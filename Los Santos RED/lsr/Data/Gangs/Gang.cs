@@ -16,11 +16,16 @@ using System.Xml.Serialization;
 [Serializable()]
 public class Gang : IPlatePrefixable, IGeneratesDispatchables
 {
+    [NonSerialized]
     private UIMenuNumericScrollerItem<int> setLoanValueMenuItem;
+    [NonSerialized]
     private UIMenuItem payoffDebtMenuItem;
+    [NonSerialized]
     private UIMenuItem takeLoanMenuItem;
+    [NonSerialized]
     private UIMenuItem payVigMenuItem;
-
+    [NonSerialized]
+    private GangContact gangContact;
     public Gang()
     {
     }
@@ -188,6 +193,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     [XmlIgnore]
     public bool HasWantedMembers { get; set; }
     [XmlIgnore]
+    [field: NonSerialized]
     public GangContact Contact { get; set; }
     public Color Color => Color.FromName(ColorString);
     public string ColorInitials => ColorPrefix + ShortName;
@@ -352,9 +358,6 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     {
         return ShortName.ToString();
     }
-
-
-
     public void AddLoanItems(ILocationInteractable Player, UIMenu LoanSubMenu,GameLocation gameLocation, ITimeReportable time)
     {
 
@@ -415,7 +418,6 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         LoanSubMenu.AddItem(takeLoanMenuItem);
         UpdateDebtMenus(gr);
     }
-
     private bool TakeLoan(ILocationInteractable player, GangReputation gr, GameLocation gameLocation, LoanParameter loanParameter, ITimeReportable time)
     {
         gr.TakeLoan(setLoanValueMenuItem.Value, time, loanParameter, false);
@@ -423,7 +425,6 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         gameLocation.DisplayMessage("Success", $"You have successfully taken a loan.~n~{gr.GangLoan?.ToString()}.");
         return true;
     }
-
     private void UpdateDebtMenus(GangReputation gr)
     {
         if(gr.GangLoan != null && gr.GangLoan.DueAmount > 0)

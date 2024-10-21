@@ -25,15 +25,17 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_Hospitals();
         DefaultConfig_Prisons();
         DefaultConfig_GangDens();
-        Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
+        DefaultConfig_Banks();
+        DefaultConfig_Restaurants();
+        DefaultConfig_Sports();
+        Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
         PossibleLocations centeredAbove = LibertyCityLocations.Copy();
         foreach (GameLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
         {
             bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         }
-        Serialization.SerializeParam(centeredAbove, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCityCenteredAbove.xml");
+        Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
     }
-
     private void DefaultConfig_Other()
     {
         //ALL THESE NEED -200 to the Z for the centeres
@@ -2002,33 +2004,415 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.IllicitMarketplaces.AddRange(IllicitMarketplaceList_25);
     }
-
     private void DefaultConfig_GangDens()
     {
-        List<GangDen> LCGangDens = new List<GangDen>()
+        float spawnChance = 45f;
+        List<GangDen> LCMafiaDens = new List<GangDen>() {};
+        GangDen GambettiDen1 = new GangDen(new Vector3(117.9776f, 237.2734f, 12.68547f), 91.83325f, "Gambetti Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_GAMBETTI")
         {
-            new GangDen(new Vector3(117.9776f, 237.2734f, 12.68547f), 91.83325f, "Gambetti Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_GAMBETTI")
-            {
-                IsPrimaryGangDen = true,
-                CanInteractWhenWanted = true,
-                MapIcon = 541,
-                BannerImagePath = "gangs\\gambetti.png",
-                OpenTime = 0,
-                CloseTime = 24,
-                IsEnabled = true,
-                StateID = StaticStrings.LibertyStateID,
-                PossiblePedSpawns = new List<ConditionalLocation>()
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\gambetti.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new GangConditionalLocation(new Vector3(116.7614f, 239.4333f, 12.68577f), 117.5893f, 55f) { TaskRequirements = TaskRequirements.Guard },//right by thingo
                     new GangConditionalLocation(new Vector3(116.0579f, 223.9395f, 12.72538f), 73.20693f, 55f){ TaskRequirements = TaskRequirements.Guard },
                 },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new GangConditionalLocation(new Vector3(111.3983f, 218.4232f, 12.41919f), 1.662297f, 75f),
                 }
+        };//Little Italy Drrusellas
+        GangDen PavanoDen1 = new GangDen(new Vector3(25.4392f, 1745.794f, 22.4494f), 359.2466f, "Pavano Safehouse", "", "PavanoDenMenu", "AMBIENT_GANG_PAVANO")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\pavano.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 10,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(29.01961f, 1747.132f, 22.26883f), 322.4916f, 65f),
+                new GangConditionalLocation(new Vector3(31.25423f, 1740.376f, 22.36001f), 313.2928f, 65f),
+                new GangConditionalLocation(new Vector3(16.37719f, 1747.927f, 23.13333f), 38.09092f, 65f),
+                new GangConditionalLocation(new Vector3(36.76826f, 1747.077f, 22.02411f), 1.040331f, 65f),
             },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(33.99926f, 1751.237f, 21.87192f), 88.18089f, 75f),
+            }
+        };//East HOlland
+        GangDen LupisellaDen1 = new GangDen(new Vector3(1642.493f, 2204.835f, 17.33413f), 270.3958f, "Lupisella Safehouse", "", "LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            //MapIcon = 77,
+            BannerImagePath = "gangs\\lupisella.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 10,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1641.377f, 2201.225f, 16.71346f), 244.8785f, 75f),
+                new GangConditionalLocation(new Vector3(1640.861f, 2199.374f, 16.71352f), 272.0472f, 75f),
+                new GangConditionalLocation(new Vector3(1644.047f, 2194.191f, 16.70902f), 276.2515f, 75f),
+                new GangConditionalLocation(new Vector3(1644.123f, 2215.08f, 16.83813f), 286.4753f, 75f),
+                new GangConditionalLocation(new Vector3(1662.775f, 2192.077f, 16.72728f), 60.91267f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1667.617f, 2192.521f, 16.65262f), 185.392f, 75f),
+                new GangConditionalLocation(new Vector3(1672.417f, 2192.223f, 16.65987f), 182.6264f, 75f),
+            }
+        };//Bohan Safehouse
+        GangDen MessinaDen1 = new GangDen(new Vector3(-35.4356f, 1104.923f, 14.96771f), 359.9908f, "Messina Safehouse", "", "MessinaDenMenu", "AMBIENT_GANG_MESSINA")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            //MapIcon = 78,
+            BannerImagePath = "gangs\\messina.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 20,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-31.04382f, 1107.717f, 14.86459f), 6.084367f, 75f),
+                new GangConditionalLocation(new Vector3(-39.05048f, 1107.48f, 14.84484f), 345.8169f, 75f),
+                new GangConditionalLocation(new Vector3(-50.87765f, 1105.908f, 14.71404f), 26.121f, 75f),
+                new GangConditionalLocation(new Vector3(-55.89527f, 1105.378f, 14.86431f), 349.0154f, 75f),
+                new GangConditionalLocation(new Vector3(-17.65579f, 1106.781f, 14.86541f), 329.3782f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-53.06663f, 1102.401f, 14.7076f), 0.8618788f, 75f),
+            }
+        };//star junction building by majestic
+        GangDen AncelottiDen1 = new GangDen(new Vector3(-1226.005f, 919.8423f, 20.70229f), 91.75867f, "Ancelotti Safehouse", "", "AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            //MapIcon = 76,
+            BannerImagePath = "gangs\\ancelotti.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 15,
+            StateID = StaticStrings.AlderneyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1229.245f, 922.0545f, 19.56563f), 106.8709f, 75f),
+                new GangConditionalLocation(new Vector3(-1230.677f, 912.7825f, 19.56561f), 73.49261f, 75f),
+                new GangConditionalLocation(new Vector3(-1230.446f, 916.0844f, 19.56561f), 82.07771f, 75f),
+                new GangConditionalLocation(new Vector3(-1225.514f, 910.3934f, 19.55676f), 76.71613f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1235.617f, 916.5689f, 19.0338f), 0.4052677f, 75f),
+            }
+        };//acter in aldery
+        LCMafiaDens.Add(GambettiDen1);
+        LCMafiaDens.Add(PavanoDen1);
+        LCMafiaDens.Add(LupisellaDen1);
+        LCMafiaDens.Add(MessinaDen1);
+        LCMafiaDens.Add(AncelottiDen1);
+        LibertyCityLocations.GangDens.AddRange(LCMafiaDens);
+
+
+        GangDen LostMainDen = new GangDen(new Vector3(-1476.747f, 848.6306f, 26.33693f), 331.2753f, "Lost M.C. Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_LOST")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\lostmc.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 25,
+            StateID = StaticStrings.AlderneyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1472.149f, 848.8211f, 25.44471f), 305.4796f, 75f),
+                new GangConditionalLocation(new Vector3(-1477.812f, 852.5535f, 25.44471f), 340.0578f, 75f),
+                new GangConditionalLocation(new Vector3(-1482.91f, 851.8522f, 25.44242f), 352.3685f, 75f),
+                new GangConditionalLocation(new Vector3(-1486.606f, 858.3859f, 25.44471f), 299.3602f, 75f),
+                new GangConditionalLocation(new Vector3(-1477.087f, 856.1881f, 25.44471f), 329.5667f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1471.557f, 853.3066f, 25.44471f), 245.9039f, 75f),
+                new GangConditionalLocation(new Vector3(-1465.049f, 849.5966f, 25.02942f), 239.8058f, 75f),
+            },
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1510.688f, 829.5602f, 25.02706f), 239.7735f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-1490.288f, 861.674f, 25.02752f), 55.41684f),
+                    new SpawnPlace(new Vector3(-1498.98f, 867.0431f, 25.02857f), 58.18737f),
+                }
         };
-        LibertyCityLocations.GangDens.AddRange(LCGangDens);
+
+        LibertyCityLocations.GangDens.Add(LostMainDen);
+
+
+        GangDen TriadMainDen = new GangDen(new Vector3(322.4745f, 98.86183f, 15.20138f), 182.0887f, "Triad Den", "", "TriadsDenMenu", "AMBIENT_GANG_WEICHENG")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\triad.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 15,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(319.0662f, 95.33968f, 14.76519f), 155.9272f, 75f),
+                new GangConditionalLocation(new Vector3(325.3342f, 95.26466f, 14.76519f), 240.5921f, 75f),
+                new GangConditionalLocation(new Vector3(332.0768f, 94.87815f, 14.76519f), 182.3631f, 75f),
+                new GangConditionalLocation(new Vector3(313.3737f, 94.43867f, 14.76357f), 134.2366f, 75f),
+
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+
+            }
+        };
+        LibertyCityLocations.GangDens.Add(TriadMainDen);
+
+
+        GangDen YardieDen1 = new GangDen(new Vector3(1456.727f, 604.7159f, 36.83776f), 273.4852f, "Yardies Chill Spot", "", "YardiesDenMenu", "AMBIENT_GANG_YARDIES")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "gangs\\yardies.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1458.424f, 602.5609f, 36.42554f), 216.3955f, 75f),
+                new GangConditionalLocation(new Vector3(1458.91f, 607.2742f, 36.269f), 293.9358f, 75f),
+                new GangConditionalLocation(new Vector3(1458.515f, 615.5831f, 35.30829f), 292.8582f, 75f),
+                new GangConditionalLocation(new Vector3(1465.213f, 620.0914f, 34.41097f), 57.3548f, 75f),
+                new GangConditionalLocation(new Vector3(1464.749f, 595.3234f, 37.76828f), 174.5851f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1463.775f, 624.2559f, 33.97698f), 355.722f, 75f),
+                new GangConditionalLocation(new Vector3(1452.932f, 618.8113f, 34.93314f), 267.0037f, 75f),
+            }
+        };
+        LibertyCityLocations.GangDens.Add(YardieDen1);
+
+        GangDen SpanishLordsDen1 = new GangDen(new Vector3(996.7028f, 1865.197f, 14.88829f), 181.2785f, "Spanish Lords Den", "", "VarriosDenMenu", "AMBIENT_GANG_SPANISH")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(998.1249f, 1863.178f, 14.24735f), 222.095f, 75f),
+                new GangConditionalLocation(new Vector3(994.1127f, 1862.485f, 14.24717f), 135.7988f, 75f),
+                new GangConditionalLocation(new Vector3(989.3598f, 1865.632f, 14.25257f), 99.79716f, 75f),
+                new GangConditionalLocation(new Vector3(1007.358f, 1861.336f, 14.22742f), 261.6856f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+
+            }
+        };
+        LibertyCityLocations.GangDens.Add(SpanishLordsDen1);
+
+        GangDen KoreanDen1 = new GangDen(new Vector3(-927.1663f, 1546.542f, 13.7039f), 266.7077f, "Korean Mob Den", "", "KkangpaeDenMenu", "AMBIENT_GANG_KOREAN")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 20,
+            StateID = StaticStrings.AlderneyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-925.3502f, 1544.59f, 13.60226f), 211.9382f, 75f),
+                new GangConditionalLocation(new Vector3(-922.923f, 1537.577f, 13.60214f), 245.0914f, 75f),
+                new GangConditionalLocation(new Vector3(-924.1536f, 1551.493f, 13.60201f), 306.0096f, 75f),
+                new GangConditionalLocation(new Vector3(-921.79f, 1554.534f, 13.60215f), 264.8454f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-917.2498f, 1521.129f, 13.47092f), 204.1982f, 75f),
+            }
+        };
+        LibertyCityLocations.GangDens.Add(KoreanDen1);
+
+
+        GangDen NorthHollandDen1 = new GangDen(new Vector3(-167.3737f, 1901.367f, 12.33477f), 357.6532f, "The North Holland Hustlers Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_HOLHUST")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-165.5883f, 1902.758f, 12.31431f), 307.6587f, 75f),
+                new GangConditionalLocation(new Vector3(-173.9109f, 1904.159f, 12.83977f), 23.44327f, 75f),
+                new GangConditionalLocation(new Vector3(-180.7313f, 1902.531f, 13.42876f), 2.435143f, 75f),
+                new GangConditionalLocation(new Vector3(-179.3212f, 1890.959f, 13.66216f), 291.3142f, 75f),
+                new GangConditionalLocation(new Vector3(-174.2546f, 1882.677f, 14.37876f), 108.8811f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-176.8966f, 1895.208f, 13.26385f), 359.4119f, 75f),
+            }
+        };
+        LibertyCityLocations.GangDens.Add(NorthHollandDen1);
+
+
+        GangDen PetrovicDen1 = new GangDen(new Vector3(1184.42f, 67.03922f, 16.17647f), 274.33f, "Petrovic Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_PETROVIC")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 10,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1185.986f, 64.35268f, 16.10061f), 212.265f, 75f),
+                new GangConditionalLocation(new Vector3(1188.175f, 71.32628f, 16.17285f), 273.377f, 75f),
+                new GangConditionalLocation(new Vector3(1194.209f, 58.05311f, 15.95746f), 280.714f, 75f),
+                new GangConditionalLocation(new Vector3(1195.461f, 71.88729f, 15.52232f), 177.8928f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1198.347f, 65.8954f, 15.54268f), 266.819f, 75f),
+                new GangConditionalLocation(new Vector3(1208.59f, 59.09538f, 15.9755f), 263.8091f, 75f),
+            }
+        };
+        LibertyCityLocations.GangDens.Add(PetrovicDen1);
+
+
+        GangDen AngelsDen = new GangDen(new Vector3(-385.5903f, 1701.063f, 6.09363f), 356.4827f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 25,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-383.5614f, 1702.414f, 6.055346f), 302.9006f, 75f),
+                new GangConditionalLocation(new Vector3(-392.6819f, 1704.269f, 6.059426f), 54.89993f, 75f),
+                new GangConditionalLocation(new Vector3(-397.4105f, 1702.661f, 6.059423f), 25.53698f, 75f),
+                new GangConditionalLocation(new Vector3(-386.3522f, 1719.108f, 6.044559f), 107.3011f, 75f),
+                new GangConditionalLocation(new Vector3(-383.4299f, 1712.491f, 6.046339f), 224.3586f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-408.7182f, 1698.409f, 5.908772f), 176.1779f, 75f),
+                new GangConditionalLocation(new Vector3(-405.0932f, 1698.177f, 5.909182f), 181.1461f, 75f),
+            },
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-398.0585f, 1720.009f, 5.908676f), 186.0972f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
+                new SpawnPlace(new Vector3(-421.4973f, 1707.647f, 5.908159f), 253.3437f),
+                new SpawnPlace(new Vector3(-425.2538f, 1717.559f, 5.908561f), 299.1917f),
+                }
+        };
+        LibertyCityLocations.GangDens.Add(AngelsDen);
+
+        GangDen UptownDen = new GangDen(new Vector3(25.66632f, 2129.53f, 18.74488f), 356.3734f, "Uptown Riders Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_UPTOWN")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 25,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(29.11273f, 2131.709f, 18.74378f), 338.1963f, 75f),
+                new GangConditionalLocation(new Vector3(20.93227f, 2132.389f, 18.75438f), 54.82221f, 75f),
+                new GangConditionalLocation(new Vector3(2.554915f, 2130.033f, 18.71214f), 21.89129f, 75f),
+                new GangConditionalLocation(new Vector3(1.660987f, 2150.447f, 18.71214f), 156.5231f, 75f),
+                new GangConditionalLocation(new Vector3(34.62012f, 2147.573f, 18.71214f), 218.4744f, 75f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(26.34993f, 2150.096f, 18.7349f), 177.5702f, 75f),
+                new GangConditionalLocation(new Vector3(17.08085f, 2149.277f, 18.73664f), 175.8186f, 75f),
+            },
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(5.633491f, 2140.862f, 18.51185f), 262.1412f),
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(31.26602f, 2137.29f, 18.61054f), 87.70872f),
+                new SpawnPlace(new Vector3(31.61404f, 2143.351f, 18.58676f), 85.14955f),
+            }
+        };
+        LibertyCityLocations.GangDens.Add(UptownDen);
+
+    }
+    private void DefaultConfig_Banks()
+    {
+        Bank Lombank1 = new Bank(new Vector3(1188.084f, -60.13863f, 14.61794f), 133.4215f, "Lombank", "Our time is your money", "Lombank")
+        {
+            BannerImagePath = "stores\\lombank.png",
+            StateID = StaticStrings.LibertyStateID,
+        };
+        LibertyCityLocations.Banks.Add(Lombank1);
+
+        ATMMachine Lombankatm1 = new ATMMachine(new Vector3(1175.552f, -61.24877f, 14.12093f), 1.822495f, "Lombank", "Our time is your money","None",null,null)
+        {
+            BannerImagePath = "stores\\lombank.png",
+            StateID = StaticStrings.LibertyStateID,
+        };
+        LibertyCityLocations.ATMMachines.Add(Lombankatm1);
+
+    }
+    private void DefaultConfig_Restaurants()
+    {
+        LibertyCityLocations.Restaurants.AddRange(new List<Restaurant>()
+        {
+            new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
+        }   
+        );
+    }
+    private void DefaultConfig_Sports()
+    {
+        LibertyCityLocations.SportingGoodsStores.AddRange(new List<SportingGoodsStore>()
+        {
+        new SportingGoodsStore(new Vector3(-1295.603f, 1896.611f, 13.17022f), 1.258699f, "Leftwood Sports", "Right our leftwood!", "VespucciSportsMenu")
+        {
+            StateID = StaticStrings.AlderneyStateID,
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1296.468f, 1909.253f, 13.04997f), 271.4031f),
+            VehiclePreviewCameraPosition = new Vector3(-1296.634f, 1914.314f, 14.65471f),
+            VehiclePreviewCameraDirection = new Vector3(-0.01058928f, -0.9803134f, -0.1971639f),
+            VehiclePreviewCameraRotation = new Rotator(-11.37116f, 6.531513E-07f, 179.3811f),
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-1301.706f, 1891.748f, 13.17023f), 2.433398f),
+                }
+        },
+                }
+        );
     }
     private void DefaultConfig_Prisons()
     {
@@ -2063,31 +2447,205 @@ public class PlacesOfInterest_Liberty
         List<PoliceStation> PoliceStations = new List<PoliceStation>()
         {
             //Broker
-            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,      
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1469.959f, 407.952f, 28.06162f), 334.1368f, 75f),
+                    new LEConditionalLocation(new Vector3(1471.489f, 400.8039f, 28.00071f), 233.3257f, 75f),
+                    new LEConditionalLocation(new Vector3(1472.287f, 413.687f, 28.16126f), 335.372f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1445.06f, 393.4634f, 28.33191f), 88.59583f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1131.671f, 138.2387f, 17.40844f), 54.60419f, 75f),
+                    new LEConditionalLocation(new Vector3(1138.356f, 133.9466f, 17.49231f), 283.6084f, 75f),
+                    new LEConditionalLocation(new Vector3(1123.693f, 138.8339f, 16.70552f), 333.9313f, 75f),
+                    new LEConditionalLocation(new Vector3(1128.705f, 108.3261f, 17.1551f), 243.2021f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1127.885f, 104.3547f, 16.9264f), 269.8351f, 75f),
+                    new LEConditionalLocation(new Vector3(1140.719f, 132.05f, 17.29783f), 176.8967f, 75f),
+                },         
+            },
 
 
             //Dukes
-            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1473.851f, 1017.511f, 30.82764f), 183.1868f, 75f),
+                    new LEConditionalLocation(new Vector3(1467.423f, 1017.069f, 30.82807f), 156.0497f, 75f),
+                    new LEConditionalLocation(new Vector3(1460.437f, 1010.427f, 28.57376f), 139.4183f, 75f),
+                    new LEConditionalLocation(new Vector3(1488.792f, 1010.496f, 28.03296f), 267.2982f, 75f),
+                    new LEConditionalLocation(new Vector3(1470.244f, 1068.398f, 38.50281f), 292.8177f, 75f),
+                    new LEConditionalLocation(new Vector3(1487.186f, 1068.372f, 38.53416f), 332.2541f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1471.367f, 1077.222f, 38.50308f), 52.43438f, 75f),
+                    new LEConditionalLocation(new Vector3(1477.497f, 1072.767f, 38.50276f), 284.1264f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(2407.317f, 946.8757f, 6.080221f), 262.8414f, 75f),
+                    new LEConditionalLocation(new Vector3(2410.385f, 938.5565f, 6.204664f), 197.1165f, 75f),
+                    new LEConditionalLocation(new Vector3(2402.948f, 903.6752f, 6.08021f), 239.0134f, 75f),
+                    new LEConditionalLocation(new Vector3(2373.941f, 905.1735f, 6.080024f), 187.3566f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(2349.061f, 922.7029f, 6.078603f), 87.75613f, 75f),
+                    new LEConditionalLocation(new Vector3(2350.036f, 932.507f, 6.080106f), 86.69183f, 75f),
+                    new LEConditionalLocation(new Vector3(2350.425f, 952.7989f, 6.08022f), 83.99601f, 75f),
+                    new LEConditionalLocation(new Vector3(2349.991f, 959.1418f, 6.080325f), 89.76208f, 75f),
+                },         
+            },
 
             //Bohan
-            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(670.1032f, 2088.794f, 16.3161f), 334.3344f, 75f),
+                    new LEConditionalLocation(new Vector3(677.0965f, 2091.434f, 16.25306f), 11.18726f, 75f),
+                    new LEConditionalLocation(new Vector3(664.1884f, 2093.99f, 16.19413f), 45.96721f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(681.4908f, 2089.008f, 16.31622f), 358.0114f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1218.547f, 2361.659f, 23.89289f), 49.91943f, 75f),
+                    new LEConditionalLocation(new Vector3(1213.31f, 2368.823f, 23.06237f), 64.75815f, 75f),
+                    new LEConditionalLocation(new Vector3(1213.848f, 2358.921f, 23.07587f), 106.4697f, 75f),
+                    new LEConditionalLocation(new Vector3(1225.221f, 2370.886f, 23.8929f), 35.86892f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1236.041f, 2386.234f, 23.89339f), 359.3186f, 75f),
+                    new LEConditionalLocation(new Vector3(1228.21f, 2385.235f, 23.89339f), 178.7449f, 75f),
+                    new LEConditionalLocation(new Vector3(1220.831f, 2385.9f, 23.89338f), 3.008273f, 75f),
+                },         
+            },
 
             //Algonquin
-            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-142.6722f, 233.2056f, 11.49896f), 297.2696f, 75f),
+                    new LEConditionalLocation(new Vector3(-141.2132f, 224.5515f, 10.20658f), 237.6309f, 75f),
+                    new LEConditionalLocation(new Vector3(-141.8323f, 248.6599f, 12.83091f), 330.3247f, 75f),
+                    new LEConditionalLocation(new Vector3(-158.308f, 249.8716f, 12.21221f), 322.5742f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-153.2814f, 242.6229f, 12.70591f), 264.8219f, 75f),
+                    new LEConditionalLocation(new Vector3(-174.0335f, 229.9114f, 12.69959f), 2.602433f, 75f),
+                    new LEConditionalLocation(new Vector3(-163.1242f, 224.3065f, 12.69959f), 270.2501f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
 
             //Alderney
-            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
-            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
-            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
+            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+
+                },         
+            },
 
         };
         LibertyCityLocations.PoliceStations.AddRange(PoliceStations);

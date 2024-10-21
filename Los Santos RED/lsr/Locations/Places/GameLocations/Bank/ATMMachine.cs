@@ -27,7 +27,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
     private Bank AssociatedBank;
     private bool KeepInteractionGoing;
     private BankInteraction BankInteraction;
-
+    [XmlIgnore]
     public Rage.Object ATMObject { get; private set; } = null;
     public ATMMachine() : base()
     {
@@ -42,8 +42,11 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Access {Name} ATM";
-        return ATMObject.Exists() && player.CurrentLookedAtObject.Exists() && ATMObject.Handle == player.CurrentLookedAtObject.Handle;
+        return EntrancePosition != Vector3.Zero || ( ATMObject.Exists() && player.CurrentLookedAtObject.Exists() && ATMObject.Handle == player.CurrentLookedAtObject.Handle);
     }
+
+
+
     public ATMMachine(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, Bank bank) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -71,9 +74,27 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
             {
                 try
                 {
-                    MachineInteraction machineInteraction = new MachineInteraction(Player, ATMObject);
-                    machineInteraction.StandingOffsetPosition = 0.5f;
-                    if (machineInteraction.MoveToMachine(1.0f) && StartUseMachine())
+
+
+                    Vector3 FinalPlayerPos = new Vector3();
+                    float FinalPlayerHeading = 0f;
+                    if (ATMObject != null && ATMObject.Exists())
+                    {
+                        MachineOffsetResult machineInteraction = new MachineOffsetResult(Player, ATMObject);
+                        machineInteraction.StandingOffsetPosition = 0.5f;
+                        machineInteraction.GetPropEntry();
+                        FinalPlayerPos = machineInteraction.PropEntryPosition;
+                        FinalPlayerHeading = machineInteraction.PropEntryHeading;
+                    }
+                    else
+                    {
+                        FinalPlayerPos = EntrancePosition;
+                        FinalPlayerHeading = EntranceHeading;
+                    }
+
+
+                    MoveInteraction moveInteraction = new MoveInteraction(Player, FinalPlayerPos, FinalPlayerHeading);
+                    if (moveInteraction.MoveToMachine(1.0f) && StartUseMachine())
                     {
                         CreateInteractionMenu();
                         InteractionMenu.Visible = true;
@@ -180,6 +201,25 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
             GameFiber.Yield();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+    }
+
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+    {
+
+        Bank closestBank = placesOfInterest.PossibleLocations.Banks.Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(EntrancePosition)).FirstOrDefault();
+        AssociatedBank = closestBank;
+
+        if(AssociatedBank == null)
+        {
+            EntryPoint.WriteToConsole($"ATM MACHINE HAS NO BANK ON SETUP");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"ATM MACHINE HAS BANK ON SETUP {AssociatedBank.Name}");
+        }
+        
+
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
     }
 }
 

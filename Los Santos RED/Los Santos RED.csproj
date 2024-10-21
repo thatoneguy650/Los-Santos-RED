@@ -112,6 +112,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -186,6 +187,7 @@
     <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />
@@ -333,7 +335,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseQuestion.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\Machines\MachineInteraction.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Machines\MachineOffsetResult.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PayNSpray\RepairGarage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\ExportedVehicle.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\MenuVehicleMap.cs" />

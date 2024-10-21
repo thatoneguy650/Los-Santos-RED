@@ -44,6 +44,9 @@ public class Contacts : IContacts
             DefaultConfig();
         }
     }
+
+
+
     public GangContact GetGangContactData(string contactName)
     {
         GangContact toReturn = PossibleContacts.GangContacts.FirstOrDefault(x => x.Name == contactName);
@@ -105,7 +108,6 @@ public class Contacts : IContacts
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Contacts_FullExpandedJurisdiction.xml");
     }
-
     public PhoneContact GetContactByNumber(string numpadString)
     {
         return PossibleContacts.AllContacts().FirstOrDefault(x => x.Number == numpadString || x.FullNumber == numpadString);

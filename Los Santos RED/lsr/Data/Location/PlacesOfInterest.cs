@@ -95,14 +95,11 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig_LibertyCity();
-            DefaultConfig_ShunshineDream();
+            DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_2008();
         }
     }
-
-
-
     public List<GameLocation> InteractableLocations()
     {
         return PossibleLocations.InteractableLocations();
@@ -271,7 +268,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
        Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
-
     private void DefaultConfig_PedCustomizeLocation()
     {
         DefaultPedCustomizerLocation = new PedCustomizerLocation();
@@ -286,7 +282,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(402.8127f, -997.4653f, -99.04851f), new Vector3(0.0355651f, 0.9914218f, -0.1257696f), new Rotator(-7.225204f, -5.647735E-07f, -2.054481f), 4));
         DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
     }
-
     private void DefaultConfig_BarberShops()
     {
         BarberShopPlaces = new List<BarberShop>()
@@ -4748,8 +4743,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             ButtonPromptText = "Enter Ballas Hangout",
             AssignedAssociationID = "AMBIENT_GANG_BALLAS",
             VehiclePreviewLocation = new SpawnPlace(new Vector3(0f, 0f, 0), 0f),
-            ExpectedMoney = 0,
-            ExpectedItemAmount = 0,
             PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(7.144477f,-1894.97f,23.12855f),
@@ -5677,7 +5670,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty();
         placesOfInterest_Liberty.DefaultConfig();
     }
-    private void DefaultConfig_ShunshineDream()
+    private void DefaultConfig_SunshineDream()
     {
         PlacesOfInterest_SunshineDream placesOfInterest_SunshineDream = new PlacesOfInterest_SunshineDream();
         placesOfInterest_SunshineDream.DefaultConfig();

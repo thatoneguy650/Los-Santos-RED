@@ -46,7 +46,15 @@ public class PlacesOfInterest_SunshineDream
 
     private void DefaultConfig_Other()
     {
-      
+        //ped customize places
+        //new Vector3(-2017.507f, -781.601f, 8.676593f,), 46.41839f  //LocationType Gold Coast Hotel Room
+
+
+        //new Interior(3842, "Name Gold Coast Hotel"),
+
+
+        //alt1 
+        //new Vector3(1043.011f, 2848.557f, 2.434071f), 191.2893f  //LocationType Mortain Mall
     }
     private void DefaultConfig_GangDens()
     {
@@ -112,6 +120,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(-1660.57f, 174.2597f, 3.531038f), 77.53107f, 75f),
@@ -133,6 +142,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 88.369f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new PoliceStation(new Vector3(2225.321f, 1014.969f, 3.808f), 93.134f, "Coral City Police Department", "")
             {
@@ -141,6 +151,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 93.134f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new PoliceStation(new Vector3(1015.738f, 700.687f, 2.634f), 310.108f, "Vice City Police Department", "")
             {
@@ -149,6 +160,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 310.108f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new PoliceStation(new Vector3(578.864f, -49.636f, 2.681f), 193.102f, "Downtown Police Department", "")
             {
@@ -157,6 +169,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 193.102f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.PoliceStations.AddRange(PoliceStations);
@@ -169,6 +182,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 262.232f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hospital(new Vector3(-1737.824f, 704.377f, 2.692f), 281.271f, "Vice Clinic", "")
             {
@@ -177,6 +191,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 281.271f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hospital(new Vector3(723.331f, 2135.241f, 2.678f), 275.403f, "Mercy Hospital", "")
             {
@@ -185,6 +200,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 275.403f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Hospitals.AddRange(Hospitals);
@@ -197,6 +213,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Our time is your money",
                 EntrancePosition = new Vector3(-1531.095f, 9.961f, 2.682f),
                 EntranceHeading = 2.764f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Bank(new Vector3(407.459f, 221.496f, 2.681f), 82.788f, "Downtown Bank", "Our time is your money","DWNT")
             {
@@ -204,6 +221,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Our time is your money",
                 EntrancePosition = new Vector3(407.459f, 221.496f, 2.681f),
                 EntranceHeading = 82.788f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Bank(new Vector3(1157.523f, 3036.054f, 2.675f), 76.988f, "Coco Grove Bank HQ", "Our time is your money","COCO")
             {
@@ -211,6 +229,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Our time is your money",
                 EntrancePosition = new Vector3(1157.523f, 3036.054f, 2.675f),
                 EntranceHeading = 76.988f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Bank(new Vector3(1331.051f, 3019.667f, 2.688f), 181.62f, "Coco Grove Bank Small", "Our time is your money","COCO")
             {
@@ -218,6 +237,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Our time is your money",
                 EntrancePosition = new Vector3(1331.051f, 3019.667f, 2.688f),
                 EntranceHeading = 181.62f,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Banks.AddRange(Banks);
@@ -231,6 +251,7 @@ public class PlacesOfInterest_SunshineDream
                 OpenTime = 0,
                 CloseTime = 24,
                 AssignedAssociationID = "GRP6",
+                StateID = StaticStrings.LeonidaStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new SecurityConditionalLocation(new Vector3(307.700f,42.293f,10.664f),239.393f,55) { RequiredPedGroup = "UnarmedSecurity",TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario },
@@ -252,6 +273,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "General shop",
                 EntrancePosition = new Vector3(-1408.402f, 1042.958f, 2.748f),
                 EntranceHeading = 281.271f,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.GunStores.AddRange(GunStores);
@@ -265,6 +287,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-1972.939f, 156.074f, 2.692f), 57.65264f, "Hotel Breakwater", "In the Heart of Ocean Beach","CheapHotelMenu")
             {
@@ -274,6 +297,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-1879.58f, -443.545f, 2.989f), 94.491f, "Loews Hotel", "A Summer to Remember!","CheapHotelMenu")
             {
@@ -283,6 +307,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 94.491f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-1972.768f, 71.861f, 2.782f), 57.65264f, "Clevelander Hotel", "Paradise in Miami!","CheapHotelMenu")
             {
@@ -292,6 +317,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-1972.432f, 26.34f, 3.066f), 57.65264f, "Decowalk Hotel", "A Summer to Remember!","CheapHotelMenu")
             {
@@ -301,6 +327,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(177.24f, 1116.312f, 2.942f), 2.443f, "Hotel Twinn", "Paradise in Miami!","CheapHotelMenu")
             {
@@ -310,6 +337,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 2.443f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(2433.271f, 1796.652f, 2.717f), 358.874f, "Biltmore Hotel", "A Summer to Remember!","CheapHotelMenu")
             {
@@ -319,6 +347,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 358.874f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-1973.665f, -277.137f, 2.692f), 57.65264f, "Cavalier Hotel", "Paradise in Miami!","CheapHotelMenu")
             {
@@ -328,6 +357,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Hotel(new Vector3(-245.26f, -242.102f, 5.897f), 281.271f, "Venetian Hotel", "Paradise in Miami!","CheapHotelMenu")
             {
@@ -337,6 +367,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 281.271f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Hotels.AddRange(Hotels);
@@ -349,6 +380,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 69.24533f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Residences.AddRange(Residences);
@@ -361,6 +393,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 243.528f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new ApartmentBuilding(new Vector3(-1415.912f, 416.574f, 2.592f), 5.139f, "Parkside Apartments", "")
             {
@@ -369,6 +402,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 5.139f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new ApartmentBuilding(new Vector3(1190.228f, 3078.698f, 2.678f), 136.376f, "Coco Grove Apartments", "")
             {
@@ -377,6 +411,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 136.376f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.ApartmentBuildings.AddRange(ApartmentBuildings);
@@ -391,6 +426,7 @@ public class PlacesOfInterest_SunshineDream
                 OpenTime = 9,
                 CloseTime = 18,
                 AssignedAssociationID = "SECURO",
+                StateID = StaticStrings.LeonidaStateID,
             },
             new CityHall(new Vector3(783.612f, 2920.142f, 2.678f), 59.267f, "Vice City Hall", "")
             {
@@ -400,6 +436,7 @@ public class PlacesOfInterest_SunshineDream
                 OpenTime = 9,
                 CloseTime = 18,
                 AssignedAssociationID = "SECURO",
+                StateID = StaticStrings.LeonidaStateID,
             },
             new CityHall(new Vector3(2116.246f, 979.475f, 4.078f), 149.415f, "Coral City Hall", "")
             {
@@ -409,6 +446,7 @@ public class PlacesOfInterest_SunshineDream
                 OpenTime = 9,
                 CloseTime = 18,
                 AssignedAssociationID = "SECURO",
+                StateID = StaticStrings.LeonidaStateID,
             },
             new CityHall(new Vector3(1004.699f, 792.522f, 5.536f), 137.771f, "Government Center", "")
             {
@@ -418,6 +456,7 @@ public class PlacesOfInterest_SunshineDream
                 OpenTime = 9,
                 CloseTime = 18,
                 AssignedAssociationID = "SECURO",
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.CityHalls.AddRange(CityHalls);
@@ -430,6 +469,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Drink til you pop!",
                 EntrancePosition = new Vector3(-1204.641f, 150.633f, 2.837f),
                 EntranceHeading = 281.271f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Restaurant(new Vector3(-1697.073f, 119.988f, 2.682f), 281.271f, "Washington Sushi", "The finest from Japan!","FancyGenericMenu",FoodType.Japanese)
             {
@@ -437,6 +477,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "The finest from Japan!",
                 EntrancePosition = new Vector3(-1697.073f, 119.988f, 2.682f),
                 EntranceHeading = 281.271f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Restaurant(new Vector3(-1524.24f, 1333.983f, 2.848f), 171.359f, "Ocean Heights Steakhouse", "A steakhouse to end all arguments.","FancyGenericMenu",FoodType.American)
             {
@@ -444,6 +485,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "A steakhouse to end all arguments.",
                 EntrancePosition = new Vector3(-1524.24f, 1333.983f, 2.848f),
                 EntranceHeading = 171.359f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Restaurant(new Vector3(-1547.686f, -6.785f, 2.68f), 221.569f, "Paesano Pasta House", "Here is an order you can't refuse!","PizzaMenu",FoodType.Pizza)
             {
@@ -451,6 +493,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Here is an order you can't refuse!",
                 EntrancePosition = new Vector3(-1547.686f, -6.785f, 2.68f),
                 EntranceHeading = 221.569f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Restaurant(new Vector3(607.166f, 259.214f, 2.681f), 193.675f, "Burger Queen", "Royal Beef!","WigwamMenu",FoodType.American)
             {
@@ -458,6 +501,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Royal Beef!",
                 EntrancePosition = new Vector3(607.166f, 259.214f, 2.681f),
                 EntranceHeading = 193.675f,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new Restaurant(new Vector3(595.478f, 2288.89f, 2.828f), 46.324f, "Los Tres Juanes", "A taste of Cuba!","TacoFarmerMenu",FoodType.Mexican)
             {
@@ -465,6 +509,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "A taste of Cuba!",
                 EntrancePosition = new Vector3(595.478f, 2288.89f, 2.828f),
                 EntranceHeading = 46.324f,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Restaurants.AddRange(Restaurants);
@@ -477,6 +522,7 @@ public class PlacesOfInterest_SunshineDream
                 Description = "Local Convenience Store",
                 EntrancePosition = new Vector3(-1933.332f, 528.623f, 2.69f),
                 EntranceHeading = 57.65264f,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.ConvenienceStores.AddRange(ConvenienceStores);
@@ -491,6 +537,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 187.039f,
                 OpenTime = 4,
                 CloseTime = 22,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new GasStation(new Vector3(613.994f, -148.807f, 2.681f), 314.996f, "Downtown Ron", "Put RON in your tank","RonMenu")
             {
@@ -500,6 +547,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 314.996f,
                 OpenTime = 4,
                 CloseTime = 22,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.GasStations.AddRange(GasStations);
@@ -513,6 +561,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 114.843f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Bars.AddRange(Bars);
@@ -527,6 +576,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 57.65264f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.Forgers.AddRange(Forgers);
@@ -540,6 +590,7 @@ public class PlacesOfInterest_SunshineDream
                 EntrancePosition = new Vector3(-1198.206f, 202.154f, 2.836f),
                 EntranceHeading = 57.65264f,
                 OpenTime = 8,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new ClothingShop(new Vector3(1311.919f, 3100.109f, 2.688f), 59.587f, "A Rexia Fashions", "Fashion to die for!","",Vector3.Zero)
             {
@@ -548,6 +599,7 @@ public class PlacesOfInterest_SunshineDream
                 EntrancePosition = new Vector3(1311.919f, 3100.109f, 2.688f),
                 EntranceHeading = 59.587f,
                 OpenTime = 8,
+                StateID = StaticStrings.LeonidaStateID,
             },
             new ClothingShop(new Vector3(687.73f, 846.63f, 2.541f), 238.845f, "Burdines", "Catering to the Elite", "", Vector3.Zero)
             {
@@ -556,6 +608,7 @@ public class PlacesOfInterest_SunshineDream
                 EntrancePosition = new Vector3(687.73f, 846.63f, 2.541f),
                 EntranceHeading = 238.845f,
                 OpenTime = 8,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.ClothingShops.AddRange(ClothingShops);
@@ -570,6 +623,7 @@ public class PlacesOfInterest_SunshineDream
                 EntranceHeading = 243.118f,
                 OpenTime = 0,
                 CloseTime = 24,
+                StateID = StaticStrings.LeonidaStateID,
             },
         };
         SunshineDreamLocations.IllicitMarketplaces.AddRange(IllicitMarketplaces);

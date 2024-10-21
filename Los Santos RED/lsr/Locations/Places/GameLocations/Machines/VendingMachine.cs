@@ -20,9 +20,11 @@ public class VendingMachine : GameLocation
     private string PlayingDict;
     private string PlayingAnim;
     private bool hasAttachedProp;
-    private MachineInteraction MachineInteraction;
+    private MachineOffsetResult MachineInteraction;
 
     private Rage.Object SellingProp;
+    private MoveInteraction MoveInteraction;
+
     public VendingMachine() : base()
     {
 
@@ -38,7 +40,7 @@ public class VendingMachine : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player) 
     {
         ButtonPromptText = $"Shop at {Name}";
-        return MachineProp.Exists() && player.CurrentLookedAtObject.Exists() && MachineProp.Handle == player.CurrentLookedAtObject.Handle;
+        return EntrancePosition != Vector3.Zero || (MachineProp.Exists() && player.CurrentLookedAtObject.Exists() && MachineProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public VendingMachine(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -72,8 +74,22 @@ public class VendingMachine : GameLocation
                     {
                         NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
                     }
-                    MachineInteraction = new MachineInteraction(Player, MachineProp);
-                    if (MachineInteraction.MoveToMachine(1.0f))
+                    Vector3 FinalPlayerPos = new Vector3();
+                    float FinalPlayerHeading = 0f;
+                    if (MachineProp != null && MachineProp.Exists())
+                    {
+                        MachineOffsetResult machineInteraction = new MachineOffsetResult(Player, MachineProp);
+                        machineInteraction.GetPropEntry();
+                        FinalPlayerPos = machineInteraction.PropEntryPosition;
+                        FinalPlayerHeading = machineInteraction.PropEntryHeading;
+                    }
+                    else
+                    {
+                        FinalPlayerPos = EntrancePosition;
+                        FinalPlayerHeading = EntranceHeading;
+                    }
+                    MoveInteraction = new MoveInteraction(Player, FinalPlayerPos, FinalPlayerHeading);
+                    if (MoveInteraction.MoveToMachine(1.0f))
                     {
                         CreateInteractionMenu();
                         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
@@ -114,7 +130,7 @@ public class VendingMachine : GameLocation
     }
     private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
     {
-        if (MachineInteraction.MoveToMachine(1.0f))// MoveToMachine())
+        if (MoveInteraction.MoveToMachine(1.0f))// MoveToMachine())
         {
             if (UseMachine(item))
             {

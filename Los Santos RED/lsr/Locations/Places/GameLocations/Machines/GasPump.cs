@@ -31,8 +31,9 @@ public class GasPump : GameLocation
     private IGasPumpable AssociatedStation;
     private bool KeepInteractionGoing;
    // private Refueling Refueling;
-    private MachineInteraction MachineInteraction;
-
+    private MachineOffsetResult MachineInteraction;
+    private MoveInteraction MoveInteraction;
+    [XmlIgnore]
     public Rage.Object PumpProp { get; private set; } = null;
     public GasPump() : base()
     {
@@ -45,11 +46,12 @@ public class GasPump : GameLocation
     public override int MapIcon { get; set; } = 361;// (int)BlipSprite.PointOfInterest;
     public override float MapIconScale { get; set; } = 0.25f;
     public override string ButtonPromptText { get; set; }
+    [XmlIgnore]
     public bool IsFueling { get; set; } = false;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Get Gas at {Name}";
-        return PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle;
+        return EntrancePosition != Vector3.Zero || (PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public GasPump(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, IGasPumpable gasStation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -81,8 +83,24 @@ public class GasPump : GameLocation
             {
                 try
                 {
-                    MachineInteraction = new MachineInteraction(Player, PumpProp);
-                    if (MachineInteraction.MoveToMachine(1.0f))
+   
+                    Vector3 FinalPlayerPos = new Vector3();
+                    float FinalPlayerHeading = 0f;
+                    if (PumpProp != null && PumpProp.Exists())
+                    {
+                        MachineOffsetResult machineInteraction = new MachineOffsetResult(Player, PumpProp);
+                        machineInteraction.StandingOffsetPosition = 0.5f;
+                        machineInteraction.GetPropEntry();
+                        FinalPlayerPos = machineInteraction.PropEntryPosition;
+                        FinalPlayerHeading = machineInteraction.PropEntryHeading;
+                    }
+                    else
+                    {
+                        FinalPlayerPos = EntrancePosition;
+                        FinalPlayerHeading = EntranceHeading;
+                    }
+                    MoveInteraction = new MoveInteraction(Player, FinalPlayerPos, FinalPlayerHeading);
+                    if (MoveInteraction.MoveToMachine(1.0f))
                     {
                         CreateInteractionMenu();
                         InteractionMenu.Visible = true;
@@ -205,7 +223,7 @@ public class GasPump : GameLocation
     }
     private void StartMachineBuyAnimation()
     {
-        if (!MachineInteraction.MoveToMachine(1.0f))
+        if (!MoveInteraction.MoveToMachine(1.0f))
         {
             FullDispose();
             return;

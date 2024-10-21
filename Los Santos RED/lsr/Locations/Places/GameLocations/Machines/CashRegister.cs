@@ -22,7 +22,7 @@ public class CashRegister : GameLocation
     private string PlayingDict;
     private string PlayingAnim;
     private bool hasAttachedProp;
-    private MachineInteraction MachineInteraction;
+    private MachineOffsetResult MachineInteraction;
     private string registerStealEmptyText = "Register Empty";
 
     private int RegisterCurrentCash;
@@ -44,7 +44,7 @@ public class CashRegister : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Steal from {Name}";
-        return RegisterProp.Exists() && player.CurrentLookedAtObject.Exists() && RegisterProp.Handle == player.CurrentLookedAtObject.Handle;
+        return EntrancePosition != Vector3.Zero || (RegisterProp.Exists() && player.CurrentLookedAtObject.Exists() && RegisterProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public CashRegister(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, int cash) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -77,10 +77,29 @@ public class CashRegister : GameLocation
                     {
                         NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
                     }
-                    MachineInteraction = new MachineInteraction(Player, RegisterProp);
+                    MachineInteraction = new MachineOffsetResult(Player, RegisterProp);
                     MachineInteraction.IsSingleSided = true;
-                    MachineInteraction.CloseDistance = 0.5f;
-                    if (MachineInteraction.MoveToMachine(3.0f))
+                    MachineInteraction.GetPropEntry();
+                    
+
+                    Vector3 FinalPlayerPos = new Vector3();
+                    float FinalPlayerHeading = 0f;
+                    if (RegisterProp != null && RegisterProp.Exists())
+                    {
+                        MachineOffsetResult machineInteraction = new MachineOffsetResult(Player, RegisterProp);
+                        machineInteraction.IsSingleSided = true;
+                        machineInteraction.GetPropEntry();
+                        FinalPlayerPos = machineInteraction.PropEntryPosition;
+                        FinalPlayerHeading = machineInteraction.PropEntryHeading;
+                    }
+                    else
+                    {
+                        FinalPlayerPos = EntrancePosition;
+                        FinalPlayerHeading = EntranceHeading;
+                    }
+                    MoveInteraction moveInteraction = new MoveInteraction(Player, FinalPlayerPos, FinalPlayerHeading);
+                    moveInteraction.CloseDistance = 0.5f;
+                    if (moveInteraction.MoveToMachine(3.0f))
                     {
                         if (RegisterCurrentCash == 0)
                         {

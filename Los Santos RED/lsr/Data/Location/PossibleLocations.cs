@@ -62,7 +62,9 @@ public class PossibleLocations
 
 
 
-
+    public List<ATMMachine> ATMMachines { get; private set; } = new List<ATMMachine>();
+    public List<GasPump> GasPumps { get; private set; } = new List<GasPump>();
+    public List<CashRegister> CashRegisters { get; private set; } = new List<CashRegister>();
 
     //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
@@ -122,6 +124,9 @@ public class PossibleLocations
         AllLocations.AddRange(BarberShops);
         AllLocations.AddRange(PlasticSurgeryClinics);
         AllLocations.AddRange(TattooShops);
+        AllLocations.AddRange(ATMMachines);
+        AllLocations.AddRange(CashRegisters);
+        AllLocations.AddRange(GasPumps);
         return AllLocations;
     }
 
