@@ -22,6 +22,7 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     private UIMenuItem LayLowMenuItem;
     private UIMenuItem dropoffKick;
     private UIMenu LoanSubMenu;
+    private bool isHiringGangDen;
 
     public GangDen() : base()
     {
@@ -59,6 +60,10 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     {
         AssignedAssociationID = assignedAssociationID;
         MenuID = menuID;
+    }
+    public void SetHiringGangDen()
+    {
+        isHiringGangDen = true;
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -204,33 +209,36 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
 
     private void CreateTaskMenuItems()
     {
-        PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-        if (ExpectedMoney > 0 && pt.IsReadyForPayment)
+        if (isHiringGangDen)
         {
-            dropoffCashMenuItem = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
-            dropoffCashMenuItem.Activated += (sender, selectedItem) =>
+            PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
+            if (ExpectedMoney > 0 && pt.IsReadyForPayment)
             {
-                DropoffCash();
-            };
-            InteractionMenu.AddItem(dropoffCashMenuItem);
-        }
-        else if (ExpectedItem != null && pt.IsReadyForPayment)
-        {
-            dropoffItemMenuItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
-            dropoffItemMenuItem.Activated += (sender, selectedItem) =>
+                dropoffCashMenuItem = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
+                dropoffCashMenuItem.Activated += (sender, selectedItem) =>
+                {
+                    DropoffCash();
+                };
+                InteractionMenu.AddItem(dropoffCashMenuItem);
+            }
+            else if (ExpectedItem != null && pt.IsReadyForPayment)
             {
-                DropoffItem();
-            };
-            InteractionMenu.AddItem(dropoffItemMenuItem);
-        }
-        else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
-        {
-            completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
-            completeTask.Activated += (sender, selectedItem) =>
+                dropoffItemMenuItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
+                dropoffItemMenuItem.Activated += (sender, selectedItem) =>
+                {
+                    DropoffItem();
+                };
+                InteractionMenu.AddItem(dropoffItemMenuItem);
+            }
+            else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
             {
-                SetCompleteTask();
-            };
-            InteractionMenu.AddItem(completeTask);
+                completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
+                completeTask.Activated += (sender, selectedItem) =>
+                {
+                    SetCompleteTask();
+                };
+                InteractionMenu.AddItem(completeTask);
+            }
         }
         if (Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true && Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
         {
