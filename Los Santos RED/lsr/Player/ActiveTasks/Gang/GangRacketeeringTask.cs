@@ -38,6 +38,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int MoneyToPickup;
         private bool HasAddedComplications;
         private bool WillAddComplications;
+        private bool HasCollectedMoney;
         private bool HasLocations => RacketeeringLocation != null && HiringGangDen != null;
 
         public GangRacketeeringTask(ITaskAssignable player, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
@@ -82,8 +83,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         try
                         {
-                            LocationLoop();
-                            WatchLoop();
+                            Loop();
                             FinishTask();
                         }
                         catch (Exception ex)
@@ -99,24 +99,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
             }
         }
-        private void LocationLoop()
-        {
-            while (true)
-            {
-                if (RacketeeringLocation != null && RacketeeringLocation.InteractionMenu != null)
-                {
-                    collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${MoneyToPickup}" };
-                    collectMoney.Activated += (sender, selectedItem) =>
-                    {
-                        CollectMoney();
-                    };
-                    RacketeeringLocation.InteractionMenu.AddItem(collectMoney);
-                    break;
-                }
-                GameFiber.Sleep(250);
-            }
-        }
-        private void WatchLoop()
+        private void Loop()
         {
             while (true)
             {
@@ -125,16 +108,28 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     break;
                 }
-                if (!RacketeeringLocation.IsPlayerInterestedInLocation)
+                if (RacketeeringLocation.InteractionMenu != null && !HasCollectedMoney)
+                {
+                    if (!RacketeeringLocation.InteractionMenu.MenuItems.Contains(collectMoney))
+                    {
+                        collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${MoneyToPickup}" };
+                        collectMoney.Activated += (sender, selectedItem) =>
+                        {
+                            CollectMoney();
+                        };
+                        RacketeeringLocation.InteractionMenu.AddItem(collectMoney);
+                    }
+                }
+                if (HasCollectedMoney)
                 {
                     RacketeeringLocation.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 1);
+                    if (!RacketeeringLocation.IsNearby)
+                    {
+                        CurrentTask.OnReadyForPayment(false);
+                        break;
+                    }
                 }
-                if (!RacketeeringLocation.IsPlayerInterestedInLocation && !RacketeeringLocation.IsNearby)
-                {
-                    CurrentTask.OnReadyForPayment(false);
-                    break;
-                }
-                GameFiber.Sleep(1000);
+                GameFiber.Sleep(250);
             }
         }
         private void FinishTask()
@@ -160,7 +155,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             Player.BankAccounts.GiveMoney(MoneyToPickup, false);
             collectMoney.Enabled = false;
-            RacketeeringLocation.IsPlayerInterestedInLocation = false;
+            HasCollectedMoney = true;
             RacketeeringLocation.PlaySuccessSound();
             RacketeeringLocation.DisplayMessage("~g~Reply", "Take the fucking money and leave already.");
         }
