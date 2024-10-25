@@ -188,6 +188,7 @@
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />

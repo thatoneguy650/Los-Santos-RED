@@ -29,6 +29,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu JobsSubMenu;
     private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangPizza;
+    private UIMenuItem GangRacketeering;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private GangReputation ActiveGangReputation;
@@ -238,6 +239,12 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangPizza(ActiveGang, GangContact);
             sender.Visible = false;
         };
+        GangRacketeering = new UIMenuItem("Racketeering", "Collect protection money. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.PickupPaymentMin:C0}-{ActiveGang.PickupPaymentMax:C0}~s~" };
+        GangRacketeering.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartGangRacketeering(ActiveGang, GangContact);
+            sender.Visible = false;
+        };
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
         JobsSubMenu.AddItem(GangMoneyPickup);  
@@ -245,6 +252,7 @@ public class GangInteraction : IContactMenuInteraction
         if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
         {
             JobsSubMenu.AddItem(GangPizza);
+            JobsSubMenu.AddItem(GangRacketeering);
         }
     }
 
