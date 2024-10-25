@@ -55,7 +55,7 @@ public class Teller : PedExt
 
         if (store == null || store.VendorMoneyMin == -1 || store.VendorMoneyMax == -1)
         {
-            Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
+            Money = RandomItems.GetRandomNumberInt(MerchantMoneyMin(), MerchantMoneyMax());
         }
         else
         {
@@ -88,5 +88,9 @@ public class Teller : PedExt
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
     }
+
+
+
+
 }
 

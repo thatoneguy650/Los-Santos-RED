@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 [Serializable()]
@@ -72,6 +73,8 @@ public class Interior
     public List<string> RequestIPLs { get; set; } = new List<string>();
     public List<string> RemoveIPLs { get; set; } = new List<string>();
     public List<string> InteriorSets { get; set; } = new List<string>();
+    public int InteriorTintColor { get; set; } = -1;
+    public int InteriorSetStyleID { get; set; } = -1;
     public Vector3 InteriorEgressPosition { get; set; }
     public float InteriorEgressHeading { get; set; }
     public bool NeedsActivation { get; set; } = false;
@@ -83,20 +86,13 @@ public class Interior
     public float MaxUpdateDistance { get; set; } = 50f;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
     public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
-
-
-
     public string ForceAutoInteractName { get; set; }
     public List<PropSpawn> PropSpawns { get; set; }
     public List<SpawnPlace> VendorLocations { get; set; } = new List<SpawnPlace>();
-
-
     public List<Vector3> SearchLocations { get; set; }
-
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
-
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames)
     {
         Settings = settings;
@@ -162,9 +158,29 @@ public class Interior
                     }
                     GameFiber.Yield();
                 }
+                // Deactivate the current entity set style before activating the new one ( If one is loaded )
+                if (InteriorSetStyleID != -1)
+                {
+                    string previousEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                    EntryPoint.WriteToConsole($"Deactivating previous entity set style: {previousEntitySetStyle}");
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, previousEntitySetStyle);
+                    GameFiber.Yield();
+                }
                 foreach (string interiorSet in InteriorSets)
                 {
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
+                    if (InteriorTintColor != -1)
+                    {
+                        SetInteriorColorTint(interiorSet, InteriorTintColor);  // Apply the tint color to each interior set
+                    }
+                    GameFiber.Yield();
+                }
+                // Activate new entity set style
+                if (InteriorSetStyleID != -1)
+                {
+                    string newEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                    EntryPoint.WriteToConsole($"Activating new entity set style: {newEntitySetStyle}");
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
                 }
                 LoadDoors(isOpen);
@@ -243,6 +259,14 @@ public class Interior
                     foreach (string interiorSet in InteriorSets)
                     {
                         NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
+                        GameFiber.Yield();
+                    }
+                    // Deactivate the current entity set style if active
+                    if (InteriorSetStyleID != -1)
+                    {
+                        string entitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                        EntryPoint.WriteToConsole($"Deactivating entity set style on unload: {entitySetStyle}");
+                        NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entitySetStyle);
                         GameFiber.Yield();
                     }
                     foreach (InteriorDoor door in Doors)
@@ -335,7 +359,6 @@ public class Interior
             }
         }
     }
-
     private void DoAutoInteract()
     {
         InteriorInteract ii = AllInteractPoints.FirstOrDefault(x => x.Name == ForceAutoInteractName);
@@ -346,7 +369,18 @@ public class Interior
         ii.SetupFake(Player, Settings, InteractableLocation, LocationInteractable);
         ii.OnInteract();
     }
-
+    public void SetInteriorColorTint(string entitySetName, int InteriorColorStyle)
+    {
+        if (InternalID != 0) // Ensure the interior instance index is valid
+        {
+            NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(InternalID, entitySetName, InteriorColorStyle);
+        }
+        else
+        {
+            // Handle the case where the interior instance index is not valid
+            EntryPoint.WriteToConsole("Error: Interior instance index is not valid.");
+        }
+    }
     private void SpawnInteriorProps()
     {
         foreach(PropSpawn ps in PropSpawns)
@@ -463,5 +497,11 @@ public class Interior
             }
         }
         SpawnedProps.Clear();
+    }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        InteriorTintColor = -1;
+        InteriorSetStyleID = -1;
     }
 }

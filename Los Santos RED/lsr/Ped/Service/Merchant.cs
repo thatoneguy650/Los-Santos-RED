@@ -43,7 +43,7 @@ public class Merchant : PedExt, IWeaponIssuable
 
         if(store == null || store.VendorMoneyMin == -1 || store.VendorMoneyMax == -1)
         {
-            Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
+            Money = RandomItems.GetRandomNumberInt(MerchantMoneyMin(), MerchantMoneyMax());
         }
         else
         {

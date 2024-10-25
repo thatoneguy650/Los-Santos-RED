@@ -34,7 +34,7 @@ public class PlacesOfInterest_Liberty
         {
             bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         }
-        Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
+        Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
     }
     private void DefaultConfig_Other()
     {

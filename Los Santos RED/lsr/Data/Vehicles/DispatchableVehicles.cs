@@ -1509,7 +1509,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
         };
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
-        Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
         //SunshineDream
     }
 
@@ -1523,22 +1522,22 @@ public class DispatchableVehicles : IDispatchableVehicles
             //new DispatchableVehicle("pmp600", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
         };
 
-        DispatchableVehicle vcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
-        vcpdpolice3.ModelName = "police3liv";
+        //DispatchableVehicle vcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
+        //vcpdpolice3.ModelName = "police3liv";
         List<DispatchableVehicle> VCPDVehicles = new List<DispatchableVehicle>() 
         {
-            vcpdpolice3,
+            new DispatchableVehicle("police3", 100, 100),
             //new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             //new DispatchableVehicle("police2", 48, 35),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
             //new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } } 
         };
-        DispatchableVehicle vdpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
-        vdpdpolice3.ModelName = "police3liv";
+        //DispatchableVehicle vdpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
+        //vdpdpolice3.ModelName = "police3liv";
         List<DispatchableVehicle> VDPDVehicles = new List<DispatchableVehicle>() 
         {
-            vdpdpolice3,
+            new DispatchableVehicle("police3", 100, 100),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
 

@@ -266,7 +266,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
     public bool IsWaitingAtTrafficLight { get; set; }
-    //public bool IsAssignedToHover { get; set; }
     public bool IsTurningLeftAtTrafficLight { get; set; }
     public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
@@ -440,7 +439,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeSeenUnconscious => Game.GameTime - GameTimeFirstSeenUnconscious;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
-   // public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public bool WasModSpawned { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }
@@ -597,7 +595,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //return false;
         }
     }
-
     public void LogSourceOfDeath()
     {
         if (Pedestrian.Exists() && Pedestrian.IsDead)
@@ -1008,7 +1005,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         Pedestrian.Money = 0;
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);// Gang.PercentageTrustingOfPlayer);
-        Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
+        Money = RandomItems.GetRandomNumberInt(CivilianMoneyMin(), CivilianMoneyMax());
         WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
         WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
         WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
@@ -1187,6 +1184,110 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         else
         {
             return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
+        }
+    }
+    protected int CivilianMoneyMax()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMaxRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMaxMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMaxPoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMaxMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.MoneyMaxMiddleZones;
+        }
+    }
+    protected int CivilianMoneyMin()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMinRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMinMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMinPoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.MoneyMinMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.MoneyMinMiddleZones;
+        }
+    }
+    protected int MerchantMoneyMax()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMaxRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMaxMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMaxPoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMaxMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.MerchantMoneyMaxMiddleZones;
+        }
+    }
+    protected int MerchantMoneyMin()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMinRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMinMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMinPoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.MerchantMoneyMinMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.MerchantMoneyMinMiddleZones;
         }
     }
     protected float CivilianFightPercentage()

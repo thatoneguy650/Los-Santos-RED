@@ -204,6 +204,10 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
 
     private void CreateTaskMenuItems()
     {
+        if(!IsPrimaryGangDen)
+        {
+            return;
+        }
         PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
         if (ExpectedMoney > 0 && pt.IsReadyForPayment)
         {

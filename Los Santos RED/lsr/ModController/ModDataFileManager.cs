@@ -410,6 +410,7 @@ public class ModDataFileManager
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
         string Description = "For use with Liberty City (centered). Not complete. Credit to box for the locations.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
     }

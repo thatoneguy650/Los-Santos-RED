@@ -117,14 +117,53 @@ public class CivilianSettings : ISettingsDefaultable
 
 
 
-    [Description("Minumum amount of money a merchant will surrender upon mugging.")]
-    public int MerchantMoneyMin { get; set; }
-    [Description("Maximum amount of money a merchant will surrender upon mugging.")]
-    public int MerchantMoneyMax { get; set; }
-    [Description("Minumum amount of money a civilian will surrender upon mugging.")]
-    public int MoneyMin { get; set; }
-    [Description("Maximum amount of money a civilian will surrender upon mugging.")]
-    public int MoneyMax { get; set; }
+    //[Description("Minumum amount of money a merchant will surrender upon mugging.")]
+    //public int MerchantMoneyMin { get; set; }
+    //[Description("Maximum amount of money a merchant will surrender upon mugging.")]
+    //public int MerchantMoneyMax { get; set; }
+    //[Description("Minumum amount of money a civilian will surrender upon mugging.")]
+    //public int MoneyMin { get; set; }
+    //[Description("Maximum amount of money a civilian will surrender upon mugging.")]
+    //public int MoneyMax { get; set; }
+
+
+
+
+    [Description("Minumum amount of money a merchant will surrender upon mugging in rich zones.")]
+    public int MerchantMoneyMinRichZones { get; set; }
+    [Description("Maximum amount of money a merchant will surrender upon mugging in rich zones.")]
+    public int MerchantMoneyMaxRichZones { get; set; }
+
+    [Description("Minumum amount of money a merchant will surrender upon mugging in middle zones.")]
+    public int MerchantMoneyMinMiddleZones { get; set; }
+    [Description("Maximum amount of money a merchant will surrender upon mugging in middle zones.")]
+    public int MerchantMoneyMaxMiddleZones { get; set; }
+
+    [Description("Minumum amount of money a merchant will surrender upon mugging in poor zones.")]
+    public int MerchantMoneyMinPoorZones { get; set; }
+    [Description("Maximum amount of money a merchant will surrender upon mugging in poor zones.")]
+    public int MerchantMoneyMaxPoorZones { get; set; }
+
+
+
+
+    [Description("Minumum amount of money a civilian will surrender upon mugging in rich zones.")]
+    public int MoneyMinRichZones { get; set; }
+    [Description("Maximum amount of money a civilian will surrender upon mugging in rich zones.")]
+    public int MoneyMaxRichZones { get; set; }
+    [Description("Minumum amount of money a civilian will surrender upon mugging in middle zones.")]
+    public int MoneyMinMiddleZones { get; set; }
+    [Description("Maximum amount of money a civilian will surrender upon mugging in middle zones.")]
+    public int MoneyMaxMiddleZones { get; set; }
+    [Description("Minumum amount of money a civilian will surrender upon mugging in poor zones.")]
+    public int MoneyMinPoorZones { get; set; }
+    [Description("Maximum amount of money a civilian will surrender upon mugging in poor zones.")]
+    public int MoneyMaxPoorZones { get; set; }
+
+
+
+
+
 
     //[Description("Minumum amount of money a merchant will surrender upon mugging.")]
     //public int MerchantMoneyMin { get; set; }
@@ -248,11 +287,24 @@ public class CivilianSettings : ISettingsDefaultable
         CowerPercentagePoorZones = 1f;//HAS DESERIALIZED VALUES
 
 
-        MerchantMoneyMin = 100;
-        MerchantMoneyMax = 800;
+        MerchantMoneyMinRichZones = 100;
+        MerchantMoneyMaxRichZones = 600;
 
-        MoneyMin = 15;
-        MoneyMax = 450;
+        MerchantMoneyMinMiddleZones = 100;
+        MerchantMoneyMaxMiddleZones = 400;
+        MerchantMoneyMinPoorZones = 1;
+        MerchantMoneyMaxPoorZones = 200;
+
+        MoneyMinRichZones = 100;
+        MoneyMaxRichZones = 750;
+        MoneyMinMiddleZones = 25;
+        MoneyMaxMiddleZones = 350; 
+        MoneyMinPoorZones = 1;
+        MoneyMaxPoorZones = 250;
+
+
+
+
         PercentageTrustingOfPlayer = 85f;
 
 
