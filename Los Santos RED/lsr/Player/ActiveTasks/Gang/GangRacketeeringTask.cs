@@ -30,16 +30,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private Gang HiringGang;
         private GangDen HiringGangDen;
-        private GameLocation RacketeeringLocation;
+        private List<GameLocation> RacketeeringLocations = new List<GameLocation>();
+
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
         private int GameTimeToWaitBeforeComplications;
-        private int MoneyToRecieve;
+        private int MoneyToReceive;
         private int MoneyToPickup;
         private bool HasAddedComplications;
         private bool WillAddComplications;
-        private bool HasCollectedMoney;
-        private bool HasLocations => RacketeeringLocation != null && HiringGangDen != null;
+
+        private bool HasLocations => RacketeeringLocations != null && RacketeeringLocations.Any() && HiringGangDen != null;
 
         public GangRacketeeringTask(ITaskAssignable player, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
             ICrimes crimes, PhoneContact phoneContact, GangTasks gangTasks, IGangTerritories gangTerritories, IZones zones)
@@ -62,9 +63,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
-            if (RacketeeringLocation != null)
+            foreach (GameLocation location in RacketeeringLocations)
             {
-                RacketeeringLocation.IsPlayerInterestedInLocation = false;
+                if (location != null) { location.IsPlayerInterestedInLocation = false; }
             }
         }
         public void Start(Gang ActiveGang)
@@ -72,7 +73,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             HiringGang = ActiveGang;
             if (PlayerTasks.CanStartNewTask(HiringGang?.ContactName))
             {
-                GetRacketeeringInformation();
+                GetRacketeeringSpots();
                 GetHiringDen();
                 if (HasLocations)
                 {
@@ -108,27 +109,32 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     break;
                 }
-                if (RacketeeringLocation.InteractionMenu != null && !HasCollectedMoney)
+                GameLocation currentLocation = RacketeeringLocations.FirstOrDefault(loc => loc.IsPlayerInterestedInLocation);
+                bool collectionFinished = RacketeeringLocations.All(loc => loc.ProtectionMoneyDue == 0);
+
+                if (collectionFinished)
                 {
-                    if (!RacketeeringLocation.InteractionMenu.MenuItems.Contains(collectMoney))
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
+                }
+
+                RacketeeringLocations.Where(loc => loc.IsPlayerInterestedInLocation)
+                    .ToList().ForEach(location =>
                     {
-                        collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${MoneyToPickup}" };
-                        collectMoney.Activated += (sender, selectedItem) =>
+                        if (location.InteractionMenu != null && location.IsPlayerInterestedInLocation)
                         {
-                            CollectMoney();
-                        };
-                        RacketeeringLocation.InteractionMenu.AddItem(collectMoney);
-                    }
-                }
-                if (HasCollectedMoney)
-                {
-                    RacketeeringLocation.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 1);
-                    if (!RacketeeringLocation.IsNearby)
-                    {
-                        CurrentTask.OnReadyForPayment(false);
-                        break;
-                    }
-                }
+                            if (!location.InteractionMenu.MenuItems.Contains(collectMoney))
+                            {
+                                collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${location.ProtectionMoneyDue}" };
+                                collectMoney.Activated += (sender, selectedItem) =>
+                                {
+                                    CollectMoney(location);
+                                };
+                                location.InteractionMenu.AddItem(collectMoney);
+                            }
+                        }
+                    });
+
                 GameFiber.Sleep(250);
             }
         }
@@ -136,9 +142,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                if (RacketeeringLocation != null)
+                foreach (GameLocation location in RacketeeringLocations)
                 {
-                    RacketeeringLocation.IsPlayerInterestedInLocation = false;
+                    if (location != null) { location.IsPlayerInterestedInLocation = false; }
                 }
                 SendMoneyDropOffMessage();
             }
@@ -151,15 +157,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 Dispose();
             }
         }
-        private void CollectMoney()
+        private void CollectMoney(GameLocation location)
         {
-            Player.BankAccounts.GiveMoney(MoneyToPickup, false);
+            Player.BankAccounts.GiveMoney(location.ProtectionMoneyDue, false);
             collectMoney.Enabled = false;
-            HasCollectedMoney = true;
-            RacketeeringLocation.PlaySuccessSound();
-            RacketeeringLocation.DisplayMessage("~g~Reply", "Take the fucking money and leave already.");
+            location.IsPlayerInterestedInLocation = false;
+            location.ProtectionMoneyDue = 0;
+            location.PlaySuccessSound();
+            location.DisplayMessage("~g~Reply", "Take the fucking money and leave already.");
         }
-        private void GetRacketeeringInformation()
+        private void GetRacketeeringSpots()
         {
             if (GangTerritories.GetGangTerritory(HiringGang.ID) != null)
             {
@@ -188,8 +195,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             }
                         }
                     }
-
-                    RacketeeringLocation = AvailableSpots.PickRandom();
+                    RacketeeringLocations = AvailableSpots.OrderBy(x => Guid.NewGuid()).Take(new Random().Next(1, AvailableSpots.Count)).ToList();
                 }
             }
         }
@@ -199,26 +205,46 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRequiredPayment()
         {
-            int PaymentAmount = RandomItems.GetRandomNumberInt(HiringGang.PickupPaymentMin, HiringGang.PickupPaymentMax).Round(100);
-            MoneyToPickup = PaymentAmount * 10;
-            float TenPercent = (float)MoneyToPickup / 10;
-            MoneyToRecieve = (int)TenPercent;
-            if (MoneyToRecieve <= 0)
+            float TenPercent = 0;
+            foreach (GameLocation location in RacketeeringLocations)
             {
-                MoneyToRecieve = 500;
+                int PaymentAmount = 0;
+                if (location.GetType().ToString().Equals("Bank"))
+                {
+                    PaymentAmount = RandomItems.GetRandomNumberInt(5000, 20000).Round(100);
+                } else 
+                { 
+                    PaymentAmount = RandomItems.GetRandomNumberInt(500, 1000).Round(50);
+                }
+
+                if (Zones.GetZone(location.EntrancePosition).Economy.ToString().Equals("Rich")) { PaymentAmount *= 5; }
+                else if (Zones.GetZone(location.EntrancePosition).Economy.ToString().Equals("Middle")) { PaymentAmount *= 2; }
+
+                MoneyToPickup += PaymentAmount;
+
+                TenPercent = (float)PaymentAmount / 10;
+                MoneyToReceive += (int)TenPercent;
+
+                location.ProtectionMoneyDue = PaymentAmount;
             }
-            MoneyToRecieve = MoneyToRecieve.Round(10);
+            MoneyToReceive = MoneyToReceive.Round(100);
         }
         private void AddTask()
         {
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
             WillAddComplications = false;
+            /*
             if (RacketeeringLocation != null)
             {
                 RacketeeringLocation.IsPlayerInterestedInLocation = true;
+            }*/
+            foreach (GameLocation location in RacketeeringLocations)
+            {
+                if (location != null) { location.IsPlayerInterestedInLocation = true; }
             }
-            PlayerTasks.AddTask(HiringGang.Contact, MoneyToRecieve, 500, -1 * MoneyToPickup, -1000, 2, "Racketeering for Gang");
+
+            PlayerTasks.AddTask(HiringGang.Contact, MoneyToReceive, 500, -1 * MoneyToPickup, -1000, 2, "Racketeering for Gang");
             CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
             CurrentTask.FailOnStandardRespawn = true;
             HiringGangDen.ExpectedMoney = MoneyToPickup;
@@ -236,30 +262,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SendInitialInstructionsMessage()
         {
+            string locationsList = string.Join(", ", RacketeeringLocations.Select(loc => loc.Name));
             List<string> Replies = new List<string>() {
-                                $"Go to {RacketeeringLocation.Name} and make the owner understand our protection isn’t optional. Payment: ${MoneyToPickup}.",
-                                $"Visit {RacketeeringLocation.Name} and remind them that payment of ${MoneyToPickup} is due. We don’t take “no” for an answer.",
-                                $"Go to {RacketeeringLocation.Name} and collect ${MoneyToPickup}. If they hesitate, make it clear what that means.",
-                                $"Stop by {RacketeeringLocation.Name} and let them know they owe us ${MoneyToPickup}. We’re not known for our patience.",
-                                $"Head to {RacketeeringLocation.Name} and propose a deal for ${MoneyToPickup}. Make sure they understand it’s non-negotiable.",
-                                $"Check {RacketeeringLocation.Name} for debts. They need to pay up: ${MoneyToPickup}. We’re not a charity.",
-                                $"Go to {RacketeeringLocation.Name} and remind them of their ${MoneyToPickup}. We don’t tolerate excuses.",
-                                $"Swing by {RacketeeringLocation.Name} and let them know we expect ${MoneyToPickup}. We can help them remember if they forget.",
-                                $"Visit {RacketeeringLocation.Name} and ensure they realize ${MoneyToPickup} is the least of their worries if they don’t pay.",
-                                $"Stop by {RacketeeringLocation.Name} and make it clear that ${MoneyToPickup} is overdue. We don’t let things slide.",
-                                $"Head to {RacketeeringLocation.Name} and check if they’re ready to pay ${MoneyToPickup}. They’d be wise to say yes.",
-                                $"Go to {RacketeeringLocation.Name} and collect ${MoneyToPickup}. Remind them that we don’t take kindly to delays.",
-                                $"Make a stop at {RacketeeringLocation.Name} and confirm ${MoneyToPickup} is settled.",
-                                $"Visit {RacketeeringLocation.Name} and remind them that their ${MoneyToPickup} is now our priority.",
-                                $"Go to {RacketeeringLocation.Name} and stress that ${MoneyToPickup} is not a request; it’s a requirement.",
-                                $"Stop by {RacketeeringLocation.Name} to collect ${MoneyToPickup}. We’ll be waiting, and we don’t like to be kept waiting.",
-                                $"Check out {RacketeeringLocation.Name} and ensure they’re ready to hand over ${MoneyToPickup}. No games.",
-                                $"Go to {RacketeeringLocation.Name} and confirm that ${MoneyToPickup} is on the table. Or we’ll have to escalate matters.",
-                                $"Visit {RacketeeringLocation.Name} and make sure they understand the importance of ${MoneyToPickup}. We don’t play nice.",
-                            };
-
-
-
+                $"Go to the following locations: {locationsList} and make the owners understand our protection isn’t optional. ${MoneyToReceive} 10% cut like usual",
+                $"Visit {locationsList} and remind them of their overdue payment. You'll get ${MoneyToReceive}",
+                $"Make sure to check in at {locationsList} and collect the tax from each. ${MoneyToReceive} for you",
+                $"Head to {locationsList} and let them know they owe us. We’re not known for our patience. ${MoneyToReceive} for you",
+                $"Stop by {locationsList} and ensure they realize they'll need to pay up. Your cut: ${MoneyToReceive}",
+                $"Remind the owners at {locationsList} that they need to settle their debts. You'll get ${MoneyToReceive}"
+            };
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
     }
