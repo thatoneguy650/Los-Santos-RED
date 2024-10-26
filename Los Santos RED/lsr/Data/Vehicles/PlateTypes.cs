@@ -42,7 +42,7 @@ public class PlateTypes : IPlateTypes
     }
     public PlateType GetPlateType(int CurrentIndex)
     {
-        return PlateTypeManager.PlateTypeList.FirstOrDefault(x => x.Index == CurrentIndex);
+        return PlateTypeManager.PlateTypeList.OrderBy(x=> x.Order).FirstOrDefault(x => x.Index == CurrentIndex);
     }
     public PlateType GetPlateType(string State)
     {
@@ -79,7 +79,20 @@ public class PlateTypes : IPlateTypes
         PlateTypeManager.PlateTypeList.Add(new PlateType(2, "San Andreas Yellow on Blue", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(3, "San Andreas Classic", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(4, "San Andreas Exempt", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false });
-        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Yankton", StaticStrings.NorthYanktonStateID, 1, "123  ABC"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Yankton", StaticStrings.NorthYanktonStateID, 2, "123  ABC"));
+
+
+        PlateTypeManager.PlateTypeList.Add(new PlateType(6, "eCola", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(7, "Las Venturas", StaticStrings.LasVenturasStateID, 2, "12A  345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(8, "Liberty", StaticStrings.LibertyStateID, 2, "ABC 1234"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(8, "Liberty", StaticStrings.AlderneyStateID, 2, "ABC 1234") { Order = 2 });
+        PlateTypeManager.PlateTypeList.Add(new PlateType(9, "LS Car Meet", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(10, "LS Panic", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(11, "LS Pounders", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(12, "Sprunkn", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
+
+
+
 
         PlateTypeManager.VanityPlates.Add("AZZ KIKR");
         PlateTypeManager.VanityPlates.Add("STARK 4");

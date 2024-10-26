@@ -214,7 +214,57 @@ public class Heads : IHeads
                         new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 45f },///white male
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("DiablosHeads", DiablosHeadList));
+
+
+
+
+        List<RandomHeadData> UptownRidersHeads = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(2,"Joshua",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(3,"Noah",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(15,"Michael",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(19,"Samuel",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+          
+                        new RandomHeadData(14,"Gabriel",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(23,"Jasmine",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(24,"Giselle",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(35,"Grace",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(36,"Brianna",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+       
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("UptownRidersHeads", UptownRidersHeads));
+
+
+        List<RandomHeadData> AngelsOfDeathHeads = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),///white male      
+
+
+                        new RandomHeadData(33,"Nicole",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(34,"Ashley",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(21,"Hannah",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(22,"Audrey",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(40,"Charlotte",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+                        new RandomHeadData(45,"Misty",WhiteHairColors_Female,WhiteHairStyles_Female,WhiteEyeColors,false),//white female
+        
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("AngelsOfDeathHeads", AngelsOfDeathHeads));
+
+
         Serialization.SerializeParams(RandomHeadDataLookup, ConfigFileName);
+
+
+
+
+
 
     }
     public List<RandomHeadData> GetHeadData(string headDataGroupID)

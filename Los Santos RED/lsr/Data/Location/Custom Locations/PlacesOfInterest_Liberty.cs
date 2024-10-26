@@ -11,6 +11,9 @@ using System.Xml.Linq;
 public class PlacesOfInterest_Liberty
 {
     private PossibleLocations LibertyCityLocations;
+    private PedCustomizerLocation DefaultPedCustomizerLocation;
+    private PedCustomizerLocation AboveDefaultPedCustomizerLocation;
+
     public void DefaultConfig()
     {
         LibertyCityLocations = new PossibleLocations();
@@ -28,13 +31,41 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_Banks();
         DefaultConfig_Restaurants();
         DefaultConfig_Sports();
+        DefaultConfig_Dealerships();
+        DefaultConfig_ConvenienceStores();
+        DefaultConfig_BarberShops();
+        DefaultConfig_FoodStands();
+        DefaultConfig_Landmarks();
+        DefaultConfig_Bars();
+        DefaultConfig_Pharmacies();
+        DefaultConfig_HardwardStores();
+        DefaultConfig_PedCustomizeLocation();
+
+
+        LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
+
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
         PossibleLocations centeredAbove = LibertyCityLocations.Copy();
         foreach (GameLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
         {
             bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         }
+        centeredAbove.PedCustomizerLocation.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
+    }
+    private void DefaultConfig_PedCustomizeLocation()
+    {
+        DefaultPedCustomizerLocation = new PedCustomizerLocation();
+        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(-1257.695f, 1610.94f, 23.20882f);
+        DefaultPedCustomizerLocation.DefaultModelPedHeading = 0.3566196f;
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(-1252.206f, 1613.172f, 23.20882f);
+        List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 4));
+        DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
     }
     private void DefaultConfig_Other()
     {
@@ -2379,6 +2410,14 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.Banks.Add(Lombank1);
 
+
+        Bank Lombank2 = new Bank(new Vector3(-1061.145f, 1302.541f, 19.57709f), 88.54723f, "Lombank", "Our time is your money", "Lombank")
+        {
+            BannerImagePath = "stores\\lombank.png",
+            StateID = StaticStrings.AlderneyStateID,
+        };
+        LibertyCityLocations.Banks.Add(Lombank2);
+
         ATMMachine Lombankatm1 = new ATMMachine(new Vector3(1175.552f, -61.24877f, 14.12093f), 1.822495f, "Lombank", "Our time is your money","None",null,null)
         {
             BannerImagePath = "stores\\lombank.png",
@@ -2387,12 +2426,52 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.ATMMachines.Add(Lombankatm1);
 
     }
+    private void DefaultConfig_Pharmacies()
+    {
+        LibertyCityLocations.Pharmacies.AddRange(new List<Pharmacy>()
+        {
+            new Pharmacy(new Vector3(-1226.868f, 1062.444f, 19.5674f), 80.39563f, "AYCEHOL", "","PharmacyMenu") { StateID = StaticStrings.AlderneyStateID },
+        });
+    }
+    private void DefaultConfig_HardwardStores()
+    {
+        LibertyCityLocations.HardwareStores.AddRange(new List<HardwareStore>()
+        {
+            new HardwareStore(new Vector3(-1439.889f, 772.345f, 20.74955f), 175.5223f, "Hardware Store", "","ToolMenu"){ StateID = StaticStrings.AlderneyStateID },
+        });
+    }
+    private void DefaultConfig_Bars()
+    {
+        LibertyCityLocations.Bars.AddRange(new List<Bar>()
+        {
+            new Bar(new Vector3(-1270.665f, 1033.902f, 19.56606f), 271.1126f, "Leprechauns Winklepicker", "Take a bite of our fanny","FancyFishMenu") { StateID = StaticStrings.AlderneyStateID },
+        }
+        );
+    }
     private void DefaultConfig_Restaurants()
     {
         LibertyCityLocations.Restaurants.AddRange(new List<Restaurant>()
         {
             new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
+            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood)
+            { StateID =StaticStrings.AlderneyStateID, OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
+
+            new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
+
+
+            //Italian
+            new Restaurant(new Vector3(-1316.426f, 998.7839f, 25.72835f), 355.8445f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.AlderneyStateID ,BannerImagePath = "stores\\pizzathis.png" },
         }   
+        );
+    }
+    private void DefaultConfig_Landmarks()
+    {
+        LibertyCityLocations.Landmarks.AddRange(new List<Landmark>()
+        {
+            new Landmark(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Schlongberg Sachs", "") { StateID = StaticStrings.AlderneyStateID },
+            new Landmark(new Vector3(-1429.036f, 770.1529f, 20.177f), 176.9206f, "Satriale's Pork Store", "") { StateID = StaticStrings.AlderneyStateID },
+        }
         );
     }
     private void DefaultConfig_Sports()
@@ -2441,6 +2520,79 @@ public class PlacesOfInterest_Liberty
             new Hospital(new Vector3(-1277.354f, 890.3488f, 21.63032f), 313.0107f, "North Tudor Medical Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
         };
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
+    }
+    private void DefaultConfig_FoodStands()
+    {
+        LibertyCityLocations.FoodStands.AddRange(new List<FoodStand>()
+        {
+           // new FoodStand(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f) }, BannerImagePath = "stores\\beefybills.png" },
+
+            new FoodStand(new Vector3(-1188.392f, 1370.67f, 19.55794f), 264.8223f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1188.392f, 1370.67f, 19.55794f), 264.8223f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(-1022.393f, 1376.817f, 19.56642f), 176.6684f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1022.393f, 1376.817f, 19.56642f), 176.6684f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(-1026.179f, 1347.799f, 19.56661f), 356.207f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1026.179f, 1347.799f, 19.56661f), 356.207f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+
+        });
+    }
+    private void DefaultConfig_ConvenienceStores()
+    {
+        LibertyCityLocations.ConvenienceStores.AddRange(new List<ConvenienceStore>()
+        {
+            new ConvenienceStore(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Happy Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+            new ConvenienceStore(new Vector3(-1424.417f, 818.9971f, 25.6028f), 22.19808f, "Los Delicatessen", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+            new ConvenienceStore(new Vector3(-1409.282f, 768.4227f, 19.35018f), 169.5838f, "Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+        }
+        );
+    }
+    private void DefaultConfig_BarberShops()
+    {
+        LibertyCityLocations.BarberShops.AddRange(new List<BarberShop>()
+        {
+            new BarberShop(new Vector3(-1214.096f, 1564.141f, 23.0377f), 92.31509f, "Unisex Salon", "")
+            {
+                StateID = StaticStrings.AlderneyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(-1237.118f, 1464.819f, 23.0369f), 269.9279f, "Alderney Hair Co", "")
+            {
+                StateID = StaticStrings.AlderneyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(-1237.505f, 1452.943f, 23.03641f), 269.7096f, "Spanky Beauty Supply", "")
+            {
+                StateID = StaticStrings.AlderneyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+        });
+    }
+    private void DefaultConfig_Dealerships()
+    {
+        Dealership AutoEroticar = new Dealership(new Vector3(-1248.386f, 1612.826f, 23.06027f), 269.4143f, "Auto Eroticar", "Prestigious Automobiles", "PremiumDeluxeMenu") 
+        {
+            CameraPosition = new Vector3(-1220.093f, 1636.106f, 34.22548f),
+            CameraDirection = new Vector3(-0.8637331f, -0.4456919f, -0.2352104f),
+            CameraRotation = new Rotator(-13.60402f, 2.196045E-06f, 117.294f),
+            VehiclePreviewCameraPosition = new Vector3(-1248.211f, 1624.571f, 23.72177f),
+            VehiclePreviewCameraDirection = new Vector3(-0.9932797f, 0.03940188f, -0.1088254f),
+            VehiclePreviewCameraRotation = new Rotator(-6.247609f, 1.073593E-07f, 87.72836f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1254.401f, 1624.775f, 22.89495f), 269.839f),
+            LicensePlatePreviewText = "AUTO ERO",
+            StateID = StaticStrings.AlderneyStateID,
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-1250.583f, 1640.089f, 23.0504f), 263.1514f),
+                    new SpawnPlace(new Vector3(-1243.687f, 1645.933f, 23.30468f), 280.7747f),
+                    new SpawnPlace(new Vector3(-1285.855f, 1621.441f, 26.50756f), 177.4582f),
+                    new SpawnPlace(new Vector3(-1280.837f, 1605.042f, 26.1878f), 188.4852f),
+                    new SpawnPlace(new Vector3(-1285.942f, 1592.272f, 26.51383f), 133.1344f),
+                }
+        };
+        LibertyCityLocations.CarDealerships.Add(AutoEroticar);
     }
     private void DefaultConfig_PoliceStations()
     {

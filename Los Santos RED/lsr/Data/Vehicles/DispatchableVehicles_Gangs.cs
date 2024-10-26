@@ -25,6 +25,14 @@ public class DispatchableVehicles_Gangs
     public List<DispatchableVehicle> VarriosVehicles { get; private set; }
     public List<DispatchableVehicle> LostVehicles { get; private set; }
     public List<DispatchableVehicle> YardiesVehicles { get; private set; }
+
+
+
+    public List<DispatchableVehicle> NorthHollandVehicles { get; private set; }
+    public List<DispatchableVehicle> PetrovicVehicles { get; private set; }
+    public List<DispatchableVehicle> SpanishLordsVehicles { get; private set; }
+    public List<DispatchableVehicle> AngelsOfDeathVehicles { get; private set; }
+    public List<DispatchableVehicle> UptownRidersVehicles { get; private set; }
     public void DefaultConfig()
     {
         SetBallasVehicles();
@@ -45,7 +53,76 @@ public class DispatchableVehicles_Gangs
         SetVarriosVehicles();
         SetLostVehicles();
         SetYardiesVehicles();
+
+
+        SetNorthHollandVehicles();
+        SetPetrovicVehicles();
+        SetSpanishLordsVehicles();
+        SetAngelsOfDeathVehicles();
+        SetUptownRidersVehicles();
+
     }
+
+    private void SetUptownRidersVehicles()
+    {
+        UptownRidersVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("burrito3",2,2) { },
+            new DispatchableVehicle("double", 50, 50) { MaxOccupants = 1 },
+            new DispatchableVehicle("bati", 50, 50) { MaxOccupants = 1 },
+            new DispatchableVehicle("bati2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("hakuchou", 50, 50) { MaxOccupants = 1, },
+            new DispatchableVehicle("hakuchou2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+        };
+    }
+
+    private void SetAngelsOfDeathVehicles()
+    {
+        AngelsOfDeathVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("burrito3",2,2) { },
+            new DispatchableVehicle("daemon", 50, 50) { MaxOccupants = 1 },
+            new DispatchableVehicle("daemon2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("nightblade", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("wolfsbane", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+        };
+    }
+
+    private void SetSpanishLordsVehicles()
+    {
+        SpanishLordsVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("primo2", 20, 20) { RequiresDLC = true,RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+            new DispatchableVehicle("primo", 20, 20) {RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+            new DispatchableVehicle("cavalcade", 55, 55) { RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+            new DispatchableVehicle("cavalcade2", 25, 25) { RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+            new DispatchableVehicle("cavalcade3", 2, 2) { RequiresDLC = true,RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+        };
+    }
+
+    private void SetPetrovicVehicles()
+    {
+        PetrovicVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("ingot", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cavalcade", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cavalcade2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cavalcade3", 20, 20) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+        };
+    }
+
+    private void SetNorthHollandVehicles()
+    {
+        NorthHollandVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("patriot3",2,2) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
+            new DispatchableVehicle("landstalker",65,65) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
+            new DispatchableVehicle("landstalker2",15,15) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
+        };
+    }
+
     private void SetBallasVehicles()
     {
         BallasVehicles = new List<DispatchableVehicle>()

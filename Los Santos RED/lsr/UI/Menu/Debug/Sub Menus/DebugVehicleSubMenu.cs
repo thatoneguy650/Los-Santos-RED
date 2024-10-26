@@ -7,6 +7,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -773,6 +774,9 @@ public class DebugVehicleSubMenu : DebugSubMenu
 
         };
         vehicleItemsMenu.AddItem(plateIndex);
+
+
+        
     }
     private void CreateInfoMenuItem()
     {

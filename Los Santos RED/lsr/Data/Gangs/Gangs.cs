@@ -798,8 +798,8 @@ public class Gangs : IGangs
         Gang Ancelotti_LIB = Extensions.DeepCopy(Ancelotti);
         Ancelotti_LIB.EnemyGangs = new List<string>() { "AMBIENT_GANG_GAMBETTI", "AMBIENT_GANG_MESSINA" };
 
-        Gang SpanishLords = new Gang("~b~", "AMBIENT_GANG_SPANISH", "The Spanish Lords", "Spanish Lords", "Blue", 
-            "VarriosPeds", "VarriosVehicles", "",
+        Gang SpanishLords = new Gang("~b~", "AMBIENT_GANG_SPANISH", "The Spanish Lords", "Spanish Lords", "Blue",
+            "SpanishLordsPeds", "SpanishLordsVehicles", "",
             "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns",
             "Spanish Lords", "CHAR_BLANK_ENTRY", "Lords Member")
         {
@@ -878,8 +878,8 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Street,
         };//heroin
 
-        Gang NorthHollandHuslters = new Gang("~r~", "AMBIENT_GANG_HOLHUST", "The North Holland Hustlers", "North Holland Hustlers", "Red", 
-            "FamiliesPeds", "FamiliesVehicles", "", 
+        Gang NorthHollandHuslters = new Gang("~r~", "AMBIENT_GANG_HOLHUST", "The North Holland Hustlers", "North Holland Hustlers", "Red",
+            "NorthHollandPeds", "NorthHollandVehicles", "", 
             "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns",
             "North Holland Hustlers", "CHAR_BLANK_ENTRY", "Huslters Member")
         {
@@ -918,7 +918,7 @@ public class Gangs : IGangs
         };//crack
 
         Gang PetrovicMafia = new Gang("~w~", "AMBIENT_GANG_PETROVIC", "Petrovic Crime Syndicate", "Petrovic Mafiya", "White",
-            "MafiaPeds", "GambettiVehicles", "PET ",
+            "PetrovicPeds", "PetrovicVehicles", "PET ",
             "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns",
             "Petrovic", "CHAR_BLANK_ENTRY","Petrovic Associate")
         {
@@ -959,12 +959,12 @@ public class Gangs : IGangs
         };//Coke
 
         Gang AngelsOfDeath = new Gang("~w~", "AMBIENT_GANG_ANGELS", "The Angels of Death", "Angels of Death", "White",
-            "LostMCPeds", "LostMCVehicles", "AOD ", 
+            "AngelsOfDeathPeds", "AngelsOfDeathVehicles", "AOD ", 
             "MeleeWeapons", "LostSidearms", "LostLongGuns",
             "AOD MC", "CHAR_BLANK_ENTRY", "AOD Member")
         {
             DenName = "Clubhouse",
-            HeadDataGroupID = "LostMCHeads",
+            HeadDataGroupID = "AngelsOfDeathHeads",
             AmbientMemberMoneyMin = 100,
             AmbientMemberMoneyMax = 250,
             DealerMemberMoneyMin = 400,
@@ -1002,7 +1002,7 @@ public class Gangs : IGangs
 
         Gang UptownRiders = new Gang("~w~", "AMBIENT_GANG_UPTOWN", 
             "Uptown Riders", "Uptown Riders", "White",
-            "BallasPeds", "BallasVehicles", "",
+            "UptownRidersPeds", "UptownRidersVehicles", "",
             "MeleeWeapons", "BallasSidearms", "BallasLongGuns",
             "Uptown Riders", "CHAR_BLANK_ENTRY", "Uptown Rider")
         {
@@ -1011,6 +1011,8 @@ public class Gangs : IGangs
             AmbientMemberMoneyMax = 300,
             DealerMemberMoneyMin = 325,
             DealerMemberMoneyMax = 1200,
+            HeadDataGroupID = "UptownRidersHeads",
+           
             EnemyGangs = new List<string>() { "AMBIENT_GANG_ANGELS" },
             DealerMenuGroup = "MethamphetamineDealerMenu",
 

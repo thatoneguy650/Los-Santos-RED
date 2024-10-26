@@ -32,6 +32,7 @@ public static class StaticStrings
     public static readonly string LibertyStateID = "Liberty";
     public static readonly string ColombiaStateID = "Colombia";
     public static readonly string LeonidaStateID = "Leonida";
+    public static readonly string LasVenturasStateID = "LasVenturas";
 
     //Contacts
     public static readonly string OfficerFriendlyContactName = "Officer Friendly";//these have gotta go, but where?

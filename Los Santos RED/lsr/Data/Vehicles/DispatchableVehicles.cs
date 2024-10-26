@@ -49,6 +49,13 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> MessinaVehicles;
     private List<DispatchableVehicle> AncelottiVehicles;
 
+
+    private List<DispatchableVehicle> NorthHollandVehicles;
+    private List<DispatchableVehicle> PetrovicVehicles;
+    private List<DispatchableVehicle> SpanishLordsVehicles;
+    private List<DispatchableVehicle> UptownRidersVehicles;
+    private List<DispatchableVehicle> AngelsOfDeathVehicles;
+
     private List<DispatchableVehicle> ArmeniaVehicles;
     private List<DispatchableVehicle> CartelVehicles;
     private List<DispatchableVehicle> RedneckVehicles;
@@ -449,6 +456,19 @@ public class DispatchableVehicles : IDispatchableVehicles
         ArmeniaVehicles.AddRange(dispatchableVehiclesGangs.ArmenianVehicles);
         YardieVehicles.AddRange(dispatchableVehiclesGangs.YardiesVehicles);
         LostMCVehicles.AddRange(dispatchableVehiclesGangs.LostVehicles);
+
+
+        NorthHollandVehicles = new List<DispatchableVehicle>();
+        PetrovicVehicles = new List<DispatchableVehicle>();
+        SpanishLordsVehicles = new List<DispatchableVehicle>();
+        UptownRidersVehicles = new List<DispatchableVehicle>();
+        AngelsOfDeathVehicles = new List<DispatchableVehicle>();
+
+        NorthHollandVehicles.AddRange(dispatchableVehiclesGangs.NorthHollandVehicles);
+        PetrovicVehicles.AddRange(dispatchableVehiclesGangs.PetrovicVehicles);
+        SpanishLordsVehicles.AddRange(dispatchableVehiclesGangs.SpanishLordsVehicles);
+        UptownRidersVehicles.AddRange(dispatchableVehiclesGangs.UptownRidersVehicles);
+        AngelsOfDeathVehicles.AddRange(dispatchableVehiclesGangs.AngelsOfDeathVehicles);
 
         //Other
         TaxiBroadWay = new DispatchableVehicle("broadway", 4, 4)
@@ -1453,6 +1473,12 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
             new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
 
+            new DispatchableVehicleGroup("NorthHollandVehicles", NorthHollandVehicles),
+            new DispatchableVehicleGroup("PetrovicVehicles", PetrovicVehicles),
+            new DispatchableVehicleGroup("SpanishLordsVehicles", SpanishLordsVehicles),
+            new DispatchableVehicleGroup("UptownRidersVehicles", UptownRidersVehicles),
+            new DispatchableVehicleGroup("AngelsOfDeathVehicles", AngelsOfDeathVehicles),
+
             //Other 
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
         };
@@ -1511,8 +1537,6 @@ public class DispatchableVehicles : IDispatchableVehicles
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
         //SunshineDream
     }
-
-
     private void DefaultConfig_SunshineDream()
     {
 
