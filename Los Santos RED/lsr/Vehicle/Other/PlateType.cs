@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ public class PlateType
     public int SpawnChance { get; set; }
     public bool CanOverwrite { get; set; } = true;
     public string SerialFormat { get; set; } = "12ABC345";
+    public int Order { get; set; }
     public bool CanSpawn
     {
         get
@@ -75,6 +77,11 @@ public class PlateType
     public override string ToString()
     {
         return Description;
+    }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        Order = 0;
     }
 }
 

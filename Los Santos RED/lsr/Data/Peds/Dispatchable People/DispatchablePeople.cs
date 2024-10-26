@@ -59,7 +59,9 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> ArmenianPeds;
     private List<DispatchablePerson> CartelPeds;
     private List<DispatchablePerson> YardiesPeds;
-
+    private List<DispatchablePerson> NorthHollandPeds;
+    private List<DispatchablePerson> PetrovicPeds;
+    private List<DispatchablePerson> SpanishLordsPeds;
     private List<DispatchablePerson> OtherPeds;
     private List<DispatchablePerson> TaxiDrivers;
     private List<DispatchablePerson> VendorPeds;
@@ -89,13 +91,16 @@ public class DispatchablePeople : IDispatchablePeople
     private DispatchablePeople_Mafia DispatchablePeople_Mafia;
     private DispatchablePeople_Diablos DispatchablePeople_Diablos;
     private DispatchablePeople_Varrios DispatchablePeople_Varrios;
-
+    private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath;
+    private DispatchablePeople_UptownRiders DispatchablePeople_UptownRiders;
 
     public List<DispatchablePerson> MafiaPeds { get; set; }
     public List<DispatchablePerson> LostMCPeds { get; set; }
     public List<DispatchablePerson> DiablosPeds { get; set; }
     public List<DispatchablePerson> VarriosPeds { get; set; }
 
+    public List<DispatchablePerson> AngelsOfDeathPeds { get; set; }
+    public List<DispatchablePerson> UptownRidersPeds { get; set; }
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
 
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1552,6 +1557,14 @@ public class DispatchablePeople : IDispatchablePeople
         DispatchablePeople_Diablos.Setup();
         DispatchablePeople_Varrios = new DispatchablePeople_Varrios(this);
         DispatchablePeople_Varrios.Setup();
+
+        DispatchablePeople_AngelsOfDeath = new DispatchablePeople_AngelsOfDeath(this);
+        DispatchablePeople_AngelsOfDeath.Setup();
+        DispatchablePeople_UptownRiders = new DispatchablePeople_UptownRiders(this);
+        DispatchablePeople_UptownRiders.Setup();
+
+
+
         VagosPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "VagosMale1" },
             new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1) { DebugName = "VagosMale2" },
@@ -1622,9 +1635,31 @@ public class DispatchablePeople : IDispatchablePeople
 
         YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale1" },
-            new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
+            new DispatchablePerson("a_m_m_soucent_03",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
             new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale3" },
         };
+
+        NorthHollandPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale1" },
+            new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale2" },
+            new DispatchablePerson("a_m_m_soucent_04",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale3" },
+        };
+
+        PetrovicPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("ig_russiandrunk",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale1" },
+            new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale2" },
+        };
+        SpanishLordsPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1) { DebugName = "SpanishLordsMale1" },
+            new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "SpanishLordsMale2" },
+            new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1) { DebugName = "SpanishLordsMale3" },
+        };
+        //UptownRidersPeds = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "UptownRiderMale1" },
+        //};
+
+
+        //a_m_m_soucent_01
 
         //Other Peds
         OtherPeds = new List<DispatchablePerson>() {
@@ -1734,6 +1769,13 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+
+
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("NorthHollandPeds", NorthHollandPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("PetrovicPeds", PetrovicPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("SpanishLordsPeds", SpanishLordsPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("UptownRidersPeds", UptownRidersPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", AngelsOfDeathPeds));
 
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
@@ -2059,9 +2101,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchablePeople_SunshineDream.xml");
     }
-
-
-
     private void DefaultConfig_SunshineDream()
     {
         List<DispatchablePerson> StandardCops_SunshineDream = new List<DispatchablePerson>() {
