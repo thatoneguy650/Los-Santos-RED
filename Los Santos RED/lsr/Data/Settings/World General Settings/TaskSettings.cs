@@ -63,6 +63,7 @@ public class TaskSettings : ISettingsDefaultable
     public int VehicleExporterTransferPaymentMin { get; set; }
     public int VehicleExporterTransferPaymentMax { get; set; }
     public float VehicleExporterTransferComplicationsPercentage { get; set; }
+    public float GangRacketeeringComplicationsPercentage { get; set; }
 
     public TaskSettings()
     {
@@ -94,6 +95,7 @@ public class TaskSettings : ISettingsDefaultable
         VehicleExporterTransferPaymentMin = 1500;// 2000;
         VehicleExporterTransferPaymentMax = 2500;// 5000;
         VehicleExporterTransferComplicationsPercentage = 25f;
+        GangRacketeeringComplicationsPercentage = 45f;
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)

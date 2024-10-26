@@ -200,5 +200,28 @@ public class PossibleLocations
         AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
+    public List<GameLocation> RacketeeringTaskLocations()
+    {
+        List<GameLocation> AllLocations = new List<GameLocation>();
+        AllLocations.AddRange(Banks);
+        AllLocations.AddRange(ScrapYards);
+        AllLocations.AddRange(CarCrushers);
+        AllLocations.AddRange(GunStores);
+        AllLocations.AddRange(Hotels);
+        AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Pharmacies);
+        AllLocations.AddRange(Dispensaries);
+        AllLocations.AddRange(HeadShops);
+        AllLocations.AddRange(HardwareStores);
+        AllLocations.AddRange(PawnShops);
+        AllLocations.AddRange(ConvenienceStores);
+        AllLocations.AddRange(LiquorStores);
+        AllLocations.AddRange(GasStations);
+        AllLocations.AddRange(Bars);
+        AllLocations.AddRange(CarDealerships);
+        AllLocations.AddRange(SportingGoodsStores);
+        AllLocations.AddRange(TattooShops);
+        return AllLocations;
+    }
 }
 
