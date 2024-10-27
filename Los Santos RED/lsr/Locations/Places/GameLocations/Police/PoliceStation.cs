@@ -12,6 +12,7 @@ using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
 using System.Runtime;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -213,5 +214,15 @@ public class PoliceStation : GameLocation, ILocationRespawnable, ILicensePlatePr
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        MaxAssaultSpawns = 15;
+        AssaultSpawnHeavyWeaponsPercent = 80f;
+    }
+
+
 }
 

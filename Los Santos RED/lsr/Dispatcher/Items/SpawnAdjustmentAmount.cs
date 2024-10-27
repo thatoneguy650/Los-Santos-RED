@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+[Serializable]
 public class SpawnAdjustmentAmount
 {
     public SpawnAdjustmentAmount()

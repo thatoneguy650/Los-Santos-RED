@@ -2407,14 +2407,16 @@ public class PlacesOfInterest_Liberty
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.LibertyStateID,
+            OpenTime = 6, 
+            CloseTime = 20
         };
         LibertyCityLocations.Banks.Add(Lombank1);
-
-
         Bank Lombank2 = new Bank(new Vector3(-1061.145f, 1302.541f, 19.57709f), 88.54723f, "Lombank", "Our time is your money", "Lombank")
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 6,
+            CloseTime = 20
         };
         LibertyCityLocations.Banks.Add(Lombank2);
 
@@ -2422,6 +2424,8 @@ public class PlacesOfInterest_Liberty
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.LibertyStateID,
+            OpenTime = 6,
+            CloseTime = 20
         };
         LibertyCityLocations.ATMMachines.Add(Lombankatm1);
 
@@ -2452,18 +2456,19 @@ public class PlacesOfInterest_Liberty
     {
         LibertyCityLocations.Restaurants.AddRange(new List<Restaurant>()
         {
+            //Generic
             new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
-            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood)
-            { StateID =StaticStrings.AlderneyStateID, OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
+            
+            //Coffee
             new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
 
-            new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
-
-
+            //Fast Food
+            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
+            
             //Italian
             new Restaurant(new Vector3(-1316.426f, 998.7839f, 25.72835f), 355.8445f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.AlderneyStateID ,BannerImagePath = "stores\\pizzathis.png" },
-        }   
-        );
+        });
     }
     private void DefaultConfig_Landmarks()
     {
@@ -2471,27 +2476,26 @@ public class PlacesOfInterest_Liberty
         {
             new Landmark(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Schlongberg Sachs", "") { StateID = StaticStrings.AlderneyStateID },
             new Landmark(new Vector3(-1429.036f, 770.1529f, 20.177f), 176.9206f, "Satriale's Pork Store", "") { StateID = StaticStrings.AlderneyStateID },
-        }
-        );
+        });
     }
     private void DefaultConfig_Sports()
     {
         LibertyCityLocations.SportingGoodsStores.AddRange(new List<SportingGoodsStore>()
         {
-        new SportingGoodsStore(new Vector3(-1295.603f, 1896.611f, 13.17022f), 1.258699f, "Leftwood Sports", "Right our leftwood!", "VespucciSportsMenu")
-        {
-            StateID = StaticStrings.AlderneyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1296.468f, 1909.253f, 13.04997f), 271.4031f),
-            VehiclePreviewCameraPosition = new Vector3(-1296.634f, 1914.314f, 14.65471f),
-            VehiclePreviewCameraDirection = new Vector3(-0.01058928f, -0.9803134f, -0.1971639f),
-            VehiclePreviewCameraRotation = new Rotator(-11.37116f, 6.531513E-07f, 179.3811f),
-            VehicleDeliveryLocations = new List<SpawnPlace>()
-                {
-                    new SpawnPlace(new Vector3(-1301.706f, 1891.748f, 13.17023f), 2.433398f),
-                }
-        },
-                }
-        );
+            new SportingGoodsStore(new Vector3(-1295.603f, 1896.611f, 13.17022f), 1.258699f, "Leftwood Sports", "Right our leftwood!", "VespucciSportsMenu")
+            {
+                StateID = StaticStrings.AlderneyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1296.468f, 1909.253f, 13.04997f), 271.4031f),
+                VehiclePreviewCameraPosition = new Vector3(-1296.634f, 1914.314f, 14.65471f),
+                VehiclePreviewCameraDirection = new Vector3(-0.01058928f, -0.9803134f, -0.1971639f),
+                VehiclePreviewCameraRotation = new Rotator(-11.37116f, 6.531513E-07f, 179.3811f),
+                VehicleDeliveryLocations = new List<SpawnPlace>()
+                    {
+                        new SpawnPlace(new Vector3(-1301.706f, 1891.748f, 13.17023f), 2.433398f),
+                    }
+            },
+                
+        });
     }
     private void DefaultConfig_Prisons()
     {
@@ -2599,7 +2603,7 @@ public class PlacesOfInterest_Liberty
         List<PoliceStation> PoliceStations = new List<PoliceStation>()
         {
             //Broker
-            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,      
+            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") { MaxAssaultSpawns = 10,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,      
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(1469.959f, 407.952f, 28.06162f), 334.1368f, 75f),
@@ -2611,7 +2615,7 @@ public class PlacesOfInterest_Liberty
                     new LEConditionalLocation(new Vector3(1445.06f, 393.4634f, 28.33191f), 88.59583f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {MaxAssaultSpawns = 5,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(1131.671f, 138.2387f, 17.40844f), 54.60419f, 75f),
@@ -2628,7 +2632,7 @@ public class PlacesOfInterest_Liberty
 
 
             //Dukes
-            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(1473.851f, 1017.511f, 30.82764f), 183.1868f, 75f),
@@ -2644,7 +2648,7 @@ public class PlacesOfInterest_Liberty
                     new LEConditionalLocation(new Vector3(1477.497f, 1072.767f, 38.50276f), 284.1264f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { MaxAssaultSpawns = 25,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(2407.317f, 946.8757f, 6.080221f), 262.8414f, 75f),
@@ -2662,7 +2666,7 @@ public class PlacesOfInterest_Liberty
             },
 
             //Bohan
-            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {MaxAssaultSpawns = 15,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(670.1032f, 2088.794f, 16.3161f), 334.3344f, 75f),
@@ -2674,7 +2678,7 @@ public class PlacesOfInterest_Liberty
                     new LEConditionalLocation(new Vector3(681.4908f, 2089.008f, 16.31622f), 358.0114f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(1218.547f, 2361.659f, 23.89289f), 49.91943f, 75f),
@@ -2691,7 +2695,7 @@ public class PlacesOfInterest_Liberty
             },
 
             //Algonquin
-            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(-142.6722f, 233.2056f, 11.49896f), 297.2696f, 75f),
@@ -2706,96 +2710,162 @@ public class PlacesOfInterest_Liberty
                     new LEConditionalLocation(new Vector3(-163.1242f, 224.3065f, 12.69959f), 270.2501f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(453.639f, 285.0331f, 10.74954f), 177.6642f, 75f),
+                    new LEConditionalLocation(new Vector3(449.8034f, 281.1576f, 10.75124f), 248.6064f, 75f),
+                    new LEConditionalLocation(new Vector3(471.2408f, 280.9908f, 10.74291f), 161.0854f, 75f),
+                    new LEConditionalLocation(new Vector3(480.5587f, 276.0337f, 10.7518f), 132.277f, 75f),
+                    new LEConditionalLocation(new Vector3(510.189f, 277.6776f, 6.751965f), 113.8463f, 75f),
+                    new LEConditionalLocation(new Vector3(415.3839f, 285.3393f, 14.87019f), 122.8338f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
+                    new LEConditionalLocation(new Vector3(398.4545f, 283.5684f, 14.75398f), 296.0812f, 75f),
+                    new LEConditionalLocation(new Vector3(396.9294f, 286.8604f, 14.74307f), 294.4711f, 75f),
+                    new LEConditionalLocation(new Vector3(395.6099f, 289.9241f, 14.75308f), 293.0849f, 75f),
+                    new LEConditionalLocation(new Vector3(394.3639f, 292.6385f, 14.75081f), 296.2747f, 75f),
+                    new LEConditionalLocation(new Vector3(392.7619f, 295.8325f, 14.70148f), 295.9965f, 75f),
+                    new LEConditionalLocation(new Vector3(504.4927f, 281.2288f, 6.597221f), 183.3899f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {MaxAssaultSpawns = 5,AssaultSpawnHeavyWeaponsPercent = 50f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(50.96454f, 595.6664f, 14.76701f), 23.6899f, 75f),
+                    new LEConditionalLocation(new Vector3(56.45068f, 598.0446f, 14.76187f), 331.0646f, 75f),
+                    new LEConditionalLocation(new Vector3(59.91758f, 582.8718f, 14.73059f), 277.8942f, 75f),
+                    new LEConditionalLocation(new Vector3(48.64334f, 581.6539f, 14.76144f), 99.23477f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(51.62194f, 607.1779f, 14.75878f), 117.0722f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-171.4672f, 773.8879f, 12.69119f), 173.3235f, 75f),
+                    new LEConditionalLocation(new Vector3(-164.9593f, 774.0068f, 13.49523f), 216.3236f, 75f),
+                    new LEConditionalLocation(new Vector3(-158.9926f, 770.3032f, 14.05752f), 220.6159f, 75f),
+                    new LEConditionalLocation(new Vector3(-179.402f, 773.2516f, 11.78918f), 148.3038f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(-170.3779f, 769.1196f, 12.73803f), 75.14408f, 75f),
+                    new LEConditionalLocation(new Vector3(-162.4109f, 769.0792f, 13.61853f), 87.21024f, 75f),
+                },         
+            },
+            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(287.5326f, 1169.215f, 14.69146f), 115.9246f, 75f),
+                    new LEConditionalLocation(new Vector3(286.9623f, 1179.041f, 14.66739f), 65.71052f, 75f),
+                    new LEConditionalLocation(new Vector3(293.907f, 1185.153f, 14.62776f), 11.44679f, 75f),
+                    new LEConditionalLocation(new Vector3(321.694f, 1165.259f, 14.66715f), 192.1326f, 75f),
+                    new LEConditionalLocation(new Vector3(325.5107f, 1168.46f, 14.66715f), 251.7568f, 75f),
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(328.2254f, 1176.702f, 14.51741f), 0.4844545f, 75f),
+                    new LEConditionalLocation(new Vector3(331.4904f, 1176.841f, 14.51946f), 359.1905f, 75f),
+                    new LEConditionalLocation(new Vector3(334.673f, 1176.806f, 14.52053f), 359.7402f, 75f),
+                    new LEConditionalLocation(new Vector3(337.8275f, 1176.815f, 14.52219f), 0.9160225f, 75f),
+                    new LEConditionalLocation(new Vector3(341.1281f, 1176.879f, 14.5238f), 357.2642f, 75f),
+                    new LEConditionalLocation(new Vector3(344.5563f, 1176.952f, 14.52575f), 3.734199f, 75f),
+                    new LEConditionalLocation(new Vector3(334.6956f, 1161.298f, 14.54932f), 92.00898f, 75f),
 
                 },         
             },
-            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-184.1453f, 1596.33f, 11.24726f), 104.9129f, 75f),
+                    new LEConditionalLocation(new Vector3(-188.899f, 1593.148f, 10.88357f), 140.0583f, 75f),
+                    new LEConditionalLocation(new Vector3(-170.9266f, 1594.829f, 12.58487f), 204.1209f, 75f),
+                    new LEConditionalLocation(new Vector3(-189.2326f, 1615.316f, 11.68808f), 77.01761f, 75f),
+                    new LEConditionalLocation(new Vector3(-184.4212f, 1629.36f, 12.85684f), 19.22638f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-197.7826f, 1637.769f, 12.88037f), 88.58164f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.1044f, 1634.417f, 12.77739f), 92.46103f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.1422f, 1631.311f, 12.66841f), 90.73277f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.3575f, 1628.211f, 12.47059f), 91.66457f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.6988f, 1625.159f, 12.23071f), 92.23808f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.6242f, 1621.406f, 11.86491f), 91.21073f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.5256f, 1617.305f, 11.4495f), 86.02792f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.6718f, 1614.119f, 11.12441f), 91.38914f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.5444f, 1610.547f, 10.86039f), 86.48497f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.2461f, 1607.494f, 10.67246f), 88.98672f, 75f),
+                    new LEConditionalLocation(new Vector3(-198.7656f, 1604.295f, 10.49834f), 89.56476f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
+            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(320.6393f, 1682.101f, 14.75296f), 140.735f, 75f),
+                    new LEConditionalLocation(new Vector3(330.8164f, 1681.063f, 14.75958f), 227.0982f, 75f),
+                    new LEConditionalLocation(new Vector3(348.2731f, 1713.972f, 15.61183f), 280.0514f, 75f),
+                    new LEConditionalLocation(new Vector3(325.3313f, 1713.931f, 16.00125f), 302.9459f, 75f),
+                    new LEConditionalLocation(new Vector3(285.5443f, 1707.673f, 16.94057f), 85.26598f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-
-                },         
-            },
-            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-
-                },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
-                {
-
-                },         
-            },
-            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-
-                },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
-                {
-
-                },         
-            },
-            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID,
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-
-                },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
-                {
-
+                    new LEConditionalLocation(new Vector3(319.3295f, 1743.545f, 15.91363f), 205.8302f, 75f),
+                    new LEConditionalLocation(new Vector3(331.2584f, 1736.257f, 15.90359f), 302.7219f, 75f),
+                    new LEConditionalLocation(new Vector3(332.7829f, 1733.547f, 15.91277f), 297.2332f, 75f),
+                    new LEConditionalLocation(new Vector3(334.3795f, 1730.983f, 15.90455f), 297.6017f, 75f),
+                    new LEConditionalLocation(new Vector3(336.0804f, 1728.12f, 15.90191f), 296.8231f, 75f),
+                    new LEConditionalLocation(new Vector3(337.3104f, 1725.38f, 15.90105f), 295.1454f, 75f),
+                    new LEConditionalLocation(new Vector3(338.6208f, 1722.555f, 15.90161f), 295.0473f, 75f),
                 },         
             },
 
             //Alderney
-            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") { MaxAssaultSpawns = 5,AssaultSpawnHeavyWeaponsPercent = 50f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-1479.285f, 767.872f, 22.09835f), 204.5331f, 75f),
+                    new LEConditionalLocation(new Vector3(-1473.666f, 775.3422f, 22.32182f), 269.4045f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-1467.071f, 789.783f, 22.93336f), 236.4416f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") { MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f, OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-982.7232f, 254.9283f, 3.053053f), 278.8697f, 75f),
+                    new LEConditionalLocation(new Vector3(-991.2359f, 262.9456f, 2.998651f), 35.81685f, 75f),
+                    new LEConditionalLocation(new Vector3(-981.2977f, 245.785f, 3.053054f), 276.9689f, 75f),
+                    new LEConditionalLocation(new Vector3(-1008.636f, 236.9965f, 2.923784f), 116.7921f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-999.2963f, 206.3592f, 2.923783f), 194.2897f, 75f),
+                    new LEConditionalLocation(new Vector3(-993.6766f, 209.552f, 2.923782f), 6.087631f, 75f),
+                    new LEConditionalLocation(new Vector3(-1004.175f, 216.1478f, 2.923783f), 273.368f, 75f),
                 },         
             },
-            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
+            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") { MaxAssaultSpawns = 20,AssaultSpawnHeavyWeaponsPercent = 80f,OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-685.2141f, 1759.955f, 24.57136f), 190.5793f, 75f),
+                    new LEConditionalLocation(new Vector3(-690.9417f, 1761.98f, 24.56702f), 145.3687f, 75f),
+                    new LEConditionalLocation(new Vector3(-691.2444f, 1784.005f, 24.56167f), 43.59f, 75f),
+                    new LEConditionalLocation(new Vector3(-692.3284f, 1796.127f, 24.56199f), 86.39127f, 75f),
+                    new LEConditionalLocation(new Vector3(-699.9471f, 1833.337f, 24.3741f), 121.7336f, 75f),
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
-
+                    new LEConditionalLocation(new Vector3(-684.2045f, 1800.412f, 24.44139f), 243.3803f, 75f),
+                    new LEConditionalLocation(new Vector3(-683.9017f, 1807.903f, 24.47196f), 243.2513f, 75f),
+                    new LEConditionalLocation(new Vector3(-684.6254f, 1814.217f, 24.45251f), 265.2226f, 75f),
+                    new LEConditionalLocation(new Vector3(-640.4788f, 1785.514f, 21.97303f), 181.8763f, 75f),
+                    new LEConditionalLocation(new Vector3(-631.6221f, 1784.284f, 21.97381f), 183.7322f, 75f),
                 },         
             },
 

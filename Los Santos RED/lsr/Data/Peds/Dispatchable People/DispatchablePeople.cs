@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
@@ -142,6 +143,7 @@ public class DispatchablePeople : IDispatchablePeople
             DefaultConfig_SunshineDream();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
+            DefaultConfig_LibertyCity();
         }
     }
     public List<DispatchablePerson> GetPersonData(string dispatchablePersonGroupID)
@@ -1741,6 +1743,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("LCPDPeds", StandardCops));
         //Fire
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -1790,6 +1793,149 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
+
+    private void DefaultConfig_LibertyCity()
+    {
+        List<DispatchablePersonGroup> LCPeopleGroupLookup = Extensions.DeepCopy(PeopleGroupLookup);
+        int optionalpropschance = 20;
+        DispatchablePerson DetectiveMale = new DispatchablePerson("mp_m_freemode_01", 2, 2)
+        {
+            DebugName = "MPDetectiveMale",
+            GroupName = "Detective",
+            RandomizeHead = true,
+            MaxWantedLevelSpawn = 2,
+            OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02", "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },
+            RequiredVariation = new PedVariation(
+        new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0) },
+        new List<PedPropComponent>() { }),
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), },
+            OptionalPropChance = optionalpropschance
+        };
+        DispatchablePerson DetectiveFemale = new DispatchablePerson("mp_f_freemode_01", 2, 2)
+        {
+            DebugName = "MPDetectiveFemale",
+            GroupName = "Detective",
+            RandomizeHead = true,
+            MaxWantedLevelSpawn = 2,
+            OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
+            RequiredVariation = new PedVariation(
+                 new List<PedComponent>() { new PedComponent(3, 3, 0, 0), new PedComponent(4, 34, 0, 0), new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0) },
+                 new List<PedPropComponent>() { }),
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), },
+            OptionalPropChance = optionalpropschance
+        };
+        DispatchablePerson K9Generic = new DispatchablePerson("a_c_shepherd", 50, 50)
+        {
+            IsAnimal = true,
+            DebugName = "K9_Shepherd",
+            UnitCode = "K9",
+            OverrideAgencyLessLethalWeapons = true,
+            OverrideAgencySideArms = true,
+            OverrideAgencyLongGuns = true,
+            OverrideLessLethalWeaponsID = null,
+            OverrideSideArmsID = null,
+            OverrideLongGunsID = null,
+        };
+        LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "LCPDPeds");
+        LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "ASPPeds");
+        LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "NOOSEPeds");
+
+        List<DispatchablePerson> NOOSE_DLC = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("ig_lcswat", 100,100) {
+                DebugName = "ig_lcswat"
+                ,AccuracyMin = 25
+                ,AccuracyMax = 40
+                ,ShootRateMin = 400
+                ,ShootRateMax = 500
+                ,CombatAbilityMin = 1
+                ,CombatAbilityMax = 2
+                ,HealthMin = 100
+                ,HealthMax = 100
+                ,ArmorMin = 100
+                ,ArmorMax = 100
+                ,AllowRandomizeBeforeVariationApplied = true
+            },
+        };
+
+        List<DispatchablePerson> LCPD_DLC = new List<DispatchablePerson>() {
+
+            DetectiveMale,
+            DetectiveFemale,
+            K9Generic,
+
+            //Standard
+            new DispatchablePerson("ig_lccop_traffic",15,0) {
+                DebugName = "ig_lccop_traffic"
+                ,MaxWantedLevelSpawn = 1
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 10
+                //hat 0 = helmet, 1 = hat
+                //glasses 0 or 1 with 0 or 1 for texture
+            },
+            new DispatchablePerson("ig_lccop_01",45,45) {
+                DebugName = "ig_lccop_01"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true//no props
+            },
+            new DispatchablePerson("ig_lccop_02",45,45) {
+                DebugName = "ig_lccop_02"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true//no props
+            },
+            new DispatchablePerson("ig_lcfatcop",25,25) {
+                DebugName = "ig_lcfatcop"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 10
+            },
+
+
+            //Tactical
+            new DispatchablePerson("ig_lccop_vest_01",0,45) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,MinWantedLevelSpawn = 3
+                ,AllowRandomizeBeforeVariationApplied = true
+            },
+                        new DispatchablePerson("ig_lccop_vest_02",0,45) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,MinWantedLevelSpawn = 3
+                ,AllowRandomizeBeforeVariationApplied = true
+            },
+            new DispatchablePerson("ig_lcfatcop_vest",0,15) {
+                DebugName = "ig_lcfatcop_vest"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,MinWantedLevelSpawn = 3
+                ,AllowRandomizeBeforeVariationApplied = true
+            },
+        };
+
+        List<DispatchablePerson> ASP_DLC = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("ig_lcstrooper",100,100) {
+                DebugName = "ig_lcstrooper"
+                ,MaxWantedLevelSpawn = 4
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
+            },
+            DetectiveMale,
+            DetectiveFemale,
+            K9Generic,
+        };
+
+        LCPeopleGroupLookup.Add(new DispatchablePersonGroup("LCPDPeds", LCPD_DLC));
+        LCPeopleGroupLookup.Add(new DispatchablePersonGroup("ASPPeds", ASP_DLC));
+        LCPeopleGroupLookup.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSE_DLC));
+        Serialization.SerializeParams(LCPeopleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchablePeople_{StaticStrings.LibertyConfigSuffix}.xml");
+    }
+
     private void DefaultConfig_LosSantos2008()
     {
         //2008
@@ -1887,6 +2033,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSLifeguardPeds", LSLifeguardPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds_2008));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_2008));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LCPDPeds", StandardCops_Old));
         //Fire
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
         //EMT
@@ -2061,6 +2208,7 @@ public class DispatchablePeople : IDispatchablePeople
 
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LCPDPeds", StandardCops_Old));
 
         //Fire
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));

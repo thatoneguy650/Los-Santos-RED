@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-
+[Serializable]
 public class OptionalAppliedOverlay
 {
     private uint CollectionHash;
