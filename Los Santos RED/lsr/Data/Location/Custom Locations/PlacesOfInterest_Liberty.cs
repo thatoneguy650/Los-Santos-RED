@@ -237,7 +237,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
             },
             new GunStore() {
-                MenuID = "GunShop1",
+                MenuID = "GunShop2",
                 Name = "Blicky Bodega",
                 Description = "Protect yourself from the opposition",
                 EntrancePosition = new Vector3(311.1f, 151.3f, 211.16f),
@@ -252,7 +252,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
             },
             new GunStore() {
-                MenuID = "GunShop1",
+                MenuID = "GunShop3",
                 Name = "Knocks Central",
                 Description = "Essential business",
                 EntrancePosition = new Vector3(-1501.22f,846.25f,225.45f),

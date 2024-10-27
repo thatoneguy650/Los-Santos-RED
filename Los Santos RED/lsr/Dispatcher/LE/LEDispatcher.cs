@@ -1819,7 +1819,8 @@ public class LEDispatcher
     }
     private bool GetRoadblockNode(bool force)
     {
-        if (RoadblockInitialPositionStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name || force)
+
+        if (RoadblockInitialPositionStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name || force || Settings.SettingsManager.RoadblockSettings.AllowRoadblockOnNonCurrentStreet)
         {
             bool hasNode = false;
 

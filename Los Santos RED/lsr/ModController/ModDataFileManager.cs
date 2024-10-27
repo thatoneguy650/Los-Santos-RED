@@ -411,7 +411,34 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
-        string Description = "For use with Liberty City (centered). Not complete. Credit to box for the locations.";
+        string Description = "For use with Liberty City Remix v35. Centered and Centered above configs available. "
+            + Environment.NewLine + Environment.NewLine +
+            "1. Install Liberty City Remix according to instructions supplied in the download. Choose the Centered or Centered Above options."
+            + Environment.NewLine +
+            "2. Optional: Install LCPD Peds Pack - Install the 'police_overhaul_wfire' dlc pack folder and dlctext.xml entry from: https://drive.google.com/file/d/1pxDvFYXwH57C8bZ37ol1Xbm29YHUbdTb/view?usp=sharing"
+            + Environment.NewLine +
+            "3. Optional: Install LCPD Updated Vehicles Pack. Install the [placeholder].oiv from the 'Files' folder"
+            + Environment.NewLine +
+            $"4. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LibertyConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
+             + Environment.NewLine +
+            $"5. Fix the RageNativeUI Menu. Open Codewalker/OpenIV and navigate to mods/update/update.rpf/common/data/levels/gta5/images.meta and add the following item"
+            + "    <Item>" + Environment.NewLine
+            + "        <filename>platform:/textures/script_txds.rpf</filename>" + Environment.NewLine
+            + "        <fileType>RPF_FILE</fileType>" + Environment.NewLine
+            + "        <locked value=\"true\"/>" + Environment.NewLine
+            + "    </Item>" + Environment.NewLine
+            + Environment.NewLine +
+            $"6. Start LSR. Open the Debug Menu (F11). Go to the 'Map Menu' -> 'Liberty City Menu' -> and select 'Set LC Active'. This will set some flags/settings and remove any remaining LS ymaps."
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            ""
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            "Credits:"
+            + Environment.NewLine +
+            "box";
+
+
+
+
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
     }
     private void SetupSunshineDream()

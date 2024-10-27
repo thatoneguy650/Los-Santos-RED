@@ -1496,10 +1496,15 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         DispatchableVehicle lcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
         lcpdpolice3.ModelName = "police3liv";
+        lcpdpolice3.ForcedPlateType = 8;
+        DispatchableVehicle lcpdpolicegres = DispatchableVehicles_FEJ.Create_PoliceGresley(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolicegres.ModelName = "polgresleyliv";
+        lcpdpolicegres.ForcedPlateType = 8;
 
         List<DispatchableVehicle> LCPDVehiclesMod = new List<DispatchableVehicle>()
         {
             lcpdpolice3,
+            lcpdpolicegres,
             new DispatchableVehicle("police4", 2, 2)
         };
 
