@@ -3,6 +3,7 @@ using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +50,12 @@ public class MilitaryBase : GameLocation, ILocationRespawnable,  ILocationAreaRe
             }
         }
 
+    }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        MaxAssaultSpawns = 15;
+        AssaultSpawnHeavyWeaponsPercent = 80f;
     }
 
 }

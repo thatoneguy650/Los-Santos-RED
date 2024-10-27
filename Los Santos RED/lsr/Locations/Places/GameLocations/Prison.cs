@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -77,6 +78,12 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
             RespawnLocation += offsetToAdd;
         }
         base.AddDistanceOffset(offsetToAdd);
+    }
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        MaxAssaultSpawns = 15;
+        AssaultSpawnHeavyWeaponsPercent = 80f;
     }
 }
 

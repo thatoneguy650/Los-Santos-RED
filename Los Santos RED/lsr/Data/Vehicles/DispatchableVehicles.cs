@@ -149,6 +149,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             DefaultConfig_SunshineDream();
             DefaultConfig();
+            DefaultConfig_LibertyCity();
         }
 
 //#if DEBUG
@@ -1484,6 +1485,29 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
         Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
+
+
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "LCPDVehicles");
+
+
+        DispatchableVehicle lcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolice3.ModelName = "police3liv";
+
+        List<DispatchableVehicle> LCPDVehiclesMod = new List<DispatchableVehicle>()
+        {
+            lcpdpolice3,
+            new DispatchableVehicle("police4", 2, 2)
+        };
+
+
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehiclesMod));
+
+        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()
     {

@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-
+[Serializable]
 public class OptionalAppliedOverlayLogic
 {
     public List<OptionalAppliedOverlay> OptionalAppliedOverlays { get; set; } = new List<OptionalAppliedOverlay>();
