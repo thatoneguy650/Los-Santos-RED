@@ -1497,21 +1497,59 @@ public class DispatchableVehicles : IDispatchableVehicles
         DispatchableVehicle lcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
         lcpdpolice3.ModelName = "police3liv";
         lcpdpolice3.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolice31 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolice31.ModelName = "police3liv";
+        lcpdpolice31.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolice3CTTF = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 2, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolice3CTTF.ModelName = "police3liv";
+        lcpdpolice3CTTF.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolice3CTTF1 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 4, "", "");
+        lcpdpolice3CTTF1.ModelName = "police3liv";
+        lcpdpolice3CTTF1.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolice3HWY = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolice3HWY.ModelName = "police3liv";
+        lcpdpolice3HWY.ForcedPlateType = 8;
+
         DispatchableVehicle lcpdpolicegres = DispatchableVehicles_FEJ.Create_PoliceGresley(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
         lcpdpolicegres.ModelName = "polgresleyliv";
         lcpdpolicegres.ForcedPlateType = 8;
 
+        DispatchableVehicle lcpdpolicegres1 = DispatchableVehicles_FEJ.Create_PoliceGresley(100, 100, 1, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolicegres1.ModelName = "polgresleyliv";
+        lcpdpolicegres1.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolicegresCTTF = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 2, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolicegresCTTF.ModelName = "polgresleyliv";
+        lcpdpolicegresCTTF.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolicegresCTTF1 = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 4, "", "");
+        lcpdpolicegresCTTF1.ModelName = "polgresleyliv";
+        lcpdpolicegresCTTF1.ForcedPlateType = 8;
+
+        DispatchableVehicle lcpdpolicegresHWY = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
+        lcpdpolicegresHWY.ModelName = "polgresleyliv";
+        lcpdpolicegresHWY.ForcedPlateType = 8;
+
         List<DispatchableVehicle> LCPDVehiclesMod = new List<DispatchableVehicle>()
         {
             lcpdpolice3,
+            lcpdpolice31,
+            lcpdpolice3CTTF,
+            lcpdpolice3CTTF1,
+            lcpdpolice3HWY,
+
             lcpdpolicegres,
-            new DispatchableVehicle("police4", 2, 2)
+            lcpdpolicegres1,
+            lcpdpolicegresCTTF,
+            lcpdpolicegresCTTF1,
+            lcpdpolicegresHWY,
+            new DispatchableVehicle("police4", 2, 2) { RequiredPedGroup = "Detective" }
         };
-
-
-
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehiclesMod));
-
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()

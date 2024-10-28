@@ -50,9 +50,9 @@ public class DebugMapSubMenu : DebugSubMenu
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various map items";
         CreateGeneralItems();
         CreateLSItems();
-        CreateSunShineDreamItems();
         CreateLCItems();
         CreateCayoPericoItems();
+        CreateSunShineDreamItems();  
     }
     private void CreateGeneralItems()
     {
@@ -129,6 +129,7 @@ public class DebugMapSubMenu : DebugSubMenu
             menu.Visible = false;
             DisableLosSantosYMAPS();
             SetLCSettings();
+            NativeFunction.Natives.SET_MINIMAP_HIDE_FOW(true);
         };
         LibertyCitySubMenu.AddItem(SetLCSettingsMenu);
     }

@@ -350,6 +350,9 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance = 50f;
         SettingsManager.PoliceTaskSettings.DriveBySightDuringInvestigateDistance = 50f;
         SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance = 50f;
+
+
+        SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels = false;
     }
 
 
