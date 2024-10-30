@@ -158,6 +158,7 @@
     <Compile Include="lsr\Data\Vehicles\MilitaryVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_LC.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Modern.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />

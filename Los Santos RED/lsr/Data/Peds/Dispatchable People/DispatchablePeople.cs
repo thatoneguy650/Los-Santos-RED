@@ -1855,6 +1855,9 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMin = 100
                 ,ArmorMax = 100
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(0, 2, 0), new PedPropComponent(0, 3, 0), new PedPropComponent(0, 4, 0), new PedPropComponent(0, 5, 0), new PedPropComponent(0, 6, 0) }
+                ,OptionalPropChance = 80
+                ,RequiredVariation = new PedVariation(),
             },
         };
 
@@ -1863,14 +1866,29 @@ public class DispatchablePeople : IDispatchablePeople
             DetectiveMale,
             DetectiveFemale,
             K9Generic,
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, 
 
             //Standard
             new DispatchablePerson("ig_lccop_traffic",15,0) {
                 DebugName = "ig_lccop_traffic"
-                ,MaxWantedLevelSpawn = 1
+                ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
-                ,OptionalPropChance = 10
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
+                //hat 0 = helmet, 1 = hat
+                //glasses 0 or 1 with 0 or 1 for texture
+            },
+
+            new DispatchablePerson("ig_lccop_traffic",0,0) {
+                DebugName = "ig_lccop_traffic"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 100
+                ,GroupName = "MotorcycleCop"
+                ,UnitCode = "Mary"
+                ,RequiredVariation = new PedVariation(),
                 //hat 0 = helmet, 1 = hat
                 //glasses 0 or 1 with 0 or 1 for texture
             },
@@ -1878,18 +1896,25 @@ public class DispatchablePeople : IDispatchablePeople
                 DebugName = "ig_lccop_01"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true//no props
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
             new DispatchablePerson("ig_lccop_02",45,45) {
                 DebugName = "ig_lccop_02"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true//no props
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
             new DispatchablePerson("ig_lcfatcop",25,25) {
                 DebugName = "ig_lcfatcop"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
-                ,OptionalPropChance = 10
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
 
 
@@ -1900,13 +1925,19 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
-                        new DispatchablePerson("ig_lccop_vest_02",0,45) {
+            new DispatchablePerson("ig_lccop_vest_02",0,45) {
                 DebugName = "ig_lccop_vest_01"
                 ,ArmorMin = 50
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
             new DispatchablePerson("ig_lcfatcop_vest",0,15) {
                 DebugName = "ig_lcfatcop_vest"
@@ -1914,6 +1945,9 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
         };
 
@@ -1924,6 +1958,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,MaxWantedLevelSpawn = 4
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
             },
             DetectiveMale,
             DetectiveFemale,

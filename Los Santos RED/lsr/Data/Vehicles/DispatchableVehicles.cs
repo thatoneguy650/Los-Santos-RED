@@ -1489,67 +1489,43 @@ public class DispatchableVehicles : IDispatchableVehicles
     private void DefaultConfig_LibertyCity()
     {
         List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
-
-
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ASPVehicles");
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "LCPDVehicles");
 
 
-        DispatchableVehicle lcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolice3.ModelName = "police3liv";
-        lcpdpolice3.ForcedPlateType = 8;
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "UnmarkedVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "CoastGuardVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "USNPSParkRangersVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "BorderPatrolVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "NOOSEPIAVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "NOOSESEPVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "FIBVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "MarshalsServiceVehicles");
 
-        DispatchableVehicle lcpdpolice31 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolice31.ModelName = "police3liv";
-        lcpdpolice31.ForcedPlateType = 8;
 
-        DispatchableVehicle lcpdpolice3CTTF = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 2, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolice3CTTF.ModelName = "police3liv";
-        lcpdpolice3CTTF.ForcedPlateType = 8;
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "DowntownTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "HellTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "PurpleTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ShitiTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "SunderedTaxiVehicles");
 
-        DispatchableVehicle lcpdpolice3CTTF1 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 4, "", "");
-        lcpdpolice3CTTF1.ModelName = "police3liv";
-        lcpdpolice3CTTF1.ForcedPlateType = 8;
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCPDVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDHeliVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCPDHeliVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ASPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.ASPVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.UnmarkedVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.CoastGuardVehicles_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("USNPSParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.USNPSParkRangersVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("BorderPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.BorderPatrolVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.NOOSEPIAVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.NOOSESEPVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FIBVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.MarshalsServiceVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.DowntownTaxiVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.HellTaxiVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.PurpleTaxiVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.ShitiTaxiVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("SunderedTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.SunderedTaxiVehicles_FEJ_LC));
 
-        DispatchableVehicle lcpdpolice3HWY = DispatchableVehicles_FEJ.Create_PoliceInterceptor(20, 20, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolice3HWY.ModelName = "police3liv";
-        lcpdpolice3HWY.ForcedPlateType = 8;
-
-        DispatchableVehicle lcpdpolicegres = DispatchableVehicles_FEJ.Create_PoliceGresley(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolicegres.ModelName = "polgresleyliv";
-        lcpdpolicegres.ForcedPlateType = 8;
-
-        DispatchableVehicle lcpdpolicegres1 = DispatchableVehicles_FEJ.Create_PoliceGresley(100, 100, 1, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolicegres1.ModelName = "polgresleyliv";
-        lcpdpolicegres1.ForcedPlateType = 8;
-
-        DispatchableVehicle lcpdpolicegresCTTF = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 2, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolicegresCTTF.ModelName = "polgresleyliv";
-        lcpdpolicegresCTTF.ForcedPlateType = 8;
-
-        DispatchableVehicle lcpdpolicegresCTTF1 = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 4, "", "");
-        lcpdpolicegresCTTF1.ModelName = "polgresleyliv";
-        lcpdpolicegresCTTF1.ForcedPlateType = 8;
-
-        DispatchableVehicle lcpdpolicegresHWY = DispatchableVehicles_FEJ.Create_PoliceGresley(20, 20, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 4, "", "");
-        lcpdpolicegresHWY.ModelName = "polgresleyliv";
-        lcpdpolicegresHWY.ForcedPlateType = 8;
-
-        List<DispatchableVehicle> LCPDVehiclesMod = new List<DispatchableVehicle>()
-        {
-            lcpdpolice3,
-            lcpdpolice31,
-            lcpdpolice3CTTF,
-            lcpdpolice3CTTF1,
-            lcpdpolice3HWY,
-
-            lcpdpolicegres,
-            lcpdpolicegres1,
-            lcpdpolicegresCTTF,
-            lcpdpolicegresCTTF1,
-            lcpdpolicegresHWY,
-            new DispatchableVehicle("police4", 2, 2) { RequiredPedGroup = "Detective" }
-        };
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", LCPDVehiclesMod));
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()

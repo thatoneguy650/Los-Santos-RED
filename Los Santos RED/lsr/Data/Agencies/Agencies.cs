@@ -346,19 +346,27 @@ public class Agencies : IAgencies
     }
     private void DefaultConfig_LibertyCity()
     {
-        List<Agency> SimpleAgenicesList = new List<Agency>
+
+        Agency BorderPatrol = new Agency("~r~", "NOOSE-BP", "Border Patrol", "NOoSE Border Patrol", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "BorderPatrolVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "Border Patrol Officer") { MaxWantedLevelSpawn = 3, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency NOOSEPIA = new Agency("~r~", "NOOSE-PIA", "Patriotism and Immigration Authority", "NOoSE Patriotism and Immigration Authority", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEPIAVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-PIA Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency NOOSESEP = new Agency("~r~", "NOOSE", "Security Enforcement Police", "NOoSE Security Enforcement Police", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSESEPVehicles", "", "Tasers", "BestSidearms", "BestLongGuns", "NOOSE-SEP Officer") { MaxWantedLevelSpawn = 4, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        Agency USNPS = new Agency("~g~", "USNPS", "USNPS", "US National Park Service", "Green", Classification.Federal, "ParkRangers", "USNPSParkRangersVehicles", "NPS ", "Tasers", "AllSidearms", "AllLongGuns", "US Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
+
+        List<Agency> LCAgenicesList = new List<Agency>
         {
             LCPD,
-            new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
-            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "LCPDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+            new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "ASPVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
             NYSP,
-            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,               
+            BorderPatrol,NOOSEPIA,NOOSESEP,
+            USNPS,
+            FIB,DOA,ARMY,USMC,USAF,USMS,               
             new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "LCMC","LCMC", "Liberty City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             GRPSECHS,SECURO,MERRY,BOBCAT,
             UNK,
         };
-        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
+        Serialization.SerializeParams(LCAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
     }
     private void DefaultConfig_SunshineDream()
     {

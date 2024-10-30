@@ -964,10 +964,8 @@ public class Jurisdictions : IJurisdictions
     {
         List<ZoneJurisdiction> ZoneJurisdictionsListLibertyCity = new List<ZoneJurisdiction>()
         {
-            new ZoneJurisdiction("ASP","ACTRR", 0, 100, 100),
-            new ZoneJurisdiction("ASP","ALDCI", 0, 100, 100),
-            new ZoneJurisdiction("ASP","ACTIP", 0, 100, 100),
-            new ZoneJurisdiction("ASP","BERCH", 0, 100, 100),
+            
+            
             new ZoneJurisdiction("LCPD","BOAB", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BOULE", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BRALG", 0, 100, 100),
@@ -996,7 +994,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","HOBEH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","INSTI", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LANCE", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","LEFWO", 0, 100, 100),
+            
             new ZoneJurisdiction("LCPD","LTBAY", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LANCA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LOWEA", 0, 100, 100),
@@ -1013,7 +1011,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","OCEANA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","OUTL", 0, 100, 100),
             new ZoneJurisdiction("LCPD","PUGAT", 0, 100, 100),
-            new ZoneJurisdiction("ASP","PORTU", 0, 100, 100),
+
             new ZoneJurisdiction("LCPD","SANAND", 0, 100, 100),
             new ZoneJurisdiction("LCPD","SUTHS", 0, 100, 100),
             new ZoneJurisdiction("LCPD","SCHOL", 0, 100, 100),
@@ -1021,7 +1019,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","STEIN", 0, 100, 100),
             new ZoneJurisdiction("LCPD","STHBO", 0, 100, 100),
             new ZoneJurisdiction("LCPD","SUFFO", 0, 100, 100),
-            new ZoneJurisdiction("ASP","TUDOR", 0, 100, 100),
+            
             new ZoneJurisdiction("LCPD","THPRES", 0, 100, 100),
             new ZoneJurisdiction("LCPD","THXCH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","THTRI", 0, 100, 100),
@@ -1029,7 +1027,18 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","VASIH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","WESMI", 0, 100, 100),
             new ZoneJurisdiction("LCPD","WESDI", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","WESDY", 0, 100, 100),
+
+            new ZoneJurisdiction("ASP","ALSCF", 0, 100, 100),
+            new ZoneJurisdiction("ASP","ACTRR", 0, 100, 100),
+            new ZoneJurisdiction("ASP","ALDCI", 0, 100, 100),
+            new ZoneJurisdiction("ASP","ACTIP", 0, 100, 100),
+            new ZoneJurisdiction("ASP","BERCH", 0, 100, 100),
+            new ZoneJurisdiction("ASP","LEFWO", 0, 100, 100),
+            new ZoneJurisdiction("ASP","NORMY", 0, 100, 100),
+            new ZoneJurisdiction("ASP","PORTU", 0, 100, 100),
+            new ZoneJurisdiction("ASP","TUDOR", 0, 100, 100),
+            new ZoneJurisdiction("ASP","WESDY", 0, 100, 100),
+
         };
         Serialization.SerializeParams(ZoneJurisdictionsListLibertyCity, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\ZoneJurisdictions_LibertyCity.xml");
     }
