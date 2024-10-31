@@ -345,6 +345,12 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeenScalar = 40f;
 
 
+
+
+
+
+
+
         SettingsManager.RoadblockSettings.AllowRoadblockOnNonCurrentStreet = true;
 
         SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance = 50f;
@@ -353,7 +359,38 @@ public class Settings : ISettingsProvideable
 
 
         SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels = false;
+
+
+        //TAXI 
+
+        SettingsManager.TaxiSettings.TimeBetweenSpawn = 5000;// 20000;//10000;
+
+        SettingsManager.TaxiSettings.TimeBetweenSpawn_DowntownAdditional = 15000;
+        SettingsManager.TaxiSettings.TimeBetweenSpawn_WildernessAdditional = 80000;
+        SettingsManager.TaxiSettings.TimeBetweenSpawn_RuralAdditional = 50000;
+        SettingsManager.TaxiSettings.TimeBetweenSpawn_SuburbAdditional = 20000;
+        SettingsManager.TaxiSettings.TimeBetweenSpawn_IndustrialAdditional = 20000;
+
+        SettingsManager.TaxiSettings.MinDistanceToSpawnOnFoot = 100f;//75f// 50f;
+        SettingsManager.TaxiSettings.MaxDistanceToSpawnOnFoot = 200f;//200f// 150f;
+
+        SettingsManager.TaxiSettings.MinDistanceToSpawnInVehicle = 100f;//300f// 50f;
+        SettingsManager.TaxiSettings.MaxDistanceToSpawnInVehicle = 250f;//500f// 150f;
+
+        SettingsManager.TaxiSettings.TotalSpawnedMembersLimit = 4;// 3;// 2;//5
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit = 3;// 2;// 1;// 8;
+
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Downtown = 4;
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Wilderness = 1;
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Rural = 1;
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Suburb = 2;
+        SettingsManager.TaxiSettings.TotalSpawnedAmbientMembersLimit_Industrial = 2;
+
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage = 10;
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage_Wilderness = 1;
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage_Rural = 1;
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage_Suburb = 10;
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage_Industrial = 12;
+        SettingsManager.TaxiSettings.AmbientSpawnPercentage_Downtown = 35;
     }
-
-
 }

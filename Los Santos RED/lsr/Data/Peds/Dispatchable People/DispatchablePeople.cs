@@ -1958,8 +1958,28 @@ public class DispatchablePeople : IDispatchablePeople
                 ,MaxWantedLevelSpawn = 4
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), }
                 ,OptionalPropChance = 70
+            },
+            //new DispatchablePerson("ig_lcstrooper",0,0) {
+            //    DebugName = "ig_lcstrooper"
+            //    ,MaxWantedLevelSpawn = 4
+            //    ,AllowRandomizeBeforeVariationApplied = true
+            //    ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
+            //    ,GroupName = "MotorcycleCop"
+            //    ,UnitCode = "Mary"
+            //},
+            new DispatchablePerson("ig_lccop_traffic",0,0) {
+                DebugName = "ig_lccop_traffic"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 100
+                ,GroupName = "MotorcycleCop"
+                ,UnitCode = "Mary"
+                ,RequiredVariation = new PedVariation(),
+                //hat 0 = helmet, 1 = hat
+                //glasses 0 or 1 with 0 or 1 for texture
             },
             DetectiveMale,
             DetectiveFemale,

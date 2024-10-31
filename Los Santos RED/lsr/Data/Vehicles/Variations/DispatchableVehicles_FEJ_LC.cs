@@ -13,11 +13,7 @@ public class DispatchableVehicles_FEJ_LC
     public List<DispatchableVehicle> NOOSEPIAVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> NOOSESEPVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> MarshalsServiceVehicles_FEJ_LC { get; private set; }
-    public List<DispatchableVehicle> DowntownTaxiVehicles_FEJ_LC { get; private set; }
-    public List<DispatchableVehicle> PurpleTaxiVehicles_FEJ_LC { get; private set; }
-    public List<DispatchableVehicle> HellTaxiVehicles_FEJ_LC { get; private set; }
-    public List<DispatchableVehicle> ShitiTaxiVehicles_FEJ_LC { get; private set; }
-    public List<DispatchableVehicle> SunderedTaxiVehicles_FEJ_LC { get; private set; }
+    public List<DispatchableVehicle> LCTaxiVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> LCPDVehicles { get; private set; }
     public List<DispatchableVehicle> ASPVehicles { get; private set; }
     public List<DispatchableVehicle> LCPDHeliVehicles { get; private set; }
@@ -68,17 +64,16 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(100, 100, 1, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(20, 20, 2, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
-            DispatchableVehicles_FEJ.Create_PoliceGresleyLC(20, 20, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 2, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceGresleyLC(20, 20, 2, false, PoliceVehicleType.MarkedNewSlicktop, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(20, 20, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
 
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 2, "Detective", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 2, "Detective", ""),
             new DispatchableVehicle("police4", 2, 2) { RequiredPedGroup = "Detective" },
 
-            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,3,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
-            DispatchableVehicles_FEJ.Create_PoliceThrust(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,0),
+            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
+            DispatchableVehicles_FEJ.Create_PoliceThrustLC(20,10,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,134),
             DispatchableVehicles_FEJ.Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
-
 
         };
 
@@ -88,9 +83,18 @@ public class DispatchableVehicles_FEJ_LC
         {
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(100, 100, 4, false, PoliceVehicleType.MarkedOriginalLightbar, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(100, 100, 4, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 2, "", ""),
+
+            DispatchableVehicles_FEJ.Create_PoliceGresleyLC(100, 100, 4, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceGresleyLC(100, 100, 4, false, PoliceVehicleType.MarkedNewSlicktop, 134, 0, 3, 1, 2, "", ""),
+    
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 4, "Detective", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 2, "Detective", ""),
-            new DispatchableVehicle("police4", 2, 2) { RequiredPedGroup = "Detective" }
+            new DispatchableVehicle("police4", 2, 2) { RequiredPedGroup = "Detective" },
+
+
+            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
+            DispatchableVehicles_FEJ.Create_PoliceThrustLC(20,10,1,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,134),
+
         };
 
 
@@ -181,48 +185,19 @@ public class DispatchableVehicles_FEJ_LC
     }
     private void Taxis()
     {
-        DowntownTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
+        LCTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
 
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,4,false,ServiceVehicleType.Taxi1,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,4,false,ServiceVehicleType.Taxi2,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,4,false,ServiceVehicleType.Taxi3,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,4,false,ServiceVehicleType.Taxi4,-1,-1,-1),
-            DispatchableVehicles_FEJ.DispatchableVehicles.TaxiBroadWay,
-            DispatchableVehicles_FEJ.DispatchableVehicles.TaxiEudora,
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi1,138,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi2,138,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi3,138,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi4,138,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi1,92,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi2,92,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi3,92,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi4,92,-1,-1),
         };
-        PurpleTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
-            
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi1,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi2,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi3,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi4,-1,-1,-1),
-
-        };
-        HellTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
-            
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi1,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi2,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi3,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi4,-1,-1,-1),
-
-        };
-        ShitiTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
-            
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,3,false,ServiceVehicleType.Taxi1,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,3,false,ServiceVehicleType.Taxi2,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,3,false,ServiceVehicleType.Taxi3,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,3,false,ServiceVehicleType.Taxi4,-1,-1,-1),
-
-        };
-        SunderedTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
-           
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,2,false,ServiceVehicleType.Taxi1,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,2,false,ServiceVehicleType.Taxi2,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,2,false,ServiceVehicleType.Taxi3,-1,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,2,false,ServiceVehicleType.Taxi4,-1,-1,-1),
-
-
-        };
+       
     }
 
 }

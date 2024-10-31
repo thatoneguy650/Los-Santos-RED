@@ -1520,11 +1520,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.NOOSESEPVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FIBVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.MarshalsServiceVehicles_FEJ_LC));
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.DowntownTaxiVehicles_FEJ_LC));
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.HellTaxiVehicles_FEJ_LC));
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.PurpleTaxiVehicles_FEJ_LC));
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.ShitiTaxiVehicles_FEJ_LC));
-        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("SunderedTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.SunderedTaxiVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCTaxiVehicles_FEJ_LC));
 
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
