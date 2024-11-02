@@ -361,8 +361,8 @@ public class Agencies : IAgencies
             BorderPatrol,NOOSEPIA,NOOSESEP,
             USNPS,
             FIB,DOA,ARMY,USMC,USAF,USMS,               
-            new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
-            new Agency("~w~", "LCMC","LCMC", "Liberty City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "FDNYFireVehicles", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "FDLC-EMS","FDLC-EMS", "Liberty City Fire Department EMS", "White", Classification.EMS, "BlueEMTs", "FDNYFireVehicles", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             GRPSECHS,SECURO,MERRY,BOBCAT,
             UNK,
         };

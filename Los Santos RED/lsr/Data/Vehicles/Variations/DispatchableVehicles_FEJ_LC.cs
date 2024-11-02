@@ -18,7 +18,8 @@ public class DispatchableVehicles_FEJ_LC
     public List<DispatchableVehicle> ASPVehicles { get; private set; }
     public List<DispatchableVehicle> LCPDHeliVehicles { get; private set; }
     public List<DispatchableVehicle> CoastGuardVehicles_LC { get; private set; }
-
+    public List<DispatchableVehicle> FDLCVehicles_FEJ_LC { get; private set; }
+    public List<DispatchableVehicle> FDLCEMTVehicles_FEJ_LC { get; private set; }
     public DispatchableVehicles_FEJ_LC(DispatchableVehicles_FEJ dispatchableVehicles_FEJ)
     {
         DispatchableVehicles_FEJ = dispatchableVehicles_FEJ;
@@ -32,6 +33,22 @@ public class DispatchableVehicles_FEJ_LC
         FederalPolice();
         Security();
         Taxis();
+        Fire();
+        EMT();
+    }
+    private void Fire()
+    {
+        FDLCVehicles_FEJ_LC = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("firetruk", 100, 100) { RequiredLiveries = new List<int>() { 0 } ,MinOccupants = 2, MaxOccupants = 4 }
+        };
+    }
+    private void EMT()
+    {
+        FDLCEMTVehicles_FEJ_LC = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } }
+        };
     }
     private void LocalPolice()
     {

@@ -1522,6 +1522,11 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.MarshalsServiceVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCTaxiVehicles_FEJ_LC));
 
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYFireVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FDLCVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYEMTVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FDLCEMTVehicles_FEJ_LC));
+        
+
+
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()
