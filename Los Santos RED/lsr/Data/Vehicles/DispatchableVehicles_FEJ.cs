@@ -3437,6 +3437,32 @@ public class DispatchableVehicles_FEJ
 
 
     //LC
+
+
+
+    public DispatchableVehicle Create_PoliceGranger3600LC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle intermediate = Create_PoliceGranger3600(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.ModelName = "polgranger3600liv";
+        intermediate.ForcedPlateType = 8;
+        return intermediate;
+    }
+    public DispatchableVehicle Create_PoliceBuffaloSTXLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle intermediate = Create_PoliceBuffaloSTX(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.ModelName = "polbuffalostxliv";
+        intermediate.ForcedPlateType = 8;
+        return intermediate;
+    }
+    public DispatchableVehicle Create_PoliceAleutianLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle intermediate = Create_PoliceAleutian(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.ModelName = "polaleutianliv";
+        intermediate.ForcedPlateType = 8;
+        return intermediate;
+    }
+
+
     public DispatchableVehicle Create_PoliceGresleyLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceGresley(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);

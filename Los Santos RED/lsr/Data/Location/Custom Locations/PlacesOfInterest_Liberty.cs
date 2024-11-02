@@ -40,8 +40,13 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_Pharmacies();
         DefaultConfig_HardwardStores();
         DefaultConfig_PedCustomizeLocation();
-
-
+        DefaultConfig_Airports();
+        DefaultConfig_Garages();
+        DefaultConfig_SubwayStations();
+        DefaultConfig_LiquorStore();
+        DefaultConfig_ClothingShops();
+        DefaultConfig_Residences();
+        DefaultConfig_PawnShops();
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
@@ -52,6 +57,216 @@ public class PlacesOfInterest_Liberty
         }
         centeredAbove.PedCustomizerLocation.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
+    }
+
+    private void DefaultConfig_PawnShops()
+    {
+        LibertyCityLocations.PawnShops.AddRange(new List<PawnShop>()
+        {
+            new PawnShop(new Vector3(1166.26f, 221.4832f, 19.15601f), 94.3014f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
+        });
+    }
+
+    private void DefaultConfig_Residences()
+    {
+        LibertyCityLocations.Residences.AddRange(new List<Residence>()
+        {
+            new Residence(new Vector3(1251.653f, 1.474908f, 19.76758f), 90.61584f, "Hove Beach Apt 124", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1058.779f, 192.1109f, 17.29779f), 272.7327f, "Hove Beach Apt 3B", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1172.407f, 158.2507f, 19.69745f), 90.64713f, "Hove Beach Apt 23", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1086.602f, 228.1993f, 16.91974f), 94.85487f, "Hove Beach Apt 76", ""){ StateID = StaticStrings.LibertyStateID, InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+        });
+    }
+
+    private void DefaultConfig_Airports()
+    {
+        List<Airport> AirportList_23 = new List<Airport>() {
+            new Airport() {
+                Name = "Francis Intl.",
+                AirportID = "FIA",
+                Description = "Great To Visit, Even Better To Leave~n~~n~City: ~y~Dukes, Liberty City~s~~n~State: ~p~Liberty~s~",
+                EntrancePosition = new Vector3(2605.07f, 899.04f, 206.08f-200f),
+                EntranceHeading = 91.74f,
+                OpenTime = 0,
+                CloseTime = 24,
+                ArrivalPosition = new Vector3(2596.69f, 821.39f, 206.08f-200f),
+                ArrivalHeading = 73.94f,
+                CommercialFlights = new List<AirportFlight>()
+                {
+                    new AirportFlight("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. ~n~~n~Taxi service to downtown Ludendorff included.", 1500, 5),
+                    new AirportFlight("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 5 hour flight! What else could you ask for? ~n~~n~Taxi service to downtown Ludendorff included.", 550, 12),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+        };
+        LibertyCityLocations.Airports.AddRange(AirportList_23);
+        List<YanktonAiport> YanktonAiportList_24 = new List<YanktonAiport>() {
+            new YanktonAiport("LDR",new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"Ludendorff Regional",
+            "The best fish boiled in lye in all of North Yankton!" +
+            "~n~" +
+            "~n~City: ~y~Ludendorff~s~" +
+            "~n~State: ~p~North Yankton~s~")
+            {
+                OpenTime = 0
+                ,CloseTime = 24
+                ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
+                ,ArrivalHeading = 354.7703f
+
+                ,AirArrivalPosition = new Vector3(4538.156f, -5345.569f, 230.4282f)
+                ,AirArrivalHeading = 43.45281f
+                ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
+                ,RequestIPLs = new List<string>() {
+                            "plg_01",
+                            "prologue01",
+                            "prologue01_lod",
+                            "prologue01c",
+                            "prologue01c_lod",
+                            "prologue01d",
+                            "prologue01d_lod",
+                            "prologue01e",
+                            "prologue01e_lod",
+                            "prologue01f",
+                            "prologue01f_lod",
+                            "prologue01g",
+                            "prologue01h",
+                            "prologue01h_lod",
+                            "prologue01i",
+                            "prologue01i_lod",
+                            "prologue01j",
+                            "prologue01j_lod",
+                            "prologue01k",
+                            "prologue01k_lod",
+                            "prologue01z",
+                            "prologue01z_lod",
+                            "plg_02",
+                            "prologue02",
+                            "prologue02_lod",
+                            "plg_03",
+                            "prologue03",
+                            "prologue03_lod",
+                            "prologue03b",
+                            "prologue03b_lod",
+                            "prologue03_grv_dug",
+                            "prologue03_grv_dug_lod",
+                            "prologue_grv_torch",
+                            "plg_04",
+                            "prologue04",
+                            "prologue04_lod",
+                            "prologue04b",
+                            "prologue04b_lod",
+                            "prologue04_cover",
+                            "des_protree_end",
+                            "des_protree_start",
+                            "des_protree_start_lod",
+                            "plg_05",
+                            "prologue05",
+                            "prologue05_lod",
+                            "prologue05b",
+                            "prologue05b_lod",
+                            "plg_06",
+                            "prologue06",
+                            "prologue06_lod",
+                            "prologue06b",
+                            "prologue06b_lod",
+                            "prologue06_int",
+                            "prologue06_int_lod",
+                            "prologue06_pannel",
+                            "prologue06_pannel_lod",
+                            "prologue_m2_door",
+                            "prologue_m2_door_lod",
+                            "plg_occl_00",
+                            "prologue_occl",
+                            "plg_rd",
+                            "prologuerd",
+                            "prologuerdb",
+                            "prologuerd_lod",
+                        }
+                ,RemoveIPLs = new List<string>(){
+                            "plg_01",
+                            "prologue01",
+                            "prologue01_lod",
+                            "prologue01c",
+                            "prologue01c_lod",
+                            "prologue01d",
+                            "prologue01d_lod",
+                            "prologue01e",
+                            "prologue01e_lod",
+                            "prologue01f",
+                            "prologue01f_lod",
+                            "prologue01g",
+                            "prologue01h",
+                            "prologue01h_lod",
+                            "prologue01i",
+                            "prologue01i_lod",
+                            "prologue01j",
+                            "prologue01j_lod",
+                            "prologue01k",
+                            "prologue01k_lod",
+                            "prologue01z",
+                            "prologue01z_lod",
+                            "plg_02",
+                            "prologue02",
+                            "prologue02_lod",
+                            "plg_03",
+                            "prologue03",
+                            "prologue03_lod",
+                            "prologue03b",
+                            "prologue03b_lod",
+                            "prologue03_grv_cov",
+                            "prologue03_grv_cov_lod",
+                            "prologue03_grv_dug",
+                            "prologue03_grv_dug_lod",
+                            "prologue03_grv_fun",
+                            "prologue_grv_torch",
+                            "plg_04",
+                            "prologue04",
+                            "prologue04_lod",
+                            "prologue04b",
+                            "prologue04b_lod",
+                            "prologue04_cover",
+                            "des_protree_end",
+                            "des_protree_start",
+                            "des_protree_start_lod",
+                            "plg_05",
+                            "prologue05",
+                            "prologue05_lod",
+                            "prologue05b",
+                            "prologue05b_lod",
+                            "plg_06",
+                            "prologue06",
+                            "prologue06_lod",
+                            "prologue06b",
+                            "prologue06b_lod",
+                            "prologue06_int",
+                            "prologue06_int_lod",
+                            "prologue06_pannel",
+                            "prologue06_pannel_lod",
+                            "prologue_m2_door",
+                            "prologue_m2_door_lod",
+                            "plg_occl_00",
+                            "prologue_occl",
+                            "plg_rd",
+                            "prologuerd",
+                            "prologuerdb",
+                            "prologuerd_lod",
+
+                        }
+                ,CommercialFlights = new List<AirportFlight>()
+                {
+                    new AirportFlight("FIA",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 850, 14),
+                }
+                ,RoadToggels = new HashSet<RoadToggler>()
+                {
+                    new RoadToggler(new Vector3(5526.24f, -5137.23f, 61.78925f),new Vector3(3679.327f, -4973.879f, 125.0828f),192.0f),
+                    new RoadToggler(new Vector3(3691.211f, -4941.24f, 94.59368f),new Vector3(3511.115f, -4689.191f, 126.7621f),16.0f),
+                    new RoadToggler(new Vector3(3510.004f, -4865.81f, 94.69557f),new Vector3(3204.424f, -4833.8147f, 126.8152f),16.0f),
+                    new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
+                }
+                ,ZonesToEnable = new HashSet<string>() { "PrLog" }
+                ,StateID = StaticStrings.NorthYanktonStateID,
+            },
+        };
+        LibertyCityLocations.Airports.AddRange(YanktonAiportList_24);
     }
     private void DefaultConfig_PedCustomizeLocation()
     {
@@ -1738,66 +1953,7 @@ public class PlacesOfInterest_Liberty
 
 
 
-        List<RepairGarage> RepairGarageList_96 = new List<RepairGarage>()
-        {
-            new RepairGarage(new Vector3(1296.38f,206.73f,220.67f), 0f, "Native Engines", "The best repair shop in the whole Broker")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(1355.78f,218.95f,231.36f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.LibertyStateID,
-            },
-
-            new RepairGarage(new Vector3(-69.7f,2042.61f,220.27f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(-113.01f,1998.94f,235.47f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new RepairGarage(new Vector3(-275.82f,868.98f,206.63f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(-227f,934.29f,222.85f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new RepairGarage(new Vector3(948.62f,1998.77f,214.84f), 0f, "Muscle Mary's", "We service imports too")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(885.52f,1988.27f,220.1f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new RepairGarage(new Vector3(-887.16f,1679.61f,217.16f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(-968.8f,1634.06f,255.7f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.AlderneyStateID,
-            },
-            new RepairGarage(new Vector3(-1063.54f,766.97f,210.8f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
-            {
-                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3082692265,new Vector3(-1355.819f,-754.4543f,23.49588f)) },
-                CameraPosition = new Vector3(-1034.16f,779.04f,219.08f),
-                OpenTime = 0,
-                CloseTime = 24,
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.AlderneyStateID,
-            },
-
-        };
-        LibertyCityLocations.RepairGarages.AddRange(RepairGarageList_96);
+        
 
         List<SportingGoodsStore> SportingGoodsStoreList_22 = new List<SportingGoodsStore>() {
             new SportingGoodsStore() {
@@ -1832,193 +1988,7 @@ public class PlacesOfInterest_Liberty
             },
         };
         LibertyCityLocations.SportingGoodsStores.AddRange(SportingGoodsStoreList_22);
-        List<Airport> AirportList_23 = new List<Airport>() {
-            new Airport() {
-                Name = "Francis Intl.",
-                AirportID = "FIA",
-                Description = "Great To Visit, Even Better To Leave~n~~n~City: ~y~Dukes, Liberty City~s~~n~State: ~p~Liberty~s~",
-                EntrancePosition = new Vector3(2605.07f, 899.04f, 206.08f),
-                EntranceHeading = 91.74f,
-                OpenTime = 0,
-                CloseTime = 24,
-                ArrivalPosition = new Vector3(2596.69f, 821.39f, 206.08f),
-                ArrivalHeading = 73.94f,
-                CommercialFlights = new List<AirportFlight>()
-                {
-                    new AirportFlight("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. ~n~~n~Taxi service to downtown Ludendorff included.", 1500, 5),
-                    new AirportFlight("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 5 hour flight! What else could you ask for? ~n~~n~Taxi service to downtown Ludendorff included.", 550, 12),
-                },
-                StateID = StaticStrings.LibertyStateID,
-            },
-        };
-        LibertyCityLocations.Airports.AddRange(AirportList_23);
-        List<YanktonAiport> YanktonAiportList_24 = new List<YanktonAiport>() {
-            new YanktonAiport("LDR",new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"Ludendorff Regional",
-            "The best fish boiled in lye in all of North Yankton!" +
-            "~n~" +
-            "~n~City: ~y~Ludendorff~s~" +
-            "~n~State: ~p~North Yankton~s~")
-            {
-                OpenTime = 0
-                ,CloseTime = 24
-                ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
-                ,ArrivalHeading = 354.7703f
-
-                ,AirArrivalPosition = new Vector3(4538.156f, -5345.569f, 230.4282f)
-                ,AirArrivalHeading = 43.45281f
-                ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
-                ,RequestIPLs = new List<string>() {
-                            "plg_01",
-                            "prologue01",
-                            "prologue01_lod",
-                            "prologue01c",
-                            "prologue01c_lod",
-                            "prologue01d",
-                            "prologue01d_lod",
-                            "prologue01e",
-                            "prologue01e_lod",
-                            "prologue01f",
-                            "prologue01f_lod",
-                            "prologue01g",
-                            "prologue01h",
-                            "prologue01h_lod",
-                            "prologue01i",
-                            "prologue01i_lod",
-                            "prologue01j",
-                            "prologue01j_lod",
-                            "prologue01k",
-                            "prologue01k_lod",
-                            "prologue01z",
-                            "prologue01z_lod",
-                            "plg_02",
-                            "prologue02",
-                            "prologue02_lod",
-                            "plg_03",
-                            "prologue03",
-                            "prologue03_lod",
-                            "prologue03b",
-                            "prologue03b_lod",
-                            "prologue03_grv_dug",
-                            "prologue03_grv_dug_lod",
-                            "prologue_grv_torch",
-                            "plg_04",
-                            "prologue04",
-                            "prologue04_lod",
-                            "prologue04b",
-                            "prologue04b_lod",
-                            "prologue04_cover",
-                            "des_protree_end",
-                            "des_protree_start",
-                            "des_protree_start_lod",
-                            "plg_05",
-                            "prologue05",
-                            "prologue05_lod",
-                            "prologue05b",
-                            "prologue05b_lod",
-                            "plg_06",
-                            "prologue06",
-                            "prologue06_lod",
-                            "prologue06b",
-                            "prologue06b_lod",
-                            "prologue06_int",
-                            "prologue06_int_lod",
-                            "prologue06_pannel",
-                            "prologue06_pannel_lod",
-                            "prologue_m2_door",
-                            "prologue_m2_door_lod",
-                            "plg_occl_00",
-                            "prologue_occl",
-                            "plg_rd",
-                            "prologuerd",
-                            "prologuerdb",
-                            "prologuerd_lod",
-                        }
-                ,RemoveIPLs = new List<string>(){
-                            "plg_01",
-                            "prologue01",
-                            "prologue01_lod",
-                            "prologue01c",
-                            "prologue01c_lod",
-                            "prologue01d",
-                            "prologue01d_lod",
-                            "prologue01e",
-                            "prologue01e_lod",
-                            "prologue01f",
-                            "prologue01f_lod",
-                            "prologue01g",
-                            "prologue01h",
-                            "prologue01h_lod",
-                            "prologue01i",
-                            "prologue01i_lod",
-                            "prologue01j",
-                            "prologue01j_lod",
-                            "prologue01k",
-                            "prologue01k_lod",
-                            "prologue01z",
-                            "prologue01z_lod",
-                            "plg_02",
-                            "prologue02",
-                            "prologue02_lod",
-                            "plg_03",
-                            "prologue03",
-                            "prologue03_lod",
-                            "prologue03b",
-                            "prologue03b_lod",
-                            "prologue03_grv_cov",
-                            "prologue03_grv_cov_lod",
-                            "prologue03_grv_dug",
-                            "prologue03_grv_dug_lod",
-                            "prologue03_grv_fun",
-                            "prologue_grv_torch",
-                            "plg_04",
-                            "prologue04",
-                            "prologue04_lod",
-                            "prologue04b",
-                            "prologue04b_lod",
-                            "prologue04_cover",
-                            "des_protree_end",
-                            "des_protree_start",
-                            "des_protree_start_lod",
-                            "plg_05",
-                            "prologue05",
-                            "prologue05_lod",
-                            "prologue05b",
-                            "prologue05b_lod",
-                            "plg_06",
-                            "prologue06",
-                            "prologue06_lod",
-                            "prologue06b",
-                            "prologue06b_lod",
-                            "prologue06_int",
-                            "prologue06_int_lod",
-                            "prologue06_pannel",
-                            "prologue06_pannel_lod",
-                            "prologue_m2_door",
-                            "prologue_m2_door_lod",
-                            "plg_occl_00",
-                            "prologue_occl",
-                            "plg_rd",
-                            "prologuerd",
-                            "prologuerdb",
-                            "prologuerd_lod",
-
-                        }
-                ,CommercialFlights = new List<AirportFlight>()
-                {
-                    new AirportFlight("FIA",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 850, 14),
-                }
-                ,RoadToggels = new HashSet<RoadToggler>()
-                {
-                    new RoadToggler(new Vector3(5526.24f, -5137.23f, 61.78925f),new Vector3(3679.327f, -4973.879f, 125.0828f),192.0f),
-                    new RoadToggler(new Vector3(3691.211f, -4941.24f, 94.59368f),new Vector3(3511.115f, -4689.191f, 126.7621f),16.0f),
-                    new RoadToggler(new Vector3(3510.004f, -4865.81f, 94.69557f),new Vector3(3204.424f, -4833.8147f, 126.8152f),16.0f),
-                    new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
-                }
-                ,ZonesToEnable = new HashSet<string>() { "PrLog" }
-                ,StateID = StaticStrings.NorthYanktonStateID,
-            },
-        };
-        LibertyCityLocations.Airports.AddRange(YanktonAiportList_24);
+        
         List<IllicitMarketplace> IllicitMarketplaceList_25 = new List<IllicitMarketplace>() {
             new IllicitMarketplace() {
 
@@ -2435,6 +2405,10 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.Pharmacies.AddRange(new List<Pharmacy>()
         {
             new Pharmacy(new Vector3(-1226.868f, 1062.444f, 19.5674f), 80.39563f, "AYCEHOL", "","PharmacyMenu") { StateID = StaticStrings.AlderneyStateID },
+
+
+            new Pharmacy(new Vector3(1166.186f, 85.03699f, 16.73859f), 90.65749f, "Hove Beach Pharmacy", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+            new Pharmacy(new Vector3(1211.575f, 88.40671f, 15.8945f), 2.371934f, "Hove Beach Pharmacy", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
         });
     }
     private void DefaultConfig_HardwardStores()
@@ -2442,6 +2416,26 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.HardwareStores.AddRange(new List<HardwareStore>()
         {
             new HardwareStore(new Vector3(-1439.889f, 772.345f, 20.74955f), 175.5223f, "Hardware Store", "","ToolMenu"){ StateID = StaticStrings.AlderneyStateID },
+            new HardwareStore(new Vector3(1133.433f, -61.76066f, 14.17166f), 229.4212f, "645 Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+            new HardwareStore(new Vector3(1249.492f, 179.6172f, 21.37342f), 94.49049f, " 645 Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+        });
+    }
+
+    private void DefaultConfig_ClothingShops()
+    {
+        LibertyCityLocations.ClothingShops.AddRange(new List<ClothingShop>()
+        {
+            new ClothingShop(new Vector3(1131.292f, 50.72863f, 15.8602f), 274.2502f, "Russian Store", "","", new Vector3(1118.766f, 54.50769f, 15.85339f)) { StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1127.265f, 46.71912f, 15.84883f), 355.0438f) } },
+            new ClothingShop(new Vector3(1166.561f, 233.396f, 19.33681f), 89.94569f, "Jewelry Store", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+        });
+    }
+
+    private void DefaultConfig_LiquorStore()
+    {
+        LibertyCityLocations.LiquorStores.AddRange(new List<LiquorStore>()
+        {
+            new LiquorStore(new Vector3(1059.693f, 114.838f, 14.0993f), 271.99f, "Wine & Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(1166.318f, 39.6803f, 15.73573f), 88.17412f, "Wine & Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
         });
     }
     private void DefaultConfig_Bars()
@@ -2459,9 +2453,16 @@ public class PlacesOfInterest_Liberty
             //Generic
             new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
             new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
-            
+
+            new Restaurant(new Vector3(1216.894f, 20.49133f, 16.10159f), 273.8801f, "Gulag Garden", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1255.93f, 159.1167f, 19.50427f), 121.6593f, "Luncheonette Diner", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+
             //Coffee
             new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
+            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Hot Coffee Shop", "Wanna come inside?","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.LibertyStateID },
+
+            //ICe Cream
+            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Ned's Ice Cream", "","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
 
             //Fast Food
             new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
@@ -2476,6 +2477,20 @@ public class PlacesOfInterest_Liberty
         {
             new Landmark(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Schlongberg Sachs", "") { StateID = StaticStrings.AlderneyStateID },
             new Landmark(new Vector3(-1429.036f, 770.1529f, 20.177f), 176.9206f, "Satriale's Pork Store", "") { StateID = StaticStrings.AlderneyStateID },
+
+
+            new Landmark(new Vector3(1195.817f, 203.6283f, 19.80799f), 182.1452f, "Perestroika", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 76290,IgnoreEntranceInteract = true, },
+            new Landmark(new Vector3(1251.176f, 168.7538f, 20.23567f), 99.71825f, "Laundromat", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 138498, IgnoreEntranceInteract = true, },
+
+
+            new Landmark(new Vector3(1061.563f, 219.1207f, 15.34185f), 269.6217f, "Express Car Services", "") { StateID = StaticStrings.LibertyStateID },
+        });
+    }
+    private void DefaultConfig_SubwayStations()
+    {
+        LibertyCityLocations.SubwayStations.AddRange(new List<SubwayStation>()
+        {
+            new SubwayStation(new Vector3(1242.84f, -50.72684f, 14.91387f), 88.32802f,"Hove Beach Stop","") { StateID = StaticStrings.LibertyStateID, },
         });
     }
     private void DefaultConfig_Sports()
@@ -2493,8 +2508,7 @@ public class PlacesOfInterest_Liberty
                     {
                         new SpawnPlace(new Vector3(-1301.706f, 1891.748f, 13.17023f), 2.433398f),
                     }
-            },
-                
+            },         
         });
     }
     private void DefaultConfig_Prisons()
@@ -2522,6 +2536,15 @@ public class PlacesOfInterest_Liberty
             //Alderny
             new Hospital(new Vector3(-1080.693f, 1769.972f, 23.37073f), 309.4161f, "Westdyke Memorial Hospital","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
             new Hospital(new Vector3(-1277.354f, 890.3488f, 21.63032f), 313.0107f, "North Tudor Medical Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
+
+            //North Yankton
+            new Hospital(new Vector3(3132.073f, -4839.958f, 112.0312f), 354.8388f, "Ludendorff Clinic", "The service you'd expect!") { StateID = StaticStrings.NorthYanktonStateID, OpenTime = 0,CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+            }
+            ,RespawnLocation = new Vector3(3132.073f, -4839.958f, 112.0312f),RespawnHeading = 354.8388f },
+
+            //Clinic
+            new Hospital(new Vector3(1216.88f, 44.20709f, 16.18041f), 271.8641f, "Russian Clinic","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
         };
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
     }
@@ -2544,6 +2567,19 @@ public class PlacesOfInterest_Liberty
             new ConvenienceStore(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Happy Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
             new ConvenienceStore(new Vector3(-1424.417f, 818.9971f, 25.6028f), 22.19808f, "Los Delicatessen", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
             new ConvenienceStore(new Vector3(-1409.282f, 768.4227f, 19.35018f), 169.5838f, "Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+
+            new ConvenienceStore(new Vector3(1135.24f, 210.5948f, 18.60099f), 268.2418f, "Table Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1059.93f, 158.6778f, 16.0245f), 270.3828f, "Deli Sandwiches", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1060.557f, -58.18488f, 13.9834f), 266.3367f, "Table Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1135.24f, 210.5948f, 18.60099f), 268.2418f, "Timazone's Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1087.992f, -10.71362f, 12.43099f), 88.80842f, "Timazone's Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1087.953f, 8.265626f, 12.43058f), 93.63045f, "Hero Shop", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+
+
+
+            new ConvenienceStore(new Vector3(1217.76f, -88.42326f, 14.501f), 3.454318f, "Island Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1134.031f, 179.1717f, 18.1881f), 270.1335f, "Russian Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1083.905f, -44.99024f, 14.1149f), 92.53188f, "Russian Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
         }
         );
     }
@@ -2869,8 +2905,88 @@ public class PlacesOfInterest_Liberty
                 },         
             },
 
+            //North Yankton
+            new PoliceStation(new Vector3(3142.471f, -4840.832f, 112.0291f), 349.9769f, "NYSP Office Ludendorff","The return of the Keystone Cops") {
+                StateID = StaticStrings.NorthYanktonStateID,
+                AssignedAssociationID = "NYSP",
+                OpenTime = 0,
+                CloseTime = 24,
+                MaxAssaultSpawns = 2,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                 {  } },
+
         };
         LibertyCityLocations.PoliceStations.AddRange(PoliceStations);
+    }
+    private void DefaultConfig_Garages()
+    {
+        List<RepairGarage> RepairGarageList_96 = new List<RepairGarage>()
+        {
+            new RepairGarage(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f, "Native Engines", "The best repair shop in the whole Broker")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                StateID = StaticStrings.LibertyStateID,
+                CameraPosition = new Vector3(1288.726f, 223.5908f, 27.29563f),
+                HasNoGarageDoors = true,
+                CameraDirection = new Vector3(0.5266379f, -0.8357221f, -0.1556312f),
+                CameraRotation = new Rotator(-8.953408f, 2.160762E-06f, -147.7825f)
+            },
+            new RepairGarage(new Vector3(-69.7f,2042.61f,220.27f-200f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
+            {
+                CameraPosition = new Vector3(-113.01f,1998.94f,235.47f-200f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new RepairGarage(new Vector3(-275.82f,868.98f,206.63f-200f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
+            {
+                CameraPosition = new Vector3(-227f,934.29f,222.85f-200f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new RepairGarage(new Vector3(948.62f,1998.77f,214.84f-200f), 0f, "Muscle Mary's", "We service imports too")
+            {
+                CameraPosition = new Vector3(885.52f,1988.27f,220.1f-200f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new RepairGarage(new Vector3(-887.16f,1679.61f,217.16f-200f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+            {
+                CameraPosition = new Vector3(-968.8f,1634.06f,255.7f-200f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.AlderneyStateID,
+            },
+            new RepairGarage(new Vector3(-1063.54f,766.97f,210.8f-200f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+            {
+                CameraPosition = new Vector3(-1034.16f,779.04f,219.08f-200f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.AlderneyStateID,
+            },
+
+        };
+        LibertyCityLocations.RepairGarages.AddRange(RepairGarageList_96);
+
+
+
     }
    }
 

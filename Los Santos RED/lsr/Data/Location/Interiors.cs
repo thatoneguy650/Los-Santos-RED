@@ -40,7 +40,13 @@ public class Interiors : IInteriors
         {
             EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_LibertyCity();
         }
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        Interiors_Liberty interiors_Liberty = new Interiors_Liberty();
+        interiors_Liberty.DefaultConfig();
     }
     private void DefaultConfig()
     {

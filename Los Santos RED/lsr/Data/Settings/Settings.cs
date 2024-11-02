@@ -336,7 +336,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen = 350f;// 550f;// 650f;//550f
         SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen = 250f;// 450f;//350f
-        SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted = 650f;// 900f;
+        SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted = 550f;// 900f;
         SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseen = 150f;// 350f;//250f
         SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeen = 200f;// 400f;// 500f;//400f
         SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWanted = 100f;// 200f;//350f;//150f
@@ -352,6 +352,19 @@ public class Settings : ISettingsProvideable
 
 
         SettingsManager.RoadblockSettings.AllowRoadblockOnNonCurrentStreet = true;
+
+
+
+        SettingsManager.RoadblockSettings.RoadblockSpawnDistance = 175f;
+        SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Unseen = 999999;
+        SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min = 60000;
+        SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 20000;
+
+        SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted1 = 0;
+        SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted2 = 55;
+        SettingsManager.RoadblockSettings.RoadblockSpawnPercentage_Wanted3 = 95;
+
+
 
         SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance = 50f;
         SettingsManager.PoliceTaskSettings.DriveBySightDuringInvestigateDistance = 50f;
