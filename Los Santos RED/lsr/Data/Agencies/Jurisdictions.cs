@@ -1055,6 +1055,9 @@ public class Jurisdictions : IJurisdictions
 
             new CountyJurisdiction("FDLC",StaticStrings.LibertyCityCountyID, 0, 100, 100),
             new CountyJurisdiction("FDLC",StaticStrings.AlderneyCountyID, 0, 100, 100),
+
+
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\CountyJurisdictions_LibertyCity.xml");
     }

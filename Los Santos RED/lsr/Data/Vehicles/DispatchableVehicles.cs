@@ -1524,7 +1524,9 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYFireVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FDLCVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYEMTVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FDLCEMTVehicles_FEJ_LC));
-        
+
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.HMSVehicles_FEJ_LC));
 
 
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");

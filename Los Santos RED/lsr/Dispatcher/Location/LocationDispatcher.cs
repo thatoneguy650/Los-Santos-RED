@@ -84,7 +84,9 @@ public class LocationDispatcher
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
-                    EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name}");
+                    EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name} {ps.AssociationID}");
+
+
                     cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
                     GameFiber.Yield();
                 }

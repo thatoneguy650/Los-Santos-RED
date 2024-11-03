@@ -20,6 +20,7 @@ public class DispatchableVehicles_FEJ_LC
     public List<DispatchableVehicle> CoastGuardVehicles_LC { get; private set; }
     public List<DispatchableVehicle> FDLCVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> FDLCEMTVehicles_FEJ_LC { get; private set; }
+    public List<DispatchableVehicle> HMSVehicles_FEJ_LC { get; private set; }
     public DispatchableVehicles_FEJ_LC(DispatchableVehicles_FEJ dispatchableVehicles_FEJ)
     {
         DispatchableVehicles_FEJ = dispatchableVehicles_FEJ;
@@ -40,14 +41,18 @@ public class DispatchableVehicles_FEJ_LC
     {
         FDLCVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("firetruk", 100, 100) { RequiredLiveries = new List<int>() { 0 } ,MinOccupants = 2, MaxOccupants = 4 }
+            new DispatchableVehicle("firetruckliv", 100, 100) { RequiredLiveries = new List<int>() { 0 } ,MinOccupants = 2, MaxOccupants = 4,ForcedPlateType = 8 }
         };
     }
     private void EMT()
     {
         FDLCEMTVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } }
+            new DispatchableVehicle("ambulanceliv", 100, 100) { RequiredLiveries = new List<int>() { 0 },ForcedPlateType = 8 }
+        };
+        HMSVehicles_FEJ_LC = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("ambulanceliv", 100, 100) { RequiredLiveries = new List<int>() { 1 },ForcedPlateType = 8 }
         };
     }
     private void LocalPolice()

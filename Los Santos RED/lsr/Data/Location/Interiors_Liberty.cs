@@ -25,6 +25,8 @@ public class Interiors_Liberty
         {
             new Interior(76290,"Perestroika"),
             new Interior(138498, "Laundromat"),
+            new Interior(160514,"Broker Fire Station"),
+            new Interior(176898, "Bohan Fire Station"),
         });
 
         LibertyCityInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>() 

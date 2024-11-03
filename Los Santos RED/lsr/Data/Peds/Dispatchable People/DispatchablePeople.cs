@@ -1793,7 +1793,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
-
     private void DefaultConfig_LibertyCity()
     {
         List<DispatchablePersonGroup> LCPeopleGroupLookup = Extensions.DeepCopy(PeopleGroupLookup);
@@ -1989,9 +1988,93 @@ public class DispatchablePeople : IDispatchablePeople
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("LCPDPeds", LCPD_DLC));
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("ASPPeds", ASP_DLC));
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSE_DLC));
+
+
+
+        List<DispatchablePerson> FDLC_DLC = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("mp_m_freemode_01",100,100) { 
+                DebugName = "fdlcfreemode1Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { 
+                    new PedComponent(3, 170, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 120, 0, 0),//Pants
+                    new PedComponent(6, 51, 0, 0),//boots
+                    new PedComponent(8, 151, 0, 0),//ff gear and rebreather
+                    new PedComponent(11, 314, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 315, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0),new PedPropComponent(0,138,0) }//hat
+                ,OptionalPropChance = 70
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "fdlcfreemode2Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 170, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 120, 0, 0),//Pants
+                    new PedComponent(6, 51, 0, 0),//boots
+                    new PedComponent(11, 314, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 315, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0), new PedPropComponent(0, 138, 0) }
+                ,OptionalPropChance = 30
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "fdlcFfreemode1Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 215, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 126, 0, 0),//Pants
+                    new PedComponent(6, 55, 0, 0),//boots
+                    new PedComponent(8, 187, 0, 0),//ff gear and rebreather
+                    new PedComponent(11, 325, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 326, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0),new PedPropComponent(0,137,0) }//hat
+                ,OptionalPropChance = 70
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "fdlcFfreemode2"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 215, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 126, 0, 0),//Pants
+                    new PedComponent(6, 55, 0, 0),//boots
+                    new PedComponent(11, 325, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 326, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0), new PedPropComponent(0, 137, 0) }
+                ,OptionalPropChance = 30
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+
+        };
+        LCPeopleGroupLookup.Add(new DispatchablePersonGroup("FDLCFirePeds", FDLC_DLC));
+
+
         Serialization.SerializeParams(LCPeopleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchablePeople_{StaticStrings.LibertyConfigSuffix}.xml");
     }
-
     private void DefaultConfig_LosSantos2008()
     {
         //2008
