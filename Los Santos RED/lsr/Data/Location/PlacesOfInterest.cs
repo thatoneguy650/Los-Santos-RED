@@ -521,7 +521,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(1759.512f, 3298.777f, 41.95529f)
                 ,ArrivalHeading = 144.954f
-
+                ,BannerImagePath = "stores\\lsia.png"
                 ,AirArrivalPosition = new Vector3(759.6899f, 2999.477f, 120.8867f)
                 ,AirArrivalHeading = 290.1536f
                 ,CameraPosition = new Vector3(1783.648f, 3279.038f, 53.9618f), CameraDirection = new Vector3(-0.9425761f, 0.2726336f, -0.1929279f), CameraRotation = new Rotator(-11.1237f, 6.525906E-07f, 73.86785f)
@@ -540,7 +540,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
                 ,ArrivalHeading = 354.7703f
-
+                ,BannerImagePath = "stores\\caipira.png"
                 ,AirArrivalPosition = new Vector3(4538.156f, -5345.569f, 230.4282f)
                 ,AirArrivalHeading = 43.45281f
                 ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
@@ -1163,7 +1163,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         //Scatino Casino, Davey's Dive,
         GamblingDens = new List<GamblingDen>()
         {
-            new GamblingDen(new Vector3(929.9568f, 41.6748f, 81.09632f), 58.06394f,"The Vinewood Casino","Finally Open!")//Regular Casino
+            new GamblingDen(new Vector3(929.9568f, 41.6748f, 81.09632f), 58.06394f,"Be Lucky Los Santos!","Finally Open!")//Regular Casino
             {
                 GamblingParameters = new GamblingParameters()
                 {
@@ -1183,6 +1183,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 TypeName = "Casino",
                 MapIcon = 679,
+                BannerImagePath = "stores\\beluckyls.png",
                 CameraPosition = new Vector3(851.0151f, 50.54535f, 97.35239f), 
                 CameraDirection = new Vector3(0.9805309f, -0.1052597f, -0.1657695f), 
                 CameraRotation = new Rotator(-9.541942f, 7.250671E-06f, -96.12722f),
@@ -1210,6 +1211,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 TypeName = "Casino",
                 MapIcon = 679,
+                BannerImagePath = "stores\\diamondcasino.png",
                 CameraPosition = new Vector3(820.244f, 26.93432f, 106.9623f), 
                 CameraDirection = new Vector3(0.9816462f, 0.02359661f, -0.1892456f), 
                 CameraRotation = new Rotator(-10.90876f, 2.445427E-07f, -88.623f),

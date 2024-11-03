@@ -134,6 +134,7 @@
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Location\Custom Locations\BlankLocationsData_Liberty.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_SunshineDream.cs" />
     <Compile Include="lsr\Data\Location\Interiors_Liberty.cs" />
     <Compile Include="lsr\Data\Location\PedCustomizerLocation.cs" />

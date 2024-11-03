@@ -224,6 +224,7 @@ public class Organizations : IOrganizations
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.LCTaxiContactName,
             IsDefault = true,
+            BannerImagePath = "stores\\lctaxi.png",
         };
 
 

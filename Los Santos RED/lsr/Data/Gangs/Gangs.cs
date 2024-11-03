@@ -928,6 +928,7 @@ public class Gangs : IGangs
             AmbientMemberMoneyMax = 250,
             DealerMemberMoneyMin = 400,
             DealerMemberMoneyMax = 1500,
+            
             EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG", "AMBIENT_GANG_PAVANO", "AMBIENT_GANG_ANGELS", "AMBIENT_GANG_KOREAN" },
             DealerMenuGroup = "CokeDealerMenu",
 
@@ -1012,7 +1013,7 @@ public class Gangs : IGangs
             DealerMemberMoneyMin = 325,
             DealerMemberMoneyMax = 1200,
             HeadDataGroupID = "UptownRidersHeads",
-           
+            
             EnemyGangs = new List<string>() { "AMBIENT_GANG_ANGELS" },
             DealerMenuGroup = "MethamphetamineDealerMenu",
 

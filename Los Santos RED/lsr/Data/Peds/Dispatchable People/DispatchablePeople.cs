@@ -1938,6 +1938,26 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalPropChance = 70
                 ,RequiredVariation = new PedVariation(),
             },
+            new DispatchablePerson("ig_lccop_vest_02",0,0) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation()
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+            },
             new DispatchablePerson("ig_lcfatcop_vest",0,15) {
                 DebugName = "ig_lcfatcop_vest"
                 ,ArmorMin = 50
@@ -1980,6 +2000,26 @@ public class DispatchablePeople : IDispatchablePeople
                 //hat 0 = helmet, 1 = hat
                 //glasses 0 or 1 with 0 or 1 for texture
             },
+            new DispatchablePerson("ig_lccop_vest_02",0,0) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation()
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+            },
             DetectiveMale,
             DetectiveFemale,
             K9Generic,
@@ -2008,7 +2048,7 @@ public class DispatchablePeople : IDispatchablePeople
                     new PedComponent(11, 315, 0, 0),//closed? yellow 
                 }
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0),new PedPropComponent(0,138,0) }//hat
-                ,OptionalPropChance = 70
+                ,OptionalPropChance = 30
                 ,OptionalComponentChance = 50
                 ,RandomizeHead = true
             },
@@ -2026,7 +2066,7 @@ public class DispatchablePeople : IDispatchablePeople
                     new PedComponent(11, 315, 0, 0),//closed? yellow 
                 }
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0), new PedPropComponent(0, 138, 0) }
-                ,OptionalPropChance = 30
+                ,OptionalPropChance = 20
                 ,OptionalComponentChance = 50
                 ,RandomizeHead = true
             },
@@ -2046,7 +2086,7 @@ public class DispatchablePeople : IDispatchablePeople
                     new PedComponent(11, 326, 0, 0),//closed? yellow 
                 }
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0),new PedPropComponent(0,137,0) }//hat
-                ,OptionalPropChance = 70
+                ,OptionalPropChance = 30
                 ,OptionalComponentChance = 50
                 ,RandomizeHead = true
             },
@@ -2064,7 +2104,7 @@ public class DispatchablePeople : IDispatchablePeople
                     new PedComponent(11, 326, 0, 0),//closed? yellow 
                 }
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0), new PedPropComponent(0, 137, 0) }
-                ,OptionalPropChance = 30
+                ,OptionalPropChance = 20
                 ,OptionalComponentChance = 50
                 ,RandomizeHead = true
             },

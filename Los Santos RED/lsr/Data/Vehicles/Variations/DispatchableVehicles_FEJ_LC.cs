@@ -288,10 +288,10 @@ public class DispatchableVehicles_FEJ_LC
     {
         LCTaxiVehicles_FEJ_LC = new List<DispatchableVehicle>() {
 
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi1,138,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi2,138,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi3,138,-1,-1),
-            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi4,138,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi1,88,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi2,88,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi3,88,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,0,false,ServiceVehicleType.Taxi4,88,-1,-1),
 
             DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi1,92,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi2,92,-1,-1),
