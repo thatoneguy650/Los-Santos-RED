@@ -20,7 +20,7 @@ public class Landmark : GameLocation
 
     }
     public override string TypeName { get; set; } = "Landmark";
-    public override int MapIcon { get; set; } = 873;//162;
+    public override int MapIcon { get; set; } = 837;//873;//162;
     public override float MapIconScale { get; set; } = 0.5f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {

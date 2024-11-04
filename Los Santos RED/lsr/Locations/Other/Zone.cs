@@ -217,7 +217,7 @@ public class Zone
         string initialDisplay = DisplayName;
         if (!string.IsNullOrEmpty(BoroughName) && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowBorough)
         {
-            initialDisplay += ", " + BoroughName + "~s~";
+            initialDisplay += ", " + BoroughName;// + "~s~";
         }
         if (GameCounty != null && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowCounty)
         {

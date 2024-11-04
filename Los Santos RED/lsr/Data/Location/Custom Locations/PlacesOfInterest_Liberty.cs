@@ -13,6 +13,12 @@ public class PlacesOfInterest_Liberty
     private PossibleLocations LibertyCityLocations;
     private PedCustomizerLocation DefaultPedCustomizerLocation;
     private PedCustomizerLocation AboveDefaultPedCustomizerLocation;
+    private PlacesOfInterest PlacesOfInterest;
+
+    public PlacesOfInterest_Liberty(PlacesOfInterest placesOfInterest)
+    {
+        PlacesOfInterest = placesOfInterest;
+    }
 
     public void DefaultConfig()
     {
@@ -48,7 +54,10 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_Residences();
         DefaultConfig_PawnShops();
         DefaultConfig_FireStations();
+        DefaultConfig_GamblingDens();
+        DefaultConfig_CityHalls();
         DefaultConfig_BlankLocations();
+
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
@@ -60,7 +69,6 @@ public class PlacesOfInterest_Liberty
         centeredAbove.PedCustomizerLocation.AddDistanceOffset(new Vector3(0f, 0f, 200f));
         Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
     }
-
     private void DefaultConfig_PawnShops()
     {
         LibertyCityLocations.PawnShops.AddRange(new List<PawnShop>()
@@ -2596,16 +2604,16 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(-63.62645f, 508.2122f, 14.70847f), 358.7118f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },
             
             //Italian
-            new Restaurant(new Vector3(-1316.426f, 998.7839f, 25.72835f), 355.8445f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.AlderneyStateID ,BannerImagePath = "stores\\pizzathis.png" },
-              new Restaurant(new Vector3(-105.2152f, 564.0861f, 14.81412f), 129.918f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID ,BannerImagePath = "stores\\aldentes.png" },
-            new Restaurant(new Vector3(390.1504f, 18.13119f, 14.76246f), 90.53439f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID ,BannerImagePath = "stores\\aldentes.png" },
-            new Restaurant(new Vector3(-161.157f, 187.2703f, 5.294047f), 143.4763f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(-176.5677f, 950.0205f, 12.40071f), 359.3528f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(366.7054f, 209.1764f, 14.98598f), 268.1589f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(-1316.426f, 998.7839f, 25.72835f), 355.8445f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza", StateID = StaticStrings.AlderneyStateID ,BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(-105.2152f, 564.0861f, 14.81412f), 129.918f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID ,BannerImagePath = "stores\\aldentes.png" },
+            new Restaurant(new Vector3(390.1504f, 18.13119f, 14.76246f), 90.53439f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID ,BannerImagePath = "stores\\aldentes.png" },
+            new Restaurant(new Vector3(-161.157f, 187.2703f, 5.294047f), 143.4763f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(-176.5677f, 950.0205f, 12.40071f), 359.3528f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(366.7054f, 209.1764f, 14.98598f), 268.1589f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
 
             //Korean
-            new Restaurant(new Vector3(243.8853f, 120.3672f, 14.76545f), 90.41767f, "Rice & Fins", "New century fast food!","NoodleMenu", FoodType.Korean | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(346.6833f, 97.29707f, 14.76293f), 178.932f, "Dim Sum", "","NoodleMenu", FoodType.Korean | FoodType.Pizza) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(243.8853f, 120.3672f, 14.76545f), 90.41767f, "Rice & Fins", "New century fast food!","NoodleMenu", FoodType.Korean) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(346.6833f, 97.29707f, 14.76293f), 178.932f, "Dim Sum", "","NoodleMenu", FoodType.Korean) { StateID = StaticStrings.LibertyStateID },
 
             //Seafood
             new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
@@ -2729,6 +2737,16 @@ public class PlacesOfInterest_Liberty
             new Prison(new Vector3(-903.9021f, 118.7461f, 3.080931f), 91.96844f, "Alderney State Correctional Facility","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
         };
         LibertyCityLocations.Prisons.AddRange(LCPrison);
+    }
+    private void DefaultConfig_CityHalls()
+    {
+        List<CityHall> CityHalls = new List<CityHall>()
+        { 
+            new CityHall(new Vector3(-971.8344f, 1485.335f, 20.59385f), 179.2278f,"Alderney City Hall","") { OpenTime = 9,CloseTime = 18, StateID = StaticStrings.AlderneyStateID }
+        
+        
+        };
+        LibertyCityLocations.CityHalls.AddRange(CityHalls);
     }
     private void DefaultConfig_Hospitals()
     {
@@ -2893,6 +2911,10 @@ public class PlacesOfInterest_Liberty
             new BarberShop(new Vector3(46.25661f, 1900.294f, 20.41354f), 357.2557f, "Father & Son Barber Shop", "")
             {
                 StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            }
         });
     }
     private void DefaultConfig_Dealerships()
@@ -3482,14 +3504,158 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.FireStations.AddRange(FireStations);
     }
+    private void DefaultConfig_GamblingDens()
+    {
+        GamblingParameters defaultParameters = PlacesOfInterest.GetParameters(1);
+        List<GamblingDen> GamblingDens = new List<GamblingDen>()
+        {
+            new GamblingDen(new Vector3(-1111.794f, 1399.861f, 19.81154f), 175.4774f,"Alderney City Casino","Test Your Luck... In more ways than one")//Regular Casino
+            {
+                GamblingParameters = new GamblingParameters()
+                {
+                    BlackJackGameRulesList = new List<BlackJackGameRules>()
+                    {
+                        new BlackJackGameRules("Blackjack","The Dealer",15,400,true,true, false, false),
+                    },
+                    RouletteGameRulesList = new List<RouletteGameRules>()
+                    {
+                        new RouletteGameRules("Roulette","The Dealer",15,450, false, false),
+                    },
+                },
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = true,
+                WinLimit = 1000000,
+                WinLimitResetHours = 24,
+                TypeName = "Casino",
+                MapIcon = 679,
+                StateID = StaticStrings.AlderneyStateID,
+                CameraPosition = new Vector3(851.0151f, 50.54535f, 97.35239f),
+                CameraDirection = new Vector3(0.9805309f, -0.1052597f, -0.1657695f),
+                CameraRotation = new Rotator(-9.541942f, 7.250671E-06f, -96.12722f),
+            },
 
 
+
+
+            new GamblingDen(new Vector3(-26.60195f, 1049.526f, 15.02625f), 178.7795f,"Messina Gentlemans Club","Take a load off!")//Messina Casino, fancy
+            {
+                GamblingParameters = PlacesOfInterest.GetParameters(3),
+                WinLimit = 45000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+                CameraPosition = new Vector3(-27.55852f, 994.0565f, 59.2492f), 
+                CameraDirection = new Vector3(-0.04450776f, 0.9161568f, -0.3983414f), 
+                CameraRotation = new Rotator(-23.47453f, 2.094323E-05f, 2.781296f),
+                StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-31.04354f, 1046.068f, 14.8617f), 154.4864f, 75f) { AssociationID = "AMBIENT_GANG_MESSINA"},
+                    new GangConditionalLocation(new Vector3(-20.08696f, 1045.989f, 14.86169f), 216.8216f, 75f) { AssociationID = "AMBIENT_GANG_MESSINA"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1351.666f, 246.2108f, 60.47062f), 186.2948f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_MESSINA"},
+                },
+            },
+            new GamblingDen(new Vector3(169.4202f, -53.90068f, 16.27729f), 270.7705f,"Old Block Casino","A game of tradition")// Gambetti Casino, decnet condo
+            {
+                GamblingParameters = PlacesOfInterest.GetParameters(2),
+                WinLimit = 35000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+                CameraPosition = new Vector3(194.5283f, -44.69314f, 29.22834f), 
+                CameraDirection = new Vector3(-0.8022859f, -0.4778223f, -0.3578032f), 
+                CameraRotation = new Rotator(-20.96535f, -6.400122E-06f, 120.777f),
+                StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(172.2236f, -51.43612f, 14.77877f), 237.9585f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                    new GangConditionalLocation(new Vector3(172.6373f, -57.73302f, 14.76363f), 244.0623f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    
+                },
+            },
+            new GamblingDen(new Vector3(1479.129f, 2289.513f, 12.09924f), 89.52518f,"Garden Casino","See green in the garden")//Lupisella Casino, low end hotel
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 25000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+                CameraPosition = new Vector3(1460.727f, 2302.028f, 20.22127f), 
+                CameraDirection = new Vector3(0.7319992f, -0.6185485f, -0.2856135f), 
+                CameraRotation = new Rotator(-16.59552f, 1.781767E-06f, -130.1982f),
+                StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1473.45f, 2286.291f, 10.12301f), 124.9453f, 40f) { AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                    new GangConditionalLocation(new Vector3(1476.263f, 2292.687f, 10.08501f), 40.22756f, 40f) { AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1470.895f, 2268.277f, 10.34472f), 0.8881978f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_LUPISELLA"},
+                },
+            },
+            new GamblingDen(new Vector3(-1217.177f, 1000.864f, 20.79525f), 355.4877f,"Upstairs Casino","Make sure you bring cash")//Ancelotti Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 20000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+                CameraPosition = new Vector3(-1199.969f, 1017.442f, 25.87575f), 
+                CameraDirection = new Vector3(-0.646277f, -0.7271133f, -0.2315867f), 
+                CameraRotation = new Rotator(-13.39051f, 6.143427E-06f, 138.3685f),
+                StateID = StaticStrings.AlderneyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1223.102f, 1003.379f, 19.29539f), 47.04644f, 40f) { AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                    new GangConditionalLocation(new Vector3(-1213.419f, 1003.196f, 18.35084f), 305.5476f, 40f) { AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1212.313f, 1006.873f, 18.2206f), 272.0731f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_ANCELOTTI"},
+                },
+            },
+            new GamblingDen(new Vector3(127.2694f, 1742.047f, 22.79446f), 359.5596f,"Pavano Games","")//Pavano Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 15000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+                CameraPosition = new Vector3(144.5005f, 1761.812f, 27.52961f), 
+                CameraDirection = new Vector3(-0.6862326f, -0.7077096f, -0.1680235f), 
+                CameraRotation = new Rotator(-9.67292f, -8.227825E-06f, 135.8827f),
+                StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(124.767f, 1747.016f, 20.43135f), 26.97159f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                    new GangConditionalLocation(new Vector3(131.6205f, 1748.192f, 20.43144f), 336.5046f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(137.138f, 1751.758f, 20.29686f), 90.64448f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+            },
+        };
+        LibertyCityLocations.GamblingDens.AddRange(GamblingDens);
+    }
     private void DefaultConfig_BlankLocations()
     {
         BlankLocationsData_Liberty blankLocationsData_Liberty = new BlankLocationsData_Liberty();
         blankLocationsData_Liberty.DefaultConfig();
         LibertyCityLocations.BlankLocations.AddRange(blankLocationsData_Liberty.BlankLocationPlaces);
     }
-
 }
 

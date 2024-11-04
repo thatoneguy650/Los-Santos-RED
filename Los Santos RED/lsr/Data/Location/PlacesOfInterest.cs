@@ -1138,7 +1138,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         
     }
-    private GamblingParameters GetParameters(int Scalar)
+    public GamblingParameters GetParameters(int Scalar)
     {
         GamblingParameters defaultParameters = new GamblingParameters()
         {
@@ -2697,13 +2697,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
             new Restaurant(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
             new Restaurant(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
-            new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza) {OpenTime = 0, CloseTime = 24},
-            new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza),
-            new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood),
+            new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",OpenTime = 0, CloseTime = 24},
+            new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza", },
+            new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood) { MapIcon = 889,TypeName ="Pizza", },
             new Restaurant(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1654.415f, -1037.579f, 13.15282f), 48.0925f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1814.037f, -1213.353f, 13.01751f), 43.14338f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
@@ -5669,7 +5669,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_LibertyCity()
     {
-        PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty();
+        PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty(this);
         placesOfInterest_Liberty.DefaultConfig();
     }
     private void DefaultConfig_SunshineDream()

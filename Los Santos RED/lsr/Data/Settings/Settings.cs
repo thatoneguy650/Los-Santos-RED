@@ -324,7 +324,6 @@ public class Settings : ISettingsProvideable
         SettingsManager.GangSettings.AllowNonEnemyTargets = false;
 
     }
-
     public void SetLC()
     {
         IsBackendChanged = true;

@@ -17,6 +17,7 @@ public class DispatchableVehicles_FEJ_LC
     public List<DispatchableVehicle> LCPDVehicles { get; private set; }
     public List<DispatchableVehicle> ASPVehicles { get; private set; }
     public List<DispatchableVehicle> LCPDHeliVehicles { get; private set; }
+    public List<DispatchableVehicle> ASPHeliVehicles { get; private set; }
     public List<DispatchableVehicle> CoastGuardVehicles_LC { get; private set; }
     public List<DispatchableVehicle> FDLCVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> FDLCEMTVehicles_FEJ_LC { get; private set; }
@@ -75,6 +76,11 @@ public class DispatchableVehicles_FEJ_LC
     }
     private void LocalSheriff()
     {
+
+        DispatchableVehicle LCPDk9 = DispatchableVehicles_FEJ.Create_PoliceGranger3600LC(0, 50, 5, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", "");
+        LCPDk9.CaninePossibleSeats = new List<int> { 1, 2 };
+        LCPDk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+
         LCPDVehicles = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(100, 100, 0, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
@@ -108,7 +114,7 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTXLC(2, 2, 2, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTXLC(100, 100, 3, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", ""),
 
-
+            LCPDk9,
 
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 2, "Detective", ""),
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(2, 2, 11, true, PoliceVehicleType.Detective, -1, 0, 3, 1, 2, "Detective", ""),
@@ -119,13 +125,15 @@ public class DispatchableVehicles_FEJ_LC
 
             new DispatchableVehicle("police4", 2, 2) { MaxWantedLevelSpawn = 3,RequiredPedGroup = "Detective" },
 
-            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
+            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceThrustLC(20,10,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,134),
             DispatchableVehicles_FEJ.Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
         };
 
-
+        DispatchableVehicle ASPk9 = DispatchableVehicles_FEJ.Create_PoliceAleutianLC(0, 50, 5, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", "");
+        ASPk9.CaninePossibleSeats = new List<int> { 1, 2 };
+        ASPk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9,200) };
 
         ASPVehicles = new List<DispatchableVehicle>()
         {
@@ -141,6 +149,10 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceAleutianLC(100, 100, 4, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceAleutianLC(100, 100, 4, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 2, "", ""),
 
+            ASPk9,
+
+            //
+
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTXLC(100, 100, 4, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTXLC(100, 100, 4, false, PoliceVehicleType.SlicktopMarked, 134, 0, 3, 1, 2, "", ""),
 
@@ -153,7 +165,7 @@ public class DispatchableVehicles_FEJ_LC
             new DispatchableVehicle("police4", 2, 2) { MaxWantedLevelSpawn = 3, RequiredPedGroup = "Detective" },
 
 
-            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
+            DispatchableVehicles_FEJ.Create_PoliceVindicatorLC(20,10,1,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceThrustLC(20,10,1,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,134),
 
         };
@@ -162,6 +174,11 @@ public class DispatchableVehicles_FEJ_LC
         LCPDHeliVehicles = new List<DispatchableVehicle>()
         {
              new DispatchableVehicle("polmavliv", 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 0 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 134, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+        };
+
+        ASPHeliVehicles = new List<DispatchableVehicle>()
+        {
+             new DispatchableVehicle("polmavliv", 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 134, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
         };
 
         CoastGuardVehicles_LC = new List<DispatchableVehicle>()

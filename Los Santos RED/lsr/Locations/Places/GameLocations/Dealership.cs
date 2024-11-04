@@ -19,7 +19,7 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
 
     }
     public override string TypeName { get; set; } = "Dealership";
-    public override int MapIcon { get; set; } = 810;// (int)BlipSprite.GangVehicle;
+    public override int MapIcon { get; set; } = 811;//810;// (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
     public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
     public override int RegisterCashMin { get; set; } = 1000;

@@ -51,7 +51,62 @@ public class LEDispatcher
     private StoredSpawn SelectedTunnelSpawn;
     private uint GameTimeLastCheckedHeliFill;
     private uint GameTimeLastSpawnedOrRecalledHeli;
+
+    private uint GameTimeLastSpawnedOrRecalledCanineUnit;
+
+
     private uint DelayBetweenHeliSpawnAfterSpawnOrRecall
+    {
+        get
+        {
+            if (World.TotalWantedLevel == 1)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted1;
+            }
+            else if (World.TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted2;
+            }
+            else if (World.TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted3;
+            }
+            else if (World.TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted4;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted5;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted6;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Wanted10;
+            }
+
+            else
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnDelay_Default;
+            }
+        }
+    }
+    private uint DelayBetweenCanineSpawnAfterSpawnOrRecall
     {
         get
         {
@@ -221,7 +276,7 @@ public class LEDispatcher
             }
         }
     }
-    private bool HasNeedToAmbientCanineDispatch => World.Pedestrians.TotalSpawnedAmbientPoliceCanines < SpawnedK9Limit;
+    private bool HasNeedToAmbientCanineDispatch => World.Pedestrians.TotalSpawnedAmbientPoliceCanines < SpawnedK9Limit && (GameTimeLastSpawnedOrRecalledCanineUnit == 0 || Game.GameTime - GameTimeLastSpawnedOrRecalledCanineUnit >= DelayBetweenCanineSpawnAfterSpawnOrRecall);
     public float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     public float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 200f : 250f;//150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.AllPoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
@@ -233,11 +288,6 @@ public class LEDispatcher
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private bool IsTimeToAmbientCanineDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
-
-
-
-
-
     private int TimeBetweenSpawn
     {
         get
@@ -1314,11 +1364,23 @@ public class LEDispatcher
             GameFiber.Yield();
             bool addOptionalPassengers = RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage);
             bool addCanine = HasNeedToAmbientCanineDispatch;// && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage);
+
+            EntryPoint.WriteToConsole($"addCanine {addCanine} HasNeedToAmbientCanineDispatch {HasNeedToAmbientCanineDispatch}");
+
             if (forcek9)
             {
                 addCanine = true;
             }
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
+
+            if (VehicleType != null && VehicleType.CaninePossibleSeats != null && VehicleType.CaninePossibleSeats.Any())//already picked a k9 car, spawn it anways
+            {
+                addCanine = true;
+
+                EntryPoint.WriteToConsole($"already picked k9 car, continue spawning");
+
+            }
+
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, addCanine);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy && !isOffDuty;
             spawnTask.ClearVehicleArea = clearArea;
@@ -1544,6 +1606,12 @@ public class LEDispatcher
             {
                 return;
             }
+
+            if(Cop.IsAnimal)
+            {
+                GameTimeLastSpawnedOrRecalledCanineUnit = Game.GameTime;
+            }
+
             //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
             if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
@@ -1995,10 +2063,14 @@ public class LEDispatcher
 
         CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);
     }
-
     public void OnHelicopterSpawnedOrRecalled()
     {
         GameTimeLastSpawnedOrRecalledHeli = Game.GameTime;
         EntryPoint.WriteToConsole($"OnHelicopterSpawnedOrRecalled {GameTimeLastSpawnedOrRecalledHeli}");
+    }
+    public void OnK9SpawnedOrRecalled()
+    {
+        GameTimeLastSpawnedOrRecalledCanineUnit = Game.GameTime;
+        EntryPoint.WriteToConsole($"OnK9SpawnedOrRecalled {GameTimeLastSpawnedOrRecalledCanineUnit}");
     }
 }

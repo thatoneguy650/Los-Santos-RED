@@ -236,7 +236,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police2", 48, 35),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
-            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } }};
+            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } }};
         SAHPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
             GauntletUndercoverSAHP,
@@ -260,14 +260,14 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         LSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f },
+            new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } },
             SheriffStanierNew,
 
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         BCSOVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
-            new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f },
+            new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } },
             SheriffStanierNew,
 
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
@@ -279,7 +279,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         DavisLSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff2", 30, 30),
+            new DispatchableVehicle("sheriff2", 30, 30) { CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } },
             SheriffStanierNew,
         };
         RHPDVehicles = new List<DispatchableVehicle>() {
@@ -290,7 +290,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         EastLSPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 100,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
-            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
+            new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } } };
         VWPDVehicles = new List<DispatchableVehicle>() {
             LSPDStanierNew,
             //new DispatchableVehicle("police", 100,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -1511,6 +1511,10 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCPDVehicles));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDHeliVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCPDHeliVehicles));
+
+        
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ASPHeliVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.ASPHeliVehicles));
+
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ASPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.ASPVehicles));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.UnmarkedVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.CoastGuardVehicles_LC));

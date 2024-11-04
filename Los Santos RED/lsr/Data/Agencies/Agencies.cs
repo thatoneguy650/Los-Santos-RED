@@ -357,11 +357,14 @@ public class Agencies : IAgencies
         {
             LCPD,
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+
+            new Agency("~b~", "ASP-ASD","ASP-ASD", "Alderney State Police - Air Support Division", "Blue", Classification.Police, "ASPPeds", "ASPHeliVehicles", "ASP ","Tasers","HeliSidearms","HeliLongGuns", "ASP Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
+
             new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "ASPVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
             NYSP,
             BorderPatrol,NOOSEPIA,NOOSESEP,
             USNPS,
-            FIB,DOA,ARMY,USMC,USAF,USMS,               
+            FIB,DOA,ARMY,USMC,USAF,USMS,USCG,
             new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "FDLCFirePeds", "FDNYFireVehicles", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "FDLC-EMS","FDLC-EMS", "Liberty City Fire Department EMS", "White", Classification.EMS, "GreenEMTs", "FDNYEMTVehicles", "LC ",null,null, null, "FDLC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             HMSEMT,

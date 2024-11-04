@@ -874,7 +874,7 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, false, 100),
             };
         }
-        toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
+        //toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
         if (requiredColor != -1)
         {
             toReturn.RequiredDashColorID = requiredColor;
@@ -1207,7 +1207,7 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, true, 100),
             };
         }
-        toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
+        //toReturn.CaninePossibleSeats = new List<int>() { 1, 2 };
         if (requiredColor != -1)
         {
             toReturn.RequiredDashColorID = requiredColor;
@@ -3480,7 +3480,7 @@ public class DispatchableVehicles_FEJ
     public DispatchableVehicle Create_PoliceVindicatorLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int highwayAdjustmentAmount)
     {
         DispatchableVehicle intermediate = Create_PoliceVindicator(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, highwayAdjustmentAmount);
-        intermediate.ModelName = "poldindicatorliv";
+        intermediate.ModelName = "polvindicatorliv";
         intermediate.ForcedPlateType = 8;
         return intermediate;
     }

@@ -1008,7 +1008,12 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","NORWO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","NRTGA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","NOWOB", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","OCEANA", 0, 100, 100),
+            //new ZoneJurisdiction("LCPD","OCEANA", 0, 100, 100),
+
+            new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
+            new ZoneJurisdiction("LCPD","OCEANA", 1, 5, 20),
+
+
             new ZoneJurisdiction("LCPD","OUTL", 0, 100, 100),
             new ZoneJurisdiction("LCPD","PUGAT", 0, 100, 100),
 
@@ -1047,7 +1052,7 @@ public class Jurisdictions : IJurisdictions
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
             new CountyJurisdiction("LCPD-ASD",StaticStrings.LibertyCityCountyID, 0, 100, 100),
-            new CountyJurisdiction("LCPD-ASD",StaticStrings.AlderneyCountyID, 0, 100, 100),
+            new CountyJurisdiction("ASP-ASD",StaticStrings.AlderneyCountyID, 0, 100, 100),
 
 
             new CountyJurisdiction("FDLC-EMS",StaticStrings.LibertyCityCountyID, 0, 100, 100),

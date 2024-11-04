@@ -179,8 +179,19 @@ public class DispatchablePeople : IDispatchablePeople
 
             new PedPropComponent(6, 20, 2),
         };
-        
 
+        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_shepherd", 50, 50)
+        {
+            IsAnimal = true,
+            DebugName = "K9_Shepherd",
+            UnitCode = "K9",
+            OverrideAgencyLessLethalWeapons = true,
+            OverrideAgencySideArms = true,
+            OverrideAgencyLongGuns = true,
+            OverrideLessLethalWeaponsID = null,
+            OverrideSideArmsID = null,
+            OverrideLongGunsID = null,
+        };
 
         //Cops
         StandardCops = new List<DispatchablePerson>() {
@@ -282,17 +293,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
 
-            new DispatchablePerson("a_c_shepherd",50,50) {
-                IsAnimal = true,
-                DebugName = "K9_Shepherd",
-                UnitCode = "K9",
-                OverrideAgencyLessLethalWeapons = true,
-                OverrideAgencySideArms = true,
-                OverrideAgencyLongGuns = true,
-                OverrideLessLethalWeaponsID = null,
-                OverrideSideArmsID = null,
-                OverrideLongGunsID = null,
-            },
+            GenericK9,
 
 
 
@@ -367,6 +368,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0) }
                 ,OptionalPropChance = 95
             },
+            GenericK9,
         };
         NOOSEPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_swat_01", 0,0){
@@ -465,6 +467,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,AlwaysHasLongGun = true
                 ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
+            GenericK9,
         };
         FIBPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_fibsec_01",55,70){ DebugName = "FIBAgentMale",MaxWantedLevelSpawn = 3 },
@@ -1835,6 +1838,8 @@ public class DispatchablePeople : IDispatchablePeople
             OverrideSideArmsID = null,
             OverrideLongGunsID = null,
         };
+
+        DispatchablePerson PilotGeneric = new DispatchablePerson("s_m_m_pilot_02", 0, 0) { DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) } } };
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "LCPDPeds");
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "ASPPeds");
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "NOOSEPeds");
@@ -1865,7 +1870,7 @@ public class DispatchablePeople : IDispatchablePeople
             DetectiveMale,
             DetectiveFemale,
             K9Generic,
-            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, 
+            PilotGeneric,
 
             //Standard
             new DispatchablePerson("ig_lccop_traffic",15,0) {
@@ -1971,7 +1976,10 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
         List<DispatchablePerson> ASP_DLC = new List<DispatchablePerson>() {
-
+            DetectiveMale,
+            DetectiveFemale,
+            K9Generic,
+            PilotGeneric,
             new DispatchablePerson("ig_lcstrooper",100,100) {
                 DebugName = "ig_lcstrooper"
                 ,MaxWantedLevelSpawn = 4
@@ -1980,14 +1988,6 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), }
                 ,OptionalPropChance = 70
             },
-            //new DispatchablePerson("ig_lcstrooper",0,0) {
-            //    DebugName = "ig_lcstrooper"
-            //    ,MaxWantedLevelSpawn = 4
-            //    ,AllowRandomizeBeforeVariationApplied = true
-            //    ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
-            //    ,GroupName = "MotorcycleCop"
-            //    ,UnitCode = "Mary"
-            //},
             new DispatchablePerson("ig_lccop_traffic",0,0) {
                 DebugName = "ig_lccop_traffic"
                 ,MaxWantedLevelSpawn = 2
@@ -2020,9 +2020,6 @@ public class DispatchablePeople : IDispatchablePeople
                 ,AccuracyMax = 85
                 ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
-            DetectiveMale,
-            DetectiveFemale,
-            K9Generic,
         };
 
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("LCPDPeds", LCPD_DLC));
