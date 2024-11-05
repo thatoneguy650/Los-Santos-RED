@@ -215,13 +215,15 @@ public class Zone
     public string FullZoneName(ISettingsProvideable settings)
     {
         string initialDisplay = DisplayName;
+        bool shownborough = false;
         if (!string.IsNullOrEmpty(BoroughName) && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowBorough)
         {
             initialDisplay += ", " + BoroughName;// + "~s~";
+            shownborough = true;
         }
         if (GameCounty != null && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowCounty)
         {
-            initialDisplay += ", " + GameCounty.ColorName + "~s~";
+            initialDisplay += ", " + GameCounty.ColorName(shownborough || settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowCountyShort) + "~s~";
         }
         if (GameState != null && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowState)
         {

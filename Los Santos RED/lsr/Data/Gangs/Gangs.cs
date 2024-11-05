@@ -878,7 +878,7 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Street,
         };//heroin
 
-        Gang NorthHollandHuslters = new Gang("~r~", "AMBIENT_GANG_HOLHUST", "The North Holland Hustlers", "North Holland Hustlers", "Red",
+        Gang NorthHollandHuslters = new Gang("~r~", "AMBIENT_GANG_HOLHUST", "The North Holland Hustlers", "N Hol Hustlers", "Red",
             "NorthHollandPeds", "NorthHollandVehicles", "", 
             "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns",
             "North Holland Hustlers", "CHAR_BLANK_ENTRY", "Huslters Member")
@@ -917,7 +917,7 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Street,
         };//crack
 
-        Gang PetrovicMafia = new Gang("~w~", "AMBIENT_GANG_PETROVIC", "Petrovic Crime Syndicate", "Petrovic Mafiya", "White",
+        Gang PetrovicMafia = new Gang("~w~", "AMBIENT_GANG_PETROVIC", "Petrovic Crime Syndicate", "Petrovic", "White",
             "PetrovicPeds", "PetrovicVehicles", "PET ",
             "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns",
             "Petrovic", "CHAR_BLANK_ENTRY","Petrovic Associate")
@@ -959,7 +959,7 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
         };//Coke
 
-        Gang AngelsOfDeath = new Gang("~w~", "AMBIENT_GANG_ANGELS", "The Angels of Death", "Angels of Death", "White",
+        Gang AngelsOfDeath = new Gang("~w~", "AMBIENT_GANG_ANGELS", "The Angels of Death", "AOD MC", "White",
             "AngelsOfDeathPeds", "AngelsOfDeathVehicles", "AOD ", 
             "MeleeWeapons", "LostSidearms", "LostLongGuns",
             "AOD MC", "CHAR_BLANK_ENTRY", "AOD Member")
@@ -1043,7 +1043,7 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Biker,
         };//Meth
 
-        List<Gang> SimpleGangsList = new List<Gang>
+        List<Gang> LCGangsList = new List<Gang>
         {
             LOST_LIB,
             Triads_LIB,
@@ -1058,7 +1058,7 @@ public class Gangs : IGangs
             AngelsOfDeath,
             UptownRiders
         };
-        Serialization.SerializeParams(SimpleGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
+        Serialization.SerializeParams(LCGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     public void CheckTerritory(GangTerritories gangTerritories)
     {

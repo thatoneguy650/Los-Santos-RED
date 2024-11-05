@@ -85,7 +85,7 @@ public class LSRHUDSettings : ISettingsDefaultable
     public bool ZoneDisplayShowBorough { get; set; }
 
 
-
+    public bool ZoneDisplayShowCountyShort { get; set; }
 
     public float TopDisplayPositionX { get; set; }
     public float TopDisplayPositionY { get; set; }

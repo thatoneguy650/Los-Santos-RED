@@ -23,10 +23,23 @@ public class Interiors_Liberty
     {
         LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
-            new Interior(76290,"Perestroika"),
-            new Interior(138498, "Laundromat"),
-            new Interior(160514,"Broker Fire Station"),
-            new Interior(176898, "Bohan Fire Station"),
+            new Interior(76290,"Perestroika") { NeedsActivation = true, },
+            new Interior(138498, "Laundromat"){ NeedsActivation = true, },
+            new Interior(160514,"Broker Fire Station"){ NeedsActivation = true, },
+            new Interior(176898, "Bohan Fire Station"){ NeedsActivation = true, },
+
+
+            new Interior(27394, "Memory Lanes"){ NeedsActivation = true, },
+            new Interior(151554, "Beechwood Apts 2"),
+            new Interior(119042, "Beechwood Apts 1"),
+            new Interior(35330, "Beechwood Apts 3"),
+            new Interior(118786, "Homebrew Cafe"){ NeedsActivation = true, },
+            new Interior(37634, "Beechwood Apts 5"),
+            new Interior(50178, "tw@"){ NeedsActivation = true, },
+            new Interior(24578, "JJ China Limited"),
+            new Interior(124418, "Burger Shot"){ NeedsActivation = true, },
+
+
         });
 
         LibertyCityInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>() 

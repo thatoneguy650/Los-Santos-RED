@@ -56,17 +56,17 @@ public class LocationTypes : ILocationTypes
         LocationTypeNames = new LocationTypeManager();
         LocationTypeNames.CountyList = new List<GameCounty>
         {
-            new GameCounty(StaticStrings.CityOfLosSantosCountyID, "City of Los Santos"),
+            new GameCounty(StaticStrings.CityOfLosSantosCountyID, "City of Los Santos","LS"),
             new GameCounty(StaticStrings.LosSantosCountyID, "Los Santos County"),
-            new GameCounty(StaticStrings.BlaineCountyID, "Blaine County"),
+            new GameCounty(StaticStrings.BlaineCountyID, "Blaine County","BC"),
             new GameCounty(StaticStrings.PacificOceanCountyID, "Pacific Ocean"),       
             new GameCounty(StaticStrings.CrookCountyID, "Crook County") { ColorPrefix = "~b~" },
             new GameCounty(StaticStrings.NorthYanktonCountyID, "North Yankton"),      
             new GameCounty(StaticStrings.VenturaCountyID, "Ventura County"),
             new GameCounty(StaticStrings.MajesticCountyID, "Majestic County"),
-            new GameCounty(StaticStrings.LibertyCityCountyID, "Liberty City"),
+            new GameCounty(StaticStrings.LibertyCityCountyID, "Liberty City","LC"),
             new GameCounty(StaticStrings.AlderneyCountyID, "Alderney"),
-            new GameCounty(StaticStrings.CityOfViceCountyID, "City of Vice"),
+            new GameCounty(StaticStrings.CityOfViceCountyID, "City of Vice","VC"),
             new GameCounty(StaticStrings.ViceCountyID, "Vice County"),
             new GameCounty("Unknown", "Unknown"),
         };

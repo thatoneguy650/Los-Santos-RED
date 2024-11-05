@@ -37,19 +37,7 @@ public class FootChase
     {
         get
         {
-            if (Ped.IsAnimal)
-            {
-                if (UseWantedLevel)
-                {
-                    return !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage;
-                }
-                else
-                {
-                    return !Player.IsBusted && !Player.IsAttemptingToSurrender && !Player.ActivityManager.IsHoldingHostage;
-                }
-            }
-            else
-            {
+
                 if (UseWantedLevel)
                 {
                     return !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
@@ -58,7 +46,7 @@ public class FootChase
                 {
                     return !Player.IsBusted && !Player.IsAttemptingToSurrender && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide;
                 }
-            }
+            
         }
     }
     private bool ShouldAimWeapon => !UseWantedLevel || Player.WantedLevel > 1;
@@ -130,7 +118,13 @@ public class FootChase
         bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
         bool shouldAimWeapon = ShouldAimWeapon;
         GameFiber.Yield();
-        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimWeapon} UseWantedLevel {UseWantedLevel} LocalDistance{LocalDistance} CloseDistance{CloseDistance}");      
+        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimWeapon} UseWantedLevel {UseWantedLevel} LocalDistance{LocalDistance} CloseDistance{CloseDistance}");
+        //
+
+
+
+
+
         if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimWeapon)//7f
         {
             if (UseWantedLevel)
@@ -141,7 +135,16 @@ public class FootChase
             {
                 Cop.WeaponInventory.SetLessLethal();
             }
-            TaskAttackWithLessLethal();
+            if(Ped.IsAnimal)
+            {
+                CurrentSubTask = SubTask.AttackWithLessLethal;
+                TaskAnimalAttack();
+            }
+            else
+            {
+                TaskAttackWithLessLethal();
+            }
+            
             //EntryPoint.WriteToConsole("TaskAttackWithLessLethal");
         }
         else if (CurrentSubTask != SubTask.AimWeapon && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimWeapon && (Cop.HasTaser || Player.IsDangerouslyArmed))//HAVE GUN OUT?
@@ -154,13 +157,23 @@ public class FootChase
             {
                 Cop.WeaponInventory.SetLessLethal();
             }
-            TaskAimTaser();
+
+                TaskAimTaser();
+            
             //EntryPoint.WriteToConsole("TaskAimWeapon");
         }
         else if (CurrentSubTask != SubTask.SimpleLook && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimWeapon && !Cop.HasTaser && !Player.IsDangerouslyArmed)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
-            TaskLookAtSimple();
+            //if (Ped.IsAnimal)
+            //{
+            //    CurrentSubTask = SubTask.SimpleLook;
+            //    TaskAnimalAttack();
+            //}
+            //else
+            //{
+                TaskLookAtSimple();
+            //}
             //EntryPoint.WriteToConsole("TaskLookAtSimple");
         }
         else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon && Player.IsBusted)
@@ -281,31 +294,34 @@ public class FootChase
             prevRunSpeed = RunSpeed;
         }
     }
+
+
+
+
+    private void TaskAnimalAttack()
+    {
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+
+
+            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+
+            //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+            // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+            NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 0);
+            NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.DefaultCombatFlag == 0 ? 134217728 : Ped.DefaultCombatFlag, 16);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+    }
     private void TaskAttackWithLessLethal()
     {
         CurrentSubTask = SubTask.AttackWithLessLethal;
-
-        if(Ped.IsAnimal)
-        {
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-
-   
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-
-                //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-                // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 0);
-                NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.DefaultCombatFlag == 0 ? 134217728 : Ped.DefaultCombatFlag, 16);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-        }
-        else if (Cop.HasTaser)
+        if (Cop.HasTaser)
         {
             if (LocalDistance > 5f)
             {

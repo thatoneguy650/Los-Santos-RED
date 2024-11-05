@@ -56,6 +56,7 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_FireStations();
         DefaultConfig_GamblingDens();
         DefaultConfig_CityHalls();
+        DefaultConfig_HeadShops();
         DefaultConfig_BlankLocations();
 
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
@@ -79,7 +80,11 @@ public class PlacesOfInterest_Liberty
             new PawnShop(new Vector3(390.1691f, 237.2966f, 14.75332f), 91.00311f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
             new PawnShop(new Vector3(339.6178f, 317.5372f, 14.54821f), 356.0719f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
             new PawnShop(new Vector3(-60.1551f, 172.431f, 11.79101f), 205.4112f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
+            new PawnShop(new Vector3(1525.151f, 427.7028f, 27.82906f), 356.2724f, "XXX Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
 
+
+            new PawnShop(new Vector3(1312.964f, 538.3285f, 34.01828f), 269.4268f, "Pawn Shop", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
+            new PawnShop(new Vector3(2020.087f, 960.3093f, 28.17154f), 179.1037f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
         });
     }
     private void DefaultConfig_Residences()
@@ -1030,16 +1035,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
             },
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(1890.87f, 719.66f, 225.21f),
-                EntranceHeading = 269.4f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
+
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
                 Name = "Burger Shot",
@@ -1232,6 +1228,9 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 280.19f,
                 OpenTime = 6,
                 CloseTime = 20,
+                ActivateDistance = 125f,
+                InteriorID = 50178,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1210.121f, 319.0208f, 24.19368f), 21.01815f) },
                 StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
@@ -1773,6 +1772,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 StateID = StaticStrings.LibertyStateID,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1704.374f, 554.5533f, 25.18571f), 271.6047f) }
             },
 
             new Bar() {
@@ -2487,31 +2487,67 @@ public class PlacesOfInterest_Liberty
             CloseTime = 20
         };
         LibertyCityLocations.Banks.Add(Fleeca1);
+        Bank WhanQBank = new Bank(new Vector3(1509.479f, 892.1535f, 22.2849f), 181.0821f, "Whan-Q Bank", "Don't beat off, Come Inside!", "WHANQ")
+        {
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 6,
+            CloseTime = 20
+        };
+        LibertyCityLocations.Banks.Add(WhanQBank);
+
+
+
 
         ATMMachine Lombankatm1 = new ATMMachine(new Vector3(1175.552f, -61.24877f, 14.12093f), 1.822495f, "Lombank", "Our time is your money","None",null,null)
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.LibertyStateID,
-            OpenTime = 6,
-            CloseTime = 20
+            OpenTime = 0,
+            CloseTime = 24,
         };
         LibertyCityLocations.ATMMachines.Add(Lombankatm1);
         ATMMachine Lombank4atm1 = new ATMMachine(new Vector3(-168.121f, 1683.874f, 14.76021f), 48.62359f, "Lombank", "Our time is your money", "None", null, null)
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.LibertyStateID,
-            OpenTime = 6,
-            CloseTime = 20
+            OpenTime = 0,
+            CloseTime = 24,
         };
         LibertyCityLocations.ATMMachines.Add(Lombank4atm1);
         ATMMachine Lombank4atm2 = new ATMMachine(new Vector3(-155.2926f, 1696.743f, 14.76021f), 45.13586f, "Lombank", "Our time is your money", "None", null, null)
         {
             BannerImagePath = "stores\\lombank.png",
             StateID = StaticStrings.LibertyStateID,
-            OpenTime = 6,
-            CloseTime = 20
+            OpenTime = 0,
+            CloseTime = 24,
         };
         LibertyCityLocations.ATMMachines.Add(Lombank4atm2);
+
+
+
+
+        ATMMachine bolatm1 = new ATMMachine(new Vector3(1396.733f, 260.615f, 23.02633f), 176.1504f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = "stores\\lombank.png",
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolatm1);
+        ATMMachine bolatm2 = new ATMMachine(new Vector3(1556.991f, 466.8633f, 28.24726f), 273.719f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolatm2);
+        ATMMachine bolatm3 = new ATMMachine(new Vector3(1436.292f, 1129.586f, 38.6717f), 1.147391f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolatm3);
 
     }
     private void DefaultConfig_Pharmacies()
@@ -2529,6 +2565,13 @@ public class PlacesOfInterest_Liberty
             new Pharmacy(new Vector3(307.8423f, 271.3829f, 14.81721f), 271.8366f, "Pill Pharm", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
             new Pharmacy(new Vector3(-150.7478f, 1899.981f, 12.27885f), 299.9541f, "Pill Pharm", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
             new Pharmacy(new Vector3(-143.1255f, 1004.039f, 14.76909f), 268.809f, "Pill Pharm", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+
+            new Pharmacy(new Vector3(1413.217f, 261.5234f, 23.47336f), 359.0964f, "Pill Pharm", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+            new Pharmacy(new Vector3(1627.619f, 636.0948f, 28.46016f), 65.32055f, "Drugs", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+
+            new Pharmacy(new Vector3(1482.59f, 520.0873f, 36.07051f), 181.6015f, "Greavsy's Pharmacy", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+            new Pharmacy(new Vector3(2035.604f, 966.4045f, 28.03109f), 266.7413f, "Fullon Drugs", "","PharmacyMenu") { StateID = StaticStrings.LibertyStateID },
+            new Pharmacy(new Vector3(1454.844f, 867.1164f, 21.94626f), 271.8613f, "Drugs", "","PharmacyMenu") { OpenTime = 0, CloseTime = 24, StateID = StaticStrings.LibertyStateID },
         });
     }
     private void DefaultConfig_HardwardStores()
@@ -2537,7 +2580,12 @@ public class PlacesOfInterest_Liberty
         {
             new HardwareStore(new Vector3(-1439.889f, 772.345f, 20.74955f), 175.5223f, "Hardware Store", "","ToolMenu"){ StateID = StaticStrings.AlderneyStateID },
             new HardwareStore(new Vector3(1133.433f, -61.76066f, 14.17166f), 229.4212f, "645 Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
-            new HardwareStore(new Vector3(1249.492f, 179.6172f, 21.37342f), 94.49049f, " 645 Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+            new HardwareStore(new Vector3(1249.492f, 179.6172f, 21.37342f), 94.49049f, "645 Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+
+            new HardwareStore(new Vector3(1468.016f, 597.6271f, 38.65081f), 155.6264f, "D.I.Y", "In Your Arms Tonight","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+            new HardwareStore(new Vector3(1469.622f, 571.1069f, 37.92224f), 358.6304f, "Discount Hardware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+
+
         });
     }
     private void DefaultConfig_ClothingShops()
@@ -2549,6 +2597,22 @@ public class PlacesOfInterest_Liberty
             new ClothingShop(new Vector3(248.9821f, -164.9303f, 14.76574f), 4.162239f, "Perseus", "","", new Vector3(245.6139f, -177.8401f, 14.86145f)) { IsTemporarilyClosed = true ,StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(249.2022f, -175.4658f, 14.86148f), 358.7083f) } },
             new ClothingShop(new Vector3(260.4522f, 1303.977f, 14.71333f), 1.235396f, "Perseus", "","", new Vector3(257.0355f, 1290.913f, 14.76171f)) { IsTemporarilyClosed = true , StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(260.4872f, 1293.259f, 14.76175f), 357.0343f) } },
             new ClothingShop(new Vector3(-42.46121f, 1848.396f, 25.63392f), 180.3579f, "Modo", "","", new Vector3(-37.88146f, 1858.274f, 25.63278f)) { IsTemporarilyClosed = true , StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-42.45911f, 1859.056f, 25.63309f), 177.3688f) } },
+            new ClothingShop(new Vector3(1595.022f, 621.552f, 31.28567f), 240.849f, "Street Clothes", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1346.353f, -60.4495f, 13.52487f), 183.2335f, "Shirt World", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1492.907f, 417.7603f, 28.25696f), 90.98744f, "Ladies Fashion", "Clothes for Ladies","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1410.216f, 643.3562f, 32.54807f), 0.2708052f, "Derriere", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            
+            new ClothingShop(new Vector3(1548.968f, 942.1575f, 24.81256f), 86.65789f, "Jim's Jewels of Nondon", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1549.411f, 911.0147f, 22.64925f), 88.57362f, "Anna Jewelers", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1550.994f, 892.7451f, 22.44084f), 180.5751f, "Mama Jewelers", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1589.987f, 869.4638f, 22.78535f), 359.0088f, "Silk-N-Gold Jewelers", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1443.815f, 1244.394f, 36.11818f), 5.438942f, "Sexy Jewelry", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1982.235f, 923.6902f, 27.32143f), 91.85303f, "Clothes Corner", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1290.16f, 655.2253f, 31.87268f), 63.1114f, "Sneaky Footwear", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1356.416f, 548.6938f, 34.18115f), 88.93094f, "Girly Girl Ladies Fashion & Shoes", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1300.863f, 619.5544f, 33.59661f), 181.0713f, "Aeris", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1276.365f, 633.8016f, 32.15121f), 61.06564f, "Curbcrawler Skateboards", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            new ClothingShop(new Vector3(1316.394f, 645.1326f, 32.63475f), 266.2737f, "Crevis", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
         });
     }
     private void DefaultConfig_LiquorStore()
@@ -2559,6 +2623,16 @@ public class PlacesOfInterest_Liberty
             new LiquorStore(new Vector3(1166.318f, 39.6803f, 15.73573f), 88.17412f, "Wine & Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(350.2346f, 1565.316f, 14.71858f), 271.9344f, "Desratar Wine Store", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(-62.34354f, 1768.754f, 23.97709f), 176.9975f, "Lady Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+
+
+            new LiquorStore(new Vector3(1529.293f, 480.4813f, 28.35725f), 243.7716f, "Bob's Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(1648.498f, 717.5427f, 26.1545f), 269.9614f, "Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(1433.099f, 309.8818f, 26.08633f), 268.741f, "Nik's Liquor & Wine", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(1594.681f, 362.6383f, 22.65849f), 186.0302f, "Jeff's Liquor & Wine", "Wash Those Cares Away!","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+
+
+            new LiquorStore(new Vector3(1378.083f, 914.7954f, 29.81077f), 68.52505f, "Oriental Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(1500.053f, 892.6182f, 22.20075f), 178.4071f, "Oriental Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
         });
     }
     private void DefaultConfig_Bars()
@@ -2569,6 +2643,10 @@ public class PlacesOfInterest_Liberty
             new Bar(new Vector3(-161.7981f, 890.8474f, 14.4101f), 178.4913f, "Bahama Mama's", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
             new Bar(new Vector3(-295.2032f, 1846.985f, 17.47949f), 175.4991f, "Linen Lounge", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
             new Bar(new Vector3(258.9634f, 57.45743f, 13.56177f), 89.61294f, "Big Boss Nightclub", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
+
+            new Bar(new Vector3(1432.41f, 305.5182f, 26.4194f), 270.3983f, "O'Reilly's Bar", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
+            new Bar(new Vector3(1670.621f, 513.1041f, 26.07587f), 85.41585f, "The Bay Bar", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
+
         }
         );
     }
@@ -2583,6 +2661,42 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(1216.894f, 20.49133f, 16.10159f), 273.8801f, "Gulag Garden", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(1255.93f, 159.1167f, 19.50427f), 121.6593f, "Luncheonette Diner", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
 
+
+            new Restaurant(new Vector3(1494.228f, 284.1609f, 25.23981f), 179.2637f, "Ali Mac's", "Traditional Familry Fare","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1436.119f, 259.1028f, 24.5536f), 270.7332f, "Coronary Corner Restuarant", "","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+
+            new Restaurant(new Vector3(1505.384f, 425.5957f, 28.10432f), 358.0871f, "Green Dragon Chinese Food", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1563.347f, 364.9023f, 25.74242f), 182.9156f, "Wok Like An Egyptian", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1579.539f, 364.8728f, 24.67028f), 178.3091f, "El Gringo Supremo's", "","FancyGenericMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },
+
+
+
+
+
+            new Restaurant(new Vector3(1312.689f, 529.9832f, 34.01013f), 273.2307f, "Diner", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1313.493f, 576.736f, 34.20903f), 269.9303f, "Hero Shop", "","SandwichMenu", FoodType.Sandwiches){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1375.332f, 905.6595f, 29.83094f), 75.98001f, "American & Spanish Food", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1397.564f, 890.1441f, 27.47992f), 181.499f, "Chicken Restaurant", "","FancyGenericMenu", FoodType.Chicken){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1477.622f, 848.5602f, 21.41052f), 92.50406f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3" },
+            new Restaurant(new Vector3(1549.102f, 924.5397f, 23.39649f), 90.51724f, "Kingston Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1570.415f, 869.429f, 22.61242f), 2.052902f, "Indian Inn Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1470.412f, 1244.412f, 36.11839f), 359.4598f, "Cherry Popper Ice Cream", "","IceCreamMenu", FoodType.Dessert){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1979.965f, 1013.015f, 29.20576f), 49.90157f, "Silk Thai", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+
+            //Burger
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(1890.87f, 719.66f, 25.21f),
+                EntranceHeading = 269.4f,
+                OpenTime = 6,
+                CloseTime = 20,
+                InteriorID = 124418,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1875.883f, 718.8391f, 25.21189f), 267.9538f) },
+                StateID = StaticStrings.LibertyStateID,
+            },
+
             //Coffee
             new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
             new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Hot Coffee Shop", "Wanna come inside?","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.LibertyStateID },
@@ -2591,6 +2705,7 @@ public class PlacesOfInterest_Liberty
 
             new Restaurant(new Vector3(169.3135f, 858.1989f, 14.77283f), 277.2627f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
             new Restaurant(new Vector3(349.1903f, 488.417f, 14.82063f), 268.7347f,  "Stews Coffee Shop", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1532.004f, 427.4155f, 27.82907f), 356.5174f,  "Benito's Coffee and Comics", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
 
             //Donuts
             new Restaurant(new Vector3(436.5504f, 246.7506f, 10.31401f), 5.807813f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut){ IsWalkup = true, StateID = StaticStrings.LibertyStateID, OpenTime = 4, CloseTime = 20,BannerImagePath = "stores\\rustybrowns.png" },
@@ -2610,6 +2725,16 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(-161.157f, 187.2703f, 5.294047f), 143.4763f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(-176.5677f, 950.0205f, 12.40071f), 359.3528f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(366.7054f, 209.1764f, 14.98598f), 268.1589f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1671.657f, 727.932f, 25.95271f), 87.05959f, "Al's Pizzeria", "Free Delivery","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+
+
+            new Restaurant(new Vector3(1217.929f, 278.336f, 23.91655f), 321.847f, "Pizza Feast", "For a Real Feast","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(2035.999f, 976.2667f, 28.14738f), 275.386f, "Pizza Feast", "For a Real Feast","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+
+
+            new Restaurant(new Vector3(1373.067f, 896.9398f, 29.79031f), 74.50283f, "Italian Restaurant", "","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1414.074f, 890.5122f, 25.53889f), 178.9763f, "Pizza & Deli", "","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
+
 
             //Korean
             new Restaurant(new Vector3(243.8853f, 120.3672f, 14.76545f), 90.41767f, "Rice & Fins", "New century fast food!","NoodleMenu", FoodType.Korean) { StateID = StaticStrings.LibertyStateID },
@@ -2629,14 +2754,9 @@ public class PlacesOfInterest_Liberty
         {
             new Landmark(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Schlongberg Sachs", "") { StateID = StaticStrings.AlderneyStateID },
             new Landmark(new Vector3(-1429.036f, 770.1529f, 20.177f), 176.9206f, "Satriale's Pork Store", "") { StateID = StaticStrings.AlderneyStateID },
-
-
             new Landmark(new Vector3(1195.817f, 203.6283f, 19.80799f), 182.1452f, "Perestroika", "") { BannerImagePath = "stores//perestroika.png", StateID = StaticStrings.LibertyStateID, InteriorID = 76290,IgnoreEntranceInteract = true, },
             new Landmark(new Vector3(1251.176f, 168.7538f, 20.23567f), 99.71825f, "Laundromat", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 138498, IgnoreEntranceInteract = true, },
-
-
             new Landmark(new Vector3(1061.563f, 219.1207f, 15.34185f), 269.6217f, "Express Car Services", "") { BannerImagePath = "stores//expresscarservice.png",StateID = StaticStrings.LibertyStateID },
-
             new Landmark(new Vector3(-105.2177f, 393.1169f, 14.70457f), 90.96992f, "Rotterdam Tower", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(260.9259f, 454.8217f, 14.81293f), 182.7993f, "Grand Easton Terminal", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(-243.7175f, 1174.777f, 9.525352f), 86.67438f, "Randalf Art Center", "") { StateID = StaticStrings.LibertyStateID },
@@ -2647,6 +2767,32 @@ public class PlacesOfInterest_Liberty
             new Landmark(new Vector3(-155.4752f, 1379.515f, 18.18823f), 269.9464f, "Natural History Museum", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(-284.2392f, 1539.379f, 15.50288f), 181.2027f, "Vespucci University", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(-341.9377f, 1327.754f, 12.82209f), 193.9257f, "Mausoleum", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1685.215f, 634.5786f, 26.77688f), 357.5381f, "Beechwood Strip CLub", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1742.516f, 611.2752f, 23.42088f), 96.11179f, "Car Wash N Lube", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1589.831f, 248.0889f, 22.89358f), 249.1297f, "Swingset-O-Death", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1317.437f, -184.1534f, 15.94499f), 36.31557f, "Funland", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1437.048f, -185.5359f, 16.44068f), 178.8712f, "Memory Lanes", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1340.066f, 422.8288f, 36.29833f), 178.2877f, "Soldier's Plaza", "To the defenders of the Union, 1861-1865") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1377.24f, 457.3909f, 37.98289f), 144.9886f, "Broker Public Library", "Get that musty old book smell") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1463.346f, 427.1826f, 28.85644f), 0.60189f, "Hanks Rent-A-Car", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1468.75f, 412.0862f, 28.15043f), 270.7415f, "Seedy Rent-A-Van", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1489.198f, -86.42191f, 13.62094f), 359.5247f, "Beachgate Gate", "") 
+            { 
+                StateID = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(1489.062f, -91.56538f, 13.89239f), 273.5172f,95f) { AssociationID = "GRP6" },
+                },
+            },
+            new Landmark(new Vector3(1301.529f, 319.8674f, 29.91103f), 257.7469f, "Outlook Park", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1651.989f, 870.5731f, 19.03766f), 1.596962f, "Pillows Strip Club", "") { IsTemporarilyClosed = true, StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1521.142f, 1097.451f, 38.99194f), 95.33509f, "24 LC", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1626.669f, 1171.941f, 35.28984f), 267.5667f, "Meadows Park Church", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1727.272f, 1173.833f, 29.37267f), 180.6092f, "Meadows Park Museum", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(2082.871f, 847.7047f, 22.5523f), 88.11333f, "Willis Wash N Lube", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(2018.704f, 937.2704f, 27.94974f), 0.9942721f, "After Dark Sex Shop", "") { OpenTime = 0,CloseTime =24, StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(2058.563f, 1060.605f, 29.0824f), 91.75621f, "Canyon Megaplex", "") { StateID = StaticStrings.LibertyStateID },
+            new Landmark(new Vector3(1522.52f, 892.3311f, 22.40118f), 179.9744f, "JJ China Limited", "") { InteriorID = 24578, StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
         });
     }
     private void DefaultConfig_SubwayStations()
@@ -2673,6 +2819,8 @@ public class PlacesOfInterest_Liberty
             new SubwayStation(new Vector3(-247.2124f, 1827.577f, 17.47126f), 90.05782f,"Vauxite Station","") { StateID = StaticStrings.LibertyStateID, },
             new SubwayStation(new Vector3(168.7186f, 1905.537f, 20.41474f), 91.88655f,"Vespucci Circus","") { StateID = StaticStrings.LibertyStateID, },
             new SubwayStation(new Vector3(-112.0743f, 1171.449f, 14.68633f), 358.3388f,"West Park","") { StateID = StaticStrings.LibertyStateID, },
+            new SubwayStation(new Vector3(1624.71f, 898.8407f, 22.94662f), 91.85176f, "Huntington St", "") { StateID = StaticStrings.LibertyStateID },
+            new SubwayStation(new Vector3(1886.904f, 907.3792f, 31.21505f), 4.448621f, "Lynch St", "") { StateID = StaticStrings.LibertyStateID },
         });
     }
     private void DefaultConfig_Sports()
@@ -2726,6 +2874,16 @@ public class PlacesOfInterest_Liberty
                 VehicleDeliveryLocations = new List<SpawnPlace>()
                     {
                         new SpawnPlace(new Vector3(-34.45256f, 1796.82f, 24.12298f), 209.1293f),
+                    }
+            },
+
+            new SportingGoodsStore(new Vector3(2059.692f, 1015.153f, 28.7499f), 89.81208f, "Bicycles", "", "BourgeoisBicyclesMenu")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(2059.692f, 1015.153f, 28.7499f), 89.81208f),
+                VehicleDeliveryLocations = new List<SpawnPlace>()
+                    {
+                        new SpawnPlace(new Vector3(2059.692f, 1015.153f, 28.7499f), 89.81208f),
                     }
             },
         });
@@ -2866,6 +3024,39 @@ public class PlacesOfInterest_Liberty
             new ConvenienceStore(new Vector3(99.27625f, 1848.561f, 20.41558f), 90.715f, "Superb Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
             new ConvenienceStore(new Vector3(-203.2266f, 891.9241f, 9.843903f), 93.12379f, "Superb Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
             new ConvenienceStore(new Vector3(-227.8028f, 1899.413f, 15.46196f), 264.9406f, "Prime Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+
+
+
+            new ConvenienceStore(new Vector3(1648.562f, 543.776f, 25.90594f), 270.9548f, "Corner Store", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1714.324f, 694.9869f, 23.11282f), 270.6736f, "Deli Grocery", "","ConvenienceStoreMenu") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1610.871f, 660.1652f, 27.02329f), 317.7926f, "99 Cents Store", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1316.454f, 25.24125f, 13.79446f), 355.1226f, "Lopez Food Co", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1392.467f, -62.13634f, 13.93315f), 180.5255f, "Table Deli & Superior Market", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1378.399f, -61.39337f, 13.77891f), 183.8857f, "Russian Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1531.095f, 361.7825f, 27.3821f), 180.3469f, "1-Stop Deli Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1459.258f, 294.5624f, 25.71845f), 91.63822f, "Island Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1504.644f, 338.7794f, 27.53597f), 312.1838f, "Mardoll's Market", "","ConvenienceStoreMenu") { OpenTime = 0, CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1498.462f, 424.9238f, 28.10074f), 2.363338f, "Deli-A-Go-Go", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1649.088f, 569.5308f, 25.77537f), 270.7967f, "E-ZEE's Authentic Jamaican Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1648.354f, 688.7581f, 26.40527f), 269.6626f, "Deli GRocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1673.893f, 660.3806f, 26.96723f), 127.1551f, "Grocery Store", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1620.969f, 615.2239f, 31.26447f), 124.0797f, "American and West Indian Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1490.238f, 642.4111f, 32.79734f), 356.8299f, "Imperial Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1445.703f, 637.9631f, 32.75601f), 45.66153f, "Roadway Deli & Grocery Coop", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+
+            new ConvenienceStore(new Vector3(1221.662f, 260.1613f, 23.18373f), 279.8268f,  "Deli &Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1492.887f, 525.0986f, 36.39328f), 268.9321f,  "Grocery Corp", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1416.269f, 524.3707f, 35.17557f), 270.1667f,  "2Tap Food Mart", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1353.188f, 666.3383f, 32.54428f), 140.4174f,  "Lopez Food Center", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1379.476f, 917.6197f, 29.78811f), 73.95114f,  "Deli Grocery", "","ConvenienceStoreMenu") { OpenTime = 0, CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1453.389f, 893.4844f, 22.54569f), 220.4071f,  "Superb Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1598.606f, 911.1912f, 23.50531f), 272.4103f,  "Candy & Grocery", "","ConvenienceStoreMenu") { OpenTime = 0, CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1431.425f, 1146.041f, 38.77233f), 89.20016f,  "Italian Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1432.227f, 1149.853f, 38.76752f), 92.27949f,  "Deli & Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(2036.27f, 911.4468f, 26.97294f), 267.462f,  "S & D's Grocery & Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(2058.805f, 950.127f, 27.93241f), 90.1776f,  "Willis Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(2059.178f, 1000.119f, 28.43221f), 89.89699f,  "49 Cent Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
+            new ConvenienceStore(new Vector3(1993.144f, 1031.65f, 29.11987f), 49.71041f,  "Deli & Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
         }
         );
     }
@@ -2914,7 +3105,52 @@ public class PlacesOfInterest_Liberty
                 IsTemporarilyClosed = true,
                 VendorPersonnelID = "HaircutPeds",
                 TypeName = "Beauty Salon",
-            }
+            },
+            new BarberShop(new Vector3(1672.063f, 673.9674f, 26.96723f), 85.82939f, "Unisex Salon", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(1532.946f, 362.6311f, 27.24284f), 178.4335f, "The Barber Shop", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+
+
+            new BarberShop(new Vector3(2037.097f, 904.048f, 26.86136f), 267.9283f, "Strictly Ink", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(2036.156f, 896.9524f, 26.92537f), 269.7621f, "Harda's Nails", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(1218.815f, 310.1832f, 24.11597f), 284.0233f, "Wil's Beauty Supply", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+            new BarberShop(new Vector3(1223.848f, 241.2803f, 21.77414f), 273.9181f, "Liberty City Beauty Salon", "")
+            {
+                StateID = StaticStrings.LibertyStateID,
+                IsTemporarilyClosed = true,
+                VendorPersonnelID = "HaircutPeds",
+                TypeName = "Beauty Salon",
+            },
+
         });
     }
     private void DefaultConfig_Dealerships()
@@ -3334,6 +3570,32 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.AlderneyStateID,
             },
 
+
+            new RepairGarage(new Vector3(1992.384f, 858.2811f, 22.10884f), 179.815f, "The East Boys Auto Shop", "")
+            {
+                CameraPosition = new Vector3(1977.735f, 885.1741f, 29.30753f),
+                CameraDirection = new Vector3(0.665975f, -0.7356181f, -0.1238685f),
+                CameraRotation = new Rotator(-7.115416f, -1.0755E-05f, -137.8446f),
+                OpenTime = 0,
+                CloseTime = 24,
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new RepairGarage(new Vector3(2032.354f, 688.2342f, 21.08754f), 334.0668f, "Auto Repairs", "")
+            {
+                CameraPosition = new Vector3(1996.28f, 706.5511f, 30.3878f), 
+                CameraDirection = new Vector3(0.906232f, -0.3647959f, -0.2136997f),
+                CameraRotation = new Rotator(-12.33925f, 3.49585E-06f, -111.9268f),
+                OpenTime = 0,
+                CloseTime = 24,
+
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = true,
+                StateID = StaticStrings.LibertyStateID,
+            },
+
+
         };
         LibertyCityLocations.RepairGarages.AddRange(RepairGarageList_96);
 
@@ -3651,11 +3913,22 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.GamblingDens.AddRange(GamblingDens);
     }
+    private void DefaultConfig_HeadShops()
+    {
+        List<HeadShop> HeadShops = new List<HeadShop>()
+        {
+            new HeadShop(new Vector3(1489.411f, 339.0406f, 27.63f), 2.845504f,"69 Brand Cigar Shop","","HeadShopMenu") { StateID = StaticStrings.LibertyStateID }
+
+
+        };
+        LibertyCityLocations.HeadShops.AddRange(HeadShops);
+    }
     private void DefaultConfig_BlankLocations()
     {
         BlankLocationsData_Liberty blankLocationsData_Liberty = new BlankLocationsData_Liberty();
         blankLocationsData_Liberty.DefaultConfig();
         LibertyCityLocations.BlankLocations.AddRange(blankLocationsData_Liberty.BlankLocationPlaces);
     }
+
 }
 
