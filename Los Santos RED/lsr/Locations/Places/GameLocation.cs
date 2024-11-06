@@ -760,10 +760,10 @@ public class GameLocation : ILocationDispatchable
         {
             betweener = "";
         }
-        else
-        {
+        //else
+        //{
             StreetNumber = NativeHelper.CellToStreetNumber(CellX, CellY);
-        }
+        //}
         string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
         string ShortLocationName = $"{StreetNumber} {streetName}".Trim();
         FullStreetAddress = LocationName;

@@ -179,8 +179,19 @@ public class DispatchablePeople : IDispatchablePeople
 
             new PedPropComponent(6, 20, 2),
         };
-        
 
+        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_shepherd", 50, 50)
+        {
+            IsAnimal = true,
+            DebugName = "K9_Shepherd",
+            UnitCode = "K9",
+            OverrideAgencyLessLethalWeapons = true,
+            OverrideAgencySideArms = true,
+            OverrideAgencyLongGuns = true,
+            OverrideLessLethalWeaponsID = null,
+            OverrideSideArmsID = null,
+            OverrideLongGunsID = null,
+        };
 
         //Cops
         StandardCops = new List<DispatchablePerson>() {
@@ -282,17 +293,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
 
-            new DispatchablePerson("a_c_shepherd",50,50) {
-                IsAnimal = true,
-                DebugName = "K9_Shepherd",
-                UnitCode = "K9",
-                OverrideAgencyLessLethalWeapons = true,
-                OverrideAgencySideArms = true,
-                OverrideAgencyLongGuns = true,
-                OverrideLessLethalWeaponsID = null,
-                OverrideSideArmsID = null,
-                OverrideLongGunsID = null,
-            },
+            GenericK9,
 
 
 
@@ -367,6 +368,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0) }
                 ,OptionalPropChance = 95
             },
+            GenericK9,
         };
         NOOSEPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_swat_01", 0,0){
@@ -465,6 +467,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,AlwaysHasLongGun = true
                 ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
+            GenericK9,
         };
         FIBPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_fibsec_01",55,70){ DebugName = "FIBAgentMale",MaxWantedLevelSpawn = 3 },
@@ -1793,7 +1796,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
-
     private void DefaultConfig_LibertyCity()
     {
         List<DispatchablePersonGroup> LCPeopleGroupLookup = Extensions.DeepCopy(PeopleGroupLookup);
@@ -1836,6 +1838,8 @@ public class DispatchablePeople : IDispatchablePeople
             OverrideSideArmsID = null,
             OverrideLongGunsID = null,
         };
+
+        DispatchablePerson PilotGeneric = new DispatchablePerson("s_m_m_pilot_02", 0, 0) { DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) } } };
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "LCPDPeds");
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "ASPPeds");
         LCPeopleGroupLookup.RemoveAll(x => x.DispatchablePersonGroupID == "NOOSEPeds");
@@ -1855,6 +1859,9 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMin = 100
                 ,ArmorMax = 100
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(0, 2, 0), new PedPropComponent(0, 3, 0), new PedPropComponent(0, 4, 0), new PedPropComponent(0, 5, 0), new PedPropComponent(0, 6, 0) }
+                ,OptionalPropChance = 80
+                ,RequiredVariation = new PedVariation(),
             },
         };
 
@@ -1863,14 +1870,29 @@ public class DispatchablePeople : IDispatchablePeople
             DetectiveMale,
             DetectiveFemale,
             K9Generic,
+            PilotGeneric,
 
             //Standard
             new DispatchablePerson("ig_lccop_traffic",15,0) {
                 DebugName = "ig_lccop_traffic"
-                ,MaxWantedLevelSpawn = 1
+                ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
-                ,OptionalPropChance = 10
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
+                //hat 0 = helmet, 1 = hat
+                //glasses 0 or 1 with 0 or 1 for texture
+            },
+
+            new DispatchablePerson("ig_lccop_traffic",0,0) {
+                DebugName = "ig_lccop_traffic"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 100
+                ,GroupName = "MotorcycleCop"
+                ,UnitCode = "Mary"
+                ,RequiredVariation = new PedVariation(),
                 //hat 0 = helmet, 1 = hat
                 //glasses 0 or 1 with 0 or 1 for texture
             },
@@ -1878,18 +1900,25 @@ public class DispatchablePeople : IDispatchablePeople
                 DebugName = "ig_lccop_01"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true//no props
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
             new DispatchablePerson("ig_lccop_02",45,45) {
                 DebugName = "ig_lccop_02"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true//no props
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
             new DispatchablePerson("ig_lcfatcop",25,25) {
                 DebugName = "ig_lcfatcop"
                 ,MaxWantedLevelSpawn = 2
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
-                ,OptionalPropChance = 10
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
 
 
@@ -1900,13 +1929,39 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
-                        new DispatchablePerson("ig_lccop_vest_02",0,45) {
+            new DispatchablePerson("ig_lccop_vest_02",0,45) {
                 DebugName = "ig_lccop_vest_01"
                 ,ArmorMin = 50
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
+            },
+            new DispatchablePerson("ig_lccop_vest_02",0,0) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation()
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
             new DispatchablePerson("ig_lcfatcop_vest",0,15) {
                 DebugName = "ig_lcfatcop_vest"
@@ -1914,28 +1969,149 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ArmorMax = 50
                 ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation(),
             },
         };
 
         List<DispatchablePerson> ASP_DLC = new List<DispatchablePerson>() {
-
+            DetectiveMale,
+            DetectiveFemale,
+            K9Generic,
+            PilotGeneric,
             new DispatchablePerson("ig_lcstrooper",100,100) {
                 DebugName = "ig_lcstrooper"
                 ,MaxWantedLevelSpawn = 4
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(3, 0, 0, 0) })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), }
+                ,OptionalPropChance = 70
             },
-            DetectiveMale,
-            DetectiveFemale,
-            K9Generic,
+            new DispatchablePerson("ig_lccop_traffic",0,0) {
+                DebugName = "ig_lccop_traffic"
+                ,MaxWantedLevelSpawn = 2
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                ,OptionalPropChance = 100
+                ,GroupName = "MotorcycleCop"
+                ,UnitCode = "Mary"
+                ,RequiredVariation = new PedVariation(),
+                //hat 0 = helmet, 1 = hat
+                //glasses 0 or 1 with 0 or 1 for texture
+            },
+            new DispatchablePerson("ig_lccop_vest_02",0,0) {
+                DebugName = "ig_lccop_vest_01"
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), }
+                ,OptionalPropChance = 70
+                ,RequiredVariation = new PedVariation()
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+            },
         };
 
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("LCPDPeds", LCPD_DLC));
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("ASPPeds", ASP_DLC));
         LCPeopleGroupLookup.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSE_DLC));
+
+
+
+        List<DispatchablePerson> FDLC_DLC = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("mp_m_freemode_01",100,100) { 
+                DebugName = "fdlcfreemode1Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() { 
+                    new PedComponent(3, 170, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 120, 0, 0),//Pants
+                    new PedComponent(6, 51, 0, 0),//boots
+                    new PedComponent(8, 151, 0, 0),//ff gear and rebreather
+                    new PedComponent(11, 314, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 315, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0),new PedPropComponent(0,138,0) }//hat
+                ,OptionalPropChance = 30
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "fdlcfreemode2Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 170, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 120, 0, 0),//Pants
+                    new PedComponent(6, 51, 0, 0),//boots
+                    new PedComponent(11, 314, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 315, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 137, 0), new PedPropComponent(0, 138, 0) }
+                ,OptionalPropChance = 20
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "fdlcFfreemode1Gear"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 215, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 126, 0, 0),//Pants
+                    new PedComponent(6, 55, 0, 0),//boots
+                    new PedComponent(8, 187, 0, 0),//ff gear and rebreather
+                    new PedComponent(11, 325, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 326, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0),new PedPropComponent(0,137,0) }//hat
+                ,OptionalPropChance = 30
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "fdlcFfreemode2"
+                ,RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(3, 215, 0, 0),//BLACK GLOVES
+                    new PedComponent(4, 126, 0, 0),//Pants
+                    new PedComponent(6, 55, 0, 0),//boots
+                    new PedComponent(11, 325, 0, 0),//open yellow 
+                })
+                ,OptionalComponents = new List<PedComponent>()
+                {
+                    new PedComponent(3, 0, 0, 0),//no gloves
+                    new PedComponent(11, 326, 0, 0),//closed? yellow 
+                }
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 136, 0), new PedPropComponent(0, 137, 0) }
+                ,OptionalPropChance = 20
+                ,OptionalComponentChance = 50
+                ,RandomizeHead = true
+            },
+
+        };
+        LCPeopleGroupLookup.Add(new DispatchablePersonGroup("FDLCFirePeds", FDLC_DLC));
+
+
         Serialization.SerializeParams(LCPeopleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchablePeople_{StaticStrings.LibertyConfigSuffix}.xml");
     }
-
     private void DefaultConfig_LosSantos2008()
     {
         //2008

@@ -34,6 +34,9 @@ public class RepairGarage : GameLocation
     public int RepairHours { get; set; } = 3;
     public int WashHours { get; set; } = 1;
     public int WashCost { get; set; } = 10;
+
+    public bool HasNoGarageDoors { get; set; } = false;
+
     public RepairGarage(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -43,15 +46,8 @@ public class RepairGarage : GameLocation
         ButtonPromptText = $"Fix Vehicle At {Name}";
         return true;
     }
-    public override void OnInteract()//ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public override void OnInteract()
     {
-        //Player = player;
-        //ModItems = modItems;
-        //World = world;
-        //Settings = settings;
-        //Weapons = weapons;
-        //Time = time;
-
         if (IsLocationClosed())
         {
             return;
@@ -297,7 +293,7 @@ public class RepairGarage : GameLocation
     }
     public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
-        if (GarageDoors == null || !GarageDoors.Any())
+        if (!HasNoGarageDoors && (GarageDoors == null || !GarageDoors.Any()))
         {
             return;
         }

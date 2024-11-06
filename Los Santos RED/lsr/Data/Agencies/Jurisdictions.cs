@@ -964,18 +964,16 @@ public class Jurisdictions : IJurisdictions
     {
         List<ZoneJurisdiction> ZoneJurisdictionsListLibertyCity = new List<ZoneJurisdiction>()
         {
-            new ZoneJurisdiction("ASP","ACTRR", 0, 100, 100),
-            new ZoneJurisdiction("ASP","ALDCI", 0, 100, 100),
-            new ZoneJurisdiction("ASP","ACTIP", 0, 100, 100),
-            new ZoneJurisdiction("ASP","BERCH", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","BOAB", 0, 100, 100),
+            
+            
+            new ZoneJurisdiction("LCPD","BOAB", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","BOULE", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BRALG", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BRDBB", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BREBB", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BRBRO", 0, 100, 100),
             new ZoneJurisdiction("LCPD","BEECW", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","BOTU", 0, 100, 100),
+            new ZoneJurisdiction("LCPD","BOTU", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","CHITO", 0, 100, 100),
             new ZoneJurisdiction("LCPD","CITH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","COISL", 0, 100, 100),
@@ -984,7 +982,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","CHAPO", 0, 100, 100),
             new ZoneJurisdiction("LCPD","CASGC", 0, 100, 100),
             new ZoneJurisdiction("LCPD","CERHE", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","DOWTW", 0, 100, 100),
+            new ZoneJurisdiction("LCPD","DOWTW", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","EAHOL", 0, 100, 100),
             new ZoneJurisdiction("LCPD","EISLC", 0, 100, 100),
             new ZoneJurisdiction("LCPD","FISSO", 0, 100, 100),
@@ -996,32 +994,37 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","HOBEH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","INSTI", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LANCE", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","LEFWO", 0, 100, 100),
+            
             new ZoneJurisdiction("LCPD","LTBAY", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LANCA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LOWEA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","LITAL", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","MIDPE", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","MIDPA", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","MIDPW", 0, 100, 100),
+            new ZoneJurisdiction("LCPD","MIDPE", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","MIDPA", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","MIDPW", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","MEADP", 0, 100, 100),
             new ZoneJurisdiction("LCPD","MEADH", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","NOHOL", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","NORWO", 0, 100, 100),
+            new ZoneJurisdiction("LCPD","NOHOL", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","NORWO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
             new ZoneJurisdiction("LCPD","NRTGA", 0, 100, 100),
             new ZoneJurisdiction("LCPD","NOWOB", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","OCEANA", 0, 100, 100),
+            //new ZoneJurisdiction("LCPD","OCEANA", 0, 100, 100),
+
+            new ZoneJurisdiction("USCG","OCEANA", 0, 95, 80),
+            new ZoneJurisdiction("LCPD","OCEANA", 1, 5, 20),
+
+
             new ZoneJurisdiction("LCPD","OUTL", 0, 100, 100),
             new ZoneJurisdiction("LCPD","PUGAT", 0, 100, 100),
-            new ZoneJurisdiction("ASP","PORTU", 0, 100, 100),
+
             new ZoneJurisdiction("LCPD","SANAND", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","SUTHS", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","SCHOL", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","STARJ", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","STEIN", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","STHBO", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","SUFFO", 0, 100, 100),
-            new ZoneJurisdiction("ASP","TUDOR", 0, 100, 100),
+            new ZoneJurisdiction("LCPD","SUTHS", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","SCHOL", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","STARJ", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","STEIN", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","STHBO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("LCPD","SUFFO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            
             new ZoneJurisdiction("LCPD","THPRES", 0, 100, 100),
             new ZoneJurisdiction("LCPD","THXCH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","THTRI", 0, 100, 100),
@@ -1029,7 +1032,18 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LCPD","VASIH", 0, 100, 100),
             new ZoneJurisdiction("LCPD","WESMI", 0, 100, 100),
             new ZoneJurisdiction("LCPD","WESDI", 0, 100, 100),
-            new ZoneJurisdiction("LCPD","WESDY", 0, 100, 100),
+
+            new ZoneJurisdiction("ASP","ALSCF", 0, 100, 100),
+            new ZoneJurisdiction("ASP","ACTRR", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("ASP","ALDCI", 0, 100, 100),
+            new ZoneJurisdiction("ASP","ACTIP", 0, 100, 100),
+            new ZoneJurisdiction("ASP","BERCH", 0, 100, 100),
+            new ZoneJurisdiction("ASP","LEFWO", 0, 100, 100),
+            new ZoneJurisdiction("ASP","NORMY", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("ASP","PORTU", 0, 100, 100),
+            new ZoneJurisdiction("ASP","TUDOR", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+            new ZoneJurisdiction("ASP","WESDY", 0, 100, 100) { CanSpawnPedestrianOfficers = true, },
+
         };
         Serialization.SerializeParams(ZoneJurisdictionsListLibertyCity, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\ZoneJurisdictions_LibertyCity.xml");
     }
@@ -1038,7 +1052,17 @@ public class Jurisdictions : IJurisdictions
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
             new CountyJurisdiction("LCPD-ASD",StaticStrings.LibertyCityCountyID, 0, 100, 100),
-            new CountyJurisdiction("LCPD-ASD",StaticStrings.AlderneyCountyID, 0, 100, 100),
+            new CountyJurisdiction("ASP-ASD",StaticStrings.AlderneyCountyID, 0, 100, 100),
+
+
+            new CountyJurisdiction("FDLC-EMS",StaticStrings.LibertyCityCountyID, 0, 100, 100),
+            new CountyJurisdiction("FDLC-EMS",StaticStrings.AlderneyCountyID, 0, 100, 100),
+
+            new CountyJurisdiction("FDLC",StaticStrings.LibertyCityCountyID, 0, 100, 100),
+            new CountyJurisdiction("FDLC",StaticStrings.AlderneyCountyID, 0, 100, 100),
+
+
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\CountyJurisdictions_LibertyCity.xml");
     }

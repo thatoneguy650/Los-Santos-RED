@@ -521,7 +521,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(1759.512f, 3298.777f, 41.95529f)
                 ,ArrivalHeading = 144.954f
-
+                ,BannerImagePath = "stores\\lsia.png"
                 ,AirArrivalPosition = new Vector3(759.6899f, 2999.477f, 120.8867f)
                 ,AirArrivalHeading = 290.1536f
                 ,CameraPosition = new Vector3(1783.648f, 3279.038f, 53.9618f), CameraDirection = new Vector3(-0.9425761f, 0.2726336f, -0.1929279f), CameraRotation = new Rotator(-11.1237f, 6.525906E-07f, 73.86785f)
@@ -540,7 +540,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
                 ,ArrivalHeading = 354.7703f
-
+                ,BannerImagePath = "stores\\caipira.png"
                 ,AirArrivalPosition = new Vector3(4538.156f, -5345.569f, 230.4282f)
                 ,AirArrivalHeading = 43.45281f
                 ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
@@ -1138,7 +1138,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         
     }
-    private GamblingParameters GetParameters(int Scalar)
+    public GamblingParameters GetParameters(int Scalar)
     {
         GamblingParameters defaultParameters = new GamblingParameters()
         {
@@ -1163,7 +1163,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         //Scatino Casino, Davey's Dive,
         GamblingDens = new List<GamblingDen>()
         {
-            new GamblingDen(new Vector3(929.9568f, 41.6748f, 81.09632f), 58.06394f,"The Vinewood Casino","Finally Open!")//Regular Casino
+            new GamblingDen(new Vector3(929.9568f, 41.6748f, 81.09632f), 58.06394f,"Be Lucky Los Santos!","Finally Open!")//Regular Casino
             {
                 GamblingParameters = new GamblingParameters()
                 {
@@ -1183,6 +1183,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 TypeName = "Casino",
                 MapIcon = 679,
+                BannerImagePath = "stores\\beluckyls.png",
                 CameraPosition = new Vector3(851.0151f, 50.54535f, 97.35239f), 
                 CameraDirection = new Vector3(0.9805309f, -0.1052597f, -0.1657695f), 
                 CameraRotation = new Rotator(-9.541942f, 7.250671E-06f, -96.12722f),
@@ -1210,6 +1211,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 TypeName = "Casino",
                 MapIcon = 679,
+                BannerImagePath = "stores\\diamondcasino.png",
                 CameraPosition = new Vector3(820.244f, 26.93432f, 106.9623f), 
                 CameraDirection = new Vector3(0.9816462f, 0.02359661f, -0.1892456f), 
                 CameraRotation = new Rotator(-10.90876f, 2.445427E-07f, -88.623f),
@@ -2695,13 +2697,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
             new Restaurant(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
             new Restaurant(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\aldentes.png" },
-            new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "stores\\pizzathis.png" },
-            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza) {OpenTime = 0, CloseTime = 24},
-            new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza),
-            new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood),
+            new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",BannerImagePath = "stores\\pizzathis.png" },
+            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza) {MapIcon = 889,TypeName ="Pizza",OpenTime = 0, CloseTime = 24},
+            new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza", },
+            new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood) { MapIcon = 889,TypeName ="Pizza", },
             new Restaurant(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1654.415f, -1037.579f, 13.15282f), 48.0925f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1814.037f, -1213.353f, 13.01751f), 43.14338f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
@@ -5667,7 +5669,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_LibertyCity()
     {
-        PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty();
+        PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty(this);
         placesOfInterest_Liberty.DefaultConfig();
     }
     private void DefaultConfig_SunshineDream()

@@ -324,6 +324,21 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public uint HeliSpawnDelay_Wanted9 { get; set; }
     public uint HeliSpawnDelay_Wanted10 { get; set; }
 
+
+
+    public uint K9SpawnDelay_Default { get; set; }
+    public uint K9SpawnDelay_Wanted1 { get; set; }
+    public uint K9SpawnDelay_Wanted2 { get; set; }
+    public uint K9SpawnDelay_Wanted3 { get; set; }
+    public uint K9SpawnDelay_Wanted4 { get; set; }
+    public uint K9SpawnDelay_Wanted5 { get; set; }
+    public uint K9SpawnDelay_Wanted6 { get; set; }
+    public uint K9SpawnDelay_Wanted7 { get; set; }
+    public uint K9SpawnDelay_Wanted8 { get; set; }
+    public uint K9SpawnDelay_Wanted9 { get; set; }
+    public uint K9SpawnDelay_Wanted10 { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -547,5 +562,18 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         HeliSpawnDelay_Wanted8 = 15000;
         HeliSpawnDelay_Wanted9 = 15000;
         HeliSpawnDelay_Wanted10 = 15000;
+
+        K9SpawnDelay_Default = 90000;
+        K9SpawnDelay_Wanted1 = 125000;
+        K9SpawnDelay_Wanted2 = 100000;
+        K9SpawnDelay_Wanted3 = 85000;
+        K9SpawnDelay_Wanted4 = 65000;
+        K9SpawnDelay_Wanted5 = 65000;
+        K9SpawnDelay_Wanted6 = 65000;
+        K9SpawnDelay_Wanted7 = 65000;
+        K9SpawnDelay_Wanted8 = 65000;
+        K9SpawnDelay_Wanted9 = 65000;
+        K9SpawnDelay_Wanted10 = 65000;
+
     }
 }

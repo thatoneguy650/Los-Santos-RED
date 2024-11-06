@@ -320,7 +320,7 @@ public class Zones : IZones
             new Zone("ACTIP", "Acter Industrial Park", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
             new Zone("BERCH", "Berchem", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Rich, eLocationType.Suburb),
             new Zone("LEFWO", "Leftwood", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb),
-            new Zone("NORMY", "Normandy", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("NORMY", "Normandy", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
             new Zone("PORTU", "Port Tudor", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
             new Zone("TUDOR", "Tudor", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb),
             new Zone("WESDY", "Westdyke", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Rich, eLocationType.Suburb),

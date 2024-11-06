@@ -134,7 +134,9 @@
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Location\Custom Locations\BlankLocationsData_Liberty.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_SunshineDream.cs" />
+    <Compile Include="lsr\Data\Location\Interiors_Liberty.cs" />
     <Compile Include="lsr\Data\Location\PedCustomizerLocation.cs" />
     <Compile Include="lsr\Data\Location\PossibleInteriors.cs" />
     <Compile Include="lsr\Data\Other\CarGeneratorBlock.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="lsr\Data\Vehicles\MilitaryVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_LC.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Modern.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_Gangs.cs" />
     <Compile Include="lsr\Data\Organizations\Contacts.cs" />

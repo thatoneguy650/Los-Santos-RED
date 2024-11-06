@@ -41,6 +41,7 @@ public class Contacts : IContacts
             EntryPoint.WriteToConsole($"No Contacts config found, creating default", 0);
             SetupDefault();
             DefaultConfig_FullExpanded();
+            DefaultConfig_LC();
             DefaultConfig();
         }
     }
@@ -107,6 +108,24 @@ public class Contacts : IContacts
         //Vanilla Peds
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Contacts_FullExpandedJurisdiction.xml");
+    }
+    private void DefaultConfig_LC()
+    {
+        PossibleContacts PossibleContacts_LC = new PossibleContacts();
+        PossibleContacts_LC.GunDealerContacts.Add(gunDealerContact);
+        PossibleContacts_LC.CorruptCopContact = corruptCopContact;
+        PossibleContacts_LC.VehicleExporterContacts.Add(vehicleExporterContact);
+        PossibleContacts_LC.EmergencyServicesContact = emergencyServicesContact;
+        //PossibleContacts_LC.TaxiServiceContacts.Add(downtownCabContact);
+
+
+
+        TaxiServiceContact LCTaxiContact = new TaxiServiceContact(StaticStrings.LCTaxiContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5557854444", Number = "7854444", IsDefault = true };
+        PossibleContacts_LC.TaxiServiceContacts.Add(LCTaxiContact);
+
+
+
+        Serialization.SerializeParam(PossibleContacts_LC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Contacts_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     public PhoneContact GetContactByNumber(string numpadString)
     {

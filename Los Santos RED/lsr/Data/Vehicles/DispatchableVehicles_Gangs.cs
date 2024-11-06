@@ -67,27 +67,851 @@ public class DispatchableVehicles_Gangs
     {
         UptownRidersVehicles = new List<DispatchableVehicle>()
         {
+            //Base
             new DispatchableVehicle("burrito3",2,2) { },
-            new DispatchableVehicle("double", 50, 50) { MaxOccupants = 1 },
-            new DispatchableVehicle("bati", 50, 50) { MaxOccupants = 1 },
-            new DispatchableVehicle("bati2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
-            new DispatchableVehicle("hakuchou", 50, 50) { MaxOccupants = 1, },
-            new DispatchableVehicle("hakuchou2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("double", 35, 35) { MaxOccupants = 1 },
+            new DispatchableVehicle("bati", 35, 35) { MaxOccupants = 1 },
+            new DispatchableVehicle("bati2", 35, 35) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("hakuchou", 35, 35) { MaxOccupants = 1, },
+            new DispatchableVehicle("hakuchou2", 35, 35) { MaxOccupants = 1,RequiresDLC = true },
+            
+            // Custom
+            new DispatchableVehicle() {
+              DebugName = "diablous2_PB_UptownRiders_DLC",
+              ModelName = "diablous2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 118,
+                    PearlescentColor = 3,
+                    WheelColor = 28,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 41,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 41,
+                          },
+                          new VehicleMod() {
+                            ID = 32,
+                            Output = 13,
+                          },
+                          new VehicleMod() {
+                            ID = 40,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 45,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 12,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "diablous2_PB_UptownRiders_Alt_DLC",
+              ModelName = "diablous2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 111,
+              RequiredSecondaryColorID = 12,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 111,
+                    SecondaryColor = 12,
+                    PearlescentColor = 0,
+                    WheelColor = 121,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 32,
+                            Output = 8,
+                          },
+                          new VehicleMod() {
+                            ID = 39,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 45,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 16,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "defiler_PB_UptownRiders_DLC",
+              ModelName = "defiler",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 11,
+              RequiredSecondaryColorID = 12,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 11,
+                    SecondaryColor = 12,
+                    PearlescentColor = 0,
+                    WheelColor = 28,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 6,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "vortex_PB_UptownRiders_DLC",
+              ModelName = "vortex",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 39,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 39,
+                    PearlescentColor = 0,
+                    WheelColor = 132,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "shinobi_PB_UptownRiders_DLC",
+              ModelName = "shinobi",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 27,
+              RequiredSecondaryColorID = 13,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 27,
+                    SecondaryColor = 13,
+                    PearlescentColor = 0,
+                    WheelColor = 132,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 10,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 4,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "bati_PB_UptownRiders_ALT",
+              ModelName = "bati",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 1,
+              RequiredSecondaryColorID = 29,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 1,
+                    SecondaryColor = 29,
+                    PearlescentColor = 0,
+                    WheelColor = 27,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 13,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = false,
+            },
+            new DispatchableVehicle() {
+              DebugName = "hakuchou2_PB_UptownRiders_ALT_DLC",
+              ModelName = "hakuchou2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 27,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 27,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 11,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 16,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 50,
+                            Output = 3,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
         };
     }
-
     private void SetAngelsOfDeathVehicles()
     {
         AngelsOfDeathVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("burrito3",2,2) { },
-            new DispatchableVehicle("daemon", 50, 50) { MaxOccupants = 1 },
-            new DispatchableVehicle("daemon2", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
-            new DispatchableVehicle("nightblade", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
-            new DispatchableVehicle("wolfsbane", 50, 50) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("daemon", 35, 35) { MaxOccupants = 1 },
+            new DispatchableVehicle("daemon2", 35, 35) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("nightblade", 35, 35) { MaxOccupants = 1,RequiresDLC = true },
+            new DispatchableVehicle("wolfsbane", 35, 35) { MaxOccupants = 1,RequiresDLC = true },
+            
+            // Custom
+            new DispatchableVehicle() {
+              DebugName = "hexer_PB_AngelsOfDeath",
+              ModelName = "hexer",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 111,
+              RequiredSecondaryColorID = 13,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 111,
+                    SecondaryColor = 13,
+                    PearlescentColor = 3,
+                    WheelColor = 120,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 7,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 7,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "avarus_PB_AngelsOfDeath_DLC",
+              ModelName = "avarus",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 134,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 134,
+                    SecondaryColor = 118,
+                    PearlescentColor = 0,
+                    WheelColor = 111,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 8,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 8,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 11,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "sanctus_PB_AngelsOfDeath_DLC",
+              ModelName = "sanctus",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 134,
+              RequiredSecondaryColorID = 112,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 134,
+                    SecondaryColor = 112,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 7,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 10,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "nightblade_PB_AngelsOfDeath_DLC",
+              ModelName = "nightblade",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 134,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 134,
+                    SecondaryColor = 118,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 10,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "zombieb_PB_AngelsOfDeath_DLC",
+              ModelName = "zombieb",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 132,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 132,
+                    SecondaryColor = 118,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 7,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 4,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 14,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "zombiea_PB_AngelsOfDeath_DLC",
+              ModelName = "zombiea",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 1,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 118,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 118,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 6,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 7,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 12,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 24,
+                            Output = 9,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 2,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
         };
     }
-
     private void SetSpanishLordsVehicles()
     {
         SpanishLordsVehicles = new List<DispatchableVehicle>()
@@ -97,9 +921,320 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("cavalcade", 55, 55) { RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
             new DispatchableVehicle("cavalcade2", 25, 25) { RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
             new DispatchableVehicle("cavalcade3", 2, 2) { RequiresDLC = true,RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
+            
+            // Custom
+            new DispatchableVehicle() {
+              DebugName = "sultan_PB_SpanishLords",
+              ModelName = "sultan",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 158,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 158,
+                    PearlescentColor = 0,
+                    WheelColor = 158,
+                    WheelType = 11,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 15,
+                          },
+                        },
+                  },
+              RequiresDLC = false,
+            },
+            new DispatchableVehicle() {
+              DebugName = "sultanrs_PB_SpanishLords_DLC",
+              ModelName = "sultanrs",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 2,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 158,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 158,
+                    PearlescentColor = 0,
+                    WheelColor = 158,
+                    WheelType = 0,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 8,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 14,
+                          },
+                          new VehicleMod() {
+                            ID = 27,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 29,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 30,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 32,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 39,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 41,
+                            Output = 11,
+                          },
+                          new VehicleMod() {
+                            ID = 42,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 0,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "tampa_PB_SpanishLords_DLC",
+              ModelName = "tampa",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 2,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 158,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 158,
+                    PearlescentColor = 0,
+                    WheelColor = 158,
+                    WheelType = 1,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 8,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "sabregt_PB_SpanishLords",
+              ModelName = "sabregt",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 2,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 158,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 158,
+                    PearlescentColor = 0,
+                    WheelColor = 158,
+                    WheelType = 1,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 12,
+                          },
+                        },
+                  },
+              RequiresDLC = false,
+            },
+            new DispatchableVehicle() {
+              DebugName = "banshee2_PB_SpanishLords_DLC",
+              ModelName = "banshee2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 2,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 158,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 158,
+                    PearlescentColor = 0,
+                    WheelColor = 158,
+                    WheelType = 0,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 8,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 14,
+                          },
+                          new VehicleMod() {
+                            ID = 29,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 32,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 39,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 41,
+                            Output = 10,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 0,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
         };
     }
-
     private void SetPetrovicVehicles()
     {
         PetrovicVehicles = new List<DispatchableVehicle>()
@@ -110,9 +1245,198 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("cavalcade", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             new DispatchableVehicle("cavalcade2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
             new DispatchableVehicle("cavalcade3", 20, 20) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            
+            // Custom
+            new DispatchableVehicle() {
+              DebugName = "vorschlaghammer_PB_Petrovic_DLC",
+              ModelName = "vorschlaghammer",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 0,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 0,
+                    PearlescentColor = 0,
+                    WheelColor = 120,
+                    WheelType = 0,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 12,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 15,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 11,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "dubsta2_PB_Petrovic",
+              ModelName = "dubsta2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 0,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 0,
+                    PearlescentColor = 0,
+                    WheelColor = 120,
+                    WheelType = 3,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 16,
+                          },
+                        },
+                  },
+              RequiresDLC = false,
+            },
+            new DispatchableVehicle() {
+              DebugName = "novak_PB_Petrovic_DLC",
+              ModelName = "novak",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 0,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 0,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 3,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 15,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 10,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "schafter3_PB_Petrovic_DLC",
+              ModelName = "schafter3",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 0,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 0,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 0,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 4,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
         };
     }
-
     private void SetNorthHollandVehicles()
     {
         NorthHollandVehicles = new List<DispatchableVehicle>()
@@ -120,6 +1444,258 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("patriot3",2,2) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
             new DispatchableVehicle("landstalker",65,65) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
             new DispatchableVehicle("landstalker2",15,15) { RequiresDLC = true, RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },
+            
+            // Custom
+            new DispatchableVehicle() {
+              DebugName = "landstalker2_PB_NorthHolland_DLC",
+              ModelName = "landstalker2",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 0,
+              RequiredSecondaryColorID = 28,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 0,
+                    SecondaryColor = 28,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 12,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 15,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 23,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "vstr_PB_NorthHolland_DLC",
+              ModelName = "vstr",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 28,
+              RequiredSecondaryColorID = 28,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 28,
+                    SecondaryColor = 28,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 7,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 3,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 10,
+                          },
+                          new VehicleMod() {
+                            ID = 5,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 10,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "revolter_PB_NorthHolland_DLC",
+              ModelName = "revolter",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 28,
+              RequiredSecondaryColorID = 28,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 28,
+                    SecondaryColor = 28,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 11,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 28,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "impaler6_PB_NorthHolland_DLC",
+              ModelName = "impaler6",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 1,
+              RequiredSecondaryColorID = 1,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 1,
+                    SecondaryColor = 1,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 11,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 8,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 5,
+                          },
+                          new VehicleMod() {
+                            ID = 3,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 4,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 6,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 9,
+                            Output = 10,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 2,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 0,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
+            new DispatchableVehicle() {
+              DebugName = "impaler5_PB_NorthHolland_DLC",
+              ModelName = "impaler5",
+              AmbientSpawnChance = 75,
+              WantedSpawnChance = 75,
+              MaxOccupants = 4,
+              RequiredPrimaryColorID = 28,
+              RequiredSecondaryColorID = 11,
+              RequiredVariation =
+                  new VehicleVariation() {
+                    PrimaryColor = 28,
+                    SecondaryColor = 11,
+                    PearlescentColor = 0,
+                    WheelColor = 0,
+                    WheelType = 3,
+                    WindowTint = 3,
+                    VehicleMods =
+                        new List<VehicleMod>() {
+                          new VehicleMod() {
+                            ID = 0,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 1,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 2,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 6,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 7,
+                            Output = 0,
+                          },
+                          new VehicleMod() {
+                            ID = 10,
+                            Output = 1,
+                          },
+                          new VehicleMod() {
+                            ID = 23,
+                            Output = 10,
+                          },
+                          new VehicleMod() {
+                            ID = 48,
+                            Output = 4,
+                          },
+                        },
+                  },
+              RequiresDLC = true,
+            },
         };
     }
 

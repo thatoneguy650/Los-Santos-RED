@@ -367,6 +367,7 @@ public class DispatchablePerson
                 {
                     if (ped.Exists() && RandomItems.RandomPercent(OptionalPropChance))
                     {
+                        EntryPoint.WriteToConsole($"SET_PED_PROP_INDEX {ped.Handle} PropID{prop.PropID} DrawableID{prop.DrawableID} TextureID{prop.TextureID}");
                         NativeFunction.Natives.SET_PED_PROP_INDEX(ped, prop.PropID, prop.DrawableID, prop.TextureID, false);
                         PedPropComponent existingprop = variationToSet.Props.Where(x => x.PropID == prop.PropID).FirstOrDefault();
                         if(existingprop != null)
@@ -381,6 +382,7 @@ public class DispatchablePerson
                     }
                 }
             }
+            
             if (OptionalComponents != null)
             {
                 foreach (PedComponent component in OptionalComponents.GroupBy(x => x.ComponentID).Select(x => x.PickRandom()))

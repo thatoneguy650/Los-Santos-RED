@@ -46,6 +46,7 @@ public class Organizations : IOrganizations
             EntryPoint.WriteToConsole($"No Organizations config found, creating default", 0);
             SetupDefault();
             DefaultConfig_FullExpanded();
+            DefaultConfig_LibertyCity();
             DefaultConfig();
         }
     }
@@ -210,8 +211,33 @@ public class Organizations : IOrganizations
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Organizations_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations_LosSantos2008.xml");
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Organizations_FullExpandedJurisdiction.xml");
-
         //
     }
+    private void DefaultConfig_LibertyCity()
+    {
+        PossibleOrganizations PossibleOrganizations_LibertyCity = new PossibleOrganizations();
 
+
+        TaxiFirm NYCTaxiCo = new TaxiFirm("~o~", "LCTAXI", "LC Taxi", "LC Taxi", "Orange", "TaxiDrivers", "LCTaxiVehicles", "LC ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
+        {
+            Description = "Your Only Choice Since 1924",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.LCTaxiContactName,
+            IsDefault = true,
+            BannerImagePath = "stores\\lctaxi.png",
+        };
+
+
+        PossibleOrganizations_LibertyCity.GeneralOrganizations = new List<Organization>
+        {
+            VehicleExports,
+            UndergroundGuns,
+        };
+        PossibleOrganizations_LibertyCity.TaxiFirms = new List<TaxiFirm>
+        {
+            NYCTaxiCo,
+        };
+        Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
+        //
+    }
 }

@@ -522,8 +522,15 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        if(Player.ClosestInteractableLocation == null)
+        {
+            EntryPoint.WriteToConsole($"No locations");
+            return;
+        }
+        EntryPoint.WriteToConsole($"{Player.ClosestInteractableLocation.Name} {Player.ClosestInteractableLocation.CanCurrentlyInteract(Player)} {Player.ClosestInteractableLocation.ButtonPromptText}");
 
-        Player.GroupManager.SetInvincible();
+
+        //Player.GroupManager.SetInvincible();
 
 
         //if (PumpHandleProp.Exists())

@@ -1148,10 +1148,14 @@ namespace Mod
                 {
                     Scanner.OnFIBHETDeployed();
                 }
-                else if (vehicleType?.IsHelicopter == true)
+                if (vehicleType?.IsHelicopter == true)
                 {
                     Scanner.OnHelicoptersDeployed();
                     Dispatcher.LEDispatcher.OnHelicopterSpawnedOrRecalled();
+                }
+                if(officerType?.IsAnimal == true)
+                {
+                    Dispatcher.LEDispatcher.OnK9SpawnedOrRecalled();
                 }
             }
         }

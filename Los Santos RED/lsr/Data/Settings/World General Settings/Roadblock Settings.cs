@@ -94,6 +94,7 @@ public class RoadblockSettings : ISettingsDefaultable
     public int RoadblockOtherBarrierSpawnPercentage_Wanted5 { get; set; }
     [Description("Likelyhood a roadblock will have other barrier props spawn for wanted level 6.")]
     public int RoadblockOtherBarrierSpawnPercentage_Wanted6 { get; set; }
+    public bool AllowRoadblockOnNonCurrentStreet { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -163,5 +164,7 @@ public class RoadblockSettings : ISettingsDefaultable
         RoadblockOtherBarrierSpawnPercentage_Wanted4 = 75;
         RoadblockOtherBarrierSpawnPercentage_Wanted5 = 25;
         RoadblockOtherBarrierSpawnPercentage_Wanted6 = 0;
+
+        AllowRoadblockOnNonCurrentStreet = false;
     }
 }
