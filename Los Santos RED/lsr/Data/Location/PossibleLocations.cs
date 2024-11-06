@@ -206,7 +206,6 @@ public class PossibleLocations
         AllLocations.AddRange(Banks);
         AllLocations.AddRange(ScrapYards);
         AllLocations.AddRange(CarCrushers);
-        AllLocations.AddRange(GunStores);
         AllLocations.AddRange(Hotels);
         AllLocations.AddRange(Restaurants);
         AllLocations.AddRange(Pharmacies);
@@ -220,7 +219,6 @@ public class PossibleLocations
         AllLocations.AddRange(Bars);
         AllLocations.AddRange(CarDealerships);
         AllLocations.AddRange(SportingGoodsStores);
-        AllLocations.AddRange(TattooShops);
         return AllLocations;
     }
 }

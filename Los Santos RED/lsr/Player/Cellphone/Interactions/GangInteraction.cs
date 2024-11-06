@@ -247,12 +247,12 @@ public class GangInteraction : IContactMenuInteraction
         };
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
-        JobsSubMenu.AddItem(GangMoneyPickup);  
+        JobsSubMenu.AddItem(GangMoneyPickup);
+        JobsSubMenu.AddItem(GangRacketeering);
         //JobsSubMenu.AddItem(GangDelivery);  
         if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
         {
             JobsSubMenu.AddItem(GangPizza);
-            JobsSubMenu.AddItem(GangRacketeering);
         }
     }
 
