@@ -42,6 +42,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int MoneyToReceive;
         private int MoneyToPickup;
         private bool WillExtortEnemyTurf;
+        private bool ExtortionComplications;
+        private bool RegularComplications;
 
         private bool HasLocations => RacketeeringLocations != null && RacketeeringLocations.Any() && HiringGangDen != null;
 
@@ -172,26 +174,36 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             List<string> Replies = new List<string>() {
                                 $"Here’s the money, just take it and leave me alone.",
                                 $"Here’s what you asked for. Hope this keeps things smooth between us.",
-                                $"Hope you'll take care of the {HiringGang.EnemyGangs.PickRandom()} problem",
+                                $"Here’s the payout. Let’s call it even, and no one gets hurt.",
                                 $"Please, take the money and go. I can’t afford to mess with you.",
-                                $"Here’s everything I’ve made today—just protect me from {HiringGang.EnemyGangs.PickRandom()}",
+                                $"Here’s everything I’ve made today—just keep ~y~{SelectedZone.DisplayName}~s~ peaceful",
+                                $"Just take it, and we can all go about our business.",
+                                $"I’m not looking to be your enemy. Here’s what you asked for.",
+                                $"Here’s what I owe you. I’d prefer we avoid any further problems.",
+                                $"I’ve paid my dues. No need for any more violence, alright?",
                                 };
+            ExtortionComplications = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.GangRacketeeringExtortionComplicationsPercentage);
+            RegularComplications = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.GangRacketeeringComplicationsPercentage);
             if (WillExtortEnemyTurf)
             {
-                Replies = new List<string>() {
-                                $"The cash is yours. But don’t think you’re the only one in this game.",
-                                $"Take the money. But is {HiringGang.ColorPrefix}{HiringGang.ShortName} really sending just you to handle this?",
-                                $"You’re alone for this? I thought {HiringGang.ColorPrefix}{HiringGang.ShortName} had better muscle than that.",
-                                $"What a joke.",
-                                $"Here’s what you came for. But I gotta ask—where’s the rest of {HiringGang.ColorPrefix}{HiringGang.ShortName}?",
-                                };
-                if (RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.GangRacketeeringExtortionComplicationsPercentage))
+                if (ExtortionComplications)
                 {
+                    Replies = new List<string>() {
+                                $"The cash is yours. But don’t think you’re the only one in this game.",
+                                $"Take the money. But is {HiringGang.ColorPrefix}{HiringGang.ShortName}~s~ really sending just you to handle this?",
+                                $"You’re alone for this? I thought {HiringGang.ColorPrefix}{HiringGang.ShortName}~s~ had better muscle than that.",
+                                $"What a joke.",
+                                $"Here’s what you came for. But I gotta ask—where’s the rest of {HiringGang.ColorPrefix}{HiringGang.ShortName}~s~?",                                $"The cash is yours. But don’t think you’re the only one in this game.",
+                                $"Here’s your money. Don’t push your luck, {EnemyGang.ColorPrefix}{SelectedZone.DisplayName}~s~ isn’t yours.",
+                                $"You think you can take over {EnemyGang.ColorPrefix}{SelectedZone.DisplayName}~s~? Think again.",
+                                };
                     Player.Dispatcher.GangDispatcher.DispatchHitSquad(SelectedZone.AssignedGang);
+                    EntryPoint.WriteToConsole($"{location.Name}:{ExtortionComplications}");
                 }
             }
-            else if (RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.GangRacketeeringComplicationsPercentage))
+            else if (RegularComplications)
             {
+                EntryPoint.WriteToConsole($"{location.Name}:{RegularComplications}");
                 Replies = new List<string>() {
                                 $"Here’s the money, my friend. But please, don't rush off. There’s always time for a small conversation between us, yes?",
                                 $"The payment is yours. Before you leave, do you want to buy anything?",
@@ -305,11 +317,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendMoneyDropOffMessage()
         {
             List<string> Replies = new List<string>() {
-                                $"Take the money to {HiringGangDen.Name} in {HiringGang.ColorPrefix} {HiringGangDen.ZoneName}",
+                                $"Take the money to {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
                                 $"Now bring me the money, don't get lost. {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
                                 $"Remember that's MY MONEY you're holding. Drop it off at {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
                                 $"Drop the money off at {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
-                                $"Bring the stuff back to {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}. Don't take long.",  };
+                                $"Bring the stuff back to {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}~s~. Don't take long.",  };
             Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0, true);
         }
         private void SendInitialInstructionsMessage()
@@ -320,7 +332,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 Replies = new List<string>() {
                     $"Make your presence felt at {locationsList}. Show them who’s really in charge. ~g~${MoneyToReceive}~s~ for you.",
-                    $"Head over to {locationsList} and remind them that {EnemyGang.ColorPrefix}{EnemyGang.ShortName}~s~ is in charge. Bigger cut this time: ~g~${MoneyToReceive}~s~.",
+                    $"Head over to {locationsList} and remind them that {EnemyGang.ColorPrefix}{EnemyGang.ShortName}~s~ ain't shit. Bigger cut this time: ~g~${MoneyToReceive}~s~.",
                     $"Visit {locationsList} and let them know we offer better protection than {EnemyGang.ColorPrefix}{EnemyGang.ShortName}~s~. Take ~g~${MoneyToReceive}~s~ for your efforts.",
                     $"Go to {locationsList} and ensure they understand they’re on our turf now. You’ll earn ~g~${MoneyToReceive}~s~ for this.",
                     $"Tell {locationsList} that partnering with {EnemyGang.ColorPrefix}{EnemyGang.ShortName}~s~ is a big mistake. Bigger cut this time: ~g~${MoneyToReceive}~s~.",
