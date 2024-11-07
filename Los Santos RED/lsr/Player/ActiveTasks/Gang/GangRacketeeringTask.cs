@@ -38,7 +38,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
-        private int GameTimeToWaitBeforeComplications;
         private int MoneyToReceive;
         private int MoneyToPickup;
         private bool WillExtortEnemyTurf;
@@ -246,7 +245,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
                                 bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.CheckIsNearby(policeStation.CellX, policeStation.CellY, 10));
 
-                                if (spotZone.InternalGameName == SelectedZone.InternalGameName && !possibleSpot.HasInterior && !isNear)
+                                if (spotZone.InternalGameName == SelectedZone.InternalGameName && !possibleSpot.HasVendor && !isNear)
                                 {
                                     AvailableSpots.Add(possibleSpot);
                                 }
@@ -303,7 +302,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             foreach (GameLocation location in RacketeeringLocations)
             {
                 if (location != null) { location.IsPlayerInterestedInLocation = true; }
