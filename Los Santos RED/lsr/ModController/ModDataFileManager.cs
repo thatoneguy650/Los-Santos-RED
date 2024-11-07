@@ -374,13 +374,13 @@ public class ModDataFileManager
         string Description =
             "See what San Andreas was like in 2008 when we were in Liberty City with Niko. Includes customized traffic, phones, police, and gangs."
             + Environment.NewLine + Environment.NewLine +
-            "1. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Files folder and install the greskfejinstaller.oiv with OpenIV (Vehicles from the Full Expanded Jurisdiction config are used in this config)"
+            //"1. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Files folder and install the greskfejinstaller.oiv with OpenIV (Vehicles from the Full Expanded Jurisdiction config are used in this config)"
+            //+ Environment.NewLine +
+            //"2. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Files folder and install the greskfullmoderntraffic.oiv with OpenIV (Vehicles from the Full Modern Traffic config are used in this config)"
+            //+ Environment.NewLine +
+            "1. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008 folder and install the greskfej2008installer.oiv with OpenIV"
             + Environment.NewLine +
-            "2. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Files folder and install the greskfullmoderntraffic.oiv with OpenIV (Vehicles from the Full Modern Traffic config are used in this config)"
-            + Environment.NewLine +
-            "3. Navigate to the Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008 folder and install the gresk2008installer.oiv with OpenIV"
-            + Environment.NewLine +
-            "4. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            "2. Copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
@@ -426,6 +426,7 @@ public class ModDataFileManager
             $"5. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LibertyConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
              + Environment.NewLine +
             $"6. Fix the RageNativeUI Menu. Open Codewalker/OpenIV and navigate to mods/update/update.rpf/common/data/levels/gta5/images.meta and add the following item"
+             + Environment.NewLine 
             + "    <Item>" + Environment.NewLine
             + "        <filename>platform:/textures/script_txds.rpf</filename>" + Environment.NewLine
             + "        <fileType>RPF_FILE</fileType>" + Environment.NewLine
