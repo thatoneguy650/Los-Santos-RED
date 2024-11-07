@@ -1937,10 +1937,6 @@ GameFiber.StartNew(delegate
         //        //string text2 = NativeHelper.GetKeyboardInput("");
         //        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
-
-
-
-
     private void DebugNumpad7()
     {
         //barberPosition = new Vector3(-278.348f,6225.873f,30.93535f);
