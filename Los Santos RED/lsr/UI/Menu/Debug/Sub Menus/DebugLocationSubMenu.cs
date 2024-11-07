@@ -9,12 +9,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+//using System.Windows.Media.Media3D;
 using static Debug;
 
 public class DebugLocationSubMenu : DebugSubMenu
@@ -48,6 +51,62 @@ public class DebugLocationSubMenu : DebugSubMenu
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Logging Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various location items.";
+
+
+        PossibleLocations PossibleLocations = new PossibleLocations();
+        PropertyInfo[] properties = typeof(PossibleLocations).GetProperties();
+
+        List<string> strings = new List<string>();
+
+        foreach (PropertyInfo property in properties)
+        {
+
+            Type type1 = property.PropertyType;
+            Type itemType1 = null;
+            if (type1 != null)
+            {
+                if (type1.GetGenericArguments() != null && type1.GetGenericArguments().Any())
+                {
+                    itemType1 = type1.GetGenericArguments()[0];
+                }
+            }
+
+
+            if (itemType1 != null)
+            {
+                EntryPoint.WriteToConsole($"IS LIST {property.Name} {itemType1.Name}");
+                //DoListItem(property, dv, $"List<{itemType1.Name}>", AllowedProperties, fileName);
+
+                strings.Add(itemType1.Name);
+            }
+
+            
+
+
+
+            //property.SetValue(PossibleLocations, value);
+        }
+
+
+        //foreach (GameLocation gl in  PlacesOfInterest.InteractableLocations())
+        //{
+        //    strings.Add(gl.Name);
+        //}
+
+
+
+        UIMenuListScrollerItem<string> LogSpecificLocationType = new UIMenuListScrollerItem<string>("Log Location", "Select type, Type Name", strings.OrderBy(x=>x));
+        LogSpecificLocationType.Activated += (menu, item) =>
+        {
+            //LogGameLocationSimple();
+
+
+            LogSpecificLocationTypeWithName(LogSpecificLocationType.SelectedItem);
+            menu.Visible = false;
+        };
+
+
+
         UIMenuItem LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
         LogLocationMenu.Activated += (menu, item) =>
         {
@@ -72,6 +131,13 @@ public class DebugLocationSubMenu : DebugSubMenu
             LogGameLocationSimple();
             menu.Visible = false;
         };
+
+
+
+
+
+
+
         UIMenuItem LogInteriorPositionMenu = new UIMenuItem("Log Interior Position", "Include a description");
         LogInteriorPositionMenu.Activated += (menu, item) =>
         {
@@ -120,6 +186,11 @@ public class DebugLocationSubMenu : DebugSubMenu
                         Function.Call((Hash)0xF74B1FFA4A15FBEA, true);//0xF74B1FFA4A15FBEA
                         Function.Call((Hash)0xDD3D5F9CA0C715D0, true);???
                         Function.Call((Hash)0x5E1460624D194A38, true);//SET_USE_ISLAND_MAP*/
+
+
+
+        LocationItemsMenu.AddItem(LogSpecificLocationType);
+
         LocationItemsMenu.AddItem(LogInteriorPositionMenu);
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
@@ -194,6 +265,16 @@ public class DebugLocationSubMenu : DebugSubMenu
             NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("VANGELICO", true);
         };
         LocationItemsMenu.AddItem(EnableScenarios);
+    }
+
+    private void LogSpecificLocationTypeWithName(string selectedItem)
+    {
+        IsWritingPosition = true;
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string text1 = NativeHelper.GetKeyboardInput("Name");
+        WriteToLogLocations($"new {selectedItem}(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, \"{text1}\", \"\",\"\"),");
+        IsWritingPosition = false;
     }
 
     private void LogVector2Position()
