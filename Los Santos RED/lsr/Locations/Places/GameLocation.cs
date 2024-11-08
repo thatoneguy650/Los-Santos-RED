@@ -301,9 +301,9 @@ public class GameLocation : ILocationDispatchable
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
     [XmlIgnore]
+    public int ProtectionMoneyDue { get; set; } = 0;
+    [XmlIgnore]
     public int TotalAssaultSpawns { get; set; } = 0;
-
-
     [XmlIgnore]
     public float InteriorMaxUpdateDistance => Interior == null ? 50f : Interior.MaxUpdateDistance;
 

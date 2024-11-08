@@ -15,7 +15,9 @@ public class GangTasks : IPlayerTaskGroup
 
     private ITaskAssignable Player;
     private ITimeControllable Time;
-    private IGangs Gangs;
+    private IGangTerritories GangTerritories;
+    private IGangs Gangs; 
+    private IZones Zones;
     private PlayerTasks PlayerTasks;
     private IPlacesOfInterest PlacesOfInterest;
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
@@ -32,6 +34,7 @@ public class GangTasks : IPlayerTaskGroup
     private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
     private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
     private List<RivalGangVehicleTheftTask> RivalGangTheftTasks = new List<RivalGangVehicleTheftTask>();
+    private List<GangRacketeeringTask> GangRacketeeringTasks = new List<GangRacketeeringTask>();
     private List<GangPickupTask> GangPickupTasks = new List<GangPickupTask>();
     private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
@@ -42,7 +45,7 @@ public class GangTasks : IPlayerTaskGroup
 
     private List<GangTask> AllGenericGangTasks = new List<GangTask>();
 
-    public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IAgencies agencies)
+    public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IAgencies agencies, IGangTerritories gangTerritories, IZones zones)
     {
         Player = player;
         Time = time;
@@ -60,6 +63,8 @@ public class GangTasks : IPlayerTaskGroup
         PedGroups = pedGroups;
         Agencies = agencies;
         Agencies = agencies;
+        GangTerritories = gangTerritories;
+        Zones = zones;
     }
     public void Setup()
     {
@@ -70,6 +75,7 @@ public class GangTasks : IPlayerTaskGroup
         RivalGangHits.ForEach(x=> x.Dispose());
         PayoffGangTasks.ForEach(x => x.Dispose());
         RivalGangTheftTasks.ForEach(x => x.Dispose());
+        GangRacketeeringTasks.ForEach(x => x.Dispose());
         GangPickupTasks.ForEach(x => x.Dispose());
         GangDeliveryTasks.ForEach(x => x.Dispose());
         GangWheelmanTasks.ForEach(x => x.Dispose());
@@ -83,6 +89,7 @@ public class GangTasks : IPlayerTaskGroup
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
         RivalGangTheftTasks.Clear();
+        GangRacketeeringTasks.Clear();
         GangPickupTasks.Clear();
         GangDeliveryTasks.Clear();
         GangWheelmanTasks.Clear();
@@ -126,6 +133,13 @@ public class GangTasks : IPlayerTaskGroup
     {
         RivalGangVehicleTheftTask newTask = new RivalGangVehicleTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, vehicleModelName, vehicleDisplayName);
         RivalGangTheftTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangRacketeering(Gang gang, GangContact gangContact)
+    {
+        GangRacketeeringTask newTask = new GangRacketeeringTask(Player, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, gangContact, this, GangTerritories, Zones);
+        GangRacketeeringTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }

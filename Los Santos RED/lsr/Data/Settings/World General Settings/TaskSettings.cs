@@ -63,6 +63,12 @@ public class TaskSettings : ISettingsDefaultable
     public int VehicleExporterTransferPaymentMin { get; set; }
     public int VehicleExporterTransferPaymentMax { get; set; }
     public float VehicleExporterTransferComplicationsPercentage { get; set; }
+    [Description("Percent that you will extort stores in Enemy Territory")]
+    public float GangRacketeeringExtortionPercentage { get; set; }
+    [Description("Complications Percent of stores calling for enemy backup during extortion.")]
+    public float GangRacketeeringExtortionComplicationsPercentage { get; set; }
+    [Description("Complications Percent of stores calling for police backup during racketeering.")]
+    public float GangRacketeeringComplicationsPercentage { get; set; }
 
     public TaskSettings()
     {
@@ -94,6 +100,9 @@ public class TaskSettings : ISettingsDefaultable
         VehicleExporterTransferPaymentMin = 1500;// 2000;
         VehicleExporterTransferPaymentMax = 2500;// 5000;
         VehicleExporterTransferComplicationsPercentage = 25f;
+        GangRacketeeringExtortionPercentage = 25f;
+        GangRacketeeringExtortionComplicationsPercentage = 10f;
+        GangRacketeeringComplicationsPercentage = 5f;
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
