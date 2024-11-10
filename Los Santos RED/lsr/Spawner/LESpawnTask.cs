@@ -73,6 +73,7 @@ public class LESpawnTask : SpawnTask
     private void AddCaninePassengers()
     {
         GameFiber.Yield();
+        bool created = false;
         if (VehicleType == null || VehicleType.CaninePossibleSeats == null || Agency == null)
         {
             return;
@@ -98,11 +99,19 @@ public class LESpawnTask : SpawnTask
             {
                 PutPedInVehicle(Passenger, seatIndex);
                 EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine {VehicleType.ModelName} ADDED ONE TO VEHICLE {seatIndex}");
+                created = true;
             }
             else
             {
                 Cleanup(false);
             }
+
+            if(created && !RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddAdditionalK9PassengerPercentage))
+            {
+                GameFiber.Yield();
+                break;
+            }
+
             GameFiber.Yield();
         }
     }

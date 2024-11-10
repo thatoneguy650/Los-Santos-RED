@@ -46,6 +46,8 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeLeftTunnel;
         private bool isMostlyStationary;
         private bool isVeryStationary;
+        private bool IsSetFakeZone;
+        private string FakeZoneName;
 
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
@@ -174,7 +176,16 @@ namespace LosSantosRED.lsr.Locations
         {
             if (EntityToLocate.Exists())
             {
-                CurrentZone = Zones.GetZone(EntityToLocate.Position);
+                if(!IsSetFakeZone || string.IsNullOrEmpty(FakeZoneName))
+                {
+                    CurrentZone = Zones.GetZone(EntityToLocate.Position);
+                }
+                else
+                {
+                    CurrentZone = Zones.GetZone(FakeZoneName);
+                }
+
+                
                 if (PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
@@ -502,6 +513,18 @@ namespace LosSantosRED.lsr.Locations
             {
                 EntityToLocate = Game.LocalPlayer.Character;
             }
+        }
+
+        public void SetFakeZone(string v)
+        {
+            IsSetFakeZone = true;
+            FakeZoneName = v;
+        }
+
+        public void ClearFakeZone()
+        {
+            IsSetFakeZone = false;
+            FakeZoneName = "";
         }
     }
 

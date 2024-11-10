@@ -92,8 +92,12 @@ public class DispatchableVehicles_FEJ_Modern
 
 
         DispatchableVehicle LSPDGranger3600K9 = DispatchableVehicles_FEJ.Create_PoliceGranger3600(0, 20, 21, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", "");
-        LSPDGranger3600K9.CaninePossibleSeats = new List<int> { 1, 2 };
-        LSPDGranger3600K9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+        LSPDGranger3600K9.CaninePossibleSeats = new List<int> { 1 };
+        LSPDGranger3600K9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 100) };
+
+        DispatchableVehicle LSSDGresleyK9 = DispatchableVehicles_FEJ.Create_PoliceGresley(0, 20, 21, false, PoliceVehicleType.MarkedValorLightbar, 134, -1, -1, -1, -1, "", "");
+        LSSDGresleyK9.CaninePossibleSeats = new List<int> { 1 };
+        LSSDGresleyK9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 100) };
 
         LSPDVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
@@ -425,9 +429,9 @@ public class DispatchableVehicles_FEJ_Modern
         BCSOVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
 
 
-        DispatchableVehicle LSSDGresleyK9 = DispatchableVehicles_FEJ.Create_PoliceGresley(0, 20, 15, false, PoliceVehicleType.MarkedValorLightbar, 134, -1, -1, -1, -1, "", "");
-        LSSDGresleyK9.CaninePossibleSeats = new List<int> { 1, 2 };
-        LSSDGresleyK9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+        DispatchableVehicle LSSDGresleyK9 = DispatchableVehicles_FEJ.Create_PoliceGresley(0, 20, 15, false, PoliceVehicleType.MarkedValorLightbar, -1, -1, -1, -1, -1, "", "");
+        LSSDGresleyK9.CaninePossibleSeats = new List<int> { 1 };
+        LSSDGresleyK9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 100) };
 
 
         LSSDVehicles_FEJ_Modern = new List<DispatchableVehicle>()

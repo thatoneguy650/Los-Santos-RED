@@ -100,6 +100,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> OffDutyCopVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
     private List<DispatchableVehicle> TaxiVehicles;
+    private List<DispatchableVehicle> RideshareVehicles;
 
     public DispatchableVehicle TaxiBroadWay;
     public DispatchableVehicle TaxiEudora;
@@ -540,6 +541,18 @@ public class DispatchableVehicles : IDispatchableVehicles
             TaxiBroadWay,
             TaxiEudora,
         };
+
+        RideshareVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("granger2", 100, 100),
+            new DispatchableVehicle("castigator", 100, 100),
+            new DispatchableVehicle("cavalcade3", 100, 100),
+            new DispatchableVehicle("vivanite", 100, 100),
+            new DispatchableVehicle("aleutian", 100, 100),
+            new DispatchableVehicle("asterope", 100, 100),
+            new DispatchableVehicle("radi", 100, 100),
+            new DispatchableVehicle("gresley", 100, 100),
+        };
+
     }
     private void SharedCopCars()
     {
@@ -1482,6 +1495,10 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             //Other 
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+
+
+            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+
         };
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
         Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
@@ -1582,7 +1599,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
 
             //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
         };
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
         //SunshineDream
@@ -1653,7 +1671,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old),
 
             //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles)
+            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
         };
         Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
     }
@@ -1976,6 +1995,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
             new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DowntownTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.HellTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.PurpleTaxiVehicles_FEJ_Modern),
@@ -2082,6 +2102,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
             new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.DowntownTaxiVehicles),
             new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.HellTaxiVehicles),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.PurpleTaxiVehicles),

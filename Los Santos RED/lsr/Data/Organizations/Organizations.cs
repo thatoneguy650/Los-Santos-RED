@@ -19,7 +19,8 @@ public class Organizations : IOrganizations
     private Organization Exportotopia;
     private Organization UndergroundGuns;
     private Organization LSRGuns;
-
+    private TaxiFirm RydeMe;
+    private TaxiFirm Schlecht;
 
     public PossibleOrganizations PossibleOrganizations { get; private set; }
 
@@ -136,6 +137,31 @@ public class Organizations : IOrganizations
             HeadDataGroupID = "AllHeads",
             ContactName = StaticStrings.LSRGunDealerContactName,
         };
+
+        RydeMe = new TaxiFirm("~r~", "rydeme", "RydeMe", "RydeMe", "Red", "TaxiDrivers", "RideshareVehicles", "", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Contractor")
+        {
+            Description = "Come on and RydeMe!",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.RydeMeContactName,
+            IsDefault = true,
+            BannerImagePath = "stores\\rydeme.png",
+            BaseFare = 12,
+            PricePerMile = 4,
+            FastSpeedFee = 50,
+            CrazySpeedFee = 300,
+        };
+        Schlecht = new TaxiFirm("~b~", "schlecht", "Schlecht", "Schlecht", "Black", "TaxiDrivers", "RideshareVehicles", "", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Contractor")
+        {
+            Description = "Service Beyond Reproach",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.SchlechtContactName,
+            IsDefault = true,
+            BannerImagePath = "stores\\schlecht.png",
+            BaseFare = 12,
+            PricePerMile = 4,
+            FastSpeedFee = 50,
+            CrazySpeedFee = 300,
+        };
     }
     private void DefaultConfig()
     {
@@ -149,6 +175,8 @@ public class Organizations : IOrganizations
         PossibleOrganizations.TaxiFirms = new List<TaxiFirm>
         {
             DowntownCabCoOld,
+            RydeMe,
+            Schlecht,
         };
         Serialization.SerializeParam(PossibleOrganizations, ConfigFileName);
     }
@@ -207,6 +235,8 @@ public class Organizations : IOrganizations
             PurpleCabCo,
             ShitiCabCo,
             SunderedCab,
+            RydeMe,
+            Schlecht,
         };
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Organizations_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations_LosSantos2008.xml");
@@ -236,6 +266,8 @@ public class Organizations : IOrganizations
         PossibleOrganizations_LibertyCity.TaxiFirms = new List<TaxiFirm>
         {
             NYCTaxiCo,
+            RydeMe,
+            Schlecht
         };
         Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
         //

@@ -701,7 +701,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 "~n~City: ~y~Cayo Perico~s~" +
                 "~n~Country: ~p~Colombia~s~") 
             { 
-                IsEnabled = false,
+                IsEnabled = true,
                 StateID = StaticStrings.ColombiaStateID, 
                 RequiresMPMap = true,
                 OpenTime = 0,
@@ -713,7 +713,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-20.99952f, -1.005964E-05f, 62.16195f),
                 AirArrivalPosition = new Vector3(3643.128f, -4779.568f, 63.15142f),
                 AirArrivalHeading =  282.1072f,
-
+                CommercialFlights = new List<AirportFlight>()
+                {
+                    new AirportFlight("LSIX",StaticStrings.AdiosAirlinesCarrierID,"You'll get there when you get there", 750, 10),
+                }
             },
 
 

@@ -225,6 +225,10 @@ public class Zones : IZones
             //Other
             new Zone("PROL", "Ludendorff", StaticStrings.NorthYanktonCountyID,StaticStrings.NorthYanktonStateID,false,eLocationEconomy.Middle,eLocationType.Rural),
 
+
+            new Zone("IsHeist", "Cayo Perico", StaticStrings.ColombiaStateID,StaticStrings.ColombiaStateID,false,eLocationEconomy.Middle,eLocationType.Rural),
+
+
             //new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
             //                            new Vector2 { X = 7898.494f, Y = 3093.242f },
             //                            new Vector2 { X = 5845.111f, Y = 8616.287f },

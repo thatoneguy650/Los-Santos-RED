@@ -180,7 +180,7 @@ public class DispatchablePeople : IDispatchablePeople
             new PedPropComponent(6, 20, 2),
         };
 
-        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_shepherd", 50, 50)
+        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
             DebugName = "K9_Shepherd",
@@ -1826,7 +1826,7 @@ public class DispatchablePeople : IDispatchablePeople
             OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), },
             OptionalPropChance = optionalpropschance
         };
-        DispatchablePerson K9Generic = new DispatchablePerson("a_c_shepherd", 50, 50)
+        DispatchablePerson K9Generic = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
             DebugName = "K9_Shepherd",
@@ -3358,7 +3358,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Animals
-            new DispatchablePerson("a_c_shepherd",50,50) {
+            new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
@@ -3777,7 +3777,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Animals
-            new DispatchablePerson("a_c_shepherd",50,50) {
+            new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
@@ -3788,7 +3788,17 @@ public class DispatchablePeople : IDispatchablePeople
                 OverrideSideArmsID = null,
                 OverrideLongGunsID = null,
             },
-
+            new DispatchablePerson("a_c_retriever",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Shepherd",
+                UnitCode = "K9",
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
             //Snipers
             new DispatchablePerson("mp_m_freemode_01",0,0) { DebugName = "<Male LSIA Utility Class B Sniper>",RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {

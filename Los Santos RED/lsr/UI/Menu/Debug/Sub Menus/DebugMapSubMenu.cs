@@ -298,13 +298,88 @@ public class DebugMapSubMenu : DebugSubMenu
             NativeFunction.Natives.xF74B1FFA4A15FBEA(true);
             //NativeFunction.Natives.xDD3D5F9CA0C715D0(true);
             NativeFunction.Natives.x5E1460624D194A38(true);
+
+
+
+
+
+
             Player.Character.Position = new Vector3(4524.132f, -4498.074f, 4.23596f);
+
+        };
+
+
+
+
+        UIMenuItem TurnOnCayo2 = new UIMenuItem("Turn On Cayo ALT 2", "Turn On Cayo Perico");
+        TurnOnCayo2.Activated += (menu, item) =>
+        {
+            //menu.Visible = false;
+            ////NativeFunction.Natives.x9A9D1BA639675CF1("HeistIsland", true);
+            ////NativeFunction.Natives.xF74B1FFA4A15FBEA(true);
+            //////NativeFunction.Natives.xDD3D5F9CA0C715D0(true);
+            ////NativeFunction.Natives.x5E1460624D194A38(true);
+
+
+            //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds", true);
+            //NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds_2", true);
+
+
+
+
+            //NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", true);
+
+            //NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(1);
+
+            //NativeFunction.Natives.SET_USE_ISLAND_MAP(true);
+
+
+
+            //    int zone = NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>("IsHeist");
+            //NativeFunction.Natives.SET_ZONE_ENABLED(zone, 1);
+
+
+            //Player.Character.Position = new Vector3(4524.132f, -4498.074f, 4.23596f);
+
+
+
+            menu.Visible = false;
+
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds", true);
+            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED("Heist_Island_Peds_2", true);
+
+
+
+            int zone = NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>("IsHeist");
+            NativeFunction.Natives.SET_ZONE_ENABLED(zone, 1);
+
+
+            //foreach (string requestIPL in cayoIPLs)
+            //{
+                NativeFunction.Natives.REQUEST_IPL("h4_islandairstrip");
+           // }
+            NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", true);
+            NativeFunction.Natives.SET_USE_ISLAND_MAP(true);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(true);
+
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Zones", true, true);
+            //NativeFunction.Natives.SET_AMBIENT_ZONE_STATE_PERSISTENT("AZL_DLC_Hei4_Island_Disabled_Zones", false, true);
+            NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(0);
+
+            //NativeFunction.Natives.LOAD_GLOBAL_WATER_FILE(1);
+
+            NativeFunction.Natives.x7E3F55ED251B76D3(1);
+
+
+            Player.Character.Position = new Vector3(4524.132f, -4498.074f, 4.23596f);
+
 
         };
         CayoPericoSubMenu.AddItem(TurnOffCayo);
         CayoPericoSubMenu.AddItem(TurnOnCayo);
         CayoPericoSubMenu.AddItem(TurnOffCayo1);
         CayoPericoSubMenu.AddItem(TurnOnCayo1);
+        CayoPericoSubMenu.AddItem(TurnOnCayo2);
     }
     private void DisableLosSantosYMAPS()
     {
