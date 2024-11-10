@@ -31,6 +31,7 @@ public class GangTasks : IPlayerTaskGroup
     private IPedGroups PedGroups;
     private IAgencies Agencies;
 
+    private List<RivalGangAmbushTask> RivalGangAmbush = new List<RivalGangAmbushTask>();
     private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
     private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
     private List<RivalGangVehicleTheftTask> RivalGangTheftTasks = new List<RivalGangVehicleTheftTask>();
@@ -71,7 +72,8 @@ public class GangTasks : IPlayerTaskGroup
 
     }
     public void Dispose()
-    {    
+    {
+        RivalGangAmbush.ForEach(x => x.Dispose());
         RivalGangHits.ForEach(x=> x.Dispose());
         PayoffGangTasks.ForEach(x => x.Dispose());
         RivalGangTheftTasks.ForEach(x => x.Dispose());
@@ -86,6 +88,7 @@ public class GangTasks : IPlayerTaskGroup
 
         AllGenericGangTasks.ForEach(x => x.Dispose());
 
+        RivalGangAmbush.Clear();
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
         RivalGangTheftTasks.Clear();
@@ -119,6 +122,13 @@ public class GangTasks : IPlayerTaskGroup
     {
         RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, killRequirement);
         RivalGangHits.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangAmbush(Gang gang, int killRequirement, GangContact gangContact, Gang targetGang)
+    {
+        RivalGangAmbushTask newTask = new RivalGangAmbushTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, killRequirement, GangTerritories, Zones);
+        RivalGangAmbush.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }

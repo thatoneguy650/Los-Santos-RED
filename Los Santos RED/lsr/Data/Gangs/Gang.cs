@@ -120,6 +120,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int BodyDisposalPaymentMax { get; set; } = 5500;//6500;
     public int CopHitPaymentMin { get; set; } = 2500;//7500;
     public int CopHitPaymentMax { get; set; } = 4500;//10500;
+    public int AmbushPaymentMin { get; set; } = 2500;//7500;
+    public int AmbushPaymentMax { get; set; } = 4500;//10500;
 
 
 
