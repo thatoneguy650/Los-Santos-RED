@@ -433,7 +433,7 @@ public class GangDispatcher
         GameTimeLastDispatchedHitSquad = Game.GameTime;
         HasDispatchedThisTick = true;
     }
-    private void DispatchHitSquad(Gang enemyGang)
+    public void DispatchHitSquad(Gang enemyGang)
     {
         if(enemyGang == null)
         {
