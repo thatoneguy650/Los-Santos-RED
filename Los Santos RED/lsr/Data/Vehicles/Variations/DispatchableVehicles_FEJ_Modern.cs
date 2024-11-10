@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 public class DispatchableVehicles_FEJ_Modern
 {
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
-
     public List<DispatchableVehicle> UnmarkedVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> LSPDVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> EastLSPDVehicles_FEJ_Modern { get; private set; }
@@ -46,7 +45,7 @@ public class DispatchableVehicles_FEJ_Modern
     public List<DispatchableVehicle> ShitiTaxiVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> SunderedTaxiVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> LSLifeguardVehicles_FEJ_Modern { get; private set; }
-
+    public List<DispatchableVehicle> PrisonVehicles_FEJ_Modern { get; private set; }
     public DispatchableVehicles_FEJ_Modern(DispatchableVehicles_FEJ dispatchableVehicles_FEJ)
     {
         DispatchableVehicles_FEJ = dispatchableVehicles_FEJ;
@@ -91,6 +90,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceRadius(5,5,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
         };
 
+
+        DispatchableVehicle LSPDGranger3600K9 = DispatchableVehicles_FEJ.Create_PoliceGranger3600(0, 20, 21, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", "");
+        LSPDGranger3600K9.CaninePossibleSeats = new List<int> { 1, 2 };
+        LSPDGranger3600K9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+
         LSPDVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             //Common Marked
@@ -116,6 +120,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceVSTR(3,3,2,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
             DispatchableVehicles_FEJ.Create_PoliceVSTR(2,2,0,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
 
+            LSPDGranger3600K9,
 
             DispatchableVehicles_FEJ.Create_PoliceVSTR(3,3,2,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
             DispatchableVehicles_FEJ.Create_PoliceGresley(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
@@ -131,15 +136,6 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceThrust(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,0),
             DispatchableVehicles_FEJ.Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
-            //Historic
-            DispatchableVehicles_FEJ.Create_PoliceStanierOld(0,0,0,false,PoliceVehicleType.OlderMarked,134,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceMerit(0,0,0,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceEsperanto(0,0,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 0,0){ CaninePossibleSeats = new List<int>{ 1 }, RequiredLiveries = new List<int>() { 1 },GroupName = "Historic" },
-            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBuffalo, 0,0){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) }, GroupName = "Historic" },
-            DispatchableVehicles_FEJ.Create_PolicePatriot(0,0,0,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceSeminole(0,0,6,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","Historic",2),
-            DispatchableVehicles_FEJ.Create_Washington(0, 0, -1, true, true, -1, 0, 3,"","Historic"),
         };
         EastLSPDVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
@@ -158,7 +154,9 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceRiata(1,1,1,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,1,2,"","",4),
             DispatchableVehicles_FEJ.Create_PoliceCaracara(1,1,3,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,3,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
-            
+
+            LSPDGranger3600K9,
+
 
             DispatchableVehicles_FEJ.Create_PoliceGresley(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceGresley(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
@@ -187,6 +185,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceTerminus(1,1,3,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"","",10),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(5,5,2,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceStanier(3,3,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+
+            LSPDGranger3600K9,
 
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
@@ -361,11 +361,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceCaracara(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceCaracara(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
 
-            new DispatchableVehicle("frogger2",1,1) { RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MaxWantedLevelSpawn = 2 },
-            new DispatchableVehicle("frogger2",0,30) { RequiredGroupIsDriverOnly = true, RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceFrogger,1,1) { RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MaxWantedLevelSpawn = 2 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceFrogger,0,30) { RequiredGroupIsDriverOnly = true, RequiredLiveries = new List<int>() { 3 },MinOccupants = 3,MaxOccupants = 4, GroupName = "Helicopter",RequiredPedGroup = "Pilot",MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
-            new DispatchableVehicle("polmav", 1,1) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MaxWantedLevelSpawn = 2,MinOccupants = 2,MaxOccupants = 4 },
-            new DispatchableVehicle("polmav", 0,30) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 1,1) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MaxWantedLevelSpawn = 2,MinOccupants = 2,MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 0,30) { RequiredPedGroup = "Pilot", GroupName = "Helicopter",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             
             DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,5,3,false,PoliceVehicleType.Marked,134,3,4,3,4,"Pilot","Helicopter",-1),
             DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(1,1,3,false,PoliceVehicleType.Marked,134,0,2,2,3,"Pilot","Helicopter",-1),
@@ -373,14 +373,12 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             DispatchableVehicles_FEJ.Create_PoliceVindicator(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65),
             DispatchableVehicles_FEJ.Create_PoliceThrust(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65,134,0,0),
-
-            //Historic
-            DispatchableVehicles_FEJ.Create_PoliceStanierOld(0,0,1,false,PoliceVehicleType.OlderMarked,134,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceStanierOld(0,0,1,false,PoliceVehicleType.SlicktopMarked,134,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceEsperanto(0,0,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceMerit(0,0,1,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceMerit(0,0,1,false,PoliceVehicleType.SlicktopMarked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PolicePatriot(0,0,1,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
+        };
+        PrisonVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceStanier, 25, 25) { RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            DispatchableVehicles_FEJ.Create_PoliceGresley(25,25,14,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceBison(5,0,14,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
         };
     }
     private void LocalSheriff()
@@ -416,16 +414,22 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,3,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             DispatchableVehicles_FEJ.Create_PoliceVindicator(15,10,1,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceThrust(15,10,3,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,0,0),
-            //Create_PoliceThrust
 
             DispatchableVehicles_FEJ.Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
 
             new DispatchableVehicle("dinghy5", 1, 20) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
-            new DispatchableVehicle("polmav", 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter", RequiredLiveries = new List<int>() { 10 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter",RequiredLiveries = new List<int>() { 5 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter", RequiredLiveries = new List<int>() { 10 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceAnnihilator, 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter",RequiredLiveries = new List<int>() { 5 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
 
         };
         BCSOVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
+
+
+        DispatchableVehicle LSSDGresleyK9 = DispatchableVehicles_FEJ.Create_PoliceGresley(0, 20, 15, false, PoliceVehicleType.MarkedValorLightbar, 134, -1, -1, -1, -1, "", "");
+        LSSDGresleyK9.CaninePossibleSeats = new List<int> { 1, 2 };
+        LSSDGresleyK9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+
+
         LSSDVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceGresley(35,35,7,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
@@ -444,6 +448,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceRadius(2,2,7,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceStanier(4,4,7,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceBuffaloS(5, 5, 7, false, PoliceVehicleType.Marked, -1, -1, -1, -1, -1, "", ""),
+
+            LSSDGresleyK9,
 
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"Detective",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
@@ -465,16 +471,6 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceBicycle(0,0,-1,false,PoliceVehicleType.Unmarked,0,-1,2,1,1,"Bicycle","Bicycle",50),
             new DispatchableVehicle("dinghy5", 1, 20) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
 
-            //Historic
-            DispatchableVehicles_FEJ.Create_PoliceStanierOld(0,0,2,false,PoliceVehicleType.OlderMarked,134,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceMerit(0,0,2,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceEsperanto(0,0,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceBuffalo, 0, 0) { RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) },GroupName = "Historic" },
-            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 0, 0) { CaninePossibleSeats = new List<int>{ 1 },RequiredLiveries = new List<int>() {7 },GroupName = "Historic" },
-            DispatchableVehicles_FEJ.Create_PolicePatriot(0,0,2,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceFugitive(0,0,7,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceSeminole(0,0,4,false,PoliceVehicleType.OlderMarked,-1,-1,-1,-1,-1,"","Historic",10),
-            DispatchableVehicles_FEJ.Create_Washington(0,0,-1,true,true,-1,-1,-1,"","Historic"),
         };
         LSSDVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 10.0f);
         MajesticLSSDVehicles_FEJ_Modern = new List<DispatchableVehicle>()
@@ -493,6 +489,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceFugitive(2,2,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceRadius(1,1,8,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceStanier(1,1,8,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+
+            LSSDGresleyK9,
 
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),     
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),           
@@ -529,6 +527,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceRadius(1,1,9,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceStanier(1,1,9,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
 
+            LSSDGresleyK9,
+
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),          
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),     
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTX(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
@@ -563,8 +563,10 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(1,1,10,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"",""),            
             DispatchableVehicles_FEJ.Create_PoliceTerminus(1,1,5,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,-1,-1,"","",10),
             DispatchableVehicles_FEJ.Create_PoliceRiata(1,1,2,false,PoliceVehicleType.MarkedValorLightbar,-1,-1,-1,1,2,"","",4),
-            
-            
+
+            LSSDGresleyK9,
+
+
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(1,1,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"Detective",""),
                      
@@ -592,11 +594,6 @@ public class DispatchableVehicles_FEJ_Modern
             
             DispatchableVehicles_FEJ.Create_PoliceAleutian(20,20,20,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceRiata(20,20,3,false,PoliceVehicleType.Marked,134,-1,-1,1,2,"","",4),
-
-            //Historic
-            DispatchableVehicles_FEJ.Create_PoliceEsperanto(0,0,5,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PolicePatriot(0,0,5,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","Historic"),
-            DispatchableVehicles_FEJ.Create_PoliceSeminole(0,0,0,false,PoliceVehicleType.OlderMarked,134,-1,-1,-1,-1,"","Historic",0),
         };
         ParkRangerVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
         USNPSParkRangersVehicles_FEJ_Modern = new List<DispatchableVehicle>()
@@ -650,10 +647,11 @@ public class DispatchableVehicles_FEJ_Modern
             new DispatchableVehicle("blazer2",50,50)  { RequiredPedGroup = "ATV",GroupName = "ATV" },
             new DispatchableVehicle("freecrawler",5,5) { RequiredVariation = new VehicleVariation() { VehicleMods = new List<VehicleMod>() {new VehicleMod(48, 7) } } },
             new DispatchableVehicle("seashark2", 100, 100) { RequiredPedGroup = "Boat",GroupName = "Boat", RequiredLiveries = new List<int>() { 0,1 }, MaxOccupants = 1 },
-            new DispatchableVehicle("frogger2",2,5) { RequiredLiveries = new List<int>() { 6 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
-            new DispatchableVehicle("polmav",2,5) { RequiredLiveries = new List<int>() { 5 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceFrogger,2,5) { RequiredLiveries = new List<int>() { 6 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick,2,5) { RequiredLiveries = new List<int>() { 5 }, MinOccupants = 2,MaxOccupants = 3, GroupName = "Helicopter" },
         };
         LSLifeguardVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
+
     }
     private void FederalPolice()
     {   
@@ -695,11 +693,8 @@ public class DispatchableVehicles_FEJ_Modern
 
             DispatchableVehicles_FEJ.Create_PoliceTerminus(0,1,12,false,PoliceVehicleType.Detective,1,0,4,-1,-1,"","",20),
 
-            new DispatchableVehicle("frogger2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 0 } },
-
-            new DispatchableVehicle("polmav", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 3 } },
-            DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,1,6,false,PoliceVehicleType.Marked,1,5,5,3,4,"FIBHET","",-1),
-
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceFrogger, 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 0 } },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RequiredPrimaryColorID = 1,RequiredSecondaryColorID = 1, RequiredPedGroup = "FIBHET",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 3 } },
 
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(0,15,11,false,PoliceVehicleType.Detective,1,5,5,3,4,"FIBHET",""),
             DispatchableVehicles_FEJ.Create_PoliceInterceptor(0,25,11,true,PoliceVehicleType.Detective,1,5,5,3,4,"FIBHET",""),
@@ -734,8 +729,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTX(20,20,13,false,PoliceVehicleType.MarkedFlatLightbar,134,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceStanier(1,1,19,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
 
-            new DispatchableVehicle("polmav", 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceAnnihilator, 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
         BorderPatrolVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
         NOOSEPIAVehicles_FEJ_Modern = new List<DispatchableVehicle>()
@@ -760,8 +755,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceGranger3600(0,15,14,false,PoliceVehicleType.MarkedValorLightbar,134,3,4,3,4,"",""),
             DispatchableVehicles_FEJ.Create_PoliceAleutian(0,15,14,false,PoliceVehicleType.MarkedFlatLightbar,134,3,4,3,4,"",""),
 
-            new DispatchableVehicle("polmav", 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceAnnihilator, 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
         NOOSESEPVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
@@ -787,8 +782,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceBuffaloSTX(0,20,15,false,PoliceVehicleType.MarkedFlatLightbar,134,3,4,3,4,"",""),
 
             DispatchableVehicles_FEJ.Create_PoliceMaverick1stGen(0,5,5,false,PoliceVehicleType.Marked,134,4,4,3,4,"","",-1),
-            new DispatchableVehicle("polmav", 0, 100) { RequiredLiveries = new List<int>() { 9 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { RequiredLiveries = new List<int>() { 6 },MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceMaverick, 0, 100) { RequiredLiveries = new List<int>() { 9 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
+            new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceAnnihilator, 0, 100) { RequiredLiveries = new List<int>() { 6 },MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
         MarshalsServiceVehicles_FEJ_Modern = new List<DispatchableVehicle>
         {
@@ -860,7 +855,7 @@ public class DispatchableVehicles_FEJ_Modern
     private void Taxis()
     {
         DowntownTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 0 } },
+            //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 0 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
@@ -881,7 +876,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.DispatchableVehicles.TaxiEudora,
         };
         PurpleTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 1 } },
+            //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 1 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,2,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
@@ -899,7 +894,7 @@ public class DispatchableVehicles_FEJ_Modern
 
         };
         HellTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 2 } },
+            //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 2 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,0,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
@@ -917,7 +912,7 @@ public class DispatchableVehicles_FEJ_Modern
 
         };
         ShitiTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 3 } },
+            //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 3 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,3,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
@@ -935,7 +930,7 @@ public class DispatchableVehicles_FEJ_Modern
 
         };
         SunderedTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 4 } },
+            //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 4 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,4,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),

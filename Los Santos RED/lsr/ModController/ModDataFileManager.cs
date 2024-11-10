@@ -317,10 +317,10 @@ public class ModDataFileManager
             "Vehicle models are from myself, Yard1, Lt.Caine, and AllenKennedy. " +
             "The Variations subfolder contains some different options. " +
             "The default FEJ config includes only modern vehicles and is mostly DLC vehicles. (buffalo stx, granger 3600, caracara, aleutian, riata, etc.)" +
-            "The 2015 config contains only vehicles that were in the game for the PC release. (buffalo 1st gen, stanier 2nd gen, interceptor, gresley, etc.)" +
+            //"The 2015 config contains only vehicles that were in the game for the PC release. (buffalo 1st gen, stanier 2nd gen, interceptor, gresley, etc.)" +
             "If you are looking for older vehicles, see the Los Santos 2008 alternate config folder as it includes some of the more dated ones (esperanto, patriot, stanier 1st gen, etc.)."
             + Environment.NewLine +
-            "These vehicles are all replace, open the dlc.rpf file to see modelnames"
+            "Open the dlc.rpf file to see modelnames"
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
@@ -342,15 +342,7 @@ public class ModDataFileManager
             + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
             + Environment.NewLine +
-            "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
-            + Environment.NewLine +
-            "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues"
-            + Environment.NewLine +
             "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
-            + Environment.NewLine +
-            "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
-            + Environment.NewLine +
-            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
             + Environment.NewLine +
             "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
             + Environment.NewLine + Environment.NewLine +

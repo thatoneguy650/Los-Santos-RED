@@ -164,7 +164,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     {
         DispatchableVehicles_FEJ = new DispatchableVehicles_FEJ(this);
         DispatchableVehicles_FEJ.DefaultConfig();
-        DefaultConfig_FullExpandedJurisdiction_2015();
+        //DefaultConfig_FullExpandedJurisdiction_2015();
         DefaultConfig_FullExpandedJurisdiction_Modern();
         DefaultConfig_LosSantos_2008();
         DefaultConfig_FullExpandedJurisdiction_Stanier();
@@ -1779,106 +1779,107 @@ public class DispatchableVehicles : IDispatchableVehicles
     }
     private void DefaultConfig_FullExpandedJurisdiction_2015()
     {
-        List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
-        {
-            new DispatchableVehicleGroup("UnmarkedVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.UnmarkedVehicles_FEJ),
-            new DispatchableVehicleGroup("CoastGuardVehicles", DispatchableVehicles_FEJ.CoastGuardVehicles_FEJ),
+        //disabled
+        //List<DispatchableVehicleGroup> VehicleGroupLookupFEJ = new List<DispatchableVehicleGroup>
+        //{
+        //    new DispatchableVehicleGroup("UnmarkedVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.UnmarkedVehicles_FEJ),
+        //    new DispatchableVehicleGroup("CoastGuardVehicles", DispatchableVehicles_FEJ.CoastGuardVehicles_FEJ),
 
-            new DispatchableVehicleGroup("ParkRangerVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.ParkRangerVehicles_FEJ),//san andreas state parks
-            new DispatchableVehicleGroup("SADFWParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SADFWParkRangersVehicles_FEJ),
-            new DispatchableVehicleGroup("USNPSParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.USNPSParkRangersVehicles_FEJ),
-            new DispatchableVehicleGroup("LSDPRParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSDPRParkRangersVehicles_FEJ),
-            new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSLifeguardVehicles_FEJ),
+        //    new DispatchableVehicleGroup("ParkRangerVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.ParkRangerVehicles_FEJ),//san andreas state parks
+        //    new DispatchableVehicleGroup("SADFWParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SADFWParkRangersVehicles_FEJ),
+        //    new DispatchableVehicleGroup("USNPSParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.USNPSParkRangersVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSDPRParkRangersVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSDPRParkRangersVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSLifeguardVehicles_FEJ),
 
-            new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.FIBVehicles_FEJ),
-            new DispatchableVehicleGroup("NOOSEVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSEVehicles_FEJ),
-            new DispatchableVehicleGroup("PrisonVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.PrisonVehicles_FEJ),
-            new DispatchableVehicleGroup("LSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSPDVehicles_FEJ),
-            new DispatchableVehicleGroup("SAHPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SAHPVehicles_FEJ),
-            new DispatchableVehicleGroup("LSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSSDVehicles_FEJ),
-            new DispatchableVehicleGroup("BCSOVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BCSOVehicles_FEJ),
-            new DispatchableVehicleGroup("LSIAPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSIAPDVehicles_FEJ),
-            new DispatchableVehicleGroup("LSPPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSPPVehicles_FEJ),
-            new DispatchableVehicleGroup("VWHillsLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.VWHillsLSSDVehicles_FEJ),
-            new DispatchableVehicleGroup("DavisLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DavisLSSDVehicles_FEJ),
-            new DispatchableVehicleGroup("MajesticLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.MajesticLSSDVehicles_FEJ),
-            new DispatchableVehicleGroup("RHPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.RHPDVehicles_FEJ),
-            new DispatchableVehicleGroup("DPPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DPPDVehicles_FEJ),
-            new DispatchableVehicleGroup("VWPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.VWPDVehicles_FEJ),
-            new DispatchableVehicleGroup("EastLSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.EastLSPDVehicles_FEJ),
-            new DispatchableVehicleGroup("PoliceHeliVehicles", DispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
-            new DispatchableVehicleGroup("SheriffHeliVehicles", DispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
-            new DispatchableVehicleGroup("ArmyVehicles", DispatchableVehicles_FEJ.ArmyVehicles_FEJ),
-            new DispatchableVehicleGroup("USMCVehicles", DispatchableVehicles_FEJ.USMCVehicles_FEJ),
-            new DispatchableVehicleGroup("USAFVehicles", DispatchableVehicles_FEJ.USAFVehicles_FEJ),
-            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
-            new DispatchableVehicleGroup("Amublance1", Amublance1),
-            new DispatchableVehicleGroup("Amublance2", Amublance2),
-            new DispatchableVehicleGroup("Amublance3", Amublance3),
-            new DispatchableVehicleGroup("NYSPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NYSPVehicles_FEJ),
-            new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LCPDVehicles_FEJ),
-            new DispatchableVehicleGroup("BorderPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BorderPatrolVehicles_FEJ),
-            new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSEPIAVehicles_FEJ),
-            new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSESEPVehicles_FEJ),
-            new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.MarshalsServiceVehicles_FEJ),
-            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+        //    new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.FIBVehicles_FEJ),
+        //    new DispatchableVehicleGroup("NOOSEVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSEVehicles_FEJ),
+        //    new DispatchableVehicleGroup("PrisonVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.PrisonVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("SAHPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SAHPVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSSDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("BCSOVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BCSOVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSIAPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSIAPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSPPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LSPPVehicles_FEJ),
+        //    new DispatchableVehicleGroup("VWHillsLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.VWHillsLSSDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("DavisLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DavisLSSDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("MajesticLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.MajesticLSSDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("RHPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.RHPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("DPPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DPPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("VWPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.VWPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("EastLSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.EastLSPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("PoliceHeliVehicles", DispatchableVehicles_FEJ.PoliceHeliVehicles_FEJ),
+        //    new DispatchableVehicleGroup("SheriffHeliVehicles", DispatchableVehicles_FEJ.SheriffHeliVehicles_FEJ),
+        //    new DispatchableVehicleGroup("ArmyVehicles", DispatchableVehicles_FEJ.ArmyVehicles_FEJ),
+        //    new DispatchableVehicleGroup("USMCVehicles", DispatchableVehicles_FEJ.USMCVehicles_FEJ),
+        //    new DispatchableVehicleGroup("USAFVehicles", DispatchableVehicles_FEJ.USAFVehicles_FEJ),
+        //    new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+        //    new DispatchableVehicleGroup("Amublance1", Amublance1),
+        //    new DispatchableVehicleGroup("Amublance2", Amublance2),
+        //    new DispatchableVehicleGroup("Amublance3", Amublance3),
+        //    new DispatchableVehicleGroup("NYSPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NYSPVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LCPDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("BorderPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BorderPatrolVehicles_FEJ),
+        //    new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSEPIAVehicles_FEJ),
+        //    new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.NOOSESEPVehicles_FEJ),
+        //    new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.MarshalsServiceVehicles_FEJ),
+        //    new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
-            //EMT
-            new DispatchableVehicleGroup("LSFDEMTVehicles", DispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
-            new DispatchableVehicleGroup("LSCOFDEMSVehicles", DispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),
-            new DispatchableVehicleGroup("BCFDEMSVehicles", DispatchableVehicles_FEJ.BCFDEMSVehicles_FEJ),
-            new DispatchableVehicleGroup("SAMSVehicles", DispatchableVehicles_FEJ.SAMSVehicles_FEJ),
-
-
-            new DispatchableVehicleGroup("LSMCVehicles", DispatchableVehicles_FEJ.LSMCVehicles_FEJ),
-            new DispatchableVehicleGroup("MRHVehicles", DispatchableVehicles_FEJ.MRHVehicles_FEJ),
+        //    //EMT
+        //    new DispatchableVehicleGroup("LSFDEMTVehicles", DispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSCOFDEMSVehicles", DispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),
+        //    new DispatchableVehicleGroup("BCFDEMSVehicles", DispatchableVehicles_FEJ.BCFDEMSVehicles_FEJ),
+        //    new DispatchableVehicleGroup("SAMSVehicles", DispatchableVehicles_FEJ.SAMSVehicles_FEJ),
 
 
-            //Fire
-            new DispatchableVehicleGroup("LSFDVehicles", DispatchableVehicles_FEJ.LSFDVehicles_FEJ),
-            new DispatchableVehicleGroup("LSCOFDVehicles", DispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),
-            new DispatchableVehicleGroup("BCFDVehicles", DispatchableVehicles_FEJ.BCFDVehicles_FEJ),
-            new DispatchableVehicleGroup("SanFireVehicles", DispatchableVehicles_FEJ.SanFireVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSMCVehicles", DispatchableVehicles_FEJ.LSMCVehicles_FEJ),
+        //    new DispatchableVehicleGroup("MRHVehicles", DispatchableVehicles_FEJ.MRHVehicles_FEJ),
 
 
-            //Security
+        //    //Fire
+        //    new DispatchableVehicleGroup("LSFDVehicles", DispatchableVehicles_FEJ.LSFDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LSCOFDVehicles", DispatchableVehicles_FEJ.LSCOFDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("BCFDVehicles", DispatchableVehicles_FEJ.BCFDVehicles_FEJ),
+        //    new DispatchableVehicleGroup("SanFireVehicles", DispatchableVehicles_FEJ.SanFireVehicles_FEJ),
 
-            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.MerryweatherPatrolVehicles_FEJ),
-            new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BobcatSecurityVehicles_FEJ),
-            new DispatchableVehicleGroup("GroupSechsVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.GroupSechsVehicles_FEJ),
-            new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SecuroservVehicles_FEJ),
-            new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LNLVehicles_FEJ),
-            new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.CHUFFVehicles_FEJ),
 
-            //Gang stuff
-            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
-            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
-            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
-            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
-            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
-            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
-            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
-            new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
-            new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
-            new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
-            new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
-            new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
-            new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
-            new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
-            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
-            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
-            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
-            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+        //    //Security
 
-            //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
-            new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DowntownTaxiVehicles),
-            new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.HellTaxiVehicles),
-            new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.PurpleTaxiVehicles),
-            new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.ShitiTaxiVehicles),
-            new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SunderedTaxiVehicles),
-        };
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdiction2015.xml");
+        //    new DispatchableVehicleGroup("MerryweatherPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.MerryweatherPatrolVehicles_FEJ),
+        //    new DispatchableVehicleGroup("BobcatSecurityVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.BobcatSecurityVehicles_FEJ),
+        //    new DispatchableVehicleGroup("GroupSechsVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.GroupSechsVehicles_FEJ),
+        //    new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SecuroservVehicles_FEJ),
+        //    new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LNLVehicles_FEJ),
+        //    new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.CHUFFVehicles_FEJ),
+
+        //    //Gang stuff
+        //    new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+        //    new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+        //    new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+        //    new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+        //    new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+        //    new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+        //    new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+        //    new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
+        //    new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
+        //    new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
+        //    new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
+        //    new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
+        //    new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
+        //    new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
+        //    new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+        //    new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+        //    new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+        //    new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+
+        //    //Other
+        //    new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+        //    new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.DowntownTaxiVehicles),
+        //    new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.HellTaxiVehicles),
+        //    new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.PurpleTaxiVehicles),
+        //    new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.ShitiTaxiVehicles),
+        //    new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.SunderedTaxiVehicles),
+        //};
+        //Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdiction2015.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction_Modern()
     {
@@ -1896,7 +1897,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.FIBVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("NOOSEVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSESEPVehicles_FEJ_Modern),
-            new DispatchableVehicleGroup("PrisonVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.PrisonVehicles_FEJ),
+            new DispatchableVehicleGroup("PrisonVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.PrisonVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("LSPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSPDVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("SAHPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SAHPVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("LSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSSDVehicles_FEJ_Modern),
@@ -1920,7 +1921,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("Amublance2", Amublance2),
             new DispatchableVehicleGroup("Amublance3", Amublance3),
             new DispatchableVehicleGroup("NYSPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NYSPVehicles_FEJ_Modern),
-            new DispatchableVehicleGroup("LCPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2015.LCPDVehicles_FEJ),
             new DispatchableVehicleGroup("BorderPatrolVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.BorderPatrolVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSEPIAVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSESEPVehicles_FEJ_Modern),
