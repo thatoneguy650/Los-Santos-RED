@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
 
         TaxiFirm GetDefaultTaxiFirm();
         Organization GetOrganizationByContact(string contactName);
-        TaxiFirm GetRandomTaxiFirm();
+        TaxiFirm GetRandomTaxiFirm(bool includeRideShare);
         TaxiFirm GetTaxiFirmFromVehicle(string v, int liveryID);
         List<Organization> GetOrganizations();
     }

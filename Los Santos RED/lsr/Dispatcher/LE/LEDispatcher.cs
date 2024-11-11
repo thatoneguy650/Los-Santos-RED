@@ -895,7 +895,7 @@ public class LEDispatcher
     }
     public bool Dispatch()
     {
-        EntryPoint.WriteToConsole("LE DISPATCHER HAS DISPATCHED RAN1");
+        //EntryPoint.WriteToConsole("LE DISPATCHER HAS DISPATCHED RAN1");
         HasDispatchedThisTick = false;
         if (!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
@@ -1272,7 +1272,7 @@ public class LEDispatcher
         {
             return;
         }
-        EntryPoint.WriteToConsole("LE DISPATCHER HAS DISPATCHED RAN2");
+        //EntryPoint.WriteToConsole("LE DISPATCHER HAS DISPATCHED RAN2");
         HasDispatchedThisTick = true;//up here for now, might be better down low
         if (ShouldRunAmbientDispatch)
         {

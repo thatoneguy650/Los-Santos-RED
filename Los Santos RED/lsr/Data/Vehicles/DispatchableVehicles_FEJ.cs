@@ -231,7 +231,6 @@ public class DispatchableVehicles_FEJ
         {
             new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 4 } }
         };
-
         MRHVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 0 } } };
         LSMCVehicles_FEJ = new List<DispatchableVehicle>() {

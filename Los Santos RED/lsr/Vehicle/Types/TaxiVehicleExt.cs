@@ -52,6 +52,14 @@ namespace LSR.Vehicles
             bool showGetInMenu = false;
             bool showTaxiMenu = false;
 
+            string taxiPromptGetInString = "Get In Taxi";
+            string taxiPromptInsideString = "Taxi Menu";
+            if (TaxiFirm != null && TaxiFirm.IsRideShare)
+            {
+                taxiPromptGetInString = "Get In Rideshare";
+                taxiPromptInsideString = "Rideshare Menu";
+            }
+
 
             if(hasDriver && player.IsNotWanted)
             {
@@ -85,7 +93,7 @@ namespace LSR.Vehicles
                     player.ButtonPrompts.RemovePrompts("VehicleInteract");
                     //EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} GET IN AS PASS MENU");
                     Action action = () => { player.ActivityManager.EnterVehicleAsPassenger(false, true, true); };
-                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Get In Taxi", $"VehicleInteractTaxiGetIn", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", taxiPromptGetInString, $"VehicleInteractTaxiGetIn", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
                 }
             }
             else if (showTaxiMenu)
@@ -95,7 +103,7 @@ namespace LSR.Vehicles
                     player.ButtonPrompts.RemovePrompts("VehicleInteract");
                    // EntryPoint.WriteToConsole($"UpdateInteractPrompts TAXI {hasDriver} OPEN TAXI MENU");
                     Action action = () => { player.ShowVehicleInteractMenu(false); };
-                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", "Taxi Menu", $"VehicleInteractTaxiMenu", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
+                    player.ButtonPrompts.AttemptAddPrompt("VehicleInteract", taxiPromptInsideString, $"VehicleInteractTaxiMenu", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999, action);
                 }
             }
             else if (showRegularMenu)

@@ -275,7 +275,8 @@ public class TaxiRide
     {
         if(IsActive)
         {
-            Game.DisplayHelp("Taxi Ride Cancelled");
+
+            Game.DisplayHelp("Ride Cancelled");
         }
         IsActive = false;
         EntryPoint.WriteToConsole("Taxi Ride IS ACTIVE SET TO FALSE");
@@ -442,11 +443,11 @@ public class TaxiRide
     {
         if (IsHailed)
         {
-            DisplayNotification("~g~Taxi Hailed", $"Your driver will attempt to pull over at the nearest safe location. Please wait for the Taxi to come to a complete stop before entering.");
+            DisplayNotification("~g~Driver Hailed", $"Your driver will attempt to pull over at the nearest safe location. Please wait for the vehicle to come to a complete stop before entering.");
         }
         else
         {
-            DisplayNotification("~g~Pick Up Ready", $"Your driver is about to arrive at ~p~{DestinationName}~s~ for the pickup. Please wait for the Taxi to come to a complete stop before entering.");
+            DisplayNotification("~g~Pick Up Ready", $"Your driver is about to arrive at ~p~{DestinationName}~s~ for the pickup. Please wait for the vehicle to come to a complete stop before entering.");
         }
         IsNearbyPickup = true;
         EntryPoint.WriteToConsole("TAXI RIDE IS NEARBY PICKUP");
@@ -480,7 +481,7 @@ public class TaxiRide
     }
     private void OnIsNearbyDestination()
     {
-        DisplayNotification("~g~Arriving", $"You are about to arrive at ~p~{DestinationName}~s~. Please wait for the Taxi to come to a complete stop before exiting. Thank your for your business.");
+        DisplayNotification("~g~Arriving", $"You are about to arrive at ~p~{DestinationName}~s~. Please wait for the vehicle to come to a complete stop before exiting. Thank your for your business.");
         IsNearbyDestination = true;
         EntryPoint.WriteToConsole("TAXI RIDE IS NEARBY DESTINATION");
         SpawnLocation spawnLocation = new SpawnLocation(DestinationLocation.StreetPosition);

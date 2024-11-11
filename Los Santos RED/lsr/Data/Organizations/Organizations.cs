@@ -68,9 +68,13 @@ public class Organizations : IOrganizations
     {
         return PossibleOrganizations.TaxiFirms.FirstOrDefault(x => x.IsDefault);
     }
-    public TaxiFirm GetRandomTaxiFirm()
+    public TaxiFirm GetRandomTaxiFirm(bool includeRideShare)
     {
-        return PossibleOrganizations.TaxiFirms.PickRandom();
+        if(includeRideShare)
+        {
+            PossibleOrganizations.TaxiFirms.PickRandom();
+        }
+        return PossibleOrganizations.TaxiFirms.Where(x=> !x.IsRideShare).PickRandom();
     }
     public TaxiFirm GetTaxiFirmFromVehicle(string v, int liveryID)
     {
@@ -149,8 +153,9 @@ public class Organizations : IOrganizations
             PricePerMile = 4,
             FastSpeedFee = 50,
             CrazySpeedFee = 300,
+            IsRideShare = true,
         };
-        Schlecht = new TaxiFirm("~b~", "schlecht", "Schlecht", "Schlecht", "Black", "TaxiDrivers", "RideshareVehicles", "", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Contractor")
+        Schlecht = new TaxiFirm("~b~", "schlecht", "Schlecht", "Schlecht", "Black", "RegularPeds", "RideshareVehicles", "", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Contractor")
         {
             Description = "Service Beyond Reproach",
             HeadDataGroupID = "AllHeads",
@@ -161,6 +166,7 @@ public class Organizations : IOrganizations
             PricePerMile = 4,
             FastSpeedFee = 50,
             CrazySpeedFee = 300,
+            IsRideShare = true,
         };
     }
     private void DefaultConfig()

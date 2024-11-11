@@ -13,8 +13,6 @@ public class TaxiFirm : Organization
     public int PricePerMile { get; set; } = 5;
     public int FastSpeedFee { get; set; } = 20;
     public int CrazySpeedFee { get; set; } = 100;
-
-
     public float FightPercentage { get; set; } = 35f;
     public float FightPolicePercentage { get; set; } = 5f;
     public float AlwaysFightPolicePercentage { get; set; } = 1f;
@@ -23,7 +21,7 @@ public class TaxiFirm : Organization
     public float PercentageWithLongGuns { get; set; } = 5f;
     public float PercentageWithSidearms { get; set; } = 30f;
     public float PercentageWithMelee { get; set; } = 10f;
-
+    public bool IsRideShare { get; set; } = false;
     public TaxiFirm()
     {
     }

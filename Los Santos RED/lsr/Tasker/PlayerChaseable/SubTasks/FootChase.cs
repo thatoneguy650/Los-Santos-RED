@@ -70,7 +70,7 @@ public class FootChase
 
         if(Ped.IsAnimal)
         {
-            MoveRate = Settings.SettingsManager.DebugSettings.CanineRunSpeed;
+            MoveRate = Settings.SettingsManager.PoliceTaskSettings.K9RunSpeed;// Settings.SettingsManager.DebugSettings.CanineRunSpeed;
         }
         AnimationDictionary.RequestAnimationDictionay("random@arrests");//THIS HAS YIELDS!
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
@@ -286,8 +286,12 @@ public class FootChase
         else
         {
             RunSpeed = 500f;
-             NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
         }
+
+
+
+
         if (prevRunSpeed != RunSpeed)
         {
             CurrentSubTask = SubTask.None;
@@ -300,17 +304,31 @@ public class FootChase
 
     private void TaskAnimalAttack()
     {
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+
+
+        //    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+
+        //    //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+        //    // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+        //    NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 0);
+        //    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.DefaultCombatFlag == 0 ? 134217728 : Ped.DefaultCombatFlag, 16);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
+
+        EntryPoint.WriteToConsole("TaskAnimalAttack ASSIGNED");
         unsafe
         {
             int lol = 0;
             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-
-
             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-
-            //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-            // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-            NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 0);
+            NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 134217728);
             NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.DefaultCombatFlag == 0 ? 134217728 : Ped.DefaultCombatFlag, 16);
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

@@ -20,7 +20,7 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
                           IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, 
-                            ICuffable, IIntimidationManageable, ICasinoGamePlayable
+                            ICuffable, IIntimidationManageable, ICasinoGamePlayable, IVehicleManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -176,6 +176,7 @@ namespace Mod
             RadarDetector = new RadarDetector(this, World, Settings);
             IntimidationManager = new IntimidationManager(this, World, Settings);
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
+            VehicleManager = new VehicleManager(this, World, Settings);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -183,6 +184,7 @@ namespace Mod
         public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
         public PlayerTasks PlayerTasks { get; private set; }
+        public VehicleManager VehicleManager { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
         public SecurityResponse SecurityResponse { get; private set; }
         public ButtonPrompts ButtonPrompts { get; private set; }
@@ -527,6 +529,7 @@ namespace Mod
             CuffManager.Setup();
             RadarDetector.Setup();
             GamblingManager.Setup();
+            VehicleManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -629,6 +632,7 @@ namespace Mod
             }
             RadarDetector.Update();
             IntimidationManager.Update();
+            VehicleManager.Update();
         }
         public void SetNotBusted()
         {
@@ -637,7 +641,7 @@ namespace Mod
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, 
             bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, 
-            bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors, bool resetGambling)
+            bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors, bool resetGambling, bool resetPersistVehicle)
         {
             IsDead = false;
             IsBusted = false;
@@ -764,6 +768,11 @@ namespace Mod
             {
                 GamblingManager.Reset();
             }
+            if(resetPersistVehicle)
+            {
+                VehicleManager.Reset();
+            }
+
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -822,6 +831,7 @@ namespace Mod
             RadarDetector.Dispose();
             IntimidationManager.Dispose();
             GamblingManager.Dipsose();
+            VehicleManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);

@@ -124,6 +124,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public uint CircleStationaryTime { get; set; }
     public uint MinCircleTimeToStartRappelling { get; set; }
     public bool RappellingRequiresWeaponsFree { get; set; }
+    public float K9RunSpeed { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -238,5 +239,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         CircleStationaryTime = 8000;
         MinCircleTimeToStartRappelling = 25000;
         RappellingRequiresWeaponsFree = true;
+
+        K9RunSpeed = 1.75f;
     }
 }

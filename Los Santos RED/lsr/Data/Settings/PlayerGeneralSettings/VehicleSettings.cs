@@ -95,6 +95,7 @@ public class VehicleSettings : ISettingsDefaultable
     public float VehicleCrashInjureScalar { get; set; }
     public int VehicleCrashInjureMinVehicleDamageTrigger { get; set; }
     public bool FuelUsesAnimationsAndProps { get; set; }
+    public int PlayerEnteredPersistantVehicleLimit { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -165,5 +166,7 @@ public class VehicleSettings : ISettingsDefaultable
         VehicleCrashInjureMinVehicleDamageTrigger = 55;
 
         FuelUsesAnimationsAndProps = true;
+
+        PlayerEnteredPersistantVehicleLimit = 3;
     }
 }

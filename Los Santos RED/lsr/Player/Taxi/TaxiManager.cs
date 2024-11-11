@@ -129,7 +129,7 @@ public class TaxiManager
         }
         if (showNotification)
         {
-            taxiRide.DisplayNotification("~r~Ride Cancelled", "You have cancelled this taxi ride. Please wait for the Taxi to stop before exiting.");
+            taxiRide.DisplayNotification("~r~Ride Cancelled", "You have cancelled this taxi ride. Please wait for the vehicle to stop before exiting.");
         }
         Player.ActivityManager.LeaveVehicle(true);
         taxiRide.Cancel();
