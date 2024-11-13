@@ -27,6 +27,8 @@ namespace LosSantosRED.lsr
         private ITimeReportable Time;
         private IEntityProvideable World;
         private HashSet<Crime> GracePeriodCrimes = new HashSet<Crime>();
+        private Vector3 CurrentWantedCenter;
+        private float CurrentPlayerDistance;
 
         public TrainStopper TrainStopper { get; private set; }
         private enum PoliceState
@@ -60,6 +62,11 @@ namespace LosSantosRED.lsr
         public bool PlayerSeenDuringWanted { get; set; } = false;
         public bool PoliceHaveDescription { get; private set; }
         public int CurrentRespondingPoliceCount { get; private set; }
+
+
+
+
+
         public bool HasShotAtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("FiringWeaponNearPolice") > 0;
         public bool HasHurtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("HurtingPolice") > 0;
         public int PoliceKilled => InstancesOfCrime("KillingPolice");
@@ -157,6 +164,9 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+        public bool IsWithinPoliceRadius { get; private set; }
+        public float CurrentPoliceRadius { get; private set; }
         public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
         {
             Player = player;
@@ -177,11 +187,84 @@ namespace LosSantosRED.lsr
             {
                 UpdateWanted();
             }
+            else
+            {
+                UpdateNotWanted();
+            }
             GameFiber.Yield();//TR 05
             UpdateBlip();
             UpdateGracePeriod();
             TrainStopper.Update();
         }
+
+        private void UpdateNotWanted()
+        {
+            CurrentPoliceRadius = 200f;
+            IsWithinPoliceRadius = false;
+        }
+
+        private void UpdateWanted()
+        {
+            if (Player.IsBusted || Player.IsDead)
+            {
+                return;
+            }
+            CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
+            if (CurrentWantedCenter != Vector3.Zero)
+            {
+                LastWantedCenterPosition = CurrentWantedCenter;
+            }
+            if (Player.AnyPoliceCanSeePlayer)
+            {
+                PlayerSeenDuringCurrentWanted = true;
+                PlayerSeenDuringWanted = true;
+                if (Player.IsInVehicle)
+                {
+                    PlayerSeenInVehicleDuringWanted = true;
+                }
+            }
+            else
+            {
+                if (!WantedLevelHasBeenRadioedIn && !Player.AnyPoliceSawPlayerViolating)
+                {
+                    ResetWanted();
+                    return;
+                }
+            }
+            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel - 1)// 5)
+            {
+                GameTimeLastRequestedBackup = Game.GameTime;
+                Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
+                Player.OnRequestedBackUp();
+            }
+            if (CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel)
+            {
+                Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel}+ wanted level", true);
+            }
+            PoliceKilledUpdate();
+            UpdateWantedSize();
+        }
+        private void UpdateWantedSize()
+        {      
+            if(!WantedLevelHasBeenRadioedIn)
+            {
+                CurrentPoliceRadius = Settings.SettingsManager.PoliceTaskSettings.MinimumPoliceResponseRadius;// 20f;
+            }
+            else
+            {
+                CurrentPoliceRadius = (Settings.SettingsManager.PoliceTaskSettings.PoliceResponseRadiusIncrement * Player.WantedLevel); //25f + ((1 - Player.SearchModePercentage) * 175f);
+            }
+            if (CurrentWantedCenter == Vector3.Zero)
+            {
+                CurrentPlayerDistance = 999f;
+            }
+            else
+            {
+                CurrentPlayerDistance = CurrentWantedCenter.DistanceTo2D(Player.Character.Position);
+            }
+            IsWithinPoliceRadius = CurrentPlayerDistance <= CurrentPoliceRadius;
+        }
+
         public void Dispose()
         {
             if (LastSeenLocationBlip.Exists())
@@ -483,7 +566,7 @@ namespace LosSantosRED.lsr
             {
                 if (!LastSeenLocationBlip.Exists() && EntryPoint.ModController.IsRunning & Settings.SettingsManager.UIGeneralSettings.CreatePoliceResponseBlip)
                 {
-                    LastSeenLocationBlip = new Blip(Player.PlacePoliceLastSeenPlayer, 200f)
+                    LastSeenLocationBlip = new Blip(Player.PlacePoliceLastSeenPlayer, CurrentPoliceRadius)//200f)
                     {
                         Name = "Wanted Center",
                         Color = Color.Red,
@@ -504,14 +587,14 @@ namespace LosSantosRED.lsr
                     if (Player.IsInSearchMode)
                     {
                         LastSeenLocationBlip.Color = Color.Orange;
-                        LastSeenLocationBlip.Alpha = 0.35f;
-                        LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
+                        LastSeenLocationBlip.Alpha = (Player.SearchModePercentage + 0.1f) * 0.35f;
+                       // LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
                     }
                     else if (Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation)
                     {
                         LastSeenLocationBlip.Color = Color.Black;
                         LastSeenLocationBlip.Alpha = 0.25f;
-                        LastSeenLocationBlip.Scale = 200f;
+                        //LastSeenLocationBlip.Scale = 200f;
                     }
                     else
                     {
@@ -519,15 +602,15 @@ namespace LosSantosRED.lsr
                         {
                             LastSeenLocationBlip.Color = Color.Red;
                             LastSeenLocationBlip.Alpha = 0.25f;
-                            LastSeenLocationBlip.Scale = 200f;
+                            //LastSeenLocationBlip.Scale = 200f;
                         }
                         else
                         {
                             LastSeenLocationBlip.Color = Color.Black;
-                            LastSeenLocationBlip.Alpha = 0.1f;
-                            LastSeenLocationBlip.Scale = 20f;
+                            LastSeenLocationBlip.Alpha = 0.25f;// 0.1f;
+                            //LastSeenLocationBlip.Scale = 20f;
                         }
-
+                        LastSeenLocationBlip.Scale = CurrentPoliceRadius;
                     }
                 }
             }
@@ -539,51 +622,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void UpdateWanted()
-        {
-            if (Player.IsBusted || Player.IsDead)
-            {
-                return;
-            }
-            Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
-            if (CurrentWantedCenter != Vector3.Zero)
-            {
-                LastWantedCenterPosition = CurrentWantedCenter;
-            }
-            if (Player.AnyPoliceCanSeePlayer)
-            {
-                PlayerSeenDuringCurrentWanted = true;
-                PlayerSeenDuringWanted = true;
-                if (Player.IsInVehicle)
-                {
-                    PlayerSeenInVehicleDuringWanted = true;
-                }
-            }
-            else
-            {
-                if (!WantedLevelHasBeenRadioedIn && !Player.AnyPoliceSawPlayerViolating)
-                {
-                    ResetWanted();
-                    return;
-                }
-            }
-            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel - 1)// 5)
-            {
-                GameTimeLastRequestedBackup = Game.GameTime;
-                Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
-                Player.OnRequestedBackUp();
-            }
-            if (CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel)
-            {
-                Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel}+ wanted level", true);
-            }
-            PoliceKilledUpdate();
-
-        }
-
-
-
-
 
         private void PoliceKilledUpdate()
         {

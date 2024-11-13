@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
 using Rage.Native;
@@ -24,6 +25,8 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
     public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
     public override int RegisterCashMin { get; set; } = 1000;
     public override int RegisterCashMax { get; set; } = 3050;
+    public override int RacketeeringAmountMin { get; set; } = 5000;
+    public override int RacketeeringAmountMax { get; set; } = 10000;
     public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -103,5 +106,6 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
+
 }
 

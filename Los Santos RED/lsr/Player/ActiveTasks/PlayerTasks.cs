@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -346,5 +347,10 @@ public class PlayerTasks
                     $"We just gave you work, don't get greedy.",
                     };
         Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
+    }
+
+    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    {
+        PlayerTaskGroups.ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
     }
 }

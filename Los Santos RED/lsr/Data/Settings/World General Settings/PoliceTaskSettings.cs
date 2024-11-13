@@ -99,6 +99,17 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
 
 
+
+    [Description("Minimum size of the police response area. Ex. chase for a one star wanted")]
+    public float MinimumPoliceResponseRadius { get; set; }
+    [Description("Additional radius added for each wanted level. Ex. At PoliceResponseRadiusIncrement = 100 a 3 star wanted level would result in a 300 m response radius ")]
+    public float PoliceResponseRadiusIncrement { get; set; }
+    [Description("Time scalar for search time when outside the police search radius")]
+    public uint OutsidePoliceResponseSearchScalar { get; set; }
+
+
+
+
     public bool EnableCombatAttributeCanInvestigate { get; set; }
     public bool EnableCombatAttributeDisableEntryReactions { get; set; }
     public bool EnableCombatAttributeCanFlank { get; set; }
@@ -125,6 +136,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public uint MinCircleTimeToStartRappelling { get; set; }
     public bool RappellingRequiresWeaponsFree { get; set; }
     public float K9RunSpeed { get; set; }
+
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -241,5 +253,11 @@ public class PoliceTaskSettings : ISettingsDefaultable
         RappellingRequiresWeaponsFree = true;
 
         K9RunSpeed = 1.75f;
+
+        MinimumPoliceResponseRadius = 50f;
+        PoliceResponseRadiusIncrement = 200f;
+
+        OutsidePoliceResponseSearchScalar = 2;
+
     }
 }

@@ -111,9 +111,6 @@ public class PersonTransaction : Interaction
             }
         }, "PersonTransaction");
     }
-
-
-
     public override void Dispose()
     {
         //EntryPoint.WriteToConsoleTestLong($"PERSON TRANSACTION Dispose IsDisposed {IsDisposed}");
@@ -480,6 +477,7 @@ public class PersonTransaction : Interaction
             InteractionMenu = new UIMenu(AssociatedStore.Name, AssociatedStore.Description);
         }
         MenuPool.Add(InteractionMenu);
+        Player.OnTransactionMenuCreated(AssociatedStore, MenuPool, InteractionMenu);
     }
     public void DisposeInteractionMenu()
     {

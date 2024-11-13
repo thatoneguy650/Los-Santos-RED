@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RAGENativeUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ public interface IPlayerTaskGroup
 {
     void Setup();
     void Dispose();
+    void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
 }
 

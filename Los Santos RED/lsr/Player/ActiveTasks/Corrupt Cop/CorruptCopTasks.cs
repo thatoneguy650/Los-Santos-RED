@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.ActiveTasks;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,11 @@ public class CorruptCopTasks : IPlayerTaskGroup
         AllTasks.Add(CopGangHitTask);
         CopGangHitTask.Setup();
         CopGangHitTask.Start(contact);
+    }
+
+    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    {
+
     }
 }
 

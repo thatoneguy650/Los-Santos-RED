@@ -2722,6 +2722,10 @@ namespace Mod
             }
             NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, selectedAnim, selectedDict);
         }
-       
+
+        public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+        {
+            PlayerTasks.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu);
+        }
     }
 }

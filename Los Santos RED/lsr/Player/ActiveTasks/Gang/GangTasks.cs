@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.ActiveTasks;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -246,6 +247,12 @@ public class GangTasks : IPlayerTaskGroup
                                 $"Going to get real very soon.",
                                 };
         Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 0,true);
+    }
+
+    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    {
+        EntryPoint.WriteToConsole("Gang Tasks OnTransactionMenuCreated");
+        GangRacketeeringTasks.Where(x=> x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
     }
 }
 

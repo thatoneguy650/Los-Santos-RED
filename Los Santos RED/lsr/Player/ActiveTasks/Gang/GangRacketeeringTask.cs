@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool RegularComplications;
 
         private bool HasLocations => RacketeeringLocations != null && RacketeeringLocations.Any() && HiringGangDen != null;
+        public bool IsInterestingInLocations { get; private set; } = false;
+        public PlayerTask PlayerTask => CurrentTask;
 
         public GangRacketeeringTask(ITaskAssignable player, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
             ICrimes crimes, PhoneContact phoneContact, GangTasks gangTasks, IGangTerritories gangTerritories, IZones zones)
@@ -124,21 +126,25 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     break;
                 }
 
-                RacketeeringLocations.ForEach(location =>
-                    {
-                        if (location.InteractionMenu != null && location.IsPlayerInterestedInLocation)
-                        {
-                            if (!location.InteractionMenu.MenuItems.Contains(collectMoney))
-                            {
-                                collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${location.ProtectionMoneyDue}" };
-                                collectMoney.Activated += (sender, selectedItem) =>
-                                {
-                                    CollectMoney(location);
-                                };
-                                location.InteractionMenu.AddItem(collectMoney);
-                            }
-                        }
-                    });
+                //RacketeeringLocations.ForEach(location =>
+                //    {
+                //       // if(location.SpawnedVendors.Any(x=> x.HasMenu))
+
+
+
+                //        if (location.InteractionMenu != null && location.IsPlayerInterestedInLocation)
+                //        {
+                //            if (!location.InteractionMenu.MenuItems.Contains(collectMoney))
+                //            {
+                //                collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${location.ProtectionMoneyDue}" };
+                //                collectMoney.Activated += (sender, selectedItem) =>
+                //                {
+                //                    CollectMoney(location);
+                //                };
+                //                location.InteractionMenu.AddItem(collectMoney);
+                //            }
+                //        }
+                //    });
 
                 GameFiber.Sleep(250);
             }
@@ -175,7 +181,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"Here’s what you asked for. Hope this keeps things smooth between us.",
                                 $"Here’s the payout. Let’s call it even, and no one gets hurt.",
                                 $"Please, take the money and go. I can’t afford to mess with you.",
-                                $"Here’s everything I’ve made today—just keep ~y~{SelectedZone.DisplayName}~s~ peaceful",
+                                $"Here’s everything I’ve made today—just keep ~p~{SelectedZone.DisplayName}~s~ peaceful",
                                 $"Just take it, and we can all go about our business.",
                                 $"I’m not looking to be your enemy. Here’s what you asked for.",
                                 $"Here’s what I owe you. I’d prefer we avoid any further problems.",
@@ -245,7 +251,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
                                 bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.CheckIsNearby(policeStation.CellX, policeStation.CellY, 10));
 
-                                if (spotZone.InternalGameName == SelectedZone.InternalGameName && !possibleSpot.HasVendor && !isNear)
+                                if (spotZone.InternalGameName == SelectedZone.InternalGameName && !isNear)// && !possibleSpot.HasVendor)
                                 {
                                     AvailableSpots.Add(possibleSpot);
                                 }
@@ -266,25 +272,44 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             foreach (GameLocation location in RacketeeringLocations)
             {
                 int PaymentAmount = 0;
-                if (location.GetType().ToString().Equals("Bank"))
+                PaymentAmount = location.GetRacketeeringPaymentAmount();
+
+                if (PaymentAmount > 1000)
                 {
-                    PaymentAmount = RandomItems.GetRandomNumberInt(10000, 20000).Round(100);
+                    PaymentAmount = PaymentAmount.Round(100);
                 }
-                else if (location.GetType().ToString().Equals("Dealership"))
+                else
                 {
-                    PaymentAmount = RandomItems.GetRandomNumberInt(5000, 10000).Round(100);
-                }
-                else if (location.GetType().ToString().Equals("Hotel"))
-                {
-                    PaymentAmount = RandomItems.GetRandomNumberInt(2000, 5000).Round(100);
-                }
-                else 
-                { 
-                    PaymentAmount = RandomItems.GetRandomNumberInt(500, 1000).Round(50);
+                    PaymentAmount = PaymentAmount.Round(50);
                 }
 
-                if (Zones.GetZone(location.EntrancePosition).Economy.ToString().Equals("Rich")) { PaymentAmount *= 5; }
-                else if (Zones.GetZone(location.EntrancePosition).Economy.ToString().Equals("Middle")) { PaymentAmount *= 2; }
+
+
+                //if (location.GetType().ToString().Equals("Bank"))
+                //{
+                //    PaymentAmount = RandomItems.GetRandomNumberInt(10000, 20000).Round(100);
+                //}
+                //else if (location.GetType().ToString().Equals("Dealership"))
+                //{
+                //    PaymentAmount = RandomItems.GetRandomNumberInt(5000, 10000).Round(100);
+                //}
+                //else if (location.GetType().ToString().Equals("Hotel"))
+                //{
+                //    PaymentAmount = RandomItems.GetRandomNumberInt(2000, 5000).Round(100);
+                //}
+                //else 
+                //{ 
+                //    PaymentAmount = RandomItems.GetRandomNumberInt(500, 1000).Round(50);
+                //}
+
+                if (Zones.GetZone(location.EntrancePosition).Economy == eLocationEconomy.Rich)// .ToString().Equals("Rich")) 
+                { 
+                    PaymentAmount *= 5; 
+                }
+                else if (Zones.GetZone(location.EntrancePosition).Economy == eLocationEconomy.Middle)//  .ToString().Equals("Middle")) 
+                { 
+                    PaymentAmount *= 2; 
+                }
 
                 MoneyToPickup += PaymentAmount;
                 location.ProtectionMoneyDue = PaymentAmount;
@@ -315,16 +340,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendMoneyDropOffMessage()
         {
             List<string> Replies = new List<string>() {
-                                $"Take the money to {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
-                                $"Now bring me the money, don't get lost. {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
-                                $"Remember that's MY MONEY you're holding. Drop it off at {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
-                                $"Drop the money off at {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}",
-                                $"Bring the stuff back to {HiringGangDen.Name} in {HiringGang.ColorPrefix}{HiringGangDen.ZoneName}~s~. Don't take long.",  };
+                                $"Take the money to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}",
+                                $"Now bring me the money, don't get lost. {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}",
+                                $"Remember that's MY MONEY you're holding. Drop it off at {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}",
+                                $"Drop the money off at {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}",
+                                $"Bring the stuff back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}~s~. Don't take long.",  };
             Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0, true);
         }
         private void SendInitialInstructionsMessage()
         {
-            string locationsList = RacketeeringLocations.Count > 5 ? $"these locations in ~y~{SelectedZone.DisplayName}~s~" : $"~y~{string.Join(", ", RacketeeringLocations.Select(loc => loc.Name))}~s~";
+            string locationsList = RacketeeringLocations.Count > 5 ? $"these locations in ~p~{SelectedZone.DisplayName}~s~" : $"~b~{string.Join(", ", RacketeeringLocations.Select(loc => loc.Name))}~s~";
             List<string> Replies;
             if (WillExtortEnemyTurf)
             {
@@ -349,6 +374,31 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 };
             }
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
+        }
+
+        public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+        {
+            EntryPoint.WriteToConsole("Gang Racketerering Task OnTransactionMenuCreated Start");
+            if(interactionMenu == null)
+            {
+                return;
+            }
+            if(gameLocation == null || !gameLocation.IsPlayerInterestedInLocation)
+            {
+                return;
+            }    
+            if (interactionMenu.MenuItems.Contains(collectMoney))
+            {
+                return;
+
+            }
+            collectMoney = new UIMenuItem("Collect Protection Money", $"Protection isn't optional or cheap.") { RightLabel = $"${gameLocation.ProtectionMoneyDue}" };
+            collectMoney.Activated += (sender, selectedItem) =>
+            {
+                CollectMoney(gameLocation);
+            };
+            interactionMenu.AddItem(collectMoney);
+            EntryPoint.WriteToConsole("Gang Racketerering Task OnTransactionMenuCreated CREATED");
         }
     }
 }

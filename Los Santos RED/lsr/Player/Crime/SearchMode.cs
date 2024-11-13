@@ -19,6 +19,10 @@ namespace LosSantosRED.lsr
         private uint GameTimeStartedSearchMode;
         private uint GameTimeStartedActiveMode;
         private ISettingsProvideable Settings;
+        private bool IsPlayerOutsidePoliceRadius;
+        private uint LastUpdateGameTime;
+        private uint TotalTimeOutsidePoliceRadius;
+
         public bool IsActive { get; private set; } = true;
         public SearchMode(IPoliceRespondable currentPlayer, ISettingsProvideable settings)
         {
@@ -29,11 +33,11 @@ namespace LosSantosRED.lsr
         public bool IsInStartOfSearchMode => IsInSearchMode && SearchModePercentage >= Settings.SettingsManager.PoliceTaskSettings.SixthSenseSearchModeLimitPercentage;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
-        public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? Game.GameTime - GameTimeStartedSearchMode : 0;
-        public uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
-        public uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PoliceSettings.SearchTimeMultiplier;//30000;//30 seconds each
-        public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
-        public string DebugString { get; set; }
+        public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? (Game.GameTime - GameTimeStartedSearchMode) - (TotalTimeOutsidePoliceRadius * Settings.SettingsManager.PoliceTaskSettings.OutsidePoliceResponseSearchScalar) : 0;
+      //  private uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
+        private uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PoliceSettings.SearchTimeMultiplier;//30000;//30 seconds each
+        //private uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
+       // private string DebugString { get; set; }
         public void Update()
         {
             if (IsActive)
@@ -41,8 +45,9 @@ namespace LosSantosRED.lsr
                 DetermineMode();
                 ToggleModes();
                 Player.IsInSearchMode = IsInSearchMode;
+                LastUpdateGameTime = Game.GameTime;
             }
-            DebugString = IsInSearchMode ? $"TimeInSearchMode: {TimeInSearchMode}, CurrentSearchTime: {CurrentSearchTime}" + $" SearchModePercentage: {SearchModePercentage}" : $"TimeInActiveMode: {TimeInActiveMode}, CurrentActiveTime: {CurrentActiveTime}";
+            //DebugString = IsInSearchMode ? $"TimeInSearchMode: {TimeInSearchMode}, CurrentSearchTime: {CurrentSearchTime}" + $" SearchModePercentage: {SearchModePercentage}" : $"TimeInActiveMode: {TimeInActiveMode}, CurrentActiveTime: {CurrentActiveTime}";
         }
         public void Dispose()
         {
@@ -88,7 +93,24 @@ namespace LosSantosRED.lsr
                 IsInActiveMode = false;
                 IsInSearchMode = false;
             }
+
+            if(IsInSearchMode && !Player.PoliceResponse.IsWithinPoliceRadius)
+            {
+                TotalTimeOutsidePoliceRadius += LastUpdateGameTime - Game.GameTime;
+            }
+
+
+
+
         }
+        //private void OnPlayerWentOutsidePoliceRadius()
+        //{
+        //    IsPlayerOutsidePoliceRadius = true;
+        //}
+        //private void OnPlayerWentInsidePoliceRadius()
+        //{
+        //    IsPlayerOutsidePoliceRadius = false;
+        //}
         private void ToggleModes()
         {
             if (PrevIsInActiveMode != IsInActiveMode)
@@ -119,6 +141,8 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
+            TotalTimeOutsidePoliceRadius = 0;
+            LastUpdateGameTime = Game.GameTime;
             Player.OnWantedSearchMode();
             //EntryPoint.WriteToConsole("SearchMode Start Search Mode");
         }
@@ -130,6 +154,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
+            TotalTimeOutsidePoliceRadius = 0;
             Player.OnWantedActiveMode();
             //EntryPoint.WriteToConsole("SEARCH MODE: Start Active Mode");
         }
@@ -141,6 +166,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
+            TotalTimeOutsidePoliceRadius = 0;
             Player.SetWantedLevel(0, "Search Mode Timeout", true);
             //EntryPoint.WriteToConsole("SEARCH MODE: End Search Mode");
         }
