@@ -139,6 +139,12 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool AllowYellGetDownPrompt { get; set; }
     public bool AllowIntimidation { get; set; }
 
+
+
+    public uint MovingTowardsTime { get; set; }
+    public uint MovingAwayTime { get; set; }
+    public float TunnelZValueMax { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -253,6 +259,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
         StationaryDistance = 40f;
         AllowYellGetDownPrompt = true;
         AllowIntimidation = true;
+
+        MovingTowardsTime = 1000;
+        MovingAwayTime = 1500;
+        TunnelZValueMax = -10.0f;
     }
 
 }

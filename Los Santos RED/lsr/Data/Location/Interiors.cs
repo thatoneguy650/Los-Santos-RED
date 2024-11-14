@@ -284,6 +284,7 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true, 
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    
                     Generate247Interact1("247rt68itemtheftint1",new Vector3(547.77f, 2669.75f, 42.15649f), 272.6136f),
                     Generate247Interact2("247rt68itemtheftint2",new Vector3(546.6794f, 2668.725f, 42.15649f), 88.89041f),
                     Generate247Interact3("247rt68itemtheftint3",new Vector3(544.7056f, 2668.834f, 42.15654f), 269.0896f),
@@ -324,6 +325,7 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true, 
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247chumashsafe1",new Vector3(-3250.059f,1004.447f,12.83072f),81.94628f),
                     Generate247Interact1("247chumashitemtheftint1",new Vector3(-3243.837f, 1001.816f, 12.83072f), 173.4079f),
                     Generate247Interact2("247chumashitemtheftint2",new Vector3(-3244.236f, 1002.773f, 12.83072f), 349.7097f),
                     Generate247Interact3("247chumashitemtheftint3",new Vector3(-3244.103f, 1004.807f, 12.83072f), 171.435f),
@@ -339,6 +341,7 @@ public class Interiors : IInteriors
 
                             InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247palominosafe1",new Vector3(2549.198f,384.9543f,108.6229f),90.04411f),
                     Generate247Interact1("247palominoitemtheftint1",new Vector3(2555.472f, 382.472f, 108.623f), 177.8884f),
                     Generate247Interact2("247palominoitemtheftint2",new Vector3(2555.143f, 383.8918f, 108.623f), 354.7713f),
                     Generate247Interact3("247palominoitemtheftint3",new Vector3(2555.162f, 385.2853f, 108.623f), 173.1648f),
@@ -354,6 +357,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247strawberrysafe1",new Vector3(28.21077f,-1339.231f,29.49702f),358.4373f),
                     Generate247Interact1("247strawberryitemtheftint1",new Vector3(26.20215f, -1345.724f, 29.49702f), 84.35592f),
                     Generate247Interact2("247strawberryitemtheftint2",new Vector3(27.30392f, -1345.065f, 29.49702f), 255.6686f),
                     Generate247Interact3("247strawberryitemtheftint3",new Vector3(29.2087f, -1344.919f, 29.49702f), 88.0149f),
@@ -368,6 +372,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsWeaponRestricted = true,
                     InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247banhamsafe1",new Vector3(-3047.899f,585.6166f,7.908929f),107.6895f),
                     Generate247Interact1("247Banhamitemtheftint1",new Vector3(-3041.139f, 585.6979f, 7.908929f), 196.5549f),
                     Generate247Interact2("247Banhamitemtheftint2",new Vector3(-3041.866f, 586.2217f, 7.908929f), 19.2346f),
                     Generate247Interact3("247Banhamitemtheftint3",new Vector3(-3042.159f, 588.2862f, 7.908929f), 196.0548f),
@@ -383,6 +388,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247vinewoodsafe1",new Vector3(378.2333f,333.4276f,103.5664f),348.8413f),
                     Generate247Interact1("247vinewooditemtheftint1",new Vector3(374.461f, 327.4398f, 103.5665f), 70.37616f),
                     Generate247Interact2("247vinewooditemtheftint2",new Vector3(375.8289f, 327.4654f, 103.5665f), 255.7188f),
                     Generate247Interact3("247vinewooditemtheftint3",new Vector3(377.3474f, 327.4413f, 103.5665f), 60.62653f),
@@ -397,6 +403,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247Senorasafe1",new Vector3(2672.808f,3286.673f,55.24113f),59.95816f),
                     Generate247Interact1("247Senoraitemtheftint1",new Vector3(2677.432f, 3281.56f, 55.24113f), 146.3796f),
                     Generate247Interact2("247Senoraitemtheftint2",new Vector3(2677.385f, 3282.917f, 55.24113f), 317.2356f),
                     Generate247Interact3("247Senoraitemtheftint3",new Vector3(2678.458f, 3284.286f, 55.24113f), 144.8814f),
@@ -411,6 +418,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
+
                     Generate247Interact1("247Senora2itemtheftint1",new Vector3(1729.814f, 6416.296f, 35.03724f), 54.17762f),
                     Generate247Interact2("247Senora2itemtheftint2",new Vector3(1731.211f, 6415.733f, 35.03724f), 235.11f),
                     Generate247Interact3("247Senora2itemtheftint3",new Vector3(1732.993f, 6414.77f, 35.03724f), 59.2864f),
@@ -427,6 +435,7 @@ public class Interiors : IInteriors
 
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("247sandysafe1",new Vector3(1959.353f,3748.935f,32.34374f),30.7123f),
                     Generate247Interact1("247sandyitemtheftint1",new Vector3(1960.4f, 3742.231f, 32.34375f), 107.836f),
                     Generate247Interact2("247sandyitemtheftint2",new Vector3(1961.382f, 3743.152f, 32.34375f), 287.01f),
                     Generate247Interact3("247sandyitemtheftint3",new Vector3(1962.828f, 3744.041f, 32.34375f), 117.9122f),
@@ -557,8 +566,9 @@ public class Interiors : IInteriors
                     new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
                 }) { IsWeaponRestricted = true,
 
-                        InteractPoints = new List<InteriorInteract>()
+                InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("robsdelperrosafe1",new Vector3(-1220.87f,-916.0239f,11.32633f),120.3279f),
                     Generate247Interact1("robsdelperroitemtheftint1",new Vector3(-1821.235f, 792.0287f, 138.1301f), 310.7221f),
                     Generate247Interact4("robsdelperroitemtheftint4",new Vector3(-1827.185f, 791.273f, 138.236f), 268.6499f),
                 },
@@ -576,6 +586,7 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("robschumashsafe1",new Vector3(-2959.66f,387.1028f,14.04329f),174.1468f),
                     Generate247Interact1("robschumashitemtheftint1",new Vector3(-2968.487f, 390.65f, 15.04331f), 267.1219f),
                     Generate247Interact4("robschumashitemtheftint4",new Vector3(-2970.053f, 390.9432f, 15.04331f), 357.4018f),
                 },
@@ -590,6 +601,7 @@ public class Interiors : IInteriors
 
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("robsprosperitysafe1",new Vector3(-1478.886f,-375.4599f,39.1634f),225.3352f),
                     Generate247Interact1("robsprosperityitemtheftint1",new Vector3(-1487.278f, -379.4213f, 40.16343f), 315.5894f),
                     Generate247Interact4("robsprosperityitemtheftint4",new Vector3(-1488.674f, -380.564f, 40.16343f), 43.9887f),
                 },
@@ -606,6 +618,7 @@ public class Interiors : IInteriors
 
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("robselranchosafe1",new Vector3(1126.804f,-980.1304f,45.41582f),2.577071f),
                     Generate247Interact1("robselranchoitemtheftint1",new Vector3(1136.005f, -981.7958f, 46.41584f), 104.7439f),
                     Generate247Interact4("robselranchoitemtheftint4",new Vector3(1137.729f, -981.8011f, 46.41584f), 190.8169f),
                 },
@@ -8672,6 +8685,32 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
             ,new Interior(272129, "Terrorbyte Interior")// { IsMPOnly = true }
         });
     }
+
+
+
+    private ItemTheftInteract GenerateSafeDrillingInteract(string name, Vector3 position, float heading)
+    {
+        int minItems = RandomItems.GetRandomNumberInt(10, 25);
+        int maxItems = minItems + RandomItems.GetRandomNumberInt(2, 10);
+        return new ItemTheftInteract(name, position, heading, "Drill Safe")//Looking at the front counter, mostly candy bars and chips
+        {
+            MinItems = 1,
+            MaxItems = 3,
+            SpawnPercent = 100,
+            ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+            UseNavmesh = false,
+            HasPreInteractRequirement = true,
+            ItemUsePreInteract = new DrillUsePreInteract(),
+            PossibleItems = new List<TheftInteractItem>()
+                        {
+                            new TheftInteractItem("Marked Cash Stack",1,1,100),
+                            new TheftInteractItem("Marked Cash Stack",1,1,65),
+                            new TheftInteractItem("Marked Cash Stack",1,1,40),
+                        }
+        };
+    }
+
+
     private ItemTheftInteract Generate247Interact1(string name,Vector3 position,float heading)
     {
         int minItems = RandomItems.GetRandomNumberInt(10, 25);

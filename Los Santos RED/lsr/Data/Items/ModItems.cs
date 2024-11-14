@@ -100,67 +100,48 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = PossibleItems.Copy();
 
         //Taxi Service 
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "lurcher");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "dukes2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "massacro2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "caddy3");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "lurcher" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Minivan Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "dukes2" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "massacro2" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Vivanite Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "caddy3" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servinterceptor" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servstanier2" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Vivanite Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "taxvivaniteliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Dilettante Service", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "servdilettante" });
+
+        //Fire/EMS
+        newPossibleItems.VehicleItems.Add(new VehicleItem("MTL Fire Truck (Livery)", ItemType.Vehicles) { ModelName = "firetrukliv", OverrideMakeName = "MTL", OverrideClassName = "Utility", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Ambulance (Livery)", ItemType.Vehicles) { ModelName = "ambulanceliv", OverrideMakeName = "Brute", OverrideClassName = "Van", });
+
+        //Mil
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "insurgent3");
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Mammoth Squaddie Armed", true, ItemType.Vehicles) { ModelName = "insurgent3", Description = "Long gone are the days of playing army men with other kids. Now you play army men with grownups. And what's more grownup than giving each other a high and tight before piling into an armored truck, stripping to the waist and making revving noises? It's just like the old days, but your mom's not there to make you snacks.", });
+
+
+        //Heli
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Frogger Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "polfroggerliv", Description = "Stylish, roomy, easy to handle with a cruise speed of 130 knots, this 4-seat single-engine light helicopter is popular with both private pilots and charter companies." });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Police (Livery)", ItemType.Vehicles) { ModelName = "polmavliv", OverrideMakeName = "Buckingham", OverrideClassName = "Helicopter", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Western Annihilator", ItemType.Vehicles) { ModelName = "annihilatorliv", OverrideMakeName = "Western", OverrideClassName = "Helicopter", });
+
 
         //Police
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "sheriff");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "ruiner3");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "policeold1");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "pranger");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "blista3");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "stalion2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "gauntlet2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "dominator2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "sovereign");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "marshall");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi4");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "jester2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "dune4");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "dune5");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "wastelander");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "hotring");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "blazer5");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tampa3");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "oppressor");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "shotaro");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "zhaba");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "zr380");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "zr3802");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "monster3");
-
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gresley Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "sheriff" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Bison Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "ruiner3" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit Police", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", ModelName = "policeold1" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Fugitive Police", true, ItemType.Vehicles) { OverrideMakeName = "Cheval", ModelName = "pranger" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Washington Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "blista3" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 1st Gen Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "stalion2" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Dundreary Landstalker XL Police", true, ItemType.Vehicles) { OverrideMakeName = "Dundreary", ModelName = "dominator2" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Sanchez Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "sovereign" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Terminus Police", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "marshall" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Thrust Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "issi4" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Vindicator Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "deathbike" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Buffalo STX Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "jester2" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "dune4" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Granger 3600 Police", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", ModelName = "dune5" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Mammoth Patriot P2 Police", true, ItemType.Vehicles) { OverrideMakeName = "Mammoth", ModelName = "wastelander" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Seminole Police", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "hotring" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Aleutian Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "blazer5" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany STR Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "tampa3" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Ubermacht Rebla GTS Police", true, ItemType.Vehicles) { OverrideMakeName = "Ubermacht", ModelName = "oppressor" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Verus Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "shotaro" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Riata Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "zhaba" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "zr380" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Ubermacht Oracle Police", true, ItemType.Vehicles) { OverrideMakeName = "Ubermacht", ModelName = "zr3802" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Radius Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "monster3" });
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Aleutian Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polaleutianliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Bison Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "polbisonliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Buffalo S Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "polbuffalosliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Buffalo STX Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "polbuffalostxliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polcaracaraliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Fugitive Police", true, ItemType.Vehicles) { OverrideMakeName = "Cheval", ModelName = "polfugitiveliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Granger 3600 Police", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", ModelName = "polgranger3600liv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gresley Police", true, ItemType.Vehicles) { OverrideMakeName = "Bravado", ModelName = "polgresleyliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "polkurumaunmarked" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Dundreary Landstalker XL Police", true, ItemType.Vehicles) { OverrideMakeName = "Dundreary", ModelName = "pollandstalkerxlliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Ubermacht Oracle Police", true, ItemType.Vehicles) { OverrideMakeName = "Ubermacht", ModelName = "poloracleliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Radius Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polradiusliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Ubermacht Rebla GTS Police", true, ItemType.Vehicles) { OverrideMakeName = "Ubermacht", ModelName = "polreblagtsliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Riata Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polriataliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Sanchez Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "polsanchezliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Terminus Police", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "polterminusliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Thrust Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "polthrustliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Verus Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "polverusliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Vindicator Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "polvindicatorliv" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany STR Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "polvstrliv" });
+        
         //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullModernTraffic()
@@ -168,26 +149,24 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = PossibleItems.Copy();
 
         //Sedans
-        //newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "issi2");
-        //newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "tornado3");
-        //newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "merit");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civesperanto", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "civmerit" });
 
 
         //Trucks
+        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "caracara");
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Service", true, ItemType.Vehicles) { ModelName = "caracara" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 4x2", true, ItemType.Vehicles) { ModelName = "civcaracarawork" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat 4x4", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatoffroad" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat Regular Bed", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatwork" });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
 
         //HELIS
-        //newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
-        //newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike3");     
-        //newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
 
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\ModItems_FullModernTraffic.xml");
@@ -195,23 +174,27 @@ public class ModItems : IModItems
     private void DefaultConfig_LosSantos2008()
     {
         PossibleItems oldPossibleItems = PossibleItems.Copy();
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "phantom2");
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "phantom2" });
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "deathbike2");
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "deathbike2" });//police 1st gen mav
 
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "policeold1");
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "blista3");
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "stalion2");
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "wastelander");
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "hotring");
-        oldPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "sovereign");
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit Police", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", ModelName = "policeold1" });
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Washington Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "blista3" });
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 1st Gen Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "stalion2" });
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Mammoth Patriot P2 Police", true, ItemType.Vehicles) { OverrideMakeName = "Mammoth", ModelName = "wastelander" });
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Canis Seminole Police", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "hotring" });
-        oldPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Sanchez Police", true, ItemType.Vehicles) { OverrideMakeName = "Maibatsu", ModelName = "sovereign" });
+        //Civilian
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civesperanto", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "civmerit" });
+
+        //Service Taxi
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Minivan Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servminivan" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 1st Gen Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servstanierold" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Karin Dilettante Service", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "servdilettante" });
+
+        //Police
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Western Police Bike (Livery)", ItemType.Vehicles) { ModelName = "policebikeold", OverrideMakeName = "Western", OverrideClassName = "Motorcycle", });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "polesperantoliv" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick Classic Police", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "polmaverickoldliv" });//police 1st gen mav
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit Police", true, ItemType.Vehicles) { OverrideMakeName = "Declasse", ModelName = "polmeritliv" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Washington Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "polwashingtonunmarked" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 1st Gen Police", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polstanieroldliv" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Mammoth Patriot P2 Police", true, ItemType.Vehicles) { OverrideMakeName = "Mammoth", ModelName = "polpatriotliv" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Canis Seminole Police", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "polseminoleliv" });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Police Transporter (Livery)", ItemType.Vehicles) { ModelName = "poltransporterliv", OverrideMakeName = "Declasse", OverrideClassName = "Van", });
+        oldPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Fugitive Police", true, ItemType.Vehicles) { OverrideMakeName = "Cheval", ModelName = "polfugitiveliv" });
 
 
         Serialization.SerializeParam(oldPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ModItems_LosSantos2008.xml");

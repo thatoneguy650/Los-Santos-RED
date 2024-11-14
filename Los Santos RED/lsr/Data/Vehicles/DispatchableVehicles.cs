@@ -144,10 +144,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
             SetupDefaults();
             DefaultConfig_Simple();
-
             DefaultConfig_FullExpandedJurisdiction();
-
-
             DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();
@@ -160,7 +157,6 @@ public class DispatchableVehicles : IDispatchableVehicles
 //        }
 //#endif
     }
-
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         DispatchableVehicles_FEJ = new DispatchableVehicles_FEJ(this);
@@ -170,7 +166,6 @@ public class DispatchableVehicles : IDispatchableVehicles
         DefaultConfig_LosSantos_2008();
         DefaultConfig_FullExpandedJurisdiction_Stanier();
     }
-
     public void Setup()
     {
         foreach(DispatchableVehicleGroup dvg in VehicleGroupLookup)

@@ -338,8 +338,8 @@ public class GameLocation : ILocationDispatchable
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        RacketeeringAmountMin = 500;
-        RacketeeringAmountMax = 1000;
+        //RacketeeringAmountMin = 500;
+        //RacketeeringAmountMax = 1000;
     }
 
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)

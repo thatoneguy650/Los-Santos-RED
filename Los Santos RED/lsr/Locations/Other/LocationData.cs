@@ -238,7 +238,7 @@ namespace LosSantosRED.lsr.Locations
                 float groundZ = 850.0f;
                 bool foundGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(playerpos.X, playerpos.Y, playerpos.Z + 850f, ref groundZ, false);
 
-                if (foundGround && groundZ >= playerpos.Z + Math.Abs(Settings.SettingsManager.DebugSettings.TunnelZValueMax))
+                if (foundGround && groundZ >= playerpos.Z + Math.Abs(Settings.SettingsManager.PlayerOtherSettings.TunnelZValueMax))
                 {
 
                     PossiblyInTunnel = true;

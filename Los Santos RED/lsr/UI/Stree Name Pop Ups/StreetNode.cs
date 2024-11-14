@@ -37,47 +37,55 @@ public class StreetNode
 
 
 
-        string textToDisplay = "";
-        if (CurrentStreet != null)
-        {
-            textToDisplay += CurrentStreet.ProperStreetName;
-        }
-        if (CurrentCrossStreet != null)
-        {
-            textToDisplay += " - " + CurrentCrossStreet.ProperStreetName;
-        }
+        //string textToDisplay = "";
+        //if (CurrentStreet != null)
+        //{
+        //    textToDisplay += CurrentStreet.ProperStreetName;
+        //}
+        //if (CurrentCrossStreet != null)
+        //{
+        //    textToDisplay += " - " + CurrentCrossStreet.ProperStreetName;
+        //}
 
 
 
         
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_ORGANISATION_NAME");
+        //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_ORGANISATION_NAME");
 
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(textToDisplay);
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+        //NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        //NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(textToDisplay);
+        //NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
 
-        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayStyleIndex);
-        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayColorIndex);
-        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayFontIndex);
-
-
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-        Vector3 rotationVector;
-        float realYaw = Heading;
-        realYaw = 360 - realYaw;
-        realYaw = realYaw - 180;
-        rotationVector = new Vector3(0f, 0f, realYaw);
-
-        Vector3 drawPos = Position;
-        drawPos += new Vector3(Settings.SettingsManager.DebugSettings.StreetDisplayOffsetX, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetY, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetZ);
+        //NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayStyleIndex);
+        //NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayColorIndex);
+        //NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(Settings.SettingsManager.DebugSettings.StreetDisplayFontIndex);
 
 
-            Render3D(globalScaleformID,
-                drawPos,
-                 rotationVector,
-                 Settings.SettingsManager.DebugSettings.StreetDisplayScaleX * new Vector3(1.0f, 1.0f, 1.0f));
+        //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        //Vector3 rotationVector;
+        //float realYaw = Heading;
+        //realYaw = 360 - realYaw;
+        //realYaw = realYaw - 180;
+        //rotationVector = new Vector3(0f, 0f, realYaw);
+
+        //Vector3 drawPos = Position;
+        //drawPos += new Vector3(Settings.SettingsManager.DebugSettings.StreetDisplayOffsetX, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetY, Settings.SettingsManager.DebugSettings.StreetDisplayOffsetZ);
+
+
+        //    Render3D(globalScaleformID,
+        //        drawPos,
+        //         rotationVector,
+        //         Settings.SettingsManager.DebugSettings.StreetDisplayScaleX * new Vector3(1.0f, 1.0f, 1.0f));
         
+
+
+
+
+
+
+
+
 
 
         //NativeFunction.Natives.SET_DRAW_ORIGIN(drawPos.X, drawPos.Y, drawPos.Z, 0);

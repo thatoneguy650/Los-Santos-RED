@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr
         public bool IsInStartOfSearchMode => IsInSearchMode && SearchModePercentage >= Settings.SettingsManager.PoliceTaskSettings.SixthSenseSearchModeLimitPercentage;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
-        public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? (Game.GameTime - GameTimeStartedSearchMode) - (TotalTimeOutsidePoliceRadius * Settings.SettingsManager.PoliceTaskSettings.OutsidePoliceResponseSearchScalar) : 0;
+        public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? (Game.GameTime - GameTimeStartedSearchMode) - (TotalTimeOutsidePoliceRadius * Settings.SettingsManager.PoliceSettings.OutsidePoliceResponseSearchScalar) : 0;
       //  private uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
         private uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PoliceSettings.SearchTimeMultiplier;//30000;//30 seconds each
         //private uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each

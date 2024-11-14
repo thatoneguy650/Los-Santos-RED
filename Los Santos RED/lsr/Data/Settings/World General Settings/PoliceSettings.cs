@@ -125,16 +125,20 @@ public class PoliceSettings : ISettingsDefaultable
     public bool DisableSearchModeAtOneStart { get; set; }
 
 
-
-    public int RadioInTime { get; set; }
-    public bool AllowLosingWantedByKillingBeforeRadio { get; set; }
-    public bool AllowReactionsToBodies { get; set; }
+    [Description("Time (in ms) that it takes for police and security to radio in player and civilian crimes.")]
+    public uint RadioInTime { get; set; }
+    //public bool AllowLosingWantedByKillingBeforeRadio { get; set; }
+    //public bool AllowReactionsToBodies { get; set; }
+    [Description("If enabled cops will invesigate shooting source locations.")]
     public bool AllowShootingInvestigations { get; set; }
+    [Description("Enable/disable radio in animations.")]
     public bool AllowRadioInAnimation { get; set; }
+    [Description("Enable/disable police using breaching logic when the player is 'inside' a location. They will be harder to lose and will be more likely to search and clear buildings when enabled.")]
     public bool AllowBreachingLogic { get; set; }
 
-
+    [Description("Time (in ms) that the breaching logic will expire when you are outside the range.")]
     public int BreachingExipireTimeOutsideWithMinDistance { get; set; }
+    [Description("Distance (in meters) that the breaching logic will expire when you are outside the range.")]
     public float BreachingExipireDistanceOutsideWithMinDistance { get; set; }
 
     public int BreachingExpireTimeOutsideOnly { get; set; }
@@ -142,7 +146,7 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
-
+    [Description("Enable/disable us marshals being dispached for APBs")]
     public bool AllowMarshalsAPBResponse { get; set; }
     public uint MinTimeBetweenMarshalsAPBResponse { get; set; }
     public uint MaxTimeBetweenMarshalsAPBResponse { get; set; }
@@ -153,9 +157,20 @@ public class PoliceSettings : ISettingsDefaultable
 
     public bool SendMarshalsAPBResponseText { get; set; }
     public float MarshalsAPBResponseExtraRadiusDistance { get;  set; }
+
+    [Description("Enable/disable police being able to stop trains when the player is spotted riding.")]
     public bool AllowStoppingTrains { get; set; }
     public uint MinTimeToStopTrains { get; set; }
     public uint MaxTimeToStopTrains { get; set; }
+
+
+    [Description("Minimum size of the police response area. Ex. chase for a one star wanted")]
+    public float MinimumPoliceResponseRadius { get; set; }
+    [Description("Additional radius added for each wanted level. Ex. At PoliceResponseRadiusIncrement = 100 a 3 star wanted level would result in a 300 m response radius ")]
+    public float PoliceResponseRadiusIncrement { get; set; }
+    [Description("Time scalar for search time when outside the police search radius")]
+    public uint OutsidePoliceResponseSearchScalar { get; set; }
+
 
 
     [OnDeserialized()]
@@ -166,8 +181,6 @@ public class PoliceSettings : ISettingsDefaultable
     public PoliceSettings()
     {
         SetDefault();
-
-
     }
     public void SetDefault()
     {
@@ -226,8 +239,8 @@ public class PoliceSettings : ISettingsDefaultable
         HighResponseWantedLevelRequirement = 2;
         DisableSearchModeAtOneStart = false;
         RadioInTime = 5000;
-        AllowLosingWantedByKillingBeforeRadio = true;
-        AllowReactionsToBodies = true;
+        //AllowLosingWantedByKillingBeforeRadio = true;
+       // AllowReactionsToBodies = true;
         AllowShootingInvestigations = true;
         AllowRadioInAnimation = true;
 
@@ -250,5 +263,10 @@ public class PoliceSettings : ISettingsDefaultable
 
         MinTimeToStopTrains = 20000;
         MaxTimeToStopTrains = 40000;
+
+        MinimumPoliceResponseRadius = 50f;
+        PoliceResponseRadiusIncrement = 200f;
+
+        OutsidePoliceResponseSearchScalar = 1;
     }
 }

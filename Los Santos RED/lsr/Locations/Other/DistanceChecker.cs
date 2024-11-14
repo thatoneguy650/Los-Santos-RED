@@ -20,8 +20,8 @@ public class DistanceChecker
         Settings = settings;
     }
 
-    public bool IsMovingTowards => GameTimeStartingMovingTowards != 0 && Game.GameTime - GameTimeStartingMovingTowards >= Settings.SettingsManager.DebugSettings.MovingTowardsTime;
-    public bool IsMovingAway => GameTimeStartingMovingAway != 0 && Game.GameTime - GameTimeStartingMovingAway >= Settings.SettingsManager.DebugSettings.MovingAwayTime;
+    public bool IsMovingTowards => GameTimeStartingMovingTowards != 0 && Game.GameTime - GameTimeStartingMovingTowards >= Settings.SettingsManager.PlayerOtherSettings.MovingTowardsTime;
+    public bool IsMovingAway => GameTimeStartingMovingAway != 0 && Game.GameTime - GameTimeStartingMovingAway >= Settings.SettingsManager.PlayerOtherSettings.MovingAwayTime;
     public float DistanceToPlayer => currentDistanceToPlayer;
     public void UpdateMovement(float distanceToPlayer)
     {

@@ -248,11 +248,11 @@ namespace LosSantosRED.lsr
         {      
             if(!WantedLevelHasBeenRadioedIn)
             {
-                CurrentPoliceRadius = Settings.SettingsManager.PoliceTaskSettings.MinimumPoliceResponseRadius;// 20f;
+                CurrentPoliceRadius = Settings.SettingsManager.PoliceSettings.MinimumPoliceResponseRadius;// 20f;
             }
             else
             {
-                CurrentPoliceRadius = (Settings.SettingsManager.PoliceTaskSettings.PoliceResponseRadiusIncrement * Player.WantedLevel); //25f + ((1 - Player.SearchModePercentage) * 175f);
+                CurrentPoliceRadius = (Settings.SettingsManager.PoliceSettings.PoliceResponseRadiusIncrement * Player.WantedLevel); //25f + ((1 - Player.SearchModePercentage) * 175f);
             }
             if (CurrentWantedCenter == Vector3.Zero)
             {
@@ -576,6 +576,7 @@ namespace LosSantosRED.lsr
                     NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Wanted Center");
                     NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(LastSeenLocationBlip);
                     NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastSeenLocationBlip.Handle, true);
+                    //NativeFunction.Natives.SET_BLIP_FLASHES((uint)LastSeenLocationBlip.Handle, true);
                     EntryPoint.WriteToConsole($"LAST SEEN LOCATION BLIP CREATED");
                 }
                 else if (LastSeenLocationBlip.Exists())
@@ -622,7 +623,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
         private void PoliceKilledUpdate()
         {
             if (!Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
