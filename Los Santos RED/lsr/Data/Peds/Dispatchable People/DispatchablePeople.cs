@@ -71,6 +71,11 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> BarPeds;
     private List<DispatchablePerson> HaircutPeds;
     private List<DispatchablePerson> BobMuletPeds;
+    private List<DispatchablePerson> BurgerShotPeds;
+
+    public List<DispatchablePerson> CluckinBellPeds { get; private set; }
+
+    private List<DispatchablePerson> RegularPeds;
 
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
@@ -94,6 +99,7 @@ public class DispatchablePeople : IDispatchablePeople
     private DispatchablePeople_Varrios DispatchablePeople_Varrios;
     private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath;
     private DispatchablePeople_UptownRiders DispatchablePeople_UptownRiders;
+    private int optionalpropschance;
 
     public List<DispatchablePerson> MafiaPeds { get; set; }
     public List<DispatchablePerson> LostMCPeds { get; set; }
@@ -103,7 +109,6 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> AngelsOfDeathPeds { get; set; }
     public List<DispatchablePerson> UptownRidersPeds { get; set; }
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
-
     public void Setup(IIssuableWeapons issuableWeapons)
     {
         foreach (DispatchablePersonGroup dpg in PeopleGroupLookup)
@@ -119,7 +124,6 @@ public class DispatchablePeople : IDispatchablePeople
             }
         }
     }
-
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -154,7 +158,7 @@ public class DispatchablePeople : IDispatchablePeople
     {
         // Game.DisplaySubtitle(Game.LocalPlayer.Character.SeatIndex.ToString());
 
-        int optionalpropschance = 20;
+        optionalpropschance = 20;
 
 
         List<PedPropComponent> MaleCopShortSleeveOptionalProps = new List<PedPropComponent>() {
@@ -180,7 +184,7 @@ public class DispatchablePeople : IDispatchablePeople
             new PedPropComponent(6, 20, 2),
         };
 
-        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_shepherd", 50, 50)
+        DispatchablePerson GenericK9 = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
             DebugName = "K9_Shepherd",
@@ -192,6 +196,9 @@ public class DispatchablePeople : IDispatchablePeople
             OverrideSideArmsID = null,
             OverrideLongGunsID = null,
         };
+
+
+
 
         //Cops
         StandardCops = new List<DispatchablePerson>() {
@@ -325,6 +332,10 @@ public class DispatchablePeople : IDispatchablePeople
 
         };
         SheriffPeds = new List<DispatchablePerson>() {
+
+            GetGenericMPDetectivePed(2,2,2,true),
+            GetGenericMPDetectivePed(2,2,2,false),
+
             new DispatchablePerson("s_m_y_sheriff_01",60,60) {
                 DebugName = "LSSDDefaultNoArmorMale"
                 ,MaxWantedLevelSpawn = 2
@@ -356,7 +367,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0) }
                 ,OptionalPropChance = 70
             },
-            new DispatchablePerson("s_f_y_sheriff_01",0,25) {
+            new DispatchablePerson("s_f_y_sheriff_01",0,45) {
                 DebugName = "LSSDDefaultArmorFemale"
                 ,MaxWantedLevelSpawn = 3
                 ,EmptyHolster = new PedComponent(9,0,0,0)
@@ -378,8 +389,22 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },
                     new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })
             },
-            new DispatchablePerson("mp_m_freemode_01", 100,100) {
-                DebugName = "NOOSEMPMale1"
+
+            //Geneirc LSPD Style Cops
+
+
+            GetGenericMPCopPed(30,30,3,true, true),
+            GetGenericMPCopPed(30,30,3,true, false),
+            GetGenericMPCopPed(20,20,3,false, true),
+            GetGenericMPCopPed(20,20,3,false, false),
+
+            GetGenericMPDetectivePed(5,1,2,true),
+            GetGenericMPDetectivePed(5,1,2,false),
+
+
+            new DispatchablePerson("mp_m_freemode_01", 0,100) {
+                DebugName = "NOOSEMPMaleSWAT1"
+                ,MinWantedLevelSpawn = 3
                 ,AccuracyMin = 25
                 ,AccuracyMax = 40
                 ,ShootRateMin = 400
@@ -396,8 +421,9 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(3, 17, 0, 0),new PedComponent(4, 121, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 2, 0, 0),new PedComponent(10, 70, 0, 0),new PedComponent(11, 320, 0, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 141, 0),new PedPropComponent(1, 23, 9)})
             },
-            new DispatchablePerson("mp_m_freemode_01", 100,100) {
-                DebugName = "NOOSEMPMale2"
+            new DispatchablePerson("mp_m_freemode_01", 0,100) {
+                DebugName = "NOOSEMPMaleSWAT2"
+                ,MinWantedLevelSpawn = 3
                 ,AccuracyMin = 25
                 ,AccuracyMax = 40
                 ,ShootRateMin = 400
@@ -415,8 +441,9 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedPropComponent>() { new PedPropComponent(0, 141, 0)})
             },
 
-            new DispatchablePerson("mp_f_freemode_01", 50,50) {
-                DebugName = "NOOSEMPFemale1"
+            new DispatchablePerson("mp_f_freemode_01", 0,50) {
+                DebugName = "NOOSEMPFemaleSWAT1"
+                ,MinWantedLevelSpawn = 3
                 ,AccuracyMin = 25
                 ,AccuracyMax = 40
                 ,ShootRateMin = 400
@@ -433,8 +460,9 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(3, 18, 0, 0),new PedComponent(4, 127, 0, 0),new PedComponent(6, 24, 0, 0),new PedComponent(8, 9, 0, 0),new PedComponent(10, 79, 0, 0), new PedComponent(11, 331, 0, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 140, 0),new PedPropComponent(1,25,9) })
             },
-            new DispatchablePerson("mp_f_freemode_01", 50,50) {
-                DebugName = "NOOSEMPFemale2"
+            new DispatchablePerson("mp_f_freemode_01", 0,50) {
+                DebugName = "NOOSEMPFemaleSWAT2"
+                ,MinWantedLevelSpawn = 3
                 ,AccuracyMin = 25
                 ,AccuracyMax = 40
                 ,ShootRateMin = 400
@@ -456,6 +484,7 @@ public class DispatchablePeople : IDispatchablePeople
                 DebugName = "NOOSEMPMaleSniper"
                 ,GroupName = "Sniper"
                 ,RandomizeHead = true
+                ,MinWantedLevelSpawn = 3
                 ,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 17, 0, 0),new PedComponent(4, 121, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 2, 0, 0),new PedComponent(10, 70, 0, 0),new PedComponent(11, 320, 0, 0), },
@@ -587,6 +616,12 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("u_m_m_doa_01",100,100) { DebugName = "DOAAgentMale" },
         };
         SAHPPeds = new List<DispatchablePerson>() {
+
+
+
+            GetGenericMPDetectivePed(2,2,2,true),
+            GetGenericMPDetectivePed(2,2,2,false),
+
             new DispatchablePerson("s_m_y_hwaycop_01",100,100){
                 DebugName = "SAHPCarMale"
                 ,EmptyHolster = new PedComponent(9,0,0,0)
@@ -1636,20 +1671,16 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1) { DebugName = "CartelMale4" },
         };
 
-
-
         YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale1" },
             new DispatchablePerson("a_m_m_soucent_03",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
             new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale3" },
         };
-
         NorthHollandPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale1" },
             new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale2" },
             new DispatchablePerson("a_m_m_soucent_04",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale3" },
         };
-
         PetrovicPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("ig_russiandrunk",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale1" },
             new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale2" },
@@ -1692,17 +1723,40 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatRange = 2
             },
         };
+        IllicitMarketplacePeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("IG_DrugDealer",100,100),
+            new DispatchablePerson("S_M_Y_Dealer_01",100,100),
+        };
+        RegularPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_bevhills_02",100,100),
+            new DispatchablePerson("a_m_m_genfat_02",100,100),
+            new DispatchablePerson("a_m_m_eastsa_02",100,100),
+            new DispatchablePerson("a_m_m_afriamer_01",100,100),
+            new DispatchablePerson("a_m_m_stlat_02",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_01",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_02",100,100),
+            new DispatchablePerson("a_m_y_bevhills_01",100,100),
+            new DispatchablePerson("a_m_y_eastsa_02",100,100),
+            new DispatchablePerson("a_f_m_salton_01",100,100),
+            new DispatchablePerson("a_f_y_business_03",100,100),
+            new DispatchablePerson("a_f_m_tourist_01",100,100),
+            new DispatchablePerson("a_f_o_genstreet_01",100,100),
+            new DispatchablePerson("a_f_y_femaleagent",100,100),
+            new DispatchablePerson("a_f_y_fitness_02",100,100),
+        };
+
+        ServicePeds();
+    }
+
+    private void ServicePeds()
+    {
         TaxiDrivers = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_socenlat_01",100,100),
         };
         VendorPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_strvend_01",100,100),
             new DispatchablePerson("s_m_m_linecook",100,100),
-        };
-        IllicitMarketplacePeds = new List<DispatchablePerson>()
-        {
-            new DispatchablePerson("IG_DrugDealer",100,100),
-            new DispatchablePerson("S_M_Y_Dealer_01",100,100),
         };
         TellerPeds = new List<DispatchablePerson>()
         {
@@ -1724,6 +1778,130 @@ public class DispatchablePeople : IDispatchablePeople
         {
             new DispatchablePerson("s_m_m_hairdress_01",100,100),
         };
+        BurgerShotPeds = new List<DispatchablePerson>()
+        {
+            CreateBurgerShotPed(true),
+            CreateBurgerShotPed(false),
+
+        };
+        CluckinBellPeds = new List<DispatchablePerson>()
+        {
+            CreateCluckinBellPed(true),
+            CreateCluckinBellPed(false),
+        };
+    }
+
+    private DispatchablePerson CreateBurgerShotPed(bool isMale)
+    {
+        if(isMale)
+        {
+            return new DispatchablePerson("mp_m_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,22,7),//colors
+                    new PedComponent(8,15,0),
+                    new PedComponent(11,22,2),
+                    new PedComponent(2,31,0),
+                    new PedComponent(6,8,0),//colors
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_069_M","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+               
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 130, 2) },//hat
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_M_M_GENERICMALE_01_WHITE_MINI_01", "A_M_M_SALTON_01_WHITE_FULL_01", "A_M_M_TOURIST_01_WHITE_MINI_01", "A_M_M_MALIBU_01_LATINO_FULL_01" },
+
+            };
+        }
+        else
+        {
+            return new DispatchablePerson("mp_f_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,64,0),
+                    new PedComponent(11,338,7),
+                    new PedComponent(8,15,0),
+                    new PedComponent(6,1,3),
+                    new PedComponent(2,75,0),
+                    new PedComponent(3,14,0),
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_069_F","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 129, 2) },
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_F_Y_FITNESS_01_WHITE_FULL_01", "A_F_Y_BEVHILLS_01_WHITE_FULL_01", "A_F_Y_SOUCENT_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_WHITE_FULL_01" },
+            };
+        }
+    }
+    private DispatchablePerson CreateCluckinBellPed(bool isMale)
+    {
+        if (isMale)
+        {
+            return new DispatchablePerson("mp_m_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,22,7),//colors
+                    new PedComponent(8,15,0),
+                    new PedComponent(11,345,2),
+                    new PedComponent(2,31,0),
+                    new PedComponent(6,8,0),//colors
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_073_M","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 130, 4) },//hat
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_M_M_GENERICMALE_01_WHITE_MINI_01", "A_M_M_SALTON_01_WHITE_FULL_01", "A_M_M_TOURIST_01_WHITE_MINI_01", "A_M_M_MALIBU_01_LATINO_FULL_01" },
+
+            };
+        }
+        else
+        {
+            return new DispatchablePerson("mp_f_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,64,0),
+                    new PedComponent(11,338,5),
+                    new PedComponent(8,15,0),
+                    new PedComponent(6,1,3),
+                    new PedComponent(2,75,0),
+                    new PedComponent(3,14,0),
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_073_F","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 129, 4) },
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_F_Y_FITNESS_01_WHITE_FULL_01", "A_F_Y_BEVHILLS_01_WHITE_FULL_01", "A_F_Y_SOUCENT_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_WHITE_FULL_01" },
+            };
+        }
     }
     private void DefaultConfig()
     {
@@ -1786,12 +1964,17 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
+
+
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         //
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
@@ -1826,7 +2009,7 @@ public class DispatchablePeople : IDispatchablePeople
             OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), },
             OptionalPropChance = optionalpropschance
         };
-        DispatchablePerson K9Generic = new DispatchablePerson("a_c_shepherd", 50, 50)
+        DispatchablePerson K9Generic = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
             DebugName = "K9_Shepherd",
@@ -1846,6 +2029,23 @@ public class DispatchablePeople : IDispatchablePeople
 
         List<DispatchablePerson> NOOSE_DLC = new List<DispatchablePerson>()
         {
+            DetectiveMale,
+            DetectiveFemale,
+            new DispatchablePerson("ig_lcswat", 2,100) {
+                DebugName = "ig_lcswat"
+                ,AccuracyMin = 25
+                ,AccuracyMax = 40
+                ,ShootRateMin = 400
+                ,ShootRateMax = 500
+                ,CombatAbilityMin = 1
+                ,CombatAbilityMax = 2
+                ,HealthMin = 100
+                ,HealthMax = 100
+                ,ArmorMin = 100
+                ,ArmorMax = 100
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,RequiredVariation = new PedVariation(),
+            },
             new DispatchablePerson("ig_lcswat", 100,100) {
                 DebugName = "ig_lcswat"
                 ,AccuracyMin = 25
@@ -1858,6 +2058,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(0, 2, 0), new PedPropComponent(0, 3, 0), new PedPropComponent(0, 4, 0), new PedPropComponent(0, 5, 0), new PedPropComponent(0, 6, 0) }
                 ,OptionalPropChance = 80
@@ -2243,9 +2444,12 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2415,9 +2619,12 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2572,9 +2779,12 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -3358,7 +3568,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Animals
-            new DispatchablePerson("a_c_shepherd",50,50) {
+            new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
@@ -3777,7 +3987,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Animals
-            new DispatchablePerson("a_c_shepherd",50,50) {
+            new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
@@ -3788,7 +3998,17 @@ public class DispatchablePeople : IDispatchablePeople
                 OverrideSideArmsID = null,
                 OverrideLongGunsID = null,
             },
-
+            new DispatchablePerson("a_c_retriever",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Shepherd",
+                UnitCode = "K9",
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
             //Snipers
             new DispatchablePerson("mp_m_freemode_01",0,0) { DebugName = "<Male LSIA Utility Class B Sniper>",RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -15014,9 +15234,12 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -17646,6 +17869,139 @@ public class DispatchablePeople : IDispatchablePeople
             }
         }
         return toreturn;
+    }
+
+
+    private DispatchablePerson GetGenericMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int maxWantedLevelSpawn, bool isMale, bool isShortSleeve)
+    {
+        //DispatchablePerson CopFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+        //    DebugName = "MPNoArmorFemale"
+        //    , RandomizeHead = true
+        //    , MaxWantedLevelSpawn = maxWantedLevelSpawn
+        //    , OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+        //    , RequiredVariation = new PedVariation(
+        //        new List<PedComponent>() { new PedComponent(3, 14, 0, 0), new PedComponent(4, 34, 0, 0), new PedComponent(6, 55, 0, 0), new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0) },
+        //        new List<PedPropComponent>() { })
+        //    , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+        //    , OptionalPropChance = optionalpropschance
+        //};//no body armor with hat and glasses possible
+        //DispatchablePerson CopMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+        //        DebugName = "MPNoArmorMale"
+        //        ,RandomizeHead = true
+        //        ,MaxWantedLevelSpawn = maxWantedLevelSpawn
+        //        ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+        //        ,RequiredVariation = new PedVariation(
+        //            new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
+        //            new List<PedPropComponent>() { })
+        //        ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
+        //        ,OptionalPropChance = optionalpropschance
+        //    };
+
+
+
+
+        DispatchablePerson ShortSleeveMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "NooseShortSleeveArmedMerryMale"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxWantedLevelSpawn
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 319, 0, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
+                ,OptionalPropChance = optionalpropschance
+            };
+            DispatchablePerson LongSleeveMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "NooseLongSleeveArmedMerryMale",
+                RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxWantedLevelSpawn
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 317, 0, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
+                ,OptionalPropChance = optionalpropschance
+            };
+
+
+            DispatchablePerson ShortSleeveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "NooseShortSleeveArmedMerryFemale"
+                , RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxWantedLevelSpawn
+                , OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                , RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 9, 0, 0), new PedComponent(4, 6, 0, 0), new PedComponent(6, 55, 0, 0), new PedComponent(8, 152, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 330, 0, 0) },
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
+            };
+            DispatchablePerson LongSleeveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "NooseLongSleeveArmedMerryFemale",
+                RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxWantedLevelSpawn
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 6, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 152, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 328, 0, 0)},
+                    new List<PedPropComponent>() {  })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
+            };
+
+
+
+        if (isMale)
+        {
+            if(isShortSleeve)
+            {
+                return ShortSleeveMale;
+            }
+            return LongSleeveMale;
+        }
+        else
+        {
+            if(isShortSleeve)
+            {
+                return ShortSleeveFemale;
+            }
+            return LongSleeveFemale;
+        }
+    }
+
+    private DispatchablePerson GetGenericMPDetectivePed(int ambientSpawnChance, int wantedSpawnChance,int maxwantedLevelSpawn, bool isMale)
+    {
+            DispatchablePerson DetectiveMale  = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "MPDetectiveMale"
+                ,GroupName = "Detective"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxwantedLevelSpawn
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0),new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), }
+                ,OptionalPropChance = optionalpropschance
+            };
+
+        DispatchablePerson DetectiveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "MPDetectiveFemale"
+                ,GroupName = "Detective"
+                ,RandomizeHead = true
+                ,MaxWantedLevelSpawn = maxwantedLevelSpawn
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0)},
+                    new List<PedPropComponent>() {  })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,OptionalPropChance = optionalpropschance
+            };
+        if(isMale)
+        {
+            return DetectiveMale;
+        }
+        else
+        {
+            return DetectiveFemale;
+        }
     }
 }
 

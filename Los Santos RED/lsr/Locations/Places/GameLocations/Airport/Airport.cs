@@ -326,7 +326,7 @@ public class Airport : GameLocation, ILocationSetupable
             }
         }
     }
-    public virtual void OnArrive(bool setPos)
+    public virtual void OnArrive(ILocationInteractable Player, bool setPos)
     {
         if (RequestIPLs != null)
         {
@@ -355,7 +355,7 @@ public class Airport : GameLocation, ILocationSetupable
             Player.Character.Heading = ArrivalHeading;
         }
     }
-    public virtual void OnDepart()
+    public virtual void OnDepart(ILocationInteractable Player)
     {
         if (RemoveIPLs != null)
         {
@@ -386,10 +386,10 @@ public class Airport : GameLocation, ILocationSetupable
             try
             {
                 Game.FadeScreenOut(1500, true);
-                OnDepart();
+                OnDepart(Player);
                 destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
                 GameFiber.Sleep(1000);
-                destinationAiport.OnArrive(true);
+                destinationAiport.OnArrive(Player, true);
                 Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
                 GameFiber.Sleep(3000);//do the whole shebang ehre
                 Game.FadeScreenIn(1500, true);
@@ -408,10 +408,10 @@ public class Airport : GameLocation, ILocationSetupable
             try
             {
                 Game.FadeScreenOut(1500, true);
-                OnDepart();
+                OnDepart(Player);
                 destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
                 GameFiber.Sleep(1000);
-                destinationAiport.OnArrive(false);
+                destinationAiport.OnArrive(Player, false);
                 Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
                 if (plane != null && plane.Vehicle.Exists())
                 {

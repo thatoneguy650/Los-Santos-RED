@@ -46,6 +46,8 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeLeftTunnel;
         private bool isMostlyStationary;
         private bool isVeryStationary;
+        private bool IsSetFakeZone;
+        private string FakeZoneName;
 
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
@@ -174,7 +176,16 @@ namespace LosSantosRED.lsr.Locations
         {
             if (EntityToLocate.Exists())
             {
-                CurrentZone = Zones.GetZone(EntityToLocate.Position);
+                if(!IsSetFakeZone || string.IsNullOrEmpty(FakeZoneName))
+                {
+                    CurrentZone = Zones.GetZone(EntityToLocate.Position);
+                }
+                else
+                {
+                    CurrentZone = Zones.GetZone(FakeZoneName);
+                }
+
+                
                 if (PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
@@ -227,7 +238,7 @@ namespace LosSantosRED.lsr.Locations
                 float groundZ = 850.0f;
                 bool foundGround = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(playerpos.X, playerpos.Y, playerpos.Z + 850f, ref groundZ, false);
 
-                if (foundGround && groundZ >= playerpos.Z + Math.Abs(Settings.SettingsManager.DebugSettings.TunnelZValueMax))
+                if (foundGround && groundZ >= playerpos.Z + Math.Abs(Settings.SettingsManager.PlayerOtherSettings.TunnelZValueMax))
                 {
 
                     PossiblyInTunnel = true;
@@ -502,6 +513,18 @@ namespace LosSantosRED.lsr.Locations
             {
                 EntityToLocate = Game.LocalPlayer.Character;
             }
+        }
+
+        public void SetFakeZone(string v)
+        {
+            IsSetFakeZone = true;
+            FakeZoneName = v;
+        }
+
+        public void ClearFakeZone()
+        {
+            IsSetFakeZone = false;
+            FakeZoneName = "";
         }
     }
 

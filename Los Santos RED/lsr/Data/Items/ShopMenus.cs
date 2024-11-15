@@ -74,7 +74,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Fortune",15000,10000),
               //  new MenuItem("Vapid Coquette (IV)",56000,35000),
               //  new MenuItem("Vapid Contender",34000,28000),
-                new MenuItem("Vapid Bobcat",31000,25000),
+                new MenuItem("Vapid Bobcat XL",31000,25000),
                 new MenuItem("Vapid Minivan",29000, 12500),
                 new MenuItem("Vapid Minivan Custom",30500,13000),
                 new MenuItem("Vapid Speedo",31000,13500),
@@ -121,7 +121,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Sultan RS",38000,32000),
                 new MenuItem("Karin Intruder",38000,32000),
                 new MenuItem("Karin Previon",39000,34500),
-                new MenuItem("Karin Everon",44000,35000),
+                //new MenuItem("Karin Everon",44000,35000),
                // new MenuItem("Declasse Vigero (IV)",32000,28000),
                 //new MenuItem("Maibatsu Vincent (IV)",22000,15000),
             }),
@@ -233,12 +233,16 @@ public class ShopMenus : IShopMenus
         {
             vapidMenu.Items.Add(new MenuItem("Vapid Interceptor", 35000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Caracara Service", 32000, 15000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Caracara 4x2", 30000, 14000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 22000, 5000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 12000, 4000));
         }
         //KarinMenu
         ShopMenu karinMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "KarinMenu").FirstOrDefault();
         if (karinMenu != null)
         {
-            karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 255000));
+            karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
         }
         ShopMenu albanyMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "AlbanyMenu").FirstOrDefault();
         if (albanyMenu != null)
@@ -249,17 +253,13 @@ public class ShopMenus : IShopMenus
         if (premiumDeluxMenu != null)
         {
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
-            premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 255000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
         }
-
-
         ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
         if (elitasMenu != null)
         {
             elitasMenu.Items.Add(new MenuItem("Buckingham Maverick 2nd Gen", 1800000));
         }
-
-
         foreach(ShopMenu menu in fejPossibleShopMenus.ShopMenuList)//swap some model names over
         {
             if (menu.ID != "KarinMenu")
@@ -274,9 +274,6 @@ public class ShopMenus : IShopMenus
             }
             menu.Items.RemoveAll(x => x.ModItemName == "Vapid Contender" || x.ModItemName == "Karin Kuruma");
         }
-
-
-        //new MenuItem("Declasse Impaler LX",35000,16000),
         Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\ShopMenus_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedExperience()

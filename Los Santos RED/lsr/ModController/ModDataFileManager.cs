@@ -413,21 +413,13 @@ public class ModDataFileManager
             + Environment.NewLine +
             "3a. OPTIONAL: Install 'Full Modern Traffic'. Updates traffic to be more modern and adds some lore friendly vehicles. Follow the readme in the 'AlternateConfigs\\FullModernTraffic' folder"
             + Environment.NewLine +
-            "4. Install 'Peter Badoingy Map Fixes'. Follow the readme in the 'Files\\Peter Badoingy Map Fixes' folder"
+            "4. Install 'Peter Badoingy Map Fixes'. Fixes some issues with the map to better work with LSR. MUST INSTALL AFTER LC. Install the badoingylcfixes.oiv from the 'Files' folder"
             + Environment.NewLine +
             $"5. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LibertyConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
              + Environment.NewLine +
-            $"6. Fix the RageNativeUI Menu. Open Codewalker/OpenIV and navigate to mods/update/update.rpf/common/data/levels/gta5/images.meta and add the following item"
-             + Environment.NewLine 
-            + "    <Item>" + Environment.NewLine
-            + "        <filename>platform:/textures/script_txds.rpf</filename>" + Environment.NewLine
-            + "        <fileType>RPF_FILE</fileType>" + Environment.NewLine
-            + "        <locked value=\"true\"/>" + Environment.NewLine
-            + "    </Item>" + Environment.NewLine
+            $"6. Start LSR. Open the Debug Menu (F11). Go to the 'Map Menu' -> 'Liberty City Menu' -> and select 'Set LC Active'. This will set some flags/settings and remove any remaining LS ymaps. You will need to do this each time your start/restart LSR."
             + Environment.NewLine +
-            $"7. Start LSR. Open the Debug Menu (F11). Go to the 'Map Menu' -> 'Liberty City Menu' -> and select 'Set LC Active'. This will set some flags/settings and remove any remaining LS ymaps. You will need to do this each time your start/restart LSR."
-            + Environment.NewLine +
-            $"8. Save the updated LC settings using the Settings Menu. Default settings are slightly different between LS and LC."
+            $"7. Save the updated LC settings using the Settings Menu. Default settings are slightly different between LS and LC."
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +

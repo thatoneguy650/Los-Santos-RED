@@ -21,7 +21,6 @@ public class TheftInteract : InteriorInteract
     protected bool IsUnlockedForPlayer = false;
 
     protected virtual bool CanInteract => false;
-    public string StealPrimptText { get; set; } = "Steal";
     public string EmptyText { get; set; } = "Empty";
     public virtual uint IncrementGameTimeMin { get; set; } = 900;
     public virtual uint IncrementGameTimeMax { get; set; } = 900;

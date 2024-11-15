@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 public class GameLocation : ILocationDispatchable
@@ -249,6 +250,12 @@ public class GameLocation : ILocationDispatchable
 
     public float CloseRange { get; set; } = 10f;
 
+
+
+    public virtual int RacketeeringAmountMin { get; set; } = 500;
+    public virtual int RacketeeringAmountMax { get; set; } = 1000;
+
+
     [XmlIgnore]
     public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
     [XmlIgnore]
@@ -326,6 +333,15 @@ public class GameLocation : ILocationDispatchable
     public bool IgnoreEntranceInteract { get; set; } = false;
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public string MapTeleportString => IsOnSPMap && !IsOnMPMap ? "(SP)" : IsOnMPMap && !IsOnSPMap ? "(MP)" : "";
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        //RacketeeringAmountMin = 500;
+        //RacketeeringAmountMax = 1000;
+    }
+
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
         //EntryPoint.WriteToConsole($"Activate Location {Name} {DistanceToPlayer}");
@@ -1071,11 +1087,14 @@ public class GameLocation : ILocationDispatchable
         {
             VendorPersonType = new DispatchablePerson(FallBackVendorModels.PickRandom(), 100, 100);
         }
+        
         HandleVariableItems();
         EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
         Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
+
+        merchantSpawnTask.PossibleHeads = VendorPossibleHeads;
         merchantSpawnTask.AllowAnySpawn = true;
         merchantSpawnTask.SpawnWithAllWeapons = true;
         merchantSpawnTask.AllowBuddySpawn = false;
@@ -1221,6 +1240,11 @@ public class GameLocation : ILocationDispatchable
             }
         }
         return null;
+    }
+
+    internal virtual int GetRacketeeringPaymentAmount()
+    {
+        return RandomItems.GetRandomNumberInt(500, 1000).Round(50);
     }
 
 

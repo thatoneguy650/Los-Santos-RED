@@ -429,7 +429,7 @@ public class Refueling
         NativeFunction.Natives.ATTACH_ENTITIES_TO_ROPE(RopeID, 
             ActiveGasPump.PumpProp, 
             PumpHandleProp,
-            ActiveGasPump.PumpProp.Position.X + Settings.SettingsManager.DebugSettings.DebugLastX, ActiveGasPump.PumpProp.Position.Y + 0.5f + Settings.SettingsManager.DebugSettings.DebugLastY, ActiveGasPump.PumpProp.Position.Z + 1.3f + Settings.SettingsManager.DebugSettings.DebugLastZ, //ActiveGasPump.PumpProp.Position.X, ActiveGasPump.PumpProp.Position.Y, ActiveGasPump.PumpProp.Position.Z + 1.45f,
+            ActiveGasPump.PumpProp.Position.X, ActiveGasPump.PumpProp.Position.Y + 0.5f, ActiveGasPump.PumpProp.Position.Z + 1.3f, //ActiveGasPump.PumpProp.Position.X, ActiveGasPump.PumpProp.Position.Y, ActiveGasPump.PumpProp.Position.Z + 1.45f,
             attachPos.X, attachPos.Y, attachPos.Z,
             6.0f,//5.0f,
             false,

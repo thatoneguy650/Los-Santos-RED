@@ -564,11 +564,11 @@ public class DebugLocationSubMenu : DebugSubMenu
                 while (!Game.IsKeyDownRightNow(Keys.Z))
                 {
                     Game.DisplayHelp("PRESS Z TO STOP");
-                    if(Game.GameTime - GameTimeLastUpdatedNodes >= Settings.SettingsManager.DebugSettings.StreetDisplayTimeBetweenUpdate)
-                    {
-                        streetNamePopUp.GetNodes();
-                        GameTimeLastUpdatedNodes = Game.GameTime;
-                    }
+                    //if(Game.GameTime - GameTimeLastUpdatedNodes >= Settings.SettingsManager.DebugSettings.StreetDisplayTimeBetweenUpdate)
+                    //{
+                    //    streetNamePopUp.GetNodes();
+                    //    GameTimeLastUpdatedNodes = Game.GameTime;
+                    //}
                     GameFiber.Yield();
                 }
             }
@@ -642,6 +642,53 @@ public class DebugLocationSubMenu : DebugSubMenu
     //}
     private void StreetTextLoop(int globalScaleformID)
     {
+
+
+        /*    public int StreetDisplayStyleIndex { get; set; }
+    public int StreetDisplayColorIndex { get; set; }
+    public int StreetDisplayFontIndex { get; set; }
+
+
+
+    public float StreetDisplayOffsetX { get; set; }
+    public float StreetDisplayOffsetY { get; set; }
+    public float StreetDisplayOffsetZ { get; set; }
+
+
+    public float StreetDisplayRotationX { get; set; }
+    public float StreetDisplayRotationY { get; set; }
+    public float StreetDisplayRotationZ { get; set; }
+
+    public float StreetDisplayScaleX { get; set; }
+    public float StreetDisplayScaleY { get; set; }
+    public float StreetDisplayScaleZ { get; set; }
+    public bool StreetDisplayUseCalc { get; set; }
+    public float StreetDisplayNodeOffsetFront { get; set; }
+    public uint StreetDisplayTimeBetweenUpdate { get; set; }
+    public int StreetDisplayNodesToGet { get; set; }
+    public float StreetDisplayMinNodeDistance { get; set; }
+    public float StreetDisplayMaxNodeDistance { get; set; }
+        
+         
+                 //StreetDisplayStyleIndex = 0;
+        //StreetDisplayColorIndex = 2;
+        //StreetDisplayFontIndex = 5;
+
+        //StreetDisplayOffsetZ = 2f;
+
+        //StreetDisplayScaleX = 5.0f;
+        //StreetDisplayScaleY = 1.0f;
+        //StreetDisplayScaleZ = 1.0f;
+        //StreetDisplayUseCalc = true;
+        //StreetDisplayNodeOffsetFront = 40f;
+        //StreetDisplayTimeBetweenUpdate = 500;
+        //StreetDisplayNodesToGet = 50;
+        //StreetDisplayMinNodeDistance = 10f;
+        //StreetDisplayMaxNodeDistance = 40f;
+         
+         
+
+
         if (Player.CurrentLocation.CurrentStreet == null)
         {
             return;
@@ -754,6 +801,8 @@ public class DebugLocationSubMenu : DebugSubMenu
         toDisplay += $" PlayerRot:{Game.LocalPlayer.Character.Rotation.Yaw} realYaw:{realYaw}";
 
         Game.DisplaySubtitle(toDisplay);
+
+        */
     }
 
 

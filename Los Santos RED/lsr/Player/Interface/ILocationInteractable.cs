@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,7 @@ namespace LosSantosRED.lsr.Interface
         void ChangeName(string newName);
 
         void SetWantedLevel(int v1, string v2, bool v3);
+        void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
 
         ICasinoGamePlayable CasinoGamePlayer { get; }
     }

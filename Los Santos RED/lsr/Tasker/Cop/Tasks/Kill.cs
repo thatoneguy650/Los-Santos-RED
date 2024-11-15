@@ -288,7 +288,7 @@ ENDENUM */
             }
             if(Ped.IsAnimal)
             {
-                NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.DebugSettings.CanineRunSpeed);
+                NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.K9RunSpeed);
             }
 
             if (Ped.IsInHelicopter)
@@ -345,6 +345,7 @@ ENDENUM */
                 if(Ped.IsAnimal)
                 {
                     NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                    NativeFunction.CallByName<bool>("TASK_PUT_PED_DIRECTLY_INTO_MELEE", 0, Player.Character, 0.0f, -1.0f, 0.0f, 134217728);
                 }
                 else
                 {

@@ -50,6 +50,8 @@ public class SalonInteract : InteriorInteract
         //    Game.DisplayHelp("No barbers available");
         //    return;
         //}
+        //GameFiber.Sleep(1000);
+
         if (Hairstylist == null)
         {
             EntryPoint.WriteToConsole("HAIRSTYLIST DOESNT EXIST I GUESS!!!!");
@@ -72,6 +74,7 @@ public class SalonInteract : InteriorInteract
         {
             Hairstylist.CanBeTasked = false;
             Hairstylist.CanBeAmbientTasked = false;
+            Hairstylist.CanBeIdleTasked = false;
             if(Hairstylist.Pedestrian.Exists())
             {
                 Hairstylist.Pedestrian.BlockPermanentEvents = true;
@@ -97,6 +100,7 @@ public class SalonInteract : InteriorInteract
         {
             Hairstylist.CanBeTasked = true;
             Hairstylist.CanBeAmbientTasked = true;
+            Hairstylist.CanBeIdleTasked = true;
             if (Hairstylist.Pedestrian.Exists())
             {
                 Hairstylist.Pedestrian.BlockPermanentEvents = false;
@@ -120,22 +124,37 @@ public class SalonInteract : InteriorInteract
     private bool PerformAnimation()
     {
         Player.ActivityManager.StopDynamicActivity();
+
+        //if(Hairstylist != null)
+        //{
+        //    Hairstylist.CanBeTasked = false;
+        //    Hairstylist.CanBeAmbientTasked = false;
+
+        //    if(Hairstylist.Pedestrian.Exists())
+        //    {
+        //        Hairstylist.Pedestrian.BlockPermanentEvents = true;
+        //    }
+        //}
+
         AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
-        unsafe
-        {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", 0, "misshair_shop@hair_dressers", "player_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        }
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", 0, "misshair_shop@hair_dressers", "player_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
+        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Player.Character, "misshair_shop@hair_dressers", "player_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
+
+
         CreateScissors();
         if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
         {
-            Hairstylist.Pedestrian.BlockPermanentEvents = true;
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Hairstylist.Pedestrian, "misshair_shop@hair_dressers", "keeper_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);    
+            //Hairstylist.Pedestrian.BlockPermanentEvents = true;
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Hairstylist.Pedestrian, "misshair_shop@hair_dressers", "keeper_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1.0f, -1, 5642, 0.0f, 2, 1);    
         }
         if(Scissors != null && Scissors.Exists())
         {
@@ -144,6 +163,11 @@ public class SalonInteract : InteriorInteract
         uint GameTimeStarted = Game.GameTime;
         bool IsCancelled = false;
         bool CheckedFaded = false;
+        float PedAnimationTime = 0.0f;
+        AnimationWatcher aw = new AnimationWatcher();
+
+        GameFiber.Sleep(500);
+
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             if(Game.GameTime - GameTimeStarted >= 1000 && !CheckedFaded)
@@ -155,20 +179,34 @@ public class SalonInteract : InteriorInteract
                 CheckedFaded = true;
             }
             Player.WeaponEquipment.SetUnarmed();
+
+
+            if(Hairstylist.Pedestrian.Exists())
+            {
+                PedAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Hairstylist.Pedestrian, "misshair_shop@hair_dressers", "keeper_enterchair");
+                EntryPoint.WriteToConsole($"PedAnimationTime: {PedAnimationTime}");
+                if (!aw.IsAnimationRunning(PedAnimationTime))
+                {
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM_ADVANCED", Hairstylist.Pedestrian, "misshair_shop@hair_dressers", "keeper_enterchair", AnimEnterPosition.X, AnimEnterPosition.Y, AnimEnterPosition.Z, AnimEnterRotation.X, AnimEnterRotation.Y, AnimEnterRotation.Z, 1000f, -1000f, -1, 5642, PedAnimationTime, 2, 1);
+                }
+
+            }
+
+
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "misshair_shop@hair_dressers", "player_enterchair");
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
             {
                 IsCancelled = true;
                 break;
             }
-            if (AnimationTime >= 1.0f)
+            if (AnimationTime >= 1.0f && PedAnimationTime >= 0.99f)
             {
                 break;
             }
-            if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
-            {
-                Hairstylist.Pedestrian.BlockPermanentEvents = true; 
-            }
+            //if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
+            //{
+            //    Hairstylist.Pedestrian.BlockPermanentEvents = true; 
+            //}
             GameFiber.Yield();
         }
         if (!IsCancelled)
@@ -216,10 +254,10 @@ public class SalonInteract : InteriorInteract
             {
                 break;
             }
-            if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
-            {
-                Hairstylist.Pedestrian.BlockPermanentEvents = true;
-            }
+            //if (Hairstylist != null && Hairstylist.Pedestrian.Exists())
+            //{
+            //    Hairstylist.Pedestrian.BlockPermanentEvents = true;
+            //}
             GameFiber.Yield();
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

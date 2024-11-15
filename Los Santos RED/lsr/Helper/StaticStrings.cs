@@ -30,6 +30,7 @@ public static class StaticStrings
     public static readonly string AlderneyStateID = "Alderney";  
     public static readonly string LibertyCityCountyID = "LibertyCity";
     public static readonly string LibertyStateID = "Liberty";
+    public static readonly string ColombiaCountyID = "Colombia";
     public static readonly string ColombiaStateID = "Colombia";
     public static readonly string LeonidaStateID = "Leonida";
     public static readonly string LasVenturasStateID = "LasVenturas";
@@ -42,7 +43,8 @@ public static class StaticStrings
     public static readonly string DowntownCabCoContactName = "Downtown Cab Co.";//these have gotta go, but where?
     public static readonly string ExportotopiaContactName = "Exportotopia";//these have gotta go, but where?
     public static readonly string LSRGunDealerContactName = "LSR Gun Dealer";
-
+    public static readonly string SchlechtContactName = "Schlecht Rideshare";
+    public static readonly string RydeMeContactName = "RydeMe Rideshare";
 
     public static readonly string HellCabContactName = "Hell Cab";//these have gotta go, but where?
     public static readonly string PurpleCabContactName = "Purple Cab Co.";//these have gotta go, but where?

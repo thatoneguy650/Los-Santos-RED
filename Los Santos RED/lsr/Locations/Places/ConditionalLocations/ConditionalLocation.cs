@@ -171,21 +171,39 @@ public class ConditionalLocation
     private bool IsValidTimeToSpawn()
     {
        // EntryPoint.WriteToConsole($"IsValidTimeToSpawn Time:{Time.CurrentHour} {MinHourSpawn} {MaxHourSpawn} IsMinLess:{MinHourSpawn <= MaxHourSpawn}");
-        if(MinHourSpawn <= MaxHourSpawn)
+        //if(MinHourSpawn <= MaxHourSpawn)
+        //{
+        //    if(Time.CurrentHour >= MinHourSpawn && Time.CurrentHour <= MaxHourSpawn)
+        //    {
+        //        return true;
+        //    }
+        //}
+        //else
+        //{
+        //    if(Time.CurrentHour >= MinHourSpawn || Time.CurrentHour <= MaxHourSpawn)
+        //    {
+        //        return true;
+        //    }
+        //}
+
+
+        if (MaxHourSpawn == 24 && MinHourSpawn == 0)
         {
-            if(Time.CurrentHour >= MinHourSpawn && Time.CurrentHour <= MaxHourSpawn)
-            {
-                return true;
-            }
+            return true;
+        }//18 & 4, NEW BAD
+        //8 & 20, OLD GOOD
+        if (MinHourSpawn < MaxHourSpawn)
+        {
+            return (Time.CurrentHour >= MinHourSpawn && Time.CurrentHour <= MaxHourSpawn);
         }
         else
         {
-            if(Time.CurrentHour >= MinHourSpawn || Time.CurrentHour <= MaxHourSpawn)
-            {
-                return true;
-            }
+            return (Time.CurrentHour >= MinHourSpawn || Time.CurrentHour <= MaxHourSpawn);
         }
-        return false;
+
+
+
+        //return false;
     }
     public virtual void OnLocationDeactivated()
     {

@@ -99,6 +99,11 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
 
 
+
+
+
+
+
     public bool EnableCombatAttributeCanInvestigate { get; set; }
     public bool EnableCombatAttributeDisableEntryReactions { get; set; }
     public bool EnableCombatAttributeCanFlank { get; set; }
@@ -118,12 +123,18 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool AllowAutoDispatchWhenCop { get; set; }
     public bool StopWeaponFiringWhenDropped { get; set; }
 
+
+    public int HeliMission { get; set; }
+    public float HeliMissionCruiseSpeed { get; set; }
+
     public bool AllowRappelling { get; set; }
     public bool RappellingRequiresLethalForce { get; set; }
     public uint RappellingStationaryTime { get; set; }
     public uint CircleStationaryTime { get; set; }
     public uint MinCircleTimeToStartRappelling { get; set; }
     public bool RappellingRequiresWeaponsFree { get; set; }
+    public float K9RunSpeed { get; set; }
+
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -238,5 +249,11 @@ public class PoliceTaskSettings : ISettingsDefaultable
         CircleStationaryTime = 8000;
         MinCircleTimeToStartRappelling = 25000;
         RappellingRequiresWeaponsFree = true;
+
+        K9RunSpeed = 1.75f;
+
+        HeliMission = 9;
+        HeliMissionCruiseSpeed = 20f;
+
     }
 }

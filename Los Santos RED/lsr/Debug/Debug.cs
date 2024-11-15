@@ -1939,6 +1939,21 @@ GameFiber.StartNew(delegate
     }
     private void DebugNumpad7()
     {
+
+
+
+        //BarberXOffset = 1.1f;
+
+        //BarberYOffset = 0.3f;
+
+        //BarberZOffset = 0.2f;
+
+        //BarberHeadingXOffset = 0f;
+
+        //BarberHeadingYOffset = -90f;
+
+        //BarberRotationYaw = 50f;
+
         //barberPosition = new Vector3(-278.348f,6225.873f,30.93535f);
         //barberrotation = new Vector3(0f, 0f, -498.969f);
         //barberrotationMAYBE>? = new Vector3(0f, 0f, -138.969f);
@@ -1946,26 +1961,26 @@ GameFiber.StartNew(delegate
 
         //TaskPlayAnimAdvanced(p:ped(), anim, "player_enterchair", data.posI, data.anim_pos, 1000.0, -1000.0, -1, 5642, 0.0, 2, 1)
 
-        AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
-        //Game.LocalPlayer.Character.Position = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
+        //AnimationDictionary.RequestAnimationDictionay("misshair_shop@hair_dressers");
+        ////Game.LocalPlayer.Character.Position = new Vector3(-277.76483154297f, 6224.8930664063f, 31.135352325439f);
 
-        Vector3 posI = new Vector3(-35.654655456543f, -154.29956054688f, 57.82421875f - 1.50f);
-        float heading = 65.38319f;
-        Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - 50f);
-
-
-        Vector3 posINew = NativeHelper.GetOffsetPosition(posI, heading + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
+        //Vector3 posI = new Vector3(-35.654655456543f, -154.29956054688f, 57.82421875f - 1.50f);
+        //float heading = 65.38319f;
+        //Vector3 anim_pos = new Vector3(0.0f, 0.0f, -2.6f * 57.29578f - 50f);
 
 
-        posINew = NativeHelper.GetOffsetPosition(posINew, heading + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
+        //Vector3 posINew = NativeHelper.GetOffsetPosition(posI, heading + Settings.SettingsManager.DebugSettings.BarberHeadingXOffset, Settings.SettingsManager.DebugSettings.BarberXOffset);
 
-        posINew = new Vector3(posINew.X, posINew.Y, posINew.Z - Settings.SettingsManager.DebugSettings.BarberZOffset);
 
-        EntryPoint.WriteToConsole($"barberPosition = new Vector3({posINew.X}f,{posINew.Y}f,{posINew.Z}f);");
-        EntryPoint.WriteToConsole($"barberrotation = new Vector3({anim_pos.X}f,{anim_pos.Y}f,{anim_pos.Z}f);");
+        //posINew = NativeHelper.GetOffsetPosition(posINew, heading + Settings.SettingsManager.DebugSettings.BarberHeadingYOffset, Settings.SettingsManager.DebugSettings.BarberYOffset);
 
-        NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Game.LocalPlayer.Character, "misshair_shop@hair_dressers", "player_enterchair", posINew.X, posINew.Y, posINew.Z, anim_pos.X, anim_pos.Y, anim_pos.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
-        GameFiber.Sleep(3000);
+        //posINew = new Vector3(posINew.X, posINew.Y, posINew.Z - Settings.SettingsManager.DebugSettings.BarberZOffset);
+
+        //EntryPoint.WriteToConsole($"barberPosition = new Vector3({posINew.X}f,{posINew.Y}f,{posINew.Z}f);");
+        //EntryPoint.WriteToConsole($"barberrotation = new Vector3({anim_pos.X}f,{anim_pos.Y}f,{anim_pos.Z}f);");
+
+        //NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Game.LocalPlayer.Character, "misshair_shop@hair_dressers", "player_enterchair", posINew.X, posINew.Y, posINew.Z, anim_pos.X, anim_pos.Y, anim_pos.Z, 1000f, -1000f, -1, 5642, 0.0f, 2, 1);
+        //GameFiber.Sleep(3000);
         //if(Game.TimeScale == 1.0f)
         //{
         //    Game.TimeScale = Settings.SettingsManager.DebugSettings.SlowMoScaleTime;

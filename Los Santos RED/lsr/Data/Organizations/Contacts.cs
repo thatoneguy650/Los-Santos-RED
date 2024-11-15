@@ -14,6 +14,8 @@ public class Contacts : IContacts
     private TaxiServiceContact downtownCabContact;
     private EmergencyServicesContact emergencyServicesContact;
     private VehicleExporterContact vehicleExporterContact;
+    private TaxiServiceContact rydeMeContact;
+    private TaxiServiceContact schlechtContact;
     private CorruptCopContact corruptCopContact;
     private GunDealerContact gunDealerContact;
 
@@ -71,7 +73,13 @@ public class Contacts : IContacts
         downtownCabContact = new TaxiServiceContact(StaticStrings.DowntownCabCoContactName, "CHAR_TAXI") { FullNumber = "3235555555", Number = "5555555", IsDefault = true };
         gunDealerContact = new GunDealerContact(StaticStrings.UndergroundGunsContactName);
         corruptCopContact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
-        vehicleExporterContact = new VehicleExporterContact(StaticStrings.VehicleExporterContactName);  
+        vehicleExporterContact = new VehicleExporterContact(StaticStrings.VehicleExporterContactName);
+
+
+
+        rydeMeContact = new TaxiServiceContact(StaticStrings.RydeMeContactName, "CHAR_BLANK_ENTRY") { FullNumber = "3235558295", Number = "5558295", IsDefault = true };
+        schlechtContact = new TaxiServiceContact(StaticStrings.SchlechtContactName, "CHAR_BLANK_ENTRY") { FullNumber = "3235552356", Number = "5552356", IsDefault = true };
+
     }
     private void DefaultConfig()
     {
@@ -81,6 +89,8 @@ public class Contacts : IContacts
         PossibleContacts.VehicleExporterContacts.Add(vehicleExporterContact);
         PossibleContacts.EmergencyServicesContact = emergencyServicesContact;
         PossibleContacts.TaxiServiceContacts.Add(downtownCabContact);
+        PossibleContacts.TaxiServiceContacts.Add(rydeMeContact);
+        PossibleContacts.TaxiServiceContacts.Add(schlechtContact);
         Serialization.SerializeParam(PossibleContacts, ConfigFileName);
     }
     private void DefaultConfig_FullExpanded()
@@ -105,6 +115,10 @@ public class Contacts : IContacts
 
         TaxiServiceContact sunderedDependentCabContact = new TaxiServiceContact(StaticStrings.SunderedDependentCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5555050", Number = "3235555050" };
         PossibleContacts_FullExpanded.TaxiServiceContacts.Add(sunderedDependentCabContact);
+
+        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(rydeMeContact);
+        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(schlechtContact);
+
         //Vanilla Peds
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Contacts_FullExpandedJurisdiction.xml");
@@ -116,6 +130,7 @@ public class Contacts : IContacts
         PossibleContacts_LC.CorruptCopContact = corruptCopContact;
         PossibleContacts_LC.VehicleExporterContacts.Add(vehicleExporterContact);
         PossibleContacts_LC.EmergencyServicesContact = emergencyServicesContact;
+
         //PossibleContacts_LC.TaxiServiceContacts.Add(downtownCabContact);
 
 
@@ -123,7 +138,8 @@ public class Contacts : IContacts
         TaxiServiceContact LCTaxiContact = new TaxiServiceContact(StaticStrings.LCTaxiContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5557854444", Number = "7854444", IsDefault = true };
         PossibleContacts_LC.TaxiServiceContacts.Add(LCTaxiContact);
 
-
+        PossibleContacts_LC.TaxiServiceContacts.Add(rydeMeContact);
+        PossibleContacts_LC.TaxiServiceContacts.Add(schlechtContact);
 
         Serialization.SerializeParam(PossibleContacts_LC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Contacts_{StaticStrings.LibertyConfigSuffix}.xml");
     }

@@ -342,7 +342,14 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
     private void CreateInteractionMenuTaxi()
     {
         MenuPool = new MenuPool();
-        VehicleInteractMenu = new UIMenu("Taxi", $"Destination: {(TaxiRide == null ? "None" : TaxiRide.DestinationName)}");
+
+        string TitleMenuString = "Taxi";
+        if(TaxiRide != null && TaxiRide.RequestedFirm != null && TaxiRide.RequestedFirm.IsRideShare)
+        {
+            TitleMenuString = "Ride Share";
+        }
+
+        VehicleInteractMenu = new UIMenu(TitleMenuString, $"Destination: {(TaxiRide == null ? "None" : TaxiRide.DestinationName)}");
         SetMenuBanner(VehicleInteractMenu);
         MenuPool.Add(VehicleInteractMenu);
         if(TaxiVehicleExt != null && TaxiVehicleExt.TaxiFirm != null)

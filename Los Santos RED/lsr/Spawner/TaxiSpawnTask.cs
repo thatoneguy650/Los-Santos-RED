@@ -24,7 +24,13 @@ public class TaxiSpawnTask : CivilianSpawnTask
         EntryPoint.PersistentPedsCreated++;//TR
         bool isMale = PersonType.IsMale(ped);
 
-        TaxiDriver CreatedPedExt = new TaxiDriver(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), "Taxi Driver", World, true);
+        string groupName = "Taxi Driver";
+        if(TaxiFirm != null && TaxiFirm.IsRideShare)
+        {
+            groupName = "Rideshare Driver";
+        }
+
+        TaxiDriver CreatedPedExt = new TaxiDriver(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), groupName, World, true);
         CreatedPedExt.TaxiFirm = TaxiFirm;
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
         World.Pedestrians.AddEntity(CreatedPedExt);

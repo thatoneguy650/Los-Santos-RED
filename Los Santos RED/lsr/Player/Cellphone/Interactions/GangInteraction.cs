@@ -241,7 +241,7 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangPizza(ActiveGang, GangContact);
             sender.Visible = false;
         };
-        GangRacketeering = new UIMenuItem("Racketeering", "Collect protection money. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{10000:C0}~s~" };
+        GangRacketeering = new UIMenuItem("Collect Protection", "Collect protection money from local shops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{10000:C0}~s~" };
         GangRacketeering.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangRacketeering(ActiveGang, GangContact);

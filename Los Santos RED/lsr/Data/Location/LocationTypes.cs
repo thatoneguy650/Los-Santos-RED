@@ -68,6 +68,9 @@ public class LocationTypes : ILocationTypes
             new GameCounty(StaticStrings.AlderneyCountyID, "Alderney"),
             new GameCounty(StaticStrings.CityOfViceCountyID, "City of Vice","VC"),
             new GameCounty(StaticStrings.ViceCountyID, "Vice County"),
+
+            new GameCounty(StaticStrings.ColombiaCountyID, "Columbia"),
+
             new GameCounty("Unknown", "Unknown"),
         };
 

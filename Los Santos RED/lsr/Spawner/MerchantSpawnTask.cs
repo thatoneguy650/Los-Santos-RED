@@ -18,6 +18,7 @@ public class MerchantSpawnTask : SpawnTask
     protected GameLocation Store;
     public bool SetPersistent { get; set; } = false;
     public List<Merchant> SpawnedVendors { get; set; } = new List<Merchant>();
+
     public MerchantSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings,
         ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, GameLocation store)
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
@@ -99,7 +100,7 @@ public class MerchantSpawnTask : SpawnTask
                 return null;
             }
             PedExt Person = SetupMerchantPed(createdPed);
-            PersonType.SetPedVariation(createdPed, null, true);
+            PersonType.SetPedVariation(createdPed, PossibleHeads, true);
             GameFiber.Yield();
             CreatedPeople.Add(Person);
             return Person;

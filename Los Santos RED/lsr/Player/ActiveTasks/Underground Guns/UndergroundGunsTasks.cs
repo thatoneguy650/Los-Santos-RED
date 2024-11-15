@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.ActiveTasks;
 using LSR.Vehicles;
 using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -52,5 +53,10 @@ public class UndergroundGunsTasks : IPlayerTaskGroup
         AllTasks.Add(gunPickupTask);
         gunPickupTask.Setup();
         gunPickupTask.Start();
+    }
+
+    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    {
+
     }
 }

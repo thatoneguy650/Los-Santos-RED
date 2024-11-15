@@ -238,6 +238,11 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     //public int AddK9Percentage { get; set; }
 
 
+    [Description("Percentage of time to add optional passengers to a vehicle. 0 is never 100 is always.")]
+    public float AddAdditionalK9PassengerPercentage { get; set; }
+
+
+
     [Description("Percentage of time to allow spawning a random agency (that can spawn in the given location) instead of the main assigned jurisdiction when not wanted. Allows agencies without territory to spawn randomly. 0 is never 100 is always.")]
     public int LikelyHoodOfAnySpawn_Default { get; set; }
     [Description("Percentage of time to allow spawning the county assigned jurisdiction when not wanted. Allows the possibility of county agencies to spawn when in a location with zone based jurisdiction. 0 is never 100 is always.")]
@@ -574,6 +579,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         K9SpawnDelay_Wanted8 = 65000;
         K9SpawnDelay_Wanted9 = 65000;
         K9SpawnDelay_Wanted10 = 65000;
+
+        AddAdditionalK9PassengerPercentage = 10;
 
     }
 }

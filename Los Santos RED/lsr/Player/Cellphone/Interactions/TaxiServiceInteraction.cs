@@ -79,7 +79,18 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     }
     private void AddNewRideItems()
     {
-        UIMenuItem requestTaxiMenuItem = new UIMenuItem("Request Taxi", "Ask for a taxi to be dispatched.");
+        string MenuRequestHeader = "Request Taxi";
+        string MenuRequestDescription = "Ask for a taxi to be dispatched.";
+        string MenuRequestQuickHeader = "Request Taxi (Quick)";
+        string MenuRequestQuickDescription = "Ask for a taxi to be dispatched and have it immediately arrive.";
+        if (TaxiFirm != null && TaxiFirm.IsRideShare)
+        {
+            MenuRequestHeader = "Request Driver";
+            MenuRequestQuickHeader = "Request Driver (Quick)";
+            MenuRequestDescription = "Ask for a driver to be dispatched.";
+            MenuRequestQuickDescription = "Ask for a driver to be dispatched and have them immediately arrive.";
+        }
+        UIMenuItem requestTaxiMenuItem = new UIMenuItem(MenuRequestHeader, MenuRequestDescription);
         requestTaxiMenuItem.Activated += (sender, selectedItem) =>
         {
             string fullText = "";
@@ -87,6 +98,11 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             {
                 fullText = $"{TaxiServiceContact.Name} is en route to ";
                 fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+                TaxiRide taxiRide = Player.TaxiManager.ActiveRides.Where(x => x.RequestedFirm != null && x.RequestedFirm.ID == TaxiFirm.ID).FirstOrDefault();
+                if (taxiRide != null && taxiRide.RespondingVehicle != null)
+                {
+                    fullText += $"~s~~n~~n~Vehicle: {taxiRide.RespondingVehicle.FullName(TaxiFirm.IsRideShare)}";
+                }
             }
             else
             {
@@ -99,7 +115,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
 
 
 
-        UIMenuItem requestQuickTaxiMenuItem = new UIMenuItem("Request Taxi (Quick)", "Ask for a taxi to be dispatched and have it immediatly arrive.");
+        UIMenuItem requestQuickTaxiMenuItem = new UIMenuItem(MenuRequestQuickHeader, MenuRequestQuickDescription);
         requestQuickTaxiMenuItem.Activated += (sender, selectedItem) =>
         {
 
@@ -107,8 +123,6 @@ public class TaxiServiceInteraction : IContactMenuInteraction
             if (Player.TaxiManager.RequestService(TaxiFirm, false))
             {
                 sender.Visible = false;
-                //fullText = $"{TaxiServiceContact.Name} is en route to ";
-                //fullText += Player.CurrentLocation?.GetStreetAndZoneString();
                 Player.TaxiManager.ActiveRides.FirstOrDefault(x => x.RequestedFirm.ID == TaxiFirm.ID)?.TeleportToPickup();
             }
             else
@@ -172,7 +186,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
         PickupSubMenu.AddItem(updatePickupHere);
 
 
-        UIMenuItem updateSetAtPickup = new UIMenuItem("Quick Pickup", "Teleport the taxi to the current pickup location..");
+        UIMenuItem updateSetAtPickup = new UIMenuItem("Quick Pickup", "Teleport the driver to the current pickup location.");
         updateSetAtPickup.Activated += (sender, selectedItem) =>
         {
             //ExistingRide.SetPickupLocationAtPlayer();

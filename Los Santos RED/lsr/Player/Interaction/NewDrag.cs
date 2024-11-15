@@ -634,12 +634,12 @@ public class NewDrag : DynamicActivity
         if (leftHandObject.Exists() && Ped.Pedestrian.Exists())
         {
 
-            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName), new Vector3(Settings.SettingsManager.DebugSettings.PlayerItemAttachX, Settings.SettingsManager.DebugSettings.PlayerItemAttachY, Settings.SettingsManager.DebugSettings.PlayerItemAttachZ), Rotator.Zero);
+            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName), new Vector3(0f, 0f, 0f), Rotator.Zero);
 
 
             if (Settings.SettingsManager.DebugSettings.DoBothAttachments && rightHandObject.Exists())
             {
-                rightHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName2), new Vector3(Settings.SettingsManager.DebugSettings.PlayerItemAttach2X, Settings.SettingsManager.DebugSettings.PlayerItemAttach2Y, Settings.SettingsManager.DebugSettings.PlayerItemAttach2Z), Rotator.Zero);
+                rightHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.PlayerAttachBoneName2), new Vector3(0f, 0f, 0f), Rotator.Zero);
 
                 if (Settings.SettingsManager.DebugSettings.DoPhysicalAttachment)
                 {

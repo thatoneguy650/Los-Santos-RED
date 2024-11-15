@@ -20,7 +20,8 @@ public class Hotel : GameLocation
     public override string TypeName { get; set; } = "Hotel";
     public override int MapIcon { get; set; } = 475;
     public override string ButtonPromptText { get; set; }
-
+    public override int RacketeeringAmountMin { get; set; } = 2000;
+    public override int RacketeeringAmountMax { get; set; } = 5000;
     public List<HotelRoom> HotelRooms { get; set; } = new List<HotelRoom>();
 
     public Hotel(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

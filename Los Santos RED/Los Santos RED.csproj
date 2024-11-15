@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -491,6 +491,7 @@
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Interface\IRestrictedAreaManagable.cs" />
     <Compile Include="lsr\Player\Interface\ITaxiRideable.cs" />
+    <Compile Include="lsr\Player\Interface\IVehicleManageable.cs" />
     <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
@@ -502,6 +503,7 @@
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
     <Compile Include="lsr\Player\Managers\CuffManager.cs" />
     <Compile Include="lsr\Player\Managers\InteriorManager.cs" />
+    <Compile Include="lsr\Player\Managers\VehicleManager.cs" />
     <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />
     <Compile Include="lsr\Player\Respawning\PedGeneralInteract.cs" />
     <Compile Include="lsr\Player\Respawning\PedPlayerInteract.cs" />

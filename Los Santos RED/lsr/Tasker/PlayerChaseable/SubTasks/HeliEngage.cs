@@ -169,7 +169,7 @@ public class HeliEngage
     {
         if (!IsAssignedRappel)
         {
-            NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, Settings.SettingsManager.DebugSettings.HeliMission,
+            NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, Settings.SettingsManager.PoliceTaskSettings.HeliMission,
             0f,//20f, //Cruise SPeed
                 45f, // Target Reached DIst
                 -1f, //Heli Orientation
@@ -230,8 +230,8 @@ public class HeliEngage
     {
         if (!IsAssignedCircle)
         {
-            NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, Settings.SettingsManager.DebugSettings.HeliMission,
-            Settings.SettingsManager.DebugSettings.HeliMissionCruiseSpeed,//20f, //Cruise SPeed
+            NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, Player.Character, 0f, 0f, 0f, Settings.SettingsManager.PoliceTaskSettings.HeliMission,
+            Settings.SettingsManager.PoliceTaskSettings.HeliMissionCruiseSpeed,//20f, //Cruise SPeed
                 45f, // Target Reached DIst
                 -1f, //Heli Orientation
                 30, //flight height

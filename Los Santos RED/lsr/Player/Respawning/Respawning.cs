@@ -587,7 +587,7 @@ public class Respawning// : IRespawning
         bool resetBankAccounts, bool resetSavedGame, bool resetPendingMessages, bool resetInteriors, bool resetGambling)
     {
         Player.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds,
-            resetGroup, resetLicenses, resetActivites, resetGracePeriod, resetBankAccounts, resetSavedGame, resetPendingMessages, resetInteriors, resetGambling);
+            resetGroup, resetLicenses, resetActivites, resetGracePeriod, resetBankAccounts, resetSavedGame, resetPendingMessages, resetInteriors, resetGambling, false);
         // CurrentPlayer.UnSetArrestedAnimation();
 
         NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Game.LocalPlayer.Character, false);

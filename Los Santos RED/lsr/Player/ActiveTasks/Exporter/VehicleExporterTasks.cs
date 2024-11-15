@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.ActiveTasks;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,4 +53,8 @@ public class VehicleExporterTasks : IPlayerTaskGroup
         tansferStolenCar.Start();
     }
 
+    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    {
+
+    }
 }

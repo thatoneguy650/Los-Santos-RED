@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -20,17 +21,17 @@ public class YanktonAiport : Airport
 
     }
 
-    public override void OnDepart()
+    public override void OnDepart(ILocationInteractable Player)
     {
         NativeFunction.Natives.SET_MINIMAP_IN_PROLOGUE(false);
         NativeFunction.Natives.SET_ALLOW_STREAM_PROLOGUE_NODES(false);
-        base.OnDepart();
+        base.OnDepart(Player);
     }
-    public override void OnArrive(bool setPos)
+    public override void OnArrive(ILocationInteractable Player, bool setPos)
     {
         NativeFunction.Natives.SET_MINIMAP_IN_PROLOGUE(true);
         NativeFunction.Natives.SET_ALLOW_STREAM_PROLOGUE_NODES(true);
-        base.OnArrive(setPos);
+        base.OnArrive(Player, setPos);
 
         if (setPos)
         {

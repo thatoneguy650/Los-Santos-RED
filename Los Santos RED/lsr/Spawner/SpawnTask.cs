@@ -29,6 +29,7 @@ public abstract class SpawnTask
     protected bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     protected bool HasPersonToSpawn => PersonType != null;
     protected bool HasVehicleToSpawn => VehicleType != null;
+    public List<RandomHeadData> PossibleHeads { get; set; }
     public SpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems)
     {
         SpawnLocation = spawnLocation;
