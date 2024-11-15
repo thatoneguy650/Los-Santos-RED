@@ -310,15 +310,33 @@ public class PlacesOfInterest_Liberty
     private void DefaultConfig_PedCustomizeLocation()
     {
         DefaultPedCustomizerLocation = new PedCustomizerLocation();
-        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(-1257.695f, 1610.94f, 23.20882f);
-        DefaultPedCustomizerLocation.DefaultModelPedHeading = 0.3566196f;
-        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(-1252.206f, 1613.172f, 23.20882f);
+        //DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(-1257.695f, 1610.94f, 23.20882f);
+        //DefaultPedCustomizerLocation.DefaultModelPedHeading = 0.3566196f;
+        //DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(-1252.206f, 1613.172f, 23.20882f);
+        //List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
+        //CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
+        //CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 1));
+        //CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 2));
+        //CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 3));
+        //CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 4));
+
+
+
+        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(1117.94f, 54.14467f, 15.85339f);
+        DefaultPedCustomizerLocation.DefaultModelPedHeading = 184.7249f;
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(1125.923f, 52.98021f, 15.86571f);
         List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 1));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 2));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 3));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 4));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(1118.04f, 51.75856f, 16.29714f), new Vector3(-0.007076373f, 0.9751766f, -0.2213152f), new Rotator(-12.78629f, 6.01895E-07f, 0.4157597f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(1118.006f, 53.37799f, 16.5719f), new Vector3(-0.01283151f, 0.9927738f, -0.1193125f), new Rotator(-6.852426f, -4.030857E-08f, 0.7405014f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(1117.979f, 53.1876f, 15.26992f), new Vector3(-0.01943615f, 0.9749539f, -0.2215562f), new Rotator(-12.80045f, 2.73604E-08f, 1.142066f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(1118.019f, 52.51995f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(1118.019f, 52.51995f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 4));
+
+
+
+
+
+
         DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
     }
     private void DefaultConfig_Other()
@@ -918,80 +936,10 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 2.22f,
                 OpenTime = 6,
                 CloseTime = 20,
+
                 StateID = StaticStrings.AlderneyStateID,
             },
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(52.45f, 781.2f, 214.77f),
-                EntranceHeading = 88.05f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(-203.4f, 1687.77f, 213.05f),
-                EntranceHeading = 95.42f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(1338.58f, 2088.76f, 216.9f),
-                EntranceHeading = 40.91f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
 
-
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(-379.51f, 640.95f, 204.81f),
-                EntranceHeading = 358.48f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new Restaurant() {
-                MenuID = "BurgerShotMenu",
-                Name = "Burger Shot",
-                Description = "Kill your hunger! It's bleedin' tasty",
-                EntrancePosition = new Vector3(-767.85f, 2107.42f, 224.31f),
-                EntranceHeading = 180.48f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.AlderneyStateID,
-            },
-            new Restaurant() {
-                MenuID = "CluckinBellMenu",
-                Name = "Cluckin' Bell",
-                Description = "Taste the cock",
-                EntrancePosition = new Vector3(1429.49f, 868.19f, 225.1f),
-                EntranceHeading = 2.2f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new Restaurant() {
-                MenuID = "CluckinBellMenu",
-                Name = "Cluckin' Bell",
-                Description = "Taste the cock",
-                EntrancePosition = new Vector3(101.04f, 566.46f, 214.8f),
-                EntranceHeading = 103.41f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
                 Name = "60 Diner",
@@ -1106,39 +1054,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
             },
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "TW@ Internet Cafe",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(-1343.86f, 958.28f, 225.44f),
-                EntranceHeading = 63.7f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.AlderneyStateID,
-            },
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "TW@ Internet Cafe",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(-101.45f, 1886.24f, 212.92f),
-                EntranceHeading = 88.88f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "TW@ Internet Cafe",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(1213.59f, 324.08f, 224.19f),
-                EntranceHeading = 280.19f,
-                OpenTime = 6,
-                CloseTime = 20,
-                ActivateDistance = 125f,
-                InteriorID = 50178,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1210.121f, 319.0208f, 24.19368f), 21.01815f) },
-                StateID = StaticStrings.LibertyStateID,
-            },
+
             new Restaurant() {
                 MenuID = "PizzaMenu",
                 Name = "Drusilla's",
@@ -2690,9 +2606,12 @@ public class PlacesOfInterest_Liberty
                 Description = "Kill your hunger! It's bleedin' tasty",
                 EntrancePosition = new Vector3(1890.87f, 719.66f, 25.21f),
                 EntranceHeading = 269.4f,
+                BannerImagePath = "stores\\burgershot.png",
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 124418,
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1875.883f, 718.8391f, 25.21189f), 267.9538f) },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -2703,11 +2622,94 @@ public class PlacesOfInterest_Liberty
                 Description = "Kill your hunger! It's bleedin' tasty",
                 EntrancePosition = new Vector3(680.63f, 2009.66f, 16.27f),
                 EntranceHeading = 23.34f,
+                BannerImagePath = "stores\\burgershot.png",
                 OpenTime = 6,
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 156674,
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(688.6464f, 1996.255f, 16.31561f), 31.33071f) }
+            },
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(52.45f, 781.2f, 14.77f),
+                EntranceHeading = 88.05f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\burgershot.png",
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.LibertyStateID,
+                InteriorID = 112642,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(67.91145f, 781.9721f, 14.81999f), 90.90947f) }
+            },
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(-203.4f, 1687.77f, 13.05f),
+                EntranceHeading = 95.42f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\burgershot.png",
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.LibertyStateID,
+                InteriorID = 109570,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-188.1336f, 1688.44f, 13.04693f), 89.43073f) }
+            },
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(1338.58f, 2088.76f, 16.9f),
+                EntranceHeading = 40.91f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\burgershot.png",
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.LibertyStateID,
+
+                InteriorID = 134402,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1350.033f, 2078.295f, 16.90743f), 45.12792f) }
+            },
+
+
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(-379.51f, 640.95f, 4.81f),
+                EntranceHeading = 358.48f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\burgershot.png",
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.LibertyStateID,
+
+                InteriorID = 105986,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-379.1163f, 625.4515f, 4.811082f), 357.4249f) }
+            },
+            new Restaurant() {
+                MenuID = "BurgerShotMenu",
+                Name = "Burger Shot",
+                Description = "Kill your hunger! It's bleedin' tasty",
+                EntrancePosition = new Vector3(-767.85f, 2107.42f, 24.31f),
+                EntranceHeading = 180.48f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\burgershot.png",
+                VendorPersonnelID = "BurgerShotPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.AlderneyStateID,
+
+                InteriorID = 59650,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-768.1967f, 2122.303f, 24.31391f), 179.2184f) }
             },
 
 
@@ -2729,9 +2731,92 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(308.0074f, 316.5331f, 14.51933f), 304.3098f, "Fudz's Delicatessen", "Satisfaction served daily!","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
 
             //Fast Food
-            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 5, CloseTime = 23, BannerImagePath = "stores\\cluckin.png", },
+            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { 
+                StateID =StaticStrings.AlderneyStateID, 
+                OpenTime = 5, 
+                CloseTime = 23, 
+                BannerImagePath = "stores\\cluckin.png",
+                VendorPersonnelID = "CluckinBellPeds",
+                VendorHeadDataGroupID = "AllHeads",
+
+
+            },
+            new Restaurant() {
+                MenuID = "CluckinBellMenu",
+                Name = "Cluckin' Bell",
+                Description = "Taste the cock",
+                EntrancePosition = new Vector3(1429.49f, 868.19f, 25.1f),
+                EntranceHeading = 2.2f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\cluckin.png",
+                VendorPersonnelID = "CluckinBellPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                StateID = StaticStrings.LibertyStateID,
+
+                InteriorID = 143874,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1423.652f, 853.5104f, 25.10769f), 4.485676f) }
+            },
+            new Restaurant() {
+                MenuID = "CluckinBellMenu",
+                Name = "Cluckin' Bell",
+                Description = "Taste the cock",
+                EntrancePosition = new Vector3(101.04f, 566.46f, 14.8f),
+                EntranceHeading = 103.41f,
+                OpenTime = 6,
+                CloseTime = 20,
+                BannerImagePath = "stores\\cluckin.png",
+                StateID = StaticStrings.LibertyStateID,
+                VendorPersonnelID = "CluckinBellPeds",
+                VendorHeadDataGroupID = "AllHeads",
+
+                InteriorID = 124162,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(116.7789f, 564.6393f, 14.80746f), 103.3126f) }
+            },
+
+
+
             new Restaurant(new Vector3(-63.62645f, 508.2122f, 14.70847f), 358.7118f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },
             
+            //tw@
+            new Restaurant() {
+                MenuID = "InternetCafeMenu",
+                Name = "tw@",
+                Description = "nu-media caffeine solutions provider",
+                EntrancePosition = new Vector3(-1343.86f, 958.28f, 25.44f),
+                EntranceHeading = 63.7f,
+                OpenTime = 6,
+                CloseTime = 20,
+                InteriorID = 166914,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1337.807f, 960.3051f, 25.44378f), 146.1286f) },
+                StateID = StaticStrings.AlderneyStateID,
+            },
+            new Restaurant() {
+                MenuID = "InternetCafeMenu",
+                Name = "tw@",
+                Description = "nu-media caffeine solutions provider",
+                EntrancePosition = new Vector3(-101.45f, 1886.24f, 12.92f),
+                EntranceHeading = 88.88f,
+                OpenTime = 6,
+                CloseTime = 20,
+                InteriorID = 66562,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-97.02089f, 1890.783f, 12.91313f), 176.6438f) },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new Restaurant() {
+                MenuID = "InternetCafeMenu",
+                Name = "tw@",
+                Description = "nu-media caffeine solutions provider",
+                EntrancePosition = new Vector3(1213.59f, 324.08f, 24.19f),
+                EntranceHeading = 280.19f,
+                OpenTime = 6,
+                CloseTime = 20,
+                ActivateDistance = 125f,
+                InteriorID = 50178,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1210.156f, 318.7346f, 24.19368f), 14.776f) },
+                StateID = StaticStrings.LibertyStateID,
+            },
+
             //Italian
             new Restaurant(new Vector3(-1316.426f, 998.7839f, 25.72835f), 355.8445f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza", StateID = StaticStrings.AlderneyStateID ,BannerImagePath = "stores\\pizzathis.png" },
             new Restaurant(new Vector3(-105.2152f, 564.0861f, 14.81412f), 129.918f, "Al Dente's", "Just like mama never used to make it","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID ,BannerImagePath = "stores\\aldentes.png" },

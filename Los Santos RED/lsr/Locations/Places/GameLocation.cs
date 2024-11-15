@@ -1087,11 +1087,14 @@ public class GameLocation : ILocationDispatchable
         {
             VendorPersonType = new DispatchablePerson(FallBackVendorModels.PickRandom(), 100, 100);
         }
+        
         HandleVariableItems();
         EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
         Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
+
+        merchantSpawnTask.PossibleHeads = VendorPossibleHeads;
         merchantSpawnTask.AllowAnySpawn = true;
         merchantSpawnTask.SpawnWithAllWeapons = true;
         merchantSpawnTask.AllowBuddySpawn = false;

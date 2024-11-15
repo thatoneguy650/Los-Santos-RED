@@ -71,6 +71,10 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> BarPeds;
     private List<DispatchablePerson> HaircutPeds;
     private List<DispatchablePerson> BobMuletPeds;
+    private List<DispatchablePerson> BurgerShotPeds;
+
+    public List<DispatchablePerson> CluckinBellPeds { get; private set; }
+
     private List<DispatchablePerson> RegularPeds;
 
     private List<DispatchablePerson> StandardCops_Old;
@@ -105,7 +109,6 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> AngelsOfDeathPeds { get; set; }
     public List<DispatchablePerson> UptownRidersPeds { get; set; }
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
-
     public void Setup(IIssuableWeapons issuableWeapons)
     {
         foreach (DispatchablePersonGroup dpg in PeopleGroupLookup)
@@ -121,7 +124,6 @@ public class DispatchablePeople : IDispatchablePeople
             }
         }
     }
-
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -1669,20 +1671,16 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1) { DebugName = "CartelMale4" },
         };
 
-
-
         YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale1" },
             new DispatchablePerson("a_m_m_soucent_03",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
             new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale3" },
         };
-
         NorthHollandPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale1" },
             new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale2" },
             new DispatchablePerson("a_m_m_soucent_04",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale3" },
         };
-
         PetrovicPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("ig_russiandrunk",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale1" },
             new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale2" },
@@ -1725,17 +1723,40 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatRange = 2
             },
         };
+        IllicitMarketplacePeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("IG_DrugDealer",100,100),
+            new DispatchablePerson("S_M_Y_Dealer_01",100,100),
+        };
+        RegularPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_bevhills_02",100,100),
+            new DispatchablePerson("a_m_m_genfat_02",100,100),
+            new DispatchablePerson("a_m_m_eastsa_02",100,100),
+            new DispatchablePerson("a_m_m_afriamer_01",100,100),
+            new DispatchablePerson("a_m_m_stlat_02",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_01",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_02",100,100),
+            new DispatchablePerson("a_m_y_bevhills_01",100,100),
+            new DispatchablePerson("a_m_y_eastsa_02",100,100),
+            new DispatchablePerson("a_f_m_salton_01",100,100),
+            new DispatchablePerson("a_f_y_business_03",100,100),
+            new DispatchablePerson("a_f_m_tourist_01",100,100),
+            new DispatchablePerson("a_f_o_genstreet_01",100,100),
+            new DispatchablePerson("a_f_y_femaleagent",100,100),
+            new DispatchablePerson("a_f_y_fitness_02",100,100),
+        };
+
+        ServicePeds();
+    }
+
+    private void ServicePeds()
+    {
         TaxiDrivers = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_socenlat_01",100,100),
         };
         VendorPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_strvend_01",100,100),
             new DispatchablePerson("s_m_m_linecook",100,100),
-        };
-        IllicitMarketplacePeds = new List<DispatchablePerson>()
-        {
-            new DispatchablePerson("IG_DrugDealer",100,100),
-            new DispatchablePerson("S_M_Y_Dealer_01",100,100),
         };
         TellerPeds = new List<DispatchablePerson>()
         {
@@ -1757,23 +1778,130 @@ public class DispatchablePeople : IDispatchablePeople
         {
             new DispatchablePerson("s_m_m_hairdress_01",100,100),
         };
-        RegularPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("a_m_m_bevhills_02",100,100),
-            new DispatchablePerson("a_m_m_genfat_02",100,100),
-            new DispatchablePerson("a_m_m_eastsa_02",100,100),
-            new DispatchablePerson("a_m_m_afriamer_01",100,100),
-            new DispatchablePerson("a_m_m_stlat_02",100,100),
-            new DispatchablePerson("a_m_y_beachvesp_01",100,100),
-            new DispatchablePerson("a_m_y_beachvesp_02",100,100),
-            new DispatchablePerson("a_m_y_bevhills_01",100,100),
-            new DispatchablePerson("a_m_y_eastsa_02",100,100),
-            new DispatchablePerson("a_f_m_salton_01",100,100),
-            new DispatchablePerson("a_f_y_business_03",100,100),
-            new DispatchablePerson("a_f_m_tourist_01",100,100),
-            new DispatchablePerson("a_f_o_genstreet_01",100,100),
-            new DispatchablePerson("a_f_y_femaleagent",100,100),
-            new DispatchablePerson("a_f_y_fitness_02",100,100),
+        BurgerShotPeds = new List<DispatchablePerson>()
+        {
+            CreateBurgerShotPed(true),
+            CreateBurgerShotPed(false),
+
         };
+        CluckinBellPeds = new List<DispatchablePerson>()
+        {
+            CreateCluckinBellPed(true),
+            CreateCluckinBellPed(false),
+        };
+    }
+
+    private DispatchablePerson CreateBurgerShotPed(bool isMale)
+    {
+        if(isMale)
+        {
+            return new DispatchablePerson("mp_m_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,22,7),//colors
+                    new PedComponent(8,15,0),
+                    new PedComponent(11,22,2),
+                    new PedComponent(2,31,0),
+                    new PedComponent(6,8,0),//colors
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_069_M","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+               
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 130, 2) },//hat
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_M_M_GENERICMALE_01_WHITE_MINI_01", "A_M_M_SALTON_01_WHITE_FULL_01", "A_M_M_TOURIST_01_WHITE_MINI_01", "A_M_M_MALIBU_01_LATINO_FULL_01" },
+
+            };
+        }
+        else
+        {
+            return new DispatchablePerson("mp_f_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,64,0),
+                    new PedComponent(11,338,7),
+                    new PedComponent(8,15,0),
+                    new PedComponent(6,1,3),
+                    new PedComponent(2,75,0),
+                    new PedComponent(3,14,0),
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_069_F","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 129, 2) },
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_F_Y_FITNESS_01_WHITE_FULL_01", "A_F_Y_BEVHILLS_01_WHITE_FULL_01", "A_F_Y_SOUCENT_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_WHITE_FULL_01" },
+            };
+        }
+    }
+    private DispatchablePerson CreateCluckinBellPed(bool isMale)
+    {
+        if (isMale)
+        {
+            return new DispatchablePerson("mp_m_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,22,7),//colors
+                    new PedComponent(8,15,0),
+                    new PedComponent(11,345,2),
+                    new PedComponent(2,31,0),
+                    new PedComponent(6,8,0),//colors
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_073_M","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 130, 4) },//hat
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_M_M_GENERICMALE_01_WHITE_MINI_01", "A_M_M_SALTON_01_WHITE_FULL_01", "A_M_M_TOURIST_01_WHITE_MINI_01", "A_M_M_MALIBU_01_LATINO_FULL_01" },
+
+            };
+        }
+        else
+        {
+            return new DispatchablePerson("mp_f_freemode_01", 100, 100)
+            {
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedPropComponent>() { }, new List<PedComponent>(){
+                    new PedComponent(4,64,0),
+                    new PedComponent(11,338,5),
+                    new PedComponent(8,15,0),
+                    new PedComponent(6,1,3),
+                    new PedComponent(2,75,0),
+                    new PedComponent(3,14,0),
+                }),
+                OptionalAppliedOverlayLogic = new OptionalAppliedOverlayLogic()
+                {
+                    OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+                    {
+                        new OptionalAppliedOverlay("mpChristmas2018_overlays","MP_Christmas2018_Tee_073_F","ZONE_TORSO"),
+                    },
+                    AppliedOverlayZonePercentages = new List<AppliedOverlayZonePercentage>() { new AppliedOverlayZonePercentage("ZONE_TORSO", 100f, 1) }
+                },
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 129, 4) },
+                OptionalPropChance = 65,
+                OverrideVoice = new List<string>() { "A_F_Y_FITNESS_01_WHITE_FULL_01", "A_F_Y_BEVHILLS_01_WHITE_FULL_01", "A_F_Y_SOUCENT_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_WHITE_FULL_01" },
+            };
+        }
     }
     private void DefaultConfig()
     {
@@ -1843,6 +1971,10 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
+
+
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         //
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
@@ -1897,6 +2029,23 @@ public class DispatchablePeople : IDispatchablePeople
 
         List<DispatchablePerson> NOOSE_DLC = new List<DispatchablePerson>()
         {
+            DetectiveMale,
+            DetectiveFemale,
+            new DispatchablePerson("ig_lcswat", 2,100) {
+                DebugName = "ig_lcswat"
+                ,AccuracyMin = 25
+                ,AccuracyMax = 40
+                ,ShootRateMin = 400
+                ,ShootRateMax = 500
+                ,CombatAbilityMin = 1
+                ,CombatAbilityMax = 2
+                ,HealthMin = 100
+                ,HealthMax = 100
+                ,ArmorMin = 100
+                ,ArmorMax = 100
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,RequiredVariation = new PedVariation(),
+            },
             new DispatchablePerson("ig_lcswat", 100,100) {
                 DebugName = "ig_lcswat"
                 ,AccuracyMin = 25
@@ -1909,6 +2058,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,HealthMax = 100
                 ,ArmorMin = 100
                 ,ArmorMax = 100
+                ,MinWantedLevelSpawn = 3
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(0, 2, 0), new PedPropComponent(0, 3, 0), new PedPropComponent(0, 4, 0), new PedPropComponent(0, 5, 0), new PedPropComponent(0, 6, 0) }
                 ,OptionalPropChance = 80
@@ -2298,6 +2448,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2471,6 +2623,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2629,6 +2783,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -15082,6 +15238,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));

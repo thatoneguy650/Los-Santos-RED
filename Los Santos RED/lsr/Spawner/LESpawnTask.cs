@@ -310,7 +310,7 @@ public class LESpawnTask : SpawnTask
                 }
                 PedExt Person = SetupAgencyAnimal(createdPed);
                 EntryPoint.WriteToConsole($"LE SPAWN TASK CreateCanine 4");
-                PersonType.SetPedVariation(createdPed, null, true);
+                PersonType.SetPedVariation(createdPed, null, true);//no head data for canines
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 EntryPoint.WriteToConsole($"LE SPAWN TASK CreateCanine 5");

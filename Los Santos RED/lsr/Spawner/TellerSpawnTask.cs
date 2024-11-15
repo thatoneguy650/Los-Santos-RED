@@ -99,7 +99,7 @@ public class TellerSpawnTask : SpawnTask
                 return null;
             }
             PedExt Person = SetupTellerPed(createdPed);
-            PersonType.SetPedVariation(createdPed, null, true);
+            PersonType.SetPedVariation(createdPed, PossibleHeads, true);
             GameFiber.Yield();
             CreatedPeople.Add(Person);
             return Person;

@@ -238,6 +238,10 @@ public class TaxiDispatcher : DefaultDispatcher
         civilianSpawnTask.AllowBuddySpawn = false;
         civilianSpawnTask.PlacePedOnGround = false;
         civilianSpawnTask.AttemptSpawn();
+        if (TaxiFirm != null)
+        {
+            civilianSpawnTask.PossibleHeads = TaxiFirm.PossibleHeads;
+        }
         //civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
         //civilianSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));
         PedExt spawnedDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
