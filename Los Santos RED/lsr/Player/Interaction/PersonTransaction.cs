@@ -190,7 +190,19 @@ public class PersonTransaction : Interaction
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
         }
         Transaction = new Transaction(MenuPool, InteractionMenu, ShopMenu, AssociatedStore);
-        Transaction.PreviewItems = false;
+
+
+        if(Settings.SettingsManager.PlayerOtherSettings.PersonTransactionNeverPreviewItems)
+        {
+            Transaction.PreviewItems = false;
+        }
+
+        //if(AssociatedStore == null || !AssociatedStore.VendorsShowItemsPreview)
+        //{
+        //    Transaction.PreviewItems = false;
+        //}
+
+        
         Transaction.PersonTransaction = this;
 
         bool useAccounts = true;
@@ -309,6 +321,7 @@ public class PersonTransaction : Interaction
         if (modItem != null)
         {
             MenuPool.CloseAllMenus();
+            Transaction.ClearPreviews();
             StartBuyAnimation(modItem, menuItem, totalItems, MoneySpent == 0);
             Ped.OnItemPurchased(Player, modItem,totalItems, menuItem.PurchasePrice * totalItems);
             MoneySpent += menuItem.PurchasePrice * totalItems;
@@ -320,6 +333,7 @@ public class PersonTransaction : Interaction
         if (modItem != null)
         {
             MenuPool.CloseAllMenus();
+            Transaction.ClearPreviews();
             StartSellAnimation(modItem, menuItem, totalItems, MoneySpent == 0);
             Ped.OnItemSold(Player, modItem, totalItems, menuItem.SalesPrice * totalItems);
             MoneySpent += menuItem.SalesPrice * totalItems;

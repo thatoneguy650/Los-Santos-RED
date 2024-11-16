@@ -449,6 +449,11 @@ public class ModItem
                     Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f);
                 }
             }
+            else if (Transaction.PersonTransaction != null && Transaction.PersonTransaction.TransactionPed != null && Transaction.PersonTransaction.TransactionPed.Pedestrian.Exists())
+            {
+                Position = Transaction.PersonTransaction.TransactionPed.Pedestrian.GetOffsetPosition(new Vector3(settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetX, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetY, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetZ));
+                EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW PERSONTRANSACTION DOING ABOVE PED");
+            }
             else
             {
                 Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
@@ -462,6 +467,9 @@ public class ModItem
                     Position = GPCamPos + GPCamDir.ToNormalized() * 3f;
                 }
             }
+
+
+
             if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
             {
                 try

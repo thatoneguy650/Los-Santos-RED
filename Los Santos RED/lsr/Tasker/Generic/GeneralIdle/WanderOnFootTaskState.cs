@@ -99,7 +99,7 @@ class WanderOnFootTaskState : TaskState
         {
             IsPatrolling = true;
         }
-        //EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
+        EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
         SetTasking();
     }
     public void Stop()
@@ -153,6 +153,8 @@ class WanderOnFootTaskState : TaskState
         {
             return;
         }
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} GuardAreaTask RAN HasSpawnRequirements: {HasSpawnRequirements} TaskRequirements: {PedGeneral.LocationTaskRequirements.TaskRequirements} ForceStandardScenarios {ForceStandardScenarios}");
+
         PedGeneral.ClearTasks(true);
         bool useLocal = false;
         List<string> DealerScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD" };
@@ -220,7 +222,7 @@ class WanderOnFootTaskState : TaskState
             }
         }
 
-        //EntryPoint.WriteToConsole($"WANDER ON FOOT useLocal {useLocal}");
+        EntryPoint.WriteToConsole($"ScenarioChosen {ScenarioChosen.ToString()}");
 
         if(PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipLongGunWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipSidearmWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipMeleeWhenIdle))
         {

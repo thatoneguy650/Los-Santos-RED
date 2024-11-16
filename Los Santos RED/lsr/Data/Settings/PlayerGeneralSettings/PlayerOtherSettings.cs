@@ -145,6 +145,13 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint MovingAwayTime { get; set; }
     public float TunnelZValueMax { get; set; }
 
+
+    public bool PersonTransactionNeverPreviewItems { get; set; }
+    public float PersonTransactionItemOffsetX { get; set; }
+    public float PersonTransactionItemOffsetY { get; set; }
+    public float PersonTransactionItemOffsetZ { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -263,6 +270,11 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MovingTowardsTime = 1000;
         MovingAwayTime = 1500;
         TunnelZValueMax = -10.0f;
+
+        PersonTransactionItemOffsetY = 0.5f;
+        PersonTransactionItemOffsetZ = 0.5f;
+
+        PersonTransactionNeverPreviewItems = false;
     }
 
 }

@@ -189,6 +189,8 @@ public class GameLocation : ILocationDispatchable
     public virtual float VendorCowerPercentage { get; set; } = -1f;
     public virtual float VendorSurrenderPercentage { get; set; } = -1f;
 
+
+
     /*Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MerchantMoneyMin, Settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
 
 
@@ -1191,6 +1193,8 @@ public class GameLocation : ILocationDispatchable
         }
         if (PossibleWeapons != null && PossibleWeapons.Any())
         {
+            EntryPoint.WriteToConsole($"GetRandomWeapon FROM STORE POSSIBLE WEAPONS{string.Join(",", PossibleWeapons)}");
+
             int Total = PossibleWeapons.Sum(x => x.SpawnChance);
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (IssuableWeapon weapon in PossibleWeapons)
@@ -1203,6 +1207,7 @@ public class GameLocation : ILocationDispatchable
                     {
 
                         weapon.SetIssued(Game.GetHashKey(weapon.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                        EntryPoint.WriteToConsole($"GetRandomWeapon FROM STORE PCIKED 1 {weapon.ModelName}");
                         return weapon;
                     }
                 }
@@ -1210,8 +1215,14 @@ public class GameLocation : ILocationDispatchable
             }
             if (PossibleWeapons.Any())
             {
-                return PossibleWeapons.PickRandom();
+                IssuableWeapon issuableWeapon = PossibleWeapons.PickRandom();
+                EntryPoint.WriteToConsole($"GetRandomWeapon FROM STORE PCIKED 2 {issuableWeapon.ModelName}");
+                return issuableWeapon;
             }
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"GetRandomWeapon FROM STORE POSSIBLE WEAPONS IS NULL");
         }
         return null;
     }

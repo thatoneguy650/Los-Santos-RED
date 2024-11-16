@@ -85,6 +85,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override bool KnowsGangAreas => true;
     public bool IsUsingMountedWeapon { get; set; } = false;
     public PedExt CurrentTarget { get; set; }
+    public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
     public override bool NeedsFullUpdate
     {
         get

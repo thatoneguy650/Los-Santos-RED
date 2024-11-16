@@ -64,6 +64,10 @@ public class Streets : IStreets
     //    string CrossStreetName = GetCrossStreetName(Position);
     //    CrossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
     //}
+    public Street GetStreet(int nodeID)
+    {
+        return StreetsList.Where(x => x.Nodes != null && x.Nodes.Contains(nodeID)).FirstOrDefault();
+    }
     public Street GetStreet(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();

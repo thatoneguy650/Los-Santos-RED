@@ -53,6 +53,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool KnowsGangAreas => true;
     public override bool IsGangMember { get; set; } = true;
     public bool IsGeneralBackup { get; internal set; }
+    public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {

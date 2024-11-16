@@ -125,6 +125,10 @@ public class PedBrain
             {
                 SetCalmCallIn();
             }
+            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
+            {
+                SetIdle();
+            }
         }
         else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
         {
@@ -158,7 +162,7 @@ public class PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new Fight(PedExt, Player, GetWeaponToIssue(PedExt.IsGangMember)) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };//gang memebrs already have guns
+        PedExt.CurrentTask = new Fight(PedExt, Player, PedExt.HasWeapon ? null : GetWeaponToIssue(PedExt.IsGangMember)) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };//gang memebrs already have guns
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
