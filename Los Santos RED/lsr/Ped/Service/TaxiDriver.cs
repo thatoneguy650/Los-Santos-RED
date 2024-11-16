@@ -14,6 +14,7 @@ public class TaxiDriver : PedExt, IWeaponIssuable
     public WeaponInventory WeaponInventory { get; private set; }
     public bool HasTaser { get; set; } = false;
     public bool IsUsingMountedWeapon { get; set; } = false;
+    public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => TaxiFirm.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => TaxiFirm.GetRandomWeapon(v, weapons);
     public bool WillCancelRide => HasSeenPlayerCommitMajorCrime || (Pedestrian.Exists() && Pedestrian.IsFleeing);

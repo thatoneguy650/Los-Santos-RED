@@ -357,6 +357,9 @@ public class PlayerPerception
         {
             ExistingEvent.UpdateWitnessed(VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport);
         }
+
+        //EntryPoint.WriteToConsole($"AddWitnessedCrime {Originator.Handle} {CrimeToAdd.Name}");
+
     }
     public void UpdateWitnessedCrimes()
     {
@@ -364,6 +367,11 @@ public class PlayerPerception
         {
             return;
         }
+        //if(Originator.IsMerchant)
+        //{
+            //EntryPoint.WriteToConsole($"UpdateWitnessedCrimes RAN FOR MERCHANT CRIMES VIOLATING {Originator.Handle} {string.Join(",",Target.Violations.CivilianReportableCrimesViolating)}");
+        //}
+
         foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
         {
             if(DistanceToTarget > committing.MaxReportingDistance)

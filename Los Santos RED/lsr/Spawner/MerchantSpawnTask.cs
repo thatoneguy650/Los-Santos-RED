@@ -139,15 +139,18 @@ public class MerchantSpawnTask : SpawnTask
         }
         SpawnedVendors.Add(Vendor);
         World.Pedestrians.AddEntity(Vendor);
+
+        Vendor.AssociatedStore = Store;
+
         Vendor.SetStats(PersonType, ShopMenus, Weapons, AddBlip, false,false,false,Store);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (ped.Exists())
         {
             Vendor.SpawnPosition = ped.Position;
             Vendor.SpawnHeading = ped.Heading;
-            if (SetupMenus)
-            {
-                Vendor.AssociatedStore = Store;
-            }
+            //if (SetupMenus)
+            //{
+                
+            //}
             Vendor.SpawnPosition = SpawnLocation.InitialPosition;
             Vendor.WasModSpawned = true;
             Vendor.CanBeAmbientTasked = true;

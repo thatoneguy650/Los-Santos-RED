@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IStreets
     {
         Street GetStreet(string currentCrossStreetName);
+        Street GetStreet(int nodeID);
         Street GetStreet(Vector3 position);
         string GetStreetNames(Vector3 entrancePosition, bool withCross);
     }

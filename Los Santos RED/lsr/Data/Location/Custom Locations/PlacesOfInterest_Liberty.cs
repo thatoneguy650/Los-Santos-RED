@@ -58,6 +58,7 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_CityHalls();
         DefaultConfig_HeadShops();
         DefaultConfig_DeadDrops();
+        DefaultConfig_GunStores();
         DefaultConfig_BlankLocations();
 
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
@@ -92,10 +93,10 @@ public class PlacesOfInterest_Liberty
     {
         LibertyCityLocations.Residences.AddRange(new List<Residence>()
         {
-            new Residence(new Vector3(1251.653f, 1.474908f, 19.76758f), 90.61584f, "Hove Beach Apt 124", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
-            new Residence(new Vector3(1058.779f, 192.1109f, 17.29779f), 272.7327f, "Hove Beach Apt 3B", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
-            new Residence(new Vector3(1172.407f, 158.2507f, 19.69745f), 90.64713f, "Hove Beach Apt 23", ""){ StateID = StaticStrings.LibertyStateID,InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
-            new Residence(new Vector3(1086.602f, 228.1993f, 16.91974f), 94.85487f, "Hove Beach Apt 76", ""){ StateID = StaticStrings.LibertyStateID, InteriorID = 60162,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1251.653f, 1.474908f, 19.76758f), 90.61584f, "Hove Beach Apt 124", ""){ StateID = StaticStrings.LibertyStateID,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1058.779f, 192.1109f, 17.29779f), 272.7327f, "Hove Beach Apt 3B", ""){ StateID = StaticStrings.LibertyStateID,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1172.407f, 158.2507f, 19.69745f), 90.64713f, "Hove Beach Apt 23", ""){ StateID = StaticStrings.LibertyStateID,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
+            new Residence(new Vector3(1086.602f, 228.1993f, 16.91974f), 94.85487f, "Hove Beach Apt 76", ""){ StateID = StaticStrings.LibertyStateID, OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
 
 
             new Residence(new Vector3(316.3927f, 789.0976f, 14.76556f), 358.0545f, "Prosperous Towers Apt 13", ""){ StateID = StaticStrings.LibertyStateID, InteriorID = -1,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
@@ -406,54 +407,8 @@ public class PlacesOfInterest_Liberty
             },
         };
         LibertyCityLocations.CarCrushers.AddRange(CarCrusherList_6);
-        List<GunStore> GunStoreList_8 = new List<GunStore>() {
-            new GunStore() {
-                MenuID = "GunShop1",
-                Name = "Choppy Shop",
-                Description = "GRAH GRAH BOOM",
-                EntrancePosition = new Vector3(1295.57f, 580.55f, 234.26f),
-                EntranceHeading = 90.56f,
-                OpenTime = 6,
-                CloseTime = 20,
-                IsEnabled = true, 
-                ContactName = StaticStrings.UndergroundGunsContactName,
-                ParkingSpaces = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(1284.30f, 550.90f, 233.12f),181.34f),
-                },
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new GunStore() {
-                MenuID = "GunShop2",
-                Name = "Blicky Bodega",
-                Description = "Protect yourself from the opposition",
-                EntrancePosition = new Vector3(311.1f, 151.3f, 211.16f),
-                EntranceHeading = 86.28f,
-                OpenTime = 6,
-                CloseTime = 20,
-                IsEnabled = true,
-                ContactName = StaticStrings.UndergroundGunsContactName,
-                ParkingSpaces = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(332.38f, 148.26f, 213.98f),177.80f),
-                },
-                StateID = StaticStrings.LibertyStateID,
-            },
-            new GunStore() {
-                MenuID = "GunShop3",
-                Name = "Knocks Central",
-                Description = "Essential business",
-                EntrancePosition = new Vector3(-1501.22f,846.25f,225.45f),
-                EntranceHeading = 234.43f,
-                OpenTime = 6,
-                CloseTime = 20,
-                IsEnabled = true,
-                ContactName = StaticStrings.UndergroundGunsContactName,
-                ParkingSpaces = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(-1499.26f, 840.65f, 225.13f),329.66f),
-                },
-                StateID = StaticStrings.LibertyStateID,
-            },
-        };
-        LibertyCityLocations.GunStores.AddRange(GunStoreList_8);
+
+
         List<Hotel> HotelList_9 = new List<Hotel>() {
             new Hotel() {
                 MenuID = "ExpensiveHotelMenu",
@@ -2570,35 +2525,6 @@ public class PlacesOfInterest_Liberty
     {
         LibertyCityLocations.Restaurants.AddRange(new List<Restaurant>()
         {
-            //Generic
-            new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
-            new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
-            new Restaurant(new Vector3(107.2284f, 1900.707f, 20.42747f), 0.09704412f, "S&D Diner", "","FancyGenericMenu", FoodType.Generic){ IsWalkup = true, StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 },
-            new Restaurant(new Vector3(1216.894f, 20.49133f, 16.10159f), 273.8801f, "Gulag Garden", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1255.93f, 159.1167f, 19.50427f), 121.6593f, "Luncheonette Diner", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
-
-
-            new Restaurant(new Vector3(1494.228f, 284.1609f, 25.23981f), 179.2637f, "Ali Mac's", "Traditional Familry Fare","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1436.119f, 259.1028f, 24.5536f), 270.7332f, "Coronary Corner Restuarant", "","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
-
-            new Restaurant(new Vector3(1505.384f, 425.5957f, 28.10432f), 358.0871f, "Green Dragon Chinese Food", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1563.347f, 364.9023f, 25.74242f), 182.9156f, "Wok Like An Egyptian", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1579.539f, 364.8728f, 24.67028f), 178.3091f, "El Gringo Supremo's", "","MexicanMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },
-
-
-
-
-
-            new Restaurant(new Vector3(1312.689f, 529.9832f, 34.01013f), 273.2307f, "Diner", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1313.493f, 576.736f, 34.20903f), 269.9303f, "Hero Shop", "","SandwichMenu", FoodType.Sandwiches){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1375.332f, 905.6595f, 29.83094f), 75.98001f, "American & Spanish Food", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1397.564f, 890.1441f, 27.47992f), 181.499f, "Chicken Restaurant", "","FancyGenericMenu", FoodType.Chicken){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1477.622f, 848.5602f, 21.41052f), 92.50406f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3" },
-            new Restaurant(new Vector3(1549.102f, 924.5397f, 23.39649f), 90.51724f, "Kingston Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1570.415f, 869.429f, 22.61242f), 2.052902f, "Indian Inn Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1470.412f, 1244.412f, 36.11839f), 359.4598f, "Cherry Popper Ice Cream", "","IceCreamMenu", FoodType.Dessert){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1979.965f, 1013.015f, 29.20576f), 49.90157f, "Silk Thai", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
-
             //Burger
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -2615,7 +2541,6 @@ public class PlacesOfInterest_Liberty
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1875.883f, 718.8391f, 25.21189f), 267.9538f) },
                 StateID = StaticStrings.LibertyStateID,
             },
-
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
                 Name = "Burger Shot",
@@ -2677,8 +2602,6 @@ public class PlacesOfInterest_Liberty
                 InteriorID = 134402,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1350.033f, 2078.295f, 16.90743f), 45.12792f) }
             },
-
-
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
                 Name = "Burger Shot",
@@ -2718,41 +2641,19 @@ public class PlacesOfInterest_Liberty
                 },
             },
 
-
-            //Coffee
-            new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
-            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Hot Coffee Shop", "Wanna come inside?","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(322.1688f, 455.7006f, 14.83659f), 179.5892f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
-            new Restaurant(new Vector3(14.92347f, 457.2468f, 14.76526f), 219.7161f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
-
-            new Restaurant(new Vector3(169.3135f, 858.1989f, 14.77283f), 277.2627f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
-            new Restaurant(new Vector3(349.1903f, 488.417f, 14.82063f), 268.7347f,  "Stews Coffee Shop", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1532.004f, 427.4155f, 27.82907f), 356.5174f,  "Benito's Coffee and Comics", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
-
-            //Donuts
-            new Restaurant(new Vector3(436.5504f, 246.7506f, 10.31401f), 5.807813f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut){ IsWalkup = true, StateID = StaticStrings.LibertyStateID, OpenTime = 4, CloseTime = 20,BannerImagePath = "stores\\rustybrowns.png" },
-
-            //ICe Cream
-            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Ned's Ice Cream", "","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(308.0074f, 316.5331f, 14.51933f), 304.3098f, "Fudz's Delicatessen", "Satisfaction served daily!","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
-
-            //Fast Food
-            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) { 
-                StateID =StaticStrings.AlderneyStateID, 
-                OpenTime = 5, 
-                CloseTime = 23, 
+            //Chicken
+            new Restaurant(new Vector3(-1270.044f, 1061.385f, 19.56771f), 270.0156f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) {
+                StateID =StaticStrings.AlderneyStateID,
+                OpenTime = 5,
+                CloseTime = 23,
                 BannerImagePath = "stores\\cluckin.png",
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
-
-
             },
-            new Restaurant() {
+            new Restaurant(new Vector3(1429.49f, 868.19f, 25.1f),2.2f,"Cluckin' Bell","Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) {
                 MenuID = "CluckinBellMenu",
                 Name = "Cluckin' Bell",
                 Description = "Taste the cock",
-                EntrancePosition = new Vector3(1429.49f, 868.19f, 25.1f),
-                EntranceHeading = 2.2f,
                 OpenTime = 6,
                 CloseTime = 20,
                 BannerImagePath = "stores\\cluckin.png",
@@ -2763,19 +2664,13 @@ public class PlacesOfInterest_Liberty
                 InteriorID = 143874,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1423.652f, 853.5104f, 25.10769f), 4.485676f) }
             },
-            new Restaurant() {
-                MenuID = "CluckinBellMenu",
-                Name = "Cluckin' Bell",
-                Description = "Taste the cock",
-                EntrancePosition = new Vector3(101.04f, 566.46f, 14.8f),
-                EntranceHeading = 103.41f,
+            new Restaurant(new Vector3(101.04f, 566.46f, 14.8f),103.41f,"Cluckin' Bell","Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) {
                 OpenTime = 6,
                 CloseTime = 20,
                 BannerImagePath = "stores\\cluckin.png",
                 StateID = StaticStrings.LibertyStateID,
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
-
                 InteriorID = 124162,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(116.7789f, 564.6393f, 14.80746f), 103.3126f) },
 
@@ -2786,17 +2681,31 @@ public class PlacesOfInterest_Liberty
                 },
             },
 
+            //Coffee
+            new Restaurant(new Vector3(-1060.514f, 1380.222f, 19.56642f), 184.7214f, "Craigs Coffee Shop", "","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.AlderneyStateID },
+            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Hot Coffee Shop", "Wanna come inside?","CoffeeMenu", FoodType.Coffee){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(322.1688f, 455.7006f, 14.83659f), 179.5892f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
+            new Restaurant(new Vector3(14.92347f, 457.2468f, 14.76526f), 219.7161f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
+            new Restaurant(new Vector3(169.3135f, 858.1989f, 14.77283f), 277.2627f,  "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { StateID = StaticStrings.LibertyStateID, BannerImagePath = "stores\\beanmachine.png" },
+            new Restaurant(new Vector3(349.1903f, 488.417f, 14.82063f), 268.7347f,  "Stews Coffee Shop", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1532.004f, 427.4155f, 27.82907f), 356.5174f,  "Benito's Coffee and Comics", "","CoffeeMenu", FoodType.Coffee) { StateID = StaticStrings.LibertyStateID },
 
+            //Donuts
+            new Restaurant(new Vector3(436.5504f, 246.7506f, 10.31401f), 5.807813f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut){ IsWalkup = true, StateID = StaticStrings.LibertyStateID, OpenTime = 4, CloseTime = 20,BannerImagePath = "stores\\rustybrowns.png" },
 
-            new Restaurant(new Vector3(-63.62645f, 508.2122f, 14.70847f), 358.7118f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Chicken | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },
+            //Ice Cream
+            new Restaurant(new Vector3(1119.733f, -62.86261f, 13.75284f), 181.5454f, "Ned's Ice Cream", "","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(308.0074f, 316.5331f, 14.51933f), 304.3098f, "Fudz's Delicatessen", "Satisfaction served daily!","IceCreamMenu", FoodType.Dessert){ IsWalkup = true, StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1470.412f, 1244.412f, 36.11839f), 359.4598f, "Cherry Popper Ice Cream", "","IceCreamMenu", FoodType.Dessert){ StateID = StaticStrings.LibertyStateID },
+
+            //s.HO
+            new Restaurant(new Vector3(1477.622f, 848.5602f, 21.41052f), 92.50406f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3" },
+
+            //Wigwam
+            new Restaurant(new Vector3(-63.62645f, 508.2122f, 14.70847f), 358.7118f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.American | FoodType.Burger | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },
             
             //tw@
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "tw@",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(-1343.86f, 958.28f, 25.44f),
-                EntranceHeading = 63.7f,
+            new Restaurant(new Vector3(-1343.86f, 958.28f, 25.44f),63.7f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 BannerImagePath = "stores\\twat.png",
                 OpenTime = 6,
                 CloseTime = 20,
@@ -2806,12 +2715,7 @@ public class PlacesOfInterest_Liberty
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
             },
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "tw@",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(-101.45f, 1886.24f, 12.92f),
-                EntranceHeading = 88.88f,
+            new Restaurant(new Vector3(-101.45f, 1886.24f, 12.92f),88.88f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 BannerImagePath = "stores\\twat.png",
                 OpenTime = 6,
                 CloseTime = 20,
@@ -2821,15 +2725,9 @@ public class PlacesOfInterest_Liberty
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
             },
-            new Restaurant() {
-                MenuID = "InternetCafeMenu",
-                Name = "tw@",
-                Description = "nu-media caffeine solutions provider",
-                EntrancePosition = new Vector3(1213.59f, 324.08f, 24.19f),
-                EntranceHeading = 280.19f,
+            new Restaurant(new Vector3(1213.59f, 324.08f, 24.19f),280.19f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 OpenTime = 6,
                 CloseTime = 20,
-                ActivateDistance = 125f,
                 InteriorID = 50178,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1210.156f, 318.7346f, 24.19368f), 14.776f) },
                 StateID = StaticStrings.LibertyStateID,
@@ -2846,29 +2744,45 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(-176.5677f, 950.0205f, 12.40071f), 359.3528f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(366.7054f, 209.1764f, 14.98598f), 268.1589f, "Pasta Le Vista", "Where every bite’s a getaway!","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(1671.657f, 727.932f, 25.95271f), 87.05959f, "Al's Pizzeria", "Free Delivery","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
-
-
             new Restaurant(new Vector3(1217.929f, 278.336f, 23.91655f), 321.847f, "Pizza Feast", "For a Real Feast","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(2035.999f, 976.2667f, 28.14738f), 275.386f, "Pizza Feast", "For a Real Feast","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
-
-
             new Restaurant(new Vector3(1373.067f, 896.9398f, 29.79031f), 74.50283f, "Italian Restaurant", "","AlDentesMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
-            new Restaurant(new Vector3(1414.074f, 890.5122f, 25.53889f), 178.9763f, "Pizza & Deli", "","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
-            
+            new Restaurant(new Vector3(1414.074f, 890.5122f, 25.53889f), 178.9763f, "Pizza & Deli", "","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },     
             new Restaurant(new Vector3(591.9781f, 2205.841f, 17.17392f), 91.2168f, "Pizza", "","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(779.9337f, 2013.644f, 15.67051f), 0.877494f, "Pizza & Gyro", "","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) { MapIcon = 889,TypeName ="Pizza",StateID = StaticStrings.LibertyStateID },
 
+            //Chinese
+            new Restaurant(new Vector3(1505.384f, 425.5957f, 28.10432f), 358.0871f, "Green Dragon Chinese Food", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1563.347f, 364.9023f, 25.74242f), 182.9156f, "Wok Like An Egyptian", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+
+            //Sandwich
+            new Restaurant(new Vector3(1313.493f, 576.736f, 34.20903f), 269.9303f, "Hero Shop", "","SandwichMenu", FoodType.Sandwiches){ StateID = StaticStrings.LibertyStateID },
+
+            //Generic    
+            new Restaurant(new Vector3(-1072.631f, 1380.906f, 19.56819f), 181.032f, "Healthy Food", "No bogeys about it","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.AlderneyStateID },
+            new Restaurant(new Vector3(107.2284f, 1900.707f, 20.42747f), 0.09704412f, "S&D Diner", "","FancyGenericMenu", FoodType.Generic){ IsWalkup = true, StateID = StaticStrings.LibertyStateID, OpenTime = 6, CloseTime = 20 },
+            new Restaurant(new Vector3(1216.894f, 20.49133f, 16.10159f), 273.8801f, "Gulag Garden", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1255.93f, 159.1167f, 19.50427f), 121.6593f, "Luncheonette Diner", "Fresh from the gulag","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1312.689f, 529.9832f, 34.01013f), 273.2307f, "Diner", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },      
+            new Restaurant(new Vector3(1375.332f, 905.6595f, 29.83094f), 75.98001f, "American & Spanish Food", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1397.564f, 890.1441f, 27.47992f), 181.499f, "Chicken Restaurant", "","FancyGenericMenu", FoodType.Chicken){ StateID = StaticStrings.LibertyStateID },    
+            new Restaurant(new Vector3(1494.228f, 284.1609f, 25.23981f), 179.2637f, "Ali Mac's", "Traditional Familry Fare","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1436.119f, 259.1028f, 24.5536f), 270.7332f, "Coronary Corner Restuarant", "","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.LibertyStateID },
 
             //Mexican
             new Restaurant(new Vector3(1030.558f, 143.9256f, 7.496456f), 178.6679f, "El Sobre", "","MexicanMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1579.539f, 364.8728f, 24.67028f), 178.3091f, "El Gringo Supremo's", "","MexicanMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },
 
             //Korean
             new Restaurant(new Vector3(243.8853f, 120.3672f, 14.76545f), 90.41767f, "Rice & Fins", "New century fast food!","NoodleMenu", FoodType.Korean) { StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(346.6833f, 97.29707f, 14.76293f), 178.932f, "Dim Sum", "","NoodleMenu", FoodType.Korean) { StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1979.965f, 1013.015f, 29.20576f), 49.90157f, "Silk Thai", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1549.102f, 924.5397f, 23.39649f), 90.51724f, "Kingston Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+            new Restaurant(new Vector3(1570.415f, 869.429f, 22.61242f), 2.052902f, "Indian Inn Restaurant", "","NoodleMenu", FoodType.Asian){ StateID = StaticStrings.LibertyStateID },
+
 
             //Seafood
             new Restaurant(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Fanny Crabs", "Take a bite of our fanny","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.AlderneyStateID },
-
             new Restaurant(new Vector3(127.7461f, -534.7335f, 5.118071f), 185.1966f, "Poop Deck", "Seafood with a splash of salty humor","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(287.4133f, 402.7248f, 15.83704f), 91.89918f, "Squid Row", "Get hooked on our big ones!","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(390.3653f, 246.1507f, 14.76013f), 86.89571f, "The Bearded Clam", "Dive in for a taste!","FancyFishMenu", FoodType.Seafood) { StateID = StaticStrings.LibertyStateID },
@@ -4111,6 +4025,76 @@ public class PlacesOfInterest_Liberty
 
         };
         LibertyCityLocations.HeadShops.AddRange(HeadShops);
+    }
+
+    private void DefaultConfig_GunStores()
+    {
+        List<GunStore> GunStores = new List<GunStore>()
+        {
+            new GunStore(new Vector3(1295.57f, 580.55f, 34.26f),90.56f,"Choppy Shop","GRAH GRAH BOOM","GunShop1")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsEnabled = true,
+                //VendorsShowItemsPreview = true,
+                VendorFightPercentage = 100,
+                VendorFightPolicePercentage = 100,
+                VendorCallPolicePercentage = 0,
+                VendorMoneyMin = 500,
+                VendorMoneyMax = 5000,
+                VendorSidearmPercent = 100,
+                VendorLongGunPercent = 100,
+                VendorLongGunWeaponsID = "AllLongGuns",
+                VendorSidearmWeaponsID ="AllSidearms",
+                VendorPersonnelID = "GunshopPeds",
+                ContactName = StaticStrings.UndergroundGunsContactName,
+                ParkingSpaces = new List<SpawnPlace>() {
+                        new SpawnPlace(new Vector3(1284.30f, 550.90f, 33.12f),181.34f),
+                    },
+                StateID = StaticStrings.LibertyStateID,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1305.167f, 585.7399f, 34.24616f), 121.8806f) },
+            },
+            new GunStore(new Vector3(311.1f, 151.3f, 11.16f),86.28f,"Blicky Bodega","Protect yourself from the opposition","GunShop2")//new Vector3(311.1f, 151.3f, 11.16f),86.28f
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsEnabled = true,
+                ContactName = StaticStrings.UndergroundGunsContactName,
+                ParkingSpaces = new List<SpawnPlace>() 
+                {
+                    new SpawnPlace(new Vector3(332.38f, 148.26f, 13.98f),177.80f),
+                },
+                //VendorsShowItemsPreview = true,
+                VendorFightPercentage = 100,
+                VendorFightPolicePercentage = 100,
+                VendorCallPolicePercentage = 0,
+                VendorMoneyMin = 500,
+                VendorMoneyMax = 5000,
+                VendorSidearmPercent = 100,
+                VendorLongGunPercent = 100,
+                VendorLongGunWeaponsID = "AllLongGuns",
+                VendorSidearmWeaponsID ="AllSidearms",
+                VendorPersonnelID = "GunshopPeds",
+                //CameraPosition = new Vector3(317.0506f, 153.9417f, 12.91824f), 
+                //CameraDirection = new Vector3(0.378016f, 0.9001398f, -0.2164539f), 
+                //CameraRotation = new Rotator(-12.50084f, -1.093132E-05f, -22.78009f),
+                StateID = StaticStrings.LibertyStateID,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(321.4965f, 156.7243f, 11.17347f), 122.1338f) },
+            },
+            new GunStore(new Vector3(-1501.22f, 846.25f, 25.45f),234.43f,"Knocks Central","Essential business","GunShop3")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsEnabled = true,
+                ContactName = StaticStrings.UndergroundGunsContactName,
+                ParkingSpaces = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-1499.26f, 840.65f, 25.13f),329.66f),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+                };
+        LibertyCityLocations.GunStores.AddRange(GunStores);
+
     }
     private void DefaultConfig_BlankLocations()
     {

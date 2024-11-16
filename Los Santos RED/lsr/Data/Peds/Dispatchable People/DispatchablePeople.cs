@@ -75,6 +75,7 @@ public class DispatchablePeople : IDispatchablePeople
 
     public List<DispatchablePerson> CluckinBellPeds { get; private set; }
     public List<DispatchablePerson> TwatPeds { get; private set; }
+    public List<DispatchablePerson> GunshopPeds { get; private set; }
 
     private List<DispatchablePerson> RegularPeds;
 
@@ -1809,6 +1810,15 @@ public class DispatchablePeople : IDispatchablePeople
             dispatchablePeople_Service.CreatetwatPed(true),
             dispatchablePeople_Service.CreatetwatPed(false),
         };
+
+        GunshopPeds = new List<DispatchablePerson>()
+        { 
+            new DispatchablePerson("s_m_m_ccrew_03",100,100),
+            new DispatchablePerson("g_m_m_cartelgoons_01",100,100),
+            new DispatchablePerson("ig_charlie_reed",100,100),
+            new DispatchablePerson("ig_req_officer",100,100),
+        };
+
     }
 
   
@@ -1886,6 +1896,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TwatPeds", TwatPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("GunshopPeds", GunshopPeds));
         //
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
@@ -2362,6 +2373,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TwatPeds", TwatPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("GunshopPeds", GunshopPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2538,6 +2550,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TwatPeds", TwatPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("GunshopPeds", GunshopPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -2699,6 +2712,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TwatPeds", TwatPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("GunshopPeds", GunshopPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
@@ -15155,6 +15169,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("CluckinBellPeds", CluckinBellPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TwatPeds", TwatPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("GunshopPeds", GunshopPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));

@@ -36,6 +36,7 @@ public class GunStore : GameLocation
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
+        ButtonPromptText = $"Shop At {Name}";
         return true;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, 

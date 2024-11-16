@@ -5,6 +5,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -48,6 +49,7 @@ namespace LosSantosRED.lsr.Locations
         private bool isVeryStationary;
         private bool IsSetFakeZone;
         private string FakeZoneName;
+        private List<int> Nodes = new List<int>();
 
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ISettingsProvideable settings)
         {
@@ -383,8 +385,33 @@ namespace LosSantosRED.lsr.Locations
                 CurrentCrossStreetName = "";
             }
 
-            CurrentStreet = Streets.GetStreet(CurrentStreetName);
-            CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
+           // int NodeID = 0;
+            if (StreetHash == 0 && CrossingHash == 0 && ClosestNode != Vector3.Zero)
+            {
+                //NodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(ClosestNode.X, ClosestNode.Y, ClosestNode.Z, 0, 0, 3.0f, 0f);
+                
+
+                //if(!Nodes.Contains(NodeID))
+                //{
+                //    EntryPoint.WriteToConsole($"No Street Detected, NodeID {NodeID}");
+
+                //    Nodes.Add(NodeID);
+
+                //    WriteToNodesLog(NodeID.ToString());
+
+
+
+                //}
+                //if (NodeID != 0)
+                //{
+                //    CurrentStreet = Streets.GetStreet(NodeID);
+                //}
+            }
+            else
+            {
+                CurrentStreet = Streets.GetStreet(CurrentStreetName);
+                CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
+            }
 
             GameFiber.Yield();
 
@@ -406,6 +433,15 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreetIsHighway = CurrentStreet.IsHighway;
             }
         }
+
+        private void WriteToNodesLog(String TextToLog)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(TextToLog + System.Environment.NewLine);
+            File.AppendAllText("Plugins\\LosSantosRED\\" + "Nodes.txt", sb.ToString());
+            sb.Clear();
+        }
+
         public string GetStreetAndZoneString()
         {
             string streetName = "";

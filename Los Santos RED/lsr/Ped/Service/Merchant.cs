@@ -22,12 +22,21 @@ public class Merchant : PedExt, IWeaponIssuable
     public override bool IsMerchant { get; set; } = true;
     public override bool CanBeIdleTasked => !SetupMenus;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssociatedStore?.GetRandomMeleeWeapon(weapons);
-    public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssociatedStore?.GetRandomWeapon(v, weapons);
+    public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons)
+    {
+        if (AssociatedStore == null)
+        {
+            EntryPoint.WriteToConsole("GetRandomWeapon AssociatedStore IS NULL");
+            return null;
+        }
+        return AssociatedStore?.GetRandomWeapon(v, weapons);
+    }
     public WeaponInventory WeaponInventory { get; private set; }
     public bool HasTaser { get; set; } = false;
     public bool IsUsingMountedWeapon { get; set; } = false;
 
     public bool SetupMenus { get; set; } = true;
+    public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
     public override string InteractPrompt(IButtonPromptable player)
     {
         if (SetupMenus)
@@ -60,11 +69,11 @@ public class Merchant : PedExt, IWeaponIssuable
         }
        
         WillFight = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianFightPercentage() : store.VendorFightPercentage);
-        WillCallPolice = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCallPercentage() : store.VendorCallPolicePercentage);
-        WillCallPoliceIntense = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianSeriousCallPercentage() : store.VendorCallPoliceForSeriousCrimesPercentage);
-        WillFightPolice = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianFightPolicePercentage() : store.VendorFightPolicePercentage);
-        WillCower = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCowerPercentage() : store.VendorCowerPercentage);
-        CanSurrender = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage : store.VendorSurrenderPercentage);
+        WillCallPolice = RandomItems.RandomPercent(store == null || store.VendorCallPolicePercentage == -1f ? CivilianCallPercentage() : store.VendorCallPolicePercentage);
+        WillCallPoliceIntense = RandomItems.RandomPercent(store == null || store.VendorCallPoliceForSeriousCrimesPercentage == -1f ? CivilianSeriousCallPercentage() : store.VendorCallPoliceForSeriousCrimesPercentage);
+        WillFightPolice = RandomItems.RandomPercent(store == null || store.VendorFightPolicePercentage == -1f ? CivilianFightPolicePercentage() : store.VendorFightPolicePercentage);
+        WillCower = RandomItems.RandomPercent(store == null || store.VendorCowerPercentage == -1f ? CivilianCowerPercentage() : store.VendorCowerPercentage);
+        CanSurrender = RandomItems.RandomPercent(store == null || store.VendorSurrenderPercentage == -1f ? Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage : store.VendorSurrenderPercentage);
     
         LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard };
 
@@ -96,6 +105,7 @@ public class Merchant : PedExt, IWeaponIssuable
         }
         if (store != null)
         {
+            EntryPoint.WriteToConsole("Merchant Issues Weapons");
             WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(store.VendorMeleePercent), forceSidearm || RandomItems.RandomPercent(store.VendorSidearmPercent), forceLongGun || RandomItems.RandomPercent(store.VendorLongGunPercent), dispatchablePerson);
         }
 
