@@ -20,15 +20,24 @@ public class Merchant : PedExt, IWeaponIssuable
     public override bool KnowsGangAreas => false;
     public override bool CanTransact => IsNearSpawnPosition && base.CanTransact;
     public override bool IsMerchant { get; set; } = true;
-    public override bool CanBeIdleTasked => false;
+    public override bool CanBeIdleTasked => !SetupMenus;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssociatedStore?.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssociatedStore?.GetRandomWeapon(v, weapons);
     public WeaponInventory WeaponInventory { get; private set; }
     public bool HasTaser { get; set; } = false;
     public bool IsUsingMountedWeapon { get; set; } = false;
+
+    public bool SetupMenus { get; set; } = true;
     public override string InteractPrompt(IButtonPromptable player)
     {
-        return $"Transact with {FormattedName}";
+        if (SetupMenus)
+        {
+            return $"Transact with {FormattedName}";
+        }
+        else
+        {
+            return $"Interact with {FormattedName}";
+        }
     }
 
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun, GameLocation store)
@@ -57,8 +66,18 @@ public class Merchant : PedExt, IWeaponIssuable
         WillCower = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCowerPercentage() : store.VendorCowerPercentage);
         CanSurrender = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage : store.VendorSurrenderPercentage);
     
-        LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
-        if (store != null)
+        LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard };
+
+        if(SetupMenus)
+        {
+            LocationTaskRequirements.ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" };
+        }
+        else
+        {
+            LocationTaskRequirements = new LocationTaskRequirements();
+        }
+
+        if (store != null && SetupMenus)
         {
             SetupTransactionItems(store.Menu, true);
         }
@@ -75,9 +94,9 @@ public class Merchant : PedExt, IWeaponIssuable
         {
             return;
         }
-        if (AssociatedStore != null)
+        if (store != null)
         {
-            WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(AssociatedStore.VendorMeleePercent), forceSidearm || RandomItems.RandomPercent(AssociatedStore.VendorSidearmPercent), forceLongGun || RandomItems.RandomPercent(AssociatedStore.VendorLongGunPercent), dispatchablePerson);
+            WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(store.VendorMeleePercent), forceSidearm || RandomItems.RandomPercent(store.VendorSidearmPercent), forceLongGun || RandomItems.RandomPercent(store.VendorLongGunPercent), dispatchablePerson);
         }
 
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)

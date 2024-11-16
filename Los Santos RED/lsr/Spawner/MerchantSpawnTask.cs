@@ -18,6 +18,7 @@ public class MerchantSpawnTask : SpawnTask
     protected GameLocation Store;
     public bool SetPersistent { get; set; } = false;
     public List<Merchant> SpawnedVendors { get; set; } = new List<Merchant>();
+    public bool SetupMenus { get; set; } = true;
 
     public MerchantSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings,
         ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, GameLocation store)
@@ -132,6 +133,10 @@ public class MerchantSpawnTask : SpawnTask
         ped.IsPersistent = true;//THIS IS ON FOR NOW!
         EntryPoint.PersistentPedsCreated++;//TR
         Merchant Vendor = new Merchant(ped, Settings, "Vendor", Crimes, Weapons, World);
+        if(!SetupMenus)
+        {
+            Vendor.SetupMenus = false;
+        }
         SpawnedVendors.Add(Vendor);
         World.Pedestrians.AddEntity(Vendor);
         Vendor.SetStats(PersonType, ShopMenus, Weapons, AddBlip, false,false,false,Store);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
@@ -139,7 +144,10 @@ public class MerchantSpawnTask : SpawnTask
         {
             Vendor.SpawnPosition = ped.Position;
             Vendor.SpawnHeading = ped.Heading;
-            Vendor.AssociatedStore = Store;
+            if (SetupMenus)
+            {
+                Vendor.AssociatedStore = Store;
+            }
             Vendor.SpawnPosition = SpawnLocation.InitialPosition;
             Vendor.WasModSpawned = true;
             Vendor.CanBeAmbientTasked = true;

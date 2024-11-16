@@ -327,7 +327,7 @@ public class Settings : ISettingsProvideable
     public void SetLC()
     {
         IsBackendChanged = true;
-        SettingsManager.PedSwapSettings.AliasPedAsMainCharacter = false;
+        //SettingsManager.PedSwapSettings.AliasPedAsMainCharacter = false;
         SettingsManager.VanillaSettings.TerminateVanillaBlips = true;
         SettingsManager.VanillaSettings.TerminateVanillaShops = true;
 
@@ -372,6 +372,8 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels = false;
 
+        //Vendor
+        SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit = 10;
 
         //TAXI 
 

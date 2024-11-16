@@ -125,6 +125,10 @@ public class PedBrain
             {
                 SetCalmCallIn();
             }
+            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
+            {
+                SetIdle();
+            }
         }
         else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
         {

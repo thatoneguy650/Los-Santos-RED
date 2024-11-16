@@ -69,7 +69,12 @@ public class Teller : PedExt
         WillCower = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? CivilianCowerPercentage() : store.VendorCowerPercentage);
         CanSurrender = RandomItems.RandomPercent(store == null || store.VendorFightPercentage == -1f ? Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage : store.VendorSurrenderPercentage);
 
+
+
+
         LocationTaskRequirements = new LocationTaskRequirements() { TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" } };
+
+
         if (addBlip)
         {
             AddBlip();

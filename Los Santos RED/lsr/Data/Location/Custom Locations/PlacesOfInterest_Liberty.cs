@@ -2709,7 +2709,13 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.AlderneyStateID,
 
                 InteriorID = 59650,
-                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-768.1967f, 2122.303f, 24.31391f), 179.2184f) }
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-768.1967f, 2122.303f, 24.31391f), 179.2184f) },
+
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new MerchantConditionalLocation(new Vector3(-759.7379f, 2105.595f, 24.16283f), 209.8278f, 55f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(-772.5197f, 2105.695f, 24.16283f), 187.217f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                },
             },
 
 
@@ -2771,7 +2777,13 @@ public class PlacesOfInterest_Liberty
                 VendorHeadDataGroupID = "AllHeads",
 
                 InteriorID = 124162,
-                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(116.7789f, 564.6393f, 14.80746f), 103.3126f) }
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(116.7789f, 564.6393f, 14.80746f), 103.3126f) },
+
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new MerchantConditionalLocation(new Vector3(99.30434f, 560.9355f, 14.75878f), 162.5283f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(108.3584f, 545.4147f, 14.78257f), 184.0074f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                },
             },
 
 
@@ -2785,11 +2797,14 @@ public class PlacesOfInterest_Liberty
                 Description = "nu-media caffeine solutions provider",
                 EntrancePosition = new Vector3(-1343.86f, 958.28f, 25.44f),
                 EntranceHeading = 63.7f,
+                BannerImagePath = "stores\\twat.png",
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 166914,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1337.807f, 960.3051f, 25.44378f), 146.1286f) },
                 StateID = StaticStrings.AlderneyStateID,
+                VendorPersonnelID = "TwatPeds",
+                VendorHeadDataGroupID = "AllHeads",
             },
             new Restaurant() {
                 MenuID = "InternetCafeMenu",
@@ -2797,11 +2812,14 @@ public class PlacesOfInterest_Liberty
                 Description = "nu-media caffeine solutions provider",
                 EntrancePosition = new Vector3(-101.45f, 1886.24f, 12.92f),
                 EntranceHeading = 88.88f,
+                BannerImagePath = "stores\\twat.png",
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 66562,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-97.02089f, 1890.783f, 12.91313f), 176.6438f) },
                 StateID = StaticStrings.LibertyStateID,
+                VendorPersonnelID = "TwatPeds",
+                VendorHeadDataGroupID = "AllHeads",
             },
             new Restaurant() {
                 MenuID = "InternetCafeMenu",
@@ -2815,6 +2833,9 @@ public class PlacesOfInterest_Liberty
                 InteriorID = 50178,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1210.156f, 318.7346f, 24.19368f), 14.776f) },
                 StateID = StaticStrings.LibertyStateID,
+                BannerImagePath = "stores\\twat.png",
+                VendorPersonnelID = "TwatPeds",
+                VendorHeadDataGroupID = "AllHeads",
             },
 
             //Italian
