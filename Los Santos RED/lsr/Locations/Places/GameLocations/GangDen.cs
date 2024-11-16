@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 
 public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
 {
+    private UIMenuItem pickupCashMenuItem;
     private UIMenuItem dropoffCashMenuItem;
     private UIMenuItem dropoffItemMenuItem;
     private UIMenuItem completeTask;
@@ -46,6 +47,8 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     public GangDenInterior GangDenInterior { get; set; }
     [XmlIgnore]
     public bool IsAvailableForPlayer { get; set; } = false;
+    [XmlIgnore]
+    public int PickupMoney { get; set; }
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -210,7 +213,16 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
             return;
         }
         PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-        if (ExpectedMoney > 0 && pt.IsReadyForPayment)
+        if (PickupMoney > 0)
+        {
+            pickupCashMenuItem = new UIMenuItem("Pick Up Cash", "Pick Up the expected amount of cash.") { RightLabel = $"${PickupMoney}" };
+            pickupCashMenuItem.Activated += (sender, selectedItem) =>
+            {
+                PickupCash();
+            };
+            InteractionMenu.AddItem(pickupCashMenuItem);
+        }
+        else if (ExpectedMoney > 0 && pt.IsReadyForPayment)
         {
             dropoffCashMenuItem = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
             dropoffCashMenuItem.Activated += (sender, selectedItem) =>
@@ -309,6 +321,14 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
                 DisplayMessage("~r~Reply", "Come back when you actually have the cash.");
             }
         }
+    }
+    private void PickupCash()
+    {
+        Player.BankAccounts.GiveMoney(PickupMoney, false);
+        PickupMoney = 0;
+        pickupCashMenuItem.Enabled = false;
+        PlaySuccessSound();
+        DisplayMessage("~g~Reply", "Here's the cash. Don't lose it.");
     }
     private void DropoffCash()
     {

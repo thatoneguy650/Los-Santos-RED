@@ -43,6 +43,8 @@ public class BankInteraction
         InteractionMenu.Visible = true;
         // Player.IsTransacting = true;
         EntryPoint.WriteToConsole("BANK INTERCATION SHOWING MENU");
+        Player.OnTransactionMenuCreated(Bank, MenuPool, InteractionMenu);
+        EntryPoint.WriteToConsole($"{Bank.Name} BankInteraction Created");
     }
     private void AddAccountsSubmenu()
     {

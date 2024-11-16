@@ -30,6 +30,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangPizza;
     private UIMenuItem GangRacketeering;
+    private UIMenuItem GangBribery;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private GangReputation ActiveGangReputation;
@@ -241,16 +242,23 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangPizza(ActiveGang, GangContact);
             sender.Visible = false;
         };
-        GangRacketeering = new UIMenuItem("Collect Protection", "Collect protection money from local shops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{10000:C0}~s~" };
+        GangRacketeering = new UIMenuItem("Collect Protection", "Collect protection money from local shops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{100000:C0}~s~" };
         GangRacketeering.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangRacketeering(ActiveGang, GangContact);
+            sender.Visible = false;
+        };
+        GangBribery = new UIMenuItem("Pay Bribe", "Make a discreet payment to keep things smooth. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.BriberyPaymentMin:C0}-{ActiveGang.BriberyPaymentMax:C0}~s~" };
+        GangBribery.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartGangBribery(ActiveGang, GangContact);
             sender.Visible = false;
         };
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
         JobsSubMenu.AddItem(GangMoneyPickup);
         JobsSubMenu.AddItem(GangRacketeering);
+        JobsSubMenu.AddItem(GangBribery);
         //JobsSubMenu.AddItem(GangDelivery);  
         if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
         {

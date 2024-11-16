@@ -195,6 +195,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangAmbushTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />
