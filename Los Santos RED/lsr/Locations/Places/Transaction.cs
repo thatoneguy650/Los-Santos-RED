@@ -127,7 +127,7 @@ public class Transaction
             }
             SellMenu.Setup();
         }
-        player.OnTransactionMenuCreated(Store, MenuPool, ParentMenu);
+        //player.OnTransactionMenuCreated(Store, MenuPool, ParentMenu);
     }
     private void SetupLists()
     {

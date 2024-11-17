@@ -146,8 +146,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             else
             {
-                SendQuickPaymentMessage();
                 PlayerTasks.CompleteTask(Contact, true);
+                SendQuickPaymentMessage();
             }
         }
         private void AddTask()

@@ -105,7 +105,7 @@ public class Merchant : PedExt, IWeaponIssuable
         }
         if (store != null)
         {
-            EntryPoint.WriteToConsole("Merchant Issues Weapons");
+            //EntryPoint.WriteToConsole("Merchant Issues Weapons");
             WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(store.VendorMeleePercent), forceSidearm || RandomItems.RandomPercent(store.VendorSidearmPercent), forceLongGun || RandomItems.RandomPercent(store.VendorLongGunPercent), dispatchablePerson);
         }
 
@@ -113,6 +113,16 @@ public class Merchant : PedExt, IWeaponIssuable
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
+    }
+    public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        AssociatedStore?.OnVendorKilledByPlayer(this, Player, Zones, GangTerritories);
+        base.OnKilledByPlayer(Player, Zones, GangTerritories);
+    }
+    public override void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        AssociatedStore?.OnVendorInjuredByPlayer(this, Player, Zones, GangTerritories);
+        base.OnInjuredByPlayer(Player, Zones, GangTerritories);
     }
 }
 

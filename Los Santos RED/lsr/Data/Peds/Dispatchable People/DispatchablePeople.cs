@@ -60,8 +60,8 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> ArmenianPeds;
     private List<DispatchablePerson> CartelPeds;
     private List<DispatchablePerson> YardiesPeds;
-    private List<DispatchablePerson> NorthHollandPeds;
-    private List<DispatchablePerson> PetrovicPeds;
+    //private List<DispatchablePerson> NorthHollandPeds;
+    //private List<DispatchablePerson> PetrovicPeds;
     private List<DispatchablePerson> SpanishLordsPeds;
     private List<DispatchablePerson> OtherPeds;
     private List<DispatchablePerson> TaxiDrivers;
@@ -101,6 +101,10 @@ public class DispatchablePeople : IDispatchablePeople
     private DispatchablePeople_Varrios DispatchablePeople_Varrios;
     private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath;
     private DispatchablePeople_UptownRiders DispatchablePeople_UptownRiders;
+
+    private DispatchablePeople_NorthHolland DispatchablePeople_NorthHolland;
+    private DispatchablePeople_Petrovic DispatchablePeople_Petrovic;
+
     private int optionalpropschance;
 
 
@@ -113,6 +117,11 @@ public class DispatchablePeople : IDispatchablePeople
 
     public List<DispatchablePerson> AngelsOfDeathPeds { get; set; }
     public List<DispatchablePerson> UptownRidersPeds { get; set; }
+
+
+    public List<DispatchablePerson> PetrovicPeds { get; set; }
+    public List<DispatchablePerson> NorthHollandPeds { get; set; }
+
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
     public void Setup(IIssuableWeapons issuableWeapons)
     {
@@ -192,8 +201,9 @@ public class DispatchablePeople : IDispatchablePeople
         DispatchablePerson GenericK9 = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
-            DebugName = "K9_Shepherd",
+            DebugName = "K9_Husky",
             UnitCode = "K9",
+            RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
             OverrideAgencyLessLethalWeapons = true,
             OverrideAgencySideArms = true,
             OverrideAgencyLongGuns = true,
@@ -1609,6 +1619,13 @@ public class DispatchablePeople : IDispatchablePeople
         DispatchablePeople_UptownRiders.Setup();
 
 
+        DispatchablePeople_NorthHolland = new DispatchablePeople_NorthHolland(this);
+        DispatchablePeople_NorthHolland.Setup();
+
+        DispatchablePeople_Petrovic = new DispatchablePeople_Petrovic(this);
+        DispatchablePeople_Petrovic.Setup();
+
+
 
         VagosPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "VagosMale1" },
@@ -1681,15 +1698,15 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_m_soucent_03",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale2" },
             new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale3" },
         };
-        NorthHollandPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("a_m_m_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale1" },
-            new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale2" },
-            new DispatchablePerson("a_m_m_soucent_04",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale3" },
-        };
-        PetrovicPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("ig_russiandrunk",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale1" },
-            new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale2" },
-        };
+        //NorthHollandPeds = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("a_m_m_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale1" },
+        //    new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale2" },
+        //    new DispatchablePerson("a_m_m_soucent_04",30,30,5,10,400,600,0,1) { DebugName = "NorthHollandMale3" },
+        //};
+        //PetrovicPeds = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("ig_russiandrunk",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale1" },
+        //    new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1) { DebugName = "PetrovicMale2" },
+        //};
         SpanishLordsPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1) { DebugName = "SpanishLordsMale1" },
             new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1) { DebugName = "SpanishLordsMale2" },
@@ -1934,8 +1951,9 @@ public class DispatchablePeople : IDispatchablePeople
         DispatchablePerson K9Generic = new DispatchablePerson("a_c_husky", 50, 50)
         {
             IsAnimal = true,
-            DebugName = "K9_Shepherd",
+            DebugName = "K9_Husky",
             UnitCode = "K9",
+            RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) }, new List<PedPropComponent>()),
             OverrideAgencyLessLethalWeapons = true,
             OverrideAgencySideArms = true,
             OverrideAgencyLongGuns = true,
@@ -3500,6 +3518,7 @@ public class DispatchablePeople : IDispatchablePeople
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
+                RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
                 OverrideAgencyLessLethalWeapons = true,
                 OverrideAgencySideArms = true,
                 OverrideAgencyLongGuns = true,
@@ -3917,8 +3936,9 @@ public class DispatchablePeople : IDispatchablePeople
             //Animals
             new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
-                DebugName = "K9_Shepherd",
+                DebugName = "K9_Husky",
                 UnitCode = "K9",
+                RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
                 OverrideAgencyLessLethalWeapons = true,
                 OverrideAgencySideArms = true,
                 OverrideAgencyLongGuns = true,
@@ -3928,7 +3948,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
             new DispatchablePerson("a_c_retriever",50,50) {
                 IsAnimal = true,
-                DebugName = "K9_Shepherd",
+                DebugName = "K9_Retriever",
                 UnitCode = "K9",
                 OverrideAgencyLessLethalWeapons = true,
                 OverrideAgencySideArms = true,

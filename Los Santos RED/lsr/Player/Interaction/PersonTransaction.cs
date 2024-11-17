@@ -6,10 +6,6 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Media;
 
 public class PersonTransaction : Interaction
 {
@@ -491,7 +487,7 @@ public class PersonTransaction : Interaction
             InteractionMenu = new UIMenu(AssociatedStore.Name, AssociatedStore.Description);
         }
         MenuPool.Add(InteractionMenu);
-        Player.OnTransactionMenuCreated(AssociatedStore, MenuPool, InteractionMenu);
+        Player.OnInteractionMenuCreated(AssociatedStore, MenuPool, InteractionMenu);
     }
     public void DisposeInteractionMenu()
     {

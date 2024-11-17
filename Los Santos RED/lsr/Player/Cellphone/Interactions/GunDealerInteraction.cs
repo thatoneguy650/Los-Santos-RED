@@ -41,13 +41,50 @@ public class GunDealerInteraction : IContactMenuInteraction
         GunDealerMenu.RemoveBanner();
         MenuPool.Add(GunDealerMenu);
 
-
-        AddJobItems();
-        AddLocationItems();
-
+        //need to turn off sotres with negative rep?
+        ContactRelationship gunDealerRelationship = Player.RelationshipManager.GetOrCreate(contact);
+        if (gunDealerRelationship == null)
+        {
+            return;
+        }
+        if (gunDealerRelationship.PlayerDebt > 0)
+        {
+            AddHasDebtItems(gunDealerRelationship);
+        }
+        else if (gunDealerRelationship.ReputationLevel < 0)
+        {
+            AddHostileRepItems(gunDealerRelationship);
+        }
+        else
+        {
+            AddJobItems();
+            AddLocationItems();
+        }
         GunDealerMenu.Visible = true;
         InteractionLoop();
     }
+
+    private void AddHostileRepItems(ContactRelationship contactRelationship)
+    {
+        UIMenuItem PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the organization to return to a neutral relationship") { RightLabel = "~r~" + contactRelationship.CostToPayoff.ToString("C0") + "~s~" };
+        PayoffGangNeutral.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.UndergroundGunsTasks.StartPayoffTask(AnsweredContact);
+            sender.Visible = false;
+        };
+        GunDealerMenu.AddItem(PayoffGangNeutral);
+    }
+    private void AddHasDebtItems(ContactRelationship contactRelationship)
+    {
+        UIMenuItem PayoffDebt = new UIMenuItem("Payoff Debt", "Payoff your current debt ") { RightLabel = "~r~" + contactRelationship.PlayerDebt.ToString("C0") + "~s~" };
+        PayoffDebt.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.UndergroundGunsTasks.StartPayoffTask(AnsweredContact);
+            sender.Visible = false;
+        };
+        GunDealerMenu.AddItem(PayoffDebt);
+    }
+
     private void InteractionLoop()
     {
         GameFiber.StartNew(delegate

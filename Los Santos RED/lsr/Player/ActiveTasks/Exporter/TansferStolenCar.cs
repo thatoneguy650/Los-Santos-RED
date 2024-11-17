@@ -112,7 +112,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetCompleted()
         {
-            SendCompletedMessage();
+            
             if (PickUpStore != null)
             {
                 PickUpStore.IsPlayerInterestedInLocation = false;
@@ -122,6 +122,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 DropOffStore.IsPlayerInterestedInLocation = false;
             }
             PlayerTasks.CompleteTask(Contact, true);
+            SendCompletedMessage();
         }
         private void SetFailed()
         {

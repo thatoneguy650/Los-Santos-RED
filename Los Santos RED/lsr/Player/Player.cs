@@ -1261,13 +1261,16 @@ namespace Mod
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
         public void OnHitSquadDispatched(Gang enemyGang)
         {
-            PhoneContact gangcontact = CellPhone.ContactList.Where(x => x.Name == enemyGang.ContactName).FirstOrDefault();
-            if (gangcontact == null)
+
+            if (enemyGang == null)
             {
                 return;
             }
-            PlayerTasks.GangTasks.SendHitSquadMessage(gangcontact);
-
+            if (Settings.SettingsManager.GangSettings.SendHitSquadText)
+            {
+                PlayerTasks.GangTasks.SendHitSquadMessage(enemyGang.Contact);
+                EntryPoint.WriteToConsole($"OnHitSquadDispatched SendHitSquadMessage {enemyGang.ShortName}");
+            }
         }
 
 
@@ -2723,9 +2726,9 @@ namespace Mod
             NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, selectedAnim, selectedDict);
         }
 
-        public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+        public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
         {
-            PlayerTasks.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu);
+            PlayerTasks.OnInteractionMenuCreated(gameLocation, menuPool, interactionMenu);
         }
     }
 }

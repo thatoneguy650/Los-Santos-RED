@@ -54,7 +54,7 @@ public class WeaponInventory
     }
     public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
-        EntryPoint.WriteToConsole($" IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
+        //EntryPoint.WriteToConsole($" IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
         bool hasOVerride = false;
         if (issueMelee)
         {
@@ -98,7 +98,7 @@ public class WeaponInventory
             }
             else
             {
-                EntryPoint.WriteToConsole($"IssueWeapons issueSidearm RAN");
+                //EntryPoint.WriteToConsole($"IssueWeapons issueSidearm RAN");
                 Sidearm = WeaponOwner.GetRandomWeapon(true, weapons);
             }    
             if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), false))
@@ -125,7 +125,7 @@ public class WeaponInventory
             }
             else
             {
-                EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN");
+                //EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN");
                 LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
             }     
             if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))

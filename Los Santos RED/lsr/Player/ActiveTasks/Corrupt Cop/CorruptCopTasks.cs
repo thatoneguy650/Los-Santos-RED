@@ -76,7 +76,7 @@ public class CorruptCopTasks : IPlayerTaskGroup
         CopGangHitTask.Start(contact);
     }
 
-    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
     {
 
     }

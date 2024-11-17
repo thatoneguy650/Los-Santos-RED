@@ -1010,16 +1010,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
             },
 
-            new Restaurant() {
-                MenuID = "PizzaMenu",
-                Name = "Drusilla's",
-                Description = "Traditionally italian",
-                EntrancePosition = new Vector3(118.01f, 237.25f, 212.69f),
-                EntranceHeading = 89.29f,
-                OpenTime = 6,
-                CloseTime = 20,
-                StateID = StaticStrings.LibertyStateID,
-            },
+
             new Restaurant() {
                 MenuID = "NoodleMenu",
                 Name = "Delicious Chinese Food",

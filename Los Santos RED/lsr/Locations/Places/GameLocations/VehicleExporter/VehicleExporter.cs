@@ -88,6 +88,17 @@ public class VehicleExporter : GameLocation
             StandardInteract(null, false);
         }
     }
+    protected override bool ShouldSpawnVendor() => PhoneContact == null || !Player.RelationshipManager.GetOrCreate(PhoneContact).IsHostile;
+    protected override bool IsLocationClosed()
+    {
+        if (PhoneContact != null && Player.RelationshipManager.GetOrCreate(PhoneContact).IsHostile)
+        {
+            Game.DisplayHelp("Increase your reputation to access.");
+            return true;
+        }
+        return base.IsLocationClosed();
+    }
+
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;

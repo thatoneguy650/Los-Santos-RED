@@ -266,7 +266,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 };
             Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1, false);
         }
-        public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+        public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
         {
             EntryPoint.WriteToConsole("Gang Bribery Task OnTransactionMenuCreated Start");
             if (interactionMenu == null)

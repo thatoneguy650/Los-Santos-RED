@@ -30,7 +30,7 @@ public class CorruptCopContact : PhoneContact
     }
     public override ContactRelationship CreateRelationship()
     {
-        return new OfficerFriendlyRelationship(Name);
+        return new OfficerFriendlyRelationship(Name, this);
     }
 }
 

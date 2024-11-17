@@ -148,6 +148,8 @@
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Diablos.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_LostMC.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Mafia.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_NorthHolland.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Petrovic.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_UptownRiders.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Varrios.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlay.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangAmbushTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Generic Contact\PayoffContactTask.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />

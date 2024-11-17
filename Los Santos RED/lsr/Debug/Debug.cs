@@ -1141,6 +1141,13 @@ public class Debug
     }
     private void DebugNumpad5()
 {
+        PhoneContact cool = ModDataFileManager.Contacts.GetContactData(StaticStrings.UndergroundGunsContactName);
+
+
+
+
+
+        Player.CellPhone.AddScheduledText(cool, "this is a test text", 0, false);
 
         //GameFiber DoorWatcher = GameFiber.StartNew(delegate
         //{
@@ -1159,31 +1166,31 @@ public class Debug
         //}, "DoorWatcher");
 
 
-        GameFiber DoorWatcher = GameFiber.StartNew(delegate
-        {
+        //GameFiber DoorWatcher = GameFiber.StartNew(delegate
+        //{
 
-            while (true)
-            {
-                try
-                {
+        //    while (true)
+        //    {
+        //        try
+        //        {
 
 
-                    RouletteGame rouletteGame = new RouletteGame(Player, Settings, ModDataFileManager.PlacesOfInterest.PossibleLocations.GamblingDens.FirstOrDefault(), new RouletteGameRules());
-                    rouletteGame.Setup();
-                    rouletteGame.StartRound();
+        //            RouletteGame rouletteGame = new RouletteGame(Player, Settings, ModDataFileManager.PlacesOfInterest.PossibleLocations.GamblingDens.FirstOrDefault(), new RouletteGameRules());
+        //            rouletteGame.Setup();
+        //            rouletteGame.StartRound();
 
-                    if (!rouletteGame.IsActive)
-                    {
-                        break;
-                    }
-                    GameFiber.Yield();
-                }
-                catch(Exception ex)
-                {
-                    Game.DisplaySubtitle(ex.ToString());
-                }
-            }
-        }, "DoorWatcher");
+        //            if (!rouletteGame.IsActive)
+        //            {
+        //                break;
+        //            }
+        //            GameFiber.Yield();
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            Game.DisplaySubtitle(ex.ToString());
+        //        }
+        //    }
+        //}, "DoorWatcher");
 
         //if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int seatIndex) && Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
         //{
@@ -1226,7 +1233,7 @@ public class Debug
         //}, "DoorWatcher");
 
 
-        GameFiber.Sleep(500);
+        // GameFiber.Sleep(500);
 
 
         //TASK_WARP_PED_INTO_VEHICLE
