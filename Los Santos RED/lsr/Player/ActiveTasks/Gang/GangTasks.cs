@@ -32,10 +32,12 @@ public class GangTasks : IPlayerTaskGroup
     private IPedGroups PedGroups;
     private IAgencies Agencies;
 
+    private List<RivalGangAmbushTask> RivalGangAmbush = new List<RivalGangAmbushTask>();
     private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
     private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
     private List<RivalGangVehicleTheftTask> RivalGangTheftTasks = new List<RivalGangVehicleTheftTask>();
     private List<GangRacketeeringTask> GangRacketeeringTasks = new List<GangRacketeeringTask>();
+    private List<GangBriberyTask> GangBriberyTasks = new List<GangBriberyTask>();
     private List<GangPickupTask> GangPickupTasks = new List<GangPickupTask>();
     private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
@@ -72,10 +74,12 @@ public class GangTasks : IPlayerTaskGroup
 
     }
     public void Dispose()
-    {    
+    {
+        RivalGangAmbush.ForEach(x => x.Dispose());
         RivalGangHits.ForEach(x=> x.Dispose());
         PayoffGangTasks.ForEach(x => x.Dispose());
         RivalGangTheftTasks.ForEach(x => x.Dispose());
+        GangBriberyTasks.ForEach(x => x.Dispose());
         GangRacketeeringTasks.ForEach(x => x.Dispose());
         GangPickupTasks.ForEach(x => x.Dispose());
         GangDeliveryTasks.ForEach(x => x.Dispose());
@@ -87,9 +91,11 @@ public class GangTasks : IPlayerTaskGroup
 
         AllGenericGangTasks.ForEach(x => x.Dispose());
 
+        RivalGangAmbush.Clear();
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
         RivalGangTheftTasks.Clear();
+        GangBriberyTasks.Clear();
         GangRacketeeringTasks.Clear();
         GangPickupTasks.Clear();
         GangDeliveryTasks.Clear();
@@ -123,6 +129,13 @@ public class GangTasks : IPlayerTaskGroup
         newTask.Setup();
         newTask.Start(gang);
     }
+    public void StartGangAmbush(Gang gang, int killRequirement, GangContact gangContact, Gang targetGang)
+    {
+        RivalGangAmbushTask newTask = new RivalGangAmbushTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, killRequirement, GangTerritories, Zones);
+        RivalGangAmbush.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
     public void StartPayoffGang(Gang gang, GangContact gangContact)
     {
         PayoffGangTask newTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this);
@@ -134,6 +147,13 @@ public class GangTasks : IPlayerTaskGroup
     {
         RivalGangVehicleTheftTask newTask = new RivalGangVehicleTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, targetGang, vehicleModelName, vehicleDisplayName);
         RivalGangTheftTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangBribery(Gang gang, GangContact gangContact)
+    {
+        GangBriberyTask newTask = new GangBriberyTask(Player, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, gangContact, this, GangTerritories, Zones);
+        GangBriberyTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }
@@ -253,6 +273,7 @@ public class GangTasks : IPlayerTaskGroup
     {
         EntryPoint.WriteToConsole("Gang Tasks OnTransactionMenuCreated");
         GangRacketeeringTasks.Where(x=> x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
+        GangBriberyTasks.Where(x => x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
     }
 }
 

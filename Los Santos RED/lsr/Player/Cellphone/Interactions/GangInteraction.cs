@@ -30,6 +30,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangPizza;
     private UIMenuItem GangRacketeering;
+    private UIMenuItem GangBribery;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private GangReputation ActiveGangReputation;
@@ -46,6 +47,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu WheelManSubMenu;
     private UIMenu CopHitSubMenu;
     private UIMenu GangHitSubMenu;
+    private UIMenu GangAmbushSubMenu;
     private UIMenu GangTheftSubMenu;
     private UIMenu GangDeliverySubMenu;
     private IModItems ModItems;
@@ -211,6 +213,7 @@ public class GangInteraction : IContactMenuInteraction
         JobsSubMenu = MenuPool.AddSubMenu(GangMenu, "Jobs");
         JobsSubMenu.RemoveBanner();
         AddGangHitSubMenu();
+        AddGangAmbushSubMenu();
         AddCopHitSubMenu();
         AddGangTheftSubMenu();
         GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.PickupPaymentMin:C0}-{ActiveGang.PickupPaymentMax:C0}~s~" };
@@ -239,16 +242,23 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangPizza(ActiveGang, GangContact);
             sender.Visible = false;
         };
-        GangRacketeering = new UIMenuItem("Collect Protection", "Collect protection money from local shops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{10000:C0}~s~" };
+        GangRacketeering = new UIMenuItem("Collect Protection", "Collect protection money from local shops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{100000:C0}~s~" };
         GangRacketeering.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartGangRacketeering(ActiveGang, GangContact);
+            sender.Visible = false;
+        };
+        GangBribery = new UIMenuItem("Pay Bribe", "Make a discreet payment to keep things smooth. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.BriberyPaymentMin:C0}-{ActiveGang.BriberyPaymentMax:C0}~s~" };
+        GangBribery.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartGangBribery(ActiveGang, GangContact);
             sender.Visible = false;
         };
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
         JobsSubMenu.AddItem(GangMoneyPickup);
         JobsSubMenu.AddItem(GangRacketeering);
+        JobsSubMenu.AddItem(GangBribery);
         //JobsSubMenu.AddItem(GangDelivery);  
         if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
         {
@@ -338,6 +348,36 @@ public class GangInteraction : IContactMenuInteraction
         GangHitSubMenu.AddItem(TargetMenu);
         GangHitSubMenu.AddItem(TargetCountMenu);
         GangHitSubMenu.AddItem(TaskStartMenu);
+    }
+    private void AddGangAmbushSubMenu()
+    {
+        GangAmbushSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Ambush");
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Ambush any rival hoods seen in an area";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin:C0}-{ActiveGang.HitPaymentMax:C0}~s~";
+        GangAmbushSubMenu.RemoveBanner();
+        //UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+
+        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang",
+            Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList()
+             : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+
+
+
+        UIMenuNumericScrollerItem<int> TargetCountMenu = new UIMenuNumericScrollerItem<int>("Targets", $"Select the number of targets", 1, 3, 1) { Value = 1 };
+        UIMenuItem TaskStartMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax * TargetCountMenu.Value:C0}~s~" };
+        TaskStartMenu.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartGangAmbush(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem);
+            sender.Visible = false;
+        };
+        TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            TaskStartMenu.RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.AmbushPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.AmbushPaymentMax * TargetCountMenu.Value:C0}~s~";
+        };
+
+        GangAmbushSubMenu.AddItem(TargetMenu);
+        GangAmbushSubMenu.AddItem(TargetCountMenu);
+        GangAmbushSubMenu.AddItem(TaskStartMenu);
     }
     private void AddGangTheftSubMenu()
     {
