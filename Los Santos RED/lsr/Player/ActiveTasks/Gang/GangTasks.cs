@@ -39,6 +39,7 @@ public class GangTasks : IPlayerTaskGroup
     private List<GangRacketeeringTask> GangRacketeeringTasks = new List<GangRacketeeringTask>();
     private List<GangBriberyTask> GangBriberyTasks = new List<GangBriberyTask>();
     private List<GangPickupTask> GangPickupTasks = new List<GangPickupTask>();
+    private List<GangArsonTask> GangArsonTasks = new List<GangArsonTask>();
     private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
     private List<GangPizzaDeliveryTask> GangPizzaDeliveryTasks = new List<GangPizzaDeliveryTask>();
@@ -80,6 +81,7 @@ public class GangTasks : IPlayerTaskGroup
         PayoffGangTasks.ForEach(x => x.Dispose());
         RivalGangTheftTasks.ForEach(x => x.Dispose());
         GangBriberyTasks.ForEach(x => x.Dispose());
+        GangArsonTasks.ForEach(x => x.Dispose());
         GangRacketeeringTasks.ForEach(x => x.Dispose());
         GangPickupTasks.ForEach(x => x.Dispose());
         GangDeliveryTasks.ForEach(x => x.Dispose());
@@ -97,6 +99,7 @@ public class GangTasks : IPlayerTaskGroup
         RivalGangTheftTasks.Clear();
         GangBriberyTasks.Clear();
         GangRacketeeringTasks.Clear();
+        GangArsonTasks.Clear();
         GangPickupTasks.Clear();
         GangDeliveryTasks.Clear();
         GangWheelmanTasks.Clear();
@@ -154,6 +157,13 @@ public class GangTasks : IPlayerTaskGroup
     {
         GangBriberyTask newTask = new GangBriberyTask(Player, Gangs, PlayerTasks, PlacesOfInterest, Settings, World, Crimes, gangContact, this, GangTerritories, Zones);
         GangBriberyTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangArson(Gang gang, GangContact gangContact)
+    {
+        GangArsonTask newTask = new GangArsonTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, gangContact, this, GangTerritories, Zones);
+        GangArsonTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);
     }

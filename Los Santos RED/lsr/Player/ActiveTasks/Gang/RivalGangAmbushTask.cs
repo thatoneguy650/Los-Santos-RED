@@ -33,10 +33,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool HasAddedComplications;
         private bool WillAddComplications;
         private int KilledMembersAtStart;
+        private int ExternalZoneKills = 0;
+        private int InternalZoneKills = 0;
         private PhoneContact PhoneContact;
         private GangTasks GangTasks;
         public int KillRequirement { get; set; } = 1;
-        private bool HasConditions => TargetGang != null && HiringGangDen != null && TargetZone != null;
+        private bool HasConditions => HiringGangDen != null && TargetZone != null;
 
         public bool JoinGangOnComplete { get; set; } = false;
 
@@ -72,7 +74,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             HiringGang = ActiveGang;
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
-                GetTargetGang();
                 GetTargetZone();
                 GetHiringDen();
                 if (HasConditions)
@@ -111,9 +112,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (Zones.GetZone(Player.Character.Position) != TargetZone)
                 {
-                    KilledMembersAtStart = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang).MembersKilled;
+                    ExternalZoneKills = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang).MembersKilled - KilledMembersAtStart - InternalZoneKills;
                 }
-                else if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled - KilledMembersAtStart >= KillRequirement)
+                else
+                {
+                    InternalZoneKills = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang).MembersKilled - KilledMembersAtStart - ExternalZoneKills;
+                }
+                if (InternalZoneKills >= KillRequirement)
                 {
                     CurrentTask.OnReadyForPayment(true);
                     break;
@@ -129,27 +134,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 SendMoneyPickupMessage();
             }
         }
-        private void GetTargetGang()
-        {
-           // TargetGang = null;
-            //if (HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
-            //{
-            //    TargetGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
-            //}
-            if (TargetGang == null)
-            {
-                TargetGang = Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();
-            }
-        }
         private void GetTargetZone()
         {
             if (GangTerritories.GetGangTerritory(HiringGang.ID) != null)
             {
-                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
+                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(TargetGang.ID);
                 if (totalTerritories != null && totalTerritories.Any())
                 {
                     List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
-                    availableTerritories = totalTerritories.Where(zj => zj.Priority != 0).ToList();
+                    availableTerritories = totalTerritories.Where(zj => zj.Priority == 0).ToList();
 
                     if (availableTerritories.Any())
                     {

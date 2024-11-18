@@ -69,6 +69,8 @@ public class TaskSettings : ISettingsDefaultable
     public float GangRacketeeringExtortionComplicationsPercentage { get; set; }
     [Description("Complications Percent of stores calling for police backup during racketeering.")]
     public float GangRacketeeringComplicationsPercentage { get; set; }
+    [Description("Percent of torching stores in Enemy Territory")]
+    public float GangArsonEnemyTurfPercentage { get; set; }
 
     public TaskSettings()
     {
@@ -103,6 +105,7 @@ public class TaskSettings : ISettingsDefaultable
         GangRacketeeringExtortionPercentage = 25f;
         GangRacketeeringExtortionComplicationsPercentage = 10f;
         GangRacketeeringComplicationsPercentage = 5f;
+        GangArsonEnemyTurfPercentage = 5f;
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
