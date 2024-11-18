@@ -320,7 +320,7 @@ public class CivilianSettings : ISettingsDefaultable
         DisableWrithe = true;
         DisableWritheShooting = true;
 
-        TotalSpawnedServiceMembersLimit = 6;
+        TotalSpawnedServiceMembersLimit = 9;
 
         PossibleSurrenderPercentage = 40;
         WantedPossibleSurrenderPercentage = 10;

@@ -145,9 +145,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 myDrop?.Deactivate(true);
             }
             else
-            {
-                SendQuickPaymentMessage();
+            {    
                 PlayerTasks.CompleteTask(Contact, true);
+                SendQuickPaymentMessage();
             }
         }   
         private void AddTask()

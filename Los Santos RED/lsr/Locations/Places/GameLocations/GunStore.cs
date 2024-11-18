@@ -29,6 +29,7 @@ public class GunStore : GameLocation
     public override int RegisterCashMax { get; set; } = 2550;
     [XmlIgnore]
     public PhoneContact PhoneContact { get; set; }
+
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -36,6 +37,7 @@ public class GunStore : GameLocation
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
+        ButtonPromptText = $"Shop At {Name}";
         return true;
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, 
@@ -71,6 +73,16 @@ public class GunStore : GameLocation
         {
             StandardInteract(null, false);
         }
+    }
+    protected override bool ShouldSpawnVendor() => PhoneContact == null || !Player.RelationshipManager.GetOrCreate(PhoneContact).IsHostile;
+    protected override bool IsLocationClosed()
+    {
+        if (PhoneContact != null && Player.RelationshipManager.GetOrCreate(PhoneContact).IsHostile)
+        {
+            Game.DisplayHelp("Increase your reputation to access.");
+            return true;
+        }
+        return base.IsLocationClosed();
     }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
@@ -112,6 +124,16 @@ public class GunStore : GameLocation
             sp.AddDistanceOffset(offsetToAdd);
         }
         base.AddDistanceOffset(offsetToAdd);
+    }
+    public override void OnVendorKilledByPlayer(Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
+    {
+        player.RelationshipManager.OnVendorKilledByPlayer(PhoneContact, merchant, player, zones, gangTerritories);
+        base.OnVendorKilledByPlayer(merchant, player, zones, gangTerritories);
+    }
+    public override void OnVendorInjuredByPlayer(Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
+    {
+        player.RelationshipManager.OnVendorInjuredByPlayer(PhoneContact, merchant, player, zones, gangTerritories);
+        base.OnVendorInjuredByPlayer(merchant, player, zones, gangTerritories);
     }
 }
 

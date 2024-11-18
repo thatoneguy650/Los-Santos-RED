@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr.Interface
         void ChangeName(string newName);
 
         void SetWantedLevel(int v1, string v2, bool v3);
-        void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
+        void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
 
         ICasinoGamePlayable CasinoGamePlayer { get; }
     }

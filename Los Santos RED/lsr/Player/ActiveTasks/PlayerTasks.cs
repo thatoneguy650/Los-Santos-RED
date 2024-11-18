@@ -349,8 +349,8 @@ public class PlayerTasks
         Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
     }
 
-    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
     {
-        PlayerTaskGroups.ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
+        PlayerTaskGroups.ForEach(x => x.OnInteractionMenuCreated(gameLocation, menuPool, interactionMenu));
     }
 }

@@ -53,7 +53,7 @@ public class VehicleExporterTasks : IPlayerTaskGroup
         tansferStolenCar.Start();
     }
 
-    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
     {
 
     }

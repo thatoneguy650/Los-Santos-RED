@@ -226,6 +226,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
     public bool ShouldSurrender { get; set; }
+    public virtual bool ShowsItemPreviewsWhenTransacting { get; set; }
     public virtual ePedAlertType PedAlertTypes { get; set; } = ePedAlertType.UnconsciousBody;
     public virtual bool GenerateUnconsciousAlerts { get; set; } = true;
     public bool HasCellPhone { get; set; } = true;
@@ -460,6 +461,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsManuallyDeleted { get; set; } = false;
     public bool CanBeBuried => IsUnconscious || IsDead;
     public bool IsLoadedInTrunk { get; set; }
+    public virtual bool HasWeapon => false;
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

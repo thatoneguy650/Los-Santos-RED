@@ -13,7 +13,7 @@ public class OfficerFriendlyRelationship : ContactRelationship
     {
 
     }
-    public OfficerFriendlyRelationship(string contactName) : base(contactName)
+    public OfficerFriendlyRelationship(string contactName, PhoneContact phoneContact) : base(contactName, phoneContact)
     {
 
     }

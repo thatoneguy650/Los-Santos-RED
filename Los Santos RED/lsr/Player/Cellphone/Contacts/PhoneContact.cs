@@ -57,6 +57,6 @@ public class PhoneContact
     }
     public virtual ContactRelationship CreateRelationship()
     {
-        return new ContactRelationship(Name);
+        return new ContactRelationship(Name, this);
     }
 }

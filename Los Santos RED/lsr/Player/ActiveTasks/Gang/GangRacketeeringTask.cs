@@ -376,7 +376,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
 
-        public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+        public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
         {
             EntryPoint.WriteToConsole("Gang Racketerering Task OnTransactionMenuCreated Start");
             if(interactionMenu == null)

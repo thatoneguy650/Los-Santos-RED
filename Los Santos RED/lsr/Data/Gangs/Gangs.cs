@@ -884,6 +884,7 @@ public class Gangs : IGangs
             "North Holland Hustlers", "CHAR_BLANK_ENTRY", "Huslters Member")
         {
             DenName = "Hangout",
+            HeadDataGroupID = "NorthHollandHeads",
             AmbientMemberMoneyMin = 100,
             AmbientMemberMoneyMax = 300,
             DealerMemberMoneyMin = 350,
@@ -923,7 +924,7 @@ public class Gangs : IGangs
             "Petrovic", "CHAR_BLANK_ENTRY","Petrovic Associate")
         {
             DenName = "Safehouse",
-            HeadDataGroupID = "MafiaHeads",
+            HeadDataGroupID = "PetrovicHeads",
             AmbientMemberMoneyMin = 100,
             AmbientMemberMoneyMax = 250,
             DealerMemberMoneyMin = 400,

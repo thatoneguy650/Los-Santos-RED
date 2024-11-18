@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class PayoffGangTask : IPlayerTask
+    public class PayoffContactTask : IPlayerTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;
@@ -21,22 +21,20 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private ISettingsProvideable Settings;
         private IEntityProvideable World;
         private ICrimes Crimes;
-        private Gang HiringGang;
         private DeadDrop DeadDrop;
         private PlayerTask CurrentTask;
         private int GameTimeToWaitBeforeComplications;
-        private GangReputation HiringGangReputation;
+        private ContactRelationship HiringContactReputation;
         private int CostToPayoff;
         private int RepToNextLevel;
         private bool HasAddedComplications;
         private bool WillAddComplications;
         private PhoneContact PhoneContact;
-        private GangTasks GangTasks;
 
         private bool HasDeadDrop => DeadDrop != null;
 
-        public PayoffGangTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, 
-            ICrimes crimes, PhoneContact phoneContact, GangTasks gangTasks)
+        public PayoffContactTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world,
+            ICrimes crimes, PhoneContact phoneContact)
         {
             Player = player;
             Time = time;
@@ -48,7 +46,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             World = world;
             Crimes = crimes;
             PhoneContact = phoneContact;
-            GangTasks = gangTasks;
         }
         public void Setup()
         {
@@ -58,10 +55,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             DeadDrop?.Reset();
             DeadDrop?.Deactivate(true);
         }
-        public void Start(Gang ActiveGang)
+        public void Start()
         {
-            HiringGang = ActiveGang;
-            if (PlayerTasks.CanStartNewTask(HiringGang?.ContactName))
+            if (PlayerTasks.CanStartNewTask(PhoneContact.Name))
             {
                 GetDeadDrop();
                 if (HasDeadDrop)
@@ -83,17 +79,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         }
                     }, "PayoffFiber");
                 }
-                else
-                {
-                    GangTasks.SendGenericTooSoonMessage(PhoneContact);
-                }
             }
         }
         private void Loop()
         {
             while (true)
             {
-                CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
+                CurrentTask = PlayerTasks.GetTask(PhoneContact.Name);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
                     //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
@@ -106,7 +98,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (DeadDrop.InteractionComplete && !DeadDrop.IsNearby)
                 {
                     CurrentTask.OnReadyForPayment(false);
-                    break;           
+                    break;
                 }
                 GameFiber.Sleep(1000);
             }
@@ -126,11 +118,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             DeadDrop?.Reset();
             DeadDrop?.Deactivate(true);
-            
-            //Player.RelationshipManager.GangRelationships.ClearDebt(HiringGang);//debt is auto cleared on complete task, maybe shouldnt be
-            PlayerTasks.CompleteTask(HiringGang.Contact,false);
+            int previousDebt = HiringContactReputation.PlayerDebt;
+            bool isHostile = Player.RelationshipManager.GetOrCreate(PhoneContact).IsHostile;
+            PlayerTasks.CompleteTask(PhoneContact, false);
+            SendCompletedMessage(previousDebt, isHostile);
 
-            SendCompletedMessage();
         }
         private void GetDeadDrop()
         {
@@ -138,18 +130,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRequiredPayment()
         {
-            HiringGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(HiringGang);
-            if(HiringGangReputation != null)
+            HiringContactReputation = Player.RelationshipManager.GetOrCreate(PhoneContact);
+            if (HiringContactReputation != null)
             {
-                if(HiringGangReputation.PlayerDebt > 0)
+                if (HiringContactReputation.PlayerDebt > 0)
                 {
-                    CostToPayoff = HiringGangReputation.PlayerDebt;
+                    CostToPayoff = HiringContactReputation.PlayerDebt;
                     RepToNextLevel = 0;
                 }
                 else
                 {
-                    CostToPayoff = HiringGangReputation.CostToPayoff;
-                    RepToNextLevel = HiringGangReputation.RepToNextLevel;
+                    CostToPayoff = HiringContactReputation.CostToPayoff;
+                    RepToNextLevel = Math.Abs(HiringContactReputation.ReputationLevel);
                 }
             }
             else
@@ -160,17 +152,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(HiringGang.Contact, 0, RepToNextLevel, 0, -200, 2, "Dead Drop");
+            PlayerTasks.AddTask(PhoneContact, 0, RepToNextLevel, 0, -200, 2, "Dead Drop");
             DeadDrop.SetupDrop(CostToPayoff, true);
             ActiveDrops.Add(DeadDrop);
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
             WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
         }
-        private void SendCompletedMessage()
+        private void SendCompletedMessage(int previousDebt, bool wasHostile)
         {
             List<string> Replies;
-            if(HiringGangReputation.PlayerDebt > 0)
+            if (previousDebt > 0)
             {
                 Replies = new List<string>() {
                         "I guess we are even now",
@@ -180,7 +172,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         "We are square",
                         };
             }
-            else if (Player.RelationshipManager.GangRelationships.IsHostile(HiringGang))// CurrentTask.RepAmountOnCompletion <= 0)
+            else if (wasHostile)// CurrentTask.RepAmountOnCompletion <= 0)
             {
                 Replies = new List<string>() {
                                 "I guess we can forget about that shit.",
@@ -201,7 +193,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Ah you got me my favorite thing! I owe you a thing or two",
                                 };
             }
-            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 0, false);
+            Player.CellPhone.AddScheduledText(PhoneContact, Replies.PickRandom(), 1, false);
+            EntryPoint.WriteToConsole($"SendCompletedMessage FOR {PhoneContact.Name}");
         }
         private void SendInitialInstructionsMessage()
         {
@@ -210,7 +203,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Place ${CostToPayoff} in {DeadDrop.Description}, address is {DeadDrop.FullStreetAddress}. Don't hang around either, drop it off and leave.",
                 $"Drop off ${CostToPayoff} to {DeadDrop.Description} on {DeadDrop.FullStreetAddress}. Once you drop the cash off, get out of the area.",
                 };
-            Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(PhoneContact.Name, PhoneContact.IconName, Replies.PickRandom());
         }
     }
 }

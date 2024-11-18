@@ -276,14 +276,14 @@ public class GangTasks : IPlayerTaskGroup
                                 $"We will be seeing each other shortly.",
                                 $"Going to get real very soon.",
                                 };
-        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 0,true);
+        Player.CellPhone.AddScheduledText(contact, Replies.PickRandom(), 0, true);
     }
 
-    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
     {
         EntryPoint.WriteToConsole("Gang Tasks OnTransactionMenuCreated");
-        GangRacketeeringTasks.Where(x=> x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
-        GangBriberyTasks.Where(x => x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnTransactionMenuCreated(gameLocation, menuPool, interactionMenu));
+        GangRacketeeringTasks.Where(x=> x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnInteractionMenuCreated(gameLocation, menuPool, interactionMenu));
+        GangBriberyTasks.Where(x => x.PlayerTask != null && x.PlayerTask.IsActive).ToList().ForEach(x => x.OnInteractionMenuCreated(gameLocation, menuPool, interactionMenu));
     }
 }
 

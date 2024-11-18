@@ -295,12 +295,20 @@ public class CellPhone
     }
     private bool CheckScheduledTexts()
     {
+        foreach(ScheduledText scheduledText in ScheduledTexts)
+        {
+            EntryPoint.WriteToConsole($"I HAVE SCHEDULES TEXTS FROM {scheduledText.ContactName} {scheduledText.Message}");
+        }
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
+            
             ScheduledText sc = ScheduledTexts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 10000))
+
+            EntryPoint.WriteToConsole($"{sc.ContactName} Text Stuff: {DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend)} Currently:{Time.CurrentDateTime} TimeToSend:{sc.TimeToSend} GameTimeDiff{Game.GameTime - sc.GameTimeSent}");
+
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && (sc.SendImmediately || Game.GameTime - sc.GameTimeSent >= 5000))
             {
-                if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
+                if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message && sc.TimeToSend.Hour == x.HourSent && sc.TimeToSend.Minute == x.MinuteSent))
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false, sc.CustomPicture);
 
@@ -360,18 +368,23 @@ public class CellPhone
             }
         }
     }
+
+
+
     public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, int minutesToWait, bool sendImmediately)
     {
         AddScheduledText(phoneContact, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait), sendImmediately);
     }
     public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd, bool sendImmediately)
     {
+        EntryPoint.WriteToConsole("AddScheduledText");
         if (phoneContact == null)
         {
             return;
         }
-        if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
+        if (!ScheduledTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend && x.TimeToSend == timeToAdd))
         {
+            EntryPoint.WriteToConsole($"AddScheduledText ADD phoneContact{phoneContact.Name} timeToAdd:{timeToAdd} MessageToSend{MessageToSend}");
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { SendImmediately = sendImmediately });
         }
     }
@@ -381,9 +394,10 @@ public class CellPhone
         {
             return;
         }
-        if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
+        if (!ScheduledTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend && x.TimeToSend == timeToAdd))
         {
             EntryPoint.WriteToConsole($"CUSTOM PICTURE SENT {customPicture}");
+            EntryPoint.WriteToConsole($"AddScheduledText ADD phoneContact{phoneContact.Name} timeToAdd:{timeToAdd} MessageToSend{MessageToSend}");
             ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend) { CustomPicture = customPicture, SendImmediately = sendImmediately });
         }
     }

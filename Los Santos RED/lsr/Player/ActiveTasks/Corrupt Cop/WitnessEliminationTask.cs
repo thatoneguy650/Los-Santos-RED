@@ -230,8 +230,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetCompleted()
         {
             //EntryPoint.WriteToConsoleTestLong("Witness Elimination COMPLETED");
-            SendCompletedMessage();
+            
             PlayerTasks.CompleteTask(Contact, true);
+
+            SendCompletedMessage();
         }
         private void SetFailed()
         {
@@ -271,8 +273,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             else
             {
-                SendQuickPaymentMessage();
+                
                 PlayerTasks.CompleteTask(Contact, true);
+                SendQuickPaymentMessage();
             }
         }
         private void AddTask()

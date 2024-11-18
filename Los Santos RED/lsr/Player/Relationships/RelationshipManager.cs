@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -87,7 +88,8 @@ public class RelationshipManager
             contactRelationship.ChangeReputation(repGained, false);
         }
     }
-    private ContactRelationship GetOrCreate(PhoneContact phoneContact)// string contactName)
+
+    public ContactRelationship GetOrCreate(PhoneContact phoneContact)// string contactName)
     {
         if(phoneContact == null)
         {
@@ -193,5 +195,27 @@ public class RelationshipManager
             return;
         }
         contactRelationship.SetMoneySpent(moneySpent, sendText);
+    }
+
+    public void OnVendorKilledByPlayer(PhoneContact phoneContact, Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
+    {
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
+        if (contactRelationship == null)
+        {
+            return;
+        }
+        contactRelationship.SetReputation(-2000, true);
+        EntryPoint.WriteToConsole("OnVendorKilledByPlayer SET REP -2000");
+    }
+
+    public void OnVendorInjuredByPlayer(PhoneContact phoneContact, Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
+    {
+        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
+        if (contactRelationship == null)
+        {
+            return;
+        }
+        contactRelationship.SetReputation(-500, true);
+        EntryPoint.WriteToConsole("OnVendorInjuredByPlayer SET REP -500");
     }
 }

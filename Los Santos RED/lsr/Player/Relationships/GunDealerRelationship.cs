@@ -17,7 +17,7 @@ public class GunDealerRelationship : ContactRelationship
     {
 
     }
-    public GunDealerRelationship(string contactName, GunDealerContact gunDealerContact) : base(contactName)
+    public GunDealerRelationship(string contactName, GunDealerContact gunDealerContact) : base(contactName, gunDealerContact)
     {
         GunDealerContact = gunDealerContact;
     }

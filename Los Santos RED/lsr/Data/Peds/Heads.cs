@@ -215,7 +215,26 @@ public class Heads : IHeads
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("DiablosHeads", DiablosHeadList));
 
-
+        List<RandomHeadData> PetrovicHeadsList = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(0,"Benjamin",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(1,"Daniel",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(4,"Andrew",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(5,"Juan",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(12,"Diego",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(13,"Adrian",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(42,"Claude",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(43,"Niko",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(44,"John",MafiaHairColors_Male,MafiaHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 45f, },//white male
+                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f, },//brown male
+                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(11,"Angel",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true) { FacialHairPercentage = 45f },//brown male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 45f },///white male
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("PetrovicHeads", PetrovicHeadsList));
 
 
         List<RandomHeadData> UptownRidersHeads = new List<RandomHeadData>()
@@ -233,6 +252,23 @@ public class Heads : IHeads
        
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("UptownRidersHeads", UptownRidersHeads));
+
+
+        List<RandomHeadData> NorthHollandHeads = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(2,"Joshua",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(3,"Noah",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(15,"Michael",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+                        new RandomHeadData(19,"Samuel",BlackHairColors_Male,BlackHairStyles_Male,BlackEyeColors, true),//black male
+          
+                        new RandomHeadData(14,"Gabriel",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(23,"Jasmine",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(24,"Giselle",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(35,"Grace",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+                        new RandomHeadData(36,"Brianna",BlackHairColors_Female,BlackHairStyles_Female,BlackEyeColors,false),//black female
+       
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("NorthHollandHeads", NorthHollandHeads));
 
 
         List<RandomHeadData> AngelsOfDeathHeads = new List<RandomHeadData>()

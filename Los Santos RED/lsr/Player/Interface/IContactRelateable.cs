@@ -9,5 +9,6 @@ namespace LosSantosRED.lsr.Interface
     public interface IContactRelateable
     {
         CellPhone CellPhone { get; }
+        string PlayerName { get; }
     }
 }

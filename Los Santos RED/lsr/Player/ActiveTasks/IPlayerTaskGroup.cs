@@ -9,6 +9,6 @@ public interface IPlayerTaskGroup
 {
     void Setup();
     void Dispose();
-    void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
+    void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
 }
 

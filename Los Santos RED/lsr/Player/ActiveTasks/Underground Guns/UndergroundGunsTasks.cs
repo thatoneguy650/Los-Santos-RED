@@ -55,8 +55,15 @@ public class UndergroundGunsTasks : IPlayerTaskGroup
         gunPickupTask.Start();
     }
 
-    public void OnTransactionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
+    public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
     {
 
+    }
+    internal void StartPayoffTask(GunDealerContact contact)
+    {
+        PayoffContactTask payoffContactTask = new PayoffContactTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, contact);
+        AllTasks.Add(payoffContactTask);
+        payoffContactTask.Setup();
+        payoffContactTask.Start();
     }
 }
