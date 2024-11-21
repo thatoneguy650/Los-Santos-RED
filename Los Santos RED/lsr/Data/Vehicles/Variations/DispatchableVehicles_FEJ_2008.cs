@@ -13,6 +13,10 @@ public class DispatchableVehicles_FEJ_2008
     public List<DispatchableVehicle> SAHP2008_FEJ { get; private set; }
     public List<DispatchableVehicle> NYSP2008_FEJ { get; private set; }
     public List<DispatchableVehicle> DowntownTaxi2008_FEJ { get; private set; }
+    public List<DispatchableVehicle> PurpleTaxiVehicles2008_FEJ { get; private set; }
+    public List<DispatchableVehicle> HellTaxiVehicles2008_FEJ { get; private set; }
+    public List<DispatchableVehicle> ShitiTaxiVehicles2008_FEJ { get; private set; }
+    public List<DispatchableVehicle> SunderedTaxiVehicles2008_FEJ { get; private set; }
     public List<DispatchableVehicle> MerryweatherSecurity2008_FEJ { get; private set; }
     public List<DispatchableVehicle> GroupSechsSecurity2008_FEJ { get; private set; }
     public List<DispatchableVehicle> BobcatSecurity2008_FEJ { get; private set; }
@@ -160,6 +164,80 @@ public class DispatchableVehicles_FEJ_2008
 
             DispatchableVehicles_FEJ.DispatchableVehicles.TaxiBroadWay,
             DispatchableVehicles_FEJ.DispatchableVehicles.TaxiEudora,
+        };
+
+
+
+        PurpleTaxiVehicles2008_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,2,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,2,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,2,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,2,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            Create_ServiceStanierOld(20,20,1,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            Create_ServiceStanierOld(20,20,1,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            Create_ServiceStanierOld(20,20,1,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            Create_ServiceStanierOld(20,20,1,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            Create_TaxiMinivan(20,20,1,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            Create_TaxiMinivan(20,20,1,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            Create_TaxiMinivan(20,20,1,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            Create_TaxiMinivan(20,20,1,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+        };
+
+        HellTaxiVehicles2008_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,0,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,0,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,0,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,0,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            Create_ServiceStanierOld(20,20,2,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            Create_ServiceStanierOld(20,20,2,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            Create_ServiceStanierOld(20,20,2,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            Create_ServiceStanierOld(20,20,2,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            Create_TaxiMinivan(20,20,0,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            Create_TaxiMinivan(20,20,0,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            Create_TaxiMinivan(20,20,0,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            Create_TaxiMinivan(20,20,0,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+        };
+
+        ShitiTaxiVehicles2008_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,3,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,3,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,3,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,3,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            Create_ServiceStanierOld(20,20,3,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            Create_ServiceStanierOld(20,20,3,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            Create_ServiceStanierOld(20,20,3,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            Create_ServiceStanierOld(20,20,3,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            Create_TaxiMinivan(20,20,2,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            Create_TaxiMinivan(20,20,2,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            Create_TaxiMinivan(20,20,2,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            Create_TaxiMinivan(20,20,2,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+        };
+
+        SunderedTaxiVehicles2008_FEJ = new List<DispatchableVehicle>()
+        {
+            Create_ServiceDilettante(35,35,4,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,4,false,ServiceVehicleType.Taxi2,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,4,false,ServiceVehicleType.Taxi3,-1,-1,-1,"",""),
+            Create_ServiceDilettante(35,35,4,false,ServiceVehicleType.Taxi4,-1,-1,-1,"",""),
+
+            Create_ServiceStanierOld(20,20,4,false,ServiceVehicleType.Taxi1,134,-1,-1),
+            Create_ServiceStanierOld(20,20,4,false,ServiceVehicleType.Taxi2,134,-1,-1),
+            Create_ServiceStanierOld(20,20,4,false,ServiceVehicleType.Taxi3,134,-1,-1),
+            Create_ServiceStanierOld(20,20,4,false,ServiceVehicleType.Taxi4,134,-1,-1),
+
+            Create_TaxiMinivan(20,20,3,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            Create_TaxiMinivan(20,20,3,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            Create_TaxiMinivan(20,20,3,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            Create_TaxiMinivan(20,20,3,false,ServiceVehicleType.Taxi4,-1,-1,-1),
         };
 
         MerryweatherSecurity2008_FEJ = new List<DispatchableVehicle>()

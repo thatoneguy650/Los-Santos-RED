@@ -1784,7 +1784,12 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles2008),
 
             //Other
-            new DispatchableVehicleGroup("TaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.DowntownTaxi2008_FEJ)
+            new DispatchableVehicleGroup("TaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.DowntownTaxi2008_FEJ),
+            new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.DowntownTaxi2008_FEJ),
+            new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.HellTaxiVehicles2008_FEJ),
+            new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.PurpleTaxiVehicles2008_FEJ),
+            new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.ShitiTaxiVehicles2008_FEJ),
+            new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.SunderedTaxiVehicles2008_FEJ),
         };
 
 

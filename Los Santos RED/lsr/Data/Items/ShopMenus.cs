@@ -254,6 +254,11 @@ public class ShopMenus : IShopMenus
         {
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
+
+
+            premiumDeluxMenu.Items.Add(new MenuItem("Schyster PMP 600", 36000, 17000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
+
         }
         ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
         if (elitasMenu != null)

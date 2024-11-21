@@ -259,7 +259,8 @@ public class ModDataFileManager
             "'Modern Traffic Base' does not include any edits to DLC vehicles and adds no new models." + Environment.NewLine +
             "" + Environment.NewLine +
             "Incompatible with Los Santos 2008 config." + Environment.NewLine +
-            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1.";
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
+            "PMP 600 - Converted to GTA V by Gta5KoRn";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
 
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\");
@@ -267,7 +268,8 @@ public class ModDataFileManager
             "Adds DLC vehicles to the vanilla traffic." +
             "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." +
             "Incompatible with Los Santos 2008 config." + Environment.NewLine +
-            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1.";
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
+            "PMP 600 - Converted to GTA V by Gta5KoRn";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\readme.txt", Description2);
 
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\");
