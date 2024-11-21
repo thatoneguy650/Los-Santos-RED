@@ -249,7 +249,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             foreach (GameLocation possibleSpot in PossibleSpots)
                             {
                                 Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
-                                bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.CheckIsNearby(policeStation.CellX, policeStation.CellY, 10));
+                                bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.EntrancePosition.DistanceTo2D(policeStation.EntrancePosition) < 100f);
 
                                 if (spotZone.InternalGameName == SelectedZone.InternalGameName && !isNear)// && !possibleSpot.HasVendor)
                                 {

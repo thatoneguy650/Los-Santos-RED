@@ -30,6 +30,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangPizza;
     private UIMenuItem GangRacketeering;
+    private UIMenuItem GangArson;
     private UIMenuItem GangBribery;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
@@ -254,11 +255,18 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangBribery(ActiveGang, GangContact);
             sender.Visible = false;
         };
+        GangArson = new UIMenuItem("Arson", "Torch a building. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.ArsonPaymentMin:C0}-{ActiveGang.ArsonPaymentMax:C0}~s~" };
+        GangArson.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartGangArson(ActiveGang, GangContact);
+            sender.Visible = false;
+        };
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
         JobsSubMenu.AddItem(GangMoneyPickup);
         JobsSubMenu.AddItem(GangRacketeering);
         JobsSubMenu.AddItem(GangBribery);
+        JobsSubMenu.AddItem(GangArson);
         //JobsSubMenu.AddItem(GangDelivery);  
         if (ActiveGang.GangClassification == GangClassification.Mafia)// == "Gambetti" || ActiveGang.ShortName == "Pavano" || ActiveGang.ShortName == "Lupisella" || ActiveGang.ShortName == "Messina" || ActiveGang.ShortName == "Ancelotti")
         {

@@ -124,6 +124,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int AmbushPaymentMax { get; set; } = 5500;//10500;
     public int BriberyPaymentMin { get; set; } = 2500;//7500;
     public int BriberyPaymentMax { get; set; } = 5000;//10500;
+    public int ArsonPaymentMin { get; set; } = 500;//7500;
+    public int ArsonPaymentMax { get; set; } = 1000;//10500;
 
 
     public float FightPercentage { get; set; } = 70f;
