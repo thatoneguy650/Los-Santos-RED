@@ -291,7 +291,7 @@ public class Agencies : IAgencies
             GRPSECHS,SECURO,MERRY,BOBCAT,CHUFFSEC,LNLSEC,
             UNK,
         };
-        Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
     }
     private void DefaultConfig_LosSantos2008()

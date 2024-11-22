@@ -164,7 +164,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         //DefaultConfig_FullExpandedJurisdiction_2015();
         DefaultConfig_FullExpandedJurisdiction_Modern();
         DefaultConfig_LosSantos_2008();
-        DefaultConfig_FullExpandedJurisdiction_Stanier();
+        //DefaultConfig_FullExpandedJurisdiction_Stanier();
     }
     public void Setup()
     {
@@ -2003,7 +2003,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SunderedTaxiVehicles_FEJ_Modern),
         };
 
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction_Stanier()
