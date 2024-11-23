@@ -158,7 +158,7 @@ public class ModItems : IModItems
 
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Schyster PMP 600", ItemType.Vehicles) { OverrideMakeName = "Schyster", OverrideClassName = "Sedan", ModelName = "civpmp600" });
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
 
         //Trucks
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "caracara");
