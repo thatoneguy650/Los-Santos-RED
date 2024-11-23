@@ -26,37 +26,55 @@ public class MoveInteraction
     }
     public float CloseDistance { get; set; } = 0.35f;
     public float CloseHeading { get; set; } = 0.5f;
+
+    public uint TimeLimit { get; set; } = 5000;
+    public uint TimeGrace { get; set; } = 3000;
+    public float DistanceGrace { get; set; } = 0.4f;
+    public float HeadingGrace { get; set; } = 2.0f;
     public bool MoveToMachine(float speed)
     {
         NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, FinalPlayerPosition.X, FinalPlayerPosition.Y, FinalPlayerPosition.Z, speed, -1, 0.25f, 0, FinalPlayerHeading);
-        uint GameTimeStartedSitting = Game.GameTime;
+        uint GameTimeStarted = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
         bool IsFacingDirection = false;
         bool IsCloseEnough = false;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+        while (Game.GameTime - GameTimeStarted <= TimeLimit && !IsCloseEnough && !IsCancelled)
         {
             if (Player.IsMoveControlPressed)
             {
                 IsCancelled = true;
             }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition) < CloseDistance;
-            //Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition)} IsCloseEnough{IsCloseEnough}");
+            float currentDistanceAway = Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition);
+            IsCloseEnough = currentDistanceAway < CloseDistance;
+
+            if(currentDistanceAway <= CloseDistance + DistanceGrace && Game.GameTime - GameTimeStarted >= TimeGrace)
+            {
+                IsCloseEnough = true;
+            }
+
+           // Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition)} IsCloseEnough{IsCloseEnough}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
-        GameTimeStartedSitting = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+        GameTimeStarted = Game.GameTime;
+        while (Game.GameTime - GameTimeStarted <= TimeLimit && !IsFacingDirection && !IsCancelled)
         {
             if (Player.IsMoveControlPressed)
             {
                 IsCancelled = true;
             }
             heading = Game.LocalPlayer.Character.Heading;
-            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, FinalPlayerHeading)) <= CloseHeading)//0.5f)
+
+            float currentHeadingDifference = Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, FinalPlayerHeading));
+            if (currentHeadingDifference <= CloseHeading)//0.5f)
             {
                 IsFacingDirection = true;
             }
-            //Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {PropEntryHeading}");
+            if(currentHeadingDifference <= CloseHeading + HeadingGrace && Game.GameTime - GameTimeStarted >= TimeGrace)
+            {
+                IsFacingDirection = true;
+            }
+           // Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {FinalPlayerHeading}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
