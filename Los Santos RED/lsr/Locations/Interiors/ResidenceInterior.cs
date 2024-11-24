@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Rage;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 

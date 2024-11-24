@@ -541,5 +541,17 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         MaxAssaultSpawns = 15;
         AssaultSpawnHeavyWeaponsPercent = 80f;
     }
+    public override bool HasAssociation(Gang gang)
+    {
+        if(gang == null)
+        {
+            return false;
+        }
+        if(AssociatedGang == null)
+        {
+            return false;
+        }
+        return AssociatedGang.ID == gang.ID;
+    }
 }
 

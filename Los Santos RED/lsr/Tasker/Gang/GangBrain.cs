@@ -64,10 +64,22 @@ public class GangBrain : PedBrain
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
         bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 150f;// 100f;
         bool isNearHomeTerritory = false;
-        if (Player.CurrentLocation.CurrentZone?.Gangs?.Any(x => x.ID == GangMember.Gang?.ID) == true)
+        string gangID = "";// GangMember.Gang?.ID;
+        if(GangMember.Gang != null)
+        {
+            gangID = GangMember.Gang.ID;
+        }
+
+        if (Player.CurrentLocation.CurrentZone?.Gangs?.Any(x => x.ID == gangID) == true)
         {
             isNearHomeTerritory = true;
         }
+        if(!isNearHomeTerritory && World.Places.ActiveLocations.Any(x=> x.DistanceToPlayer <= 200f && x.HasAssociation(GangMember.Gang)))
+        {
+            isNearHomeTerritory = true;
+        }
+
+
         if (GangMember.IsBusted)
         {
             SetArrested(GangMember);

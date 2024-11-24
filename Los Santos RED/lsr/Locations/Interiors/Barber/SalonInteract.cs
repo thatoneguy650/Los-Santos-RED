@@ -353,5 +353,12 @@ public class SalonInteract : InteriorInteract
         }
         changeHaircutProcess.Dispose();
     }
+
+
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        AnimEnterPosition += offsetToAdd;
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

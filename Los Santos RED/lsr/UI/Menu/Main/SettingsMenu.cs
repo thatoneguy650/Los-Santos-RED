@@ -17,6 +17,9 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
     private UIMenuItem ReloadSettingsFromFile;
     private UIMenuItem SaveSettingsToFile;
     private UIMenuItem DefaultSettings;
+
+    public UIMenuItem LCConfigSettingsMenu { get; private set; }
+
     private UIMenuItem EasySettings;
     private UIMenuItem HardSettings;
     private UIMenu SettingsUIMenu;
@@ -91,12 +94,16 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
         changePresets.SetBannerType(EntryPoint.LSRedColor);
 
         DefaultSettings = new UIMenuItem("Set Default Settings", "Set all values back to default settings");
+
+        LCConfigSettingsMenu = new UIMenuItem("Set LC Config Settings", "Set select settings to the default for the LC config. Will disable vanilla shops and blips!");
+
         MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
         EasySettings = new UIMenuItem("Set Easy Settings", "Use the easy preset for settings");
         HardSettings = new UIMenuItem("Set Hard Settings", "Use the hard preset for settings");
 
         SettingsUIMenu.AddItem(SaveSettingsToFile);
         changePresets.AddItem(DefaultSettings);
+        changePresets.AddItem(LCConfigSettingsMenu);
         changePresets.AddItem(MySettings);
         changePresets.AddItem(HardSettings);
         changePresets.AddItem(EasySettings);
@@ -208,6 +215,11 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
         else if (selectedItem == DefaultSettings)
         {
             SettingsProvider.SetDefault();
+            Crimes.SetDefault();
+        }
+        else if (selectedItem == LCConfigSettingsMenu)
+        {
+            SettingsProvider.SetLC();
             Crimes.SetDefault();
         }
         else if (selectedItem == HardSettings)

@@ -347,5 +347,10 @@ public class InteriorInteract
         return isInPosition;
     }
 
+    public virtual void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        Position += offsetToAdd;
+        CameraPosition += offsetToAdd;
+    }
 }
 

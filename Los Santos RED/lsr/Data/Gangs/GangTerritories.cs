@@ -250,77 +250,78 @@ public class GangTerritories : IGangTerritories
     {
         List<ZoneJurisdiction> LibertyZOneJurisdictionsList = new List<ZoneJurisdiction>()
         {
+            //Lost (ONLY ALderney)
             new ZoneJurisdiction("AMBIENT_GANG_LOST","ACTRR", 0, 100, 100),//acter
             new ZoneJurisdiction("AMBIENT_GANG_LOST","ACTIP", 0, 100, 100),//acter indus
             new ZoneJurisdiction("AMBIENT_GANG_LOST","ALSCF", 0, 100, 100),//acter prison
-
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","TUDOR", 0, 100, 100),//tudor
+          
+            //Yardies (Only Alderney)
             new ZoneJurisdiction("AMBIENT_GANG_YARDIES","SCHOL", 0, 100, 100),//schlotter
             new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEECW", 0, 100, 100),//beachwood city
             new ZoneJurisdiction("AMBIENT_GANG_YARDIES","WILLI", 0, 100, 100),//Willis
 
-            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CHITO", 0, 100, 100),//CHinatown
-            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CITH", 0, 100, 100),//city hall
+            //Korean Mob (Only Alderney)
+            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","ALDCI", 0, 100, 100),//Alderny City
+            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","LEFWO", 0, 100, 100),//Leftwood
+            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","WESDY", 0, 100, 100),//Westdyke
+            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","BERCH", 0, 100, 100),//bercham
+
+            //Triads (South East Algonquin)
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CHITO", 0, 100, 100),//CHinatown   
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","THXCH", 0, 100, 100),//the exchange
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","FISSO", 0, 100, 100),//fishmarket south
 
-            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","ALDCI", 0, 100, 100),//Alderny City
-            new ZoneJurisdiction("AMBIENT_GANG_KOREAN","BERCH", 0, 100, 100),//bercham
-
+            //North Holland Hustlers (As Said)
             new ZoneJurisdiction("AMBIENT_GANG_HOLHUST","NOHOL", 0, 100, 100),//North Holland
 
+            //AOD North West Algonquin
+            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","VASIH", 0, 100, 100),//Varsity Heights
+            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","MIDPW", 0, 100, 100),//Middle Park West
+            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","NOHOL", 1, 100, 100),//North Holland
+
+            //Uptown Riders (only Northwood, maybe westdyke?)
+            new ZoneJurisdiction("AMBIENT_GANG_UPTOWN","NORWO", 0, 100, 100),//Northwood
+
+            //Spanish Lords (in West Bohan)
+            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","STHBO", 0, 100, 100),//South BOhan
+            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","FORSI", 0, 100, 100),//Fortside
+            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","CHAPO", 0, 100, 100),//Chase Point
+            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","BOULE", 0, 100, 100),//Chase Point 
+
+            //Mafia
+            //Gambetti (Southern Algonquin (With Triads))
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","LITAL", 0, 100, 100),//little italy
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","CITH", 0, 100, 100),//city hall
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","SUFFO", 0, 100, 100),//suffolk
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THTRI", 0, 100, 100),//the triangle
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THPRES", 0, 100, 100),//presidents city
+
+            //Lupisella (Bohan (With Spanish Lords))
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","INSTI", 0, 100, 100),//Industrial Bohan
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LTBAY", 0, 100, 100),//Little Bay Boahn
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","NRTGA", 0, 100, 100),//Northern Gardens
+
+            //Petrovic (Broker)
             new ZoneJurisdiction("AMBIENT_GANG_PETROVIC","HOBEH", 0, 100, 100),//Hove Beach
             new ZoneJurisdiction("AMBIENT_GANG_PETROVIC","FIISL", 0, 100, 100),//Firefly Island
             new ZoneJurisdiction("AMBIENT_GANG_PETROVIC","BEGGA", 0, 100, 100),//Beachgate
 
-            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","STHBO", 0, 100, 100),//South BOhan
-            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","FORSI", 0, 100, 100),//Fortside
-            new ZoneJurisdiction("AMBIENT_GANG_SPANISH","CHAPO", 0, 100, 100),//Chase Point
-
-            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","BOAB", 0, 100, 100),//BOABO
-
-            new ZoneJurisdiction("AMBIENT_GANG_UPTOWN","NORWO", 0, 100, 100),//Northwood
-            new ZoneJurisdiction("AMBIENT_GANG_UPTOWN","NOHOL", 1, 100, 100),//North Hooald
-
+            //Pavano
             new ZoneJurisdiction("AMBIENT_GANG_PAVANO","EAHOL", 0, 100, 100),//East Holland
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","LANCA", 0, 100, 100),//Laancaster
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","MIDPE", 0, 100, 100),//Middle Park East
 
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","INSTI", 0, 100, 100),//Industrial Bohan
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LTBAY", 0, 100, 100),//Little Bay Boahn
-
+            //Messian 
             new ZoneJurisdiction("AMBIENT_GANG_MESSINA","STARJ", 0, 100, 100),//Star Junction
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","PUGAT", 0, 100, 100),//Purgatory
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","HATGA", 0, 100, 100),//Hafton Gardens
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","LANCE", 0, 100, 100),//Lancet
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","WESMI", 0, 100, 100),//Westminster
 
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","ACTRR", 1, 100, 100),//ACter
-
-
-            //Mafia
-            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","LITAL", 0, 100, 100),//little italy
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","LITAL", 1, 20, 20),//little italy
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","LITAL", 2, 20, 20),//little italy
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LITAL", 3, 20, 20),//little italy
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","LITAL", 4, 20, 20),//little italy
-
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","SUFFO", 0, 100, 100),//suffolk
-            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","SUFFO", 1, 20, 20),//suffolk
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","SUFFO", 2, 20, 20),//suffolk
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","SUFFO", 3, 20, 20),//suffolk
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","SUFFO", 4, 20, 20),//suffolk
-
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","LOWEA", 0, 100, 100),//lower easton
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LOWEA", 1, 20, 20),//lower easton
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","LOWEA", 2, 20, 20),//lower easton
-            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","LOWEA", 3, 20, 20),//lower easton
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","LOWEA", 4, 20, 20),//lower easton
-
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","THPRES", 0, 100, 100),//presidents city
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","THPRES", 1, 20, 20),//presidents city
-            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THPRES", 2, 20, 20),//presidents city
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","THPRES", 3, 20, 20),//presidents city
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","THPRES", 4, 20, 20),//presidents city
-
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","THTRI", 0, 100, 100),//the triangle
-            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THTRI", 1, 20, 20),//the triangle
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","THTRI", 2, 20, 20),//the triangle
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","THTRI", 3, 20, 20),//the triangle
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","THTRI", 4, 20, 20),//the triangle
+            //Ancelotti
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","NORMY", 0, 100, 100),//Normandy
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","PORTU", 0, 100, 100),//port tudor
         };
         Serialization.SerializeParams(LibertyZOneJurisdictionsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\GangTerritories_{StaticStrings.LibertyConfigSuffix}.xml");
     }

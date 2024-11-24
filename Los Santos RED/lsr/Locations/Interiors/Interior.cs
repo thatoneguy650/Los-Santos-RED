@@ -421,6 +421,46 @@ public class Interior
         RemoveButtonPrompts();
         TeleportOut();
     }
+
+    public virtual void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        InternalInteriorCoordinates += offsetToAdd;
+        DisabledInteriorCoords += offsetToAdd;
+
+        foreach (InteriorDoor sl in Doors)
+        {
+            if (sl.Position != Vector3.Zero)
+            {
+                sl.Position += offsetToAdd;
+            }
+        }
+        InteriorEgressPosition += offsetToAdd;
+        foreach(InteriorInteract test in AllInteractPoints)
+        {
+            test.AddDistanceOffset(offsetToAdd);
+        }
+        ClearPositions.ForEach(x => x += offsetToAdd);
+        if (PropSpawns != null)
+        {
+            foreach (PropSpawn test in PropSpawns)
+            {
+                test.SpawnPlace.AddDistanceOffset(offsetToAdd);
+            }
+        }
+        if (VendorLocations != null)
+        {
+            foreach (var test2 in VendorLocations)
+            {
+                test2.AddDistanceOffset(offsetToAdd);
+            }
+        }
+        if (SearchLocations != null)
+        {
+            SearchLocations.ForEach(x => x += offsetToAdd);
+        }
+    }
+
+
     private void SetInactive()
     {
         if (IsInside)

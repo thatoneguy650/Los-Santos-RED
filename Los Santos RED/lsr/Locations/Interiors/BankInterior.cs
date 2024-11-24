@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -41,5 +42,6 @@ public class BankInterior : Interior
         player.Violations.AddViolating(StaticStrings.BankRobberyCrimeID);
         base.OnCarryingWeaponInside(player);
     }
+
 }
 

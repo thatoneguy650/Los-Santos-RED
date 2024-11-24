@@ -407,6 +407,8 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\CenteredAbove");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\East");
         string Description = "For use with Liberty City Remix v35. Centered and Centered above configs available. "
             + Environment.NewLine + Environment.NewLine +
             "1. Install 'Liberty City Remix' according to instructions supplied in the download. Choose the Centered or Centered Above options. Make sure you can load into the map on vanilla GTA before proceeding."

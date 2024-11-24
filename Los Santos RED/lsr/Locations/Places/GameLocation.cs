@@ -1148,6 +1148,12 @@ public class GameLocation : ILocationDispatchable
         }
         return false;
     }
+
+    public virtual bool HasAssociation(Gang gang)
+    {
+        return false;
+    }
+
     public virtual void HighlightVehicle()
     {
         if (StoreCamera == null || VehiclePreviewLocation == null)

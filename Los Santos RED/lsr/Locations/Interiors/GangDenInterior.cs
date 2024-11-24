@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Rage;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -50,5 +51,13 @@ public class GangDenInterior : Interior
                 door.LockDoor();
             }
         }
+    }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach (RestInteract bdi in RestInteracts)
+        {
+            bdi.AddDistanceOffset(offsetToAdd);
+        }
+        base.AddDistanceOffset(offsetToAdd);
     }
 }
