@@ -80,13 +80,13 @@ public class Gangs : IGangs
     {
         return GangsList;
     }
-    public Gang GetGang(string GangInitials)
+    public Gang GetGang(string gangID)
     {
-        if(string.IsNullOrEmpty(GangInitials))
+        if(string.IsNullOrEmpty(gangID))
         {
             return null;
         }
-        return GangsList.Where(x => x.ID.ToLower() == GangInitials.ToLower()).FirstOrDefault();
+        return GangsList.Where(x => x.ID.ToLower() == gangID.ToLower()).FirstOrDefault();
     }
     public Gang GetGangByContact(string contactName)
     {

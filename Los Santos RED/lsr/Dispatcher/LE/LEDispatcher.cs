@@ -1219,7 +1219,7 @@ public class LEDispatcher
                         float distanceTo = PoliceCar.DistanceChecker.DistanceToPlayer;
                         //float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
                         //PoliceCar.DistanceChecker.UpdateMovement(distanceTo);
-                        if (PoliceCar.DistanceChecker.IsMovingAway && distanceTo >= 225f && PoliceCar.HasBeenEmptyFor >= 15000)//300f//10000))
+                        if (PoliceCar.DistanceChecker.IsMovingAway && distanceTo >= 225f && PoliceCar.HasBeenEmptyFor >= 15000)//300f//10000))//225f
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
                             EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles 1 SPAWNED EMPTY NONPERS isNearLimit{isNearLimit} TotalPoliceCars{TotalPoliceCars} PossibleSpawnedPoliceCars{PossibleSpawnedPoliceCars}");
@@ -1625,6 +1625,9 @@ public class LEDispatcher
                         {
                             RemoveBlip(Passenger);
                             Passenger.Delete();
+
+                            //Passenger.IsPersistent = false;
+
                             EntryPoint.PersistentPedsDeleted++;
                             GameFiber.Yield();
                         }
@@ -1792,37 +1795,38 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NON MOD SPAWNED COPS");
             return true;
         }
-        else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
+        else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete && cop.DistanceChecker.IsMovingAway) //Beyond Caring
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
             return true;
         }
-        else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && (!cop.WasModSpawned || cop.HasBeenSpawnedFor >= 25000) && ((cop.DistanceToPlayer > DistanceToDeleteOnFoot && cop.ClosestDistanceToPlayer <= 50f) || cop.DistanceToPlayer > 300f)) //Beyond Caring
+        else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && (!cop.WasModSpawned || cop.HasBeenSpawnedFor >= 25000) && (cop.DistanceToPlayer > DistanceToDeleteOnFoot) && cop.DistanceChecker.IsMovingAway)// || cop.DistanceToPlayer > 300f))//else if (!cop.IsInVehicle && !cop.IsRoadblockSpawned && (!cop.WasModSpawned || cop.HasBeenSpawnedFor >= 25000) && ((cop.DistanceToPlayer > DistanceToDeleteOnFoot && cop.ClosestDistanceToPlayer <= 50f) || cop.DistanceToPlayer > 300f)) //Beyond Caring
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE NOT ROADBLOCK");
             return true;
         }
+        //Wanted Cleanups below
         else if (!cop.IsInVehicle && cop.IsRoadblockSpawned && cop.HasBeenSpawnedFor >= 25000 && cop.DistanceToPlayer > 350f) //Beyond Caring
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE YES ROADBLOCK");
             return true;
         }
-        else if (cop.IsInVehicle && Player.IsWanted && cop.DistanceToPlayer >= 300f && !cop.IsRespondingToWanted && !cop.IsInHelicopter)
+        else if (Player.IsWanted && cop.IsInVehicle && cop.DistanceToPlayer >= 300f && !cop.IsRespondingToWanted && !cop.IsInHelicopter)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, Ambient NOT RESPONDING");
             return true;
         }
-        else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
+        else if (Player.IsWanted && cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away, when wanted
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
             return true;
         }
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 250f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
+        else if (Player.IsWanted && !cop.IsInHelicopter && cop.DistanceToPlayer >= 250f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
             return true;
         }
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 350f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
+        else if (Player.IsWanted && !cop.IsInHelicopter && cop.DistanceToPlayer >= 350f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)//else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST total COPS");
             return true;

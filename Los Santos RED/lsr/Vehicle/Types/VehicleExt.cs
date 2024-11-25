@@ -81,8 +81,8 @@ namespace LSR.Vehicles
         public DistanceChecker DistanceChecker { get; private set; }
         public virtual Color BlipColor => AssociatedAgency != null ? AssociatedAgency.Color : AssociatedGang != null ? AssociatedGang.Color : Color.White;
         public virtual float BlipSize => AssociatedAgency != null ? 0.6f : 0.25f;
-        public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
-        public uint HasBeenEmptyFor => Game.GameTime - GameTimeBecameEmpty;
+        public uint HasExistedFor => GameTimeSpawned == 0 ? 0 : Game.GameTime - GameTimeSpawned;
+        public uint HasBeenEmptyFor => GameTimeBecameEmpty == 0 ? 0 : Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
         public Vector3 PositionSpawned { get; set; } = Vector3.Zero;
         public bool WasModSpawned { get; set; } = false;

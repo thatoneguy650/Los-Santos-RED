@@ -63,8 +63,8 @@ public class GangDispatcher
     }
     private float ClosestGangSpawnToPlayerAllowed => 45f;
     private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-    private float DistanceToDeleteInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
-    private float DistanceToDeleteOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
+    private float DistanceToDeleteInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle + 150f;// 500 + 150 = 650;
+    private float DistanceToDeleteOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot + 50f;// 225 + 50f grace = 275f;
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
     private float MaxDistanceToSpawnOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot;//150f;

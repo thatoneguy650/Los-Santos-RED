@@ -222,45 +222,67 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRacketeeringSpots()
         {
-            if (GangTerritories.GetGangTerritory(HiringGang.ID) != null)
+            if(GangTerritories.GetGangTerritory(HiringGang.ID) == null)
             {
-                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
-                if (totalTerritories != null && totalTerritories.Any())
+                return;
+            }
+            List<ZoneJurisdiction> hiringGangTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
+            if (hiringGangTerritories == null || !hiringGangTerritories.Any())
+            {
+                return;
+            }
+            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RacketeeringTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+            List<GameLocation> AvailableSpots = new List<GameLocation>();
+            List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
+            EnemyGang = null;
+            if (WillExtortEnemyTurf)
+            {
+                //availableTerritories = hiringGangTerritories.Where(zj => zj.Priority != 0).ToList();
+                if(HiringGang.EnemyGangs != null && HiringGang.EnemyGangs.Any())
                 {
-                    List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RacketeeringTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
-                    List<GameLocation> AvailableSpots = new List<GameLocation>();
-
-                    List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
-                    availableTerritories = WillExtortEnemyTurf
-                        ? totalTerritories.Where(zj => zj.Priority != 0).ToList()
-                        : totalTerritories.Where(zj => zj.Priority == 0).ToList();
-
-                    if (availableTerritories.Any())
+                    EnemyGang = Gangs.GetGang(HiringGang.EnemyGangs.PickRandom());
+                }
+                if(EnemyGang == null)
+                {
+                    EnemyGang = Gangs.GetAllGangs().Where(x=> x.ID.ToLower() != HiringGang.ID.ToLower()).PickRandom();
+                }
+                if(EnemyGang != null)
+                {
+                    availableTerritories = GangTerritories.GetGangTerritory(EnemyGang.ID).ToList();
+                }
+            }
+            else
+            {
+                availableTerritories = hiringGangTerritories.ToList();
+            }
+            if (!availableTerritories.Any() && WillExtortEnemyTurf)//fallback to friendly turf 
+            {
+                availableTerritories = hiringGangTerritories.ToList();
+                WillExtortEnemyTurf = false;
+            }
+            if (!availableTerritories.Any())
+            {
+                return;
+            }
+            ZoneJurisdiction selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            if (WillExtortEnemyTurf && EnemyGang == null)
+            {
+                EnemyGang = Zones.GetZone(availableTerritories.FirstOrDefault().ZoneInternalGameName).AssignedGang;
+            }
+            if (Zones.GetZone(selectedTerritory.ZoneInternalGameName) != null)
+            {
+                SelectedZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);
+                foreach (GameLocation possibleSpot in PossibleSpots)
+                {
+                    Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
+                    bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.EntrancePosition.DistanceTo2D(policeStation.EntrancePosition) < 100f);
+                    if (spotZone.InternalGameName == SelectedZone.InternalGameName && !isNear)// && !possibleSpot.HasVendor)
                     {
-                        ZoneJurisdiction selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-                        if (WillExtortEnemyTurf)
-                        {
-                            EnemyGang = Zones.GetZone(availableTerritories.FirstOrDefault().ZoneInternalGameName).AssignedGang;
-                        }
-
-                        if (Zones.GetZone(selectedTerritory.ZoneInternalGameName) != null)
-                        {
-                            SelectedZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);
-                            foreach (GameLocation possibleSpot in PossibleSpots)
-                            {
-                                Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
-                                bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.EntrancePosition.DistanceTo2D(policeStation.EntrancePosition) < 100f);
-
-                                if (spotZone.InternalGameName == SelectedZone.InternalGameName && !isNear)// && !possibleSpot.HasVendor)
-                                {
-                                    AvailableSpots.Add(possibleSpot);
-                                }
-                            }
-                        }
-                        RacketeeringLocations = AvailableSpots.OrderBy(x => Guid.NewGuid()).Take(new Random().Next(1, AvailableSpots.Count + 1)).ToList();
+                        AvailableSpots.Add(possibleSpot);
                     }
                 }
             }
+            RacketeeringLocations = AvailableSpots.OrderBy(x => Guid.NewGuid()).Take(RandomItems.GetRandomNumberInt(1, 5)).ToList();//new Random().Next(1, AvailableSpots.Count + 1)).ToList();
         }
         private void GetHiringDen()
         {
