@@ -71,6 +71,13 @@ public class RelationshipManager
             EntryPoint.WriteToConsole("phoneContact IS NULL");
             return;
         }
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.SetDebt(myGang, 0);
+            GangRelationships.OnMoneyWon(myGang, moneySpent);
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);// ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == contactName.ToLower());
         if (contactRelationship == null)
         {
@@ -88,7 +95,6 @@ public class RelationshipManager
             contactRelationship.ChangeReputation(repGained, false);
         }
     }
-
     public ContactRelationship GetOrCreate(PhoneContact phoneContact)// string contactName)
     {
         if(phoneContact == null)
@@ -123,6 +129,7 @@ public class RelationshipManager
             {
                 GangRelationships.SetGang(myGang, true);
             }
+            return;
         }
        ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
@@ -153,6 +160,7 @@ public class RelationshipManager
                 GangRelationships.AddDebt(myGang, debtAmountOnFail);
             }
             GangRelationships.SetFailedTask(myGang);
+            return;
         }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
@@ -168,9 +176,14 @@ public class RelationshipManager
             contactRelationship.AddDebt(debtAmountOnFail);
         }     
     }
-
     public void ResetRelationship(PhoneContact phoneContact, bool sendText)
     {
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.SetReputation(myGang, 0, sendText);
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if(contactRelationship == null)
         {
@@ -180,6 +193,12 @@ public class RelationshipManager
     }
     public void SetMaxReputation(PhoneContact phoneContact, bool sendText)
     {
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.SetReputation(myGang, myGang.MaximumRep, sendText);
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
@@ -189,6 +208,12 @@ public class RelationshipManager
     }
     public void SetMoneySpent(PhoneContact phoneContact, int moneySpent, bool sendText)
     {
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.OnMoneyWon(myGang, moneySpent);
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
@@ -196,9 +221,15 @@ public class RelationshipManager
         }
         contactRelationship.SetMoneySpent(moneySpent, sendText);
     }
-
     public void OnVendorKilledByPlayer(PhoneContact phoneContact, Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
     {
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.ChangeReputation(myGang, -2000, true);
+            EntryPoint.WriteToConsole("OnVendorKilledByPlayer SET GANG REP -2000");
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
@@ -207,9 +238,15 @@ public class RelationshipManager
         contactRelationship.SetReputation(-2000, true);
         EntryPoint.WriteToConsole("OnVendorKilledByPlayer SET REP -2000");
     }
-
     public void OnVendorInjuredByPlayer(PhoneContact phoneContact, Merchant merchant, IViolateable player, IZones zones, IGangTerritories gangTerritories)
     {
+        Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
+        if (myGang != null)
+        {
+            GangRelationships.ChangeReputation(myGang, -500, true);
+            EntryPoint.WriteToConsole("OnVendorInjuredByPlayer SET GANG REP -500");
+            return;
+        }
         ContactRelationship contactRelationship = GetOrCreate(phoneContact);
         if (contactRelationship == null)
         {
