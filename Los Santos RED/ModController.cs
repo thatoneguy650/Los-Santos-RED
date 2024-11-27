@@ -55,6 +55,12 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
             GameFiber.Yield();
+
+
+
+
+
+
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
             NAudioPlayer.Setup();
             GameFiber.Yield();
@@ -113,8 +119,7 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus, ModDataFileManager);
             Debug.Setup();
             GameFiber.Yield();
-            //World.Setup();
-            //GameFiber.Yield();
+
             PedSwap.Setup();
             GameFiber.Yield();
             SetTaskGroups();

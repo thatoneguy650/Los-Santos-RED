@@ -126,6 +126,7 @@ public class PlayerTasks
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == phoneContact.Name && x.IsActive);
         if(myTask != null)
         {
+            EntryPoint.WriteToConsole($"CompleteTask: FOR : {phoneContact.Name}");
             Player.RelationshipManager.SetCompleteTask(phoneContact, myTask.RepAmountOnCompletion, myTask.JoinGangOnComplete);
             if (myTask.PaymentAmountOnCompletion != 0)
             {

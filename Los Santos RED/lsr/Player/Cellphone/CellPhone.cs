@@ -356,6 +356,12 @@ public class CellPhone
     }
     public void AddContact(PhoneContact phoneContact, bool displayNotification)
     {
+        if(phoneContact == null)
+        {
+            EntryPoint.WriteToConsole("AddContact PHONECONTACT IS NULL");
+
+        }
+
         if (!AddedContacts.Any(x => x.Name == phoneContact.Name))
         {
             phoneContact.Index = ContactIndex;

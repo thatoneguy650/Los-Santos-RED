@@ -207,6 +207,10 @@ public class Interiors_Liberty
                         CameraRotation = new Rotator(-17.65257f, 0f, 2.854204f)
                     },
                 },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(261592072,new Vector3(835.2046f, 1894.023f, 11.785f)) { LockWhenClosed = true, NeedsDefaultUnlock = true },//90.81429f)
+                },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
                     new InventoryInteract("southbohanInventory1",new Vector3(847.3621f, 1902.232f, 17.47133f), 271.6566f ,"Access Items")
@@ -256,6 +260,10 @@ public class Interiors_Liberty
                         CameraRotation = new Rotator(-13.51151f, 4.390381E-06f, -35.95886f)
                     },
                 },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(2181386400,new Vector3(1134.176f, -10.53613f, 15.40443f)) { LockWhenClosed = true, NeedsDefaultUnlock = true },//90.81429f)
+                },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
                     new InventoryInteract("brokeraptInventory1",new Vector3(1125.994f, -6.80858f, 19.41108f), 181.8482f ,"Access Items")
@@ -304,6 +312,10 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.3834104f, 0.8622515f, -0.3309363f),
                         CameraRotation = new Rotator(-19.32561f, -1.311893E-05f, -23.97289f)
                     },
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(2124429686,new Vector3(-725.5925f, 1387.102f, 14.23296f)) { LockWhenClosed = true, NeedsDefaultUnlock = true },//90.81429f)
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {

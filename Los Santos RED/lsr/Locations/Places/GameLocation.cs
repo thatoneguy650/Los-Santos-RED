@@ -785,6 +785,14 @@ public class GameLocation : ILocationDispatchable
         //}
         string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
         string ShortLocationName = $"{StreetNumber} {streetName}".Trim();
+
+        if(streetName == "")
+        {
+            LocationName = $"{StreetNumber} {zoneString}".Trim();
+            ShortLocationName = $"{StreetNumber}".Trim();
+        }
+
+
         FullStreetAddress = LocationName;
         StreetAddress = ShortLocationName;
         ZoneName = zoneString;

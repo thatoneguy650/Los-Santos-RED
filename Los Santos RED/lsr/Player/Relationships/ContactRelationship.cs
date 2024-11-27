@@ -28,6 +28,9 @@ public class ContactRelationship
     public virtual string Stuff => "NONE";
     public bool IsHostile => ReputationLevel < 0;
 
+
+    public bool HasPhoneContact => PhoneContact != null;
+
     public ContactRelationship()
     {
 
@@ -59,6 +62,7 @@ public class ContactRelationship
     }
     public void SetReputation(int value, bool sendText)
     {
+        EntryPoint.WriteToConsole($"ContactRelationship SetReputation value:{value} ContactName:{ContactName} PhoneContactName = {PhoneContact?.Name}");
         if (ReputationLevel != value)
         {
             if (value > RepMaximum)
@@ -99,6 +103,12 @@ public class ContactRelationship
         bool isPositive = CurrentRelationshipLevel > 0;
         if (PrevRelationshipLevel != CurrentRelationshipLevel)
         {
+            if(PhoneContact == null)
+            {
+                EntryPoint.WriteToConsole($"OnReputationChanged for: PhoneContact IS NULL");
+            }
+
+
             if (sendText)
             {
                 SendInfoText(PhoneContact, isPositive);
@@ -188,7 +198,11 @@ public class ContactRelationship
 
     public virtual void SetupContact(IContacts contacts)
     {
-
+        if(contacts == null)
+        {
+            return;
+        }
+        PhoneContact = contacts.PossibleContacts.AllContacts().Where(x => x.Name.ToLower() == ContactName.ToLower()).FirstOrDefault();
     }
 }
 

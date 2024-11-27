@@ -546,10 +546,20 @@ namespace LosSantosRED.lsr.Data
             }
             foreach (ContactRelationship contactRelationship in ContactRelationships)
             {
+                if(!contacts.PossibleContacts.AllContacts().Any(x=> x.Name.ToLower() == contactRelationship.ContactName.ToLower()))
+                {
+                    EntryPoint.WriteToConsole($"Game Saves: Removing Contact Relationship (Not Found) from {contactRelationship.ContactName}");//can turn off eventually i guess
+                    continue;
+                }
+
+
+
                 EntryPoint.WriteToConsole($"RELATIONSHIP LOAD {contactRelationship.ContactName} MONEY:{contactRelationship.TotalMoneySpent} REP:{contactRelationship.ReputationLevel}");
                 contactRelationship.SetupContact(contacts);
                 player.RelationshipManager.Add(contactRelationship);
                 contactRelationship.Activate();
+
+                EntryPoint.WriteToConsole($"contactRelationship.HasPhoneContact: {contactRelationship.HasPhoneContact}");
             }
             if(GangLoanSaves == null || !GangLoanSaves.Any())
             {

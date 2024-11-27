@@ -92,10 +92,10 @@ namespace Mod
             IsFMTInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmt"));
             EntryPoint.WriteToConsole($"FMT Installed: {IsFMTInstalled}", 0);
 
-            if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
-            {
-                NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
-            }
+            //if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
+            //{
+            //    NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
+            //}
         }
 
         private void SetMemoryItems()

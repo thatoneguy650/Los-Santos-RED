@@ -136,24 +136,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetZone()
         {
-            if (GangTerritories.GetGangTerritory(HiringGang.ID) != null)
+            if (TargetGang == null)
             {
-                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(TargetGang.ID);
-                if (totalTerritories != null && totalTerritories.Any())
-                {
-                    List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
-                    availableTerritories = totalTerritories.Where(zj => zj.Priority == 0).ToList();
-
-                    if (availableTerritories.Any())
-                    {
-                        ZoneJurisdiction selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                        if (Zones.GetZone(selectedTerritory.ZoneInternalGameName) != null)
-                        {
-                            TargetZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);
-                        }
-                    }
-                }
+                return;
+            }
+            List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(TargetGang.ID)?.Where(x=> x.Priority == 0).ToList();
+            if(totalTerritories == null || !totalTerritories.Any())
+            {
+                return;
+            }
+            ZoneJurisdiction selectedTerritory = totalTerritories.PickRandom();
+            if (selectedTerritory != null)
+            {
+                TargetZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);
             }
         }
         private void GetHiringDen()

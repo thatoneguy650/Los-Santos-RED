@@ -40,7 +40,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Zone SelectedZone;
         private GameLocation DepositLocation;
         public int KillRequirement { get; set; } = 1;
-        private bool HasConditions => DepositLocation != null && HiringGangDen != null;
+        private bool HasConditions => DepositLocation != null && HiringGangDen != null && SelectedZone != null;
 
         public PlayerTask PlayerTask => CurrentTask;
 
@@ -168,41 +168,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetBank()
         {
-            if (GangTerritories.GetGangTerritory(HiringGang.ID) != null)
+            DepositLocation = PlacesOfInterest.PossibleLocations.Banks.PickRandom();     
+            if(DepositLocation  == null)
             {
-                List<Bank> bankLocations = PlacesOfInterest.PossibleLocations.Banks;
-
-                // Ignore for now. Will implement benefits when I finish reputations
-                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
-                if (totalTerritories != null && totalTerritories.Any())
-                {
-                    List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
-                    List<GameLocation> AvailableSpots = new List<GameLocation>();
-                    availableTerritories = totalTerritories.Where(zj => zj.Priority == 0).ToList();
-
-                    if (availableTerritories.Any())
-                    {
-                        ZoneJurisdiction selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-                        if (Zones.GetZone(selectedTerritory.ZoneInternalGameName) != null)
-                        {
-                            SelectedZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);
-                            foreach (GameLocation possibleSpot in bankLocations)
-                            {
-                                Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
-
-                                if (spotZone.InternalGameName == SelectedZone.InternalGameName)
-                                {
-                                    AvailableSpots.Add(possibleSpot);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (bankLocations.Any())
-                {
-                    DepositLocation = bankLocations.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-                }
+                return;
             }
+            SelectedZone = Zones.GetZone(DepositLocation.EntrancePosition);
         }
         private void GetHiringDen()
         {

@@ -94,7 +94,8 @@ public class GunDealerRelationship : ContactRelationship
         {
             return;
         }
-        GunDealerContact = contacts.PossibleContacts.GunDealerContacts.FirstOrDefault(x => x.Name == ContactName);
+        GunDealerContact = contacts.PossibleContacts.GunDealerContacts.FirstOrDefault(x => x.Name.ToLower() == ContactName.ToLower());
+        PhoneContact = GunDealerContact;
     }
     public override void Deactivate()
     {

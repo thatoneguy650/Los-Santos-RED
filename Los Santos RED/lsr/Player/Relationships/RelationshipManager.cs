@@ -101,13 +101,17 @@ public class RelationshipManager
         {
             return null;
         }
+        EntryPoint.WriteToConsole($"ContactRelationship GetOrCreate FOR: {phoneContact.Name}");
         ContactRelationship contactRelationship = ContactRelationships.FirstOrDefault(x => x.ContactName.ToLower() == phoneContact.Name.ToLower());
         if (contactRelationship == null)
         {
+            EntryPoint.WriteToConsole($"No contact relationship for {phoneContact.Name} CREATING");
             contactRelationship = phoneContact.CreateRelationship();
             contactRelationship.Setup(ContactRelateable, PlacesOfInterest);
             ContactRelationships.Add(contactRelationship);
         }
+
+        EntryPoint.WriteToConsole($"contactRelationship.HasPhoneContact: {contactRelationship.HasPhoneContact}");
         return contactRelationship;
     }
     public void SetCompleteTask(PhoneContact phoneContact, int repAmountOnCompletion, bool joinGangOnComplete)
@@ -116,6 +120,7 @@ public class RelationshipManager
         {
             return;
         }
+        EntryPoint.WriteToConsole($"SetCompleteTask phoneContact exists:{phoneContact !=null} Name: {phoneContact?.Name}");
         Gang myGang = Gangs.GetGangByContact(phoneContact.Name);
         if (myGang != null)
         {
