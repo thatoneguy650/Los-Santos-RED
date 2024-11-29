@@ -1141,13 +1141,19 @@ public class Debug
     }
     private void DebugNumpad5()
 {
-        PhoneContact cool = ModDataFileManager.Contacts.GetContactData(StaticStrings.UndergroundGunsContactName);
+
+
+        foreach(ContactRelationship test in Player.RelationshipManager.ContactRelationships)
+        {
+            EntryPoint.WriteToConsole($"ContactRelationship {test.ContactName} HasPhoneContact:{test.HasPhoneContact} ReputationLevel:{test.ReputationLevel} PlayerDebt:{test.PlayerDebt}");
+        }
+        //PhoneContact cool = ModDataFileManager.Contacts.GetContactData(StaticStrings.UndergroundGunsContactName);
 
 
 
 
 
-        Player.CellPhone.AddScheduledText(cool, "this is a test text", 0, false);
+        //Player.CellPhone.AddScheduledText(cool, "this is a test text", 0, false);
 
         //GameFiber DoorWatcher = GameFiber.StartNew(delegate
         //{

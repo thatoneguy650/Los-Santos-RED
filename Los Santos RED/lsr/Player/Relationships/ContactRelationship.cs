@@ -107,17 +107,18 @@ public class ContactRelationship
             {
                 EntryPoint.WriteToConsole($"OnReputationChanged for: PhoneContact IS NULL");
             }
-
-
-            if (sendText)
-            {
-                SendInfoText(PhoneContact, isPositive);
+            else 
+            { 
+                if (sendText)
+                {
+                    SendInfoText(PhoneContact, isPositive);
+                }
+                else
+                {
+                    Player.CellPhone.AddContact(PhoneContact, false);
+                }
             }
-            else
-            {
-                Player.CellPhone.AddContact(PhoneContact, false);
-            }      
-            EntryPoint.WriteToConsole($"OnReputationChanged for: {PhoneContact.Name} CurrentRelationshipLevel:{CurrentRelationshipLevel} PrevRelationshipLevel:{PrevRelationshipLevel} ReputationLevel{ReputationLevel}");
+            EntryPoint.WriteToConsole($"OnReputationChanged for: {PhoneContact?.Name} CurrentRelationshipLevel:{CurrentRelationshipLevel} PrevRelationshipLevel:{PrevRelationshipLevel} ReputationLevel{ReputationLevel}");
             PrevRelationshipLevel = CurrentRelationshipLevel;
         }
 

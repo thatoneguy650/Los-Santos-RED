@@ -2006,18 +2006,18 @@ public class DispatchableVehicles : IDispatchableVehicles
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles_FullExpandedJurisdiction.xml");
         //Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
 
-        List<string> ModelsToRemove = new List<string>()
-        {
-            DispatchableVehicles_FEJ.PoliceRiata,
-            DispatchableVehicles_FEJ.PoliceReblaGTS,
-            DispatchableVehicles_FEJ.PoliceOracle,
-            DispatchableVehicles_FEJ.PoliceLandstalkerXL,
-        };
+        //List<string> ModelsToRemove = new List<string>()
+        //{
+        //    DispatchableVehicles_FEJ.PoliceRiata,
+        //    DispatchableVehicles_FEJ.PoliceReblaGTS,
+        //    DispatchableVehicles_FEJ.PoliceOracle,
+        //    DispatchableVehicles_FEJ.PoliceLandstalkerXL,
+        //};
 
-        foreach(DispatchableVehicleGroup dvg in VehicleGroupLookupFEJ)
-        {
-            dvg.DispatchableVehicles.RemoveAll(x => ModelsToRemove.Contains(x.ModelName));
-        }
+        //foreach(DispatchableVehicleGroup dvg in VehicleGroupLookupFEJ)
+        //{
+        //    dvg.DispatchableVehicles.RemoveAll(x => ModelsToRemove.Contains(x.ModelName));
+        //}
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction_Stanier()
