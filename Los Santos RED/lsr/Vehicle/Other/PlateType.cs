@@ -15,6 +15,7 @@ public class PlateType
     public bool CanOverwrite { get; set; } = true;
     public string SerialFormat { get; set; } = "12ABC345";
     public int Order { get; set; }
+    public bool DisablePrefix { get; set; }
     public bool CanSpawn
     {
         get

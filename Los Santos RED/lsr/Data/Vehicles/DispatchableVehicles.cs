@@ -97,6 +97,8 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> NOOSEPIAVehicles;
     private List<DispatchableVehicle> NOOSESEPVehicles;
     public List<DispatchableVehicle> MarshalsServiceVehicles;
+    public List<DispatchableVehicle> DOAVehicles;
+
     private List<DispatchableVehicle> OffDutyCopVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
     private List<DispatchableVehicle> TaxiVehicles;
@@ -166,13 +168,13 @@ public class DispatchableVehicles : IDispatchableVehicles
         DefaultConfig_LosSantos_2008();
         //DefaultConfig_FullExpandedJurisdiction_Stanier();
     }
-    public void Setup()
+    public void Setup(IPlateTypes plateTypes)
     {
         foreach(DispatchableVehicleGroup dvg in VehicleGroupLookup)
         {
             foreach(DispatchableVehicle dv in dvg.DispatchableVehicles)
             {
-                dv.Setup();
+                dv.Setup(plateTypes);
             }
         }
     }
@@ -399,6 +401,12 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi2", 30, 30),
         };
         MarshalsServiceVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("police4", 50, 50),
+            new DispatchableVehicle("fbi", 50, 50){ OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 50, 50) { OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+        };
+        DOAVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("police4", 50, 50),
             new DispatchableVehicle("fbi", 50, 50){ OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
@@ -1457,6 +1465,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEPIAVehicles),
             new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSESEPVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("DOAVehicles",DOAVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
             new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
@@ -1513,6 +1522,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "NOOSESEPVehicles");
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "FIBVehicles");
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "MarshalsServiceVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "DOAVehicles");
 
 
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "DowntownTaxiVehicles");
@@ -1536,6 +1546,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.NOOSESEPVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FIBVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FIBVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.MarshalsServiceVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("DOAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.MarshalsServiceVehicles_FEJ_LC));
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.LCTaxiVehicles_FEJ_LC));
 
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYFireVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.FDLCVehicles_FEJ_LC));
@@ -1577,6 +1588,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("DOAVehicles", DOAVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
             new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
@@ -1660,6 +1672,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
             new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+            new DispatchableVehicleGroup("DOAVehicles",DOAVehicles),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //Gang
@@ -1758,6 +1771,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SecuroservVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.SecuroservSecurity2008_FEJ),
             new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.UnmarkedVehicles2008_FEJ),
+            new DispatchableVehicleGroup("DOAVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.UnmarkedVehicles2008_FEJ),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
             new DispatchableVehicleGroup("LSLifeguardVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.LSLifeguardVehicles2008_FEJ),
 
@@ -1944,6 +1958,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("NOOSEPIAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSEPIAVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("NOOSESEPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.NOOSESEPVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("MarshalsServiceVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.MarshalsServiceVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("DOAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DOAVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
             //EMT

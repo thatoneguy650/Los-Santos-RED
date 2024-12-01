@@ -74,6 +74,12 @@ public class DispatchableVehicles_FEJ
     public string CivilianMerit = "civmerit";//"technical2";
     public List<int> DefaultOptionalColors { get; private set; } = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 61, 62, 64, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 112 };
 
+    public List<string> LibertyPlates { get; private set; } = new List<string>() { "Liberty", };
+    public List<string> LibertyPolicePlates { get; private set; } = new List<string>() { "Liberty Police", "Liberty", };
+    public List<string> AlderneyPlates { get; private set; } = new List<string>() { "Alderney", "Liberty", };
+    public List<string> NorthYanktonPlates { get; private set; } = new List<string>() { "North Yankton", };
+
+    public List<string> USGovernmentPlates { get; private set; } = new List<string>() { "US Gov", };
     public DispatchableVehicles_FEJ(DispatchableVehicles dispatchableVehicles)
     {
         DispatchableVehicles = dispatchableVehicles;
@@ -614,6 +620,9 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+
                 new DispatchableVehicleExtra(5, true, 55),
                 new DispatchableVehicleExtra(6, true, 55),
                 new DispatchableVehicleExtra(10, false, 100),
@@ -3433,56 +3442,64 @@ public class DispatchableVehicles_FEJ
     {
         DispatchableVehicle intermediate = Create_TaxiVivanite(ambientPercent, wantedPercent, liveryID, useOptionalColors, serviceVehicleType, requiredColor, minWantedLevel, maxWantedLevel);
         intermediate.ModelName = "taxvivaniteliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = LibertyPolicePlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceGranger3600LC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceGranger3600(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.ModelName = "polgranger3600liv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceBuffaloSTXLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceBuffaloSTX(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.ModelName = "polbuffalostxliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates; ;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceAleutianLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceAleutian(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.ModelName = "polaleutianliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceGresleyLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceGresley(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.ModelName = "polgresleyliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceInterceptorLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle intermediate = Create_PoliceInterceptor(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.ModelName = "police3liv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceVindicatorLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int highwayAdjustmentAmount)
     {
         DispatchableVehicle intermediate = Create_PoliceVindicator(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, highwayAdjustmentAmount);
         intermediate.ModelName = "polvindicatorliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     public DispatchableVehicle Create_PoliceThrustLC(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int highwayAdjustmentAmount, int requiredPrimaryColor, int requiredSecondaryColor, int requiredDashcolor)
     {
         DispatchableVehicle intermediate = Create_PoliceThrust(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, highwayAdjustmentAmount,requiredPrimaryColor,requiredSecondaryColor, requiredDashcolor);
         intermediate.ModelName = "polthrustliv";
-        intermediate.ForcedPlateType = 8;
+        //intermediate.ForcedPlateType = 8;
+        //intermediate.RequestedPlateTypes = isLC ? LibertyPlates : AlderneyPlates;
         return intermediate;
     }
     private void SetDefault(DispatchableVehicle toSetup, bool useOptionalColors, int requiredColor, int minWantedLevel,int maxWantedLevel, int minOccupants, int maxOccupants, 

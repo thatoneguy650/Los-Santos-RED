@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -17,7 +18,7 @@ public class DispatchableVehicle
     private bool isMotorcycle;
     private bool isPlane;
     private bool isCar;
-
+    private PlateType FinalPlateType;
 
     public string DebugName { get; set; }
     public string ModelName { get; set; }
@@ -59,11 +60,17 @@ public class DispatchableVehicle
     public bool IsPlane => isPlane;// NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => isMotorcycle;// NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 
+    public PlateType OutputFinalPlateType => FinalPlateType;
+
     public int FirstPassengerIndex { get; set; } = 0;
     public List<SpawnAdjustmentAmount> SpawnAdjustmentAmounts { get; set; }
     public bool RequiredGroupIsDriverOnly { get; set; }
     public bool MatchDashColorToBaseColor { get; set; } = false;
     public bool MatchInteriorColorToBaseColor { get; set; } = false;
+
+
+
+    public List<string> RequestedPlateTypes { get; set; }
 
     public string GetDescription()
     {
@@ -78,7 +85,7 @@ public class DispatchableVehicle
         description += $"~n~RequiresDLC: {RequiresDLC}";
         return description;
     }
-    public void Setup()
+    public void Setup(IPlateTypes plateTypes)
     {
         isBoat = NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
         isCar = NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
@@ -107,6 +114,18 @@ public class DispatchableVehicle
         //    EntryPoint.WriteToConsole($"{DebugName} {ModelName} is car");
         //}
 #endif
+        if (RequestedPlateTypes != null)
+        {
+            foreach (string plateTypeName in RequestedPlateTypes)
+            {
+                FinalPlateType = plateTypes.GetPlateByDescription(plateTypeName);
+                if (FinalPlateType != null)
+                {
+                    break;
+                }
+            }
+        }
+
     }
 
     public bool CanCurrentlyAdjustedSpawn(int WantedLevel, bool allowDLC, eSpawnAdjustment eSpawnAdjustment) => CurrentAdjustedSpawnChance(WantedLevel, allowDLC, eSpawnAdjustment) > 0;
@@ -262,12 +281,20 @@ public class DispatchableVehicle
         {
             return;
         }
-        if (ForcedPlateType != -1)
+        if (FinalPlateType == null && ForcedPlateType != -1)
         {
             string plateNumber = NativeHelper.GenerateNewLicensePlateNumber("12ABC345");
             vehicleExt.Vehicle.LicensePlate = plateNumber;
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, ForcedPlateType);
         }
+
+        if(FinalPlateType != null)
+        {
+            string plateNumber = FinalPlateType.GenerateNewLicensePlateNumber();
+            vehicleExt.Vehicle.LicensePlate = plateNumber;
+            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, FinalPlateType.Index);
+        }
+
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())
         {

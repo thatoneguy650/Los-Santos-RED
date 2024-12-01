@@ -724,6 +724,10 @@ namespace LSR.Vehicles
             {
                 return;
             }
+            if(DispatchableVehicle != null && DispatchableVehicle.OutputFinalPlateType != null && DispatchableVehicle.OutputFinalPlateType.DisablePrefix)
+            {
+                return;
+            }
             string newPlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
             Vehicle.LicensePlate = newPlate;
             CarPlate.PlateNumber = newPlate;
@@ -762,6 +766,9 @@ namespace LSR.Vehicles
         public bool CanAlwaysRollOver => VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Cycle;
         public virtual bool HasSonarBlip => true;
         public bool IsManualCleanup { get; internal set; }
+
+
+        public virtual bool CanNeverUpdatePlate => false;
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

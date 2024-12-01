@@ -13,6 +13,7 @@ public class DispatchableVehicles_FEJ_LC
     public List<DispatchableVehicle> NOOSEPIAVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> NOOSESEPVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> MarshalsServiceVehicles_FEJ_LC { get; private set; }
+    public List<DispatchableVehicle> DOAVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> LCTaxiVehicles_FEJ_LC { get; private set; }
     public List<DispatchableVehicle> LCPDVehicles { get; private set; }
     public List<DispatchableVehicle> ASPVehicles { get; private set; }
@@ -44,6 +45,7 @@ public class DispatchableVehicles_FEJ_LC
         {
             new DispatchableVehicle("firetruckliv", 100, 100) { RequiredLiveries = new List<int>() { 0 } ,MinOccupants = 2, MaxOccupants = 4,ForcedPlateType = 8 }
         };
+        FDLCVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPolicePlates; });
     }
     private void EMT()
     {
@@ -55,6 +57,8 @@ public class DispatchableVehicles_FEJ_LC
         {
             new DispatchableVehicle("ambulanceliv", 100, 100) { RequiredLiveries = new List<int>() { 1 },ForcedPlateType = 8 }
         };
+        FDLCEMTVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPolicePlates; });
+        HMSVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPolicePlates; });
     }
     private void LocalPolice()
     {
@@ -65,6 +69,7 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(25,25,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(25,25,11,true,PoliceVehicleType.Detective,-1,-1,-1,-1,-1,"",""),
         };
+        UnmarkedVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPolicePlates; });
     }
     private void StatePolice()
     {
@@ -72,7 +77,7 @@ public class DispatchableVehicles_FEJ_LC
         {
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(50,50,16,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
         };
-        NYSPVehicles_FEJ_LC.ForEach(x => { x.ForcedPlateType = 5; x.MaxRandomDirtLevel = 15.0f; });
+        NYSPVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.NorthYanktonPlates; x.MaxRandomDirtLevel = 15.0f; });
     }
     private void LocalSheriff()
     {
@@ -131,6 +136,11 @@ public class DispatchableVehicles_FEJ_LC
 
         };
 
+        foreach(DispatchableVehicle dv in LCPDVehicles)
+        {
+            dv.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPolicePlates;
+        }
+
         DispatchableVehicle ASPk9 = DispatchableVehicles_FEJ.Create_PoliceAleutianLC(0, 50, 5, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", "");
         ASPk9.CaninePossibleSeats = new List<int> { 1, 2 };
         ASPk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9,200) };
@@ -170,6 +180,11 @@ public class DispatchableVehicles_FEJ_LC
 
         };
 
+        foreach (DispatchableVehicle dv in ASPVehicles)
+        {
+            dv.RequestedPlateTypes = DispatchableVehicles_FEJ.AlderneyPlates;
+        }
+
 
         LCPDHeliVehicles = new List<DispatchableVehicle>()
         {
@@ -189,10 +204,11 @@ public class DispatchableVehicles_FEJ_LC
             new DispatchableVehicle("polmavliv", 1,30) { GroupName = "Helicopter",RequiredLiveries = new List<int>() { 4 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
             new DispatchableVehicle("annihilatorliv", 1,100) { GroupName = "Helicopter",RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
         };
+        CoastGuardVehicles_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; });
     }
     private void ParkRangers()
     {
-        
+
         USNPSParkRangersVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(25,25,20,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
@@ -201,8 +217,7 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceGranger3600LC(20,20,17,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceAleutianLC(20,20,17,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"",""),
         };
-        USNPSParkRangersVehicles_FEJ_LC.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
-        
+        USNPSParkRangersVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; x.MaxRandomDirtLevel = 15.0f; });
     }
     private void FederalPolice()
     {
@@ -234,7 +249,7 @@ public class DispatchableVehicles_FEJ_LC
 
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 1, RequiredSecondaryColorID = 0, RequiredPedGroup = "FIBHET", ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 5,MaxWantedLevelSpawn = 6, },
         };
-        FIBVehicles_FEJ_LC.ForEach(x => x.MaxRandomDirtLevel = 2.0f);
+        FIBVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; x.MaxRandomDirtLevel = 2.0f; });
         BorderPatrolVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceGresleyLC(25,25,19,false,PoliceVehicleType.MarkedFlatLightbar,134,-1,-1,-1,-1,"",""),
@@ -247,7 +262,7 @@ public class DispatchableVehicles_FEJ_LC
             new DispatchableVehicle("polmavliv", 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
             new DispatchableVehicle("annihilatorliv", 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
-        BorderPatrolVehicles_FEJ_LC.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
+        BorderPatrolVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; x.MaxRandomDirtLevel = 15.0f; });
         NOOSEPIAVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(70,70,15,false,PoliceVehicleType.MarkedFlatLightbar,134,0,3,-1,-1,"",""),
@@ -266,6 +281,7 @@ public class DispatchableVehicles_FEJ_LC
             new DispatchableVehicle("polmavliv", 0, 100) { RequiredLiveries = new List<int>() { 8 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
             new DispatchableVehicle("annihilatorliv", 0, 100) { RequiredLiveries = new List<int>() { 7 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
+        NOOSEPIAVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; });
         NOOSESEPVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
             
@@ -287,6 +303,7 @@ public class DispatchableVehicles_FEJ_LC
             new DispatchableVehicle("polmavliv", 0, 100) { RequiredLiveries = new List<int>() { 9 }, MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
             new DispatchableVehicle("annihilatorliv", 0, 100) { RequiredLiveries = new List<int>() { 6 },MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
         };
+        NOOSEPIAVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; });
         MarshalsServiceVehicles_FEJ_LC = new List<DispatchableVehicle>
         {
             DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(35, 35, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
@@ -295,6 +312,16 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_PoliceGranger3600LC(15, 15, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceAleutianLC(15, 15, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
         };
+        MarshalsServiceVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; });
+        DOAVehicles_FEJ_LC = new List<DispatchableVehicle>
+        {
+            DispatchableVehicles_FEJ.Create_PoliceInterceptorLC(35, 35, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceGresleyLC(35, 35, -1, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceBuffaloSTXLC(20,20,11,true,PoliceVehicleType.Unmarked,-1,-1,-1,-1,-1,"",""),
+            DispatchableVehicles_FEJ.Create_PoliceGranger3600LC(15, 15, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceAleutianLC(15, 15, 11, true, PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
+        };
+        DOAVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.USGovernmentPlates; });
     }
     private void Security()
     {
@@ -315,7 +342,7 @@ public class DispatchableVehicles_FEJ_LC
             DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi3,92,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivaniteLC(35,35,1,false,ServiceVehicleType.Taxi4,92,-1,-1),
         };
-       
+        LCTaxiVehicles_FEJ_LC.ForEach(x => { x.RequestedPlateTypes = DispatchableVehicles_FEJ.LibertyPlates; });
     }
 
 }

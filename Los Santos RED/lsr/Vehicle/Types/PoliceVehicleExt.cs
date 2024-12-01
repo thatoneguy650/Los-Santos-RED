@@ -17,6 +17,7 @@ namespace LSR.Vehicles
         public override bool CanUpdatePlate => false;
         public bool IsOffDuty { get; set; } = false;
         public override bool HasSonarBlip => IsOffDuty ? false : true;
+        public override bool CanNeverUpdatePlate => true;
         public PoliceVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }

@@ -107,7 +107,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         DispatchableVehicles = new DispatchableVehicles();
         DispatchableVehicles.ReadConfig();
-        DispatchableVehicles.Setup();
+        DispatchableVehicles.Setup(PlateTypes);
         GameFiber.Yield();
         IssueableWeapons = new IssueableWeapons();
         IssueableWeapons.ReadConfig();
@@ -288,10 +288,17 @@ public class ModDataFileManager
 
     private void SetupAddonPlatesConfig()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142");
-        string Description = "PreMade config for 'Addon Plates' by Wildbrick 142's. Installation: https://www.gta5-mods.com/paintjobs/new-license-plates-add-on." + Environment.NewLine +
-            "To use, copy the all of the .xml files from the AlternateConfigs\\AddOnPlates_Wildbrick142 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\readme.txt", Description);
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates");
+        string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly states and agencies. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+           "Installation: "
+           + Environment.NewLine +
+           "1. Install greskfullexpandedlicenseplates.oiv using OpenIV"
+           + Environment.NewLine +
+           "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
+           "";
+
+
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates\\readme.txt", Description);
     }
     private void SetupEUP()
     {

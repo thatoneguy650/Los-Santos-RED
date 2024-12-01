@@ -12,6 +12,7 @@ namespace LSR.Vehicles
     {
         public override bool CanRandomlyHaveIllegalItems { get; set; } = true;
         public override bool CanUpdatePlate => false;
+        public override bool CanNeverUpdatePlate => true;
         public EMSVehicleExt(Vehicle vehicle, ISettingsProvideable settings) : base(vehicle, settings)
         {
         }
