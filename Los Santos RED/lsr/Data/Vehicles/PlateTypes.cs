@@ -286,7 +286,7 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(21, "New Austin", "New Austin", 2, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(22, "Ambarino", "Ambarino", 2, "ABC  D12"));
-
+        FullPlateTypeList.Add(new PlateType(23, "Robada", "Robada", 2, "12A  345"));
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates\\PlateTypes_FullExpandedLicensePlates.xml");
