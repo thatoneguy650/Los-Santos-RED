@@ -271,7 +271,7 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(12, "Sprunkn", StaticStrings.SanAndreasStateID, 1, "12ABC345"));
 
         FullPlateTypeList.Add(new PlateType(13, "Pimahito", "Pimahito", 12, "ABC  1DE") { DisablePrefix = true, });
-        FullPlateTypeList.Add(new PlateType(14, "Arnold", "Arnold", 8, "ABC12345"));
+        FullPlateTypeList.Add(new PlateType(14, "Cascadia", "Cascadia", 8, "ABC12345"));
 
         FullPlateTypeList.Add(new PlateType(15, "US Gov", "US Gov", 0, "1234A") { DisablePrefix = true, CanOverwrite = false });
 
@@ -285,17 +285,18 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(20, "North Yankton", StaticStrings.NorthYanktonStateID, 2, "123  ABC") { DisablePrefix = true, });
 
         FullPlateTypeList.Add(new PlateType(21, "New Austin", "New Austin", 7, "ABC 1234"));
-        FullPlateTypeList.Add(new PlateType(22, "Ambarino", "Ambarino", 5, "ABC  D12"));
+        FullPlateTypeList.Add(new PlateType(22, "Ambarino", "Ambarino", 6, "ABC  D12"));
         FullPlateTypeList.Add(new PlateType(23, "Robada", "Robada", 12, "12A  345"));
 
         FullPlateTypeList.Add(new PlateType(24, "Leonida County", StaticStrings.LeonidaStateID, 0, " 123456 ") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(25, "Leonida City", StaticStrings.LeonidaStateID, 0, " 123456 ") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(26, "South Yankton", "South Yankton", 2, "1AB  345"));
         FullPlateTypeList.Add(new PlateType(27, "Lemoyne", "Lemoyne", 2, "123  ABC") { DisablePrefix = true, });
-
+        FullPlateTypeList.Add(new PlateType(28, "Willamette", "Willamette", 8, "123  ABC") { DisablePrefix = true, });
+        FullPlateTypeList.Add(new PlateType(29, "Nacimiento", "Nacimiento", 6, "ABC  123") { DisablePrefix = true, });
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
-        Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates\\PlateTypes_FullExpandedLicensePlates.xml");
+        Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");
 
     }
     //private void DefaultConfig_Full()

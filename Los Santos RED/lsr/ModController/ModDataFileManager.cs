@@ -288,17 +288,17 @@ public class ModDataFileManager
 
     private void SetupAddonPlatesConfig()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates");
         string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly states and agencies. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
            "Installation: "
            + Environment.NewLine +
-           "1. Install greskfullexpandedlicenseplates.oiv using OpenIV"
+           "1. Install greskfullmodernlicenseplates.oiv using OpenIV"
            + Environment.NewLine +
-           "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
+           "To use, copy all of the .xml files from the AlternateConfigs\\FullModernLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
            "";
 
 
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedLicensePlates\\readme.txt", Description);
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\readme.txt", Description);
     }
     private void SetupEUP()
     {
