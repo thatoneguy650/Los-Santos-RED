@@ -294,6 +294,24 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(27, "Lemoyne", "Lemoyne", 2, "123  ABC") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(28, "Willamette", "Willamette", 8, "123  ABC") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(29, "Nacimiento", "Nacimiento", 6, "ABC  123") { DisablePrefix = true, });
+
+        FullPlateTypeList.Add(new PlateType(30, "Jolliet", "Jolliet", 3, "AB 12345"));
+        FullPlateTypeList.Add(new PlateType(31, "Nez Perce", "Nez Perce", 5, "1A B2345"));
+        FullPlateTypeList.Add(new PlateType(32, "Noochee", "Noochee", 5, "1ABC2"));
+
+        FullPlateTypeList.Add(new PlateType(33, "Shoshone", "Shoshone", 5, "1 23456A"));
+
+
+
+        FullPlateTypeList.Add(new PlateType(34, "Liberty Exculpate", StaticStrings.LibertyStateID, 2, "A1B 23C4") { DisablePrefix = true });
+        FullPlateTypeList.Add(new PlateType(35, "Alderney Municipal", StaticStrings.AlderneyStateID, 0, "123456AB") { CanOverwrite = false, });
+        FullPlateTypeList.Add(new PlateType(36, "Keweenawan", "Keweenawan", 5, "ABC-1234"));
+        FullPlateTypeList.Add(new PlateType(37, "Meskousing", "Meskousing", 5, "1 23456A"));
+
+        FullPlateTypeList.Add(new PlateType(38, "Radon", "Radon", 5, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(39, "Saybrook", "Saybrook", 5, "AB 12345"));
+
+
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");
