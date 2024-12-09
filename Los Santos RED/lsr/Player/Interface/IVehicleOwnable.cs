@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         string PlayerName { get; }
         bool IsCop { get; }
+        VehicleManager VehicleManager { get; }
     }
 }

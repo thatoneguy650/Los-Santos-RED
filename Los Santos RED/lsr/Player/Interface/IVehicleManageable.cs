@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsInVehicle { get; }
         VehicleExt CurrentVehicle { get; }
+        VehicleOwnership VehicleOwnership { get; }
     }
 }

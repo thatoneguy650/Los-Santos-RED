@@ -23,7 +23,6 @@ public class VehicleManager
         Settings = settings;
     }
 
-
     public void Setup()
     {
 
@@ -50,7 +49,7 @@ public class VehicleManager
         {
             return;
         }
-        if(Player.CurrentVehicle.Vehicle.IsPersistent)
+        if (Player.CurrentVehicle.Vehicle.IsPersistent)
         {
             return;
         }
@@ -76,6 +75,10 @@ public class VehicleManager
             return;
         }
         if (Player.CurrentVehicle.Vehicle.IsPersistent)
+        {
+            return;
+        }
+        if(Player.VehicleOwnership.OwnedVehicles.Any(x=> x.Handle == Player.CurrentVehicle.Handle))
         {
             return;
         }
@@ -111,6 +114,16 @@ public class VehicleManager
         }
         EntryPoint.WriteToConsole($"UNPERSISTED ALL VEHICLES");
     }
+
+    public void OnTookOwnership(VehicleExt toOwn)
+    {
+        if(toOwn == null)
+        {
+            return;
+        }
+        PersistantVehicles.RemoveAll(x=> x.VehicleExt.Handle == toOwn.Handle);
+    }
+
     private class StoredVehicle
     {
         public VehicleExt VehicleExt;

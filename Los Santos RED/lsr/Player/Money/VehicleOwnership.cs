@@ -118,6 +118,7 @@ public class VehicleOwnership
         }
         toOwn.SetNotWanted();
         toOwn.AddOwnership();
+        Player.VehicleManager.OnTookOwnership(toOwn);
         OwnedVehicles.Add(toOwn);
         UpdateOwnedBlips();
         if (showNotification)

@@ -312,6 +312,37 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(39, "Saybrook", "Saybrook", 5, "AB 12345"));
 
 
+        FullPlateTypeList.Add(new PlateType(40, "Lenape", "Lenape", 5, " 123456 "));
+        FullPlateTypeList.Add(new PlateType(41, "Chickatawbut", "Chickatawbut", 5, "123  AB4"));
+
+
+        FullPlateTypeList.Add(new PlateType(42, "Platte", "Platte", 5, "123  AB4"));
+        FullPlateTypeList.Add(new PlateType(43, "South Cromwell", "South Cromwell", 5, "123  ABC"));
+        FullPlateTypeList.Add(new PlateType(44, "North Cromwell", "North Cromwell", 5, "ABC 1234"));
+
+        FullPlateTypeList.Add(new PlateType(45, "West Powhatan", "West Powhatan", 5, "123 345A"));
+        FullPlateTypeList.Add(new PlateType(46, "Powhatan", "Powhatan", 5, "123 345A"));
+
+
+        FullPlateTypeList.Add(new PlateType(47, "Champlain", "Champlain", 5, "ABC  123"));
+
+
+        FullPlateTypeList.Add(new PlateType(48, "Patmo Island", "Patmo Island", 5, "1AB  234"));
+        FullPlateTypeList.Add(new PlateType(49, "Gnadenhutten", "Gnadenhutten", 5, "ABC 1234"));
+
+        FullPlateTypeList.Add(new PlateType(50, "Mackinac", "Mackinac", 5, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(51, "Seamount", "Seamount", 5, "ABC  123"));
+
+        FullPlateTypeList.Add(new PlateType(52, "Aleutia", "Aleutia", 5, "ABC  123"));
+
+        FullPlateTypeList.Add(new PlateType(53, "Quapaw", "Quapaw", 5, "ABC  12D"));
+
+        FullPlateTypeList.Add(new PlateType(54, "Altamaha", "Altamaha", 5, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(55, "Tippecanoe", "Tippecanoe", 5, " 123ABC "));
+        FullPlateTypeList.Add(new PlateType(56, "Humboldt", "Humboldt", 5, "1234ABCD"));
+
+
+
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");
