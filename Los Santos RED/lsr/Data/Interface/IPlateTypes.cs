@@ -13,6 +13,7 @@ namespace LosSantosRED.lsr.Interface
         PlateType GetPlateType(string State);
         string GetRandomVanityPlateText();
         PlateType GetPlateByDescription(string plateTypeName);
+        PlateType GetRandomInStatePlate(string stateID);
 
         PlateTypeManager PlateTypeManager { get; }
     }

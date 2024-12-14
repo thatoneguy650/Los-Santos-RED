@@ -46,7 +46,7 @@ public class FashionComponent
         Ped = ped;
         PedCustomizer = pedCustomizer;
         UIMenu componentMenu = MenuPool.AddSubMenu(topMenu, ComponentName);
-        topMenu.MenuItems[topMenu.MenuItems.Count() - 1].Description = $"Customize the {ComponentName}";
+        topMenu.MenuItems[topMenu.MenuItems.Count() - 1].Description = $"Customize the {ComponentName} - {ComponentID}";
         topMenu.MenuItems[topMenu.MenuItems.Count() - 1].RightLabel = "";
         componentMenu.SetBannerType(EntryPoint.LSRedColor);
         if (Ped.Exists())
@@ -134,6 +134,7 @@ public class FashionComponent
     private void GetPossibleDrawables()
     {
         int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(Ped, ComponentID);
+        EntryPoint.WriteToConsole($"ComponentID: {ComponentID}   NumberOfDrawables: {NumberOfDrawables}");
         PossibleDrawables = new List<PedFashionAlias>();
         bool isValid = true;
         for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)

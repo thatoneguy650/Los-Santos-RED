@@ -951,7 +951,7 @@ namespace LSR.Vehicles
 
             if(forceState)
             {
-                NewType = PlateTypes.GetPlateType(CurrentZone.StateID);
+                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID);
             }
             else if (force)
             {
@@ -960,7 +960,7 @@ namespace LSR.Vehicles
             }
             else if (CanHavePlateRandomlyUpdated && CurrentZone != null && CurrentZone.StateID != StaticStrings.SanAndreasStateID && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
             {
-                NewType = PlateTypes.GetPlateType(CurrentZone.StateID);
+                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID);
             }
             else
             {

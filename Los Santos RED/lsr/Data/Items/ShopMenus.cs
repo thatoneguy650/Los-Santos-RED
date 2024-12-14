@@ -82,6 +82,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Sadler",38000,15500),
                 new MenuItem("Vapid Dominator",55000,33000),
                 new MenuItem("Vapid Bullet",155000,105050),
+
+
+
             }),
             new ShopMenu("LuxuryAutosMenu","Luxury Autos",new List<MenuItem>() {//pegassi/grotti/enus/buckingham/pfiuster
                 //new MenuItem("Schyster PMP 600",37000,28000),
@@ -1557,6 +1560,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Vapid Dominator GT",85000,45000),
                 new MenuItem("Vapid Dominator FX",19000,5000),
 
+                new MenuItem("Vapid Firebolt ASP",45000,19000),
+                new MenuItem("Vapid Uranus LozSpeed",15000,5000),
+
                 //Dundreary
                 new MenuItem("Dundreary Landstalker",34000,12000),
                 new MenuItem("Dundreary Landstalker XL",49000,18000),
@@ -1769,6 +1775,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Gauntlet Classic",89000,45000),
                 new MenuItem("Bravado Verlierer",250000,120000),
                 new MenuItem("Bravado Dorado",24000,12000),
+                new MenuItem("Bravado Banshee GTS",95000,32000),
 
                 new MenuItem("Karin Futo",12000,8000),
                 new MenuItem("Karin Rebel",19000,9500),
@@ -1815,11 +1822,16 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Invetero Coquette BlackFin", 80000,40000),// { ModelName = "coquette3" },
                 new MenuItem("Invetero Coquette D10", 150000,80000),// { ModelName = "coquette4" },
                 new MenuItem("Invetero Coquette D1",250000,95000),
+                new MenuItem("Invetero Coquette D5",45000,23000),
 
                 //Cheval
                 new MenuItem("Cheval Fugitive",25000,12000),
                 new MenuItem("Cheval Surge",29000,13000),
                 new MenuItem("Cheval Picador",19000,10000),
+
+                //Dinka
+                new MenuItem("Dinka Jester RR Widebody",150000,45000),
+                new MenuItem("Dinka Chavos V6",34000,19000),
 
                 //Declasse
                 new MenuItem("Declasse Asea",19000,8000),

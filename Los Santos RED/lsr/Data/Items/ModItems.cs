@@ -3163,6 +3163,19 @@ public class ModItems : IModItems
             new VehicleItem("Vulcar Drift Nebula", ItemType.Vehicles) { ModelName = "driftnebula", RequiresDLC = true, },
             new VehicleItem("Ubermacht Drift Cypher", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },
 
+            //Agents of Sabotage
+            new VehicleItem("Bravado Banshee GTS", ItemType.Vehicles) { ModelName = "banshee3", RequiresDLC = true, },
+            new VehicleItem("Dinka Chavos V6", ItemType.Vehicles) { ModelName = "chavosv6", RequiresDLC = true, },
+            new VehicleItem("Dinka Jester RR Widebody", ItemType.Vehicles) { ModelName = "jester5", RequiresDLC = true, },
+            new VehicleItem("Invetero Coquette D5", ItemType.Vehicles) { ModelName = "coquette6", RequiresDLC = true, },
+            new VehicleItem("Vapid Firebolt ASP", ItemType.Vehicles) { ModelName = "firebolt", RequiresDLC = true, },
+            new VehicleItem("Vapid Uranus LozSpeed", ItemType.Vehicles) { ModelName = "uranus", RequiresDLC = true, },
+
+
+            //new VehicleItem("Buckingham DH-7 Iron Mule", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },
+            //new VehicleItem("Western Company Duster 300-H", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },       
+            //new VehicleItem("Eberhard Titan 250 D", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },
+
             //Drift
             new VehicleItem("Declasse Drift Tampa", ItemType.Vehicles) { ModelName = "drifttampa", RequiresDLC = true, },
             new VehicleItem("Declasse Drift Yosemite", ItemType.Vehicles) { ModelName = "driftyosemite", RequiresDLC = true, },       

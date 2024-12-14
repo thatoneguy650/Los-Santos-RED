@@ -16,6 +16,7 @@ public class PlateType
     public string SerialFormat { get; set; } = "12ABC345";
     public int Order { get; set; }
     public bool DisablePrefix { get; set; }
+    public int InStateSpawnChance { get; set; }
     public bool CanSpawn
     {
         get
@@ -83,6 +84,7 @@ public class PlateType
     private void SetValuesOnDeserialized(StreamingContext context)
     {
         Order = 0;
+        InStateSpawnChance = 100;
     }
 }
 

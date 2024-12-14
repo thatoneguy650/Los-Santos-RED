@@ -43,6 +43,7 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.START_NEW_SCRIPT(scriptName, buffer);
             NativeFunction.Natives.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
         }
+
         public static bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
         {
             int polygonLength = polygon.Length, i = 0;
