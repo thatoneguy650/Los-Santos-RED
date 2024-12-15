@@ -243,55 +243,77 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalPropChance = 10
             },
 
-            new DispatchablePerson("mp_f_freemode_01",40,40) {
-                DebugName = "LSPDMPNoArmorFemale"
-                ,RandomizeHead = true
-                ,MaxWantedLevelSpawn = 2
-                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
-                ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
-                    new List<PedPropComponent>() {  })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9),new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
-                ,OptionalPropChance = optionalpropschance
-            },//no body armor with hat and glasses possible
-            new DispatchablePerson("mp_f_freemode_01",0,40) {
-                DebugName = "LSPDMPArmorFemale"
-                ,RandomizeHead = true
-                ,MinWantedLevelSpawn = 3
-                ,ArmorMin = 30
-                ,ArmorMax = 50
-                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
-                ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
-                    new List<PedPropComponent>() {  })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
-                ,OptionalPropChance = optionalpropschance
-            },//body armor, with riot helmet and glasses possible
+            //Regular
+            DispatchablePeople_Cops.CreateLSPDMPPed(60,60,0,2,true,true,false),
+            DispatchablePeople_Cops.CreateLSPDMPPed(60,60,0,2,true,false,false),
 
-            new DispatchablePerson("mp_m_freemode_01",60,60) {
-                DebugName = "LSPDMPNoArmorMale"
-                ,RandomizeHead = true
-                ,MaxWantedLevelSpawn = 2
-                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
-                ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
-                ,OptionalPropChance = optionalpropschance
-            },
-            new DispatchablePerson("mp_m_freemode_01",0,60) {
-                DebugName = "LSPDMPArmorMale"
-                ,RandomizeHead = true
-                ,MinWantedLevelSpawn = 3
-                ,ArmorMin = 50
-                ,ArmorMax = 50
-                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
-                ,RequiredVariation = new PedVariation(
-                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { })
-                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9), new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), new PedPropComponent(6, 3, 0), }
-                ,OptionalPropChance = optionalpropschance
-            },
+            DispatchablePeople_Cops.CreateLSPDMPPed(40,40,0,2,false,true,false),
+            DispatchablePeople_Cops.CreateLSPDMPPed(40,40,0,2,false,false,false),
+
+            //Armored
+            DispatchablePeople_Cops.CreateLSPDMPPed(0,60,3,6,true,true,true),
+            DispatchablePeople_Cops.CreateLSPDMPPed(0,60,3,6,true,false,true),
+
+            DispatchablePeople_Cops.CreateLSPDMPPed(0,40,3,6,false,true,true),
+            DispatchablePeople_Cops.CreateLSPDMPPed(0,40,3,6,false,false,true),
+
+            //Motorcycle
+            DispatchablePeople_Cops.CreateLSPDMotorcycleMPPed(0,0,0,2,true,true),
+            DispatchablePeople_Cops.CreateLSPDMotorcycleMPPed(0,0,0,2,true,false),
+
+            DispatchablePeople_Cops.CreateLSPDMotorcycleMPPed(0,0,0,2,false,true),
+            DispatchablePeople_Cops.CreateLSPDMotorcycleMPPed(0,0,0,2,false, false),
+
+
+            //new DispatchablePerson("mp_f_freemode_01",40,40) {
+            //    DebugName = "LSPDMPNoArmorFemale"
+            //    ,RandomizeHead = true
+            //    ,MaxWantedLevelSpawn = 2
+            //    ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+            //    ,RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
+            //        new List<PedPropComponent>() {  })
+            //    ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9),new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+            //    ,OptionalPropChance = optionalpropschance
+            //},//no body armor with hat and glasses possible
+            //new DispatchablePerson("mp_f_freemode_01",0,40) {
+            //    DebugName = "LSPDMPArmorFemale"
+            //    ,RandomizeHead = true
+            //    ,MinWantedLevelSpawn = 3
+            //    ,ArmorMin = 30
+            //    ,ArmorMax = 50
+            //    ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+            //    ,RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
+            //        new List<PedPropComponent>() {  })
+            //    ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+            //    ,OptionalPropChance = optionalpropschance
+            //},//body armor, with riot helmet and glasses possible
+
+            //new DispatchablePerson("mp_m_freemode_01",60,60) {
+            //    DebugName = "LSPDMPNoArmorMale"
+            //    ,RandomizeHead = true
+            //    ,MaxWantedLevelSpawn = 2
+            //    ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+            //    ,RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
+            //        new List<PedPropComponent>() { })
+            //    ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9),new PedPropComponent(1, 37, 0),new PedPropComponent(1, 38, 0),new PedPropComponent(1, 8, 3),new PedPropComponent(1, 8, 5),new PedPropComponent(1, 8, 6),new PedPropComponent(1, 7, 0),new PedPropComponent(1, 2, 3),new PedPropComponent(6, 3, 0), }
+            //    ,OptionalPropChance = optionalpropschance
+            //},
+            //new DispatchablePerson("mp_m_freemode_01",0,60) {
+            //    DebugName = "LSPDMPArmorMale"
+            //    ,RandomizeHead = true
+            //    ,MinWantedLevelSpawn = 3
+            //    ,ArmorMin = 50
+            //    ,ArmorMax = 50
+            //    ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+            //    ,RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
+            //        new List<PedPropComponent>() { })
+            //    ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9), new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), new PedPropComponent(6, 3, 0), }
+            //    ,OptionalPropChance = optionalpropschance
+            //},
 
 
 
@@ -350,17 +372,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
 
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,true,true,true),
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,true,true,false),
 
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,true,false,false),
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,true,false,false),
-
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,false,true,true),
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,false,true,false),
-
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,false,false,false),
-            DispatchablePeople_Cops.CreateLSPDMPPed(0,0,3,false,false,false),
         };
         SheriffPeds = new List<DispatchablePerson>() {
 
@@ -411,6 +423,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalPropChance = 95
             },
             GenericK9,
+
+
         };
         NOOSEPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_swat_01", 0,0){
@@ -632,23 +646,30 @@ public class DispatchablePeople : IDispatchablePeople
             },
         };
         ParkRangers = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_ranger_01",75,75) {
+            new DispatchablePerson("s_m_y_ranger_01",60,60) {
                 DebugName = "ParkRangerMale"
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0),new PedPropComponent(1, 0, 0)}
                 ,OptionalPropChance = 70
             },
-            new DispatchablePerson("s_f_y_ranger_01",25,25) {
+            new DispatchablePerson("s_f_y_ranger_01",40,40) {
                 DebugName = "ParkRangerFemale"
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 0, 0) }
                 ,OptionalPropChance = 70
             },
+
+
+
+            DispatchablePeople_Cops.CreateSAPRMPPed(60,60,0,3,true,true),
+            DispatchablePeople_Cops.CreateSAPRMPPed(60,60,0,3,true,false),
+
+            DispatchablePeople_Cops.CreateSAPRMPPed(40,40,0,3,false,true),
+            DispatchablePeople_Cops.CreateSAPRMPPed(40,40,0,3,false,false),
+
         };
         DOAPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("u_m_m_doa_01",100,100) { DebugName = "DOAAgentMale" },
         };
         SAHPPeds = new List<DispatchablePerson>() {
-
-
 
             GetGenericMPDetectivePed(2,2,2,true),
             GetGenericMPDetectivePed(2,2,2,false),
@@ -677,17 +698,31 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },
                     new List<PedPropComponent>() )
             },
-                                    DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,true,true,true,false),
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,true,true,false,false),
+            //Male
+            //Regular
+            DispatchablePeople_Cops.CreateSAHPMPPed(25,25,0,3,true,false,false,false),         
+            DispatchablePeople_Cops.CreateSAHPMPPed(25,25,0,3,true,true,false,false),
 
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,true,false,false,true),
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,true,false,false, true),
+            //Armored
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,75,3,3,true,false,false,false),
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,75,3,3,true,true,false,false),
 
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,false,true,true,false),
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,false,true,false,false),
+            //Female
+            //Regular 
+            DispatchablePeople_Cops.CreateSAHPMPPed(25,25,0,3,false,false,false,false),
+            DispatchablePeople_Cops.CreateSAHPMPPed(25,25,0,3,false,true,false,false),
 
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,false,false,false,true),
-            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,3,false,false,false,true),
+            //Armored
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,75,3,3,false,false,true,false),
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,75,3,3,false,true,true,false),
+
+            //Motorcycle
+            //Male
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,true,false,false,true),
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,true,true,false,true),
+            //Female
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,false,false,false,true),    
+            DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,false,true,false,true),
         };
         ArmyPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_armymech_01",10,10) { DebugName = "Army Mechanic", MaxWantedLevelSpawn = 2 },

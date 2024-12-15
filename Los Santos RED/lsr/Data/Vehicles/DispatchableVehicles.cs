@@ -209,6 +209,8 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         ParkRangerVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("pranger", 100, 100) { MaxRandomDirtLevel = 15.0f },
+            Create_PoliceTerminusVanilla(50,50,"SAPR"),
+            Create_PoliceCaracaraVanilla(25,25,"SAPR"),
             ParkRangerStanierNew, };
         FIBVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
@@ -231,6 +233,9 @@ public class DispatchableVehicles : IDispatchableVehicles
         LSPDVehicles = new List<DispatchableVehicle>() {
             //new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             LSPDStanierNew,
+            Create_PoliceTerminusVanilla(10,10,"LSPD"),
+            Create_PoliceCaracaraVanilla(5,5,"LSPD"),
+            new DispatchableVehicle("policeb", 10, 5) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
             new DispatchableVehicle("police2", 48, 35),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
@@ -243,11 +248,16 @@ public class DispatchableVehicles : IDispatchableVehicles
             GauntletSAHPSlicktop,
 
             SAHPStanierNew,
-            SAHPStanierSlicktopNew
+            SAHPStanierSlicktopNew,
+
+            Create_PoliceTerminusVanilla(5,5,"SAHP"),
+            Create_PoliceCaracaraVanilla(1,1,"SAHP"),
         };
 
         LSPPVehicles = new List<DispatchableVehicle>() {
             LSPPStanierNew,
+            Create_PoliceTerminusVanilla(5,5,"LSPP"),
+            Create_PoliceCaracaraVanilla(1,1,"LSPP"),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),};
 
@@ -260,20 +270,23 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } },
             SheriffStanierNew,
-
+            Create_PoliceTerminusVanilla(15,15,"LSSD"),
+            Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         BCSOVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 10, 10) { MaxRandomDirtLevel = 10.0f,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 10.0f,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) } },
             SheriffStanierNew,
-
+            Create_PoliceTerminusVanilla(15,15,"LSSD"),
+            Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 70, 70),
             SheriffStanierNew,
-
+            Create_PoliceTerminusVanilla(15,15,"LSSD"),
+            Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         DavisLSSDVehicles = new List<DispatchableVehicle>() {
@@ -284,6 +297,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         DPPDVehicles = new List<DispatchableVehicle>() {
+
+            Create_PoliceTerminusVanilla(15,15,"DPPD"),
             new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         EastLSPDVehicles = new List<DispatchableVehicle>() {
@@ -2145,7 +2160,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
 
-    private DispatchableVehicle Create_PoliceTerminusVanilla(int ambientSpawnChance, int wantedSpawnChance)
+    private DispatchableVehicle Create_PoliceTerminusVanilla(int ambientSpawnChance, int wantedSpawnChance, string agencyID)
     {
         DispatchableVehicle policeTerminus = new DispatchableVehicle("polterminus", ambientSpawnChance, wantedSpawnChance)
         {
@@ -2189,8 +2204,12 @@ public class DispatchableVehicles : IDispatchableVehicles
                     },
                     new DispatchableVehicleMod(48,100)
                     {
+  
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
+
+
+
                             new DispatchableVehicleModValue(0,100),//LSPD
                             new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
                             new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
@@ -2213,9 +2232,90 @@ public class DispatchableVehicles : IDispatchableVehicles
                     },
                 },
         };
+
+
+        if(agencyID == "LSPD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),//LSPD
+                            new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
+                            new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
+                            new DispatchableVehicleModValue(3,100),//LSPD K9
+                            new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
+                            new DispatchableVehicleModValue(5,100),//LSPD
+                            new DispatchableVehicleModValue(20,100),//LSPD
+
+                            //new DispatchableVehicleModValue(10,100),//SAHP
+                            //new DispatchableVehicleModValue(11,100),//LSSD
+                            //new DispatchableVehicleModValue(13,100),//LSIAPD
+                            //new DispatchableVehicleModValue(15,100),//DPPD
+                            //new DispatchableVehicleModValue(17,100),//LSPP
+
+                            //new DispatchableVehicleModValue(22,100),//SAHP
+                            //new DispatchableVehicleModValue(23,100),//LSSD
+                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
+                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
+                        },
+            });
+        }
+        else if (agencyID == "SAHP")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(10,100),//SAHP
+                            new DispatchableVehicleModValue(22,100),//SAHP
+                        },
+            });
+        }
+        else if (agencyID == "LSSD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(11,100),//LSSD
+                            new DispatchableVehicleModValue(23,100),//LSSD
+                        },
+            });
+        }
+        else if (agencyID == "LSPP")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(17,100),
+                        },
+            });
+        }
+        else if (agencyID == "DPPD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(15,100),
+                        },
+            });
+        }
+        else if (agencyID == "SAPR")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(27,100),
+                        },
+            });
+        }
         return policeTerminus;
     }
-    private DispatchableVehicle Create_PoliceCaracaraVanilla(int ambientSpawnChance, int wantedSpawnChance)
+    private DispatchableVehicle Create_PoliceCaracaraVanilla(int ambientSpawnChance, int wantedSpawnChance, string agencyID)
     {
         DispatchableVehicle policeCaracara = new DispatchableVehicle("polcaracara", ambientSpawnChance, wantedSpawnChance)
         {
@@ -2271,9 +2371,14 @@ public class DispatchableVehicles : IDispatchableVehicles
                             new DispatchableVehicleModValue(5,15),
                         },
                     },
-                    new DispatchableVehicleMod(48,100)
-                    {
-                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                },
+        };
+
+        if (agencyID == "LSPD")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
                             new DispatchableVehicleModValue(0,100),//LSPD
                             new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
@@ -2294,9 +2399,60 @@ public class DispatchableVehicles : IDispatchableVehicles
                             //new DispatchableVehicleModValue(27,100),//PARK RANGER
                             //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
                         },
-                    },
-                },
-        };
+            });
+        }
+        else if (agencyID == "SAHP")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(10,100),//SAHP
+                            new DispatchableVehicleModValue(22,100),//SAHP
+                        },
+            });
+        }
+        else if (agencyID == "LSSD")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(11,100),//LSSD
+                            new DispatchableVehicleModValue(23,100),//LSSD
+                        },
+            });
+        }
+        else if (agencyID == "LSPP")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(17,100),
+                        },
+            });
+        }
+        else if (agencyID == "DPPD")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(15,100),
+                        },
+            });
+        }
+        else if (agencyID == "SAPR")
+        {
+            policeCaracara.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(27,100),
+                        },
+            });
+        }
         return policeCaracara;
     }
 }
