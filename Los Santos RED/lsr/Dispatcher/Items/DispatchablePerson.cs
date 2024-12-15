@@ -348,7 +348,7 @@ public class DispatchablePerson
             }
             else
             {
-                variationToSet = RequiredVariation.ApplyToPed(ped, setDefaultFirst);
+                variationToSet = RequiredVariation.ApplyToPed(ped, setDefaultFirst, false);
             }
             if (RandomizeHead)//need to have a variation for this as its just freemode otherwise
             {
@@ -430,10 +430,14 @@ public class DispatchablePerson
         }
         if (RequiredHelmetType != -1)
         {
-            //EntryPoint.WriteToConsole($"HELMET REQUIRED: PersonType.RequiredHelmetType {RequiredHelmetType}");
+            EntryPoint.WriteToConsole($"HELMET REQUIRED: PersonType.RequiredHelmetType {RequiredHelmetType}");
             ped.GiveHelmet(false, (HelmetTypes)RequiredHelmetType, 4096);
         }
         return variationToSet;
+
+
+        
+
     }
     public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation, bool allowMorph)
     {

@@ -325,8 +325,17 @@ public class DebugVehicleSubMenu : DebugSubMenu
             new ModKitDescription("Hydraulics", 38),
             new ModKitDescription("Boost", 40),
             new ModKitDescription("Window Tint", 55),
-            new ModKitDescription("Livery", 48),
-            new ModKitDescription("Plate", 53),
+            new ModKitDescription("Livery - 48", 48),
+            new ModKitDescription("Plate - 53", 53),
+
+
+
+
+            new ModKitDescription("Pushbar - 42", 42),
+            new ModKitDescription("Aerials - 43", 43),
+            new ModKitDescription("Searchlights - 44", 44),
+
+
         };
 
 

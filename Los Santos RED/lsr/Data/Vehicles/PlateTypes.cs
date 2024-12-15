@@ -360,6 +360,18 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(62, "Squaretop", "Squaretop", 4, "1A  2345"));
         FullPlateTypeList.Add(new PlateType(63, "Squaretop Old", "Squaretop Old", 4, "1  2345A"));
 
+
+
+        FullPlateTypeList.Add(new PlateType(64, "Niobrara", "Niobrara", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(65, "Putnam", "Putnam", 2, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(66, "Pascagoula", "Pascagoula", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(67, "Coosa", "Coosa", 2, "1A2345B6"));
+        FullPlateTypeList.Add(new PlateType(68, "New Cornwall", "New Cornwall", 2, "123 4567"));
+
+        FullPlateTypeList.Add(new PlateType(69, "Columbia, DW", "Columbia, DW", 2, "AB  1234"));
+
+
+        //Pascagoula
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");

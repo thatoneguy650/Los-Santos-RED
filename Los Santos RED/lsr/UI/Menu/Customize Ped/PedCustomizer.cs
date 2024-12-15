@@ -396,7 +396,7 @@ public class PedCustomizer
     {
         if (ModelPed.Exists())
         {
-            WorkingVariation?.ApplyToPed(ModelPed, false);
+            WorkingVariation?.ApplyToPed(ModelPed, false, true);
         }
     }
     public void BecomePed()

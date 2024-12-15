@@ -2141,6 +2141,198 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdiction_AttackOfTheStaniers.xml");
     }
+
+
+
+
+    private DispatchableVehicle Create_PoliceTerminusVanilla(int ambientSpawnChance, int wantedSpawnChance)
+    {
+        DispatchableVehicle policeTerminus = new DispatchableVehicle("polterminus", ambientSpawnChance, wantedSpawnChance)
+        {
+            RequiredPrimaryColorID = 0,
+            RequiredSecondaryColorID = 111,
+            MaxRandomDirtLevel = 10.0f,
+            VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),//weight bubble lights
+                    new DispatchableVehicleExtra(2,false,100,2),//red and blue regular
+                    new DispatchableVehicleExtra(3,false,100,3),//red and blue vector
+                    new DispatchableVehicleExtra(4,true,100,4),//clear vector
+                    new DispatchableVehicleExtra(5,true,100,5),//roof
+                },
+            VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),//LSPD
+                            new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
+                            new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
+                            new DispatchableVehicleModValue(3,100),//LSPD K9
+                            new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
+                            new DispatchableVehicleModValue(5,100),//LSPD
+                            new DispatchableVehicleModValue(20,100),//LSPD
+
+                            //new DispatchableVehicleModValue(10,100),//SAHP
+                            //new DispatchableVehicleModValue(11,100),//LSSD
+                            //new DispatchableVehicleModValue(13,100),//LSIAPD
+                            //new DispatchableVehicleModValue(15,100),//DPPD
+                            //new DispatchableVehicleModValue(17,100),//LSPP
+
+                            //new DispatchableVehicleModValue(22,100),//SAHP
+                            //new DispatchableVehicleModValue(23,100),//LSSD
+                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
+                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
+                        },
+                    },
+                },
+        };
+        return policeTerminus;
+    }
+    private DispatchableVehicle Create_PoliceCaracaraVanilla(int ambientSpawnChance, int wantedSpawnChance)
+    {
+        DispatchableVehicle policeCaracara = new DispatchableVehicle("polcaracara", ambientSpawnChance, wantedSpawnChance)
+        {
+            RequiredPrimaryColorID = 0,
+            RequiredSecondaryColorID = 111,
+            MaxRandomDirtLevel = 10.0f,
+            VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),//weight bubble lights
+                    new DispatchableVehicleExtra(2,false,100,2),//red and blue regular
+                    new DispatchableVehicleExtra(3,false,100,3),//red and blue vector
+                    new DispatchableVehicleExtra(4,true,100,4),//clear vector
+                },
+            VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(1,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
+                        },
+                    },
+                    new DispatchableVehicleMod(42,50)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(2,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(43,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(44,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),//LSPD
+                            new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
+                            new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
+                            new DispatchableVehicleModValue(3,100),//LSPD K9
+                            new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
+                            new DispatchableVehicleModValue(5,100),//LSPD
+                            new DispatchableVehicleModValue(20,100),//LSPD
+
+                            //new DispatchableVehicleModValue(10,100),//SAHP
+                            //new DispatchableVehicleModValue(11,100),//LSSD
+                            //new DispatchableVehicleModValue(13,100),//LSIAPD
+                            //new DispatchableVehicleModValue(15,100),//DPPD
+                            //new DispatchableVehicleModValue(17,100),//LSPP
+
+                            //new DispatchableVehicleModValue(22,100),//SAHP
+                            //new DispatchableVehicleModValue(23,100),//LSSD
+                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
+                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
+                        },
+                    },
+                },
+        };
+        return policeCaracara;
+    }
 }
 
 
+/*
+ *             new ModKitDescription("Spoilers",0),
+            new ModKitDescription("Front Bumper",1),
+            new ModKitDescription("Rear Bumper",2),
+            new ModKitDescription("Side Skirt",3),
+            new ModKitDescription("Exhaust",4),
+            new ModKitDescription("Frame",5),
+            new ModKitDescription("Grille",6),
+            new ModKitDescription("Hood",7),
+            new ModKitDescription("Fender",8),
+            new ModKitDescription("Right Fender",9),
+            new ModKitDescription("Roof",10),
+            new ModKitDescription("Engine",11),
+            new ModKitDescription("Brakes",12),
+            new ModKitDescription("Transmission",13),
+            new ModKitDescription("Horns",1),
+            new ModKitDescription("Suspension",15),
+            new ModKitDescription("Armor",16),
+            new ModKitDescription("Turbo",18),
+            new ModKitDescription("Xenon",22),
+            new ModKitDescription("Front Wheels",23),
+            new ModKitDescription("Back Wheels (Motorcycle)",24),
+            new ModKitDescription("Plate holders", 25),
+            new ModKitDescription("Trim Design", 27),
+            new ModKitDescription("Ornaments", 28),
+            new ModKitDescription("Dial Design", 30),
+            new ModKitDescription("Steering Wheel", 33),
+            new ModKitDescription("Shift Lever", 34),
+            new ModKitDescription("Plaques", 35),
+            new ModKitDescription("Hydraulics", 38),
+            new ModKitDescription("Boost", 40),
+            new ModKitDescription("Window Tint", 55),
+            new ModKitDescription("Livery", 48),
+            new ModKitDescription("Plate", 53),*/

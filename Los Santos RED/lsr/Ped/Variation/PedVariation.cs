@@ -53,24 +53,36 @@ public class PedVariation
 
     public List<AppliedOverlay> AppliedOverlays { get; set; } = new List<AppliedOverlay>();
 
-
-    public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst)
-    {
-        if (setDefaultFirst)
-        {
-            NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
-        }
-        return ApplyToPed(ped);
-    }
     public PedVariation ApplyToPed(Ped ped)
+    {
+        return ApplyToPed(ped, false, false);
+    }
+    //public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst)
+    //{
+    //    if (setDefaultFirst)
+    //    {
+    //        NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+    //    }
+    //    return ApplyToPed(ped);
+    //}
+    public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst, bool checkComponentValid)
     {
         try
         {
+            if (setDefaultFirst)
+            {
+                NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+            }
+
+
             PedVariation setVariation = new PedVariation();
             foreach (PedComponent Component in Components)
             {
-                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
-                setVariation.Components.Add(new PedComponent(Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID));
+                if (!checkComponentValid || NativeFunction.Natives.IS_PED_COMPONENT_VARIATION_VALID<bool>(ped, Component.ComponentID, Component.DrawableID, Component.TextureID))
+                {
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+                    setVariation.Components.Add(new PedComponent(Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID));
+                }
             }
             NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
             foreach (PedPropComponent Prop in Props)
