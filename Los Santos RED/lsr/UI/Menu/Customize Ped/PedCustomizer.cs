@@ -35,6 +35,8 @@ public class PedCustomizer
     private GameLocation TeleportedFromLocation;
     private IInteractionable Interactionable;
 
+    private List<BlacklistedPedComponent> BlacklistedPedComponents = new List<BlacklistedPedComponent>();
+
     //private CameraCycler CameraCycler;
 
 
@@ -164,6 +166,30 @@ public class PedCustomizer
 
         CameraCycler = new CameraCycler(CharCam, Player, this, PedCustomizerLocation.CameraCyclerPositions);
         CameraCycler.Setup();
+
+        BlacklistedPedComponents = new List<BlacklistedPedComponent>() {
+        
+            new BlacklistedPedComponent(11,new List<int>(),548,true),
+            new BlacklistedPedComponent(11,new List<int>(),584,false),
+
+
+            new BlacklistedPedComponent(10,new List<int>(),224,true),
+            new BlacklistedPedComponent(10,new List<int>(),208,false),
+            //Female DECAL -        FORGE = 228 RPH = 224?
+            //Male DECAL -          FORGE = 212 RPH = 208?
+
+            new BlacklistedPedComponent(4,new List<int>(),199,true),
+            new BlacklistedPedComponent(4,new List<int>(),214,false),
+            //Female LEG -        FORGE = 218 RPH = 214?
+            //Male LEG -          FORGE = 203 RPH = 199?
+
+            new BlacklistedPedComponent(6,new List<int>(),151,true),
+            new BlacklistedPedComponent(6,new List<int>(),159,false),
+            //Female SHOES -        FORGE = 163 RPH = 159?//157 = crash
+            //Male LSHOESEG -          FORGE = 155 RPH = 159?
+        };
+
+
     }
     private void SetupDefaultPedCustomzerLocation()
     {
@@ -398,6 +424,19 @@ public class PedCustomizer
         {
             WorkingVariation?.ApplyToPed(ModelPed, false, true);
         }
+    }
+    public bool IsDrawableBlacklisted(int componentID, int drawableID, bool isMale)
+    {
+        if(!Settings.SettingsManager.PlayerOtherSettings.UseClothingBlacklist)
+        {
+            return false;
+        }
+        if(BlacklistedPedComponents.Any(x=> x.ComponentID == componentID && (x.DrawableIDs.Contains(drawableID) || (x.StartingDrawableID > 0 && drawableID >= x.StartingDrawableID)) && x.IsMale == isMale))
+        {
+            return true;
+        }
+        return false;
+        
     }
     public void BecomePed()
     {

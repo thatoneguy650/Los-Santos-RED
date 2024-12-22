@@ -152,6 +152,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float PersonTransactionItemOffsetZ { get; set; }
 
 
+    [Description("If enabled, certian clothing that will cause the CTD is disabled when inside the ped creator.")]
+    public bool UseClothingBlacklist { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -275,6 +279,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         PersonTransactionItemOffsetZ = 0.5f;
 
         PersonTransactionNeverPreviewItems = false;
+        UseClothingBlacklist = true;
     }
 
 }

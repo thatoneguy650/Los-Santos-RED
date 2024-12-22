@@ -648,6 +648,7 @@
     <Compile Include="lsr\Tasker\Taxi\TaxiGeneralIdle.cs" />
     <Compile Include="lsr\Tasker\Taxi\TaxiService.cs" />
     <Compile Include="lsr\UI\LowerRightDisplay.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\BlacklistedPedComponent.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCycler.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCyclerPosition.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeAffiliationMenu.cs" />

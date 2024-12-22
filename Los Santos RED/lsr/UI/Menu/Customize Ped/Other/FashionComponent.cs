@@ -209,6 +209,15 @@ public class FashionComponent
             //EntryPoint.WriteToConsoleTestLong($"OnComponentChanged RETURN IsProgramicallySettingFieldValues {ComponentID}");
             return;
         }
+
+
+        if(PedCustomizer.IsDrawableBlacklisted(ComponentID,newDrawableID,PedCustomizer.PedModelIsFreeMode && !PedCustomizer.PedModelIsFreeModeFemale))
+        {
+            Game.DisplaySubtitle($"{ComponentID}-{newDrawableID} cannot be set");
+            return;
+        }
+
+
         //EntryPoint.WriteToConsoleTestLong($"OnComponentChanged Start {ComponentID} newDrawableID {newDrawableID}");
         GetPossibleTextures(newDrawableID);
         TextureMenuScroller.Items = PossibleTextures;
@@ -394,4 +403,5 @@ public class FashionComponent
         }
         //EntryPoint.WriteToConsoleTestLong($"SetCurrent End {ComponentID}");
     }
+
 }

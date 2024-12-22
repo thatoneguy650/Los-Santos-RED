@@ -529,12 +529,20 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        if(Player.ClosestInteractableLocation == null)
-        {
-            EntryPoint.WriteToConsole($"No locations");
-            return;
-        }
-        EntryPoint.WriteToConsole($"{Player.ClosestInteractableLocation.Name} {Player.ClosestInteractableLocation.CanCurrentlyInteract(Player)} {Player.ClosestInteractableLocation.ButtonPromptText}");
+
+
+        //NativeFunction.Natives.FREEZE_RADIO_STATION("RADIO_19_USER");
+
+
+        //NativeFunction.Natives.SKIP_RADIO_FORWARD();
+        //GameFiber.Sleep(500);
+
+        //if(Player.ClosestInteractableLocation == null)
+        //{
+        //    EntryPoint.WriteToConsole($"No locations");
+        //    return;
+        //}
+        //EntryPoint.WriteToConsole($"{Player.ClosestInteractableLocation.Name} {Player.ClosestInteractableLocation.CanCurrentlyInteract(Player)} {Player.ClosestInteractableLocation.ButtonPromptText}");
 
 
         //Player.GroupManager.SetInvincible();

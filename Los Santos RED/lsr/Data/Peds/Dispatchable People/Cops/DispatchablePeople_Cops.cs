@@ -311,12 +311,12 @@ public class DispatchablePeople_Cops
                     RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                                 new PedComponent(3, 11, 0, 0),
-                                new PedComponent(4, 205, 0, 0),
+                                new PedComponent(4, 205, 0, 0),//202 from plebmaster
                                 new PedComponent(6, 103, 0, 0),
                                 new PedComponent(8, 153, 0, 0),
                                 new PedComponent(9, 11, 0, 0),
                                 new PedComponent(11, 319, 2, 0),
-                                new PedComponent(10,214,1)
+                                new PedComponent(10,214,1)//207-210 from plebmaster
                     },
                     new List<PedPropComponent>() { }),
                     OptionalProps = ShortSleeveMaleOptionalProps,
@@ -338,7 +338,7 @@ public class DispatchablePeople_Cops
                     RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                             new PedComponent(3, 1, 0, 0),
-                            new PedComponent(4, 205, 0, 0),
+                            new PedComponent(4, 205, 0, 0),//217 from plebmaster
                             new PedComponent(6, 103, 0, 0),
                             new PedComponent(8, 153, 0, 0),
                             new PedComponent(9, 11, 0, 0),
