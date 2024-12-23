@@ -289,7 +289,7 @@ public class ModDataFileManager
     private void SetupAddonPlatesConfig()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates");
-        string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly states and agencies. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly versions of ALL states and select state/government agencies. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
            "Installation: "
            + Environment.NewLine +
            "1. Install greskfullmodernlicenseplates.oiv using OpenIV"

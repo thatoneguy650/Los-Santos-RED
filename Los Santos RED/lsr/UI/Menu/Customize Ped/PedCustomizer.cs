@@ -169,12 +169,12 @@ public class PedCustomizer
 
         BlacklistedPedComponents = new List<BlacklistedPedComponent>() {
         
-            new BlacklistedPedComponent(11,new List<int>(),548,true),
-            new BlacklistedPedComponent(11,new List<int>(),584,false),
+            new BlacklistedPedComponent(11,new List<int>(),548,true),//good
+            new BlacklistedPedComponent(11,new List<int>(),584,false),//good
 
 
-            new BlacklistedPedComponent(10,new List<int>(),224,true),
-            new BlacklistedPedComponent(10,new List<int>(),208,false),
+            new BlacklistedPedComponent(10,new List<int>(),220,true),
+            new BlacklistedPedComponent(10,new List<int>(),204,false),
             //Female DECAL -        FORGE = 228 RPH = 224?
             //Male DECAL -          FORGE = 212 RPH = 208?
 
@@ -183,8 +183,8 @@ public class PedCustomizer
             //Female LEG -        FORGE = 218 RPH = 214?
             //Male LEG -          FORGE = 203 RPH = 199?
 
-            new BlacklistedPedComponent(6,new List<int>(),151,true),
-            new BlacklistedPedComponent(6,new List<int>(),159,false),
+            new BlacklistedPedComponent(6,new List<int>(),151,true),//good
+            new BlacklistedPedComponent(6,new List<int>(),159,false),//good
             //Female SHOES -        FORGE = 163 RPH = 159?//157 = crash
             //Male LSHOESEG -          FORGE = 155 RPH = 159?
         };
