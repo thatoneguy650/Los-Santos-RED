@@ -68,5 +68,10 @@ public class BusStop : GameLocation
         return BaseList;
 
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.BusStops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -38,5 +38,10 @@ public class Landmark : GameLocation
             Game.DisplayHelp("~r~No Interaction~s~");
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Landmarks.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

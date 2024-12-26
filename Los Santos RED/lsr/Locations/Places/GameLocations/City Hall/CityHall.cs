@@ -345,6 +345,12 @@ public class CityHall : GameLocation
                 DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
             }
         }
+
+    }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.CityHalls.Add(this);
+        base.AddLocation(possibleLocations);
     }
 }
 

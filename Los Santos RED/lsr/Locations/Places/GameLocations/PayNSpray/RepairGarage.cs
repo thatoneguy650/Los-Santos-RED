@@ -320,5 +320,10 @@ public class RepairGarage : GameLocation
         }
         base.AddDistanceOffset(offsetToAdd);
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.RepairGarages.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

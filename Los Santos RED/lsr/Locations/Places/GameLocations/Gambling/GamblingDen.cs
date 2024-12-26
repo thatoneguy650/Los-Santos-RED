@@ -256,4 +256,9 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         BlackJackGame blackJackGameInternal = new BlackJackGame(Player.CasinoGamePlayer, Settings, false, this, blackJackGameRules);
         blackJackGameInternal.StartRound();
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.GamblingDens.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }

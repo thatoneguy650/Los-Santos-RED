@@ -296,5 +296,10 @@ public class Forger : GameLocation
             DisplayMessage("~g~Purchased", $"Thank you for your purchase. Plate added to inventory.");
         };
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Forgers.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

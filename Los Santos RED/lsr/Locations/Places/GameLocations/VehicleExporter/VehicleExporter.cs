@@ -373,5 +373,10 @@ public class VehicleExporter : GameLocation
         finalString += "~n~";
         return finalString;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.VehicleExporters.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

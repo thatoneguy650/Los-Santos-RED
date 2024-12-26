@@ -119,5 +119,10 @@ public class ApartmentBuilding : GameLocation
             InteractionMenu.AddItem(PurchaseResidenceMenuItem);       
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.ApartmentBuildings.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

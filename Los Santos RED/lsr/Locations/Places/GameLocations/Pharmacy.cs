@@ -27,5 +27,10 @@ public class Pharmacy : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Pharmacies.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

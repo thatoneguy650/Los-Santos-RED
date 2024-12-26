@@ -77,6 +77,21 @@ public class PlacesOfInterest_Liberty
         }
         eastLC.PedCustomizerLocation.AddDistanceOffset(new Vector3(4949.959f, -1184.845f, -0.000109f));
         Serialization.SerializeParam(eastLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\East\\Locations_{StaticStrings.LibertyConfigSuffix}East.xml");
+
+
+        PossibleLocations lppLC = LibertyCityLocations.Copy();
+        foreach (GameLocation bl in lppLC.InteractableLocations())//for centered above we want to add 200 of height
+        {
+            bl.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));
+        }
+        foreach(GameLocation gl in PlacesOfInterest.InteractableLocations())
+        {
+            gl.AddLocation(lppLC);
+        }
+
+
+        Serialization.SerializeParam(lppLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Locations_{StaticStrings.LPPConfigSuffix}.xml");
+        //offset is (4949.947f, -3750.0441f, -0.000197f)); for lpp whenever
     }
     private void DefaultConfig_PawnShops()
     {

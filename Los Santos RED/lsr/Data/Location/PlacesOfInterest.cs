@@ -93,10 +93,10 @@ public class PlacesOfInterest : IPlacesOfInterest
         }
         else
         {
-            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
-            DefaultConfig_LibertyCity();
+            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);    
             DefaultConfig_SunshineDream();
             DefaultConfig();
+            DefaultConfig_LibertyCity();
             DefaultConfig_2008();
         }
     }

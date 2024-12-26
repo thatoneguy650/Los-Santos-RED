@@ -324,6 +324,16 @@ public class GangTerritories : IGangTerritories
             new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","PORTU", 0, 100, 100),//port tudor
         };
         Serialization.SerializeParams(LibertyZOneJurisdictionsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\GangTerritories_{StaticStrings.LibertyConfigSuffix}.xml");
+
+
+
+
+
+        List<ZoneJurisdiction> LPPZoneJurisdiction = new List<ZoneJurisdiction>();
+        LPPZoneJurisdiction.AddRange(LibertyZOneJurisdictionsList);
+        LPPZoneJurisdiction.AddRange(ZoneJurisdictionsList);
+        Serialization.SerializeParams(LPPZoneJurisdiction, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\GangTerritories_{StaticStrings.LPPConfigSuffix}.xml");
+
     }
 
     private void DefaultConfig_SunshineDream()

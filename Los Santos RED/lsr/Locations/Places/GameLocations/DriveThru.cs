@@ -72,5 +72,10 @@ public class DriveThru : GameLocation
             }, "DriveThruInteract");
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.DriveThrus.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

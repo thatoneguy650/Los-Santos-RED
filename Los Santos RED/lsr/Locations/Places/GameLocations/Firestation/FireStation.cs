@@ -154,5 +154,10 @@ public class FireStation : GameLocation, ILicensePlatePreviewable
         InteractionMenu.Visible = true;
         ProcessInteractionMenu();
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.FireStations.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

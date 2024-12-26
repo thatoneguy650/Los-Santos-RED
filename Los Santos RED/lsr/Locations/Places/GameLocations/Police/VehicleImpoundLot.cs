@@ -66,4 +66,5 @@ public class VehicleImpoundLot
         toImpound.SetImpounded(time, Location.Name, hasValidCCW, weapons);
         return true;
     }
+
 }

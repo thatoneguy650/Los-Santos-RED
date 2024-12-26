@@ -466,5 +466,12 @@ public class Airport : GameLocation, ILocationSetupable
         AirArrivalPosition += offsetToAdd;
         base.AddDistanceOffset(offsetToAdd);
     }
+
+
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Airports.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

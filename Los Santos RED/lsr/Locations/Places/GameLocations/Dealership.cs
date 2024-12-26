@@ -106,6 +106,10 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
         base.AddDistanceOffset(offsetToAdd);
     }
-
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.CarDealerships.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -27,5 +27,10 @@ public class SportingGoodsStore : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.SportingGoodsStores.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

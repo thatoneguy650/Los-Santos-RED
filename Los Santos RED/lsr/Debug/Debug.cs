@@ -531,8 +531,22 @@ public class Debug
     {
 
 
-        //NativeFunction.Natives.FREEZE_RADIO_STATION("RADIO_19_USER");
 
+        int trackID = NativeFunction.Natives.GET_AUDIBLE_MUSIC_TRACK_TEXT_ID<int>();
+
+
+        string artistNameLabel = $"{trackID}A";
+        string songNameLabel = $"{trackID}S";
+
+
+        string artistName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(artistNameLabel);
+        string songName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(songNameLabel);
+
+
+        Game.DisplaySubtitle($"{artistName} - {songName}  {artistNameLabel}-{songNameLabel}  {Game.GetLocalizedString(trackID.ToString())} {Game.GetLocalizedString(songNameLabel)}");
+        GameFiber.Sleep(500);
+        //NativeFunction.Natives.FREEZE_RADIO_STATION("RADIO_19_USER");
+        ;
 
         //NativeFunction.Natives.SKIP_RADIO_FORWARD();
         //GameFiber.Sleep(500);
@@ -1147,14 +1161,19 @@ public class Debug
         // SpawnNoGunAttackers();
         //SpawnBus();
     }
+
+
+   
+
     private void DebugNumpad5()
 {
+        NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME(2,(int)GameControl.VehicleNextRadioTrack, 1.0f);
+        GameFiber.Sleep(100);
 
-
-        foreach(ContactRelationship test in Player.RelationshipManager.ContactRelationships)
-        {
-            EntryPoint.WriteToConsole($"ContactRelationship {test.ContactName} HasPhoneContact:{test.HasPhoneContact} ReputationLevel:{test.ReputationLevel} PlayerDebt:{test.PlayerDebt}");
-        }
+        //foreach(ContactRelationship test in Player.RelationshipManager.ContactRelationships)
+        //{
+        //    EntryPoint.WriteToConsole($"ContactRelationship {test.ContactName} HasPhoneContact:{test.HasPhoneContact} ReputationLevel:{test.ReputationLevel} PlayerDebt:{test.PlayerDebt}");
+        //}
         //PhoneContact cool = ModDataFileManager.Contacts.GetContactData(StaticStrings.UndergroundGunsContactName);
 
 

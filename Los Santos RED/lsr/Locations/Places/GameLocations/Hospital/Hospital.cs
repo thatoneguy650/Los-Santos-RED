@@ -184,5 +184,10 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
         PlaySuccessSound();
         DisplayMessage("~g~Purchase", $"Thank you for your purchase.");
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Hospitals.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

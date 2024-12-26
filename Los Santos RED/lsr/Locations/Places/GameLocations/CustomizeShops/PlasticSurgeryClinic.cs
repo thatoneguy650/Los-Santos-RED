@@ -41,5 +41,10 @@ public class PlasticSurgeryClinic : GameLocation
             Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.PlasticSurgeryClinics.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

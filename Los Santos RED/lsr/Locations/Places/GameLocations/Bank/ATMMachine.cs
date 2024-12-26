@@ -221,5 +221,10 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
 
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.ATMMachines.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -239,5 +239,10 @@ public class DeadDrop : GameLocation
     {
         return Description;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.DeadDrops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

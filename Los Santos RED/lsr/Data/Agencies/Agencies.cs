@@ -355,6 +355,11 @@ public class Agencies : IAgencies
 
         List<Agency> LCAgenicesList = new List<Agency>
         {
+
+
+
+
+
             LCPD,
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
 
@@ -372,6 +377,39 @@ public class Agencies : IAgencies
             UNK,
         };
         Serialization.SerializeParams(LCAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
+
+
+        List<Agency> LCPPAgenicesList = new List<Agency>
+        {
+
+
+            LSPD,LSPDVW,LSPDELS,LSPDDP,LSPDRH,LSPDASD,
+            LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
+            SAHP,SASPA,SAPR,USCG,
+            NYSP,//LCPD,
+            LSLFG,
+            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
+            LSFDFire,LSMC,MRH,LSFD,
+            GRPSECHS,SECURO,MERRY,BOBCAT,
+
+
+            LCPD,
+            new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+
+            new Agency("~b~", "ASP-ASD","ASP-ASD", "Alderney State Police - Air Support Division", "Blue", Classification.Police, "ASPPeds", "ASPHeliVehicles", "ASP ","Tasers","HeliSidearms","HeliLongGuns", "ASP Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
+
+            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "ASPVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+            
+            BorderPatrol,NOOSEPIA,NOOSESEP,
+
+
+            new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "FDLCFirePeds", "FDNYFireVehicles", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "FDLC-EMS","FDLC-EMS", "Liberty City Fire Department EMS", "White", Classification.EMS, "GreenEMTs", "FDNYEMTVehicles", "LC ",null,null, null, "FDLC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            HMSEMT,
+
+            UNK,
+        };
+        Serialization.SerializeParams(LCPPAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Agencies_{StaticStrings.LPPConfigSuffix}.xml");
     }
     private void DefaultConfig_SunshineDream()
     {

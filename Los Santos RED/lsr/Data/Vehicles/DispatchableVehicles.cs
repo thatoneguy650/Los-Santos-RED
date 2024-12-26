@@ -60,7 +60,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> CartelVehicles;
     private List<DispatchableVehicle> RedneckVehicles;
     private List<DispatchableVehicle> FamiliesVehicles;
-    private List<DispatchableVehicle> UnmarkedVehicles;
+    public List<DispatchableVehicle> UnmarkedVehicles;
     private List<DispatchableVehicle> CoastGuardVehicles;
     private List<DispatchableVehicle> ParkRangerVehicles;
     private List<DispatchableVehicle> FIBVehicles;
@@ -150,6 +150,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();
+            DefaultConfig_LPP();
         }
 
 //#if DEBUG
@@ -1572,6 +1573,65 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
+    }
+    private void DefaultConfig_LPP()
+    {
+        DispatchableVehicles_LPP dispatchableVehicles_LPP = new DispatchableVehicles_LPP(this);
+        dispatchableVehicles_LPP.DefaultConfig();
+
+        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ASPVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "LCPDVehicles");
+
+
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "UnmarkedVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "CoastGuardVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "USNPSParkRangersVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "BorderPatrolVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "NOOSEPIAVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "NOOSESEPVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "FIBVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "MarshalsServiceVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "DOAVehicles");
+
+
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "DowntownTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "HellTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "PurpleTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ShitiTaxiVehicles");
+        LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "SunderedTaxiVehicles");
+
+
+
+
+
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDVehicles", dispatchableVehicles_LPP.LCPDVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCPDHeliVehicles", dispatchableVehicles_LPP.LCPDHeliVehicles));
+
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ASPHeliVehicles", dispatchableVehicles_LPP.ASPHeliVehicles));
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("ASPVehicles", dispatchableVehicles_LPP.ASPVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("USNPSParkRangersVehicles", ParkRangerVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("BorderPatrolVehicles", NOOSEVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSEPIAVehicles", NOOSEVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("NOOSESEPVehicles", NOOSEVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("DOAVehicles", DOAVehicles));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("LCTaxiVehicles", dispatchableVehicles_LPP.LCTaxiVehicles_FEJ_LC));
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYFireVehicles", dispatchableVehicles_LPP.FDLCVehicles_FEJ_LC));
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("FDNYEMTVehicles", dispatchableVehicles_LPP.FDLCEMTVehicles_FEJ_LC));
+
+
+        LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", dispatchableVehicles_LPP.HMSVehicles_FEJ_LC));
+
+
+        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\DispatchableVehicles_{StaticStrings.LPPConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()
     {

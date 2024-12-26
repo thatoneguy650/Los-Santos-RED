@@ -343,7 +343,12 @@ public class Zones : IZones
             new Zone("OCEANA", "Atlantic Ocean", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("SANAND", "Outskirts", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             };
-        Serialization.SerializeParams(LibertyCityZones, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Zones_LibertyCity.xml");
+        Serialization.SerializeParams(LibertyCityZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Zones_{StaticStrings.LibertyConfigSuffix}.xml");
+
+        List<Zone> LPPZones = new List<Zone>();
+        LPPZones.AddRange(LibertyCityZones);
+        LPPZones.AddRange(ZoneList);
+        Serialization.SerializeParams(LPPZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Zones_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
     private void DefaultConfig_SunshineDream()

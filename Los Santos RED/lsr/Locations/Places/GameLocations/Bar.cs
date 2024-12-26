@@ -28,5 +28,10 @@ public class Bar : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Bars.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

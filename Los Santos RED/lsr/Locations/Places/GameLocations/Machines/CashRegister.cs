@@ -283,5 +283,10 @@ public class CashRegister : GameLocation
         }
         
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.CashRegisters.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -30,5 +30,10 @@ public class BlankLocation : GameLocation
     {
         return false;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.BlankLocations.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -27,5 +27,10 @@ public class HeadShop : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.HeadShops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

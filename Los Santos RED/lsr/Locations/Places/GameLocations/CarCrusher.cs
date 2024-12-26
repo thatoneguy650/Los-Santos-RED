@@ -226,5 +226,10 @@ public class CarCrusher : GameLocation
         }
         return false;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.CarCrushers.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

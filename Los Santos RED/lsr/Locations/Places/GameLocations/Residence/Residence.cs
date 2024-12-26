@@ -761,4 +761,9 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             CashStorage = new CashStorage();
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Residences.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }

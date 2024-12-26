@@ -33,5 +33,10 @@ public class PawnShop : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.PawnShops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

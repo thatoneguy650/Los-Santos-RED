@@ -29,5 +29,10 @@ public class ConvenienceStore : GameLocation, IGasPumpable
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.ConvenienceStores.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

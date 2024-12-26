@@ -33,6 +33,14 @@ public class Interiors_Liberty
         }
         Serialization.SerializeParam(lcEastInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\East\\Interiors_{StaticStrings.LibertyConfigSuffix}East.xml");
 
+
+        PossibleInteriors lppInteriors = LibertyCityInteriors.Copy();
+        foreach (Interior interior in lppInteriors.AllInteriors())
+        {
+            interior.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));
+        }
+        Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
+
     }
     private void GeneralInteriors()
     {

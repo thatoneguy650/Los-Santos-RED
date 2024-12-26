@@ -78,7 +78,10 @@ public class DynamicPlaces
             0x885c12c7, //xero new
             0xe40106f5, //xero old
             0xe469f8b3, //globe old
-            0x64ff4c0e ///globe new
+            0x64ff4c0e, ///globe new
+
+
+            0x0f3b57cf//lc globe
         };
         ATMModelNames = new List<string>() 
         {

@@ -190,5 +190,10 @@ public class Hotel : GameLocation
         }
         base.AddDistanceOffset(offsetToAdd);
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Hotels.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

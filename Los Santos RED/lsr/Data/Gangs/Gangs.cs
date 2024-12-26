@@ -1060,6 +1060,28 @@ public class Gangs : IGangs
             UptownRiders
         };
         Serialization.SerializeParams(LCGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
+
+        List<Gang> LPPGangsList = new List<Gang>
+        {
+            //LOST_LIB,
+            //Triads_LIB,
+            //Yardies_LIB,
+            //Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
+
+
+            LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Gambetti,Pavano,Lupisella,Messina,Ancelotti,Cartel,Armenian,Yardies,Diablos,
+
+
+            //New
+            PetrovicMafia,
+            NorthHollandHuslters,
+            SpanishLords,
+            KoreanMob,
+            AngelsOfDeath,
+            UptownRiders
+        };
+        Serialization.SerializeParams(LPPGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Gangs_{StaticStrings.LPPConfigSuffix}.xml");
+
     }
     public void CheckTerritory(GangTerritories gangTerritories)
     {

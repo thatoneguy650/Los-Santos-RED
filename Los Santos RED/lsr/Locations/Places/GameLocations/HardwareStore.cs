@@ -27,5 +27,10 @@ public class HardwareStore : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.HardwareStores.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -37,5 +37,10 @@ public class Restaurant : GameLocation
         BaseList.Add(Tuple.Create("Type: ", FoodType.ToString()));
         return BaseList;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Restaurants.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

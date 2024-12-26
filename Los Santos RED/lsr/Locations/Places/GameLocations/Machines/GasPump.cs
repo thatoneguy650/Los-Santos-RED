@@ -229,5 +229,10 @@ public class GasPump : GameLocation
             return;
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.GasPumps.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

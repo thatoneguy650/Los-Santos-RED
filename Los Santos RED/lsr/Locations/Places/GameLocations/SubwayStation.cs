@@ -43,5 +43,10 @@ public class SubwayStation : GameLocation
             Game.DisplayHelp("~r~No Interaction~s~");
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.SubwayStations.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -210,5 +210,10 @@ public class VendingMachine : GameLocation
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         return IsCompleted;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.VendingMachines.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -241,5 +241,10 @@ public class ScrapYard : GameLocation
         }
         return false;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.ScrapYards.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

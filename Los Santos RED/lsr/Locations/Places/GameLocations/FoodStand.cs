@@ -29,5 +29,10 @@ public class FoodStand : GameLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.FoodStands.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

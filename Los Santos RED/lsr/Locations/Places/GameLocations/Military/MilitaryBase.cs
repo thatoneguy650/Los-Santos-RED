@@ -57,6 +57,11 @@ public class MilitaryBase : GameLocation, ILocationRespawnable,  ILocationAreaRe
         MaxAssaultSpawns = 15;
         AssaultSpawnHeavyWeaponsPercent = 80f;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.MilitaryBases.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 
 }
 

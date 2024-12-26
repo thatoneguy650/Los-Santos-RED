@@ -135,5 +135,10 @@ public class GunStore : GameLocation
         player.RelationshipManager.OnVendorInjuredByPlayer(PhoneContact, merchant, player, zones, gangTerritories);
         base.OnVendorInjuredByPlayer(merchant, player, zones, gangTerritories);
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.GunStores.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

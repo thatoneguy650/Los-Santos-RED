@@ -51,5 +51,10 @@ public class ClothingShop : GameLocation
         }
 
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.ClothingShops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

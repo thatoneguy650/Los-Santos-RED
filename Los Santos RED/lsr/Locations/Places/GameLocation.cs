@@ -1284,6 +1284,11 @@ public class GameLocation : ILocationDispatchable
  
     }
 
+    public virtual void AddLocation(PossibleLocations possibleLocations)
+    {
+
+    }
+
 
     //public virtual void UpdatePrompts()
     //{

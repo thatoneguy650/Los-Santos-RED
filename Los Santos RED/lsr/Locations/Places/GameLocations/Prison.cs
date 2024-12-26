@@ -85,5 +85,10 @@ public class Prison : GameLocation, ILocationRespawnable, ILocationAreaRestricta
         MaxAssaultSpawns = 15;
         AssaultSpawnHeavyWeaponsPercent = 80f;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Prisons.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

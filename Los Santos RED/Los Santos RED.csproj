@@ -180,6 +180,7 @@
     <Compile Include="lsr\Data\Vehicles\eServiceVehicleType.cs" />
     <Compile Include="lsr\Data\Vehicles\OldDispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Stanier.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_LPP.cs" />
     <Compile Include="lsr\Dispatcher\Items\eSpawnAdjustment.cs" />
     <Compile Include="lsr\Dispatcher\Items\SpawnAdjustmentAmount.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />

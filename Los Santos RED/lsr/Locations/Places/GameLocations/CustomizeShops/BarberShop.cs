@@ -68,5 +68,10 @@ public class BarberShop : GameLocation
             StandardInteract(null, false);
         }
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.BarberShops.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

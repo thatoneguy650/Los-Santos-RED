@@ -289,6 +289,11 @@ public class Bank : GameLocation
         }
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Banks.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 
 }
 

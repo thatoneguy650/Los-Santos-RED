@@ -55,7 +55,11 @@ public class Morgue : GameLocation
             StandardInteract(null, false);
         }
     }
-
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.Morgues.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 
 }
 

@@ -277,5 +277,20 @@ public class Organizations : IOrganizations
         };
         Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
         //
+
+        PossibleOrganizations PossibleOrganizations_LibertyCityPP = new PossibleOrganizations();
+        PossibleOrganizations_LibertyCityPP.GeneralOrganizations = new List<Organization>()
+        {
+            VehicleExports,
+            UndergroundGuns,
+        };
+        PossibleOrganizations_LibertyCityPP.TaxiFirms = new List<TaxiFirm>
+        {
+            DowntownCabCoOld,
+            NYCTaxiCo,
+            RydeMe,
+            Schlecht
+        };
+        Serialization.SerializeParam(PossibleOrganizations_LibertyCityPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Organizations_{StaticStrings.LPPConfigSuffix}.xml");
     }
 }

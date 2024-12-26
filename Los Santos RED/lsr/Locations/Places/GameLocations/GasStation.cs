@@ -31,5 +31,10 @@ public class GasStation : GameLocation, IGasPumpable
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.GasStations.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

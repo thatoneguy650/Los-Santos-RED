@@ -553,5 +553,10 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         }
         return AssociatedGang.ID == gang.ID;
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.GangDens.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 
