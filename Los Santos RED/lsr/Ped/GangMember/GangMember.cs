@@ -36,7 +36,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override int CollideWithPlayerLimit => 0;
     public override int PlayerStandTooCloseLimit => 1;
     public bool IsUsingMountedWeapon { get; set; } = false;
-    public WeaponInventory WeaponInventory { get; private set; }
+    public WeaponInventory WeaponInventory { get; set; } = 17;
     public GangVoice Voice { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
