@@ -232,18 +232,7 @@ public class ModDataFileManager
         SetupSunshineDream();
         SetupSimple();
         SetupFullModernTraffic();
-        SetupFullExpandedExperience();
         SetupRemoveVanillaGangs();
-    }
-
-    private void SetupFullExpandedExperience()
-    {
-        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience");
-        string Description =
-            "Full Expanded Experience"
-            + Environment.NewLine +
-            "";
-        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\readme.txt", Description);
     }
     private void SetupRemoveVanillaGangs()
     {
@@ -286,7 +275,6 @@ public class ModDataFileManager
         string Description4 = "Uninstaller OIV for any version.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Uninstaller\\readme.txt", Description4);
     }
-
     private void SetupAddonPlatesConfig()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates");
@@ -297,8 +285,6 @@ public class ModDataFileManager
            + Environment.NewLine +
            "To use, copy all of the .xml files from the AlternateConfigs\\FullModernLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
            "";
-
-
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\readme.txt", Description);
     }
     private void SetupEUP()
@@ -418,11 +404,11 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine +
             "1. Install 'Liberty City Preservation Project' according to instructions supplied in the download. Make sure you can load into the map on vanilla GTA before proceeding."
             + Environment.NewLine +
-            "2. Install 'Full Expanded Jurisdiction Liberty'. Adds Lore-Friendly local police and service vehicles. Install the greskfejlcinstaller.oiv from the 'Files' folder"
-            + Environment.NewLine +
+            //"2. Install 'Full Expanded Jurisdiction Liberty'. Adds Lore-Friendly local police and service vehicles. Install the greskfejlcinstaller.oiv from the 'Files' folder"
+            //+ Environment.NewLine +
             //"2a. OPTIONAL: Install 'Full Modern Traffic'. Updates traffic to be more modern and adds some lore friendly vehicles. Follow the readme in the 'AlternateConfigs\\FullModernTraffic' folder"
             //+ Environment.NewLine +
-            $"3. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LPPConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
+            $"2. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LPPConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             ""
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
@@ -436,13 +422,13 @@ public class ModDataFileManager
 
     private void SetupLibertyCity()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\CenteredAbove");
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\East");
-        string Description = "For use with Liberty City Remix v35. Centered and Centered above configs available. "
+        Directory.CreateDirectory($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}");
+        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
+        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\CenteredAbove");
+        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\East");
+        string Description = "For use with Liberty City Remix v35 Centered"
             + Environment.NewLine + Environment.NewLine +
-            "1. Install 'Liberty City Remix' according to instructions supplied in the download. Choose the Centered or Centered Above options. Make sure you can load into the map on vanilla GTA before proceeding."
+            "1. Install 'Liberty City Remix' according to instructions supplied in the download. Choose the Centered option. Make sure you can load into the map on vanilla GTA before proceeding."
             + Environment.NewLine +
             "2. Install 'LCPD Peds Pack'. Adds GTA 4 police peds. Install the 'police_overhaul_wfire' dlc pack folder and dlctext.xml entry from: https://drive.google.com/file/d/1pxDvFYXwH57C8bZ37ol1Xbm29YHUbdTb/view?usp=sharing"
             + Environment.NewLine +
@@ -465,11 +451,7 @@ public class ModDataFileManager
             "box"
             + Environment.NewLine +
             "Peter Badoingy";
-
-
-
-
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
+        File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\readme.txt", Description);
     }
     private void SetupSunshineDream()
     {

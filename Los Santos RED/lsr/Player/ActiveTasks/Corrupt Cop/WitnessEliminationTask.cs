@@ -137,11 +137,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             WitnessIsAtHome = RandomItems.RandomPercent(30);
             if (WitnessIsAtHome)
             {
-                WitnessLocation = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
+                WitnessLocation = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented && x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();
             }
             else
             {
-                WitnessLocation = PlacesOfInterest.PossibleLocations.WitnessTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
+                WitnessLocation = PlacesOfInterest.PossibleLocations.WitnessTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();
             }
             
             WitnessVariation = null;
@@ -243,7 +243,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void StartDeadDropPayment()
         {
-            myDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded);
+            myDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded, Player.CurrentLocation);
             if (myDrop != null)
             {
                 myDrop.SetupDrop(MoneyToRecieve, false);

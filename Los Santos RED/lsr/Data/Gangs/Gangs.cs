@@ -1063,13 +1063,13 @@ public class Gangs : IGangs
 
         List<Gang> LPPGangsList = new List<Gang>
         {
-            //LOST_LIB,
-            //Triads_LIB,
-            //Yardies_LIB,
-            //Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
+            LOST_LIB,
+            Triads_LIB,
+            Yardies_LIB,
+            Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
 
 
-            LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Gambetti,Pavano,Lupisella,Messina,Ancelotti,Cartel,Armenian,Yardies,Diablos,
+            Vagos,Families,Ballas,Marabunte,Varrios,Redneck,Korean,Cartel,Armenian,Diablos,
 
 
             //New

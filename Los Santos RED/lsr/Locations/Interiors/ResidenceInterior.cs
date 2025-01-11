@@ -64,5 +64,9 @@ public class ResidenceInterior : Interior
             test.OutfitableLocation = newResidence;
         }
     }
+    public override void AddLocation(PossibleInteriors interiorList)
+    {
+        interiorList.ResidenceInteriors.Add(this);
+    }
 }
 

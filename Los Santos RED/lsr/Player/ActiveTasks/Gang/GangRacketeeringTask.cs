@@ -231,7 +231,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RacketeeringTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RacketeeringTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).ToList();
             List<GameLocation> AvailableSpots = new List<GameLocation>();
             List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
             EnemyGang = null;
@@ -275,7 +275,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 foreach (GameLocation possibleSpot in PossibleSpots)
                 {
                     Zone spotZone = Zones.GetZone(possibleSpot.EntrancePosition);
-                    bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => possibleSpot.EntrancePosition.DistanceTo2D(policeStation.EntrancePosition) < 100f);
+                    bool isNear = PlacesOfInterest.PossibleLocations.PoliceStations.Any(policeStation => policeStation.IsSameState(Player.CurrentLocation) && possibleSpot.EntrancePosition.DistanceTo2D(policeStation.EntrancePosition) < 100f);
                     if (spotZone.InternalGameName == SelectedZone.InternalGameName && !isNear)// && !possibleSpot.HasVendor)
                     {
                         AvailableSpots.Add(possibleSpot);
@@ -286,7 +286,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetHiringDen()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         }
         private void GetRequiredPayment()
         {

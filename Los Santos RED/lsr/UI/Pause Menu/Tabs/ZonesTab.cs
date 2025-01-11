@@ -125,7 +125,7 @@ public class ZonesTab
             List<Gang> gangList = GangTerritories.GetGangs(zone.InternalGameName, 0);
             foreach (Gang gang in gangList)
             {
-                GangDen myDen = PlacesOfInterest.GetMainDen(gang.ID, World.IsMPMapLoaded);
+                GangDen myDen = PlacesOfInterest.GetMainDen(gang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
                 ShopMenu dealerMenu;
                 ShopMenu denMenu;
                 dealerMenu = ShopMenus.GetWeightedRandomMenuFromGroup(gang.DealerMenuGroup);

@@ -177,8 +177,8 @@ public static class StaticStrings
     public static readonly string CokeAreaDrugDealerMenuGroupID = "CokeAreaDrugDealerMenuGroupID";
     public static readonly string CokeAreaDrugCustomerMenuGroupID = "CokeAreaDrugCustomerMenuGroupID";
 
-    public static readonly string LibertyConfigSuffix = "LibertyCity";
-    public static readonly string LibertyConfigFolder = "LibertyCity";
+    public static readonly string LibertyConfigSuffix = "LCRemix";
+    public static readonly string LibertyConfigFolder = "LibertyCityRemix";
 
     public static readonly string LPPConfigSuffix = "LPP";
     public static readonly string LPPConfigFolder = "LibertyPreservationProject";

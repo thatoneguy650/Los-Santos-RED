@@ -162,7 +162,7 @@ public class AdvancedConversation
             ReplyUnknown();
             return;
         }
-        GangDen foundDen = PlacesOfInterest.GetMainDen(gang.ID, World.IsMPMapLoaded);
+        GangDen foundDen = PlacesOfInterest.GetMainDen(gang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         if (foundDen == null)
         {
             ReplyUnknown();

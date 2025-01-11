@@ -497,4 +497,5 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         CopHitPaymentMax = 10500;
         HostileRepLevel = -200;
     }
+
 }

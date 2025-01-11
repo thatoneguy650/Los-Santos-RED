@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Microsoft.VisualBasic;
 using Mod;
@@ -747,6 +748,18 @@ public class GameLocation : ILocationDispatchable
             StoreCamera.SayGreeting = sayGreeting;
             EntryPoint.WriteToConsole("SetupLocationCamera CAM GOT PASSED IN");
         }
+    }
+    public bool IsSameState(LocationData locationData)
+    {
+        if(locationData == null)
+        {
+            return false;
+        }
+        if(locationData.CurrentZone == null)
+        {
+            return false;
+        }
+        return IsSameState(locationData.CurrentZone.GameState);
     }
     public bool IsSameState(GameState state)
     {

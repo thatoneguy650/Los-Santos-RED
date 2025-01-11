@@ -62,24 +62,27 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_BlankLocations();
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
-        PossibleLocations centeredAbove = LibertyCityLocations.Copy();
-        foreach (GameLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
-        {
-            bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
-        }
-        centeredAbove.PedCustomizerLocation.AddDistanceOffset(new Vector3(0f, 0f, 200f));
-        Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\CenteredAbove\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
+        //PossibleLocations centeredAbove = LibertyCityLocations.Copy();
+        //foreach (GameLocation bl in centeredAbove.InteractableLocations())//for centered above we want to add 200 of height
+        //{
+        //    bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
+        //}
+        //centeredAbove.PedCustomizerLocation.AddDistanceOffset(new Vector3(0f, 0f, 200f));
+        //Serialization.SerializeParam(centeredAbove, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\CenteredAbove\\Locations_{StaticStrings.LibertyConfigSuffix}CenteredAbove.xml");
 
-        PossibleLocations eastLC = LibertyCityLocations.Copy();
-        foreach (GameLocation bl in eastLC.InteractableLocations())//for centered above we want to add 200 of height
-        {
-            bl.AddDistanceOffset(new Vector3(4949.959f, -1184.845f, -0.000109f));
-        }
-        eastLC.PedCustomizerLocation.AddDistanceOffset(new Vector3(4949.959f, -1184.845f, -0.000109f));
-        Serialization.SerializeParam(eastLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\East\\Locations_{StaticStrings.LibertyConfigSuffix}East.xml");
+        //PossibleLocations eastLC = LibertyCityLocations.Copy();
+        //foreach (GameLocation bl in eastLC.InteractableLocations())//for centered above we want to add 200 of height
+        //{
+        //    bl.AddDistanceOffset(new Vector3(4949.959f, -1184.845f, -0.000109f));
+        //}
+        //eastLC.PedCustomizerLocation.AddDistanceOffset(new Vector3(4949.959f, -1184.845f, -0.000109f));
+        //Serialization.SerializeParam(eastLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\East\\Locations_{StaticStrings.LibertyConfigSuffix}East.xml");
 
 
         PossibleLocations lppLC = LibertyCityLocations.Copy();
+
+        lppLC.PedCustomizerLocation = PlacesOfInterest.PossibleLocations.PedCustomizerLocation;
+
         foreach (GameLocation bl in lppLC.InteractableLocations())//for centered above we want to add 200 of height
         {
             bl.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));

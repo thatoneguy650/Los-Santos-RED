@@ -42,6 +42,9 @@ public class BankInterior : Interior
         player.Violations.AddViolating(StaticStrings.BankRobberyCrimeID);
         base.OnCarryingWeaponInside(player);
     }
-
+    public override void AddLocation(PossibleInteriors interiorList)
+    {
+        interiorList.BankInteriors.Add(this);
+    }
 }
 

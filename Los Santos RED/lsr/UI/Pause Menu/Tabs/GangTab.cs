@@ -57,7 +57,7 @@ public class GangTab
     {
 
 
-        GangDen myDen = PlacesOfInterest.GetMainDen(gr.Gang.ID, World.IsMPMapLoaded);//PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
+        GangDen myDen = PlacesOfInterest.GetMainDen(gr.Gang.ID, World.IsMPMapLoaded, Player.CurrentLocation);//PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
 
         if(myDen == null)
         {

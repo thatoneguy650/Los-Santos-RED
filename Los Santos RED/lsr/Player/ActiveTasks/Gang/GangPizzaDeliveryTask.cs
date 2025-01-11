@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetHiringDen()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         }
         private void GetRequiredPayment()
         {
@@ -134,7 +134,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (ChosenItem != "")
             {
                 ItemToDeliver = ModItems.Get(ChosenItem);
-                ClosestPlace = PlacesOfInterest.PossibleLocations.Restaurants.Where(x => x.Menu?.Items.Any(y => y.ModItemName == ChosenItem) == true).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                ClosestPlace = PlacesOfInterest.PossibleLocations.Restaurants.Where(x => x.IsSameState(Player.CurrentLocation) && x.Menu?.Items.Any(y => y.ModItemName == ChosenItem) == true).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             }
             if (ItemToDeliver != null)
             {

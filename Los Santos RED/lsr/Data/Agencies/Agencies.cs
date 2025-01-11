@@ -376,7 +376,7 @@ public class Agencies : IAgencies
             GRPSECHS,SECURO,MERRY,BOBCAT,
             UNK,
         };
-        Serialization.SerializeParams(LCAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
+        Serialization.SerializeParams(LCAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Agencies_{StaticStrings.LibertyConfigSuffix}.xml");
 
 
         List<Agency> LCPPAgenicesList = new List<Agency>

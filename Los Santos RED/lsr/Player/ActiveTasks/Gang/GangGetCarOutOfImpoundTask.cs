@@ -208,8 +208,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTaskData()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
-            ImpoundLocation = PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.HasImpoundLot && x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
+            ImpoundLocation = PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.HasImpoundLot && x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();
             if(SpawnCar())
             {
                 SpawnedVehicle = true;

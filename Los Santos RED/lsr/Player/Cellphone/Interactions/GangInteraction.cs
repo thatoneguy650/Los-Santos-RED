@@ -433,7 +433,7 @@ public class GangInteraction : IContactMenuInteraction
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.DeliveryPaymentMin:C0}-{ActiveGang.DeliveryPaymentMax:C0}~s~";
         GangDeliverySubMenu.RemoveBanner();
         List<string> PossibleItems = ModItems.AllItems().Where(x => x.ItemSubType == ItemSubType.Narcotic).Select(x => x.Name).ToList();
-        GangDen ActiveGangGangDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded);
+        GangDen ActiveGangGangDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
 
         List<string> AvailableItems = new List<string>();
         foreach(string item in PossibleItems)
@@ -566,7 +566,7 @@ public class GangInteraction : IContactMenuInteraction
     }
     private void RequestDenAddress()
     {
-        GangDen myDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded);
+        GangDen myDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         if (myDen != null)
         {
             Player.GPSManager.AddGPSRoute(myDen.Name, myDen.EntrancePosition);

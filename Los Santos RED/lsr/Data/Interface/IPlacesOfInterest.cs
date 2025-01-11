@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Locations;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace LosSantosRED.lsr.Interface
         List<ILocationImpoundable> VehicleImpoundLocations();
         List<ILocationRespawnable> HospitalRespawnLocations();
         List<ILocationSetupable> LocationsToSetup();
-        DeadDrop GetUsableDeadDrop(bool IsOnMPMap);
-        GangDen GetMainDen(string iD, bool isMPMapLoaded);
+        DeadDrop GetUsableDeadDrop(bool IsOnMPMap, LocationData locationData);
+        GangDen GetMainDen(string iD, bool isMPMapLoaded, LocationData locationData);
         List<ILocationAreaRestrictable> RestrictedAreaLocations();
         List<ILEDispatchableLocation> LEDispatchLocations();
     }

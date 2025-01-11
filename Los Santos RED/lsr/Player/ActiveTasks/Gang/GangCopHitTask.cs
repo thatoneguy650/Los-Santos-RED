@@ -108,7 +108,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetHiringDen()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         }
         protected override void GetPayment()
         {

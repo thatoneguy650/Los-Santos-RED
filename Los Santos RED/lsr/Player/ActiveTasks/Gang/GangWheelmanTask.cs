@@ -534,7 +534,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRobberyInformation()
         {
-            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RobberyTaskLocations().Where(x=> (string.IsNullOrEmpty(ForcedLocationType) || ForcedLocationType == "Random" || x.TypeName == ForcedLocationType) && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
+            List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RobberyTaskLocations().Where(x=> (string.IsNullOrEmpty(ForcedLocationType) || ForcedLocationType == "Random" || x.TypeName == ForcedLocationType) && x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).ToList();
             List<GameLocation> AvailableSpots = new List<GameLocation>();
             foreach (GameLocation possibleSpot in PossibleSpots)
             {
@@ -553,7 +553,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
             }
             RobberyLocation = AvailableSpots.PickRandom();
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
             HoursToRobbery = RandomItems.GetRandomNumberInt(8, 12);
             RobberyTime = Time.CurrentDateTime.AddHours(HoursToRobbery);
             //RobbersToSpawn = RandomItems.GetRandomNumberInt(1, 3);

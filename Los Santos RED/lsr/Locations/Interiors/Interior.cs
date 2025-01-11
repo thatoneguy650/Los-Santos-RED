@@ -544,4 +544,9 @@ public class Interior
         InteriorTintColor = -1;
         InteriorSetStyleID = -1;
     }
+
+    public virtual void AddLocation(PossibleInteriors lppInteriors)
+    {
+        lppInteriors.GeneralInteriors.Add(this);
+    }
 }

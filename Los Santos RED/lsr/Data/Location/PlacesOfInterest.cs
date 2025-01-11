@@ -3,6 +3,7 @@ using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Locations;
 using Rage;
 using Rage.Native;
 using System;
@@ -152,18 +153,18 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.MilitaryBases);
         return AllLocations;
     }
-    public DeadDrop GetUsableDeadDrop(bool IsMPMap)
+    public DeadDrop GetUsableDeadDrop(bool IsMPMap, LocationData locationData)
     {
-        return PossibleLocations.DeadDrops.Where(x => x.CanUse && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
+        return PossibleLocations.DeadDrops.Where(x => x.CanUse && x.IsCorrectMap(IsMPMap) && x.IsSameState(locationData?.CurrentZone?.GameState)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
     }
-    public GangDen GetMainDen(string gangID, bool IsMPMap)
+    public GangDen GetMainDen(string gangID, bool IsMPMap, LocationData locationData)
     {
-        GangDen mainDen = PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == gangID && x.IsPrimaryGangDen && x.IsCorrectMap(IsMPMap)).FirstOrDefault();
+        GangDen mainDen = PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == gangID && x.IsPrimaryGangDen && x.IsSameState(locationData?.CurrentZone?.GameState) && x.IsCorrectMap(IsMPMap)).FirstOrDefault();
         if (mainDen != null)
         {
             return mainDen;
         }
-        return PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == gangID && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
+        return PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == gangID && x.IsSameState(locationData?.CurrentZone?.GameState) && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
     }
     private void DefaultConfig()
     {

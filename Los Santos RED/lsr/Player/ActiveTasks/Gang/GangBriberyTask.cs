@@ -168,7 +168,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetTargetBank()
         {
-            DepositLocation = PlacesOfInterest.PossibleLocations.Banks.PickRandom();     
+            DepositLocation = PlacesOfInterest.PossibleLocations.Banks.Where(x=>x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();     
             if(DepositLocation  == null)
             {
                 return;
@@ -177,7 +177,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetHiringDen()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         }
         private void GetPayment()
         {

@@ -126,7 +126,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetDeadDrop()
         {
-            DeadDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded);
+            DeadDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded, Player.CurrentLocation);
         }
         private void GetRequiredPayment()
         {

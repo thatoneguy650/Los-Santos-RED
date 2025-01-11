@@ -60,4 +60,8 @@ public class GangDenInterior : Interior
         }
         base.AddDistanceOffset(offsetToAdd);
     }
+    public override void AddLocation(PossibleInteriors interiorList)
+    {
+        interiorList.GangDenInteriors.Add(this);
+    }
 }

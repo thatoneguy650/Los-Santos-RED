@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         string ModelName { get; }
         Dispatcher Dispatcher { get; }
+        LocationData CurrentLocation { get; }
 
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
     }

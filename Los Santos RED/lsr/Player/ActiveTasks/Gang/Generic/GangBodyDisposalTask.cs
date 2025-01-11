@@ -61,17 +61,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected override bool GetTaskData()
         {
-            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
             if (HiringGangDen == null)
             {
                 return false;
             }
-            CrusherLocation = PlacesOfInterest.PossibleLocations.CarCrushers.Where(x => x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
+            CrusherLocation = PlacesOfInterest.PossibleLocations.CarCrushers.Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();
             if (CrusherLocation == null)
             {
                 return false;
             }
-            SpawnLocation = PlacesOfInterest.PossibleLocations.GenericTaskLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded)).PickRandom();
+            SpawnLocation = PlacesOfInterest.PossibleLocations.GenericTaskLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).PickRandom();
             if (SpawnLocation == null)
             {
                 return false;

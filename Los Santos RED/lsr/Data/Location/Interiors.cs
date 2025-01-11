@@ -45,7 +45,7 @@ public class Interiors : IInteriors
     }
     private void DefaultConfig_LibertyCity()
     {
-        Interiors_Liberty interiors_Liberty = new Interiors_Liberty();
+        Interiors_Liberty interiors_Liberty = new Interiors_Liberty(this);
         interiors_Liberty.DefaultConfig();
     }
     private void DefaultConfig()

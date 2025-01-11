@@ -40,6 +40,10 @@ public class BarberShopInterior : Interior
             //test.TotalCash = RandomItems.GetRandomNumberInt(Bank.DrawerCashMin, Bank.DrawerCashMax);
         }
     }
+    public override void AddLocation(PossibleInteriors interiorList)
+    {
+        interiorList.BarberShopInteriors.Add(this);
+    }
 
 }
 
