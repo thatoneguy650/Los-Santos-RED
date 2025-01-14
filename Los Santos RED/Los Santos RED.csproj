@@ -96,16 +96,16 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHook">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -133,7 +133,9 @@
     <Compile Include="lsr\Data\Gangs\LoanParameters.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
+    <Compile Include="lsr\Data\Interface\ICraftableItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Items\CraftableItems.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\BlankLocationsData_Liberty.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_SunshineDream.cs" />
     <Compile Include="lsr\Data\Location\Interiors_Liberty.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangAmbushTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Generic Contact\PayoffContactTask.cs" />
+    <Compile Include="lsr\Player\Crafting\Craft.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />
@@ -503,6 +506,7 @@
     <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\CraftableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
@@ -691,6 +695,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugTrunkSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugVehicleSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugWeaponsSubMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Main\CraftingMenu.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsAddTab.cs" />

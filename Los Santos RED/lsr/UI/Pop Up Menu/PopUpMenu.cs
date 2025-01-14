@@ -1233,7 +1233,7 @@ public class PopUpMenu
                 IconNameDefault = "burnerphone_white.png",
                 IconNameSelected = "burnerphone_red.png",
                 IconNameInvalid = "burnerphone_black.png" },
-        };
+    };
         List<PopUpBox> ActionsSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
@@ -1247,6 +1247,7 @@ public class PopUpMenu
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
             new PopUpBox(9,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
             new PopUpBox(10,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
+            new PopUpBox(11, "Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },
         };
 
         List<PopUpBox> TaxiOptionsSubMenu = new List<PopUpBox>()
@@ -1409,6 +1410,7 @@ public class PopUpMenu
             ID++;
         }
 
+        
         NextPageMenuMap = new PopUpBox(999, "Next Page", new Action(() => CurrentPage++), "") { ClosesMenu = false };
         PrevPageMenuMap = new PopUpBox(998, "Prev Page", new Action(() => CurrentPage--), "") { ClosesMenu = false };
 
