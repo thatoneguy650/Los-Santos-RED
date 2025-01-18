@@ -1,6 +1,9 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
+using System.Linq;
+using LosSantosRED.lsr.Helper.Crafting;
+using System.Collections.Generic;
 
 namespace Mod
 {
@@ -10,28 +13,98 @@ namespace Mod
         private ICraftableItems CraftableItems;
         private IModItems ModItems;
         private ISettingsProvideable Settings;
+        private IWeapons Weapons;
         private ICrimes Crimes;
 
-        public Crafting(Player player, ICraftableItems craftableItems, IModItems modItems, ISettingsProvideable settings, ICrimes crimes)
+        public Crafting(Player player, ICraftableItems craftableItems, IModItems modItems, ISettingsProvideable settings,IWeapons weapons, ICrimes crimes)
         {
             Player = player;
             CraftableItems = craftableItems;
             ModItems = modItems;
             Settings = settings;
+            Weapons = weapons;
             Crimes = crimes;
+        }
+        public void Setup()
+        {
+            //Pre-processing for optimization - when a player wants to craft multiple batches of an ingredient, we can cache the last crafted recipe or have a lookup table making it faster to read instead of using .Find() over and over. Re-evaluate later.
+            SetupCraftableLookup();
+        }
+        private void SetupCraftableLookup()
+        {
+            CraftableItems.CraftablesLookup = new System.Collections.Generic.Dictionary<string, CraftableItemLookupModel>();
+            //Just holding reference to the craftable item in case any of the other details are required anywhere else.
+            for (int i = 0; i < CraftableItems.Items.Count; i++)
+            {
+                CraftableItems.CraftablesLookup.Add(
+                    CraftableItems.Items[i].Name, 
+                    new CraftableItemLookupModel() { 
+                        RecipeName = CraftableItems.Items[i].Name, 
+                        IngredientLookup = CraftingUtils.GetIngredientLookup(CraftableItems.Items[i].Ingredients),
+                        CraftableItem = CraftableItems.Items[i],
+                    });
+            }
+        }
+        private void DeductIngredientsFromInventory(List<InventoryItem> ingredientsSatisfied, CraftableItemLookupModel craftItem, int quantity)
+        {
+            foreach(var ingredient in ingredientsSatisfied)
+            {
+                Player.Inventory.Remove(ModItems.Get(craftItem.IngredientLookup[ingredient.ModItem.Name].IngredientName), craftItem.IngredientLookup[ingredient.ModItem.Name].Quantity * quantity);
+            }
+        }
+        private bool CheckIngredientsAvailable(CraftableItemLookupModel craftItem, int ingredientsToSatisfy, List<InventoryItem> ingredientsSatisfied, int quantity)
+        {
+            for (int i = 0; i < Player.Inventory.ItemsList.Count && ingredientsSatisfied.Count < ingredientsToSatisfy; i++)
+            {
+                if (craftItem.IngredientLookup.ContainsKey(Player.Inventory.ItemsList[i].ModItem.Name))
+                {
+                    if ((craftItem.IngredientLookup[Player.Inventory.ItemsList[i].ModItem.Name].Quantity * quantity) <= Player.Inventory.ItemsList[i].Amount)
+                    {
+                        ingredientsSatisfied.Add(Player.Inventory.ItemsList[i]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            return ingredientsSatisfied.Count == ingredientsToSatisfy;
         }
         public void CraftItem(string productName, int quantity)
         {
-            var itemToAdd = Player.Inventory.ItemsList.Find(item => item.ModItem.Name == productName);
-            if(itemToAdd != null)
+            List<InventoryItem> ingredientsSatisfied = new List<InventoryItem>();
+            int ingredientsToSatisfy = CraftableItems.CraftablesLookup[productName].IngredientLookup.Count;
+            CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
+            bool ingredientsAvailableForCrafting = CheckIngredientsAvailable(craftItem, ingredientsToSatisfy, ingredientsSatisfied, quantity);
+            if(ingredientsAvailableForCrafting)
             {
-                itemToAdd.AddAmount(quantity);
+                DeductIngredientsFromInventory(ingredientsSatisfied, craftItem, quantity);
+                switch (CraftableItems.CraftablesLookup[productName].CraftableItem.CraftType)
+                {
+                    case CraftableType.Weapon:
+                        WeaponInformation myGun = Weapons.GetWeapon(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant);
+                        if (myGun != null)
+                        {
+                            Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+                        }
+                        break;
+                    case CraftableType.ModItem:
+                    default:
+                        Player.Inventory.Add(ModItems.Get(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant), (quantity * CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
+                        break;
+                }
+                if(Player.AnyHumansNear && !string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
+                {
+                    Crime crimeObserved = Crimes.GetCrime(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
+                    CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true) { InteriorSeen = Player.CurrentLocation.CurrentInterior };
+                    Player.PoliceResponse.AddCrime(crimeObserved, description, false);
+                    Player.Investigation.Start(Player.Character.Position, true, true, false, false, Player.CurrentLocation.CurrentInterior);
+                }
+                Game.DisplayNotification($"~g~{productName} ~w~crafted");
             }
             else
             {
-                itemToAdd = new InventoryItem(ModItems.Get(productName), Settings);
-                itemToAdd.RemainingPercent = quantity;
-                Player.Inventory.ItemsList.Add(itemToAdd);
+                Game.DisplayNotification("You do not have the required materials to craft this item");
             }
         }
     }

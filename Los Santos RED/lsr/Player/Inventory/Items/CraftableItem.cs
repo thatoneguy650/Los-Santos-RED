@@ -10,15 +10,18 @@ public class CraftableItem
     public CraftableItem()
     {
     }
-    public CraftableItem(string name, List<Ingredient> ingredients, bool isIllegal)
+    public CraftableItem(string name, string resultant, List<Ingredient> ingredients)
     {
         Name = name;
+        Resultant = resultant;
         Ingredients = ingredients;
-        IsIllegal = isIllegal;
     }
     public string Name { get; set; }
+    public string Resultant { get; set; }
+    public int ResultantAmount { get; set; }
     public List<Ingredient> Ingredients { get; set; }
-    public bool? IsIllegal { get; set; }
+    public CraftableType CraftType { get; set; }
+    public string CrimeId { get; set; }
     [XmlIgnore]
     private string _ingredientList;
     [XmlIgnore]
@@ -49,4 +52,10 @@ public class Ingredient
 {
     public string IngredientName { get; set; }
     public int Quantity { get; set; }
+}
+
+public enum CraftableType
+{
+    ModItem,
+    Weapon
 }
