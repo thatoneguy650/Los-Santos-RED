@@ -16,7 +16,28 @@ public class Cellphones : ICellphones
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Cellphones*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Cellphones.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Cellphones config: {ConfigFile.FullName}", 0);
+            CellphoneList = Serialization.DeserializeParams<CellphoneData>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Cellphones config  {ConfigFileName}", 0);
+            CellphoneList = Serialization.DeserializeParams<CellphoneData>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Cellphones config found, creating default", 0);
+            DefaultConfig();
+            DefaultConfig_LosSantos2008();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Cellphones_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Cellphones config: {ConfigFile.FullName}", 0);

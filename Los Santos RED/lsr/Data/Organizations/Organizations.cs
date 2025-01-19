@@ -31,7 +31,30 @@ public class Organizations : IOrganizations
     public void ReadConfig()
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Organizations*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo taskFile = taskDirectory.GetFiles("Organizations.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (taskFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Organizations Config: {taskFile.FullName}", 0);
+            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(taskFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Organizations Config  {ConfigFileName}", 0);
+            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Organizations config found, creating default", 0);
+            SetupDefault();
+            DefaultConfig_FullExpanded();
+            DefaultConfig_LibertyCity();
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo taskFile = taskDirectory.GetFiles($"Organizations_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (taskFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Organizations Config: {taskFile.FullName}", 0);

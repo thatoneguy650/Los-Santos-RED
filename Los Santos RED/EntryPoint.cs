@@ -65,13 +65,12 @@ public static class EntryPoint
     {
         while (true)
         {
-            if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
+            if ((ModController == null || (!ModController.IsRunning)) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
             {
                 if (NotificationID != 0)
                 {
                     Game.RemoveNotification(NotificationID);
                 }
-                Game.FadeScreenOut(500, true);
                 ModController = new ModController();
                 ModController.Setup();
             }

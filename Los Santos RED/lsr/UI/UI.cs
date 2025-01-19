@@ -59,6 +59,7 @@ public class UI : IMenuProvideable
 
     public AboutMenu AboutMenu { get; private set; }
     public PlayerInfoMenu PlayerInfoMenu { get; private set; }
+    public ConfigPauseMenu ConfigPauseMenu { get; private set; }
     public SavePauseMenu SavePauseMenu { get; private set; }
     public MessagesMenu MessagesMenu { get; private set; }
 
@@ -100,6 +101,7 @@ public class UI : IMenuProvideable
         MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
         LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this);
         TopRightMenu = new TopRightMenu(DisplayablePlayer, Time, Settings, this);
+        ConfigPauseMenu = new ConfigPauseMenu(saveablePlayer, Time, Settings, modDataFileManager.GameConfigs);
     }
     public void Setup()
     {
@@ -109,6 +111,7 @@ public class UI : IMenuProvideable
         MainMenu.Setup();
         PlayerInfoMenu.Setup();
         SavePauseMenu.Setup();
+        ConfigPauseMenu.Setup();
         MessagesMenu.Setup();
         AboutMenu.Setup();
         ActionPopUpMenu.Setup();
@@ -257,6 +260,7 @@ public class UI : IMenuProvideable
         TimerBarPool.Draw();
         MenuPool.ProcessMenus();
         PlayerInfoMenu.Update();
+        ConfigPauseMenu.Update();
         SavePauseMenu.Update();
         MessagesMenu.Update();
         AboutMenu.Update();

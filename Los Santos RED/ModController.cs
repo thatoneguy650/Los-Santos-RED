@@ -4,6 +4,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,9 @@ namespace LosSantosRED.lsr
         private NAudioPlayer NAudioPlayer2;
         private WeatherReporting Weather;
         private Mod.World World;
-        
+        private List<GameFiber> _activeFibers = new List<GameFiber>();
+        private GameFiber CoreLogic, InputLogic, VanillaLogic, UILogic1, UILogic2, UILogic3, DebugLogic;
+
         public ModDataFileManager ModDataFileManager { get; private set; }
         private WeatherManager WeatherManager;
 
@@ -39,6 +42,8 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();//test
         }
         public bool IsRunning { get; private set; }
+        public bool IsLoadingAltConfig { get; set; } = false; 
+        public string CurrentConfigName { get; set; } = "Default";
         public bool RunUI { get; set; } = true;
         public bool RunInput { get; set; } = true;
         public bool RunOther { get; set; } = true;
@@ -52,14 +57,20 @@ namespace LosSantosRED.lsr
             {
                 GameFiber.Yield();
             }
+            Game.FadeScreenOut(500, true);
+
+
             ModDataFileManager = new ModDataFileManager();
-            ModDataFileManager.Setup();
+
+            if (CurrentConfigName.Equals("Default"))
+            {
+                ModDataFileManager.Setup();
+            }
+            else
+            {
+                ModDataFileManager.Setup(CurrentConfigName);
+            }
             GameFiber.Yield();
-
-
-
-
-
 
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
             NAudioPlayer.Setup();
@@ -119,9 +130,9 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus, ModDataFileManager);
             Debug.Setup();
             GameFiber.Yield();
-
             PedSwap.Setup();
             GameFiber.Yield();
+
             SetTaskGroups();
             GameFiber.Yield();
             StartCoreLogic();
@@ -134,6 +145,7 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             GameFiber.Yield();
 #endif
+
             UI.SetupDebugMenu();
             Game.FadeScreenIn(500, true);
             DisplayLoadSuccessfulMessage();
@@ -161,8 +173,22 @@ namespace LosSantosRED.lsr
             Weather.Dispose();
             Debug.Dispose();
             WeatherManager.Dispose();
-            Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
-            EntryPoint.WriteToConsole($"Has Been Deactivated",0);
+
+            if (!IsLoadingAltConfig)
+            {
+                Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
+                EntryPoint.WriteToConsole($"Has Been Deactivated", 0);
+            }
+        }
+        public void LoadAltConfig()
+        {
+            Dispose();
+            GameFiber.Yield();
+            WriteFibersToConsole();
+            Setup();
+            GameFiber.Yield();
+
+            IsLoadingAltConfig = false;
         }
         public void CrashUnload()
         {
@@ -257,7 +283,7 @@ namespace LosSantosRED.lsr
             foreach(ModTaskGroup modTaskGroup in TaskGroups)
             {
                 //Start a new gamefiber to loop our tasks
-                GameFiber.StartNew(delegate
+                CoreLogic = GameFiber.StartNew(delegate
                 {
                     try
                     {
@@ -274,12 +300,13 @@ namespace LosSantosRED.lsr
                         Dispose();
                     }
                 }, $"Run Logic {modTaskGroup.Name}");
+                AddFiberToList(CoreLogic);
             } 
             GameFiber.Yield();
         }
         private void StartInputLogic()
         {
-            GameFiber.StartNew(delegate
+            InputLogic = GameFiber.StartNew(delegate
             {
                 try
                 {
@@ -300,7 +327,7 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Input Logic");
 
-            GameFiber.StartNew(delegate
+            VanillaLogic = GameFiber.StartNew(delegate
             {
                 try
                 {
@@ -320,13 +347,16 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Vanilla Manager Logic");
+            AddFiberToList(InputLogic);
+            AddFiberToList(VanillaLogic);
         }
         private void StartUILogic()
         {
-            GameFiber.StartNew(delegate
+            UILogic1 = GameFiber.StartNew(delegate
             {
                 try
                 {
+                    EntryPoint.WriteToConsole("Starting UI Logic 1");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -339,6 +369,7 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
+                    EntryPoint.WriteToConsole("Ending UI Logic 1");
                 }
                 catch (Exception e)
                 {
@@ -347,10 +378,11 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run UI Logic");
-            GameFiber.StartNew(delegate
+            UILogic2 = GameFiber.StartNew(delegate
             {
                 try
                 {
+                    EntryPoint.WriteToConsole("Starting UI Logic 2");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -359,6 +391,7 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
+                    EntryPoint.WriteToConsole("Ending UI Logic 2");
                 }
                 catch (Exception e)
                 {
@@ -367,10 +400,11 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run UI Logic 2");
-            GameFiber.StartNew(delegate
+            UILogic3 = GameFiber.StartNew(delegate
             {
                 try
                 {
+                    EntryPoint.WriteToConsole("Starting UI Logic 3");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -381,6 +415,7 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
+                    EntryPoint.WriteToConsole("Ending UI Logic 3");
                 }
                 catch (Exception e)
                 {
@@ -389,10 +424,13 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run UI Logic 3");
+            AddFiberToList(UILogic1);
+            AddFiberToList(UILogic2);
+            AddFiberToList(UILogic3);
         }
         private void StartDebugLogic()
         {
-            GameFiber.StartNew(delegate
+            DebugLogic = GameFiber.StartNew(delegate
             {
                 try
                 {
@@ -412,6 +450,7 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Debug Logic");
+            AddFiberToList(DebugLogic);
         }
         private void DisplayCrashMessage()
         {
@@ -444,6 +483,8 @@ namespace LosSantosRED.lsr
             }
             Game.DisplayHelp(controlString);
             EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
+            Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {CurrentConfigName} Config Loaded");
+            EntryPoint.WriteToConsole($"Loaded {CurrentConfigName} config", 0);
         }
         public string FormatButtons(ControllerButtons modifier, ControllerButtons key)
         {
@@ -489,6 +530,23 @@ namespace LosSantosRED.lsr
             int TotalPeds = World.Pedestrians.PedExts.Count();
             EntryPoint.WriteToConsole($"ADDED NEW SPAWN ERROR {spawnError.ModelHash} {spawnError.SpawnLocation} {spawnError.GameTimeSpawned} Totalvehicles {Totalvehicles} TotalPeds {TotalPeds}");
             World.SpawnErrors.Add(spawnError);
+        }
+        private void AddFiberToList(GameFiber fiber)
+        {
+            _activeFibers.Add(fiber);
+        }
+        private void WriteFibersToConsole()
+        {
+            foreach (var fiber in _activeFibers)
+            {
+                // Write basic information about each fiber to the console
+                EntryPoint.WriteToConsole($"Fiber Name: {fiber.Name}");
+                EntryPoint.WriteToConsole($"Is Alive: {fiber.IsAlive}");
+                EntryPoint.WriteToConsole($"Is Sleeping: {fiber.IsSleeping}");
+                EntryPoint.WriteToConsole($"Is Hibernating: {fiber.IsHibernating}");
+                EntryPoint.WriteToConsole($"Is Entry Fiber: {fiber.IsEntryFiber}");
+                EntryPoint.WriteToConsole("--------------------------------------");
+            }
         }
     }
 }

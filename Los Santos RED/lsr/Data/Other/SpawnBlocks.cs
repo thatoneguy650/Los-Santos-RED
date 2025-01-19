@@ -20,7 +20,29 @@ public class SpawnBlocks : ISpawnBlocks
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("SpawnBlocks*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("SpawnBlocks.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Spawn Blocks config: {ConfigFile.FullName}", 0);
+            PossibleSpawnBlocks = Serialization.DeserializeParam<PossibleSpawnBlocks>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Spawn Blocks config  {ConfigFileName}", 0);
+            PossibleSpawnBlocks = Serialization.DeserializeParam<PossibleSpawnBlocks>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Spawn Blocks config found, creating default", 0);
+            DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"SpawnBlocks_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Spawn Blocks config: {ConfigFile.FullName}", 0);

@@ -26,7 +26,7 @@ public class Jurisdictions : IJurisdictions
     {
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ZoneFile = LSRDirectory.GetFiles("ZoneJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ZoneFile = LSRDirectory.GetFiles("ZoneJurisdictions.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ZoneFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}",0);
@@ -50,7 +50,7 @@ public class Jurisdictions : IJurisdictions
         }
 
 
-        FileInfo CountyFile = LSRDirectory.GetFiles("CountyJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo CountyFile = LSRDirectory.GetFiles("CountyJurisdictions.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (CountyFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}",0);
@@ -59,6 +59,57 @@ public class Jurisdictions : IJurisdictions
         else if (File.Exists(CountyConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded County Jurisdictions config  {CountyConfigFileName}",0);
+            CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No County Jurisdiction config found, creating default", 0);
+            DefaultCountyConfig_FullExpandedJurisdiction();
+            DefaultCountyConfig_LosSantos2008();
+            DefaultCountyConfig_LibertyCity();
+            DefaultCountyConfig_SunshineDream();
+            DefaultCountyConfig_Simple();
+            DefaultCountyConfig();
+            DefaultCountyConfig_LibertyPP();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ZoneFile = LSRDirectory.GetFiles($"ZoneJurisdictions_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ZoneFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}", 0);
+            ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneFile.FullName);
+        }
+        else if (File.Exists(ZoneConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config  {ZoneConfigFileName}", 0);
+            ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Zone Jurisdiction config found, creating default", 0);
+            DefaultZoneConfig_FullExpandedJurisdiction();
+            DefaultZoneConfig_LosSantos2008();
+            DefaultZoneConfig_LibertyCity();
+            DefaultZoneConfig_SunshineDream();
+            DefaultZoneConfig_Simple();
+            DefaultZoneConfig();
+            DefaultZoneConfig_LibertyPP();
+        }
+
+
+        FileInfo CountyFile = LSRDirectory.GetFiles($"$CountyJurisdictions_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (CountyFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}", 0);
+            CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyFile.FullName);
+        }
+        else if (File.Exists(CountyConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config  {CountyConfigFileName}", 0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyConfigFileName);
         }
         else

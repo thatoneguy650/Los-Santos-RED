@@ -20,7 +20,7 @@ public class Intoxicants : IIntoxicants
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Itoxicants*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Itoxicants.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Intoxicants config: {ConfigFile.FullName}",0);
@@ -29,6 +29,26 @@ public class Intoxicants : IIntoxicants
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Intoxicants config  {ConfigFileName}",0);
+            IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Intoxicants config found, creating default", 0);
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Itoxicants_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Intoxicants config: {ConfigFile.FullName}", 0);
+            IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Intoxicants config  {ConfigFileName}", 0);
             IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFileName);
         }
         else

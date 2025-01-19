@@ -17,7 +17,27 @@ public class Speeches : ISpeeches
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Speeches*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Speeches.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Speeches config: {ConfigFile.FullName}", 0);
+            SpeechLookups = Serialization.DeserializeParams<SpeechData>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Speeches config  {ConfigFileName}", 0);
+            SpeechLookups = Serialization.DeserializeParams<SpeechData>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Speeches config found, creating default", 0);
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Speeches_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Speeches config: {ConfigFile.FullName}", 0);

@@ -43,7 +43,7 @@ public class Gangs : IGangs
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Gangs*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Gangs.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Gangs config: {ConfigFile.FullName}",0);
@@ -52,6 +52,29 @@ public class Gangs : IGangs
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Gangs config  {ConfigFileName}",0);
+            GangsList = Serialization.DeserializeParams<Gang>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Gangs config found, creating default", 0);
+            SetupDefaults();
+            DefaultConfig_Simple();
+            DefaultConfig();
+            DefaultConfig_LibertyCity();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Gangs_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Gangs config: {ConfigFile.FullName}", 0);
+            GangsList = Serialization.DeserializeParams<Gang>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Gangs config  {ConfigFileName}", 0);
             GangsList = Serialization.DeserializeParams<Gang>(ConfigFileName);
         }
         else

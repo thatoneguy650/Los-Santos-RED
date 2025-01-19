@@ -76,7 +76,7 @@ public class Crimes : ICrimes
     {
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}",0);
@@ -90,6 +90,27 @@ public class Crimes : ICrimes
         else
         {
             EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);       
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        SetupCrimes();
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
+            CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Crimes config  {ConfigFileName}", 0);
+            CrimeList = Serialization.DeserializeParams<Crime>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);
             DefaultConfig();
         }
     }

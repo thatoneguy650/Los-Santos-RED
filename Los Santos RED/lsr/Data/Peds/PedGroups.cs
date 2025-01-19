@@ -19,10 +19,30 @@ public class PedGroups : IPedGroups
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("PedGroups*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("PedGroups.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Ped Groups config: {ConfigFile.FullName}",0);
+            PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Ped Groups config  {ConfigFileName}", 0);
+            PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Ped Groups config found, creating default", 0);
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"PedGroups_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Ped Groups config: {ConfigFile.FullName}", 0);
             PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))

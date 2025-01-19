@@ -26,7 +26,28 @@ public class WantedLevels : IWantedLevels
     public void ReadConfig()
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("WantedLevels*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo taskFile = taskDirectory.GetFiles("WantedLevels.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (taskFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded WantedLevels Config: {taskFile.FullName}", 0);
+            WantedLevelList = Serialization.DeserializeParams<WantedLevel>(taskFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded WantedLevels Config  {ConfigFileName}", 0);
+            WantedLevelList = Serialization.DeserializeParams<WantedLevel>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No WantedLevel config found, creating default", 0);
+            SetupDefault();
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo taskFile = taskDirectory.GetFiles($"WantedLevels_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (taskFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded WantedLevels Config: {taskFile.FullName}", 0);

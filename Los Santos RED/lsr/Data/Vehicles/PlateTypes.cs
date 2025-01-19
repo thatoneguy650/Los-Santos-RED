@@ -22,7 +22,30 @@ public class PlateTypes : IPlateTypes
     {
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("PlateTypes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("PlateTypes.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded PlateTypes config: {ConfigFile.FullName}", 0);
+            PlateTypeManager = Serialization.DeserializeParam<PlateTypeManager>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded PlateTypes config  {ConfigFileName}", 0);
+            PlateTypeManager = Serialization.DeserializeParam<PlateTypeManager>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No PlateTypes config found, creating default", 0);
+            DefaultConfig();
+            //DefaultConfig_Full();
+            DefaultConfig_Gresk();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"PlateTypes_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded PlateTypes config: {ConfigFile.FullName}", 0);

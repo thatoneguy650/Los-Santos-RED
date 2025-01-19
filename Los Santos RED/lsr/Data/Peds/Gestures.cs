@@ -20,7 +20,7 @@ public class Gestures : IGestures
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Gestures*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Gestures.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Gestures config: {ConfigFile.FullName}",0);
@@ -29,6 +29,26 @@ public class Gestures : IGestures
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Gestures config  {ConfigFileName}",0);
+            GestureLookups = Serialization.DeserializeParams<GestureData>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Gestures config found, creating default", 0);
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Gestures_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Gestures config: {ConfigFile.FullName}", 0);
+            GestureLookups = Serialization.DeserializeParams<GestureData>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Gestures config  {ConfigFileName}", 0);
             GestureLookups = Serialization.DeserializeParams<GestureData>(ConfigFileName);
         }
         else

@@ -18,7 +18,27 @@ public class LocationTypes : ILocationTypes
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("LocationTypes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("LocationTypes.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded LocationTypes config: {ConfigFile.FullName}", 0);
+            LocationTypeNames = Serialization.DeserializeParam<LocationTypeManager>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded LocationTypes config  {ConfigFileName}", 0);
+            LocationTypeNames = Serialization.DeserializeParam<LocationTypeManager>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No LocationTypes config found, creating default", 0);
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"LocationTypes_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded LocationTypes config: {ConfigFile.FullName}", 0);

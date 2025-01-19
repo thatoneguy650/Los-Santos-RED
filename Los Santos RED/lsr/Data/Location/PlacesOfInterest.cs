@@ -81,7 +81,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Locations*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Locations.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);
@@ -95,6 +95,29 @@ public class PlacesOfInterest : IPlacesOfInterest
         else
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);    
+            DefaultConfig_SunshineDream();
+            DefaultConfig();
+            DefaultConfig_LibertyCity();
+            DefaultConfig_2008();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Locations_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);
+            PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Locations config  {ConfigFileName}", 0);
+            PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();

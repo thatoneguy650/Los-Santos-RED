@@ -19,7 +19,7 @@ public class Streets : IStreets
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Streets*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Streets.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Streets config: {ConfigFile.FullName}",0);
@@ -28,6 +28,28 @@ public class Streets : IStreets
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Streets config  {ConfigFileName}",0);
+            StreetsList = Serialization.DeserializeParams<Street>(ConfigFileName);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"No Streets config found, creating default", 0);
+            DefaultConfig_LibertyCity();
+            DefaultConfig_SunshineDream();
+            DefaultConfig();
+        }
+    }
+    public void ReadConfig(string configName)
+    {
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Streets_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
+        {
+            EntryPoint.WriteToConsole($"Loaded Streets config: {ConfigFile.FullName}", 0);
+            StreetsList = Serialization.DeserializeParams<Street>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Streets config  {ConfigFileName}", 0);
             StreetsList = Serialization.DeserializeParams<Street>(ConfigFileName);
         }
         else
