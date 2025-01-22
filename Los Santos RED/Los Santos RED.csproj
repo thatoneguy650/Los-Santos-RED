@@ -96,16 +96,16 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>E:\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>E:\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHook">
-      <HintPath>E:\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
