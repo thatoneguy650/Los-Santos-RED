@@ -36,9 +36,8 @@ namespace LosSantosRED.lsr.Data
         {
             try
             {
-                EntryPoint.ModController.IsLoadingAltConfig = true;
-                EntryPoint.ModController.CurrentConfigName = configName;
-                EntryPoint.ModController.LoadAltConfig();
+                EntryPoint.ConfigName = configName;
+                EntryPoint.ModController.Dispose();
             }
             catch (Exception e)
             {

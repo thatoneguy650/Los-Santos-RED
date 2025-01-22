@@ -40,6 +40,7 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
+    public static string ConfigName { get; set; }
     public static void Main()
     {
 
@@ -73,6 +74,11 @@ public static class EntryPoint
                 }
                 ModController = new ModController();
                 ModController.Setup();
+            }
+            if ((ModController == null || !ModController.IsRunning) && ConfigName != null)
+            {
+                ModController = new ModController();
+                ModController.Setup(ConfigName);
             }
             GameFiber.Yield();
         }
