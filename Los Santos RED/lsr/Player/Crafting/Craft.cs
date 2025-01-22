@@ -14,16 +14,16 @@ namespace Mod
         private IModItems ModItems;
         private ISettingsProvideable Settings;
         private IWeapons Weapons;
-        private ICrimes Crimes;
+        private bool IsCrafting = false;
 
-        public Crafting(Player player, ICraftableItems craftableItems, IModItems modItems, ISettingsProvideable settings,IWeapons weapons, ICrimes crimes)
+
+        public Crafting(Player player, ICraftableItems craftableItems, IModItems modItems, ISettingsProvideable settings,IWeapons weapons)
         {
             Player = player;
             CraftableItems = craftableItems;
             ModItems = modItems;
             Settings = settings;
             Weapons = weapons;
-            Crimes = crimes;
         }
         public void Setup()
         {
@@ -72,6 +72,11 @@ namespace Mod
         }
         public void CraftItem(string productName, int quantity)
         {
+            if(IsCrafting)
+            {
+                Game.DisplayNotification("~r~Cooldown active. ~w~Cannot craft.");
+                return;
+            }
             List<InventoryItem> ingredientsSatisfied = new List<InventoryItem>();
             int ingredientsToSatisfy = CraftableItems.CraftablesLookup[productName].IngredientLookup.Count;
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
@@ -79,6 +84,13 @@ namespace Mod
             if(ingredientsAvailableForCrafting)
             {
                 DeductIngredientsFromInventory(ingredientsSatisfied, craftItem, quantity);
+                Player.IsSetDisabledControls = true;
+                IsCrafting = true;
+                if(!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
+                {
+                    Player.Violations.SetContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
+                }
+                GameFiber.Wait(CraftableItems.CraftablesLookup[productName].CraftableItem.Cooldown);
                 switch (CraftableItems.CraftablesLookup[productName].CraftableItem.CraftType)
                 {
                     case CraftableType.Weapon:
@@ -93,13 +105,12 @@ namespace Mod
                         Player.Inventory.Add(ModItems.Get(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant), (quantity * CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
                         break;
                 }
-                if(Player.AnyHumansNear && !string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
+                IsCrafting = false;
+                if(!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
                 {
-                    Crime crimeObserved = Crimes.GetCrime(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
-                    CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true) { InteriorSeen = Player.CurrentLocation.CurrentInterior };
-                    Player.PoliceResponse.AddCrime(crimeObserved, description, false);
-                    Player.Investigation.Start(Player.Character.Position, true, true, false, false, Player.CurrentLocation.CurrentInterior);
+                    Player.Violations.StopContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
                 }
+                Player.IsSetDisabledControls = false;
                 Game.DisplayNotification($"~g~{productName} ~w~crafted");
             }
             else

@@ -42,15 +42,15 @@ public class CraftableItems : ICraftableItems
         CraftableList = new List<CraftableItem>()
         {
             new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() {
-                new Ingredient() { IngredientName =  "Pseudoephedrine", Quantity = 2 }
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1},
+                new Ingredient() { IngredientName =  "Chesty", Quantity = 2 }
+            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1, Cooldown = 2000},
             new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
-                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2},
+                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
+            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000},
             new CraftableItem("Molotov Cocktail", "weapon_molotov", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, CraftType = CraftableType.Weapon},
+            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, CraftType = CraftableType.Weapon, Cooldown = 2000},
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }

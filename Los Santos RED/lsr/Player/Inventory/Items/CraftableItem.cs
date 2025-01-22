@@ -20,6 +20,7 @@ public class CraftableItem
     public string Resultant { get; set; }
     public int ResultantAmount { get; set; }
     public List<Ingredient> Ingredients { get; set; }
+    public int Cooldown { get; set;}
     public CraftableType CraftType { get; set; }
     public string CrimeId { get; set; }
     [XmlIgnore]
