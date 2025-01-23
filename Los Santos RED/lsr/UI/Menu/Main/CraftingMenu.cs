@@ -59,23 +59,27 @@ public class CraftingMenu : ModUIMenu
     {
         foreach (var craftableItem in CraftableItems.Items)
         {
-            UIMenuNumericScrollerItem<int> itemMenu;
-            switch (craftableItem.CraftType)
+            if(craftableItem.SingleUnit)
             {
-                case CraftableType.Weapon:
-                    itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList,1,1,1);
-                    break;
-                case CraftableType.ModItem:
-                default:
-                    itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList, 1, 10, 1);
-                    break;
+                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
+                itemMenu.Activated += (s, e) =>
+                {
+                    Crafting.CraftItem(itemMenu.Text);
+                };
+                Menu.AddItem(itemMenu);
             }
-            itemMenu.Value = 1;
-            itemMenu.Activated += (sender, selectedItem) =>
+            else
             {
-                Crafting.CraftItem(itemMenu.Text, itemMenu.Value);
-            }; 
-            Menu.AddItem(itemMenu);
+                UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList, 1, 10, 1);
+                itemMenu.Value = 1;
+                itemMenu.Activated += (s, e) =>
+                {
+                    Crafting.CraftItem(itemMenu.Text, itemMenu.Value);
+                };
+                Menu.AddItem(itemMenu);
+
+            }
+
         }
     }
 }

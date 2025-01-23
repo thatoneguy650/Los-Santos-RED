@@ -84,7 +84,7 @@ namespace Mod
             }
             return ingredientsSatisfied.Count == ingredientsToSatisfy;
         }
-        public void CraftItem(string productName, int quantity)
+        public void CraftItem(string productName, int quantity = 1)
         {
             if(IsCrafting)
             {
@@ -109,7 +109,7 @@ namespace Mod
                 }
                 GameFiber.Wait(CraftableItems.CraftablesLookup[productName].CraftableItem.Cooldown);
                 ModItem itemToGive = ModItems.Get(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant);
-                itemToGive.AddToPlayerInventory(Player, (quantity * CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
+                itemToGive.AddToPlayerInventory(Player, quantity * (CraftableItems.CraftablesLookup[productName].CraftableItem.SingleUnit?1:CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
                 IsCrafting = false;
                 if(!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
                 {

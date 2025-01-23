@@ -56,7 +56,7 @@ public class CraftableItems : ICraftableItems
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, CraftType = CraftableType.Weapon, Cooldown = 2000},
+            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true},
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }
