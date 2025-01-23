@@ -958,5 +958,9 @@ public class WeaponItem : ModItem
         }
         return spawnedAttachedObject;
     }
+    public override void AddToPlayerInventory(Mod.Player player, int quantity)
+    {
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(this.WeaponInformation.ModelName,this.WeaponInformation.AmmoAmount, false);
+    }
 }
 

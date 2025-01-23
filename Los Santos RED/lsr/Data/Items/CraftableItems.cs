@@ -10,11 +10,16 @@ public class CraftableItems : ICraftableItems
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\CraftableItems.xml";
     private List<CraftableItem> CraftableList;
     public List<CraftableItem> Items => CraftableList;
+    private IModItems ModItems;
 
     public Dictionary<string, CraftableItemLookupModel> CraftablesLookup { get; set; }
     public CraftableItem Get(string name)
     {
         return CraftableList.FirstOrDefault(x => x.Name == name);
+    }
+    public CraftableItems(IModItems modItems)
+    {
+        ModItems = modItems;
     }
     public void ReadConfig()
     {
@@ -35,6 +40,7 @@ public class CraftableItems : ICraftableItems
             EntryPoint.WriteToConsole($"No Craftable Items config found, creating default", 0);
             DefaultConfig();
         }
+        CraftableList.RemoveAll(x => ModItems.Get(x.Resultant) == null);
     }
 
     private void DefaultConfig()
@@ -47,7 +53,7 @@ public class CraftableItems : ICraftableItems
             new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
             }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000},
-            new CraftableItem("Molotov Cocktail", "weapon_molotov", new List<Ingredient>() {
+            new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
             }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, CraftType = CraftableType.Weapon, Cooldown = 2000},

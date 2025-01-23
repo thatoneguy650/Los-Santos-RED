@@ -183,7 +183,7 @@ public class ModDataFileManager
         TattooNames.DefaultConfig();
         GameFiber.Yield();
 
-        CraftableItems = new CraftableItems();
+        CraftableItems = new CraftableItems(ModItems);
         CraftableItems.ReadConfig();
         GameFiber.Yield();
 
