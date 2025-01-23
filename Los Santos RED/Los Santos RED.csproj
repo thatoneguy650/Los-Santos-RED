@@ -187,7 +187,7 @@
     <Compile Include="lsr\Dispatcher\Items\SpawnAdjustmentAmount.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
-    <Compile Include="lsr\Helper\CraftingUtils.cs" />
+    <Compile Include="lsr\Helper\CraftableItemLookupModel.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
@@ -509,6 +509,7 @@
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CraftableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\Ingredient.cs" />
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />

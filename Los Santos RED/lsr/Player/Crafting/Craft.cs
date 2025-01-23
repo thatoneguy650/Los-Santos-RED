@@ -40,10 +40,19 @@ namespace Mod
                     CraftableItems.Items[i].Name, 
                     new CraftableItemLookupModel() { 
                         RecipeName = CraftableItems.Items[i].Name, 
-                        IngredientLookup = CraftingUtils.GetIngredientLookup(CraftableItems.Items[i].Ingredients),
+                        IngredientLookup = GetIngredientLookup(CraftableItems.Items[i].Ingredients),
                         CraftableItem = CraftableItems.Items[i],
                     });
             }
+        }
+        private Dictionary<string, Ingredient> GetIngredientLookup(List<Ingredient> ingredient)
+        {
+            Dictionary<string, Ingredient> ingredientLookup = new Dictionary<string, Ingredient>();
+            for (int i = 0; i < ingredient.Count; i++)
+            {
+                ingredientLookup.Add(ingredient[i].IngredientName, ingredient[i]);
+            }
+            return ingredientLookup;
         }
         private void DeductIngredientsFromInventory(List<InventoryItem> ingredientsSatisfied, CraftableItemLookupModel craftItem, int quantity)
         {

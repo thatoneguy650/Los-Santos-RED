@@ -71,13 +71,11 @@ public class CraftingMenu : ModUIMenu
                     break;
             }
             itemMenu.Value = 1;
-            itemMenu.Activated += ItemMenu_Activated; 
+            itemMenu.Activated += (sender, selectedItem) =>
+            {
+                Crafting.CraftItem(itemMenu.Text, itemMenu.Value);
+            }; 
             Menu.AddItem(itemMenu);
         }
-    }
-
-    private void ItemMenu_Activated(UIMenu sender, UIMenuItem selectedItem)
-    {
-        Crafting.CraftItem(selectedItem.Text, int.Parse(((UIMenuNumericScrollerItem<int>)selectedItem).OptionText));
     }
 }
