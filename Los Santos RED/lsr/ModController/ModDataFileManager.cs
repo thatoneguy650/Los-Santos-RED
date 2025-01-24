@@ -30,6 +30,7 @@ public class ModDataFileManager
     public Streets Streets;
     public Weapons Weapons;
     public Zones Zones;
+    public CraftableItems CraftableItems;
     public Heads Heads;
     public DispatchableVehicles DispatchableVehicles;
     public DispatchablePeople DispatchablePeople;
@@ -182,6 +183,9 @@ public class ModDataFileManager
         TattooNames.DefaultConfig();
         GameFiber.Yield();
 
+        CraftableItems = new CraftableItems(ModItems);
+        CraftableItems.ReadConfig();
+        GameFiber.Yield();
 
 #if DEBUG
         WantedLevels = new WantedLevels();

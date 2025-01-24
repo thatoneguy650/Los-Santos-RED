@@ -905,6 +905,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Dippo Lighter", 20), }),
             new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
                 new MenuItem("Chesty", 19, 0),
+                new MenuItem("Pseudoephedrine", 25,0) { NumberOfItemsToSellToPlayer = 5},
 
 
 
@@ -919,7 +920,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Mollis", 345, 0),
                 new MenuItem("Zombix", 267, 0),
                 new MenuItem("Diazepam", 150, 0),
-
 
 
 
