@@ -136,7 +136,9 @@
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
     <Compile Include="lsr\Data\Interface\IGameConfigs.cs" />
+    <Compile Include="lsr\Data\Interface\ICraftableItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />
+    <Compile Include="lsr\Data\Items\CraftableItems.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\BlankLocationsData_Liberty.cs" />
     <Compile Include="lsr\Data\Location\Custom Locations\PlacesOfInterest_SunshineDream.cs" />
     <Compile Include="lsr\Data\Location\Interiors_Liberty.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="lsr\Dispatcher\Items\SpawnAdjustmentAmount.cs" />
     <Compile Include="lsr\Dispatcher\LE\MarshalDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
+    <Compile Include="lsr\Helper\CraftableItemLookupModel.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
@@ -206,6 +209,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangAmbushTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Generic Contact\PayoffContactTask.cs" />
+    <Compile Include="lsr\Player\Crafting\Craft.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackjackGameUI.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\Card.cs" />
@@ -506,7 +510,9 @@
     <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\CraftableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\Ingredient.cs" />
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
@@ -695,6 +701,7 @@
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugVehicleSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\Sub Menus\DebugWeaponsSubMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\ConfigMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Main\CraftingMenu.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />
     <Compile Include="lsr\UI\Pause Menu\ConfigPauseMenu.cs" />

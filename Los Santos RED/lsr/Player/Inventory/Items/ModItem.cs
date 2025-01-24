@@ -816,9 +816,13 @@ public class ModItem
         }
         return spawnedAttachedObject;
     }
+    public virtual void AddToPlayerInventory(Mod.Player player, int quantity)
+    {
+        player.Inventory.Add(this, quantity * this.AmountPerPackage);
+    }
 
 
-    
+
 
 }
 
