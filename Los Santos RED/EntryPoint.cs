@@ -66,19 +66,26 @@ public static class EntryPoint
     {
         while (true)
         {
-            if ((ModController == null || (!ModController.IsRunning)) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
+            if ((ModController == null || !ModController.IsRunning))//maybe add cheat string instead of keys?
             {
-                if (NotificationID != 0)
+                if (ConfigName != null)//load config first if available
                 {
-                    Game.RemoveNotification(NotificationID);
+                    if (NotificationID != 0)
+                    {
+                        Game.RemoveNotification(NotificationID);
+                    }
+                    ModController = new ModController();
+                    ModController.Setup(ConfigName);
                 }
-                ModController = new ModController();
-                ModController.Setup();
-            }
-            if ((ModController == null || !ModController.IsRunning) && ConfigName != null)
-            {
-                ModController = new ModController();
-                ModController.Setup(ConfigName);
+                else if (Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)
+                {
+                    if (NotificationID != 0)
+                    {
+                        Game.RemoveNotification(NotificationID);
+                    }
+                    ModController = new ModController();
+                    ModController.Setup();
+                }
             }
             GameFiber.Yield();
         }

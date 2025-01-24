@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 public class Settings : ISettingsProvideable
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public SettingsManager SettingsManager { get; private set; }
 
 
@@ -66,6 +66,7 @@ public class Settings : ISettingsProvideable
         DefaultSettingsManager.Setup();
         DefaultSettingsManager.SetDefault();
         SettingsManager.Setup();
+        ConfigFileName = $"Plugins\\LosSantosRED\\Settings_{configName}.xml"; // for serialization
     }
     public void DefaultConfig()
     {

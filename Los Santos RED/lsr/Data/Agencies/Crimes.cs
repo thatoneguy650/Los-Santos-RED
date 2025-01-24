@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 public class Crimes : ICrimes
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Crimes.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\Crimes.xml";
     private List<Crime> DefaultCrimeList;
     private Crime KillingPolice;
     private Crime TerroristActivity;
@@ -113,6 +113,7 @@ public class Crimes : ICrimes
             EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);
             DefaultConfig();
         }
+        ConfigFileName = $"Plugins\\LosSantosRED\\Crimes_{configName}.xml"; // for serialization
     }
     public Crime GetCrime(string crimeID)
     {
