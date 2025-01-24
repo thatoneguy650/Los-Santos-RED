@@ -354,6 +354,10 @@ public class ModDataFileManager
         GameFiber.Yield();
 
 
+        CraftableItems = new CraftableItems(ModItems);
+        CraftableItems.ReadConfig(configName);
+        GameFiber.Yield();
+
 #if DEBUG
         WantedLevels = new WantedLevels();
         WantedLevels.ReadConfig(configName);
