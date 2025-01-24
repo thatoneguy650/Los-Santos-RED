@@ -40,7 +40,7 @@ public class CraftableItems : ICraftableItems
             EntryPoint.WriteToConsole($"No Craftable Items config found, creating default", 0);
             DefaultConfig();
         }
-        CraftableList.RemoveAll(x => ModItems.Get(x.Resultant) == null);
+        CraftableList.RemoveAll(x => ModItems.Get(x.Resultant) == null || (x.SingleUnit == false && x.ResultantAmount <1));
     }
 
     private void DefaultConfig()
