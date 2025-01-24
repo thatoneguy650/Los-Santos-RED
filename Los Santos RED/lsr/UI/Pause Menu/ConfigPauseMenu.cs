@@ -62,8 +62,8 @@ public class ConfigPauseMenu
     private void UpdateMenu()
     {
         //tabView.MoneySubtitle = Player.BankAccounts.TotalMoney.ToString("C0");
-        //tabView.Name = Player.PlayerName;
         //tabView.Money = Time.CurrentTime;
+        tabView.Name = EntryPoint.ConfigName ?? "Default";
         tabView.Tabs.Clear();
 
         NewGameConfigTab.AddConfigItems();

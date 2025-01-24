@@ -41,6 +41,7 @@ public static class EntryPoint
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
     public static string ConfigName { get; set; }
+    public static bool IsLoadingAltConfig { get; set; } = false;
     public static void Main()
     {
 
@@ -66,9 +67,9 @@ public static class EntryPoint
     {
         while (true)
         {
-            if ((ModController == null || !ModController.IsRunning))//maybe add cheat string instead of keys?
+            if (ModController == null || !ModController.IsRunning)//maybe add cheat string instead of keys?
             {
-                if (ConfigName != null)//load config first if available
+                if (IsLoadingAltConfig) // for loading game configs manually
                 {
                     if (NotificationID != 0)
                     {
@@ -77,14 +78,22 @@ public static class EntryPoint
                     ModController = new ModController();
                     ModController.Setup(ConfigName);
                 }
-                else if (Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)
+                if (Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)
                 {
                     if (NotificationID != 0)
                     {
                         Game.RemoveNotification(NotificationID);
                     }
-                    ModController = new ModController();
-                    ModController.Setup();
+                    if (ConfigName != null) // Autoload last used config, QOL for xml gremlins
+                    {
+                        ModController = new ModController();
+                        ModController.Setup(ConfigName);
+                    }
+                    else // if player hasn't loaded anything, default
+                    {
+                        ModController = new ModController();
+                        ModController.Setup();
+                    }
                 }
             }
             GameFiber.Yield();

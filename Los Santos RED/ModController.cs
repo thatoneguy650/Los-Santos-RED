@@ -240,7 +240,7 @@ namespace LosSantosRED.lsr
             Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {configName} Config Loaded");
             EntryPoint.WriteToConsole($"Loaded {configName} config", 0);
 
-            EntryPoint.ConfigName = null;
+            EntryPoint.IsLoadingAltConfig = false;
         }
         public void SetupFileOnly()
         {
@@ -431,7 +431,6 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    EntryPoint.WriteToConsole("Starting UI Logic 1");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -444,7 +443,6 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole("Ending UI Logic 1");
                 }
                 catch (Exception e)
                 {
@@ -457,7 +455,6 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    EntryPoint.WriteToConsole("Starting UI Logic 2");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -466,7 +463,6 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole("Ending UI Logic 2");
                 }
                 catch (Exception e)
                 {
@@ -479,7 +475,6 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    EntryPoint.WriteToConsole("Starting UI Logic 3");
                     while (IsRunning)
                     {
                         if (RunUI)
@@ -490,7 +485,6 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole("Ending UI Logic 3");
                 }
                 catch (Exception e)
                 {
