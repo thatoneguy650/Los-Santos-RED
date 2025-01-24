@@ -93,10 +93,7 @@ namespace Mod
             }
             List<InventoryItem> ingredientsSatisfied = new List<InventoryItem>();
             int ingredientsToSatisfy = CraftableItems.CraftablesLookup[productName].IngredientLookup.Count;
-            Game.Console.Print($"{ingredientsToSatisfy} ingreidnets to satsify");
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
-            Game.Console.Print($"{craftItem.RecipeName} craftitem");
-            Game.Console.Print($"{craftItem.IngredientLookup.Keys.Count} IngredientsCount");
             bool ingredientsAvailableForCrafting = CheckIngredientsAvailable(craftItem, ingredientsToSatisfy, ingredientsSatisfied, quantity);
             if(ingredientsAvailableForCrafting)
             {

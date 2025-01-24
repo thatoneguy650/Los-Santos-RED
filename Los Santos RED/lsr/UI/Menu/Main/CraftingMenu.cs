@@ -77,9 +77,7 @@ public class CraftingMenu : ModUIMenu
                     Crafting.CraftItem(itemMenu.Text, itemMenu.Value);
                 };
                 Menu.AddItem(itemMenu);
-
             }
-
         }
     }
 }
