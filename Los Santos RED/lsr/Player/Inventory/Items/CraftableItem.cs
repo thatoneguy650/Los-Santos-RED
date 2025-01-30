@@ -23,6 +23,7 @@ public class CraftableItem
     public List<Ingredient> Ingredients { get; set; }
     public int Cooldown { get; set;}
     public string CrimeId { get; set; }
+    public string CraftingFlag { get; set; }
     [XmlIgnore]
     private string _ingredientList;
     [XmlIgnore]

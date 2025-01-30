@@ -52,7 +52,7 @@ public class CraftableItems : ICraftableItems
             }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1, Cooldown = 2000},
             new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000},
+            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000, CraftingFlag = "CutCocaine"},
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }

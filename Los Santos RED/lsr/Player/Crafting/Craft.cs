@@ -82,7 +82,9 @@ namespace Mod
                     }
                 }
             }
-            return ingredientsSatisfied.Count == ingredientsToSatisfy;
+            Game.Console.Print("Crafting flags" + Player.CraftingFlags.FirstOrDefault());
+            Game.Console.Print("Crafting flags Size" + Player.CraftingFlags.Count);
+            return ingredientsSatisfied.Count == ingredientsToSatisfy && (string.IsNullOrEmpty(craftItem.CraftableItem.CraftingFlag) || Player.CraftingFlags.Contains(craftItem.CraftableItem.CraftingFlag));
         }
         public void CraftItem(string productName, int quantity = 1)
         {

@@ -231,7 +231,13 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Barber
-            
+            new Interior(247553,"Cocaine Lockup"){ 
+                IsTeleportEntry = true,
+                RequestIPLs = new List<string> () { "bkr_biker_interior_placement_interior_4_biker_dlc_int_ware03_milo"}, 
+                InteriorEgressPosition = new Vector3(1088.682f,-3187.929f,-38.99348f), InteriorEgressHeading = 176.9885f, NeedsActivation = false, NeedsSetDisabled = false, MaxUpdateDistance = 85, 
+                InteractPoints = new List<InteriorInteract>() { 
+                    new ExitInteriorInteract() { Name = "CocaineLockerExit1", Position = new Vector3(1088.709f, -3187.834f, -38.99348f),Heading = 355.7281f, InteractDistance = 1, ButtonPromptText = "Exit" },
+                    new CraftInteriortInteract() { Name = "Cocaine Cutting Table", Position = new Vector3(1090.343f, -3194.849f, -38.99347f),InteractDistance = 1, ButtonPromptText = "Cocaine Cutting Table", CraftingFlag = "CutCocaine" }  } },
 
             //Clothes
             new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },
