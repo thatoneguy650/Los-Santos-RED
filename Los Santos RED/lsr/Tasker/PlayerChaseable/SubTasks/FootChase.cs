@@ -162,7 +162,7 @@ public class FootChase
             
             //EntryPoint.WriteToConsole("TaskAimWeapon");
         }
-        else if (CurrentSubTask != SubTask.SimpleLook && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimWeapon && !Cop.HasTaser && !Player.IsDangerouslyArmed)//7f
+        else if (CurrentSubTask != SubTask.SimpleLook && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && ((shouldAimWeapon && !Cop.HasTaser && !Player.IsDangerouslyArmed) || Ped.IsAnimal))//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             //if (Ped.IsAnimal)
@@ -176,9 +176,14 @@ public class FootChase
             //}
             //EntryPoint.WriteToConsole("TaskLookAtSimple");
         }
+        //else if (CurrentSubTask != SubTask.SimpleLook && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && Ped.IsAnimal)//7f
+        //{
+        //    Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+        //    TaskLookAtSimple();
+        //}
         else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon && Player.IsBusted)
         {
-            if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle)
+            if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle && !Ped.IsAnimal)
             {
                 if (CurrentSubTask != SubTask.WriteTicket)
                 {
@@ -188,7 +193,7 @@ public class FootChase
                     //EntryPoint.WriteToConsole("TaskWriteTicket");
                 }
             }
-            else if (!Cop.HasTaser)
+            else if (!Cop.HasTaser && !Ped.IsAnimal)
             {
                 if (CurrentSubTask != SubTask.SimpleLook)
                 {

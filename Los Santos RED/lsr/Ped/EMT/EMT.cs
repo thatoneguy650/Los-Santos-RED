@@ -43,7 +43,7 @@ public class EMT : PedExt
                 UpdateVehicleState();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    if (!PlayerPerception.RanSightThisUpdate && !Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
                     {
                         GameFiber.Yield();
                     }

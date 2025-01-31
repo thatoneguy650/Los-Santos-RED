@@ -576,12 +576,12 @@ namespace Mod
         public void Update()
         {
             UpdateVehicleData();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
             UpdateWeaponData();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -593,12 +593,12 @@ namespace Mod
                 IntoxicationIsPrimary = true;
             }
             Intoxication.Update(IntoxicationIsPrimary);
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
             Injuries.Update(!IntoxicationIsPrimary);
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -606,13 +606,13 @@ namespace Mod
             BankAccounts.Update();
             HealthManager.Update();
             GroupManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
             ButtonPrompts.Update();
             MeleeManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }
@@ -626,7 +626,7 @@ namespace Mod
             GangBackupManager.Update();
             InteriorManager.Update();
             CuffManager.Update();
-            if (!Settings.SettingsManager.PerformanceSettings.EnableIncreasedUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
             {
                 GameFiber.Yield();
             }

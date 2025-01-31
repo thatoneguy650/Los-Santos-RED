@@ -11,13 +11,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 
 public class PlateTypes : IPlateTypes
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PlateTypes.xml";
     public PlateTypeManager PlateTypeManager { get; private set; }
-
+    
     public void ReadConfig()
     {
 
@@ -50,33 +51,52 @@ public class PlateTypes : IPlateTypes
         return PlateTypeManager.PlateTypeList.Where(x => x.StateID == State).PickRandom();
     }
 
-    public PlateType GetRandomInStatePlate(string State)
+    public PlateType GetRandomInStatePlate(string State, bool isMotorcycle)
     {
-        return PlateTypeManager.PlateTypeList.Where(x => x.StateID == State).RandomElementByWeight(x => x.InStateSpawnChance);
+        if(isMotorcycle)
+        {
+            PlateType toReturn = PlateTypeManager.PlateTypeList.Where(x => x.StateID == State && x.IsMotorcyclePlate).RandomElementByWeight(x => x.InStateSpawnChance);
+            if (toReturn != null)
+            {
+                return toReturn;
+            }
+        }
+        return PlateTypeManager.PlateTypeList.Where(x => x.StateID == State && !x.IsMotorcyclePlate).RandomElementByWeight(x => x.InStateSpawnChance);
     }
 
     public PlateType GetPlateByDescription(string description)
     {
         return PlateTypeManager.PlateTypeList.Where(x => x.Description.ToLower() == description.ToLower()).FirstOrDefault();
     }
-    public PlateType GetRandomPlateType()
+    public PlateType GetRandomPlateType(bool isMotorcycle)
     {
         if (!PlateTypeManager.PlateTypeList.Any())
             return null;
 
-        List<PlateType> ToPickFrom = PlateTypeManager.PlateTypeList.Where(x => x.CanSpawn).ToList();
-        int Total = ToPickFrom.Sum(x => x.SpawnChance);
-        int RandomPick = RandomItems.MyRand.Next(0, Total);
-        foreach (PlateType Type in ToPickFrom)
+        if (isMotorcycle)
         {
-            int SpawnChance = Type.SpawnChance;
-            if (RandomPick < SpawnChance)
+            PlateType toReturn = PlateTypeManager.PlateTypeList.Where(x => x.CanSpawn && x.IsMotorcyclePlate).RandomElementByWeight(x => x.SpawnChance);
+            if (toReturn != null)
             {
-                return Type;
+                return toReturn;
             }
-            RandomPick -= SpawnChance;
         }
-        return null;
+        return PlateTypeManager.PlateTypeList.Where(x=> x.CanSpawn && !x.IsMotorcyclePlate).RandomElementByWeight(x => x.SpawnChance);
+
+
+        //List<PlateType> ToPickFrom = PlateTypeManager.PlateTypeList.Where(x => x.CanSpawn).ToList();
+        //int Total = ToPickFrom.Sum(x => x.SpawnChance);
+        //int RandomPick = RandomItems.MyRand.Next(0, Total);
+        //foreach (PlateType Type in ToPickFrom)
+        //{
+        //    int SpawnChance = Type.SpawnChance;
+        //    if (RandomPick < SpawnChance)
+        //    {
+        //        return Type;
+        //    }
+        //    RandomPick -= SpawnChance;
+        //}
+        //return null;
     }
     public string GetRandomVanityPlateText()
     {
@@ -371,6 +391,9 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(69, "Columbia, DW", "Columbia, DW", 2, "AB  1234"));
 
 
+        FullPlateTypeList.Add(new PlateType(70, "San Andreas Disabled", StaticStrings.SanAndreasStateID, 1, "AB123") { InStateSpawnChance = 2 });
+        FullPlateTypeList.Add(new PlateType(71, "San Andreas Motorcycle", StaticStrings.SanAndreasStateID, 1, "1A234567") { IsMotorcyclePlate = true, });
+        FullPlateTypeList.Add(new PlateType(72, "San Andreas Motorcycle Alt", StaticStrings.SanAndreasStateID, 1, "1A234567"){ IsMotorcyclePlate = true, });
         //Pascagoula
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();

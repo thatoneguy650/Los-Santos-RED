@@ -31,6 +31,8 @@ public class SecurityCamera
     public uint ModelHash { get; set; }
     public Vector3 Position { get; set; }
     public float Heading { get; set; }
+    public bool IsManuallyCreated { get; set; } = false;
+    public float PropHeading { get; set; }
     public bool IsDestroyed => isDestroyed;
     public void Activate(IEntityProvideable world)
     {
@@ -45,8 +47,17 @@ public class SecurityCamera
         DeleteBlip();
         ShowedDestroyed = false;
         isDestroyed = false;
+
+        if (IsManuallyCreated && securityCameraObject.Exists())
+        {
+            securityCameraObject.Delete();
+        }
+
         securityCameraObject = null;
         IsCreated = false;
+
+
+
         EntryPoint.WriteToConsole($"{Name} DEACTIVATED");
     }
     private void GetObject()
@@ -55,16 +66,41 @@ public class SecurityCamera
         {
             return;
         }
-        securityCameraObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 15f, ModelHash, false, false, false);
+
+
+        if (IsManuallyCreated)
+        {
+            securityCameraObject = new Rage.Object(ModelHash, Position, PropHeading != 0f ? PropHeading : Heading);
+
+            GameFiber.Yield();
+
+
+            if(securityCameraObject.Exists())
+            {
+                securityCameraObject.CanBeDamaged = true;
+
+
+                NativeFunction.Natives.SET_ENTITY_CAN_BE_DAMAGED(securityCameraObject, true);
+            }
+        }
+        else
+        {
+            securityCameraObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 15f, ModelHash, false, false, false);
+
+        }
+
+
         if (!securityCameraObject.Exists())
         {
             IsCreated = false;
 
             return;
         }
-        //securityCameraObject.IsPersistent = false;
         IsCreated = true;
-        //EntryPoint.WriteToConsole($"{Name} Created");
+
+        //securityCameraObject.IsPersistent = false;
+
+        EntryPoint.WriteToConsole($"{Name} Created");
     }
     public void Update()
     {
@@ -83,6 +119,9 @@ public class SecurityCamera
             OnCameraDeleted();
             return;
         }
+
+        EntryPoint.WriteToConsole($"{securityCameraObject.Health} CAM HEALTH");
+
         if (securityCameraObject.HasBeenDamagedBy(Game.LocalPlayer.Character))
         {
             OnCameraDestroyed();

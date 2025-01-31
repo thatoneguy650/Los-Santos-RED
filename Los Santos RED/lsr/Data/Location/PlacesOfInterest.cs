@@ -3008,10 +3008,54 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_PoliceStations()
     {
-        float DavisPercentage = 35f;
-
-        Vector2[] davisImpoundLot = new Vector2[]
+        Vector2[] paletoImpoundLotCOORDs = new Vector2[]
                 {
+                    new Vector2(-450.1601f, 6023.744f),
+                    new Vector2(-458.6687f, 6032.619f),
+                    new Vector2(-450.4703f, 6041.437f),
+                    new Vector2(-460.8949f, 6051.862f),
+                    new Vector2(-488.3354f, 6024.421f),
+                    new Vector2(-478.2342f, 6014.375f),
+                    new Vector2(-500.6814f, 5991.814f),
+                    new Vector2(-472.0482f, 5963.174f),
+                    new Vector2(-440.47f, 5994.833f),
+                    new Vector2(-459.487f, 6013.923f),
+                };
+
+        Vector2[] vespucciImpoundLotCOORDs = new Vector2[]
+                {
+                    new Vector2(-1079.636f, -889.4446f),
+                    new Vector2(-1054.351f, -873.9821f),
+                    new Vector2(-1030.945f, -852.6335f),
+                    new Vector2(-1052.255f, -836.5693f),
+                    new Vector2(-1086.979f, -862.3729f),
+                    new Vector2(-1098.735f, -853.6608f),
+                    new Vector2(-1097.787f, -865.0078f),
+                };
+
+        Vector2[] lamesaImpoundLotCOORDs = new Vector2[]
+                {
+                    new Vector2(817.2213f, -1310.874f),
+                    new Vector2(851.389f, -1319.316f),
+                    new Vector2(868.6058f, -1366.066f),
+                    new Vector2(853.1696f, -1407.805f),
+                    new Vector2(816.1465f, -1417.473f),
+                    new Vector2(817.2775f, -1342.83f),
+                };
+        Vector2[] vespucciPoliceParkingCOORDs = new Vector2[]
+                {
+                    new Vector2(-1135.565f, -876.0131f),
+                    new Vector2(-1107.035f, -855.572f),
+                    new Vector2(-1126.803f, -831.3523f),
+                    new Vector2(-1152.057f, -851.6998f),
+                };
+        List<InteriorDoor> vespucciImpoundGates = new List<InteriorDoor>() { 
+            new InteriorDoor(2637522495, new Vector3(-1053.284f, -874.3318f, 6.205582f)), 
+            new InteriorDoor(2926053628,new Vector3(-1063.636f, -880.7089f, 6.214558f)), 
+        };
+        List<InteriorDoor> davisImpoundGates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845, new Vector3(418.291f, -1651.395f, 28.29171f)) };
+        Vector2[] davisImpoundLot = new Vector2[]
+        {
                     new Vector2 { X = 409.3969f, Y = -1616.724f },
                     new Vector2 { X = 423.1207f, Y = -1628.206f },
                     new Vector2 { X = 423.9051f, Y = -1634.224f },
@@ -3019,8 +3063,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new Vector2 { X = 410.9243f, Y = -1660.619f },
                     new Vector2 { X = 409.476f, Y = -1660.212f },
                     new Vector2 { X = 388.094f, Y = -1641.983f },
-                };
-        List<InteriorDoor> davisImpoundGates = new List<InteriorDoor>() { new InteriorDoor(2811495845, new Vector3(413.364f, -1620.034f, 28.34158f)), new InteriorDoor(2811495845, new Vector3(418.291f, -1651.395f, 28.29171f)) };
+        };
         Vector2[] davisPoliceLot = new Vector2[]
         {
                     new Vector2 { X = 391.2724f, Y = -1602.033f },
@@ -3073,7 +3116,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,45f),
                     new LEConditionalLocation(new Vector3(385.5102f, -1624.759f, 29.29195f), 312.3226f, 30f) { ForceVehicleGroup = true, AssociationID = "LSSD", RequiredVehicleGroup = "Historic" },
                 },
-                VehicleImpoundLot = new VehicleImpoundLot("Impound Lot 1",new List<SpawnPlace>()
+                VehicleImpoundLot = new VehicleImpoundLot("Davis Impound Lot",new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(404.3888f, -1649.421f, 28.82277f), 321.7852f),
                     new SpawnPlace(new Vector3(408.3622f, -1654.027f, 28.8215f), 322.5292f),
@@ -3084,12 +3127,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 {
                     RestrictedAreasList = new List<RestrictedArea>()
                     {
-                        new RestrictedArea("Vehicle Impound Lot", davisImpoundLot,davisImpoundGates, RestrictedAreaType.ImpoundLot) {
+                        new RestrictedArea("Davis Impound Lot", davisImpoundLot,davisImpoundGates, RestrictedAreaType.ImpoundLot) {
                             SecurityCameras = new List<SecurityCamera>() {
                                 new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(411.6299f, -1619.302f, 28.30813f),187.8307f) { Name = "Security Cam 1" },
                                 new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(409.8848f,-1660.358f,28.25814f),357.6599f) { Name = "Security Cam 2" },
                             } },
-                        new RestrictedArea("Police Parking Lot",davisPoliceLot,davisPoliceGate,RestrictedAreaType.PoliceLot),
+                        new RestrictedArea("Davis Police Parking Lot",davisPoliceLot,davisPoliceGate,RestrictedAreaType.PoliceLot),
 
                     }
                 }
@@ -3149,7 +3192,33 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-458.788f, 6005.529f, 31.17422f), 267f,35f),
                 new LEConditionalLocation(new Vector3(-455.154f, 6001.894f, 31.17422f), 267f,35f),
                 new LEConditionalLocation(new Vector3(-475.5325f, 5988.582f, 31.33671f), 311.222f,45f) { AllowAirVehicle = true,RequiredVehicleGroup = "Helicopter" },
-            }},
+                },
+                VehicleImpoundLot = new VehicleImpoundLot("Paleto Bay Impound Lot",new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-454.4307f, 6040.472f, 31.17424f), 317f),
+                    new SpawnPlace(new Vector3(-457.8087f, 6043.849f, 31.17424f), 317f),
+                    new SpawnPlace(new Vector3(-468.1928f, 6038.506f, 31.17422f), 45f),
+                    new SpawnPlace(new Vector3(-475.1396f, 6031.421f, 31.17419f), 45f),
+                    new SpawnPlace(new Vector3(-458.788f, 6005.529f, 31.17422f), 267f),
+                    new SpawnPlace(new Vector3(-455.154f, 6001.894f, 31.17422f), 267f),
+
+                }),
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Paleto Bay Impound Lot", paletoImpoundLotCOORDs,new List<InteriorDoor>(), RestrictedAreaType.ImpoundLot) {
+                            SecurityCameras = new List<SecurityCamera>() {
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(-460.9359f, 6051.856f, 30.24048f), 181.0383f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 181.0383f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(-472.0002f, 5963.116f, 30.25363f), 4.102695f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 4.102695f-90f-45f, },
+                            } },
+
+                    }
+                }
+
+
+
+            },
             new PoliceStation(new Vector3(434.3387f, -981.8954f, 30.70984f), 89.51098f, "Mission Row Police Station","Obey and Survive") {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -3242,7 +3311,35 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(857.2202f, -1393.802f, 26.21234f), 216f,20f) { AssociationID = "SAHP" },
                     new LEConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,20f),
                     new LEConditionalLocation(new Vector3(831.9248f, -1370.362f, 26.13427f), 266.9978f, 20f) { RequiredVehicleGroup = "Historic",AssociationID = "SAHP",ForceVehicleGroup = true, },
-                } },
+                },
+                VehicleImpoundLot = new VehicleImpoundLot("La Mesa Impound Lot",new List<SpawnPlace>()
+                {
+
+                    new SpawnPlace(new Vector3(828.1719f, -1333.792f, 26.18776f), 242f),
+                    new SpawnPlace(new Vector3(828.1719f, -1339.649f, 26.18776f), 242f),
+                    new SpawnPlace(new Vector3(828.1719f, -1345.815f, 26.18776f), 242f),
+                    new SpawnPlace(new Vector3(828.362f, -1351.482f, 26.21234f), 65f),
+                    new SpawnPlace(new Vector3(843.9627f, -1334.354f, 26.17253f), 65f),
+                    new SpawnPlace(new Vector3(843.874f, -1340.518f, 26.18776f), 242f),
+                    new SpawnPlace(new Vector3(844.3544f, -1346.3f, 26.21234f), 65f),
+                    new SpawnPlace(new Vector3(843.7897f, -1352.283f, 26.21234f), 65f),
+                    new SpawnPlace(new Vector3(865.7624f, -1378.407f, 26.21234f), 216f),
+                    new SpawnPlace(new Vector3(862.8425f, -1383.55f, 26.21234f), 216f),
+                    new SpawnPlace(new Vector3(859.8381f, -1388.58f, 26.21234f), 216f),
+                }),
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("La Mesa Impound Lot", lamesaImpoundLotCOORDs,new List<InteriorDoor>(), RestrictedAreaType.ImpoundLot) {
+                            SecurityCameras = new List<SecurityCamera>() {
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(863.1493f, -1388.311f, 25.05884f), 35.25811f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 35.25811f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(817.2347f, -1366.5f, 25.02679f), 303.5829f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 303.5829f-90f-45f, },
+                            } },
+
+                    }
+                }
+            },
             new PoliceStation(new Vector3(638.4491f, 1.559977f, 82.78642f), 247.7514f,"Vinewood Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
@@ -3313,7 +3410,37 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(-1122.896f, -863.4746f, 13.6122f), 220f,10f),
                     new LEConditionalLocation(new Vector3(-1115.937f, -857.7859f, 13.65187f), 220f,10f),
                     new LEConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,10f),
-                } },
+                }
+            ,
+                VehicleImpoundLot = new VehicleImpoundLot("Vespucci Main Impound Lot",new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-1072.822f, -880.3561f, 4.809089f), 208f),
+                    new SpawnPlace(new Vector3(-1075.95f, -882.3492f, 4.809089f), 208f),
+                    new SpawnPlace(new Vector3(-1051.726f, -867.1277f, 4.809089f), 230f),
+                    new SpawnPlace(new Vector3(-1045.53f, -861.5321f, 4.809089f), 230f),
+                    new SpawnPlace(new Vector3(-1042.226f, -857.9979f, 4.809089f), 230f),
+                    new SpawnPlace(new Vector3(-1047.814f, -846.7044f, 4.809089f), 37f),
+
+                }),
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Vespucci Main Impound Lot", vespucciImpoundLotCOORDs,vespucciImpoundGates, RestrictedAreaType.ImpoundLot) {
+                            SecurityCameras = new List<SecurityCamera>() {
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(-1030.648f, -852.3813f, 4.038184f), 103.6869f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 103.6869f-135f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(-1079.635f, -889.5612f, 3.672141f), 351.7791f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 351.7791f-135f, },
+                                new SecurityCamera(548760764,new Vector3(-1095.489f, -854.2435f, 10.36935f), 342.7794f-180f) { Name = "Security Cam 4", },
+
+                            } },
+                        new RestrictedArea("Vespucci Police Parking Lot",vespucciPoliceParkingCOORDs,new List<InteriorDoor>(),RestrictedAreaType.PoliceLot){
+                            SecurityCameras = new List<SecurityCamera>() {
+                                new SecurityCamera(3940745496,new Vector3(-1130.892f, -857.3484f, 17.48366f), 311.3365f-180f) { Name = "Security Cam 3", },
+                                
+                            } },
+                    }
+                }
+            },
             new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {
                 BannerImagePath = "agencies\\lspdmain.png",
                 OpenTime = 0,
@@ -3359,7 +3486,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new LEConditionalLocation(new Vector3(76.40812f, -693.0204f, 43.62196f), 339.8584f, 55f), 
                 }, 
             },
-                    new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
+            new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { 
                 AssignedAssociationID = "SAPR", 
                 
                 OpenTime = 0,
