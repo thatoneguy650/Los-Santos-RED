@@ -40,11 +40,11 @@ public class FootChase
 
                 if (UseWantedLevel)
                 {
-                    return !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+                    return !Player.IsBusted && !Player.IsDead && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
                 }
                 else
                 {
-                    return !Player.IsBusted && !Player.IsAttemptingToSurrender && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide;
+                    return !Player.IsBusted && !Player.IsDead && !Player.IsAttemptingToSurrender && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide;
                 }
             
         }
@@ -181,7 +181,7 @@ public class FootChase
         //    Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
         //    TaskLookAtSimple();
         //}
-        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon && Player.IsBusted)
+        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimWeapon && (Player.IsBusted || Player.IsDead))
         {
             if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle && !Ped.IsAnimal)
             {

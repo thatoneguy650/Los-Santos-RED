@@ -1527,7 +1527,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         PlayerPerception.SetFakeSeen();
         PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
-        AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        if (Crimes != null && Crimes.CrimeList != null)
+        {
+            AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HarassmentCrimeID), player.Character.Position);
+        }
         EntryPoint.WriteToConsole($"OnHitInsultLimit triggered {Handle}");
     }
     protected virtual void OnHitPlayerStoodTooCloseLimit(IInteractionable player)

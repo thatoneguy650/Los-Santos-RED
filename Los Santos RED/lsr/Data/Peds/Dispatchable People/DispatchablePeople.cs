@@ -106,7 +106,7 @@ public class DispatchablePeople : IDispatchablePeople
     private DispatchablePeople_Petrovic DispatchablePeople_Petrovic;
     private DispatchablePeople_Cops DispatchablePeople_Cops;
     private int optionalpropschance;
-
+    private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath_LS;
 
     public List<string> GeneralMaleVoices { get; private set; } = new List<string>() { "A_M_M_GENERICMALE_01_WHITE_MINI_01", "A_M_M_SALTON_01_WHITE_FULL_01", "A_M_M_TOURIST_01_WHITE_MINI_01", "A_M_M_MALIBU_01_LATINO_FULL_01" };
     public List<string> GeneralFemaleVoices { get; private set; } = new List<string>() { "A_F_Y_FITNESS_01_WHITE_FULL_01", "A_F_Y_BEVHILLS_01_WHITE_FULL_01", "A_F_Y_SOUCENT_01_BLACK_FULL_01", "A_F_Y_TOURIST_01_WHITE_FULL_01" };
@@ -121,6 +121,9 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> VarriosPeds { get; set; }
 
     public List<DispatchablePerson> AngelsOfDeathPeds { get; set; }
+
+    public List<DispatchablePerson> AngelsOfDeathPeds_LS { get; set; }
+
     public List<DispatchablePerson> UptownRidersPeds { get; set; }
 
 
@@ -1684,6 +1687,13 @@ public class DispatchablePeople : IDispatchablePeople
 
         DispatchablePeople_AngelsOfDeath = new DispatchablePeople_AngelsOfDeath(this);
         DispatchablePeople_AngelsOfDeath.Setup();
+
+
+        DispatchablePeople_AngelsOfDeath_LS = new DispatchablePeople_AngelsOfDeath(this);
+        DispatchablePeople_AngelsOfDeath_LS.IsLosSantos = true;
+        DispatchablePeople_AngelsOfDeath_LS.Setup();
+
+
         DispatchablePeople_UptownRiders = new DispatchablePeople_UptownRiders(this);
         DispatchablePeople_UptownRiders.Setup();
 
@@ -1839,7 +1849,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         ServicePeds();
     }
-
     private void ServicePeds()
     {
         DispatchablePeople_Service dispatchablePeople_Service = new DispatchablePeople_Service(this);
@@ -1906,9 +1915,6 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
     }
-
-  
-
     private void DefaultConfig()
     {
         //Cops
@@ -1965,7 +1971,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("PetrovicPeds", PetrovicPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("SpanishLordsPeds", SpanishLordsPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("UptownRidersPeds", UptownRidersPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", AngelsOfDeathPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", AngelsOfDeathPeds_LS));
 
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
@@ -2322,9 +2328,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(LCPeopleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchablePeople_{StaticStrings.LibertyConfigSuffix}.xml");
     }
-
-
-
     private void DefaultConfig_LPP()
     {
         List<DispatchablePersonGroup> LPPPersonGroup = Extensions.DeepCopy(PeopleGroupLookup);
@@ -2584,8 +2587,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         Serialization.SerializeParams(LPPPersonGroup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\DispatchablePeople_{StaticStrings.LPPConfigSuffix}.xml");
     }
-
-
     private void DefaultConfig_LosSantos2008()
     {
         //2008
@@ -15511,6 +15512,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", AngelsOfDeathPeds_LS));
+
 
         //Other
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));

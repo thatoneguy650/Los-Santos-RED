@@ -167,7 +167,7 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("LSMC","DELBE", 0, 100, 100),
             //new ZoneJurisdiction("LSMC","DELPE", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_YARDIES","DELSOL", 0, 100, 100),//Puerto Del Sol
-            new ZoneJurisdiction("AMBIENT_GANG_LOST","DESRT", 0, 100, 100),//grande senora desert
+            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","DESRT", 0, 100, 100),//grande senora desert//new ZoneJurisdiction("AMBIENT_GANG_LOST","DESRT", 0, 100, 100),//grande senora desert
             //new ZoneJurisdiction("MRH","DOWNT", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","DTVINE", 0, 100, 100),//Downtown Vinewood
             new ZoneJurisdiction("AMBIENT_GANG_LOST","EAST_V", 0, 100, 100),//East Vinewood
@@ -178,7 +178,7 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_PAVANO","GRAPES", 0, 100, 100),//Grapeseed
             //new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
-            //new ZoneJurisdiction("LSMC","HARMO", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_ANGELS","HARMO", 0, 100, 100),
             //new ZoneJurisdiction("AMBIENT_GANG_LOST","HAWICK", 0, 100, 100) {CanSpawnPedestrianOfficers = true },//Hawikc
             //new ZoneJurisdiction("LSMC","HORS", 0, 100, 100),
             //new ZoneJurisdiction("LSMC","HUMLAB", 0, 100, 100),
@@ -226,7 +226,7 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("LSMC","SANCHIA", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_HILLBILLY","SANDY", 0, 100, 100),//Sandy Shores
             new ZoneJurisdiction("AMBIENT_GANG_BALLAS","SKID", 0, 100, 100),//Mission Row
-            new ZoneJurisdiction("AMBIENT_GANG_LOST","SLAB", 0, 100, 100),//stab city aka slab city
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","SLAB", 0, 100, 100),//stab city aka slab city//new ZoneJurisdiction("AMBIENT_GANG_LOST","SLAB", 0, 100, 100),//stab city aka slab city
             new ZoneJurisdiction("AMBIENT_GANG_SALVA","STAD", 0, 100, 100),//Maze Bank
             new ZoneJurisdiction("AMBIENT_GANG_FAMILY","STRAW", 0, 100, 100),//Strawberry
             //new ZoneJurisdiction("LSSD","TATAMO", 0, 100, 100),

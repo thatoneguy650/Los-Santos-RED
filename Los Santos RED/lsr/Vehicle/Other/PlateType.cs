@@ -18,6 +18,7 @@ public class PlateType
     public bool DisablePrefix { get; set; }
     public int InStateSpawnChance { get; set; }
     public bool IsMotorcyclePlate { get; set; }
+    public bool AllowVanity { get; set; }
     public bool CanSpawn
     {
         get

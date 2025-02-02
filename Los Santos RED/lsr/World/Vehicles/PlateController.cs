@@ -34,7 +34,7 @@ public class PlateController
                 {
                     if (MyCar.Vehicle.Exists())
                     {
-                        EntryPoint.WriteToConsole($"PLATE CONTROLLER PLATE UPDATE FOR {MyCar.Handle}", 0);
+                        //EntryPoint.WriteToConsole($"PLATE CONTROLLER PLATE UPDATE FOR {MyCar.Handle}", 0);
                         MyCar.UpdatePlateType(false, Zones, PlateTypes, true, false);
                     }
                     VehiclesUpdated++;

@@ -371,7 +371,7 @@ public class LESpawnTask : SpawnTask
             CreatedVehicle.UpgradePerformance();
             if (IsOffDutySpawn)
             {
-                EntryPoint.WriteToConsole($"OFF DUTY SPAWN PLATE UPDATE FOR {CreatedVehicle.Handle}", 0);
+                //EntryPoint.WriteToConsole($"OFF DUTY SPAWN PLATE UPDATE FOR {CreatedVehicle.Handle}", 0);
                 CreatedVehicle.UpdatePlateType(true, World.ModDataFileManager.Zones, World.ModDataFileManager.PlateTypes,true, true);
             }
             else

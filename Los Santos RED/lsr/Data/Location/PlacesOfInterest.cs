@@ -5361,6 +5361,42 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(LostMainDen);
         GangDens.Add(LostMainDenMP);
         GangDens.Add(LostDen2);
+
+
+
+
+        GangDen AODDen1 = new GangDen(new Vector3(564.5187f, 2598.906f, 43.87211f), 108.823f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        {
+            CanInteractWhenWanted = true,
+            //MapIcon = 226,
+            IsPrimaryGangDen  = true,
+            BannerImagePath = "gangs\\angelsofdeath.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 30,
+            // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(560.9178f, 2602.27f, 43.02237f), 158.5504f, 65f),
+                new GangConditionalLocation(new Vector3(562.6679f, 2594.881f, 43.02491f), 86.77177f, 65f),
+                new GangConditionalLocation(new Vector3(567.6641f, 2590.169f, 42.81374f), 133.1242f, 65f),
+                new GangConditionalLocation(new Vector3(561.3026f, 2610.389f, 42.86051f), 30.94393f, 65f),
+                new GangConditionalLocation(new Vector3(559.5026f, 2621.251f, 42.9962f), 62.93612f, 65f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(571.2027f, 2589.197f, 42.81371f), 97.68387f, 75f),
+                new GangConditionalLocation(new Vector3(557.566f, 2593.706f, 42.81371f), 9.633554f, 75f),
+
+            },
+
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(548.1042f, 2602.095f, 42.78351f), 78.18074f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(547.9156f, 2592.404f, 42.90622f), 40.88092f),
+                }
+        };
+        GangDens.Add(AODDen1);
     }
     private void DefaultConfig_GangDens_Triads()
     {

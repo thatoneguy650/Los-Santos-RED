@@ -21,6 +21,7 @@ public class SellMenu : ModUIMenu
     private ISettingsProvideable Settings;
     private ITimeControllable Time;
     private IWeapons Weapons;
+    private bool isSpawningPreview;
 
     private Transaction Transaction;
     private ShopMenu ShopMenu;
@@ -268,7 +269,7 @@ public class SellMenu : ModUIMenu
     private void CreatePreview(MenuItem selectedMenu)
     {
         Transaction.ClearPreviews();
-        if (selectedMenu == null || selectedMenu.ModItem == null || !Transaction.PreviewItems || !Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (selectedMenu == null || selectedMenu.ModItem == null || !Transaction.PreviewItems || !Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews || isSpawningPreview)
         {
             return;
         }
@@ -276,7 +277,9 @@ public class SellMenu : ModUIMenu
         {
             try
             {
+                isSpawningPreview = true;
                 selectedMenu.ModItem.CreatePreview(Transaction, StoreCam, false, World, Settings);
+                isSpawningPreview = false;
             }
             catch (Exception ex)
             {
