@@ -22,6 +22,9 @@ public class BlankLocationsData_Liberty
         Checkpoints();
         RooftopSnipers();
         OtherCops();
+        PetrovicGang();
+        YardiesGang();
+        SpanishLordsGang();
     }
     private void RooftopSnipers()
     {
@@ -3831,6 +3834,1722 @@ public class BlankLocationsData_Liberty
                 },
         };
         BlankLocationPlaces.Add(ColonyIslandCops2);
+    }
+
+
+    private void PetrovicGang()
+    {
+        BlankLocation PetrovicCarServices = new BlankLocation()
+        {
+            Name = "PetrovicCarServices",
+            FullName = "",
+            Description = "Petrovic at Express Car Services",
+            EntrancePosition = new Vector3(1060.557f, 224.3717f, 15.59858f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 8,
+            MaxHourSpawn = 16,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1060.557f,224.3717f,15.59858f),
+            Heading = 253.0275f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+                new GangConditionalLocation() {
+                Location = new Vector3(1060.765f,223.128f,15.59858f),
+                Heading = 266.1909f,
+                AssociationID = "",
+                RequiredPedGroup = "",
+                RequiredVehicleGroup = "",
+                TaskRequirements = TaskRequirements.Guard,
+                ForcedScenarios = new List<String>() {
+                "WORLD_HUMAN_STAND_MOBILE",
+                "WORLD_HUMAN_SMOKING",
+                },
+                },
+                },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1056.836f,220.429f,14.66296f),
+            Heading = 270.1932f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1051.202f,232.595f,15.33756f),
+            Heading = 163.001f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1051.344f,230.8872f,15.33756f),
+            Heading = -16.033f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1052.226f,232.1301f,15.33756f),
+            Heading = 134.217f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE",
+            "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1049.771f,225.6905f,15.33756f),
+            Heading = -37.78978f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1048.376f,224.4079f,15.01581f),
+            Heading = -149.631f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicCarServices);
+        BlankLocation Petrovic69erDiner = new BlankLocation()
+        {
+            Name = "Petrovic69erDiner",
+            FullName = "",
+            Description = "2 Petrovic at 69th Street Diner",
+            EntrancePosition = new Vector3(1116.795f, 12.65497f, 14.93323f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+            Percentage = 60f,
+            MinHourSpawn = 8,
+            MaxHourSpawn = 14,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1116.795f,12.65497f,14.93323f),
+            Heading = 337.7535f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1118.274f,12.5189f,14.97527f),
+            Heading = 27.80906f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1112.5f,10.90448f,14.11008f),
+            Heading = 181.7274f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(Petrovic69erDiner);
+        BlankLocation PetrovicComradesBar = new BlankLocation()
+        {
+            Name = "PetrovicComradesBar",
+            FullName = "",
+            Description = "2 Petrovic at Comrades Bar",
+            EntrancePosition = new Vector3(1166.035f, 0.06602886f, 15.25864f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1166.035f,0.06602886f,15.25864f),
+            Heading = 91.14774f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1165.974f,1.157122f,15.28025f),
+            Heading = 129.3841f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1169.697f,-6.863485f,14.49819f),
+            Heading = 88.63706f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicComradesBar);
+        BlankLocation PetrovicSexShop = new BlankLocation()
+        {
+            Name = "PetrovicSexShop",
+            FullName = "",
+            Description = "1 Petrovic at Sex Shop",
+            EntrancePosition = new Vector3(1022.138f, -48.6943f, 9.500606f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 12,
+            MaxHourSpawn = 20,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1022.138f,-48.6943f,9.500606f),
+            Heading = 134.7647f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1016.142f,-56.35802f,9.214223f),
+            Heading = 49.11929f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicSexShop);
+        BlankLocation PetrovicHomeGroup = new BlankLocation()
+        {
+            Name = "PetrovicHomeGroup",
+            FullName = "",
+            Description = "4 Petrovic at random home",
+            EntrancePosition = new Vector3(1353.559f, 46.04258f, 17.79775f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1353.559f,46.04258f,17.79775f),
+            Heading = 92.58981f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1341.774f,42.94996f,13.60607f),
+            Heading = 50.88604f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT",
+            "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1341.804f,44.67862f,13.60499f),
+            Heading = 123.1636f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1340.423f,43.63142f,13.60668f),
+            Heading = 278.5757f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1351.192f,50.31235f,13.42303f),
+            Heading = 91.44496f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            MinHourSpawn = 18,
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1347.531f,47.9216f,12.82223f),
+            Heading = 271.1961f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1347.155f,52.65498f,12.99181f),
+            Heading = 90.49146f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            MinHourSpawn = 20,
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicHomeGroup);
+        BlankLocation PetrovicBeachboys = new BlankLocation()
+        {
+            Name = "PetrovicBeachboys",
+            FullName = "",
+            Description = "2 Petrovic at Firefly walkway",
+            EntrancePosition = new Vector3(1180.539f, -185.1522f, 16.44039f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1180.539f,-185.1522f,16.44039f),
+            Heading = -144.6719f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1181.491f,-185.1007f,16.44039f),
+            Heading = 165.3603f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_MOBILE",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicBeachboys);
+        BlankLocation PetrovicBeachboys2 = new BlankLocation()
+        {
+            Name = "PetrovicBeachboys2",
+            FullName = "",
+            Description = "2 Petrovic at Firefly Walkway2",
+            EntrancePosition = new Vector3(1330.582f, -149.4676f, 12.96499f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1329.791f,-185.2679f,16.44043f),
+            Heading = -88.09063f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT",
+            "WORLD_HUMAN_HANG_OUT",
+            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1330.831f,-185.2264f,16.44043f),
+            Heading = 91.29375f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1330.582f,-149.4676f,12.96499f),
+            Heading = 0.9169335f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1330.582f,-149.4676f,12.96499f),
+            Heading = 0.9169335f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            IsEmpty = false,
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicBeachboys2);
+        BlankLocation PetrovicPerestroika = new BlankLocation()
+        {
+            Name = "PetrovicPerestroika",
+            FullName = "",
+            Description = "2 Petrovic at Perestroika",
+            EntrancePosition = new Vector3(1198.493f, 203.3723f, 19.91231f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1198.493f,203.3723f,19.91231f),
+            Heading = 131.9387f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1198.097f,202.4012f,19.81704f),
+            Heading = -14.91232f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicPerestroika);
+        BlankLocation PetrovicBackAlley = new BlankLocation()
+        {
+            Name = "PetrovicBackAlley",
+            FullName = "",
+            Description = "Petrovic Courtyard",
+            EntrancePosition = new Vector3(1388.117f, 69.95895f, 16.5161f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 16,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1388.117f,69.95895f,16.5161f),
+            Heading = -98.90459f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1389.182f,69.86279f,16.53918f),
+            Heading = 92.34665f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 16,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1392.658f,59.53156f,16.43925f),
+            Heading = -112.4795f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1392.597f,58.59082f,16.43925f),
+            Heading = -66.63788f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1393.703f,59.13092f,16.43925f),
+            Heading = 87.99725f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicBackAlley);
+        BlankLocation PetrovicBeachgate = new BlankLocation()
+        {
+            Name = "PetrovicBeachgate",
+            FullName = "",
+            Description = "Petrovic BeagateParking",
+            EntrancePosition = new Vector3(1557.437f, -118.1017f, 12.24019f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 16,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1540.721f,-112.1248f,12.89008f),
+            Heading = -178.1683f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1557.437f,-118.1017f,12.24019f),
+            Heading = 0.9169335f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 16,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1552.54f,-122.7449f,12.71858f),
+            Heading = -84.1668f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1553.727f,-122.035f,12.71827f),
+            Heading = 119.951f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1553.922f,-123.095f,12.71747f),
+            Heading = 65.00776f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1557.437f,-118.1017f,12.24019f),
+            Heading = 179.6279f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            IsEmpty = false,
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(PetrovicBeachgate);
+    }
+    private void YardiesGang()
+    {
+        BlankLocation YardiesBumbaclot = new BlankLocation()
+        {
+            Name = "YardiesBumbaclot",
+            FullName = "",
+            Description = "Yardies behind Bumbaclots",
+            EntrancePosition = new Vector3(1626.656f, 557.8749f, 25.58451f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 16,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1630.266f,557.313f,25.90625f),
+            Heading = 168.2886f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1626.656f,557.8749f,25.58451f),
+            Heading = -25.60437f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 16,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1630.266f,557.313f,25.90625f),
+            Heading = 168.2886f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_DRINKING",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1628.937f,556.2213f,25.90625f),
+            Heading = -39.99989f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1629.584f,555.275f,25.90607f),
+            Heading = -19.42001f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1626.656f,557.8749f,25.58451f),
+            Heading = 179.6279f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(YardiesBumbaclot);
+        BlankLocation YardiesStreets = new BlankLocation()
+        {
+            Name = "YardiesStreets",
+            FullName = "",
+            Description = "Yardies Street Setup",
+            EntrancePosition = new Vector3(1600.437f, 540.2205f, 32.23283f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1600.437f,540.2205f,32.23283f),
+            Heading = -173.8112f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1600.437f,540.2205f,32.23283f),
+            Heading = -173.8112f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+            "WORLD_HUMAN_SMOKING",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1601.36f,539.939f,32.22181f),
+            Heading = 154.9978f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1600.605f,539.003f,32.2259f),
+            Heading = -9.000006f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(YardiesStreets);
+        BlankLocation YardiesStreets2 = new BlankLocation()
+        {
+            Name = "YardiesStreets2",
+            FullName = "",
+            Description = "Yardies Street Setup2",
+            EntrancePosition = new Vector3(1515.371f, 561.4121f, 38.10307f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 10,
+            MaxHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1515.371f,561.4121f,38.10307f),
+            Heading = -129.4167f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1516.403f,561.0484f,38.0646f),
+            Heading = 83.4598f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            },
+            },
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            MaxHourSpawn = 23,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1515.24f,559.6724f,37.96181f),
+            Heading = -129.174f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1516.196f,559.0659f,37.90246f),
+            Heading = 83.46609f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1515.037f,558.7992f,37.89363f),
+            Heading = -82.79473f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1510.477f,558.7837f,37.56691f),
+            Heading = 0.01087305f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(YardiesStreets2);
+        BlankLocation YardiesStreets3 = new BlankLocation()
+        {
+            Name = "YardiesStreets3",
+            FullName = "",
+            Description = "Yardies Street Setup3",
+            EntrancePosition = new Vector3(1703.692f, 679.4326f, 24.55261f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 12,
+            MaxHourSpawn = 20,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1714.549f,676.8549f,23.08803f),
+            Heading = -90.89314f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1714.568f,676.0766f,23.00532f),
+            Heading = -67.1198f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1703.692f,679.4326f,24.55261f),
+            Heading = 103.0923f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(YardiesStreets3);
+        BlankLocation YardiesStreets4 = new BlankLocation()
+        {
+            Name = "YardiesStreets4",
+            FullName = "",
+            Description = "Yardies Street Setup4",
+            EntrancePosition = new Vector3(1769.87f, 631.3967f, 22.80543f),
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+            PossibleGroupSpawns = new List<ConditionalGroup>() {
+            new ConditionalGroup() {
+            Name = "",
+
+            MinHourSpawn = 18,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1773.581f,632.506f,23.12693f),
+            Heading = 104.7972f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_HANG_OUT_STREET",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            new GangConditionalLocation() {
+            Location = new Vector3(1773.527f,631.49f,23.12693f),
+            Heading = 82.25832f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            TaskRequirements = TaskRequirements.Guard,
+            ForcedScenarios = new List<String>() {
+            "WORLD_HUMAN_STAND_IMPATIENT_FACILITY",
+            "WORLD_HUMAN_STAND_MOBILE",
+            },
+            },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+            Location = new Vector3(1769.87f,631.3967f,22.80543f),
+            Heading = -164.1557f,
+            AssociationID = "",
+            RequiredPedGroup = "",
+            RequiredVehicleGroup = "",
+            ForcedScenarios = new List<String>() {
+            },
+            },
+            },
+            },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+            },
+            VendorLocations = new List<SpawnPlace>()
+            {
+            },
+            VendorHeadDataGroupID = "",
+            VehiclePreviewLocation = new SpawnPlace()
+            {
+            },
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+            },
+        };
+        BlankLocationPlaces.Add(YardiesStreets4);
+        // EndOfStreamException of xml converts
+        BlankLocation YardiesAlley1 = new BlankLocation()
+        {
+
+            Name = "YardiesAlley1",
+            FullName = "",
+            Description = "",
+            MapIcon = 78,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(2012.652f, 1014.228f, 28.62987f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+
+            PossibleGroupSpawns =
+              new List<ConditionalGroup>() {
+        new ConditionalGroup() {
+          Name = "",
+          Percentage = defaultSpawnPercentage,
+          MinHourSpawn = 10,
+          MaxHourSpawn = 22,
+          PossiblePedSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(2017.166f, 1012.159f, 28.62671f),
+                  Heading = 93.53442f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                        "WORLD_HUMAN_DRUG_DEALER_HARD",
+                      },
+                },
+                new GangConditionalLocation() {
+                  Location = new Vector3(2015.703f, 1012.086f, 28.71803f),
+                  Heading = 282.9243f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_HANG_OUT_STREET",
+                        "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                      },
+                },
+              },
+          PossibleVehicleSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(2012.652f, 1014.228f, 28.62987f),
+                  Heading = 316.3719f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  ForcedScenarios = new List<String>() {},
+                },
+              },
+        },
+              },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+            VehicleDeliveryLocations = new List<SpawnPlace>() { },
+        };
+        BlankLocationPlaces.Add(YardiesAlley1);
+        BlankLocation YardiesStreet5 = new BlankLocation()
+        {
+
+            Name = "YardiesStreet5",
+            FullName = "",
+            Description = "",
+            MapIcon = 78,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(2062.486f, 898.504f, 26.46866f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+
+            PossibleGroupSpawns =
+          new List<ConditionalGroup>() {
+        new ConditionalGroup() {
+          Name = "",
+          Percentage = defaultSpawnPercentage,
+          MinHourSpawn = 16,
+          MaxHourSpawn = 24,
+          PossiblePedSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(2063.646f, 903.1901f, 26.78606f),
+                  Heading = 94.53841f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        "WORLD_HUMAN_DRUG_DEALER_HARD",
+                      },
+                },
+                new GangConditionalLocation() {
+                  Location = new Vector3(2063.631f, 902.1149f, 26.7692f),
+                  Heading = 82.53756f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_HANG_OUT_STREET",
+                        "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                      },
+                },
+              },
+          PossibleVehicleSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(2062.486f, 898.504f, 26.46866f),
+                  Heading = 270.4164f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  ForcedScenarios = new List<String>() {},
+                },
+              },
+        },
+          },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+            VehicleDeliveryLocations = new List<SpawnPlace>() { },
+        };
+        BlankLocationPlaces.Add(YardiesStreet5);
+        BlankLocation YardiesAlley2 = new BlankLocation()
+        {
+
+            Name = "YardiesAlley2",
+            FullName = "",
+            Description = "",
+            MapIcon = 78,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(1926.702f, 1134.882f, 28.58441f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            MenuID = "",
+
+            PossibleGroupSpawns =
+          new List<ConditionalGroup>() {
+        new ConditionalGroup() {
+          Name = "",
+          Percentage = defaultSpawnPercentage,
+          MinHourSpawn = 12,
+          MaxHourSpawn = 20,
+          PossiblePedSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(1930.279f, 1135.17f, 29.0173f),
+                  Heading = 93.33098f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                        "WORLD_HUMAN_DRUG_DEALER_HARD",
+                      },
+                },
+                new GangConditionalLocation() {
+                  Location = new Vector3(1930.355f, 1136.531f, 29.00263f),
+                  Heading = 120.6347f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  TaskRequirements = TaskRequirements.Guard,
+                  ForcedScenarios =
+                      new List<String>() {
+                        "WORLD_HUMAN_HANG_OUT_STREET",
+                        "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                      },
+                },
+              },
+          PossibleVehicleSpawns =
+              new List<ConditionalLocation>() {
+                new GangConditionalLocation() {
+                  Location = new Vector3(1926.702f, 1134.882f, 28.58441f),
+                  Heading = 178.8307f,
+                  AssociationID = "",
+                  RequiredPedGroup = "",
+                  RequiredVehicleGroup = "",
+                  ForcedScenarios = new List<String>() {},
+                },
+              },
+        },
+          },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+            VehicleDeliveryLocations = new List<SpawnPlace>() { },
+        };
+        BlankLocationPlaces.Add(YardiesAlley2);
+
+    }
+    private void SpanishLordsGang()
+    {
+        BlankLocation SpanLordsMem = new BlankLocation()
+        {
+
+            Name = "SpanLordsMem",
+            FullName = "",
+            Description = "2 Spanish Lords at Hernan Memorial",
+            MapIcon = 78,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(811.6744f, 1869.621f, 10.9797f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            MenuID = "",
+
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = defaultSpawnPercentage,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 20,
+                    MaxWantedLevelSpawn = 6,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(811.6744f, 1869.621f, 10.9797f),
+                            Heading = 262.1925f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                            },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(811.6653f, 1870.759f, 10.96288f),
+                            Heading = 258.0417f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                            },
+                            MaxWantedLevelSpawn = 6,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {
+                   },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(SpanLordsMem);
+
     }
 }
 

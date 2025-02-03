@@ -35,8 +35,19 @@ public class PlayerPerception
     {
         get
         {
+            uint RecognizeTime = 1200;
+            if(Target.IsPoorWeather)
+            {
+                RecognizeTime += 500;
+            }
+            if(Target.IsConsideredNight)
+            {
+                RecognizeTime += 500;
+            }
 
-            if (TimeContinuoslySeenTarget >= 500)//1250
+
+
+            if (TimeContinuoslySeenTarget >= RecognizeTime) // 500)//1250
             {
                 return true;
             }
@@ -208,7 +219,118 @@ public class PlayerPerception
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
         float expectedSightDistance = 60f;
+        bool requiresFrontLOS = true;
         if(Originator.IsInAirVehicle)
+        {
+            expectedSightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
+            if (IsWanted)
+            {
+                expectedSightDistance += Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft_AdditionalAtWanted;
+            }
+            requiresFrontLOS = false;
+        }
+        else if (Originator.IsCop)
+        {
+            expectedSightDistance = Settings.SettingsManager.PoliceSettings.SightDistance;
+        }
+        else
+        {
+            expectedSightDistance = Settings.SettingsManager.CivilianSettings.SightDistance;
+        }
+        float extendedExpectedSightDistance = expectedSightDistance + 50f;
+        if (DistanceToTarget >= extendedExpectedSightDistance || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
+        {
+            SetTargetUnseen();
+            return false;
+        }
+
+
+        //Special Hiding Cases
+
+
+        if(!NeedsLOSCheck || !Target.Character.Exists() || !Originator.Pedestrian.Exists())
+        {
+            return false;
+        }
+
+
+
+
+
+        bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
+        Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
+
+
+
+        bool isInFront = IsInFrontOf(Target.Character);
+
+
+
+        if (Target.IsHidingInVehicle)
+        {
+            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.HidingInVehicleSightDecreasePercentage;
+        }
+        if(Target.IsConsideredNight)
+        {
+            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.NightTimeSightDecreasePercenttage;
+        }
+        if (Target.IsPoorWeather)
+        {
+            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.PoorWeatherSightDecreasePercenttage;
+        }
+
+
+        bool isWithinPossibleSightDistance = false;
+        if(isInFront && DistanceToTarget < expectedSightDistance)
+        {
+            isWithinPossibleSightDistance = true;
+        }
+        else if (!isInFront && ((TargetInVehicle && DistanceToTarget <= DistanceToTargetInVehicle) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
+        {
+            requiresFrontLOS = false;
+            isWithinPossibleSightDistance = true;
+        }
+
+        //EntryPoint.WriteToConsole($"expectedSightDistance: {expectedSightDistance} isWithinPossibleSightDistance{isWithinPossibleSightDistance}");
+
+        if (isWithinPossibleSightDistance)
+        {
+            if (requiresFrontLOS)
+            {
+                if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                {
+                    SetTargetSeen();
+                }
+                else
+                {
+                    SetTargetUnseen();
+                }
+            }
+            else
+            {
+                if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                {
+                    SetTargetSeen();
+                }
+                else
+                {
+                    SetTargetUnseen();
+                }
+            }
+            GameFiber.Yield();//TR TEST 28
+            RanSightThisUpdate = true;
+        }
+        GameTimeLastLOSCheck = Game.GameTime;
+        return true;
+    }
+
+
+
+    private bool UpdateTargetLineOfSight_Old(bool IsWanted)
+    {
+        float expectedSightDistance = 60f;
+        bool requiresFrontCheck = true;
+        if (Originator.IsInAirVehicle)
         {
             expectedSightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
             if (IsWanted)
@@ -224,25 +346,30 @@ public class PlayerPerception
         {
             expectedSightDistance = Settings.SettingsManager.CivilianSettings.SightDistance;
         }
-        expectedSightDistance += 50f;//safety margin
-
-        if (DistanceToTarget >= expectedSightDistance || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
+        float extendedExpectedSightDistance = expectedSightDistance + 50f;
+        if (DistanceToTarget >= extendedExpectedSightDistance || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new, was 100f
         {
             SetTargetUnseen();
             return false;
         }
 
+
+        //Special Hiding Cases
+
+
+
+
         if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
-        {     
+        {
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
 
-            bool isInFront = IsInFrontOf(Target.Character); 
+            bool isInFront = IsInFrontOf(Target.Character);
             if (Originator.IsCop && !Originator.IsInHelicopter && !Originator.IsInPlane)//!Originator.Pedestrian.IsInHelicopter)
             {
                 if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && isInFront)//55f
                 {
-                    if(NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
                     {
                         SetTargetSeen();
                     }
@@ -255,7 +382,7 @@ public class PlayerPerception
                 }
                 else
                 {
-                    if(!isInFront && ((TargetInVehicle && DistanceToTarget <= DistanceToTargetInVehicle) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
+                    if (!isInFront && ((TargetInVehicle && DistanceToTarget <= DistanceToTargetInVehicle) || (!TargetInVehicle && DistanceToTarget <= DistanceToTargetOnFoot)))
                     {
                         if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
                         {
@@ -344,6 +471,10 @@ public class PlayerPerception
         }
         return false;
     }
+
+
+
+
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
         PositionLastSeenCrime = PositionToReport;

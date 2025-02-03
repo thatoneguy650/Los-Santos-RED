@@ -2115,6 +2115,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
             new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
             new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+            new DispatchableVehicleGroup("AngelsOfDeathVehicles", AngelsOfDeathVehicles),
 
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),

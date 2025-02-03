@@ -111,9 +111,9 @@ public class WorldSettings : ISettingsDefaultable
         UpdateVehiclePlates = true;
         CleanupVehicles = true;
         ReplaceVanillaShopKeepers = true;
-        RandomVehiclePlatesPercent = 7f;
+        RandomVehiclePlatesPercent = 12f;// 7f;
         AllowRandomVanityPlates = true;
-        RandomVehicleVanityPlatesPercent = 5f;
+        RandomVehicleVanityPlatesPercent = 3f;// 5f;
         ShowAllLocationsOnDirectory = false;
 
         LowerPedSpawnsAtHigherWantedLevels = true;

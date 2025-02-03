@@ -948,32 +948,36 @@ namespace LSR.Vehicles
             PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
             Zone CurrentZone = Zones.GetZone(Vehicle.Position);
             PlateType NewType = null;
-
-            if(forceState)
+            
+            if (forceState)
             {
-                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID);
+                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID, IsMotorcycle);
             }
             else if (force)
             {
-                NewType = PlateTypes.GetRandomPlateType();
+                NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
                 //EntryPoint.WriteToConsole($"UPDATE PLATE TYPE FORCE {NewType?.StateID}");
             }
             else if (CanHavePlateRandomlyUpdated && CurrentZone != null && CurrentZone.StateID != StaticStrings.SanAndreasStateID && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
             {
-                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID);
+                NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID, IsMotorcycle);
+            }
+            else if (CanHavePlateRandomlyUpdated && CurrentZone.StateID == StaticStrings.SanAndreasStateID && IsMotorcycle)
+            {
+                NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
             }
             else
             {
                 if (CanHavePlateRandomlyUpdated && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
                 {
-                    NewType = PlateTypes.GetRandomPlateType();
+                    NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
                 }
             }
             if (NewType != null)
             {
                 //EntryPoint.WriteToConsole($"UPDATE PLATE TYPE FORCE NEW TYPE IS NOT NULL {NewType?.StateID}");
                 string NewPlateNumber;
-                if (allowVanity && Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+                if (allowVanity && NewType.AllowVanity && Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
                 {
                     NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
                 }
@@ -1003,20 +1007,20 @@ namespace LSR.Vehicles
                     CarPlate.PlateType = NewType.Index;
                 }
             }
-            else
-            {
-                string NewPlateNumber;
-                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent) && allowVanity && AllowVanityPlates)
-                {
-                    NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
-                    if (NewPlateNumber != "")
-                    {
-                        Vehicle.LicensePlate = NewPlateNumber;
-                        OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                }
-            }
+            //else
+            //{
+            //    string NewPlateNumber;
+            //    if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent) && allowVanity && AllowVanityPlates)
+            //    {
+            //        NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
+            //        if (NewPlateNumber != "")
+            //        {
+            //            Vehicle.LicensePlate = NewPlateNumber;
+            //            OriginalLicensePlate.PlateNumber = NewPlateNumber;
+            //            CarPlate.PlateNumber = NewPlateNumber;
+            //        }
+            //    }
+            //}
         }
         public void ResetBecameEmpty()
         {

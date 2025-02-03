@@ -71,6 +71,7 @@ public class GroupMember
         {
             return;
         }
+        previousPedGroup = PedExt.Pedestrian.RelationshipGroup;
         if (!PedExt.WasModSpawned)
         {
             PedExt.WasEverSetPersistent = true;
@@ -140,8 +141,9 @@ public class GroupMember
         {
             PedExt.Pedestrian.KeepTasks = true;
             PedExt.Pedestrian.IsPersistent = false;
-            PedExt.Pedestrian.RelationshipGroup = previousPedGroup;
+            //PedExt.Pedestrian.RelationshipGroup = previousPedGroup;
         }
+        PedExt.Pedestrian.RelationshipGroup = previousPedGroup;
     }
     public void SetViolent()
     {

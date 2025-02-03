@@ -2187,7 +2187,7 @@ public class PlacesOfInterest_Liberty
             CloseTime = 24,
             IsEnabled = true,
             StateID = StaticStrings.LibertyStateID,
-            BannerImagePath = "gangs\\petrovic.png",
+            BannerImagePath = "gangs\\spanishlords.png",
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(998.1249f, 1863.178f, 14.24735f), 222.095f, 75f),

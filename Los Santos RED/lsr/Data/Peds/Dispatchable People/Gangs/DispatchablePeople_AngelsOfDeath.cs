@@ -24,6 +24,8 @@ public class DispatchablePeople_AngelsOfDeath
     private int defaultCombatAbilityMin = 0;
     private int defaultCombatAbilityMax = 1;
 
+    public bool IsLosSantos { get; set; } = false;
+
     private List<string> DefaultVoicesMale = new List<string>() {
         "G_M_Y_LOST_01_BLACK_FULL_01",
         "G_M_Y_LOST_01_BLACK_FULL_02",
@@ -54,7 +56,14 @@ public class DispatchablePeople_AngelsOfDeath
     }
     public void Setup()
     {
-        DispatchablePeople.AngelsOfDeathPeds = new List<DispatchablePerson>() { };
+        if (IsLosSantos)
+        {
+            DispatchablePeople.AngelsOfDeathPeds_LS = new List<DispatchablePerson>() { };
+        }
+        else
+        {
+            DispatchablePeople.AngelsOfDeathPeds = new List<DispatchablePerson>() { };
+        }
         DefaultPeds();
         MaleFreemodePeds();
         FemaleFreemodePeds();
@@ -441,7 +450,15 @@ public class DispatchablePeople_AngelsOfDeath
             },
             OptionalComponentChance = optionalComponentDefault,
         };
-        DispatchablePeople.AngelsOfDeathPeds.Add(GeneralMaleBiker5);
+
+        if (IsLosSantos)
+        {
+            DispatchablePeople.AngelsOfDeathPeds_LS.Add(GeneralMaleBiker5);
+        }
+        else
+        {
+            DispatchablePeople.AngelsOfDeathPeds.Add(GeneralMaleBiker5);
+        }
     }
 
     private void FemaleFreemodePeds()
@@ -785,7 +802,17 @@ public class DispatchablePeople_AngelsOfDeath
             },
             OptionalComponentChance = optionalComponentDefault,
         };
-        DispatchablePeople.AngelsOfDeathPeds.Add(GeneralFemaleBiker5);
+        
+        
+        if(IsLosSantos)
+        {
+            DispatchablePeople.AngelsOfDeathPeds_LS.Add(GeneralFemaleBiker5);
+        }
+        else
+        {
+            DispatchablePeople.AngelsOfDeathPeds.Add(GeneralFemaleBiker5);
+        }
+        
     }
     private OptionalAppliedOverlayLogic TShirtOverlays(bool isMale)
     {
@@ -797,24 +824,50 @@ public class DispatchablePeople_AngelsOfDeath
         };
 
         //28 - 31, 34, 35 BIKE TEEs = good for full sHIRT
-        if (isMale)
+
+
+        if(IsLosSantos)
         {
-            toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+            {
+                new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_002_M","ZONE_TORSO"),//Ones that say liberty
+
+            };
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+            {
+                new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_002_F","ZONE_TORSO"),
+
+            };
+            }
+        }
+        else
+        {
+            if (isMale)
+            {
+                toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
             {
                 new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_000_M","ZONE_TORSO"),//Ones that say liberty
                 new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_001_M","ZONE_TORSO"),//2 and 3 say los santos
 
             };
-        }
-        else
-        {
-            toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
+            }
+            else
+            {
+                toreturn.OptionalAppliedOverlays = new List<OptionalAppliedOverlay>()
             {
                 new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_000_F","ZONE_TORSO"),
                 new OptionalAppliedOverlay("mpBiker_overlays","MP_Biker_Tee_001_F","ZONE_TORSO"),
 
             };
+            }
         }
+
+
 
         return toreturn;
     }

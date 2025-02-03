@@ -27,6 +27,7 @@ public class PurchaseMenu : ModUIMenu
     private IEntityProvideable World;
     private Transaction Transaction;
     private ShopMenu ShopMenu;
+    private bool isSpawningPreview;
     public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, ILocationInteractable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
@@ -327,7 +328,7 @@ public class PurchaseMenu : ModUIMenu
     private void CreatePreview(MenuItem selectedMenu)
     {
         Transaction.ClearPreviews();
-        if (selectedMenu == null || selectedMenu.ModItem == null || !Transaction.PreviewItems || !Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (selectedMenu == null || selectedMenu.ModItem == null || !Transaction.PreviewItems || !Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews || isSpawningPreview)
         {
             return;
         }
@@ -335,7 +336,9 @@ public class PurchaseMenu : ModUIMenu
         {
             try
             {
+                isSpawningPreview = true;
                 selectedMenu.ModItem.CreatePreview(Transaction, StoreCam, true, World, Settings);
+                isSpawningPreview = false;
             }
             catch (Exception ex)
             {

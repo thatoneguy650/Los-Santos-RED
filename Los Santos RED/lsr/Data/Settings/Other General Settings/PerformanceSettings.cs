@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 public class PerformanceSettings : ISettingsDefaultable
 {
-    [Description("If enabled, lsr will update more items each frame. This should increase respinsiveness but can decrease performance.")]
-    public bool EnableIncreasedUpdateMode { get; set; }
+    [Description("If enabled, lsr will update less items each frame. This should increase performance for lower end computers.")]
+    public bool EnablePerformanceUpdateMode { get; set; }
     public bool PrintUpdateTimes { get; set; }
     public bool PrintCivilianOnlyUpdateTimes { get; set; }
     public bool PrintCivilianUpdateTimes { get; set; }
@@ -42,7 +42,10 @@ public class PerformanceSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        EnableIncreasedUpdateMode = false;
+
+
+
+        EnablePerformanceUpdateMode = false;
 
         PrintUpdateTimes = false;
         PrintCivilianUpdateTimes = false;

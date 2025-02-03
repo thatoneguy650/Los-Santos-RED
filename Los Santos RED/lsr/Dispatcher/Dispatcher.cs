@@ -143,13 +143,19 @@ public class Dispatcher
         {
             GameFiber.Yield();
         }
-        GameFiber.Yield();
+        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        {
+            GameFiber.Yield();
+        }
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
         }
         LocationDispatcher.Dispatch();
-        GameFiber.Yield();
+        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        {
+            GameFiber.Yield();
+        }
         if (!EntryPoint.ModController.IsRunning)
         {
             return;

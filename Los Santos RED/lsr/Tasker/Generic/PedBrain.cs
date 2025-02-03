@@ -40,14 +40,14 @@ public class PedBrain
 
         if (PedExt.CanBeTasked && PedExt.CanBeAmbientTasked)
         {
-            if (PedExt.DistanceToPlayer >= 230f)
+            if (PedExt.DistanceToPlayer >= 350f)//230f)
             {
                 PedExt.CurrentTask = null;
                 return;
             }
             if (PedExt.NeedsTaskAssignmentCheck)
             {
-                if (PedExt.DistanceToPlayer <= 200f)
+                if (PedExt.DistanceToPlayer <= 300f)//200f)
                 {
                     UpdateCurrentTask();//has yields if it does anything
                 }

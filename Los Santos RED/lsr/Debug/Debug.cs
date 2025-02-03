@@ -532,19 +532,25 @@ public class Debug
 
 
 
-        int trackID = NativeFunction.Natives.GET_AUDIBLE_MUSIC_TRACK_TEXT_ID<int>();
+        foreach(VehicleExt vehicle in World.Vehicles.NonServiceVehicles)
+        {
+            EntryPoint.WriteToConsole($"NonServiceVehicles: {vehicle.Handle} {vehicle.IsMotorcycle}");
+        }
 
 
-        string artistNameLabel = $"{trackID}A";
-        string songNameLabel = $"{trackID}S";
+        //int trackID = NativeFunction.Natives.GET_AUDIBLE_MUSIC_TRACK_TEXT_ID<int>();
 
 
-        string artistName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(artistNameLabel);
-        string songName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(songNameLabel);
+        //string artistNameLabel = $"{trackID}A";
+        //string songNameLabel = $"{trackID}S";
 
 
-        Game.DisplaySubtitle($"{artistName} - {songName}  {artistNameLabel}-{songNameLabel}  {Game.GetLocalizedString(trackID.ToString())} {Game.GetLocalizedString(songNameLabel)}");
-        GameFiber.Sleep(500);
+        //string artistName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(artistNameLabel);
+        //string songName = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(songNameLabel);
+
+
+        //Game.DisplaySubtitle($"{artistName} - {songName}  {artistNameLabel}-{songNameLabel}  {Game.GetLocalizedString(trackID.ToString())} {Game.GetLocalizedString(songNameLabel)}");
+        //GameFiber.Sleep(500);
         //NativeFunction.Natives.FREEZE_RADIO_STATION("RADIO_19_USER");
         ;
 

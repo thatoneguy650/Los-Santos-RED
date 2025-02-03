@@ -857,7 +857,7 @@ public class Interiors : IInteriors
 
             new GangDenInterior(245761,"LOST M.C. Clubhouse")
             {
-                RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo" },
+                RequestIPLs = new List<string>() { "bkr_bi_hw1_13_int","bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo" },
                 InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("lostmxclubhouseStandard1",new Vector3(988.4098f, -96.65791f, 74.84534f), 43.43883f,"Interact") 
                     {

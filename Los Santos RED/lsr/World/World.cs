@@ -268,7 +268,7 @@ namespace Mod
                     catch (Exception ex)
                     {
                         EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                        EntryPoint.ModController.CrashUnload();
+                        //EntryPoint.ModController.CrashUnload();
                     }
                 }, $"Density Runner");
             }

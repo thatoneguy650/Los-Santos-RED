@@ -138,12 +138,12 @@ public class Vehicles
 
         FEJSuppressedHashes = new List<uint>() { 
             TaxiHashKey, 
-            Game.GetHashKey("sovereign"), 
-            Game.GetHashKey("buffalo3"),
-            Game.GetHashKey("blista3"),
-            Game.GetHashKey("stalion2"),
-            Game.GetHashKey("gauntlet2"),
-            Game.GetHashKey("dominator2"),
+            //Game.GetHashKey("sovereign"), 
+            //Game.GetHashKey("buffalo3"),
+            //Game.GetHashKey("blista3"),
+            //Game.GetHashKey("stalion2"),
+            //Game.GetHashKey("gauntlet2"),
+            //Game.GetHashKey("dominator2"),
         };
     }
     public void Dispose()
@@ -289,7 +289,7 @@ public class Vehicles
         }
         else
         {
-            if (!NonPoliceList.Any(x => x.Handle == vehicle.Handle))
+            if (!AllVehicleList.Any(x => x.Handle == vehicle.Handle))
             {
                 CreateCivilianVehicleFromAmbient(vehicle);
                 return true;

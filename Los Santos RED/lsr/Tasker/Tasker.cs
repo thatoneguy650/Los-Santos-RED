@@ -115,9 +115,15 @@ namespace Mod
             CivilianTasker.Update();
             GameFiber.Yield();//TR 29
             GangTasker.Update();
-            GameFiber.Yield();//TR 29
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            {
+                GameFiber.Yield();//TR 29
+            }
             EMTTasker.Update();
-            GameFiber.Yield();//TR 29
+            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            {
+                GameFiber.Yield();//TR 29
+            }
             FirefighterTasker.Update();
             GameFiber.Yield();
             if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)

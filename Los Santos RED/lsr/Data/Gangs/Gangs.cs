@@ -33,6 +33,7 @@ public class Gangs : IGangs
     private Gang Armenian;
     private Gang Yardies;
     private Gang Diablos;
+    private Gang AngelsOfDeath;
     private LoanParameters defaultLoanParameters;
 
     public Gangs()
@@ -765,17 +766,61 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
             GangClassification = GangClassification.Street,
         };//SPANK
+        AngelsOfDeath = new Gang("~w~", "AMBIENT_GANG_ANGELS", "The Angels of Death", "AOD MC", "White",
+    "AngelsOfDeathPeds", "AngelsOfDeathVehicles", "AOD ",
+    "MeleeWeapons", "LostSidearms", "LostLongGuns",
+    "AOD MC", "CHAR_BLANK_ENTRY", "AOD Member")
+        {
+            DenName = "Clubhouse",
+            HeadDataGroupID = "AngelsOfDeathHeads",
+            AmbientMemberMoneyMin = 100,
+            AmbientMemberMoneyMax = 250,
+            DealerMemberMoneyMin = 400,
+            DealerMemberMoneyMax = 1500,
+            EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST", "AMBIENT_GANG_YARDIES" },
+            DealerMenuGroup = "MethamphetamineDealerMenu",
+
+            PickupPaymentMin = 200,
+            PickupPaymentMax = 600,
+            TheftPaymentMin = 1000,
+            TheftPaymentMax = 2000,// 3000,
+            HitPaymentMin = 2000,//5000,// 10000,
+            HitPaymentMax = 3250,//12000,//22000,
+            DeliveryPaymentMin = 1000,
+            DeliveryPaymentMax = 2000,// 3000,
+
+            NeutralRepLevel = 0,
+            FriendlyRepLevel = 1500,
+            StartingRep = 0,
+            MaximumRep = 5000,
+            MinimumRep = -5000,
+            MemberOfferRepLevel = 4500,
+            HitSquadRep = -4500,
+            PercentageWithMelee = 40f,
+            PercentageWithSidearms = 30f,
+            PercentageWithLongGuns = 15f,
+            MemberKickUpAmount = 2500,
+            DrugDealerPercentage = 65f,
+            LicensePlatePrefix = "AOD ",
+            GangClassification = GangClassification.Biker,
+            MembersGetFreeVehicles = true,
+            MembersGetFreeWeapons = true,
+            LoanParameters = defaultLoanParameters,
+        };//Meth
+
+
         //new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", "AltruistPeds", "GenericGangVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Altruist Leader","CHAR_PA_MALE","Altruist Member") { 
         //                                DenName = "Gathering Location",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_HILLBILLY" }, DealerMenuGroup = "ToiletCleanerDealerMenu",
         //                                PickupPaymentMin = 100, PickupPaymentMax = 500, TheftPaymentMin = 500, TheftPaymentMax = 2000, HitPaymentMin = 5000, HitPaymentMax = 10000,DeliveryPaymentMin = 800, DeliveryPaymentMax = 3000
         //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 4500, StartingRep = 0, MaximumRep = 5000, MinimumRep = -5000
         //                                ,PercentageWithMelee = 20f, PercentageWithSidearms = 30f, PercentageWithLongGuns = 5f} ,
+
     }
     private void DefaultConfig()
     {    
         GangsList = new List<Gang>
         {
-            LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Gambetti,Pavano,Lupisella,Messina,Ancelotti,Cartel,Armenian,Yardies,Diablos
+            LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Gambetti,Pavano,Lupisella,Messina,Ancelotti,Cartel,Armenian,Yardies,Diablos,AngelsOfDeath
         };
         Serialization.SerializeParams(GangsList, ConfigFileName);
     }
@@ -821,6 +866,9 @@ public class Gangs : IGangs
         Gang Ancelotti_LIB = Extensions.DeepCopy(Ancelotti);
         Ancelotti_LIB.EnemyGangs = new List<string>() { "AMBIENT_GANG_GAMBETTI", "AMBIENT_GANG_MESSINA" };
 
+        Gang AngelsOfDeath_LIB = Extensions.DeepCopy(AngelsOfDeath);
+        AngelsOfDeath_LIB.EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST", "AMBIENT_GANG_UPTOWN", "AMBIENT_GANG_PETROVIC", "AMBIENT_GANG_YARDIES" };
+
         Gang SpanishLords = new Gang("~b~", "AMBIENT_GANG_SPANISH", "The Spanish Lords", "Spanish Lords", "Blue",
             "SpanishLordsPeds", "SpanishLordsVehicles", "",
             "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns",
@@ -834,7 +882,7 @@ public class Gangs : IGangs
             HeadDataGroupID = "VarriosHeads",
             EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" },
             DealerMenuGroup = "CrackDealerMenu",
-
+           
             PickupPaymentMin = 200,
             PickupPaymentMax = 500,
             TheftPaymentMin = 1000,
@@ -983,48 +1031,6 @@ public class Gangs : IGangs
             LoanParameters = defaultLoanParameters,
         };//Coke
 
-        Gang AngelsOfDeath = new Gang("~w~", "AMBIENT_GANG_ANGELS", "The Angels of Death", "AOD MC", "White",
-            "AngelsOfDeathPeds", "AngelsOfDeathVehicles", "AOD ", 
-            "MeleeWeapons", "LostSidearms", "LostLongGuns",
-            "AOD MC", "CHAR_BLANK_ENTRY", "AOD Member")
-        {
-            DenName = "Clubhouse",
-            HeadDataGroupID = "AngelsOfDeathHeads",
-            AmbientMemberMoneyMin = 100,
-            AmbientMemberMoneyMax = 250,
-            DealerMemberMoneyMin = 400,
-            DealerMemberMoneyMax = 1500,
-            EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST", "AMBIENT_GANG_UPTOWN", "AMBIENT_GANG_PETROVIC", "AMBIENT_GANG_YARDIES" },
-            DealerMenuGroup = "MethamphetamineDealerMenu",
-
-            PickupPaymentMin = 200,
-            PickupPaymentMax = 600,
-            TheftPaymentMin = 1000,
-            TheftPaymentMax = 2000,// 3000,
-            HitPaymentMin = 2000,//5000,// 10000,
-            HitPaymentMax = 3250,//12000,//22000,
-            DeliveryPaymentMin = 1000,
-            DeliveryPaymentMax = 2000,// 3000,
-
-            NeutralRepLevel = 0,
-            FriendlyRepLevel = 1500,
-            StartingRep = 0,
-            MaximumRep = 5000,
-            MinimumRep = -5000,
-            MemberOfferRepLevel = 4500,
-            HitSquadRep = -4500,
-            PercentageWithMelee = 40f,
-            PercentageWithSidearms = 30f,
-            PercentageWithLongGuns = 15f,
-            MemberKickUpAmount = 2500,
-            DrugDealerPercentage = 65f,
-            LicensePlatePrefix = "AOD ",
-            GangClassification = GangClassification.Biker,
-            MembersGetFreeVehicles = true,
-            MembersGetFreeWeapons = true,
-            LoanParameters = defaultLoanParameters,
-        };//Meth
-
         Gang UptownRiders = new Gang("~w~", "AMBIENT_GANG_UPTOWN", 
             "Uptown Riders", "Uptown Riders", "White",
             "UptownRidersPeds", "UptownRidersVehicles", "",
@@ -1079,7 +1085,7 @@ public class Gangs : IGangs
             NorthHollandHuslters,
             SpanishLords,
             KoreanMob,
-            AngelsOfDeath,
+            AngelsOfDeath_LIB,
             UptownRiders
         };
         Serialization.SerializeParams(LCGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
@@ -1100,7 +1106,7 @@ public class Gangs : IGangs
             NorthHollandHuslters,
             SpanishLords,
             KoreanMob,
-            AngelsOfDeath,
+            AngelsOfDeath_LIB,
             UptownRiders
         };
         Serialization.SerializeParams(LPPGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Gangs_{StaticStrings.LPPConfigSuffix}.xml");

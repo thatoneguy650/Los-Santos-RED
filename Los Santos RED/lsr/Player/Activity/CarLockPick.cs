@@ -98,6 +98,10 @@ public class CarLockPick
     }
     private bool SetupLockPick()
     {
+        if (!TargetVehicle.Exists())
+        {
+            return false;
+        }
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
         Player.WeaponEquipment.SetUnarmed();
@@ -126,6 +130,10 @@ public class CarLockPick
                 break;
             }
             GameFiber.Yield();
+        }
+        if(!TargetVehicle.Exists())
+        {
+            return false; ;
         }
         if (!StartAnimation)
         {
@@ -175,6 +183,10 @@ public class CarLockPick
                 Continue = false;
                 break;
             }
+            if(!TargetVehicle.Exists())
+            {
+                return false;
+            }
             if (TargetVehicle.Doors[DoorIndex].IsOpen)
             {
                 EntryPoint.WriteToConsole($"LOCK PICK ENTRY BREAK 2: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
@@ -184,6 +196,10 @@ public class CarLockPick
             }
 
 
+        }
+        if (!TargetVehicle.Exists())
+        {
+            return false;
         }
         Player.IsLockPicking = false;
         if (!Continue)

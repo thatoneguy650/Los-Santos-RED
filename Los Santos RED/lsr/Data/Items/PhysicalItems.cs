@@ -265,8 +265,13 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0f, 0f, 0.03f),new Rotator(-60f, 0f, 0f)),
             }),
             new PhysicalItem("prop_cs_pills", new List<PropAttachment>() { 
-                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
+                //new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0f, 0f)),
                 new PropAttachment("RightHandPass", "BONETAG_R_PH_HAND", new Vector3(0.02f, 0.02f, 0.04f),new Rotator(-60.0f, 0f, 0f)),
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.07f, 0.03f, 0f),new Rotator(-70f, 0f, 0f)),
+                //new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.06f, 0.03f, 0f),new Rotator(-70f, 0f, 0f))
+
+
+
             }),
             new PhysicalItem("sf_prop_sf_bag_weed_01a", new List<PropAttachment>() {
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),

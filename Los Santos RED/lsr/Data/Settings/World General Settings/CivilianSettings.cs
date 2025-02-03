@@ -28,6 +28,18 @@ public class CivilianSettings : ISettingsDefaultable
     public float SightDistance { get; set; }
     [Description("How far away in meters civilians will be able to hear non-suppressed shooting. Maximum value of 200.")]
     public float GunshotHearingDistance { get; set; }
+
+
+
+
+    [Description("How much the sight distance is decreased when the player is ducking in an off, not wanted vehicle.")]
+    public float HidingInVehicleSightDecreasePercentage { get; set; }
+    [Description("How much the sight distance is decreased at night.")]
+    public float NightTimeSightDecreasePercenttage { get; set; }
+    [Description("How much the sight distance is decreased during poor weather.")]
+    public float PoorWeatherSightDecreasePercenttage { get; set; }
+
+
     [Description("Allows tasking of mission or other mod spawned civilians in the world.")]
     public bool TaskMissionPeds { get; set; }
     [Description("Allows hold ups and talking of mission or other mod spawned civilians in the world.")]
@@ -324,6 +336,13 @@ public class CivilianSettings : ISettingsDefaultable
 
         PossibleSurrenderPercentage = 40;
         WantedPossibleSurrenderPercentage = 10;
+
+
+
+
+        HidingInVehicleSightDecreasePercentage = 0.3f;
+        NightTimeSightDecreasePercenttage = 0.7f;
+        PoorWeatherSightDecreasePercenttage = 0.8f;
     }
 
 }
