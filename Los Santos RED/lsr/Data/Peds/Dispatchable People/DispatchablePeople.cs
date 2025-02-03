@@ -181,7 +181,7 @@ public class DispatchablePeople : IDispatchablePeople
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Dispatchable People config  {ConfigFile.FullName}", 0);
+            EntryPoint.WriteToConsole($"Loaded Dispatchable People config:  {ConfigFileName}", 0);
             PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFileName);
         }
         else
