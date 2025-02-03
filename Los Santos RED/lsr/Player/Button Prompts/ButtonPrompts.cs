@@ -491,6 +491,19 @@ public class ButtonPrompts
             RemovePrompts("ToggleGroupMode");
         }
 
+        if(!addedPromptGroup && Player.ActivityManager.CanHideInCurrentObject && !Player.ActivityManager.IsPerformingActivity)
+        {
+            if(!HasPrompt("HideInObject"))
+            {
+                AttemptAddPrompt("Hiding","Hide In Object", "HideInObject", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { Player.ActivityManager.Hide(Player.CurrentLookedAtObject); });
+            }
+        }
+        else
+        {
+            RemovePrompts("Hiding");
+        }
+
+
     }
     private void SittingPrompts()
     {

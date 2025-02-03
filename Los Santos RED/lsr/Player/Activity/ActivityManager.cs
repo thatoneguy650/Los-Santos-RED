@@ -61,6 +61,7 @@ public class ActivityManager
     private uint GameTimeLastSetBlips;
     private bool IsDoingVehileAnim;
     private uint GameTimeLastStartedHotwiring;
+    private uint GameTimeLastPressedHide;
 
     public bool IsUsingToolAsWeapon { get; set; }
 
@@ -224,6 +225,7 @@ public class ActivityManager
     public bool IsUrinatingDefecting { get; set; }
     public bool IsUrinatingDefectingOnToilet { get; set; }
     public bool IsUsingIllegalItem { get; internal set; }
+    public bool CanHideInCurrentObject { get; private set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -508,6 +510,29 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
+
+    public void Hide(Rage.Object hidingObject)
+    {
+        if(Game.GameTime - GameTimeLastPressedHide <= 500)
+        {
+            return;
+        }
+        GameTimeLastPressedHide = Game.GameTime;
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        HidingActivity hidingActivity = new HidingActivity(Actionable,LocationInteractable, Settings, hidingObject);
+        if (hidingActivity.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = hidingActivity;
+            LowerBodyActivity.Start();
+        }
+    }
+
     public void Gesture(GestureData gestureData)
     {
         if (IsPerformingActivity)
@@ -1987,6 +2012,31 @@ public class ActivityManager
         Player.CurrentVehicle.Engine.SetState(true);
         //GameFiber.Sleep(2500);
         //Player.CurrentVehicle?.Engine.Synchronize();
+    }
+
+    public void OnLookedAtObject(Rage.Object currentLookedAtObject)
+    {
+
+        if(currentLookedAtObject == null)
+        {
+            CanHideInCurrentObject = false;
+            return;
+        }
+        uint[] dumpsterHashes = new uint[]
+{
+            0x0cffb6b0, // prop_dumpster_01a
+            0x27baeb1a, // prop_dumpster_02a
+            0xfc8394ac, // prop_dumpster_02b
+            0xf3ae2877, // prop_dumpster_3a
+            0x5a1d76e4, // prop_dumpster_4a
+            0x28b2940f // prop_dumpster_4b
+};
+        if(dumpsterHashes.Contains(currentLookedAtObject.Model.Hash))
+        {
+            CanHideInCurrentObject = true;
+            return;
+        }
+        CanHideInCurrentObject = false;
     }
 }
 

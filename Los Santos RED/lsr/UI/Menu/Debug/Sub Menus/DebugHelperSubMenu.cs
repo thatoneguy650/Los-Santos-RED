@@ -636,7 +636,7 @@ public class DebugHelperSubMenu : DebugSubMenu
 
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("prop_cash_pile_02");
+        string PropName = NativeHelper.GetKeyboardInput("prop_cs_pills");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -701,9 +701,14 @@ public class DebugHelperSubMenu : DebugSubMenu
 
                 //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-                AnimationDictionary.RequestAnimationDictionay(dictionary);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
-                isRunning = true;
+
+
+                if (!string.IsNullOrEmpty(dictionary))
+                {
+                    AnimationDictionary.RequestAnimationDictionay(dictionary);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+                }
+                    isRunning = true;
                 AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
                 GameFiber.StartNew(delegate
                 {

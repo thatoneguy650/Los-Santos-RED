@@ -224,6 +224,7 @@ namespace Mod
 
         public GangBackupManager GangBackupManager { get; private set; }
         public InteriorManager InteriorManager { get; private set; }
+        public WeatherReporting Weather { get; set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -319,7 +320,7 @@ namespace Mod
         public bool IsSecurityGuard { get; set; } = false;
         public bool IsRidingOnTrain { get; set; }
         public bool HasBustPowers => IsCop || IsSecurityGuard;
-
+        public bool IsHidingInVehicle { get; private set; }
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
         public bool IsServicePed => IsCop || IsEMT || IsFireFighter;
         public bool AutoDispatch { get; set; } = false;
@@ -492,8 +493,9 @@ namespace Mod
         public bool IsInPoliceVehicle { get; private set; }
         public Dispatcher Dispatcher { get; set; }
         public bool IsBlockingTraffic { get; set; }
+        public bool IsConsideredNight { get; private set; }
 
-
+        public bool IsPoorWeather => Weather.IsPoorWeather;
 
 
         //Required
@@ -633,7 +635,30 @@ namespace Mod
             RadarDetector.Update();
             IntimidationManager.Update();
             VehicleManager.Update();
+            UpdateHiding();
         }
+
+        private void UpdateHiding()
+        {
+            if(IsInVehicle && CurrentVehicle != null && !CurrentVehicle.IsWanted && IsDuckingInVehicle && !CurrentVehicle.Engine.IsRunning)
+            {
+                IsHidingInVehicle = true;
+            }
+            else
+            {
+                IsHidingInVehicle = false;
+            }
+            if(TimeControllable.CurrentHour >= 18 || TimeControllable.CurrentHour <= 5)
+            {
+                IsConsideredNight = true;
+            }
+            else
+            {
+                IsConsideredNight = false;
+            }
+ 
+        }
+
         public void SetNotBusted()
         {
             BeingArrested = false;
@@ -884,6 +909,10 @@ namespace Mod
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", $"~y~{PlayerName}", NotifcationText);
             // DisplayPlayerVehicleNotification();
         }
+
+
+             
+
         public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill, string voiceName)
         {
             ModelName = modelName;
@@ -1914,6 +1943,12 @@ namespace Mod
             UpdateSleeping();
             GameFiber.Yield();
             Violations.MinorViolations.UpdateData();
+
+
+
+
+
+
         }
         private void UpdateGeneralStatus()
         {
@@ -2562,7 +2597,7 @@ namespace Mod
 
 
                     World.Places.DynamicPlaces.OnLookedAtObject(CurrentLookedAtObject);
-
+                    ActivityManager.OnLookedAtObject(CurrentLookedAtObject);
 
                     prevCurrentLookedAtObjectHandle = CurrentLookedAtObject.Handle;
                 }
@@ -2571,6 +2606,7 @@ namespace Mod
             {
                 CanSitOnCurrentLookedAtObject = false;
                 prevCurrentLookedAtObjectHandle = 0;
+                ActivityManager.OnLookedAtObject(null);
             }
         }
         private void GetCurrentViewMode()

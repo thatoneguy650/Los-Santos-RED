@@ -99,6 +99,7 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest, Weather,Time, ModDataFileManager.ModItems, ModDataFileManager.Organizations, ModDataFileManager.Interiors);
             Dispatcher.Setup();
             Player.Dispatcher = Dispatcher;
+            Player.Weather = Weather;
             GameFiber.Yield();
             Crafting = new Mod.Crafting(Player, ModDataFileManager.CraftableItems, ModDataFileManager.ModItems, ModDataFileManager.Settings,ModDataFileManager.Weapons);
             Crafting.Setup();

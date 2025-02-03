@@ -24,13 +24,13 @@ public class MoveInteraction
         FinalPlayerPosition = finalPlayerPosition;
         FinalPlayerHeading = finalPlayerHeading;
     }
-    public float CloseDistance { get; set; } = 0.35f;
-    public float CloseHeading { get; set; } = 0.5f;
+    public float CloseDistance { get; set; } = 0.72f;//0.35f;
+    public float CloseHeading { get; set; } = 7.0f;//0.5f;
 
     public uint TimeLimit { get; set; } = 5000;
     public uint TimeGrace { get; set; } = 3000;
-    public float DistanceGrace { get; set; } = 0.4f;
-    public float HeadingGrace { get; set; } = 2.0f;
+    public float DistanceGrace { get; set; } = 0.45f;//0.4f;
+    public float HeadingGrace { get; set; } = 5.0f;//2.0f;
     public bool MoveToMachine(float speed)
     {
         NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, FinalPlayerPosition.X, FinalPlayerPosition.Y, FinalPlayerPosition.Z, speed, -1, 0.25f, 0, FinalPlayerHeading);
@@ -52,7 +52,7 @@ public class MoveInteraction
                 IsCloseEnough = true;
             }
 
-           // Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition)} IsCloseEnough{IsCloseEnough}");
+            //Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition)} IsCloseEnough{IsCloseEnough}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);

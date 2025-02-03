@@ -78,6 +78,7 @@ namespace LosSantosRED.lsr.Interface
         Dispatcher Dispatcher { get; }
         RadarDetector RadarDetector { get; }
         PlayerVoice PlayerVoice { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

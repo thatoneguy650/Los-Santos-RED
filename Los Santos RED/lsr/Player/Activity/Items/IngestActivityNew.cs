@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class IngestActivity : DynamicActivity
+    public class IngestActivityNew : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private EatingData Data;
@@ -25,8 +25,9 @@ namespace LosSantosRED.lsr.Player
         private IngestItem IngestItem;
         private ConsumableRefresher ConsumableItemNeedGain;
         private AnimationWatcher AnimationWatcher;
+        private bool IsPlayingPillTakeAnimation;
 
-        public IngestActivity(IActionable consumable, ISettingsProvideable settings, IngestItem modItem, IIntoxicants intoxicants) : base()
+        public IngestActivityNew(IActionable consumable, ISettingsProvideable settings, IngestItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -83,34 +84,77 @@ namespace LosSantosRED.lsr.Player
             return false;
         }
         private void Enter()
-        { 
+        {
             Player.WeaponEquipment.SetUnarmed();
             AttachItemToHand();
-            Player.ActivityManager.IsPerformingActivity = true;   
-            if(ModItem.IsPublicUseIllegal)
+            CancelPrompt = $"Stop Taking {IngestItem.Name}";
+            Player.ActivityManager.IsPerformingActivity = true;
+            if (ModItem.IsPublicUseIllegal)
             {
                 Player.ActivityManager.IsUsingIllegalItem = true;
             }
-            Idle();
+
+            //Idle();
+            PlayBase();
         }
-        private void Idle()
+        private void PlayBase()
         {
+            while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
+            {
+                DisableControls();
+                if (!IsPlayingPillTakeAnimation && Player.ButtonPrompts.IsPressed("IngestTakePill"))
+                {
+                    TakePillLoop();
+                }
+                if(IsPlayingPillTakeAnimation)
+                {
+                    Player.ButtonPrompts.RemovePrompts("IngestActivity");
+                }
+                else
+                {
+                    Player.ButtonPrompts.AddPrompt("IngestActivity", $"Take {IngestItem?.Name} ({CountOfRemainingItems()})", "IngestTakePill", GameControl.Attack, 10);
+                }
+                if(!HasMoreOfItem())
+                {
+                    IsCancelled = true;
+                }
+                GameFiber.Yield();
+            }
+            Exit();
+        }
+        private bool HasMoreOfItem()
+        {
+            return CountOfRemainingItems() > 0;
+        }
+        private int CountOfRemainingItems()
+        {
+            InventoryItem inventoryItem = Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.Name.ToLower() == IngestItem.Name.ToLower()).FirstOrDefault();
+            if(inventoryItem == null)
+            {
+                return 0;
+            }
+            return inventoryItem.Amount;
+        }
+        private void TakePillLoop()
+        {
+            Player.ButtonPrompts.RemovePrompts("IngestActivity");
+            IsPlayingPillTakeAnimation = true;
+
             StartNewIdleAnimation();
             ConsumableItemNeedGain = new ConsumableRefresher(Player, IngestItem, Settings);
             while (Player.ActivityManager.CanPerformActivitiesMiddle && !IsCancelled)
             {
+                DisableControls();
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.25f)
-                {
-                    if (Item.Exists())
-                    {
-                        Item.Delete();
-                    }
-                }
                 if (AnimationTime >= 0.35f)
                 {
                     ConsumableItemNeedGain.FullyConsume();
+                    Player.Inventory.Use(IngestItem);
+                    if (CurrentIntoxicant != null)
+                    {
+                        Player.Intoxication.Ingest(CurrentIntoxicant);
+                    }
                     break;
                 }
                 bool isAnimRunning = AnimationWatcher.IsAnimationRunning(AnimationTime);
@@ -120,10 +164,12 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            Exit();
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+            IsPlayingPillTakeAnimation = false;
         }
         private void Exit()
         {
+            Player.ButtonPrompts.RemovePrompts("IngestActivity");
             if (Item.Exists())
             {
                 Item.Detach();
@@ -147,11 +193,30 @@ namespace LosSantosRED.lsr.Player
             CreateItem();
             if (Item.Exists() && !IsAttachedToHand)
             {
-                Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
+                EntryPoint.WriteToConsole($"{Data.HandBoneName} {Data.HandOffset} {Data.HandRotator} BoneIndex:{NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName)}");
+                Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
                 Player.AttachedProp.Add(Item);
             }
         }
+
+
+        private void DisableControls()
+        {
+            Game.DisableControlAction(0, GameControl.Attack, true);// false);
+            Game.DisableControlAction(0, GameControl.Attack2, true);// false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
+            Game.DisableControlAction(0, GameControl.Detonate, true);// false);
+
+
+            Game.DisableControlAction(0, GameControl.Aim, true);// false);
+            Game.DisableControlAction(0, GameControl.VehicleAim, true);// false);
+            Game.DisableControlAction(0, GameControl.AccurateAim, true);// false);
+            Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);// false);
+        }
+
+
         private void CreateItem()
         {
             if (!Item.Exists() && Data.PropModelName != "")
@@ -168,10 +233,10 @@ namespace LosSantosRED.lsr.Player
                 {
                     Item.IsGravityDisabled = false;
                 }
-                else
-                {
-                    IsCancelled = true;
-                }
+                //else
+                //{
+                //    IsCancelled = true;
+                //}
             }
         }
         private void StartNewIdleAnimation()
@@ -180,14 +245,6 @@ namespace LosSantosRED.lsr.Player
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-        }
-        private void StartBaseAnimation()
-        {
-            //isPlayingBase = true;
-            AnimationWatcher.Reset();
-            PlayingDict = Data.AnimBaseDictionary;
-            PlayingAnim = Data.AnimBase;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Settings.SettingsManager.ActivitySettings.BlendInBaseEat * 1.0f, Settings.SettingsManager.ActivitySettings.BlendOutBaseEat * -1.0f, -1, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
         }
         private void Setup()
         {
@@ -211,6 +268,8 @@ namespace LosSantosRED.lsr.Player
                     HandRotator = pa.Rotation;
                     HandBoneName = pa.BoneName;
                 }
+
+                EntryPoint.WriteToConsole($"HandOffset:{HandOffset} HandRotator:{HandRotator} HandBoneName:{HandBoneName}");
             }
             AnimIdleDictionary = "mp_suicide";
             AnimIdle = new List<string>() { "pill" };
