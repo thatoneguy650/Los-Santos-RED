@@ -231,7 +231,6 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Barber
-            
 
             //Clothes
             new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },

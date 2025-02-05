@@ -13,6 +13,8 @@ public class CraftableItems : ICraftableItems
     private IModItems ModItems;
 
     public Dictionary<string, CraftableItemLookupModel> CraftablesLookup { get; set; }
+    public Dictionary<string, List<string>> IngredientCraftableLookup { get; set; }
+
     public CraftableItem Get(string name)
     {
         return CraftableList.FirstOrDefault(x => x.Name == name);
@@ -52,11 +54,11 @@ public class CraftableItems : ICraftableItems
             }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1, Cooldown = 2000},
             new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000},
+            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000, CraftingFlag = "CutCocaine"},
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true},
+            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true, AnimationDictionary= "gestures@f@standing@casual", AnimationName = "gesture_bye_soft"},
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }
@@ -65,4 +67,3 @@ public class CraftableItems : ICraftableItems
         Serialization.SerializeParams(CraftableList == null ? new List<CraftableItem>() : CraftableList, ConfigFileName);
     }
 }
-//

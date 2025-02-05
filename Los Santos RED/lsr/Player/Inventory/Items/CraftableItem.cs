@@ -18,11 +18,14 @@ public class CraftableItem
     }
     public string Name { get; set; }
     public string Resultant { get; set; }
+    public string AnimationDictionary { get; set; }
+    public string AnimationName { get; set; }
     public int ResultantAmount { get; set; }
     public bool SingleUnit { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public int Cooldown { get; set;}
     public string CrimeId { get; set; }
+    public string CraftingFlag { get; set; }
     [XmlIgnore]
     private string _ingredientList;
     [XmlIgnore]
