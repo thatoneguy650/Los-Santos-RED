@@ -58,7 +58,7 @@ public class CraftableItems : ICraftableItems
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true},
+            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true, AnimationDictionary= "gestures@f@standing@casual", AnimationName = "gesture_bye_soft"},
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }
@@ -67,4 +67,3 @@ public class CraftableItems : ICraftableItems
         Serialization.SerializeParams(CraftableList == null ? new List<CraftableItem>() : CraftableList, ConfigFileName);
     }
 }
-//

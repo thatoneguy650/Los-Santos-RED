@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using LosSantosRED.lsr.Helper.Crafting;
 using System.Collections.Generic;
+using Rage.Native;
 
 namespace Mod
 {
@@ -121,6 +122,10 @@ namespace Mod
             }
             return quantity;
         }
+        private void PerformAnimation(CraftableItemLookupModel craftItem)
+        {
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, craftItem.CraftableItem.AnimationDictionary, craftItem.CraftableItem.AnimationName, 4.0f, -4.0f, -1, 0, 0, false, false, false);
+        }
         public void CraftItem(string productName, Dictionary<string,ModItem> itemsToRemove, int quantity = 1)
         {
             if (IsCrafting)
@@ -128,11 +133,16 @@ namespace Mod
                 Game.DisplayNotification("~r~Cooldown active. ~w~Cannot craft.");
                 return;
             }
+            Player.ActivityManager.StopDynamicActivity();
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
             CraftingMenu.Toggle();
             DeductIngredientsFromInventory(itemsToRemove, craftItem, quantity);
             Player.IsSetDisabledControls = true;
             IsCrafting = true;
+            if((!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationDictionary)) && (!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationName)))
+            {
+                PerformAnimation(craftItem);
+            }
             if (!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
             {
                 Player.Violations.SetContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
