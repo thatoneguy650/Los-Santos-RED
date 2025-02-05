@@ -13,19 +13,21 @@ public class CraftingMenu : ModUIMenu
     private MenuPool MenuPool;
     private ICraftableItems CraftableItems;
     private Mod.Crafting Crafting;
+    private ILocationInteractable LocationInteractablePlayer;
 
-    public CraftingMenu(MenuPool menuPool, ICraftableItems craftableItems, Mod.Crafting crafting)
+    public CraftingMenu(MenuPool menuPool, ICraftableItems craftableItems, Mod.Crafting crafting, ILocationInteractable locationInteractablePlayer)
     {
         MenuPool = menuPool;
         CraftableItems = craftableItems;
         Crafting = crafting;
+        LocationInteractablePlayer = locationInteractablePlayer;
     }
     public void Setup()
     {
-        Menu = new UIMenu("Crafting",string.Empty);
+        Menu = new UIMenu("Crafting", string.Empty);
+        Crafting.CraftingMenu = this;
         Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         MenuPool.Add(Menu);
-
     }
     public override void Hide()
     {
@@ -36,6 +38,15 @@ public class CraftingMenu : ModUIMenu
         if (!Menu.Visible)
         {
             Create();
+            Menu.Visible = true;
+        }
+    }
+    public void Show(string craftingFlag)
+    {
+        if (!Menu.Visible)
+        {
+            Menu.Clear();
+            CreateCraftableItems(craftingFlag);
             Menu.Visible = true;
         }
     }
@@ -55,28 +66,46 @@ public class CraftingMenu : ModUIMenu
         Menu.Clear();
         CreateCraftableItems();
     }
-    private void CreateCraftableItems()
+    private void CreateCraftableItems(string craftingFlag = null)
     {
-        foreach (var craftableItem in CraftableItems.Items)
+        HashSet<string> craftableItemsChecked = new HashSet<string>();
+        Dictionary<string, ModItem> itemsToRemove = new Dictionary<string,ModItem>();
+        foreach (var item in LocationInteractablePlayer.Inventory.ItemsList)
         {
-            if(craftableItem.SingleUnit)
+            if (Crafting.CraftableItems.IngredientCraftableLookup.ContainsKey(item.ModItem.Name))
             {
-                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
-                itemMenu.Activated += (s, e) =>
+                foreach (var craftableItem in Crafting.CraftableItems.IngredientCraftableLookup[item.ModItem.Name])
                 {
-                    Crafting.CraftItem(itemMenu.Text);
-                };
-                Menu.AddItem(itemMenu);
-            }
-            else
-            {
-                UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList, 1, 10, 1);
-                itemMenu.Value = 1;
-                itemMenu.Activated += (s, e) =>
-                {
-                    Crafting.CraftItem(itemMenu.Text, itemMenu.Value);
-                };
-                Menu.AddItem(itemMenu);
+                    if (craftableItemsChecked.Contains(craftableItem))
+                    {
+                        continue;
+                    }
+                    int quantity = Crafting.GetQuantityOfCraftable(CraftableItems.CraftablesLookup[craftableItem], itemsToRemove, craftingFlag);
+                    if (quantity > 0)
+                    {
+                        craftableItemsChecked.Add(craftableItem);
+                        var craftableItemObject = Crafting.CraftableItems.CraftablesLookup[craftableItem].CraftableItem;
+                        if (craftableItemObject.SingleUnit)
+                        {
+                            UIMenuItem itemMenu = new UIMenuItem(craftableItemObject.Name, craftableItemObject.IngredientList);
+                            itemMenu.Activated += (s, e) =>
+                            {
+                                Crafting.CraftItem(itemMenu.Text, itemsToRemove);
+                            };
+                            Menu.AddItem(itemMenu);
+                        }
+                        else
+                        {
+                            UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItemObject.Name, craftableItemObject.IngredientList, 1, quantity, 1);
+                            itemMenu.Value = 1;
+                            itemMenu.Activated += (s, e) =>
+                            {
+                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, itemMenu.Value);
+                            };
+                            Menu.AddItem(itemMenu);
+                        }
+                    }
+                }
             }
         }
     }

@@ -17,7 +17,7 @@ public class CraftInteriortInteract : InteriorInteract
         RemovePrompt();
         Interior.IsMenuInteracting = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        LocationInteractable.CraftingFlags.Add(CraftingFlag);
+        LocationInteractable.Crafting.CraftingMenu.Show(CraftingFlag);
         bool IsCancelled = false;
         while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
@@ -25,7 +25,7 @@ public class CraftInteriortInteract : InteriorInteract
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
             {
                 IsCancelled = true;
-                LocationInteractable.CraftingFlags.Remove(CraftingFlag);
+                LocationInteractable.Crafting.CraftingMenu.Hide();
                 break;
             }
             GameFiber.Yield();
