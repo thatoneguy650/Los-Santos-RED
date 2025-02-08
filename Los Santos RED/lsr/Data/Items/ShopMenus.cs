@@ -26,34 +26,11 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus = new ShopMenuTypes();
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("ShopMenus.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}",0);
-            PossibleShopMenus = Serialization.DeserializeParam<ShopMenuTypes>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFileName}",0);
-            PossibleShopMenus = Serialization.DeserializeParam<ShopMenuTypes>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Shop Menus config found, creating default", 0);
-            DefaultConfig();
-            DefaultConfig_LosSantos2008();
-            DefaultConfig_FullModernTraffic();
-            DefaultConfig_FullExpandedExperience();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"ShopMenus_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}", 0);
             PossibleShopMenus = Serialization.DeserializeParam<ShopMenuTypes>(ConfigFile.FullName);

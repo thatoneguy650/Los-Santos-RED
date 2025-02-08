@@ -14,33 +14,11 @@ public class Zones : IZones
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
     public List<Zone> ZoneList { get; private set; } = new List<Zone>();
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Zones.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Zones config: {ConfigFile.FullName}",0);
-            ZoneList = Serialization.DeserializeParams<Zone>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Zones config  {ConfigFileName}",0);
-            ZoneList = Serialization.DeserializeParams<Zone>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Zones config found, creating default", 0);
-            DefaultConfig();
-            DefaultConfig_LibertyCity();
-            DefaultConfig_SunshineDream();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Zones_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Zones config: {ConfigFile.FullName}", 0);
             ZoneList = Serialization.DeserializeParams<Zone>(ConfigFile.FullName);

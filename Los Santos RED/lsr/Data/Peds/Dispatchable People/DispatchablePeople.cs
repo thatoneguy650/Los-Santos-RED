@@ -146,38 +146,11 @@ public class DispatchablePeople : IDispatchablePeople
             }
         }
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("DispatchablePeople.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Dispatchable People config: {ConfigFile.FullName}", 0);
-            PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Dispatchable People config  {ConfigFile.FullName}", 0);
-            PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Dispatchable People config found, creating default", 0);
-            SetupDefault();
-            DefaultConfig_LosSantos2008();
-            DefaultConfig_Simple();
-            DefaultConfig_SunshineDream();
-            DefaultConfig_FullExpandedJurisdiction();
-            DefaultConfig();
-            DefaultConfig_LibertyCity();
-            DefaultConfig_LPP();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"DispatchablePeople_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Dispatchable People config: {ConfigFile.FullName}", 0);
             PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFile.FullName);

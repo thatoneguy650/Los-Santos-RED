@@ -12,31 +12,11 @@ public class Heads : IHeads
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Heads.xml";
     private List<HeadDataGroup> RandomHeadDataLookup;
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Heads.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Heads config: {ConfigFile.FullName}", 0);
-            RandomHeadDataLookup = Serialization.DeserializeParams<HeadDataGroup>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Heads config  {ConfigFileName}", 0);
-            RandomHeadDataLookup = Serialization.DeserializeParams<HeadDataGroup>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Heads config found, creating default", 0);
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Heads_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Heads config: {ConfigFile.FullName}", 0);
             RandomHeadDataLookup = Serialization.DeserializeParams<HeadDataGroup>(ConfigFile.FullName);

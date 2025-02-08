@@ -18,31 +18,11 @@ public class Weapons : IWeapons
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Weapons.xml";
     private List<WeaponInformation> WeaponsList;
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Weapons.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Weapons config: {ConfigFile.FullName}",0);
-            WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Issuable Weapons config  {ConfigFileName}",0);
-            WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Weapons config found, creating default", 0);
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Weapons_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Weapons config: {ConfigFile.FullName}", 0);
             WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFile.FullName);

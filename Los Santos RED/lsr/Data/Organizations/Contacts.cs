@@ -24,38 +24,14 @@ public class Contacts : IContacts
     {
         PossibleContacts = new PossibleContacts();
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Contacts.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Contacts Config: {taskFile.FullName}", 0);
-            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(taskFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Contacts Config  {ConfigFileName}", 0);
-            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Contacts config found, creating default", 0);
-            SetupDefault();
-            DefaultConfig_FullExpanded();
-            DefaultConfig_LC();
-            DefaultConfig();
-        }
-    }
-
     public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles($"Contacts_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Contacts_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Contacts Config: {taskFile.FullName}", 0);
-            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Contacts Config: {ConfigFile.FullName}", 0);
+            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {

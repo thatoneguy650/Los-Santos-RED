@@ -19,38 +19,15 @@ public class Settings : ISettingsProvideable
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Settings.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
-            SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Settings config  {ConfigFileName}", 0);
-            SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
-            DefaultConfig();
-        }
-        DefaultSettingsManager = new SettingsManager();
-        DefaultSettingsManager.Setup();
-        DefaultSettingsManager.SetDefault();
-        SettingsManager.Setup();
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Settings_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
             SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\Settings_{configName}.xml";
         }
         else if (File.Exists(ConfigFileName))
         {
@@ -66,7 +43,6 @@ public class Settings : ISettingsProvideable
         DefaultSettingsManager.Setup();
         DefaultSettingsManager.SetDefault();
         SettingsManager.Setup();
-        ConfigFileName = $"Plugins\\LosSantosRED\\Settings_{configName}.xml"; // for serialization
     }
     public void DefaultConfig()
     {

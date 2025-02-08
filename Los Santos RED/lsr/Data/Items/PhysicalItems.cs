@@ -26,31 +26,11 @@ public class PhysicalItems : IPropItems
     {
         return PhysicalItemsList.Where(x => x.Type != ePhysicalItemType.Vehicle && x.Type != ePhysicalItemType.Weapon && x.Type != ePhysicalItemType.Ped).PickRandom();
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("PhysicalItems.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Physical Items config: {ConfigFile.FullName}", 0);
-            PhysicalItemsList = Serialization.DeserializeParams<PhysicalItem>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Physical Items config  {ConfigFileName}", 0);
-            PhysicalItemsList = Serialization.DeserializeParams<PhysicalItem>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Physical Items config found, creating default", 0);
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"PhysicalItems_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Physical Items config: {ConfigFile.FullName}", 0);
             PhysicalItemsList = Serialization.DeserializeParams<PhysicalItem>(ConfigFile.FullName);

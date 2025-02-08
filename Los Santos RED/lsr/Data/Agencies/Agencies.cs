@@ -54,40 +54,14 @@ public class Agencies : IAgencies
     {
 
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Agencies.xml").OrderByDescending(x=> x.Name).FirstOrDefault();
-        if(taskFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Agencies Config: {taskFile.FullName}",0);
-            AgenciesList = Serialization.DeserializeParams<Agency>(taskFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Agencies Config  {ConfigFileName}", 0);
-            AgenciesList = Serialization.DeserializeParams<Agency>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Agencies config found, creating default", 0);
-            SetupDefault();
-            DefaultConfig_Simple();
-            DefaultConfig_FullExpanded();
-            DefaultConfig_LosSantos2008();
-            DefaultConfig_LibertyCity();
-            DefaultConfig_SunshineDream();
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles($"Agencies_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Agencies_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Agencies Config: {taskFile.FullName}", 0);
-            AgenciesList = Serialization.DeserializeParams<Agency>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Agencies Config: {ConfigFile.FullName}", 0);
+            AgenciesList = Serialization.DeserializeParams<Agency>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {

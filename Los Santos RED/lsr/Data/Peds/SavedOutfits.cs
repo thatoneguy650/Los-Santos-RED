@@ -13,31 +13,11 @@ public class SavedOutfits : ISavedOutfits
     {
     }
     public List<SavedOutfit> SavedOutfitList { get; private set; } = new List<SavedOutfit>();
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("SavedOutfits.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Saved Outfits config: {ConfigFile.FullName}", 0);
-            SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Saved Outfits config  {ConfigFileName}", 0);
-            SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Saved Outfits config found, creating default", 0);
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"SavedOutfits_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Saved Outfits config: {ConfigFile.FullName}", 0);
             SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFile.FullName);

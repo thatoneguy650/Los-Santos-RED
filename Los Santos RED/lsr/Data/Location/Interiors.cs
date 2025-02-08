@@ -22,32 +22,11 @@ public class Interiors : IInteriors
     }
 
     public PossibleInteriors PossibleInteriors { get; private set; }
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Interiors.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFile.FullName}",0);
-            PossibleInteriors = Serialization.DeserializeParam<PossibleInteriors>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFileName}",0);
-            PossibleInteriors = Serialization.DeserializeParam<PossibleInteriors>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
-            DefaultConfig();
-            DefaultConfig_LibertyCity();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Interiors_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFile.FullName}", 0);
             PossibleInteriors = Serialization.DeserializeParam<PossibleInteriors>(ConfigFile.FullName);

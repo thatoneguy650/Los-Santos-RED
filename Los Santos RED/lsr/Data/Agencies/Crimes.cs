@@ -72,36 +72,16 @@ public class Crimes : ICrimes
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig()
-    {
-        SetupCrimes();
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}",0);
-            CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Crimes config  {ConfigFileName}",0);
-            CrimeList = Serialization.DeserializeParams<Crime>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);       
-            DefaultConfig();
-        }
-    }
     public void ReadConfig(string configName)
     {
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes_{configName}.xml"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {
@@ -113,7 +93,6 @@ public class Crimes : ICrimes
             EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);
             DefaultConfig();
         }
-        ConfigFileName = $"Plugins\\LosSantosRED\\Crimes_{configName}.xml"; // for serialization
     }
     public Crime GetCrime(string crimeID)
     {

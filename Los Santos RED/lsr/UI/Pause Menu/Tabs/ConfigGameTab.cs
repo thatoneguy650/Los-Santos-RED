@@ -35,11 +35,10 @@ public class ConfigGameTab
         configListItems.Add(configCount);
         if (GameConfigs.GameConfigList != null && GameConfigs.GameConfigList.Any())
         {
-            int maxNumber = GameConfigs.GameConfigList.Max(x => x.ConfigNumber);
-            for (int i = 1; i <= maxNumber; i++)
+            int index = 1;
+            foreach (GameConfig config in GameConfigs.GameConfigList)
             {
                 UIMenuItem loadItem;
-                GameConfig config = GameConfigs.GameConfigList.FirstOrDefault(x => x.ConfigNumber == i);
                 if (config != null)
                 {
                     loadItem = new UIMenuItem(config.configName, "") { };
@@ -58,9 +57,10 @@ public class ConfigGameTab
                 }
                 else
                 {
-                    loadItem = new UIMenuItem($"{i.ToString("D2")} - Empty Config", "") { Enabled = false };
+                    loadItem = new UIMenuItem($"{index.ToString("D2")} - Empty Config", "") { Enabled = false };
                 }
                 configListItems.Add(loadItem);
+                index++;
             }
         }
         TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("LOAD", configListItems);

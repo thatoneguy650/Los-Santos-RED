@@ -61,7 +61,7 @@ public class MainMenu : ModUIMenu
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
         PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies, ActionablePlayer);
-        ConfigMenu = new ConfigMenu(MenuPool, Main, Settings, crimes, intoxicants, shopMenus, ui);
+        ConfigMenu = new ConfigMenu(MenuPool, Main, ui);
     }
 
     public void Setup()

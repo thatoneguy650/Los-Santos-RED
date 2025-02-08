@@ -71,35 +71,11 @@ public class ModItems : IModItems
     {
         return PossibleItems.VehicleItems.FirstOrDefault(x => x.ModelName.ToLower() == modelName.ToLower());
     }
-    public void ReadConfig()
-    {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("ModItems.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
-        {
-            EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}",0);
-            PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFile.FullName);
-        }
-        else if (File.Exists(ConfigFileName))
-        {
-            EntryPoint.WriteToConsole($"Loaded Mod Items config  {ConfigFileName}",0);
-            PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFileName);
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"No Mod Items config found, creating default", 0);
-            DefaultConfig();
-            DefaultConfig_FullModernTraffic();
-            DefaultConfig_FullExpandedJurisdiction();
-            DefaultConfig_FullExpandedExperience();
-            DefaultConfig_LosSantos2008();
-        }
-    }
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles($"ModItems_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}", 0);
             PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFile.FullName);

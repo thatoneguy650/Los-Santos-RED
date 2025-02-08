@@ -40,7 +40,7 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
-    public static string ConfigName { get; set; }
+    public static string ConfigName { get; set; } = "Default";
     public static bool IsLoadingAltConfig { get; set; } = false;
     public static void Main()
     {
@@ -67,37 +67,24 @@ public static class EntryPoint
     {
         while (true)
         {
-            if (ModController == null || !ModController.IsRunning)//maybe add cheat string instead of keys?
+            if (ModController == null || !ModController.IsRunning)
             {
-                if (IsLoadingAltConfig) // for loading game configs manually
+                if ((Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow) || IsLoadingAltConfig)
                 {
-                    if (NotificationID != 0)
-                    {
-                        Game.RemoveNotification(NotificationID);
-                    }
+                    RemoveNotification();
+
                     ModController = new ModController();
                     ModController.Setup(ConfigName);
                 }
-                if (Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)
-                {
-                    if (NotificationID != 0)
-                    {
-                        Game.RemoveNotification(NotificationID);
-                    }
-                    if (ConfigName != null) // Autoload last used config, QOL for xml gremlins
-                    {
-                        ModController = new ModController();
-                        ModController.Setup(ConfigName);
-                    }
-                    else // if player hasn't loaded anything, default
-                    {
-                        ModController = new ModController();
-                        ModController.Setup();
-                    }
-                }
             }
+
             GameFiber.Yield();
         }
+    }
+    private static void RemoveNotification()
+    {
+        if (NotificationID == 0) return;
+        Game.RemoveNotification(NotificationID);
     }
     private static void GetVersionInfo()
     {
