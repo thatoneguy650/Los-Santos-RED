@@ -209,10 +209,14 @@ public class WeaponInventory
     }
     private void AutoSetWeapons_AI(IEntityProvideable world)
     {
-        HasHeavyWeaponOnPerson = true;
+        
         if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.IsDeadlyChase)
         {
             SetDeadly(true);
+            if (WeaponOwner.IsInVehicle)
+            {
+                HasHeavyWeaponOnPerson = true;
+            }
         }
         else
         {
@@ -245,9 +249,10 @@ public class WeaponInventory
     {
         if (WeaponOwner.IsInVehicle)
         {
-            HasHeavyWeaponOnPerson = true;
-            if (Player.PoliceResponse.IsWeaponsFree)
+            
+            if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.IsLethalForceAuthorized)
             {
+                HasHeavyWeaponOnPerson = true;
                 SetDeadly(false);
             }
             else
@@ -322,7 +327,7 @@ public class WeaponInventory
                 SetLessLethal();
             }
         }
-        if (WeaponOwner.IsInVehicle && Player.IsDangerouslyArmed)
+        if (WeaponOwner.IsInVehicle && Player.IsDangerouslyArmed && Player.WantedLevel >= 3)
         {
             HasHeavyWeaponOnPerson = true;
         }
@@ -715,7 +720,7 @@ public class WeaponInventory
                             NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, WeaponOwner.CurrentTask.OtherTarget.Pedestrian, 0, 0f, 0f, 0f, 2, false);//2 == AIM
                         }
                     }
-                    else if (isChasingPlayer && WeaponOwner.RecentlySeenPlayer)
+                    else if (isChasingPlayer && Player.IsInWantedActiveMode && WeaponOwner.RecentlySeenPlayer)
                     {
                         NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, Player.Character, 0, 0f, 0f, 0f, 2, false);//2 == AIM
                     }

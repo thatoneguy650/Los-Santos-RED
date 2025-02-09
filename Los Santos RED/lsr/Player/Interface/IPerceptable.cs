@@ -25,9 +25,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         Stance Stance { get; }
         IntimidationManager IntimidationManager { get; }
-        bool IsHidingInVehicle { get; }
-        bool IsConsideredNight { get; }
-        bool IsPoorWeather { get; }
+        StealthManager StealthManager { get; }
+
+        //bool IsHidingInVehicle { get; }
+        //bool IsConsideredNight { get; }
+        //bool IsPoorWeather { get; }
 
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
     }

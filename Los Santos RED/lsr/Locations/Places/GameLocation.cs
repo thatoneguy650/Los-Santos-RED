@@ -1161,7 +1161,7 @@ public class GameLocation : ILocationDispatchable
             PlayErrorSound();
             return true;
         }
-        if (Player.IsWanted && CanInteractWhenWanted && (Player.ClosestPoliceDistanceToPlayer < 20f || Player.AnyPoliceRecentlySeenPlayer))
+        if (Player.IsWanted && CanInteractWhenWanted && (Player.ClosestPoliceDistanceToPlayer < 20f || Player.IsInWantedActiveMode))// Player.AnyPoliceRecentlySeenPlayer))
         {
             Game.DisplayHelp($"{Name} is unavailable when police are nearby");
             PlayErrorSound();

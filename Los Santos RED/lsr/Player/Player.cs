@@ -20,7 +20,7 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
                           IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, 
-                            ICuffable, IIntimidationManageable, ICasinoGamePlayable, IVehicleManageable
+                            ICuffable, IIntimidationManageable, ICasinoGamePlayable, IVehicleManageable, IStealthManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -177,6 +177,7 @@ namespace Mod
             IntimidationManager = new IntimidationManager(this, World, Settings);
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
             VehicleManager = new VehicleManager(this, World, Settings);
+            StealthManager = new StealthManager(this, World, Settings, TimeControllable);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -225,6 +226,7 @@ namespace Mod
         public GangBackupManager GangBackupManager { get; private set; }
         public InteriorManager InteriorManager { get; private set; }
         public WeatherReporting Weather { get; set; }
+        public StealthManager StealthManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -237,6 +239,9 @@ namespace Mod
         public bool AnyPoliceKnowInteriorLocation { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public bool AnyPoliceSawPlayerViolating { get; set; }
+
+
+        public bool IsInWantedActiveMode => SearchMode.IsInActiveMode;
         public int AssignedSeat => -1;
         public VehicleExt AssignedVehicle => null;
         public List<Rage.Object> AttachedProp { get; set; } = new List<Rage.Object>();
@@ -320,7 +325,7 @@ namespace Mod
         public bool IsSecurityGuard { get; set; } = false;
         public bool IsRidingOnTrain { get; set; }
         public bool HasBustPowers => IsCop || IsSecurityGuard;
-        public bool IsHidingInVehicle { get; private set; }
+        //public bool IsHidingInVehicle { get; private set; }
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
         public bool IsServicePed => IsCop || IsEMT || IsFireFighter;
         public bool AutoDispatch { get; set; } = false;
@@ -493,9 +498,9 @@ namespace Mod
         public bool IsInPoliceVehicle { get; private set; }
         public Dispatcher Dispatcher { get; set; }
         public bool IsBlockingTraffic { get; set; }
-        public bool IsConsideredNight { get; private set; }
+        //public bool IsConsideredNight { get; private set; }
 
-        public bool IsPoorWeather => Weather.IsPoorWeather;
+        //public bool IsPoorWeather => Weather.IsPoorWeather;
 
 
         //Required
@@ -532,6 +537,7 @@ namespace Mod
             RadarDetector.Setup();
             GamblingManager.Setup();
             VehicleManager.Setup();
+            StealthManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -635,29 +641,30 @@ namespace Mod
             RadarDetector.Update();
             IntimidationManager.Update();
             VehicleManager.Update();
-            UpdateHiding();
+            StealthManager.Update();
+            //UpdateHiding();
         }
 
-        private void UpdateHiding()
-        {
-            if(IsInVehicle && CurrentVehicle != null && !CurrentVehicle.IsWanted && IsDuckingInVehicle && !CurrentVehicle.Engine.IsRunning)
-            {
-                IsHidingInVehicle = true;
-            }
-            else
-            {
-                IsHidingInVehicle = false;
-            }
-            if(TimeControllable.CurrentHour >= 18 || TimeControllable.CurrentHour <= 5)
-            {
-                IsConsideredNight = true;
-            }
-            else
-            {
-                IsConsideredNight = false;
-            }
+        //private void UpdateHiding()
+        //{
+        //    if(IsInVehicle && CurrentVehicle != null && !CurrentVehicle.IsWanted && IsDuckingInVehicle && !CurrentVehicle.Engine.IsRunning)
+        //    {
+        //        IsHidingInVehicle = true;
+        //    }
+        //    else
+        //    {
+        //        IsHidingInVehicle = false;
+        //    }
+        //    if(TimeControllable.CurrentHour >= 18 || TimeControllable.CurrentHour <= 5)
+        //    {
+        //        IsConsideredNight = true;
+        //    }
+        //    else
+        //    {
+        //        IsConsideredNight = false;
+        //    }
  
-        }
+        //}
 
         public void SetNotBusted()
         {
@@ -857,6 +864,7 @@ namespace Mod
             IntimidationManager.Dispose();
             GamblingManager.Dipsose();
             VehicleManager.Dispose();
+            StealthManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -1131,7 +1139,7 @@ namespace Mod
         public void OnGotOffFreeway()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
+            if (IsWanted && IsInWantedActiveMode && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
             {
                 Scanner.OnGotOffFreeway();
             }
@@ -1140,7 +1148,7 @@ namespace Mod
         public void OnGotOnFreeway()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
+            if (IsWanted && IsInWantedActiveMode && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
             {
                 Scanner.OnGotOnFreeway();
             }
@@ -1149,7 +1157,7 @@ namespace Mod
         public void OnWentInTunnel()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceCanSeePlayer && IsAliveAndFree)
+            if (IsWanted && IsInWantedActiveMode && AnyPoliceCanSeePlayer && IsAliveAndFree)
             {
                 Scanner.OnWentInTunnel();
             }
@@ -1218,7 +1226,7 @@ namespace Mod
         public void OnVehicleCrashed()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
+            if (IsWanted && IsInWantedActiveMode /* AnyPoliceRecentlySeenPlayer*/ && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
             {
                 GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
@@ -1233,7 +1241,7 @@ namespace Mod
             GameFiber.Yield();
             if (IsInVehicle && amount >= 25f && TimeInCurrentVehicle >= 5000)
             {
-                if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                if (IsWanted && IsInWantedActiveMode /* AnyPoliceRecentlySeenPlayer*/) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased SCANNER CALLED");
@@ -1249,7 +1257,7 @@ namespace Mod
             GameFiber.Yield();
             if (IsInVehicle && amount >= 25 && TimeInCurrentVehicle >= 5000)
             {
-                if (IsWanted && AnyPoliceRecentlySeenPlayer) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                if (IsWanted && IsInWantedActiveMode /* AnyPoliceRecentlySeenPlayer*/) //if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
                 {
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased SCANNER CALLED");
@@ -1271,7 +1279,7 @@ namespace Mod
         public void OnVehicleStartedFire()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
+            if (IsWanted && IsInWantedActiveMode /* AnyPoliceRecentlySeenPlayer*/ && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
             {
                 Scanner.OnVehicleStartedFire();
             }
@@ -1360,7 +1368,7 @@ namespace Mod
         private void OnExcessiveSpeed()
         {
             GameFiber.Yield();
-            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed && IsAliveAndFree)
+            if (IsWanted && VehicleSpeedMPH >= 75f && IsInWantedActiveMode && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed && IsAliveAndFree)
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
@@ -1553,7 +1561,7 @@ namespace Mod
             {
                 GameTimeGotInVehicle = Game.GameTime;
                 GameTimeGotOutOfVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer && IsAliveAndFree)
+                if (IsWanted && IsInWantedActiveMode && AnyPoliceCanSeePlayer && IsAliveAndFree)
                 {
                     Scanner.OnGotInVehicle();
                 }
@@ -1568,7 +1576,7 @@ namespace Mod
             {
                 GameTimeGotOutOfVehicle = Game.GameTime;
                 GameTimeGotInVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll && IsAliveAndFree)
+                if (IsWanted && IsInWantedActiveMode && AnyPoliceCanSeePlayer && !IsRagdoll && IsAliveAndFree)
                 {
                     Scanner.OnGotOutOfVehicle();
                 }
@@ -1663,7 +1671,7 @@ namespace Mod
         {
             if (IsShooting)
             {
-                if (IsWanted && WantedLevel <= 4 && AnyPoliceRecentlySeenPlayer)
+                if (IsWanted && WantedLevel <= 4 && IsInWantedActiveMode /* AnyPoliceRecentlySeenPlayer*/)
                 {
                     Scanner.OnSuspectShooting();
                 }

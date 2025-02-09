@@ -192,17 +192,17 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     private void OnStartedRespondingToInvestigation()
     {
-        if (IsRespondingToInvestigation)
-        {
-            if (IsInVehicle && !WeaponInventory.HasHeavyWeaponOnPerson)
-            {
-                if (PlayerToCheck.Investigation.InvestigationWantedLevel >= 3 || (PlayerToCheck.Investigation.InvestigationWantedLevel == 2 && RandomItems.RandomPercent(45)))
-                {
-                    WeaponInventory.GiveHeavyWeapon();
-                    EntryPoint.WriteToConsole("Responding to Investigation, Giving Heavy Weapon");
-                }
-            }
-        }
+        //if (IsRespondingToInvestigation)
+        //{
+        //    if (IsInVehicle && !WeaponInventory.HasHeavyWeaponOnPerson)
+        //    {
+        //        if (PlayerToCheck.Investigation.InvestigationWantedLevel >= 3 || (PlayerToCheck.Investigation.InvestigationWantedLevel == 2 && RandomItems.RandomPercent(45)))
+        //        {
+        //            WeaponInventory.GiveHeavyWeapon();
+        //            EntryPoint.WriteToConsole("Responding to Investigation, Giving Heavy Weapon");
+        //        }
+        //    }
+        //}
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
@@ -226,7 +226,8 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         if (!IsAnimal)
         {
-            WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+            EntryPoint.WriteToConsole($"PercentageWithLongGuns:{AssignedAgency.PercentageWithLongGuns}");
+            WeaponInventory.IssueWeapons(Weapons, true, true, RandomItems.RandomPercent(AssignedAgency.PercentageWithLongGuns), dispatchablePerson);
             GameFiber.Yield();
         }
         if (!Pedestrian.Exists())

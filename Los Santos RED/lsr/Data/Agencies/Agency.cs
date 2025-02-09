@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using static DispatchScannerFiles;
 
@@ -60,6 +61,10 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public float OffDutyDispatchPercent { get; set; } = 0f;
     public string OffDutyPersonnelID { get; set; } //OffDutyCops
     public string OffDutyVehiclesID { get; set; }//OffDutyCopVehicles
+
+
+    public float PercentageWithLongGuns { get; set; } = 100f;
+
 
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
@@ -547,5 +552,13 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         PossibleHeads = heads.GetHeadData(HeadDataGroupID);
         //HasDispatchableBoats = Vehicles != null && Vehicles.Any(x => x.IsBoat);
         //HasDispatchableHelicopters = Vehicles != null && Vehicles.Any(x => x.IsHelicopter);
+    }
+
+
+    [OnDeserialized()]
+    private void SetValuesOnDeserialized(StreamingContext context)
+    {
+        PercentageWithLongGuns = 95f;
+        EntryPoint.WriteToConsole("Agency SetValuesOnDeserialized");
     }
 }

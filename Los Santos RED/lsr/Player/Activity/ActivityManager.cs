@@ -47,6 +47,7 @@ public class ActivityManager
     private IGangTerritories GangTerritories;
     private ICellphones Cellphones;
     private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+    private HideableObject HideableObject;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -62,7 +63,7 @@ public class ActivityManager
     private bool IsDoingVehileAnim;
     private uint GameTimeLastStartedHotwiring;
     private uint GameTimeLastPressedHide;
-
+    private List<HideableObject> HideableObjects;
     public bool IsUsingToolAsWeapon { get; set; }
 
 
@@ -225,7 +226,6 @@ public class ActivityManager
     public bool IsUrinatingDefecting { get; set; }
     public bool IsUrinatingDefectingOnToilet { get; set; }
     public bool IsUsingIllegalItem { get; internal set; }
-    public bool CanHideInCurrentObject { get; private set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -268,6 +268,20 @@ public class ActivityManager
         AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
         AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
         AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
+
+        HideableObjects = new List<HideableObject>()
+        { 
+            new HideableObject(0x0cffb6b0,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0x27baeb1a,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xfc8394ac,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xf3ae2877,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0x5a1d76e4,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0x28b2940f,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xbea0821b,"Garbage Can", "Hide inside Garbage Can"),        
+        };
+
+
+
     }
     public void Dispose()
     {
@@ -2016,27 +2030,25 @@ public class ActivityManager
 
     public void OnLookedAtObject(Rage.Object currentLookedAtObject)
     {
-
-        if(currentLookedAtObject == null)
+        if (currentLookedAtObject == null)
         {
-            CanHideInCurrentObject = false;
+            HideableObject = null;
             return;
         }
-        uint[] dumpsterHashes = new uint[]
-{
-            0x0cffb6b0, // prop_dumpster_01a
-            0x27baeb1a, // prop_dumpster_02a
-            0xfc8394ac, // prop_dumpster_02b
-            0xf3ae2877, // prop_dumpster_3a
-            0x5a1d76e4, // prop_dumpster_4a
-            0x28b2940f // prop_dumpster_4b
-};
-        if(dumpsterHashes.Contains(currentLookedAtObject.Model.Hash))
+        uint currentHash = currentLookedAtObject.Model.Hash;
+        HideableObject = HideableObjects.Where(x=> x.ModelHash == currentHash).FirstOrDefault();
+    }
+    public void CheckHidingButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
+    {
+        if(HideableObject == null || IsPerformingActivity)
         {
-            CanHideInCurrentObject = true;
-            return;
+            buttonPrompts.RemovePrompts("Hiding");
+            return; 
         }
-        CanHideInCurrentObject = false;
+        if (!buttonPrompts.HasPrompt("HideInObject"))
+        {
+            buttonPrompts.AttemptAddPrompt("Hiding", $"{HideableObject.ButtonPrompt}", "HideInObject", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { Hide(currentLookedAtObject); });
+        }
     }
 }
 

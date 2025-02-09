@@ -151,7 +151,11 @@ public class PedSwapMenu : ModUIMenu
             PedSwap.BecomeCop(SetAsCop.SelectedItem);
             PedSwapUIMenu.Visible = false;
         };
+#if DEBUG
+
         PedSwapUIMenu.AddItem(SetAsCop);
+
+#endif
 
         SetAsSecurity = new UIMenuListScrollerItem<Agency>("Become Security", "Become a random ~y~Security Guard~s~ from the selected agency. Want to walk around with a gun without questions? Not accepted by the real police? Join a security agency and become the king of your small castle.~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Security));
         SetAsSecurity.Activated += (menu, item) =>
@@ -164,7 +168,11 @@ public class PedSwapMenu : ModUIMenu
             PedSwap.BecomeSecurity(SetAsSecurity.SelectedItem);
             PedSwapUIMenu.Visible = false;
         };
+
+#if DEBUG
         PedSwapUIMenu.AddItem(SetAsSecurity);
+
+#endif
 
         SetAsEMT = new UIMenuListScrollerItem<Agency>("Become EMT", "Become a random ~w~EMT~s~ from the selected agency. Treat the unwashed masses, or don't. Got sticky fingers? They won't miss it if they are dead. ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.EMS));
         SetAsEMT.Activated += (menu, item) =>
@@ -177,7 +185,10 @@ public class PedSwapMenu : ModUIMenu
             PedSwap.BecomeEMT(SetAsEMT.SelectedItem);
             PedSwapUIMenu.Visible = false;
         };
+#if DEBUG
         PedSwapUIMenu.AddItem(SetAsEMT);
+
+#endif
 
         SetAsFireFighter = new UIMenuListScrollerItem<Agency>("Become FireFighter", "Become a random ~r~Firefighter~s~ from the selected agency. You've seen Backdraft right? ~r~WIP Most Features TBD~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.Fire));
         SetAsFireFighter.Activated += (menu, item) =>
@@ -190,6 +201,9 @@ public class PedSwapMenu : ModUIMenu
             PedSwap.BecomeFireFighter(SetAsFireFighter.SelectedItem);
             PedSwapUIMenu.Visible = false;
         };
+#if DEBUG
         PedSwapUIMenu.AddItem(SetAsFireFighter);
+
+#endif
     }
 }

@@ -118,10 +118,10 @@ public class VehicleSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        AlarmedCarTimeToReportStolenMin = 40000;// 60000;
-        AlarmedCarTimeToReportStolenMax = 100000;// 140000;
-        NonAlarmedCarTimeToReportStolenMin = 200000;// 500000;
-        NonAlarmedCarTimeToReportStolenMax = 400000;// 700000;
+        AlarmedCarTimeToReportStolenMin = 30000;// 40000;// 60000;
+        AlarmedCarTimeToReportStolenMax = 50000; // 100000;// 140000;
+        NonAlarmedCarTimeToReportStolenMin = 100000;// 200000;// 500000;
+        NonAlarmedCarTimeToReportStolenMax = 200000;// 400000;// 700000;
         KeepRadioAutoTuned = false;
         AutoTuneRadioOnEntry = false;
         AutoTuneRadioStation = "NONE";

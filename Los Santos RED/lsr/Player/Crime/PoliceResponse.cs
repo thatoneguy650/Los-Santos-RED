@@ -167,6 +167,8 @@ namespace LosSantosRED.lsr
 
         public bool IsWithinPoliceRadius { get; private set; }
         public float CurrentPoliceRadius { get; private set; }
+        public bool IsLethalForceAuthorized { get; internal set; }
+
         public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
         {
             Player = player;
@@ -231,7 +233,7 @@ namespace LosSantosRED.lsr
                     return;
                 }
             }
-            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel - 1)// 5)
+            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.IsInWantedActiveMode && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel - 1)// 5)
             {
                 GameTimeLastRequestedBackup = Game.GameTime;
                 Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);

@@ -57,7 +57,17 @@ namespace LosSantosRED.lsr
         {
             if (Player.IsWanted)// && Player.HasBeenWantedFor >= 5000)
             {
-                if (Player.AnyPoliceRecentlySeenPlayer)
+                //if(Player.AnyPoliceRecentlySeenPlayer)
+                //{
+                //    IsInActiveMode = true;
+                //    IsInSearchMode = false;
+                //}
+                if (IsInActiveMode && Player.AnyPoliceRecentlySeenPlayer)
+                {
+                    IsInActiveMode = true;
+                    IsInSearchMode = false;
+                }
+                else if (IsInSearchMode && (Player.AnyPoliceCanRecognizePlayer || (Player.AnyPoliceCanSeePlayer && Player.Violations.IsViolatingAnyCrimes)))
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;

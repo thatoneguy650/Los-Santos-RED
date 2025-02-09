@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr
         public bool CanDriveRecklesslyWithSiren => Player.IsCop || Player.IsEMT || Player.IsFireFighter || Settings.SettingsManager.ViolationSettings.TreatAsCop;
         public bool CanIgnoreAllTrafficLaws => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
         public bool CanEnterRestrictedAreas => Player.IsCop || Settings.SettingsManager.ViolationSettings.TreatAsCop;
+        public bool IsViolatingAnyCrimes => CrimesViolating.Any();
         public void Setup()
         {
             TrafficViolations.Setup();

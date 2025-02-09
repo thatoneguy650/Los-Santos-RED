@@ -35,9 +35,47 @@ public class CivilianSettings : ISettingsDefaultable
     [Description("How much the sight distance is decreased when the player is ducking in an off, not wanted vehicle.")]
     public float HidingInVehicleSightDecreasePercentage { get; set; }
     [Description("How much the sight distance is decreased at night.")]
-    public float NightTimeSightDecreasePercenttage { get; set; }
+    public float NightTimeSightDecreasePercentage { get; set; }
     [Description("How much the sight distance is decreased during poor weather.")]
-    public float PoorWeatherSightDecreasePercenttage { get; set; }
+    public float PoorWeatherSightDecreasePercentage { get; set; }
+    [Description("How much the sight distance is decreased when doing a law abiding activity.")]
+    public float ActivityWithoutViolationSightDecreasePercentage { get; set; }
+
+
+    [Description("How much the sight distance is decreased .")]
+    public float HidingInUnknownVehicleSightDecreasePercentage { get; set; }
+
+
+
+    [Description("How time a ped will require to recognize the player (in ms)")]
+    public uint BaseRecognizeTime { get; set; }
+    [Description("How much the recongize time is increase when the player is ducking in an off, not wanted vehicle.")]
+    public uint HidingInVehicleRecognizeIncreaseTime { get; set; }
+    [Description("How much the recongize time is increase at night.")]
+    public uint NightTimeRecognizeIncreaseTime { get; set; }
+    [Description("How much the recongize time is increase during poor weather.")]
+    public uint PoorWeatherRecognizeIncreaseTime { get; set; }
+    [Description("How much the recongize time is increase when doing a law abiding activity.")]
+    public uint ActivityWithoutViolationRecognizeIncreaseTime { get; set; }
+
+
+
+    [Description("How much the recongize time is increase when doing .")]
+    public uint HidingInUnknownVehicleRecognizeIncreaseTime { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     [Description("Allows tasking of mission or other mod spawned civilians in the world.")]
@@ -224,10 +262,9 @@ public class CivilianSettings : ISettingsDefaultable
 
     public int PossibleSurrenderPercentage { get; set; } = 40;
     public int WantedPossibleSurrenderPercentage { get; set; } = 10;
-
-
-
-
+    public float NeverSeenPlayerSightDecreasePercentage { get; set; }
+    public uint NeverSeenPlayerRecognizeIncreaseTime { get; set; }
+    public uint SeenPlayerRecognizeDecreaseTime { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -341,8 +378,30 @@ public class CivilianSettings : ISettingsDefaultable
 
 
         HidingInVehicleSightDecreasePercentage = 0.3f;
-        NightTimeSightDecreasePercenttage = 0.7f;
-        PoorWeatherSightDecreasePercenttage = 0.8f;
+        NightTimeSightDecreasePercentage = 0.7f;
+        PoorWeatherSightDecreasePercentage = 0.8f;
+        ActivityWithoutViolationSightDecreasePercentage = 0.8f;
+
+
+        HidingInUnknownVehicleSightDecreasePercentage = 0.9f;
+        NeverSeenPlayerSightDecreasePercentage = 0.9f;
+
+        BaseRecognizeTime = 1200;
+
+
+        HidingInVehicleRecognizeIncreaseTime = 750;
+
+        NightTimeRecognizeIncreaseTime = 500;
+        PoorWeatherRecognizeIncreaseTime = 500;
+
+        ActivityWithoutViolationRecognizeIncreaseTime = 500;
+
+        HidingInUnknownVehicleRecognizeIncreaseTime = 500;
+        NeverSeenPlayerRecognizeIncreaseTime = 500;
+        SeenPlayerRecognizeDecreaseTime = 1000;
+            
+
+
     }
 
 }

@@ -213,7 +213,7 @@ public class Drag : DynamicActivity
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2 | 8, 0, false, false, false);
         }
-        PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_putdown_plyr", false, 2, true, false);
+        PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_putdown_plyr", false, 2, true, false, true);
         DetachPeds();
     }
     private void RemovePrompts()
@@ -373,7 +373,7 @@ public class Drag : DynamicActivity
             EntryPoint.WriteToConsole("PLAYING DRAGGING ANIM START FOR PED");
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME |  eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
         }
-        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false, true))
+        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false, true, true))
         {
             if (!Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
             {
@@ -393,7 +393,7 @@ public class Drag : DynamicActivity
         {
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.5f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
         }
-        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false, false))
+        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false, false, false))
         {
             return true;
         }
@@ -402,13 +402,19 @@ public class Drag : DynamicActivity
             return false;
         }
     }
-    private bool PlayPlayerLoopingAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels, bool forcePedIntroAnim)
+    private bool PlayPlayerLoopingAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels, bool forcePedIntroAnim, bool isFast)
     {
         //EntryPoint.WriteToConsoleTestLong($"PlayPlayerLoopingAnimation START {animation} repeat {repeat}");
         if (!repeat)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 2.0f, -2.0f, -1, flag, 0, false, false, false);
         }
+
+        //if(isFast)
+        //{
+        //    NativeFunction.Natives.SET_ANIM_RATE(Player.Character, 2.0f);
+        //}
+
         uint GameTimeStartedAnimation = Game.GameTime;
         float AnimationTime = 0.0f;
         AnimationWatcher.Reset();

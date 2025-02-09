@@ -12,6 +12,7 @@ public class PossibleLocations
     }
     public List<DeadDrop> DeadDrops { get; private set; } = new List<DeadDrop>();
     public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
+    public List<BodyExport> BodyExports { get; private set; } = new List<BodyExport>();
     public List<CarCrusher> CarCrushers { get; private set; } = new List<CarCrusher>();
     public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
     public List<GunStore> GunStores { get; private set; } = new List<GunStore>();
@@ -127,6 +128,7 @@ public class PossibleLocations
         AllLocations.AddRange(ATMMachines);
         AllLocations.AddRange(CashRegisters);
         AllLocations.AddRange(GasPumps);
+        AllLocations.AddRange(BodyExports);
         return AllLocations;
     }
 

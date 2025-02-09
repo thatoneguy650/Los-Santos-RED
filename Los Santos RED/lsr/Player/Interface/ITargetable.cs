@@ -66,6 +66,7 @@ namespace LosSantosRED.lsr.Interface
         Cop ClosestCopDriverToPlayer { get; }
         IntimidationManager IntimidationManager { get; }
         Vector3 Position { get; }
+        bool IsInWantedActiveMode { get; }
         //bool IsHostile(Gang gang);
     }
 }

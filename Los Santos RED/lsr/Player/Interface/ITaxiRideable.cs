@@ -27,5 +27,6 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         SearchMode SearchMode { get; }
         bool IsInSearchMode { get; }
+        bool IsInWantedActiveMode { get; }
     }
 }

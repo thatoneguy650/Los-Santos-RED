@@ -509,7 +509,7 @@ public class Investigation
     }
     private void UpdateBlip()
     {
-        if (IsActive && Player.IsNotWanted && Settings.SettingsManager.InvestigationSettings.CreateBlip)
+        if (IsActive && Player.IsNotWanted && Settings.SettingsManager.InvestigationSettings.CreateBlip && EntryPoint.ModController.IsRunning)
         {
             if (!InvestigationBlip.Exists())
             {

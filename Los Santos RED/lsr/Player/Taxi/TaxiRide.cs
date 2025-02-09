@@ -225,7 +225,7 @@ public class TaxiRide
             IsValid = false;
             return;
         }
-        if (RespondingDriver.WillCancelRide || (Player.IsWanted && Player.PoliceResponse.WantedLevelHasBeenRadioedIn && Player.AnyPoliceRecentlySeenPlayer && !Player.IsInSearchMode) || Player.IsDead)
+        if (RespondingDriver.WillCancelRide || (Player.IsWanted && Player.PoliceResponse.WantedLevelHasBeenRadioedIn && Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer*/ && !Player.IsInSearchMode) || Player.IsDead)
         {
             Cancel();
             IsValid = false;

@@ -26,6 +26,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<DeadDrop> DeadDrops;
     private List<CarCrusher> CarCrushers;
     private List<ScrapYard> ScrapYards;
+    private List<BodyExport> BodyExports;
     private List<GangDen> GangDens;
     private List<GunStore> GunStores;
     private List<Hotel> Hotels;
@@ -172,6 +173,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_DeadDrops();
         DefaultConfig_CarCrushers();
         DefaultConfig_ScrapYards();
+        DefaultConfig_BodyExports();
         DefaultConfig_GangDens();
         DefaultConfig_GunStores();
         DefaultConfig_Hotels();
@@ -220,6 +222,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
         PossibleLocations.ScrapYards.AddRange(ScrapYards);
+        PossibleLocations.BodyExports.AddRange(BodyExports);
         PossibleLocations.GangDens.AddRange(GangDens);
         PossibleLocations.GunStores.AddRange(GunStores);
         PossibleLocations.Hotels.AddRange(Hotels);
@@ -5770,6 +5773,12 @@ public class PlacesOfInterest : IPlacesOfInterest
             new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
         };     
     }
+    private void DefaultConfig_BodyExports()
+    {
+        BodyExports = new List<BodyExport>() {
+            new BodyExport(new Vector3(-1641.823f, 264.0672f, 59.55512f), 24.32237f, "ULSA Medical School", "Always looking for fresh meat!") { OpenTime = 20, CloseTime = 4 },
+        };
+    }
     private void DefaultConfig_CarCrushers()
     {
         CarCrushers = new List<CarCrusher>() {
@@ -5876,6 +5885,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.DeadDrops.AddRange(DeadDrops);
         OldPossibleLocations.CarCrushers.AddRange(CarCrushers);
         OldPossibleLocations.ScrapYards.AddRange(ScrapYards);
+        OldPossibleLocations.BodyExports.AddRange(BodyExports);
         OldPossibleLocations.GangDens.AddRange(GangDens2008);
         OldPossibleLocations.GunStores.AddRange(GunStores);
         OldPossibleLocations.Hotels.AddRange(Hotels);

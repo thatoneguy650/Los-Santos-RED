@@ -70,7 +70,7 @@ public class HidingActivity : DynamicActivity
     }
     public override bool CanPerform(IActionable player)
     {
-        if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
+        if (Player.IsWanted && Player.AnyPoliceCanSeePlayer)
         {
             EntryPoint.WriteToConsole("CANNOT HIDE RAN");
             Game.DisplayHelp($"Cannot Hide When Wanted and Seen");
@@ -132,6 +132,14 @@ public class HidingActivity : DynamicActivity
     {
         //StartCower();
         //GameFiber.Sleep(800);
+
+        if(Player.IsWanted && Player.AnyPoliceCanSeePlayer)
+        {
+            Game.DisplayHelp("You were seen entering");
+            return;
+        }
+
+
         Player.Character.IsVisible = false;
         while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
@@ -146,7 +154,7 @@ public class HidingActivity : DynamicActivity
                 Player.ButtonPrompts.RemovePrompts("HidingExit");
                 break;
             }
-            if(Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
+            if(Player.IsWanted && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
             {
                 break;
             }

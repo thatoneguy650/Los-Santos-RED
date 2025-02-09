@@ -181,7 +181,7 @@ public class PlateTypes : IPlateTypes
         List<PlateType> FullPlateTypeList = new List<PlateType>();
 
 
-        FullPlateTypeList.Add(new PlateType(0, "San Andreas", StaticStrings.SanAndreasStateID, 1, "12ABC345") { AllowVanity = true });
+        FullPlateTypeList.Add(new PlateType(0, "San Andreas", StaticStrings.SanAndreasStateID, 1, "12ABC345") { AllowVanity = true, InStateSpawnChance = 100 });
         FullPlateTypeList.Add(new PlateType(1, "San Andreas Yellow on Black", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
         FullPlateTypeList.Add(new PlateType(2, "San Andreas Yellow on Blue", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });;
         FullPlateTypeList.Add(new PlateType(3, "San Andreas Classic", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
@@ -197,41 +197,41 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(11, "LS Pounders", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
         FullPlateTypeList.Add(new PlateType(12, "Sprunkn", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
 
-        FullPlateTypeList.Add(new PlateType(13, "Pimahito", "Pimahito", 12, "ABC  1DE"));
-        FullPlateTypeList.Add(new PlateType(14, "Columbia", "Columbia", 8, "ABC12345"));
+        FullPlateTypeList.Add(new PlateType(13, "Pimahito", "Pimahito", 8, "ABC  1DE"));
+        FullPlateTypeList.Add(new PlateType(14, "Columbia", "Columbia", 4, "ABC12345"));
 
         FullPlateTypeList.Add(new PlateType(15, "US Gov", "US Gov", 0, "1234A") { DisablePrefix = true, CanOverwrite = false });
 
 
         FullPlateTypeList.Add(new PlateType(16, "Liberty", StaticStrings.LibertyStateID, 2, "ABC 1234") { DisablePrefix = true, InStateSpawnChance = 75 });
-        FullPlateTypeList.Add(new PlateType(17, "Alderney", StaticStrings.AlderneyStateID, 2, "A12  BCD") { DisablePrefix = true });
+        FullPlateTypeList.Add(new PlateType(17, "Alderney", StaticStrings.AlderneyStateID, 2, "A12  BCD") { DisablePrefix = true, InStateSpawnChance = 100 });
         FullPlateTypeList.Add(new PlateType(18, "Leonida", StaticStrings.LeonidaStateID, 2, "A12  BCD") { DisablePrefix = true });
 
 
         FullPlateTypeList.Add(new PlateType(19, "Liberty Police", StaticStrings.LibertyStateID,0, " 123456 ") { DisablePrefix = true, });
-        FullPlateTypeList.Add(new PlateType(20, "North Yankton", StaticStrings.NorthYanktonStateID, 2, "123  ABC") { DisablePrefix = true, });
+        FullPlateTypeList.Add(new PlateType(20, "North Yankton", StaticStrings.NorthYanktonStateID, 2, "123  ABC") { DisablePrefix = true, InStateSpawnChance = 100 });
 
-        FullPlateTypeList.Add(new PlateType(21, "New Austin", "New Austin", 7, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(21, "New Austin", "New Austin", 4, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(22, "Ambarino", "Ambarino", 6, "ABC  D12"));
-        FullPlateTypeList.Add(new PlateType(23, "Robada", "Robada", 12, "12A  345"));
+        FullPlateTypeList.Add(new PlateType(23, "Robada", "Robada", 8, "12A  345"));
 
         FullPlateTypeList.Add(new PlateType(24, "Leonida County", StaticStrings.LeonidaStateID, 0, " 123456 ") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(25, "Leonida City", StaticStrings.LeonidaStateID, 0, " 123456 ") { DisablePrefix = true, });
         FullPlateTypeList.Add(new PlateType(26, "South Yankton", "South Yankton", 2, "1AB  345"));
         FullPlateTypeList.Add(new PlateType(27, "Lemoyne", "Lemoyne", 2, "123  ABC"));
-        FullPlateTypeList.Add(new PlateType(28, "Willamette", "Willamette", 8, "123  ABC"));
+        FullPlateTypeList.Add(new PlateType(28, "Willamette", "Willamette", 6, "123  ABC"));
         FullPlateTypeList.Add(new PlateType(29, "Nacimiento", "Nacimiento", 6, "ABC  123"));
 
         FullPlateTypeList.Add(new PlateType(30, "Jolliet", "Jolliet", 2, "AB 12345"));
-        FullPlateTypeList.Add(new PlateType(31, "Nez Perce", "Nez Perce", 5, "1A B2345"));
-        FullPlateTypeList.Add(new PlateType(32, "Noochee", "Noochee", 5, "1ABC2"));
+        FullPlateTypeList.Add(new PlateType(31, "Nez Perce", "Nez Perce", 4, "1A B2345"));
+        FullPlateTypeList.Add(new PlateType(32, "Noochee", "Noochee", 4, "A12  3BC"));
 
-        FullPlateTypeList.Add(new PlateType(33, "Shoshone", "Shoshone", 5, "1 23456A"));
+        FullPlateTypeList.Add(new PlateType(33, "Shoshone", "Shoshone", 2, "1 23456A"));
 
 
 
         FullPlateTypeList.Add(new PlateType(34, "Liberty Exculpate", StaticStrings.LibertyStateID, 2, "A1B 23C4") { DisablePrefix = true, InStateSpawnChance = 25 });
-        FullPlateTypeList.Add(new PlateType(35, "Alderney Municipal", StaticStrings.AlderneyStateID, 0, "123456AB") { CanOverwrite = false, });
+        FullPlateTypeList.Add(new PlateType(35, "Alderney Municipal", StaticStrings.AlderneyStateID, 2, "123456AB") { CanOverwrite = false, });
         FullPlateTypeList.Add(new PlateType(36, "Keweenawan", "Keweenawan", 2, "ABC-1234"));
         FullPlateTypeList.Add(new PlateType(37, "Meskousing", "Meskousing", 2, "1 23456A"));
 
@@ -278,8 +278,8 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(61, "Jackson", "Jackson", 2, "ABC  123"));
 
 
-        FullPlateTypeList.Add(new PlateType(62, "Squaretop", "Squaretop", 4, "1A  2345"));
-        FullPlateTypeList.Add(new PlateType(63, "Squaretop Old", "Squaretop Old", 4, "1  2345A"));
+        FullPlateTypeList.Add(new PlateType(62, "Squaretop", "Squaretop", 2, "1A  2345"));
+        FullPlateTypeList.Add(new PlateType(63, "Squaretop Old", "Squaretop Old", 2, "1  2345A"));
 
 
 

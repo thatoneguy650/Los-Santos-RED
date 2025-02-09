@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr
             UpdateCops();
             GameFiber.Yield();
             UpdateRecognition();
-            if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1 || (Player.WantedLevel > 1 && Player.IsDangerouslyArmed && Player.IsStill)) && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1 || (Player.WantedLevel > 1 && Player.IsDangerouslyArmed && Player.IsStill)) && Player.IsInWantedActiveMode && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
                 GameFiber.Yield();
                 Player.Arrest();
@@ -265,7 +265,13 @@ namespace LosSantosRED.lsr
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
+
+
+
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
+
+
+
             Player.AnyPoliceSawPlayerViolating = anyPoliceSawPlayerViolating;
             Player.AnyPoliceInHeliCanSeePlayer = anyPoliceInHeliCanSeePlayer;
         }
@@ -280,14 +286,14 @@ namespace LosSantosRED.lsr
             //    }
             //}
             HandleInteriorKnowledge();
-            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            if (Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer*/ || Player.AnyPoliceKnowInteriorLocation)
             {
                 Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
             }
         }
         private void HandleInteriorKnowledge()
         {
-            if (Settings.SettingsManager.PoliceSettings.AllowBreachingLogic && Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
+            if (Settings.SettingsManager.PoliceSettings.AllowBreachingLogic && Player.CurrentLocation.IsInside && Player.IsInWantedActiveMode)// (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {
                 Player.AnyPoliceKnowInteriorLocation = true;
             }
@@ -320,7 +326,7 @@ namespace LosSantosRED.lsr
             }
             GameFiber.Yield();
 
-            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            if (Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer */ || Player.AnyPoliceKnowInteriorLocation)
             {
                 Player.PlacePoliceLastSeenPlayer = Player.Position;
             }
@@ -340,14 +346,14 @@ namespace LosSantosRED.lsr
                 prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
-            if(Player.AnyPoliceRecentlySeenPlayer)
+            if(Player.AnyPoliceRecentlySeenPlayer && Player.IsInWantedActiveMode)
             {
                 Player.PlacePolicePhysicallyLastSeenPlayer = Player.Position;
             }
 
             DeterimineInterestedLocation();
 
-            if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
+            if (Player.IsInWantedActiveMode && Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
             {
                 if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
                 {
@@ -356,7 +362,7 @@ namespace LosSantosRED.lsr
                 PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
             }
 
-            if (Player.AnyPoliceCanSeePlayer && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            if (Player.IsInWantedActiveMode && Player.AnyPoliceCanSeePlayer && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
                 Player.CurrentVehicle.OnPoliceSeenCar();
             }

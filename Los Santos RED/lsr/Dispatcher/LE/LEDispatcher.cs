@@ -357,7 +357,7 @@ public class LEDispatcher
             {
                 return UnseenTime + ExtraSpawnTimeByLocationType;
             }
-            else if (!Player.AnyPoliceRecentlySeenPlayer && !Settings.SettingsManager.PoliceSpawnSettings.UseScalingLogicForSpawnWhenUnseen)
+            else if (!Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer*/ && !Settings.SettingsManager.PoliceSpawnSettings.UseScalingLogicForSpawnWhenUnseen)
             {
                 return UnseenTime + ExtraSpawnTimeByLocationType;
             }
@@ -384,7 +384,7 @@ public class LEDispatcher
             {
                 return UnseenTime;
             }
-            else if (!Player.AnyPoliceRecentlySeenPlayer)
+            else if (!Player.IsInWantedActiveMode)// !Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -406,7 +406,7 @@ public class LEDispatcher
             int SeenScalarTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min;
 
-            if (!Player.AnyPoliceRecentlySeenPlayer)
+            if (!Player.IsInWantedActiveMode)//!Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -429,7 +429,7 @@ public class LEDispatcher
             }
             else if (TotalIsWanted)
             {
-                if (!Player.AnyPoliceRecentlySeenPlayer)
+                if (!Player.IsInWantedActiveMode)// !Player.AnyPoliceRecentlySeenPlayer)
                 {
                     return MaxWantedUnseen;
                 }
@@ -463,7 +463,7 @@ public class LEDispatcher
             }
             else if (TotalIsWanted)
             {
-                if (!Player.AnyPoliceRecentlySeenPlayer)
+                if (!Player.IsInWantedActiveMode)//!Player.AnyPoliceRecentlySeenPlayer)
                 {
                     float calcDistance = MinWantedUnseen - (World.TotalWantedLevel * MinScalerUnseen);
                     return calcDistance < 150f ? 150f : calcDistance;
