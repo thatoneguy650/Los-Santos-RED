@@ -515,8 +515,6 @@ public class ModItems : IModItems
             new ValuableItem("Police ID Card","Police Identification Card", ItemType.Valuables) {
                 ModelItemID = "p_ld_id_card_01",
                 ItemSubType = ItemSubType.Identification },
-            new ValuableItem("Pseudoephedrine", "Pseudoephedrine, usually found in anti-allergy medicines.", ItemType.Valuables) {
-                ItemSubType = ItemSubType.Medication}
         });
     }
     private void DefaultConfig_Drinks()

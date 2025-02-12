@@ -905,7 +905,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Dippo Lighter", 20), }),
             new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
                 new MenuItem("Chesty", 19, 0),
-                new MenuItem("Pseudoephedrine", 25,0) { NumberOfItemsToSellToPlayer = 5},
 
 
 
