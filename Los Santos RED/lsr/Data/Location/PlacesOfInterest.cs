@@ -69,6 +69,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<TattooShop> TattooShopPlaces;
     private List<PlasticSurgeryClinic> PlasticSurgeryClinics;
     private List<BarberShop> BarberShopPlaces;
+    private List<ExteriorCraftingLocation> ExteriorCraftingLocations;
     private PedCustomizerLocation DefaultPedCustomizerLocation;
 
     public PossibleLocations PossibleLocations { get; private set; }
@@ -216,6 +217,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_BarberShops();
         DefaultConfig_PlasticSurgeryClinics();
         DefaultConfig_TattooShops();
+        DefaultConfig_ExteriorCraftingLocations();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -263,6 +265,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.BarberShops.AddRange(BarberShopPlaces);
         PossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
         PossibleLocations.TattooShops.AddRange(TattooShopPlaces);
+        PossibleLocations.ExteriorCraftingLocations.AddRange(ExteriorCraftingLocations);
 
         PossibleLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
@@ -387,6 +390,13 @@ public class PlacesOfInterest : IPlacesOfInterest
         PlasticSurgeryClinics = new List<PlasticSurgeryClinic>()
         {
 
+        };
+    }
+    private void DefaultConfig_ExteriorCraftingLocations()
+    {
+        ExteriorCraftingLocations = new List<ExteriorCraftingLocation>()
+        {
+           
         };
     }
     private void DefaultConfig_TattooShops()
