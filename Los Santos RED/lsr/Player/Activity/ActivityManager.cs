@@ -225,7 +225,8 @@ public class ActivityManager
     public bool IsEnteringAsPassenger { get; set; }
     public bool IsUrinatingDefecting { get; set; }
     public bool IsUrinatingDefectingOnToilet { get; set; }
-    public bool IsUsingIllegalItem { get; internal set; }
+    public bool IsUsingIllegalItem { get; set; }
+    public bool IsHidingInObject { get; set; }
 
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
@@ -2049,6 +2050,15 @@ public class ActivityManager
         {
             buttonPrompts.AttemptAddPrompt("Hiding", $"{HideableObject.ButtonPrompt}", "HideInObject", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { Hide(currentLookedAtObject); });
         }
+    }
+
+    public void SetFoundInObject()
+    {
+        if(!IsHidingInObject)
+        {
+            return;
+        }
+        CancelCurrentActivity();
     }
 }
 

@@ -375,7 +375,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,AccuracyMax = 85
                 ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
-
+            new DispatchablePerson("s_m_y_pilot_01",0,0) { DebugName = "Police and LSPD Labeled Pilot",GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } }, //HAS LSPD STUFF ON HIM!!!!
 
         };
         SheriffPeds = new List<DispatchablePerson>() {
@@ -427,7 +427,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OptionalPropChance = 95
             },
             GenericK9,
-
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
 
         };
         NOOSEPeds = new List<DispatchablePerson>() {
@@ -727,6 +727,8 @@ public class DispatchablePeople : IDispatchablePeople
             //Female
             DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,false,false,false,true),    
             DispatchablePeople_Cops.CreateSAHPMPPed(0,0,0,2,false,true,false,true),
+
+            new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
         };
         ArmyPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_armymech_01",10,10) { DebugName = "Army Mechanic", MaxWantedLevelSpawn = 2 },

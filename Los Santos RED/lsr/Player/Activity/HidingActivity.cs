@@ -33,11 +33,11 @@ public class HidingActivity : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
-    public override bool CanCancel { get; set; } = false;
+    public override bool CanCancel { get; set; } = true;
     public override bool IsUpperBodyOnly { get; set; } = false;
-    public override string PausePrompt { get; set; } = "Pause Activity";
-    public override string CancelPrompt { get; set; } = "Stop Activity";
-    public override string ContinuePrompt { get; set; } = "Continue Activity";
+    public override string PausePrompt { get; set; } = "Pause Hiding";
+    public override string CancelPrompt { get; set; } = "Stop Hiding";
+    public override string ContinuePrompt { get; set; } = "Continue Hiding";
     public override void Cancel()
     {
         IsCancelled = true;
@@ -141,19 +141,22 @@ public class HidingActivity : DynamicActivity
 
 
         Player.Character.IsVisible = false;
+
+        Player.ActivityManager.IsHidingInObject = true;
+
         while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
             DisableControls();
-            if(!Player.ButtonPrompts.HasPrompt("ExitHiding"))
-            {
-                EntryPoint.WriteToConsole("ATTEMPTING TO ADD PROMPT");
-                Player.ButtonPrompts.AttemptAddPrompt("HidingExit", "Exit Hiding", "ExitHiding", GameControl.Attack, 999);
-            }
-            if (Player.ButtonPrompts.IsPressed("ExitHiding") || Player.IsMoveControlPressed)
-            {
-                Player.ButtonPrompts.RemovePrompts("HidingExit");
-                break;
-            }
+            //if(!Player.ButtonPrompts.HasPrompt("ExitHiding"))
+            //{
+            //    EntryPoint.WriteToConsole("ATTEMPTING TO ADD PROMPT");
+            //    Player.ButtonPrompts.AttemptAddPrompt("HidingExit", "Exit Hiding", "ExitHiding", GameControl.Attack, 999);
+            //}
+            //if (Player.ButtonPrompts.IsPressed("ExitHiding") || Player.IsMoveControlPressed)
+            //{
+            //    Player.ButtonPrompts.RemovePrompts("HidingExit");
+            //    break;
+            //}
             if(Player.IsWanted && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
             {
                 break;
@@ -165,6 +168,7 @@ public class HidingActivity : DynamicActivity
     {
         Player.ButtonPrompts.RemovePrompts("HidingExit");
         Player.Character.IsVisible = true;
+        Player.ActivityManager.IsHidingInObject = false;
         StartClimb();
         uint GameTimeStarted = Game.GameTime;
         AnimationWatcher aw = new AnimationWatcher();

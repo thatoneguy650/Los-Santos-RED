@@ -2067,7 +2067,7 @@ public class LEDispatcher
        //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
        // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
-        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);
+        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, false);
     }
     public void OnHelicopterSpawnedOrRecalled()
     {

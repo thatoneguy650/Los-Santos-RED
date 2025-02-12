@@ -767,6 +767,7 @@ namespace LosSantosRED.lsr
             }
             PlayerSeenDuringCurrentWanted = true;
             PlayerSeenDuringWanted = true;
+            Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
             if (Player.IsInVehicle)
             {
                 PlayerSeenInVehicleDuringWanted = true;

@@ -318,6 +318,7 @@ namespace LosSantosRED.lsr
                 PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
             }
         }
+
         private void UpdateWantedItems()
         {
             if (!Player.IsWanted)
@@ -332,6 +333,11 @@ namespace LosSantosRED.lsr
             }
             else
             {
+
+
+
+
+
                 if (Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero && Player.PoliceResponse.PlaceLastReportedCrime != Player.PlacePoliceLastSeenPlayer && Player.Position.DistanceTo2D(Player.PoliceResponse.PlaceLastReportedCrime) <= Player.Position.DistanceTo2D(Player.PlacePoliceLastSeenPlayer))//They called in a place closer than your position, maybe go with time instead ot be more fair?
                 {
                     Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;

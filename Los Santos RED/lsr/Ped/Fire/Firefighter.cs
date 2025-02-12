@@ -71,7 +71,7 @@ public class Firefighter : PedExt, IWeaponIssuable
         }
         if (!IsAnimal)
         {
-            WeaponInventory.IssueWeapons(Weapons, true, false, false, dispatchablePerson);
+            WeaponInventory.IssueWeapons(Weapons, true, false, false, dispatchablePerson, true);
             GameFiber.Yield();
         }
         if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")

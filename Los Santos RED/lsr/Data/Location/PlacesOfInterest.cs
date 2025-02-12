@@ -3473,6 +3473,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                 OpenTime = 0,
                 CloseTime = 24,
                 MaxAssaultSpawns = 30,
+                AssaultSpawnHeavyWeaponsPercent =  75,
+                AssaultSpawnLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(140.531f, -766.8214f, 45.75206f), 70.78406f),
+                    new SpawnPlace(new Vector3(116.9612f, -761.9981f, 45.75474f), 321.8445f),
+                    new SpawnPlace(new Vector3(128.3177f, -754.02f, 43.95144f), 161.5162f),
+                    new SpawnPlace(new Vector3(128.0339f, -758.0148f, 45.75905f), 152.4301f),
+                },
                 IgnoreEntranceInteract = true,
                 ScannerFilePath = "01_specific_location\\0x1667D63F.mp3", 
                 PossiblePedSpawns = new List<ConditionalLocation>() 

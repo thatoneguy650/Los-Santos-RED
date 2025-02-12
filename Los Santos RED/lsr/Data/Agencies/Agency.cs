@@ -64,7 +64,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
 
 
     public float PercentageWithLongGuns { get; set; } = 100f;
-
+    public float PercentageUsingLongGunsWheneverPossible { get; set; } = 60f;
 
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
@@ -558,7 +558,8 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
-        PercentageWithLongGuns = 95f;
+        PercentageWithLongGuns = 100f;
+        PercentageUsingLongGunsWheneverPossible = 50f;
         EntryPoint.WriteToConsole("Agency SetValuesOnDeserialized");
     }
 }

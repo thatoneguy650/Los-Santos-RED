@@ -62,7 +62,7 @@ public class StealthManager
         // EntryPoint.WriteToConsole($"PLAYER UPDATE: GetRecognizeTime{GetRecognizeTime(null)}  GetSightDistanceScalar{GetSightDistanceScalar(null)}");
 
 
-        Player.DebugString = $"Dist: {GetSightDistanceScalar(null)}% Time:{GetRecognizeTime(null)} CarSeen:{Player.CurrentVehicle?.HasBeenSeenByPoliceDuringWanted}";
+        //Player.DebugString = $"Dist: {GetSightDistanceScalar(null)}% Time:{GetRecognizeTime(null)} CarSeen:{Player.CurrentVehicle?.HasBeenSeenByPoliceDuringWanted}";
 
     }
     public uint GetRecognizeTime(PedExt pedExt)

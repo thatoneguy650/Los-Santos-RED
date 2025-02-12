@@ -135,6 +135,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool RappellingRequiresWeaponsFree { get; set; }
     public float K9RunSpeed { get; set; }
 
+    public float K9KnowLocationDistance { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -254,6 +255,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
         HeliMission = 9;
         HeliMissionCruiseSpeed = 20f;
+        K9KnowLocationDistance = 55f;
 
     }
 }

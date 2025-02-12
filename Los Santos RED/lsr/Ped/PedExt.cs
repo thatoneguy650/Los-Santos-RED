@@ -144,7 +144,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int CombatMovement { get; set; } = -1;
     public virtual int TaserAccuracy { get; set; } = 10;
     public virtual int TaserShootRate { get; set; } = 100;
-    public virtual int VehicleAccuracy { get; set; } = 10;
+    public virtual int VehicleAccuracy { get; set; } = 5;//10;
     public virtual int VehicleShootRate { get; set; } = 100;
     public virtual int TurretAccuracy { get; set; } = 10;
     public virtual int TurretShootRate { get; set; } = 1000;

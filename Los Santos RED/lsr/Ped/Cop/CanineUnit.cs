@@ -51,7 +51,43 @@ public class CanineUnit : Cop
             }
         }
         UpdateMoveRateOverride();
+        CheckSearchingForPlayerInObjects(policeRespondable);
+        CheckGivingLocationForPlayerHiding(policeRespondable);
+
     }
+
+    private void CheckGivingLocationForPlayerHiding(IPoliceRespondable policeRespondable)
+    {
+        if (!policeRespondable.IsWanted)
+        {
+            return;
+        }
+        float distanceToLastSeenPlayer = policeRespondable.PlacePoliceLastSeenPlayer.DistanceTo2D(policeRespondable.Position);
+        if(DistanceToPlayer <= distanceToLastSeenPlayer)
+        {
+            policeRespondable.PlacePoliceLastSeenPlayer = Position;
+            EntryPoint.WriteToConsole("K9 Units knows where you are updating");
+        }
+    }
+
+    private void CheckSearchingForPlayerInObjects(IPoliceRespondable policeRespondable)
+    {
+        if(!policeRespondable.IsWanted)
+        {
+            return;
+        }
+        if(!policeRespondable.ActivityManager.IsHidingInObject)
+        {
+            return;
+        }
+        if(DistanceToPlayer <= 7f)
+        {
+            policeRespondable.ActivityManager.SetFoundInObject();
+            Game.DisplaySubtitle("[Barking Noises]");
+            Game.DisplayHelp("You Have Been Found");
+        }
+    }
+
     private void UpdateMoveRateOverride()
     {
         if (PlayerPerception.DistanceToTarget <= 75f && IsRespondingToWanted)

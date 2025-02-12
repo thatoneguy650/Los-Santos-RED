@@ -226,8 +226,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         if (!IsAnimal)
         {
-            EntryPoint.WriteToConsole($"PercentageWithLongGuns:{AssignedAgency.PercentageWithLongGuns}");
-            WeaponInventory.IssueWeapons(Weapons, true, true, RandomItems.RandomPercent(AssignedAgency.PercentageWithLongGuns), dispatchablePerson);
+            bool hasLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageWithLongGuns);
+            bool percentusingLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageUsingLongGunsWheneverPossible);
+            EntryPoint.WriteToConsole($"{AssignedAgency.ID} hasLongGuns {hasLongGuns} PercentageWithLongGuns:{AssignedAgency.PercentageWithLongGuns} PercentageWithLongGunsBeforeWeaponsFree{AssignedAgency.PercentageUsingLongGunsWheneverPossible} ROLL VALUE:{percentusingLongGuns}");
+            WeaponInventory.IssueWeapons(Weapons, true, true, hasLongGuns, dispatchablePerson, percentusingLongGuns);
             GameFiber.Yield();
         }
         if (!Pedestrian.Exists())

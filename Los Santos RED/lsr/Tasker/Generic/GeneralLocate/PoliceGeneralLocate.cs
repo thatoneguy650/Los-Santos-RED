@@ -42,9 +42,8 @@ public class PoliceGeneralLocate : GeneralLocate
     protected override void GetLocations()
     {
         PlaceToDriveTo = HasSixthSense ? Player.StreetPlacePoliceShouldSearchForPlayer : Player.StreetPlacePoliceLastSeenPlayer;
-        PlaceToWalkTo = HasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer; 
+        PlaceToWalkTo = Ped.IsAnimal && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.K9KnowLocationDistance ? Player.Character.Position : HasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
     }
-
     public override void OnLocationReached()
     {
         if (!Ped.IsInVehicle)

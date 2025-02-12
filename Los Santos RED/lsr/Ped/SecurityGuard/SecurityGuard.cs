@@ -130,7 +130,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         {
             return;
         }
-        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson, RandomItems.RandomPercent(AssignedAgency.PercentageUsingLongGunsWheneverPossible));
         GameFiber.Yield();
         if (!Pedestrian.Exists())
         {

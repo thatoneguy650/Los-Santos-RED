@@ -1108,7 +1108,8 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns_2008),
             new IssuableWeaponsGroup("Minigun", Minigun_2008),
             new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher_2008),
-            new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms_2008)
+            new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms_2008),
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\IssuableWeapons_LosSantos2008.xml");
     }
@@ -1263,7 +1264,7 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
             new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms),
             new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
-
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons_FullExpandedJurisdiction.xml");

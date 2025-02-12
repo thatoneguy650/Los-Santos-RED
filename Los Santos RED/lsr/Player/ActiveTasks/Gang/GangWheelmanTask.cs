@@ -454,7 +454,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(RobberAccomplice.Pedestrian, 0, false);
                         NativeFunction.Natives.SET_PED_ALERTNESS(RobberAccomplice.Pedestrian, 3);
                         NativeFunction.Natives.SET_PED_USING_ACTION_MODE(RobberAccomplice.Pedestrian, true, -1, "DEFAULT_ACTION");
-                        RobberAccomplice.WeaponInventory.IssueWeapons(Weapons, true, true, true, RobberAccompliceInfo);
+                        RobberAccomplice.WeaponInventory.IssueWeapons(Weapons, true, true, true, RobberAccompliceInfo, true);
                         RobberAccomplice.CanBeTasked = false;
                         RobberAccomplice.CanBeAmbientTasked = false;
                         RobberAccomplice.Money = RandomItems.GetRandomNumberInt(2000, 5000);
