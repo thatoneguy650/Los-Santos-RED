@@ -131,5 +131,38 @@ public class StealthManager
         }
         return expectedSightDistance;
     }
+
+    public string GetUIText()
+    {
+        string toReturn = "";
+        //if(Player.CurrentVehicle != null)
+        //{
+        //    if(Player.CurrentVehicle.HasBeenSeenByPoliceDuringWanted)
+        //    {
+        //        toReturn += "~o~Vehicle Known to Police~s~";
+        //    }
+        //    else if (Player.CurrentVehicle.CarPlate != null && Player.CurrentVehicle.CarPlate.IsWanted)
+        //    {
+        //        toReturn += "~o~Plate Known to Police~s~";
+        //    }
+        //}
+        if(!Player.IsWanted)
+        {
+            return toReturn;
+        }
+        if(IsHidingInUnknownOffVehicle)
+        {
+            toReturn += "Stealth+ ~b~(Unknown Off Vehicle)~s~";
+        }
+        else if (IsHidingInUnknownVehicle)
+        {
+            toReturn += "Stealth+ ~b~(Unknown Vehicle)~s~";
+        }
+        else if (IsDoingActivityWithoutCrime)
+        {
+            toReturn += "Stealth+ ~b~(Blending In)~s~";
+        }
+        return toReturn;
+    }
 }
 

@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         ActivityManager ActivityManager { get; }
         Violations Violations { get; }
         string DebugString { get; set; }
+        bool IsWanted { get; }
     }
 }

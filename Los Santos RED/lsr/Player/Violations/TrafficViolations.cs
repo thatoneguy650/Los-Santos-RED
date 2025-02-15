@@ -51,7 +51,7 @@ public class TrafficViolations
     private bool HasBeenFelonySpeeding => GameTimeStartedFelonySpeeding != 0 && Game.GameTime - GameTimeStartedFelonySpeeding >= Settings.SettingsManager.ViolationSettings.RecentlySpeedingTime;
     private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.ViolationSettings.RecentlyHitPedTime;
     private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.ViolationSettings.RecentlyHitVehicleTime;
-    private bool ShouldCheckTrafficViolations => !Violations.CanIgnoreAllTrafficLaws && Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying && World.TotalWantedLevel <= 2 ;
+    private bool ShouldCheckTrafficViolations => !Violations.CanIgnoreAllTrafficLaws && Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;// && World.TotalWantedLevel <= 2 ;
     private bool IsFastEnoughToCheckViolations => Player.VehicleSpeedMPH >= Settings.SettingsManager.ViolationSettings.MinTrafficViolationSpeed;
     public void Setup()
     {
@@ -91,7 +91,7 @@ public class TrafficViolations
     }
     private void UpdateGeneralViolations()
     {
-        if(Player.IsInPoliceVehicle || Player.IsGeneralTrafficLawImmune)
+        if((Player.IsInPoliceVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.HasBeenSeenByPoliceDuringWanted) || Player.IsGeneralTrafficLawImmune)
         {
             return;
         }

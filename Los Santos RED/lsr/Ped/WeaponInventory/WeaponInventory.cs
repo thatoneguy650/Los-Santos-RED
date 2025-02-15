@@ -42,7 +42,52 @@ public class WeaponInventory
     public bool IsArmed => HasPistol || HasLongGun;
     public bool CanRadioIn => IsSetLessLethal || (IsSetDeadly && !HasHeavyWeaponOnPerson) || (IsSetDefault && !HasHeavyWeaponOnPerson);
 
-    public bool UsesLongGunWheneverPossible { get; internal set; }
+    public bool UsesLongGunWheneverPossible { get; set; }
+
+
+    //public bool ShouldHaveHeavyWeaponOnPerson => WeaponOwner != null && (WeaponOwner.AlwaysHasLongGun || (Player.PoliceResponse.IsDeadlyChase && WeaponOwner.IsInVehicle &&
+    //    (Player.PoliceResponse.IsWeaponsFree ||
+    //    (Player.PoliceResponse.IsLethalForceAuthorized && 
+    //        (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit))));
+
+
+
+
+    public bool ShouldHaveHeavyWeaponOnPerson
+    {
+        get
+        {
+            
+            if (WeaponOwner == null)
+            {
+               // EntryPoint.WriteToConsole("SHHW 0");
+                return false;
+            }
+            else if(WeaponOwner.AlwaysHasLongGun)
+            {
+               // EntryPoint.WriteToConsole("SHHW 1");
+                return true;
+            }
+            else if (WeaponOwner.IsInVehicle)
+            {
+                if(Player.PoliceResponse.IsWeaponsFree)
+                {
+                   // EntryPoint.WriteToConsole("SHHW 2");
+                    return true;
+                }
+                else if (Player.PoliceResponse.IsDeadlyChase && (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit))
+                {
+                    //EntryPoint.WriteToConsole($"SHHW 3 PoliceKilled{Player.PoliceResponse.PoliceKilled}");
+                    return true;
+                }
+            }
+            //EntryPoint.WriteToConsole($"SHHW NONE {WeaponOwner.Handle} VEH:{WeaponOwner.IsInVehicle} free{Player.PoliceResponse.IsWeaponsFree} USLGWP{UsesLongGunWheneverPossible} DeadlyChase{Player.PoliceResponse.IsDeadlyChase}");
+            return false;
+        }
+    }
+
+
+
 
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
@@ -156,7 +201,7 @@ public class WeaponInventory
     }
     public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, IEntityProvideable world, bool isNightTime, bool overrideAccuracy)
     {
-        if(prevHasHeavyWeaponOnPerson != HasHeavyWeaponOnPerson)
+        if (prevHasHeavyWeaponOnPerson != HasHeavyWeaponOnPerson)
         {
             EntryPoint.WriteToConsole($"HasHeavyWeaponOnPerson CHANGED FOR {WeaponOwner.Handle} tO {HasHeavyWeaponOnPerson}");
             prevHasHeavyWeaponOnPerson = HasHeavyWeaponOnPerson;
@@ -172,19 +217,26 @@ public class WeaponInventory
         }
 
 
-        if (Player.PoliceResponse.IsDeadlyChase && WeaponOwner.IsInVehicle)
+        if(!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
         {
-            if (UsesLongGunWheneverPossible || Player.PoliceResponse.IsWeaponsFree)
-            {
-                EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
-                HasHeavyWeaponOnPerson = true;
+            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+            HasHeavyWeaponOnPerson = true;
+        }
+
+
+        //if (Player.PoliceResponse.IsDeadlyChase && WeaponOwner.IsInVehicle)
+        //{
+        //    if (UsesLongGunWheneverPossible || Player.PoliceResponse.IsWeaponsFree)
+        //    {
+        //        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+        //        HasHeavyWeaponOnPerson = true;
 
 
  
 
 
-            }
-        }
+        //    }
+        //}
 
 
         //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} UPDATING LOADOUT");
@@ -283,12 +335,20 @@ public class WeaponInventory
     {
         if (WeaponOwner.IsInVehicle)
         {
-            if (Player.PoliceResponse.IsWeaponsFree || (Player.PoliceResponse.IsLethalForceAuthorized && UsesLongGunWheneverPossible))
+            //if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.PoliceKilled >= 3 || (Player.PoliceResponse.IsLethalForceAuthorized && UsesLongGunWheneverPossible))
+            //{
+            //    EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 2 {UsesLongGunWheneverPossible}");
+            //    HasHeavyWeaponOnPerson = true;
+            //}
+
+            if(!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
             {
                 EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 2 {UsesLongGunWheneverPossible}");
                 HasHeavyWeaponOnPerson = true;
             }
-            if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.IsLethalForceAuthorized)
+
+
+            if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.IsDeadlyChase)
             {
 
                 SetDeadly(false);
@@ -365,7 +425,12 @@ public class WeaponInventory
                 SetLessLethal();
             }
         }
-        if (WeaponOwner.IsInVehicle && (UsesLongGunWheneverPossible || Player.PoliceResponse.IsWeaponsFree))// && Player.IsDangerouslyArmed && Player.WantedLevel >= 3)
+        //if (WeaponOwner.IsInVehicle && ((UsesLongGunWheneverPossible && Player.PoliceResponse.IsLethalForceAuthorized) || Player.PoliceResponse.IsWeaponsFree))// && Player.IsDangerouslyArmed && Player.WantedLevel >= 3)
+        //{
+        //    EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+        //    HasHeavyWeaponOnPerson = true;
+        //}
+        if (!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
         {
             EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
             HasHeavyWeaponOnPerson = true;

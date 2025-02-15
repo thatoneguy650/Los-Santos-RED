@@ -167,7 +167,7 @@ namespace LosSantosRED.lsr
 
         public bool IsWithinPoliceRadius { get; private set; }
         public float CurrentPoliceRadius { get; private set; }
-        public bool IsLethalForceAuthorized { get; internal set; }
+
 
         public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
         {

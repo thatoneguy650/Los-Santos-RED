@@ -366,7 +366,7 @@ public class LEDispatcher
                 if (World.TotalWantedLevel <= 6)
                 {
                     int totalTime = ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime + ExtraSpawnTimeByLocationType;
-                    EntryPoint.WriteToConsole($"Time Between Dispatching when seen {totalTime} WantedLevel{World.TotalWantedLevel} ExtraSpawnTimeByLocationType{ExtraSpawnTimeByLocationType}");
+                    //EntryPoint.WriteToConsole($"Time Between Dispatching when seen {totalTime} WantedLevel{World.TotalWantedLevel} ExtraSpawnTimeByLocationType{ExtraSpawnTimeByLocationType}");
                     return totalTime;
                 }
                 return SeenMinTime;  
@@ -992,7 +992,7 @@ public class LEDispatcher
         }
         if (World.Pedestrians.TotalSpawnedAmbientPolice >= SpawnedCopLimit)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY COPS");
+            //EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY COPS");
             return;
         }
         GameFiber.Yield();

@@ -82,7 +82,7 @@ public class ViolationSettings : ISettingsDefaultable
         ResistingArrestMediumTriggerTime = 10000;
         ResistingArrestSlowTriggerTime = 25000;
 
-        MinTrafficViolationSpeed = 25f;
+        MinTrafficViolationSpeed = 35f;
         OverLimitFelonySpeedingAmount = 20f;
         OverLimitSpeedingAmount = 10f;
         ShowCrimeWarnings = true;

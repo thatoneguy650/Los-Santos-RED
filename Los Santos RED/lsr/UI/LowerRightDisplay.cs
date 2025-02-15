@@ -310,6 +310,11 @@ public class LowerRightDisplay
                 PlayerDisplay += $" {UI.CurrentDefaultTextColor}{DisplayablePlayer.IntimidationManager.IntimidationDisplay}";
             }
         }
+        string stealthText = DisplayablePlayer.StealthManager.GetUIText();
+        if (!string.IsNullOrEmpty(stealthText))
+        {
+            PlayerDisplay += $" {UI.CurrentDefaultTextColor}{stealthText}";
+        }
 
         if ((DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime) || (Settings.SettingsManager.LSRHUDSettings.PlayerStatusShowWhenSleeping && DisplayablePlayer.IsSleeping) || Time.ForceShowClock)
         {
@@ -468,6 +473,23 @@ public class LowerRightDisplay
             {
                 string Heading = NativeHelper.GetSimpleCompassHeading(DisplayablePlayer.Character.Heading);
                 CurrentSpeedDisplay += $" {Heading}";
+            }
+
+
+            if (DisplayablePlayer.CurrentVehicle != null)
+            {
+                if (DisplayablePlayer.CurrentVehicle.WasReportedStolen)
+                {
+                    CurrentSpeedDisplay += $" ~r~Vehicle Reported Stolen{UI.CurrentDefaultTextColor}";
+                }
+                else if (DisplayablePlayer.CurrentVehicle.HasBeenSeenByPoliceDuringWanted)
+                {
+                    CurrentSpeedDisplay += $" ~o~Vehicle Known to Police{UI.CurrentDefaultTextColor}";
+                }
+                else if (DisplayablePlayer.CurrentVehicle.CarPlate != null && DisplayablePlayer.CurrentVehicle.CarPlate.IsWanted)
+                {
+                    CurrentSpeedDisplay += $" ~o~Plate Known to Police{UI.CurrentDefaultTextColor}";
+                }
             }
         }
         return CurrentSpeedDisplay;

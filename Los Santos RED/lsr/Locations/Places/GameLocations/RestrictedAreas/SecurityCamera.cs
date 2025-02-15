@@ -40,7 +40,7 @@ public class SecurityCamera
         ShowedDestroyed = false;
         isDestroyed = false;
         IsCreated = false;
-        EntryPoint.WriteToConsole("Security Camera ACTIVATED");
+        //EntryPoint.WriteToConsole("Security Camera ACTIVATED");
     }
     public void Deactivate()
     {
@@ -58,7 +58,7 @@ public class SecurityCamera
 
 
 
-        EntryPoint.WriteToConsole($"{Name} DEACTIVATED");
+        //EntryPoint.WriteToConsole($"{Name} DEACTIVATED");
     }
     private void GetObject()
     {
@@ -100,7 +100,7 @@ public class SecurityCamera
 
         //securityCameraObject.IsPersistent = false;
 
-        EntryPoint.WriteToConsole($"{Name} Created");
+        //EntryPoint.WriteToConsole($"{Name} Created");
     }
     public void Update()
     {
@@ -120,7 +120,7 @@ public class SecurityCamera
             return;
         }
 
-        EntryPoint.WriteToConsole($"{securityCameraObject.Health} CAM HEALTH");
+        //EntryPoint.WriteToConsole($"{securityCameraObject.Health} CAM HEALTH");
 
         if (securityCameraObject.HasBeenDamagedBy(Game.LocalPlayer.Character))
         {
@@ -150,7 +150,7 @@ public class SecurityCamera
         }
         AttachedBlip = new Blip(Position) { Name = Name, Color = EntryPoint.LSRedColor, Sprite = (BlipSprite)629,Angle = (int)Heading,Scale = 0.55f };
 
-        EntryPoint.WriteToConsole($"SECURITY CAMERA BLIP CREATED");
+        //EntryPoint.WriteToConsole($"SECURITY CAMERA BLIP CREATED");
         if (!AttachedBlip.Exists())
         {
             return;
@@ -162,7 +162,7 @@ public class SecurityCamera
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("CCTV");
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(AttachedBlip);
         world.AddBlip(AttachedBlip);
-        EntryPoint.WriteToConsole($"{Name} BLIP CREATED");
+        //EntryPoint.WriteToConsole($"{Name} BLIP CREATED");
     }
     private void UpdateBlip()
     {
@@ -181,6 +181,6 @@ public class SecurityCamera
         }
         AttachedBlip.Delete();
         AttachedBlip = null;
-        EntryPoint.WriteToConsole($"{Name} BLIP DELETED");
+        //EntryPoint.WriteToConsole($"{Name} BLIP DELETED");
     }
 }

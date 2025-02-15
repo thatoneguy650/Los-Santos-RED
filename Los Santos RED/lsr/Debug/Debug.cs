@@ -1173,8 +1173,21 @@ public class Debug
 
     private void DebugNumpad5()
 {
-        NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME(2,(int)GameControl.VehicleNextRadioTrack, 1.0f);
-        GameFiber.Sleep(100);
+        CanineUnit k9 = World.Pedestrians.PoliceCanines.Where(x => x.Pedestrian.Exists()).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
+        if(k9 == null)
+        {
+            return;
+        }
+        if(!k9.Pedestrian.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.PLAY_ANIMAL_VOCALIZATION(k9.Pedestrian, 2, "BARK");
+        Game.DisplaySubtitle("Bark Played");
+        GameFiber.Sleep(500);
+
+        //NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME(2,(int)GameControl.VehicleNextRadioTrack, 1.0f);
+        //GameFiber.Sleep(100);
 
         //foreach(ContactRelationship test in Player.RelationshipManager.ContactRelationships)
         //{

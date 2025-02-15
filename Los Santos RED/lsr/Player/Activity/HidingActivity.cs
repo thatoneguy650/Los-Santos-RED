@@ -22,13 +22,15 @@ public class HidingActivity : DynamicActivity
     private float FinalPlayerHeading;
     private string PlayingDict;
     private string PlayingAnim;
+    private HideableObject HideableObject;
 
-    public HidingActivity(IActionable player,ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object hidingObject)
+    public HidingActivity(IActionable player,ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object hidingObject, HideableObject hideableObject)
     {
         Player = player;
         LocationInteractable = locationInteractable;
         Settings = settings;
         HidingObject = hidingObject;
+        HideableObject = hideableObject;
     }
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
@@ -76,7 +78,7 @@ public class HidingActivity : DynamicActivity
             Game.DisplayHelp($"Cannot Hide When Wanted and Seen");
             return false;
         }
-        else if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
+        else if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase && !player.ActivityManager.IsResting)
         {
             return true;
         }
@@ -104,7 +106,7 @@ public class HidingActivity : DynamicActivity
         NativeFunction.Natives.DISABLE_CAM_COLLISION_FOR_OBJECT(HidingObject);
         StartClimb();
         uint GameTimeStarted = Game.GameTime;
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
         {
             DisableControls();
             GameFiber.Yield();
@@ -116,7 +118,7 @@ public class HidingActivity : DynamicActivity
         HidingObject.IsCollisionEnabled = false;
         Player.Character.Position = HidingObject.Position;
         Player.Character.Heading = FinalPlayerHeading - 180f;
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
         {
             DisableControls();
             GameFiber.Yield();
@@ -144,7 +146,7 @@ public class HidingActivity : DynamicActivity
 
         Player.ActivityManager.IsHidingInObject = true;
 
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
         {
             DisableControls();
             //if(!Player.ButtonPrompts.HasPrompt("ExitHiding"))
@@ -204,11 +206,26 @@ public class HidingActivity : DynamicActivity
 
         Game.DisableControlAction(0, GameControl.VehicleAttack, true);// false);
         Game.DisableControlAction(0, GameControl.VehicleAttack2, true);// false);
+
+
+
+
+
+        NativeHelper.DisablePlayerMovementControl();
     }
     private void Setup()
     {
         AnimationDictionary.RequestAnimationDictionay("move_climb");
         Player.ButtonPrompts.RemovePrompts("Hiding");
+
+        if(HideableObject == null)
+        {
+            CancelPrompt = $"Stop Hiding";
+        }
+        else
+        {
+            CancelPrompt = $"Exit {HideableObject.Name}";
+        }
     }
 }
 

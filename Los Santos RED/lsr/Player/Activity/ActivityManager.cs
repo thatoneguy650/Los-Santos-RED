@@ -538,7 +538,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        HidingActivity hidingActivity = new HidingActivity(Actionable,LocationInteractable, Settings, hidingObject);
+        HidingActivity hidingActivity = new HidingActivity(Actionable,LocationInteractable, Settings, hidingObject, HideableObject);
         if (hidingActivity.CanPerform(Actionable))
         {
             ForceCancelAllActive();
