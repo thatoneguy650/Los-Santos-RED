@@ -40,6 +40,8 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
+    public static string ConfigName { get; set; } = "Default";
+    public static bool IsLoadingAltConfig { get; set; } = false;
     public static void Main()
     {
 
@@ -65,18 +67,24 @@ public static class EntryPoint
     {
         while (true)
         {
-            if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
+            if (ModController == null || !ModController.IsRunning)
             {
-                if (NotificationID != 0)
+                if ((Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow) || IsLoadingAltConfig)
                 {
-                    Game.RemoveNotification(NotificationID);
+                    RemoveNotification();
+
+                    ModController = new ModController();
+                    ModController.Setup(ConfigName);
                 }
-                Game.FadeScreenOut(500, true);
-                ModController = new ModController();
-                ModController.Setup();
             }
+
             GameFiber.Yield();
         }
+    }
+    private static void RemoveNotification()
+    {
+        if (NotificationID == 0) return;
+        Game.RemoveNotification(NotificationID);
     }
     private static void GetVersionInfo()
     {
