@@ -97,7 +97,7 @@ namespace Mod
         private bool prevIsSleeping;
         private uint KillerHandle;
         private bool HasThrownInTunnel;
-
+        private bool prevIsBreakingIntoCar;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -1953,11 +1953,29 @@ namespace Mod
             Violations.MinorViolations.UpdateData();
 
 
-
+            if(prevIsBreakingIntoCar != IsBreakingIntoCar)
+            {
+                EntryPoint.WriteToConsole($"Started Breaking Into Car");
+                OnIsBreakingIntoCarChanged();
+                prevIsBreakingIntoCar = IsBreakingIntoCar;
+            }
 
 
 
         }
+
+        private void OnIsBreakingIntoCarChanged()
+        {
+            if(InterestedVehicle == null)
+            {
+                return;
+            }
+            if (IsBreakingIntoCar)
+            {
+                InterestedVehicle.OnPlayerStartedBreakingInto(this);
+            }
+        }
+
         private void UpdateGeneralStatus()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -2773,6 +2791,23 @@ namespace Mod
         public void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu)
         {
             PlayerTasks.OnInteractionMenuCreated(gameLocation, menuPool, interactionMenu);
+        }
+
+        public void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt)
+        {
+            if(associatedGang == null)
+            {
+                return;
+            }
+            if(gangVehicleExt == null)
+            {
+                return;
+            }
+            EntryPoint.WriteToConsole($"Started Breaking Into Gang Car {associatedGang.ID} {gangVehicleExt.Handle} {gangVehicleExt.VehicleModelName}");
+            foreach(GangMember gm in World.Pedestrians.GangMembers.Where(x=> x.Pedestrian.Exists() && x.CanSeePlayer))
+            {
+                gm.OnPlayerStoleInterestedCar(this);
+            }
         }
     }
 }

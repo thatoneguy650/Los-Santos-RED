@@ -224,7 +224,7 @@ public class DispatchableVehicle
         {
             NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
         }
-        GameFiber.Yield();
+        //GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())
         {
             return;
@@ -241,7 +241,7 @@ public class DispatchableVehicle
                         NativeFunction.Natives.SET_VEHICLE_EXTRA(vehicleExt.Vehicle, extra.ExtraID, toSet);
                     }
                 }
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 if (!vehicleExt.Vehicle.Exists())
                 {
                     break;
@@ -267,7 +267,7 @@ public class DispatchableVehicle
                     {
                        // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID} VALUE: {value.Value}");
                         NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, dispatchableVehicleMod.ModID, value.Value, false);
-                        GameFiber.Yield();
+                        //GameFiber.Yield();
                         if(!vehicleExt.Vehicle.Exists())
                         {
                             break;

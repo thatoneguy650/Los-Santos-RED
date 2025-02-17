@@ -19,5 +19,13 @@ namespace LSR.Vehicles
         {
             world.Vehicles.AddGang(this);
         }
+        public override void OnPlayerStartedBreakingInto(IInteractionable player)
+        {
+            if(AssociatedGang != null)
+            {
+                player.OnStartedBreakingIntoGangCar(AssociatedGang,this);
+            }
+            base.OnPlayerStartedBreakingInto(player);
+        }
     }
 }

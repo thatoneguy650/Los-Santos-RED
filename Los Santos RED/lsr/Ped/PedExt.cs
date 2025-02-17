@@ -1523,6 +1523,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
+    public virtual void OnPlayerStoleInterestedCar(IInteractionable player)
+    {
+
+    }
     protected virtual void OnHitInsultLimit(IInteractionable player)
     {
         PlayerPerception.SetFakeSeen();

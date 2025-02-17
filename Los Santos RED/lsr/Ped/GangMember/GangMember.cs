@@ -243,6 +243,19 @@ public class GangMember : PedExt, IWeaponIssuable
         TimesInsultedByPlayer += 10;
         EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }
+
+
+    public override void OnPlayerStoleInterestedCar(IInteractionable player)
+    {
+        if (IsPlayerMember(player) || Gang == null)
+        {
+            return;
+        }
+        //PlayerPerception.SetFakeSeen();
+        TimesInsultedByPlayer += 10;
+        EntryPoint.WriteToConsole($"OnPlayerStoleInterestedCar triggered {Handle}");
+    }
+
     public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)

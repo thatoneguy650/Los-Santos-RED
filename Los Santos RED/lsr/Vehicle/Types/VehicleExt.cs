@@ -1701,5 +1701,10 @@ namespace LSR.Vehicles
             GameTimeLastHadPedsRappelOrParachute = Game.GameTime;
             EntryPoint.WriteToConsole($"VEHICLE MARKED AS RAPPELLED FROM SEAT {seatIndex}");
         }
+
+        public virtual void OnPlayerStartedBreakingInto(IInteractionable player)
+        {
+           
+        }
     }
 }

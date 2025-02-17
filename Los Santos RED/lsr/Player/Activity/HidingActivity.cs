@@ -135,12 +135,14 @@ public class HidingActivity : DynamicActivity
         //StartCower();
         //GameFiber.Sleep(800);
 
-        if(Player.IsWanted && Player.AnyPoliceCanSeePlayer)
-        {
-            Game.DisplayHelp("You were seen entering");
-            return;
-        }
+        //if(Player.IsWanted && Player.AnyPoliceCanSeePlayer)
+        //{
+        //    Game.DisplayHelp("You were seen entering");
+        //    EntryPoint.WriteToConsole("You were seen entering");
 
+        //    return;
+        //}
+        CanCancel = true;
 
         Player.Character.IsVisible = false;
 
@@ -161,6 +163,8 @@ public class HidingActivity : DynamicActivity
             //}
             if(Player.IsWanted && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
             {
+                Game.DisplayHelp("You have been found");
+                EntryPoint.WriteToConsole("STOPPED HIDING Wanted and IsInWantedActiveMode");
                 break;
             }
             GameFiber.Yield();
@@ -215,6 +219,7 @@ public class HidingActivity : DynamicActivity
     }
     private void Setup()
     {
+        CanCancel = false;
         AnimationDictionary.RequestAnimationDictionay("move_climb");
         Player.ButtonPrompts.RemovePrompts("Hiding");
 

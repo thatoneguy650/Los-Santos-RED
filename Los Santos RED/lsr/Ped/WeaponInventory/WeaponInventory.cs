@@ -75,7 +75,7 @@ public class WeaponInventory
                    // EntryPoint.WriteToConsole("SHHW 2");
                     return true;
                 }
-                else if (Player.PoliceResponse.IsDeadlyChase && (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit))
+                else if (Player.PoliceResponse.IsDeadlyChase && (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit || Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.AlwaysUseLongGunWantedLevelLimit))
                 {
                     //EntryPoint.WriteToConsole($"SHHW 3 PoliceKilled{Player.PoliceResponse.PoliceKilled}");
                     return true;

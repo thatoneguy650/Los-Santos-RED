@@ -137,6 +137,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
     public float K9KnowLocationDistance { get; set; }
     public int ALwaysUseLongGunCopKillLimit { get; set; }
+    public int AlwaysUseLongGunWantedLevelLimit { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -259,6 +260,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         K9KnowLocationDistance = 65f;
 
         ALwaysUseLongGunCopKillLimit = 3;
+        AlwaysUseLongGunWantedLevelLimit = 4;
 
     }
 }

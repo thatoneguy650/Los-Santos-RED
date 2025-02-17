@@ -153,7 +153,7 @@ public class PedVariation
             if (setDefaultFirst)
             {
                 NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
-                GameFiber.Yield();
+                //GameFiber.Yield();
             }
             if (!ped.Exists())
             {
@@ -161,7 +161,7 @@ public class PedVariation
             }
             foreach (PedComponent Component in Components)
             {
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 if (!ped.Exists())
                 {
                     return setVariation;
@@ -169,6 +169,7 @@ public class PedVariation
                 NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
                 setVariation.Components.Add(new PedComponent(Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID));
             }
+            GameFiber.Yield();
             if (!ped.Exists())
             {
                 return setVariation;
@@ -179,7 +180,7 @@ public class PedVariation
             }
             foreach (PedPropComponent Prop in Props)
             {
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 if (!ped.Exists())
                 {
                     return setVariation;
@@ -232,8 +233,9 @@ public class PedVariation
                     NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
                     NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
                     setVariation.HeadOverlays.Add(new HeadOverlayData(headOverlayData.OverlayID, headOverlayData.Part) { ColorType = headOverlayData.ColorType, Index = headOverlayData.Index, Opacity = headOverlayData.Opacity, OverlayID = headOverlayData.OverlayID, PrimaryColor = headOverlayData.PrimaryColor, SecondaryColor = headOverlayData.SecondaryColor });
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                 }
+                GameFiber.Yield();
                 if (!ped.Exists())
                 {
                     return setVariation;
@@ -246,8 +248,9 @@ public class PedVariation
                     }
                     NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
                     setVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = faceFeature.Scale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                 }
+                GameFiber.Yield();
                 if (!ped.Exists())
                 {
                     return setVariation;
