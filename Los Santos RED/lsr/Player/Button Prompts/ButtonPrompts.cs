@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 public class ButtonPrompts
 {
-    
+    //THIS WHOLE FUCKING RATS NEST NEEDS TO BE STREAMLINED
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
@@ -91,16 +91,6 @@ public class ButtonPrompts
             return;
         }
         toConsider.UpdateInteractPrompts(Player);
-        //string interactPrompt = toConsider.InteractPrompt(Player, Settings);
-        //if (string.IsNullOrEmpty(interactPrompt))
-        //{
-        //    RemovePrompts("VehicleInteract");
-        //    return;
-        //}
-        //if (!HasPrompt($"VehicleInteract"))
-        //{
-        //    AttemptAddPrompt("VehicleInteract", interactPrompt, $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
-        //}
     }
     public void Dispose()
     {
@@ -286,10 +276,6 @@ public class ButtonPrompts
         RemovePrompts("Drag");//new
         RemovePrompts("Grab");//new
         RemovePrompts("Treat");//new
-
-
-
-
         if (!HasPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
             RemovePrompts("InteractableLocation");
@@ -438,12 +424,6 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
-
-        //if(Player.ActivityManager.CanGrabLookedAtPed || Player.ActivityManager.CanGrabPed)
-        //{
-        //    EntryPoint.WriteToConsole($"CanGrabLookedAtPed{Player.ActivityManager.CanGrabLookedAtPed} CanGrabPed{Player.ActivityManager.CanGrabPed}");
-        //}
-
         if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowGrabbingPeds)
         {
             PersonGrabPrompts();
@@ -453,7 +433,7 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "Grab");
         }
-        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer */ && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -469,10 +449,7 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowStopSurrender");
         }
-
-
-
-        if (Settings.SettingsManager.PlayerOtherSettings.AllowYellGetDownPrompt && Player.CurrentLookedAtPed == null && !Player.ActivityManager.IsInteractingWithLocation && !Prompts.Any(x=> x.Identifier != "YellGetDown") && !Player.IsShowingFrontEndMenus && !Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer > 40f && Player.IsAliveAndFree && Player.IsAiming && Player.IsOnFoot)
+        if (Settings.SettingsManager.PlayerOtherSettings.AllowYellGetDownPrompt && Player.CurrentLookedAtPed == null && !Player.ActivityManager.IsInteractingWithLocation && !Prompts.Any(x=> x.Identifier != "YellGetDown") && !Player.IsShowingFrontEndMenus && !Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer*/ && Player.ClosestPoliceDistanceToPlayer > 40f && Player.IsAliveAndFree && Player.IsAiming && Player.IsOnFoot)
         {
             AddPrompt("YellGetDown", "Force All Down", "YellGetDown", Settings.SettingsManager.KeySettings.YellKeyModifier, Settings.SettingsManager.KeySettings.YellKey, 999);
         }
@@ -480,8 +457,6 @@ public class ButtonPrompts
         {
             RemovePrompts("YellGetDown");
         }
-
-
         if (Settings.SettingsManager.GroupSettings.EnableGroupButtonPrompts && Player.GroupManager.CurrentGroupMembers.Any() && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsAliveAndFree)
         {
             AddPrompt("ToggleGroupMode", "Toggle Group Mode", "ToggleGroupMode", Settings.SettingsManager.KeySettings.GroupModeToggleKeyModifier, Settings.SettingsManager.KeySettings.GroupModeToggleKey, 999);
@@ -491,19 +466,8 @@ public class ButtonPrompts
             RemovePrompts("ToggleGroupMode");
         }
 
-        if(!addedPromptGroup && Player.ActivityManager.CanHideInCurrentObject && !Player.ActivityManager.IsPerformingActivity)
-        {
-            if(!HasPrompt("HideInObject"))
-            {
-                AttemptAddPrompt("Hiding","Hide In Object", "HideInObject", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { Player.ActivityManager.Hide(Player.CurrentLookedAtObject); });
-            }
-        }
-        else
-        {
-            RemovePrompts("Hiding");
-        }
-
-
+        //do more like this?
+        Player.ActivityManager.CheckHidingButtonPrompts(this, Player.CurrentLookedAtObject);
     }
     private void SittingPrompts()
     {

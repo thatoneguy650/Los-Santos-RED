@@ -46,9 +46,9 @@ public class TrainStopper
     {
         if(!Settings.SettingsManager.PoliceSettings.AllowStoppingTrains)
         {
-
+            return;
         }
-        if (Player.IsRidingOnTrain && Player.AnyPoliceRecentlySeenPlayer)
+        if (Player.IsRidingOnTrain && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
         {
             if (GameTimeSawOnTrain == 0)
             {

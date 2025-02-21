@@ -84,7 +84,7 @@ public class DispatchableVehicles_FEJ_LC
 
         DispatchableVehicle LCPDk9 = DispatchableVehicles_FEJ.Create_PoliceGranger3600LC(0, 50, 5, false, PoliceVehicleType.MarkedValorLightbar, 134, 0, 3, 1, 2, "", "");
         LCPDk9.CaninePossibleSeats = new List<int> { 1, 2 };
-        LCPDk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 200) };
+        LCPDk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 50) };
 
         LCPDVehicles = new List<DispatchableVehicle>()
         {
@@ -143,7 +143,7 @@ public class DispatchableVehicles_FEJ_LC
 
         DispatchableVehicle ASPk9 = DispatchableVehicles_FEJ.Create_PoliceAleutianLC(0, 50, 5, false, PoliceVehicleType.Marked, 134, 0, 3, 1, 2, "", "");
         ASPk9.CaninePossibleSeats = new List<int> { 1, 2 };
-        ASPk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9,200) };
+        ASPk9.SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9,50) };
 
         ASPVehicles = new List<DispatchableVehicle>()
         {

@@ -491,6 +491,7 @@ namespace LSR.Vehicles
             {
                 OriginalLicensePlate.IsWanted = false;
             }
+            HasBeenSeenByPoliceDuringWanted = false;
         }
         public string FullName(bool withColor)
         {
@@ -685,6 +686,7 @@ namespace LSR.Vehicles
             {
                 CarPlate.IsWanted = true;
             }
+            HasBeenSeenByPoliceDuringWanted = true;
             //if (IsStolen && !WasReportedStolen)
             //{
             //    WasReportedStolen = true;
@@ -769,6 +771,9 @@ namespace LSR.Vehicles
 
 
         public virtual bool CanNeverUpdatePlate => false;
+
+        public bool HasBeenSeenByPoliceDuringWanted { get; private set; }
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -962,17 +967,17 @@ namespace LSR.Vehicles
             {
                 NewType = PlateTypes.GetRandomInStatePlate(CurrentZone.StateID, IsMotorcycle);
             }
-            else if (CanHavePlateRandomlyUpdated && CurrentZone.StateID == StaticStrings.SanAndreasStateID && IsMotorcycle)
+            else if (CanHavePlateRandomlyUpdated && CurrentZone != null && CurrentZone.StateID == StaticStrings.SanAndreasStateID && IsMotorcycle)
             {
                 NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
             }
-            else
+            else if (CanHavePlateRandomlyUpdated && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
             {
-                if (CanHavePlateRandomlyUpdated && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
-                {
-                    NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
-                }
+                NewType = PlateTypes.GetRandomPlateType(IsMotorcycle);
             }
+
+
+
             if (NewType != null)
             {
                 //EntryPoint.WriteToConsole($"UPDATE PLATE TYPE FORCE NEW TYPE IS NOT NULL {NewType?.StateID}");
@@ -1695,6 +1700,11 @@ namespace LSR.Vehicles
             HasHadPedsRappelOrParachute = true;
             GameTimeLastHadPedsRappelOrParachute = Game.GameTime;
             EntryPoint.WriteToConsole($"VEHICLE MARKED AS RAPPELLED FROM SEAT {seatIndex}");
+        }
+
+        public virtual void OnPlayerStartedBreakingInto(IInteractionable player)
+        {
+           
         }
     }
 }

@@ -35,15 +35,10 @@ public class PlayerPerception
     {
         get
         {
-            uint RecognizeTime = 1200;
-            if(Target.IsPoorWeather)
-            {
-                RecognizeTime += 500;
-            }
-            if(Target.IsConsideredNight)
-            {
-                RecognizeTime += 500;
-            }
+            uint RecognizeTime = Target.StealthManager.GetRecognizeTime(Originator);
+
+
+
 
 
 
@@ -266,18 +261,21 @@ public class PlayerPerception
 
 
 
-        if (Target.IsHidingInVehicle)
-        {
-            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.HidingInVehicleSightDecreasePercentage;
-        }
-        if(Target.IsConsideredNight)
-        {
-            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.NightTimeSightDecreasePercenttage;
-        }
-        if (Target.IsPoorWeather)
-        {
-            expectedSightDistance *= Settings.SettingsManager.CivilianSettings.PoorWeatherSightDecreasePercenttage;
-        }
+        expectedSightDistance *= Target.StealthManager.GetSightDistanceScalar(Originator);
+
+
+        //if (Target.IsHidingInVehicle)
+        //{
+        //    expectedSightDistance *= Settings.SettingsManager.CivilianSettings.HidingInVehicleSightDecreasePercentage;
+        //}
+        //if(Target.IsConsideredNight)
+        //{
+        //    expectedSightDistance *= Settings.SettingsManager.CivilianSettings.NightTimeSightDecreasePercenttage;
+        //}
+        //if (Target.IsPoorWeather)
+        //{
+        //    expectedSightDistance *= Settings.SettingsManager.CivilianSettings.PoorWeatherSightDecreasePercenttage;
+        //}
 
 
         bool isWithinPossibleSightDistance = false;

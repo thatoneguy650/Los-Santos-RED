@@ -22,22 +22,24 @@ public class HidingActivity : DynamicActivity
     private float FinalPlayerHeading;
     private string PlayingDict;
     private string PlayingAnim;
+    private HideableObject HideableObject;
 
-    public HidingActivity(IActionable player,ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object hidingObject)
+    public HidingActivity(IActionable player,ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object hidingObject, HideableObject hideableObject)
     {
         Player = player;
         LocationInteractable = locationInteractable;
         Settings = settings;
         HidingObject = hidingObject;
+        HideableObject = hideableObject;
     }
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
-    public override bool CanCancel { get; set; } = false;
+    public override bool CanCancel { get; set; } = true;
     public override bool IsUpperBodyOnly { get; set; } = false;
-    public override string PausePrompt { get; set; } = "Pause Activity";
-    public override string CancelPrompt { get; set; } = "Stop Activity";
-    public override string ContinuePrompt { get; set; } = "Continue Activity";
+    public override string PausePrompt { get; set; } = "Pause Hiding";
+    public override string CancelPrompt { get; set; } = "Stop Hiding";
+    public override string ContinuePrompt { get; set; } = "Continue Hiding";
     public override void Cancel()
     {
         IsCancelled = true;
@@ -70,13 +72,13 @@ public class HidingActivity : DynamicActivity
     }
     public override bool CanPerform(IActionable player)
     {
-        if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
+        if (Player.IsWanted && Player.AnyPoliceCanSeePlayer)
         {
             EntryPoint.WriteToConsole("CANNOT HIDE RAN");
             Game.DisplayHelp($"Cannot Hide When Wanted and Seen");
             return false;
         }
-        else if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
+        else if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase && !player.ActivityManager.IsResting)
         {
             return true;
         }
@@ -104,7 +106,7 @@ public class HidingActivity : DynamicActivity
         NativeFunction.Natives.DISABLE_CAM_COLLISION_FOR_OBJECT(HidingObject);
         StartClimb();
         uint GameTimeStarted = Game.GameTime;
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
         {
             DisableControls();
             GameFiber.Yield();
@@ -116,7 +118,7 @@ public class HidingActivity : DynamicActivity
         HidingObject.IsCollisionEnabled = false;
         Player.Character.Position = HidingObject.Position;
         Player.Character.Heading = FinalPlayerHeading - 180f;
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && Game.GameTime - GameTimeStarted <= 800)
         {
             DisableControls();
             GameFiber.Yield();
@@ -132,22 +134,37 @@ public class HidingActivity : DynamicActivity
     {
         //StartCower();
         //GameFiber.Sleep(800);
+
+        //if(Player.IsWanted && Player.AnyPoliceCanSeePlayer)
+        //{
+        //    Game.DisplayHelp("You were seen entering");
+        //    EntryPoint.WriteToConsole("You were seen entering");
+
+        //    return;
+        //}
+        CanCancel = true;
+
         Player.Character.IsVisible = false;
-        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+
+        Player.ActivityManager.IsHidingInObject = true;
+
+        while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
         {
             DisableControls();
-            if(!Player.ButtonPrompts.HasPrompt("ExitHiding"))
+            //if(!Player.ButtonPrompts.HasPrompt("ExitHiding"))
+            //{
+            //    EntryPoint.WriteToConsole("ATTEMPTING TO ADD PROMPT");
+            //    Player.ButtonPrompts.AttemptAddPrompt("HidingExit", "Exit Hiding", "ExitHiding", GameControl.Attack, 999);
+            //}
+            //if (Player.ButtonPrompts.IsPressed("ExitHiding") || Player.IsMoveControlPressed)
+            //{
+            //    Player.ButtonPrompts.RemovePrompts("HidingExit");
+            //    break;
+            //}
+            if(Player.IsWanted && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
             {
-                EntryPoint.WriteToConsole("ATTEMPTING TO ADD PROMPT");
-                Player.ButtonPrompts.AttemptAddPrompt("HidingExit", "Exit Hiding", "ExitHiding", GameControl.Attack, 999);
-            }
-            if (Player.ButtonPrompts.IsPressed("ExitHiding") || Player.IsMoveControlPressed)
-            {
-                Player.ButtonPrompts.RemovePrompts("HidingExit");
-                break;
-            }
-            if(Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
-            {
+                Game.DisplayHelp("You have been found");
+                EntryPoint.WriteToConsole("STOPPED HIDING Wanted and IsInWantedActiveMode");
                 break;
             }
             GameFiber.Yield();
@@ -157,6 +174,7 @@ public class HidingActivity : DynamicActivity
     {
         Player.ButtonPrompts.RemovePrompts("HidingExit");
         Player.Character.IsVisible = true;
+        Player.ActivityManager.IsHidingInObject = false;
         StartClimb();
         uint GameTimeStarted = Game.GameTime;
         AnimationWatcher aw = new AnimationWatcher();
@@ -192,11 +210,27 @@ public class HidingActivity : DynamicActivity
 
         Game.DisableControlAction(0, GameControl.VehicleAttack, true);// false);
         Game.DisableControlAction(0, GameControl.VehicleAttack2, true);// false);
+
+
+
+
+
+        NativeHelper.DisablePlayerMovementControl();
     }
     private void Setup()
     {
+        CanCancel = false;
         AnimationDictionary.RequestAnimationDictionay("move_climb");
         Player.ButtonPrompts.RemovePrompts("Hiding");
+
+        if(HideableObject == null)
+        {
+            CancelPrompt = $"Stop Hiding";
+        }
+        else
+        {
+            CancelPrompt = $"Exit {HideableObject.Name}";
+        }
     }
 }
 

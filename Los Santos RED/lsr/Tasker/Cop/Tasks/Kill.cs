@@ -19,7 +19,7 @@ public class Kill : ComplexTask
     private bool isSetCode3Close;
     private bool isSetRegularCode3;
     private HeliEngage HeliEngage;
-    private bool ShouldGoToBeforeAttack => Ped.IsAnimal || (Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege);
+    private bool ShouldGoToBeforeAttack => Ped.IsAnimal || (Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer */ && CanSiege);
     public Kill(IComplexTaskable cop, IPlayerChaseable playerchaseable,IEntityProvideable world, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Kill";

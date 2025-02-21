@@ -24,13 +24,13 @@ public class DispatchablePerson
     public int ArmorMin { get; set; } = 0;
     public int ArmorMax { get; set; } = 0;
 
-    public int AccuracyMin { get; set; } = 20;//40
-    public int AccuracyMax { get; set; } = 20;//40
+    public int AccuracyMin { get; set; } = 10;//20;//40
+    public int AccuracyMax { get; set; } = 10;//20;//40
 
-    public int ShootRateMin { get; set; } = 200;//400
-    public int ShootRateMax { get; set; } = 300;//400
+    public int ShootRateMin { get; set; } = 150;//200;//400
+    public int ShootRateMax { get; set; } = 250;//300;//400
 
-    public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
+    public int CombatAbilityMin { get; set; } = 0;//1;//0 - poor, 1- average, 2 - professional
     public int CombatAbilityMax { get; set; } = 2;//0 - poor, 1- average, 2 - professional
 
     public int CombatRange { get; set; } = -1;
@@ -42,10 +42,10 @@ public class DispatchablePerson
     public int TaserShootRateMin { get; set; } = 100;
     public int TaserShootRateMax { get; set; } = 100;
 
-    public int VehicleAccuracyMin { get; set; } = 2;//5
+    public int VehicleAccuracyMin { get; set; } = 1;//2;//5
     public int VehicleAccuracyMax { get; set; } = 4;//5
-    public int VehicleShootRateMin { get; set; } = 10;//20
-    public int VehicleShootRateMax { get; set; } = 15;//20
+    public int VehicleShootRateMin { get; set; } = 5;//10;//20
+    public int VehicleShootRateMax { get; set; } = 10;//15;//20
 
 
     public int TurretAccuracyMin { get; set; } = 10;
@@ -589,9 +589,12 @@ public class DispatchablePerson
 
     public void Setup(IIssuableWeapons issuableWeapons)
     {
+        
         OverrideLessLethalWeapons = issuableWeapons.GetWeaponData(OverrideLessLethalWeaponsID);
         OverrideLongGuns = issuableWeapons.GetWeaponData(OverrideLongGunsID);
         OverrideSideArms = issuableWeapons.GetWeaponData(OverrideSideArmsID);
-        OptionalAppliedOverlayLogic?.Setup();     
+        OptionalAppliedOverlayLogic?.Setup();
+
+       // EntryPoint.WriteToConsole($"{DebugName} SETUP WEAPONS OverrideLongGunsID:{OverrideLongGunsID} {OverrideLongGuns != null} OverrideSideArmsID{OverrideSideArmsID} {OverrideSideArms!= null} OverrideLessLethalWeaponsID{OverrideLessLethalWeaponsID}");
     }
 }

@@ -123,8 +123,8 @@ public class RoadblockSettings : ISettingsDefaultable
         Roadblock_ConeDistance = 12f;// 19f;
 
         TimeBetweenRoadblock_Unseen = 999999;
-        TimeBetweenRoadblock_Seen_Min = 90000;
-        TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 25000;
+        TimeBetweenRoadblock_Seen_Min = 50000;// 90000;
+        TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 15000;// 25000;
 
         RemoveGeneratedVehiclesAroundRoadblock = true;
         RemoveGeneratedVehiclesAroundRoadblockDistance = 15f;
@@ -134,8 +134,8 @@ public class RoadblockSettings : ISettingsDefaultable
 
 
         RoadblockSpawnPercentage_Wanted1 = 0;
-        RoadblockSpawnPercentage_Wanted2 = 5;
-        RoadblockSpawnPercentage_Wanted3 = 65;
+        RoadblockSpawnPercentage_Wanted2 = 10;// 5;
+        RoadblockSpawnPercentage_Wanted3 = 75;// 65;
         RoadblockSpawnPercentage_Wanted4 = 95;
         RoadblockSpawnPercentage_Wanted5 = 100;
         RoadblockSpawnPercentage_Wanted6 = 0;

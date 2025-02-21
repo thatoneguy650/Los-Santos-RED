@@ -153,10 +153,22 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         }
         else
         {
-            PlaceToDriveTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;
-            PlaceToWalkTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;
+            if(HasSixthSense)
+            {
+                PlaceToDriveTo = Player.Character.Position;
+                PlaceToWalkTo = Player.Character.Position;
+            }
+            else if (Ped.IsAnimal && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.K9KnowLocationDistance)
+            {
+                PlaceToDriveTo = Player.Character.Position;
+                PlaceToWalkTo = Player.Character.Position;
+            }
+            else
+            {
+                PlaceToDriveTo = Ped.PlayerPerception.PositionLastSeenTarget;
+                PlaceToWalkTo = Ped.PlayerPerception.PositionLastSeenTarget;
+            }
         }
-
     }
 }
 

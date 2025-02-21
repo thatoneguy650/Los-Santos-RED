@@ -33,6 +33,7 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         Dispatcher Dispatcher { get; }
         LocationData CurrentLocation { get; }
+        bool IsInWantedActiveMode { get; }
 
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
     }

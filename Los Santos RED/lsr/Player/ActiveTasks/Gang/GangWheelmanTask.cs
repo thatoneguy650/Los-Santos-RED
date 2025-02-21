@@ -316,13 +316,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 GangMember tospeak = SpawnedRobbers.PickRandom();
                 if(tospeak != null && tospeak.Pedestrian.Exists())
                 {
-                    if(Player.IsWanted && Player.RecentlyShot && Player.AnyPoliceRecentlySeenPlayer)
+                    if(Player.IsWanted && Player.RecentlyShot && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
                     {
                         List<string> PossibleSpeech = new List<string>() { "COVER_ME","RELOADING","TAKE_COVER","PINNED_DOWN", "GENERIC_FRIGHTENED_MED", "GENERIC_FRIGHTENED_HIGH" };
                         PlaySpeech(tospeak, PossibleSpeech.PickRandom(), false);
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(2000, 5000);
                     }
-                    else if (Player.IsWanted && tospeak.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
+                    else if (Player.IsWanted && tospeak.IsWanted && Player.IsInWantedActiveMode)// Player.AnyPoliceRecentlySeenPlayer)
                     {
                         List<string> PossibleSpeech = new List<string>() { "GENERIC_WAR_CRY","SHOUT_INSULT", "CHALLENGE_THREATEN", "FIGHT", "GENERIC_CURSE_HIGH" };
                         PlaySpeech(tospeak, PossibleSpeech.PickRandom(), false);
@@ -454,7 +454,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(RobberAccomplice.Pedestrian, 0, false);
                         NativeFunction.Natives.SET_PED_ALERTNESS(RobberAccomplice.Pedestrian, 3);
                         NativeFunction.Natives.SET_PED_USING_ACTION_MODE(RobberAccomplice.Pedestrian, true, -1, "DEFAULT_ACTION");
-                        RobberAccomplice.WeaponInventory.IssueWeapons(Weapons, true, true, true, RobberAccompliceInfo);
+                        RobberAccomplice.WeaponInventory.IssueWeapons(Weapons, true, true, true, RobberAccompliceInfo, true);
                         RobberAccomplice.CanBeTasked = false;
                         RobberAccomplice.CanBeAmbientTasked = false;
                         RobberAccomplice.Money = RandomItems.GetRandomNumberInt(2000, 5000);
@@ -484,6 +484,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     gm.CanBeTasked = true;
                     gm.CanBeAmbientTasked = true;
+                    Player.GroupManager.Remove(gm);
+
+                    if (HiringGang != null && gm.Pedestrian.Exists())
+                    {
+                        gm.Pedestrian.RelationshipGroup = HiringGang.ID;
+                    }
                 }
             }
             GangTasks.SendGenericFailMessage(PhoneContact);
@@ -512,7 +518,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     RobberAccomplice.ResetPlayerCrimes();
                     RobberAccomplice.CanBeTasked = true;
                     RobberAccomplice.CanBeAmbientTasked = true;
+
                     Player.GroupManager.Remove(RobberAccomplice);
+
+                    if (HiringGang != null && RobberAccomplice.Pedestrian.Exists())
+                    {
+                        RobberAccomplice.Pedestrian.RelationshipGroup = HiringGang.ID;
+                    }
                 }
             }
         }

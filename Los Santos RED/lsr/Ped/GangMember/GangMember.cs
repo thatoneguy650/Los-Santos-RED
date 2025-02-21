@@ -172,7 +172,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson, true);
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
@@ -243,6 +243,19 @@ public class GangMember : PedExt, IWeaponIssuable
         TimesInsultedByPlayer += 10;
         EntryPoint.WriteToConsole($"OnPlayerStoodOnCar triggered {Handle}");
     }
+
+
+    public override void OnPlayerStoleInterestedCar(IInteractionable player)
+    {
+        if (IsPlayerMember(player) || Gang == null)
+        {
+            return;
+        }
+        //PlayerPerception.SetFakeSeen();
+        TimesInsultedByPlayer += 10;
+        EntryPoint.WriteToConsole($"OnPlayerStoleInterestedCar triggered {Handle}");
+    }
+
     public override void OnPlayerDidBodilyFunctionsNear(IInteractionable player)
     {
         if (Game.GameTime - GameTimePlayerLastDidBodilyFunctionsNear < 3000)

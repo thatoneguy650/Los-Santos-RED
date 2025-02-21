@@ -187,7 +187,7 @@ namespace LosSantosRED.lsr
                         //EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
                         AddToQueue(DispatcherVoice.SDI.SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!Player.AnyPoliceRecentlySeenPlayer && !DispatcherVoice.SDI.AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !DispatcherVoice.SDI.SuspectEvaded.HasRecentlyBeenPlayed)
+                    else if (!Player.IsInWantedActiveMode /* !Player.AnyPoliceRecentlySeenPlayer */ && !DispatcherVoice.SDI.AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !DispatcherVoice.SDI.SuspectEvaded.HasRecentlyBeenPlayed)
                     {
                         //EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
                         AddToQueue(DispatcherVoice.SDI.AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
@@ -555,7 +555,7 @@ namespace LosSantosRED.lsr
         }
         public void OnSuspectWasted()
         {
-            if (!DispatcherVoice.SDI.SuspectWasted.HasRecentlyBeenPlayed && Player.AnyPoliceRecentlySeenPlayer && Player.WantedLevel > 1)// && Player.MaxWantedLastLife > 1)
+            if (!DispatcherVoice.SDI.SuspectWasted.HasRecentlyBeenPlayed && Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer */ && Player.WantedLevel > 1)// && Player.MaxWantedLastLife > 1)
             {
                 AddToQueue(DispatcherVoice.SDI.SuspectWasted);
             }

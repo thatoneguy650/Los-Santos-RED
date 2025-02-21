@@ -10,6 +10,10 @@ public static class RandomItems
     public static readonly Random MyRand = new Random();
     public static bool RandomPercent(float Percent)
     {
+        if(Percent >= 100f)
+        {
+            return true;
+        }
         if (MyRand.Next(1, 101) <= Percent)
             return true;
         else

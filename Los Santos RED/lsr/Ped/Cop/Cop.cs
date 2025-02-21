@@ -192,17 +192,17 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     private void OnStartedRespondingToInvestigation()
     {
-        if (IsRespondingToInvestigation)
-        {
-            if (IsInVehicle && !WeaponInventory.HasHeavyWeaponOnPerson)
-            {
-                if (PlayerToCheck.Investigation.InvestigationWantedLevel >= 3 || (PlayerToCheck.Investigation.InvestigationWantedLevel == 2 && RandomItems.RandomPercent(45)))
-                {
-                    WeaponInventory.GiveHeavyWeapon();
-                    EntryPoint.WriteToConsole("Responding to Investigation, Giving Heavy Weapon");
-                }
-            }
-        }
+        //if (IsRespondingToInvestigation)
+        //{
+        //    if (IsInVehicle && !WeaponInventory.HasHeavyWeaponOnPerson)
+        //    {
+        //        if (PlayerToCheck.Investigation.InvestigationWantedLevel >= 3 || (PlayerToCheck.Investigation.InvestigationWantedLevel == 2 && RandomItems.RandomPercent(45)))
+        //        {
+        //            WeaponInventory.GiveHeavyWeapon();
+        //            EntryPoint.WriteToConsole("Responding to Investigation, Giving Heavy Weapon");
+        //        }
+        //    }
+        //}
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
@@ -226,7 +226,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         if (!IsAnimal)
         {
-            WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+            bool hasLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageWithLongGuns);
+            bool percentusingLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageUsingLongGunsWheneverPossible);
+            EntryPoint.WriteToConsole($"{AssignedAgency.ID} hasLongGuns {hasLongGuns} PercentageWithLongGuns:{AssignedAgency.PercentageWithLongGuns} PercentageWithLongGunsBeforeWeaponsFree{AssignedAgency.PercentageUsingLongGunsWheneverPossible} ROLL VALUE:{percentusingLongGuns}");
+            WeaponInventory.IssueWeapons(Weapons, true, true, hasLongGuns, dispatchablePerson, percentusingLongGuns);
             GameFiber.Yield();
         }
         if (!Pedestrian.Exists())

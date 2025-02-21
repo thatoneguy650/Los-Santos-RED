@@ -56,6 +56,10 @@ public class TimerBarController
         ItemsDisplaying = itemsDisplaying;
         TimerBarPool.OrderBy(x => x.Label);
         GameTimeLastUpdated = Game.GameTime;
+
+
+
+
     }
     public void Dispose()
     {

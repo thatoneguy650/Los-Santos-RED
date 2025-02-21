@@ -24,8 +24,8 @@ public class MoveInteraction
         FinalPlayerPosition = finalPlayerPosition;
         FinalPlayerHeading = finalPlayerHeading;
     }
-    public float CloseDistance { get; set; } = 0.72f;//0.35f;
-    public float CloseHeading { get; set; } = 7.0f;//0.5f;
+    public float CloseDistance { get; set; } = 0.86f;//0.35f;
+    public float CloseHeading { get; set; } = 10.0f;//0.5f;
 
     public uint TimeLimit { get; set; } = 5000;
     public uint TimeGrace { get; set; } = 3000;

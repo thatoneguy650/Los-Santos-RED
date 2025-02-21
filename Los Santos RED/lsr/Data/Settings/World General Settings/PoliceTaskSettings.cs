@@ -135,6 +135,9 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool RappellingRequiresWeaponsFree { get; set; }
     public float K9RunSpeed { get; set; }
 
+    public float K9KnowLocationDistance { get; set; }
+    public int ALwaysUseLongGunCopKillLimit { get; set; }
+    public int AlwaysUseLongGunWantedLevelLimit { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -254,6 +257,10 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
         HeliMission = 9;
         HeliMissionCruiseSpeed = 20f;
+        K9KnowLocationDistance = 65f;
+
+        ALwaysUseLongGunCopKillLimit = 3;
+        AlwaysUseLongGunWantedLevelLimit = 4;
 
     }
 }

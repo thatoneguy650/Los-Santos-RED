@@ -37,7 +37,21 @@ public class VehicleManager
     }
     public void Update()
     {
-        if(!Player.IsInVehicle)
+        foreach(StoredVehicle sv in PersistantVehicles)
+        {
+            if(sv.VehicleExt == null || !sv.VehicleExt.Vehicle.Exists())
+            {
+                continue;
+            }
+            if(sv.VehicleExt.DistanceChecker.DistanceToPlayer >= 500f)
+            {
+                sv.VehicleExt.Vehicle.IsPersistent = false;
+                EntryPoint.WriteToConsole("Removeing Persist Vehicle as you moved too far away");
+            }
+        }
+        PersistantVehicles.RemoveAll(x => x.VehicleExt != null && !x.VehicleExt.Vehicle.Exists());
+
+        if (!Player.IsInVehicle)
         {
             return;
         }

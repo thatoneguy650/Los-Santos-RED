@@ -239,7 +239,7 @@ public class GangDispatcher
                     IsGeneralBackup = true;
                     break;
                 }
-                else if (Player.WantedLevel >= 2 && (Player.ClosestPoliceDistanceToPlayer < 20f || Player.AnyPoliceRecentlySeenPlayer))
+                else if (Player.WantedLevel >= 2 && (Player.ClosestPoliceDistanceToPlayer < 20f ||Player.IsInWantedActiveMode))// Player.AnyPoliceRecentlySeenPlayer))
                 {
                     isHitSquad = false;
                     closestDen = gangDen;

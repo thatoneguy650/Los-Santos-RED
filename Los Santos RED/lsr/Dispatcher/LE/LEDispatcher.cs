@@ -357,7 +357,7 @@ public class LEDispatcher
             {
                 return UnseenTime + ExtraSpawnTimeByLocationType;
             }
-            else if (!Player.AnyPoliceRecentlySeenPlayer && !Settings.SettingsManager.PoliceSpawnSettings.UseScalingLogicForSpawnWhenUnseen)
+            else if (!Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer*/ && !Settings.SettingsManager.PoliceSpawnSettings.UseScalingLogicForSpawnWhenUnseen)
             {
                 return UnseenTime + ExtraSpawnTimeByLocationType;
             }
@@ -366,7 +366,7 @@ public class LEDispatcher
                 if (World.TotalWantedLevel <= 6)
                 {
                     int totalTime = ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime + ExtraSpawnTimeByLocationType;
-                    EntryPoint.WriteToConsole($"Time Between Dispatching when seen {totalTime} WantedLevel{World.TotalWantedLevel} ExtraSpawnTimeByLocationType{ExtraSpawnTimeByLocationType}");
+                    //EntryPoint.WriteToConsole($"Time Between Dispatching when seen {totalTime} WantedLevel{World.TotalWantedLevel} ExtraSpawnTimeByLocationType{ExtraSpawnTimeByLocationType}");
                     return totalTime;
                 }
                 return SeenMinTime;  
@@ -384,7 +384,7 @@ public class LEDispatcher
             {
                 return UnseenTime;
             }
-            else if (!Player.AnyPoliceRecentlySeenPlayer)
+            else if (!Player.IsInWantedActiveMode)// !Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -406,7 +406,7 @@ public class LEDispatcher
             int SeenScalarTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min;
 
-            if (!Player.AnyPoliceRecentlySeenPlayer)
+            if (!Player.IsInWantedActiveMode)//!Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -429,7 +429,7 @@ public class LEDispatcher
             }
             else if (TotalIsWanted)
             {
-                if (!Player.AnyPoliceRecentlySeenPlayer)
+                if (!Player.IsInWantedActiveMode)// !Player.AnyPoliceRecentlySeenPlayer)
                 {
                     return MaxWantedUnseen;
                 }
@@ -463,7 +463,7 @@ public class LEDispatcher
             }
             else if (TotalIsWanted)
             {
-                if (!Player.AnyPoliceRecentlySeenPlayer)
+                if (!Player.IsInWantedActiveMode)//!Player.AnyPoliceRecentlySeenPlayer)
                 {
                     float calcDistance = MinWantedUnseen - (World.TotalWantedLevel * MinScalerUnseen);
                     return calcDistance < 150f ? 150f : calcDistance;
@@ -992,7 +992,7 @@ public class LEDispatcher
         }
         if (World.Pedestrians.TotalSpawnedAmbientPolice >= SpawnedCopLimit)
         {
-            EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY COPS");
+            //EntryPoint.WriteToConsole("Assault Spawn failed TOO MANY COPS");
             return;
         }
         GameFiber.Yield();
@@ -2067,7 +2067,7 @@ public class LEDispatcher
        //EntryPoint.WriteToConsole($"DEBUG LE DISPATCH vehicleType: {VehicleType?.ModelName}");
        // EntryPoint.WriteToConsole($"DEBUG LE DISPATCH PERSONTYTPE: {PersonType?.ModelName}");
 
-        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, true);
+        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9, IsOffDutySpawn, false);
     }
     public void OnHelicopterSpawnedOrRecalled()
     {

@@ -311,6 +311,10 @@ namespace LosSantosRED.lsr.Player
         }
         private void SitDown()
         {
+            if(ClosestSittableEntity.Exists())
+            {
+                NativeFunction.Natives.DISABLE_CAM_COLLISION_FOR_OBJECT(ClosestSittableEntity);
+            }
             PlayingDict = Data.AnimEnterDictionary;
             PlayingAnim = Data.AnimEnter;
             StartingPosition = Game.LocalPlayer.Character.Position;

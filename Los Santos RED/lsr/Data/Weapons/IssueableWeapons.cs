@@ -1107,7 +1107,8 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns_2008),
             new IssuableWeaponsGroup("Minigun", Minigun_2008),
             new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher_2008),
-            new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms_2008)
+            new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms_2008),
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\IssuableWeapons_LosSantos2008.xml");
     }
@@ -1116,20 +1117,15 @@ public class IssueableWeapons : IIssuableWeapons
         //COPS
         List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
         {
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 15),
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 15),
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 10),
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip") }), 25),
-            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(), 15),
-            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 15),
-            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 10),
-            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 25),
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 5),
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 5),
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 5),
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 25),
-
-            new IssuableWeapon("weapon_ceramicpistol",new WeaponVariation(),5),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 35),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 35),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(), 35),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 35),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 15),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 15),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),15),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")}),15),
+            new IssuableWeapon("weapon_ceramicpistol",new WeaponVariation(),15),
             new IssuableWeapon("weapon_ceramicpistol",new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 20),
         };
         List<IssuableWeapon> AllLongGuns_Modern = new List<IssuableWeapon>()
@@ -1164,6 +1160,7 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight")}),50),
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Extended Clip") }),25),
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_heavyrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
 
 
             new IssuableWeapon("weapon_combatmg_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip")}), 5),
@@ -1185,6 +1182,9 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
             new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip")}),15),
+            new IssuableWeapon("weapon_heavyrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+
+
         };
         List<IssuableWeapon> HeliSidearms_Modern = new List<IssuableWeapon>()
         {
@@ -1215,6 +1215,10 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
+            new IssuableWeapon("weapon_combatshotgun", new WeaponVariation(),5),
+
         };
 
 
@@ -1262,7 +1266,7 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
             new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms),
             new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
-
+            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons_FullExpandedJurisdiction.xml");

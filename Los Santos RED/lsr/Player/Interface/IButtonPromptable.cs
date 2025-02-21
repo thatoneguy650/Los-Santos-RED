@@ -65,6 +65,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAiming { get; }
         bool IsOnFoot { get; }
         GroupManager GroupManager { get; }
+        bool IsInWantedActiveMode { get; }
 
         void ShowVehicleInteractMenu(bool showDefault);
         // bool IsSitting { get; }

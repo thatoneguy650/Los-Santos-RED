@@ -65,5 +65,6 @@ namespace LosSantosRED.lsr.Interface
         void OnInteractionMenuCreated(GameLocation gameLocation, MenuPool menuPool, UIMenu interactionMenu);
 
         ICasinoGamePlayable CasinoGamePlayer { get; }
+        bool IsInWantedActiveMode { get; }
     }
 }

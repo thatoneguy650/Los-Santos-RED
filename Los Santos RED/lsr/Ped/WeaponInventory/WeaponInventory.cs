@@ -23,6 +23,7 @@ public class WeaponInventory
     private PedComponent FullHolster;
     private uint CurrentWeapon;
     private bool HasSearchlight;
+    private bool prevHasHeavyWeaponOnPerson;
 
     public IssuableWeapon LongGun { get; private set; }
     public IssuableWeapon Sidearm { get; private set; }
@@ -40,6 +41,54 @@ public class WeaponInventory
 
     public bool IsArmed => HasPistol || HasLongGun;
     public bool CanRadioIn => IsSetLessLethal || (IsSetDeadly && !HasHeavyWeaponOnPerson) || (IsSetDefault && !HasHeavyWeaponOnPerson);
+
+    public bool UsesLongGunWheneverPossible { get; set; }
+
+
+    //public bool ShouldHaveHeavyWeaponOnPerson => WeaponOwner != null && (WeaponOwner.AlwaysHasLongGun || (Player.PoliceResponse.IsDeadlyChase && WeaponOwner.IsInVehicle &&
+    //    (Player.PoliceResponse.IsWeaponsFree ||
+    //    (Player.PoliceResponse.IsLethalForceAuthorized && 
+    //        (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit))));
+
+
+
+
+    public bool ShouldHaveHeavyWeaponOnPerson
+    {
+        get
+        {
+            
+            if (WeaponOwner == null)
+            {
+               // EntryPoint.WriteToConsole("SHHW 0");
+                return false;
+            }
+            else if(WeaponOwner.AlwaysHasLongGun)
+            {
+               // EntryPoint.WriteToConsole("SHHW 1");
+                return true;
+            }
+            else if (WeaponOwner.IsInVehicle)
+            {
+                if(Player.PoliceResponse.IsWeaponsFree)
+                {
+                   // EntryPoint.WriteToConsole("SHHW 2");
+                    return true;
+                }
+                else if (Player.PoliceResponse.IsDeadlyChase && (UsesLongGunWheneverPossible || Player.PoliceResponse.PoliceKilled >= Settings.SettingsManager.PoliceTaskSettings.ALwaysUseLongGunCopKillLimit || Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.AlwaysUseLongGunWantedLevelLimit))
+                {
+                    //EntryPoint.WriteToConsole($"SHHW 3 PoliceKilled{Player.PoliceResponse.PoliceKilled}");
+                    return true;
+                }
+            }
+            //EntryPoint.WriteToConsole($"SHHW NONE {WeaponOwner.Handle} VEH:{WeaponOwner.IsInVehicle} free{Player.PoliceResponse.IsWeaponsFree} USLGWP{UsesLongGunWheneverPossible} DeadlyChase{Player.PoliceResponse.IsDeadlyChase}");
+            return false;
+        }
+    }
+
+
+
+
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;
@@ -52,9 +101,9 @@ public class WeaponInventory
         EmptyHolster = emptyHolster;
         FullHolster = fullHolster;
     }
-    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson, bool usesLongGunWheneverPossible)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
-        //EntryPoint.WriteToConsole($" IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
+        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
         bool hasOVerride = false;
         if (issueMelee)
         {
@@ -109,6 +158,7 @@ public class WeaponInventory
         }
         if (issueLongGun)
         {
+            EntryPoint.WriteToConsole($"IssueWeapons issueLongGun START {WeaponOwner.Handle} Override Long Guns{dispatchablePerson?.OverrideAgencyLongGuns} {dispatchablePerson?.DebugName} {dispatchablePerson?.ModelName}");
             if (dispatchablePerson?.OverrideAgencyLongGuns == true)
             {
                 hasOVerride = true;
@@ -125,21 +175,25 @@ public class WeaponInventory
             }
             else
             {
-                //EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN");
+                EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN {WeaponOwner.Handle}");
                 LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
             }     
-            if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
-            {
-                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
-                LongGun.ApplyVariation(WeaponOwner.Pedestrian);
-                //EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
-            }
+            //if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
+            //{
+            //    NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
+            //    LongGun.ApplyVariation(WeaponOwner.Pedestrian);
+            //    //EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
+            //}
         }
         if (dispatchablePerson != null)
         {
             EmptyHolster = dispatchablePerson.EmptyHolster;
             FullHolster = dispatchablePerson.FullHolster;
         }
+
+        UsesLongGunWheneverPossible = usesLongGunWheneverPossible;
+        EntryPoint.WriteToConsole($"PED {WeaponOwner.Handle} UsesLongGunWheneverPossible:{UsesLongGunWheneverPossible}");
+
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 3, true);//can leave vehicle
@@ -147,15 +201,46 @@ public class WeaponInventory
     }
     public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, IEntityProvideable world, bool isNightTime, bool overrideAccuracy)
     {
+        if (prevHasHeavyWeaponOnPerson != HasHeavyWeaponOnPerson)
+        {
+            EntryPoint.WriteToConsole($"HasHeavyWeaponOnPerson CHANGED FOR {WeaponOwner.Handle} tO {HasHeavyWeaponOnPerson}");
+            prevHasHeavyWeaponOnPerson = HasHeavyWeaponOnPerson;
+        }
+
+
+
+
         Player = policeRespondablePlayer;
         if(!WeaponOwner.Pedestrian.Exists() || Player == null)
         {
             return;
         }
+
+
+        if(!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
+        {
+            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+            HasHeavyWeaponOnPerson = true;
+        }
+
+
+        //if (Player.PoliceResponse.IsDeadlyChase && WeaponOwner.IsInVehicle)
+        //{
+        //    if (UsesLongGunWheneverPossible || Player.PoliceResponse.IsWeaponsFree)
+        //    {
+        //        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+        //        HasHeavyWeaponOnPerson = true;
+
+
+ 
+
+
+        //    }
+        //}
+
+
         //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} UPDATING LOADOUT");
         GetVehicleWeapon();
-
-
         if (HasVehicleWeapon && CurrentVehicleWeapon == 3450622333 || (HasSearchlight && WeaponOwner.IsDriver))//searchlight
         {
             //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HANDLE SEARCHLIGHT IS RUNNING");
@@ -209,10 +294,15 @@ public class WeaponInventory
     }
     private void AutoSetWeapons_AI(IEntityProvideable world)
     {
-        HasHeavyWeaponOnPerson = true;
+        
         if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.IsDeadlyChase)
         {
             SetDeadly(true);
+            if (WeaponOwner.IsInVehicle && UsesLongGunWheneverPossible)
+            {
+                HasHeavyWeaponOnPerson = true;
+                //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 1 {UsesLongGunWheneverPossible}");
+            }
         }
         else
         {
@@ -245,9 +335,22 @@ public class WeaponInventory
     {
         if (WeaponOwner.IsInVehicle)
         {
-            HasHeavyWeaponOnPerson = true;
-            if (Player.PoliceResponse.IsWeaponsFree)
+            //if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.PoliceKilled >= 3 || (Player.PoliceResponse.IsLethalForceAuthorized && UsesLongGunWheneverPossible))
+            //{
+            //    EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 2 {UsesLongGunWheneverPossible}");
+            //    HasHeavyWeaponOnPerson = true;
+            //}
+
+            if(!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
             {
+                EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 2 {UsesLongGunWheneverPossible}");
+                HasHeavyWeaponOnPerson = true;
+            }
+
+
+            if (Player.PoliceResponse.IsWeaponsFree || Player.PoliceResponse.IsDeadlyChase)
+            {
+
                 SetDeadly(false);
             }
             else
@@ -322,8 +425,14 @@ public class WeaponInventory
                 SetLessLethal();
             }
         }
-        if (WeaponOwner.IsInVehicle && Player.IsDangerouslyArmed)
+        //if (WeaponOwner.IsInVehicle && ((UsesLongGunWheneverPossible && Player.PoliceResponse.IsLethalForceAuthorized) || Player.PoliceResponse.IsWeaponsFree))// && Player.IsDangerouslyArmed && Player.WantedLevel >= 3)
+        //{
+        //    EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+        //    HasHeavyWeaponOnPerson = true;
+        //}
+        if (!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
         {
+            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
             HasHeavyWeaponOnPerson = true;
         }
     }
@@ -438,7 +547,7 @@ public class WeaponInventory
     }
     public void SetDeadly(bool ForceLong)
     {
-        if(IsSetDeadly || !WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)
+        if(!WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)
         {
             return;
         }
@@ -452,7 +561,7 @@ public class WeaponInventory
             NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
             Sidearm.ApplyVariation(WeaponOwner.Pedestrian);
         }
-        if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
+        if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong) && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
         {
             NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
             LongGun.ApplyVariation(WeaponOwner.Pedestrian);
@@ -468,34 +577,37 @@ public class WeaponInventory
             //EntryPoint.WriteToConsole($"I AM {WeaponOwner.Handle} AND I DO NOT HAVE A VEHICLE WEAPON {CurrentVehicleWeapon} HELI: {WeaponOwner.IsInHelicopter} DRVIER: {WeaponOwner.IsDriver}");
             //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 3, true);//can leave vehicle
             GetCurrentWeapon();
-            if (WeaponOwner.IsInHelicopter)//unarmed with no mounted weapon in a heli
-            {
-                if (!WeaponOwner.IsDriver)
-                {
-                    if (LongGun != null)
-                    {
-                        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
-                    }
-                    else if (Sidearm != null)
-                    {
-                        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
-                    }
-                }
-            }
-            else
-            {
-                if (!WeaponOwner.IsDriver)
-                {
-                    if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong))
-                    {
-                        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
-                    }
-                    else if (Sidearm != null)
-                    {
-                        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
-                    }
-                }
-            }
+            SetCurrentWeapon(ForceLong);
+            //if (WeaponOwner.IsInHelicopter)//unarmed with no mounted weapon in a heli
+            //{
+            //    if (!WeaponOwner.IsDriver)
+            //    {
+            //        if (LongGun != null)
+            //        {
+            //            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+            //        }
+            //        else if (Sidearm != null)
+            //        {
+            //            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (!WeaponOwner.IsDriver)
+            //    {
+            //        if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong))
+            //        {
+            //            EntryPoint.WriteToConsole("SET CURRENT WEAPON LONG 1");
+            //            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+            //        }
+            //        else if (Sidearm != null)
+            //        {
+            //            EntryPoint.WriteToConsole("SET CURRENT WEAPON SIDEARM");
+            //            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+            //        }
+            //    }
+            //}
         }
         NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponOwner.Pedestrian, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(WeaponOwner.Pedestrian, (int)eCombat_Attribute.CA_DO_DRIVEBYS, true);
@@ -514,6 +626,38 @@ public class WeaponInventory
         //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEADLY");
         DebugWeaponState = "Set Deadly";
         GameTimeLastWeaponCheck = Game.GameTime;    
+    }
+    private void SetCurrentWeapon(bool ForceLong)
+    {
+        if (WeaponOwner.IsInHelicopter)//unarmed with no mounted weapon in a heli
+        {
+            if (!WeaponOwner.IsDriver)
+            {
+                if (LongGun != null)
+                {
+                    NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+                }
+                else if (Sidearm != null)
+                {
+                    NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+                }
+            }
+        }
+        else
+        {
+
+            if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong))
+            {
+                //EntryPoint.WriteToConsole("SET CURRENT WEAPON LONG 1");
+                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+            }
+            else if (Sidearm != null)
+            {
+                //EntryPoint.WriteToConsole("SET CURRENT WEAPON SIDEARM");
+                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+            }
+            
+        }
     }
     private void GetCurrentWeapon()
     {
@@ -658,6 +802,7 @@ public class WeaponInventory
     }
     public void GiveHeavyWeapon()
     {
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 4 {UsesLongGunWheneverPossible}");
         HasHeavyWeaponOnPerson = true;
     }
     private void HolsterPistol()
@@ -715,7 +860,7 @@ public class WeaponInventory
                             NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, WeaponOwner.CurrentTask.OtherTarget.Pedestrian, 0, 0f, 0f, 0f, 2, false);//2 == AIM
                         }
                     }
-                    else if (isChasingPlayer && WeaponOwner.RecentlySeenPlayer)
+                    else if (isChasingPlayer && Player.IsInWantedActiveMode && WeaponOwner.RecentlySeenPlayer)
                     {
                         NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(WeaponOwner.Pedestrian, Player.Character, 0, 0f, 0f, 0f, 2, false);//2 == AIM
                     }
