@@ -70,11 +70,11 @@ public class CraftingMenu : ModUIMenu
     {
         HashSet<string> craftableItemsChecked = new HashSet<string>();
         Dictionary<string, ModItem> itemsToRemove = new Dictionary<string,ModItem>();
-        foreach (var item in LocationInteractablePlayer.Inventory.ItemsList)
+        foreach (InventoryItem item in LocationInteractablePlayer.Inventory.ItemsList)
         {
             if (Crafting.CraftableItems.IngredientCraftableLookup.ContainsKey(item.ModItem.Name))
             {
-                foreach (var craftableItem in Crafting.CraftableItems.IngredientCraftableLookup[item.ModItem.Name])
+                foreach (string craftableItem in Crafting.CraftableItems.IngredientCraftableLookup[item.ModItem.Name])
                 {
                     if (craftableItemsChecked.Contains(craftableItem))
                     {

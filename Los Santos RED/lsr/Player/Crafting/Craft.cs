@@ -74,7 +74,7 @@ namespace Mod
         }
         private void DeductIngredientsFromInventory(Dictionary<string,ModItem> itemsToRemove, CraftableItemLookupModel craftItem, int quantity)
         {
-            foreach(var ingredient in craftItem.IngredientLookup.Values)
+            foreach(Ingredient ingredient in craftItem.IngredientLookup.Values)
             {
                 if(ingredient.IsConsumed)
                 {
