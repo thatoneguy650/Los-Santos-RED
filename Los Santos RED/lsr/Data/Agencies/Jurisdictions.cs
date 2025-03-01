@@ -26,7 +26,7 @@ public class Jurisdictions : IJurisdictions
     {
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ZoneFile = LSRDirectory.GetFiles($"ZoneJurisdictions_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ZoneFile = LSRDirectory.GetFiles($"ZoneJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ZoneFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}", 0);
@@ -50,7 +50,7 @@ public class Jurisdictions : IJurisdictions
         }
 
 
-        FileInfo CountyFile = LSRDirectory.GetFiles($"$CountyJurisdictions_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo CountyFile = LSRDirectory.GetFiles($"CountyJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (CountyFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}", 0);

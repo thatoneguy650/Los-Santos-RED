@@ -76,12 +76,12 @@ public class Crimes : ICrimes
     {
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes_{configName}.xml"; // for serialization
+            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes{configName}.xml"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {

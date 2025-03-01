@@ -35,6 +35,7 @@ public class PlayerPerception
     {
         get
         {
+            if (Target == null) return false;
             uint RecognizeTime = Target.StealthManager.GetRecognizeTime(Originator);
 
 

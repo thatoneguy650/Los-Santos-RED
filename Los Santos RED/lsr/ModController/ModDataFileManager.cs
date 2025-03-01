@@ -62,6 +62,9 @@ public class ModDataFileManager
 
     public void Setup(string configName)
     {
+        if (configName.Equals("Default")) configName = "*";
+        else configName = "_" + configName;
+
         SetupAlternateConfigs();
         Settings = new Settings();
         Settings.ReadConfig(configName);

@@ -22,12 +22,12 @@ public class Settings : ISettingsProvideable
     public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Settings_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Settings{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
             SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\Settings_{configName}.xml";
+            ConfigFileName = $"Plugins\\LosSantosRED\\Settings{configName}.xml";
         }
         else if (File.Exists(ConfigFileName))
         {

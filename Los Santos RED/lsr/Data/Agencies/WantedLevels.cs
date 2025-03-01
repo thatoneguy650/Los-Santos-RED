@@ -26,7 +26,7 @@ public class WantedLevels : IWantedLevels
     public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = taskDirectory.GetFiles($"WantedLevels_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = taskDirectory.GetFiles($"WantedLevels{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded WantedLevels Config: {ConfigFile.FullName}", 0);

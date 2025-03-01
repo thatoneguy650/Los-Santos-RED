@@ -27,7 +27,7 @@ public class Contacts : IContacts
     public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = taskDirectory.GetFiles($"Contacts_{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Contacts{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Contacts Config: {ConfigFile.FullName}", 0);
