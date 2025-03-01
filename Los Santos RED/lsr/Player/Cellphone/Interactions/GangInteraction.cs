@@ -54,6 +54,8 @@ public class GangInteraction : IContactMenuInteraction
     private IModItems ModItems;
     private UIMenuItem RequestBackupMenu;
     private UIMenu BackupSubMenu;
+
+    private string TargetGangDescription => $"Choose a target gang~n~~n~~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies, IModItems modItems)
     {
         Player = player;
@@ -334,9 +336,17 @@ public class GangInteraction : IContactMenuInteraction
         GangHitSubMenu.RemoveBanner();
         //UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
 
-        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", 
-            Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID ).ToList()
-             : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+
+        //List<Gang> ChosenGangs = Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList()
+        //     : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList();
+
+
+        //ChosenGangs.OrderBy(x => ActiveGang.EnemyGangs.Contains(x.ID)).ThenBy(x=> Player.RelationshipManager.GangRelationships.GetReputation(x)?.ReputationLevel);
+
+
+        UIMenuListScrollerItem<GangDisplay> TargetMenu = new UIMenuListScrollerItem<GangDisplay>("Target Gang", TargetGangDescription, GetGangDisplay());
+
+
 
 
 
@@ -345,7 +355,7 @@ public class GangInteraction : IContactMenuInteraction
         UIMenuItem TaskStartMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax * TargetCountMenu.Value:C0}~s~" };
         TaskStartMenu.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem);
+            Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem.Gang);
             sender.Visible = false;
         };
         TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
@@ -357,6 +367,42 @@ public class GangInteraction : IContactMenuInteraction
         GangHitSubMenu.AddItem(TargetCountMenu);
         GangHitSubMenu.AddItem(TaskStartMenu);
     }
+    private List<GangDisplay> GetGangDisplay()
+    {
+        List<GangDisplay> toReturn = new List<GangDisplay>();
+        List<Gang> possibleGangs = Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList() : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList();
+        foreach (Gang gang in possibleGangs.OrderBy(x => Player.RelationshipManager.GangRelationships.GetReputation(x)?.ReputationLevel))
+        {
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gang);
+            string extra = "";
+            if(gr != null)
+            {
+                if(gr.IsEnemy)
+                {
+                    extra = "~r~";
+                }
+                else if (gr.GangRelationship == GangRespect.Hostile)
+                {
+                    extra = "~o~";
+                }
+                else if (gr.GangRelationship == GangRespect.Friendly)
+                {
+                    extra = "~g~";
+                }
+                //EntryPoint.WriteToConsole($"REPUTATION: {gr.ReputationLevel}~s~");
+            }
+            //EntryPoint.WriteToConsole($"{extra}{gang.ShortName}~s~");
+            toReturn.Add(new GangDisplay(gang, $"{extra}{gang.ShortName}~s~"));
+        }
+
+        //toReturn.OrderBy(x => Player.RelationshipManager.GangRelationships.GetReputation(x.Gang)?.IsEnemy).ThenBy(x=> Player.RelationshipManager.GangRelationships.GetReputation(x.Gang)?.ReputationLevel);
+        foreach(GangDisplay gd in toReturn) 
+        {
+            EntryPoint.WriteToConsole($"{gd.CurrentFormattedName}");
+        }
+        return toReturn;
+
+    }
     private void AddGangAmbushSubMenu()
     {
         GangAmbushSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Ambush");
@@ -365,9 +411,7 @@ public class GangInteraction : IContactMenuInteraction
         GangAmbushSubMenu.RemoveBanner();
         //UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang", Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
 
-        UIMenuListScrollerItem<Gang> TargetMenu = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang",
-            Settings.SettingsManager.GangSettings.AllowNonEnemyTargets ? Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList()
-             : Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID && ActiveGang.EnemyGangs.Contains(x.ID)).ToList());
+        UIMenuListScrollerItem<GangDisplay> TargetMenu = new UIMenuListScrollerItem<GangDisplay>("Target Gang", TargetGangDescription, GetGangDisplay());
 
 
 
@@ -375,7 +419,7 @@ public class GangInteraction : IContactMenuInteraction
         UIMenuItem TaskStartMenu = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.HitPaymentMin * TargetCountMenu.Value:C0}-{ActiveGang.HitPaymentMax * TargetCountMenu.Value:C0}~s~" };
         TaskStartMenu.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartGangAmbush(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem);
+            Player.PlayerTasks.GangTasks.StartGangAmbush(ActiveGang, TargetCountMenu.Value, GangContact, TargetMenu.SelectedItem.Gang);
             sender.Visible = false;
         };
         TargetCountMenu.IndexChanged += (sender, oldIndex, newIndex) =>
@@ -402,12 +446,12 @@ public class GangInteraction : IContactMenuInteraction
             vehicleNameList.Add(vns);
         }
         UIMenuListScrollerItem<VehicleNameSelect> GangTheftVehicles = new UIMenuListScrollerItem<VehicleNameSelect>("Target Vehicle", $"Choose a target vehicle.", vehicleNameList);
-        UIMenuListScrollerItem<Gang> GangTheftTargets = new UIMenuListScrollerItem<Gang>("Target Gang", $"Choose a target gang.", AllGangs);
+        UIMenuListScrollerItem<GangDisplay> GangTheftTargets = new UIMenuListScrollerItem<GangDisplay>("Target Gang", TargetGangDescription, GetGangDisplay());
         GangTheftTargets.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             GangTheftVehicles.Items.Clear();
             List<VehicleNameSelect> vehicleNameList2 = new List<VehicleNameSelect>();
-            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Vehicles.Where(x=> !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
+            foreach (DispatchableVehicle dv in GangTheftTargets.SelectedItem.Gang.Vehicles.Where(x=> !x.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles))
             {
                 VehicleNameSelect vns = new VehicleNameSelect(dv.ModelName);
                 vns.UpdateItems();
@@ -418,7 +462,7 @@ public class GangInteraction : IContactMenuInteraction
         UIMenuItem GangTheftStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.TheftPaymentMin:C0}-{ActiveGang.TheftPaymentMax:C0}~s~" };
         GangTheftStart.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartGangVehicleTheft(ActiveGang, GangContact, GangTheftTargets.SelectedItem, GangTheftVehicles.SelectedItem.ModelName, GangTheftVehicles.SelectedItem.ToString());
+            Player.PlayerTasks.GangTasks.StartGangVehicleTheft(ActiveGang, GangContact, GangTheftTargets.SelectedItem.Gang, GangTheftVehicles.SelectedItem.ModelName, GangTheftVehicles.SelectedItem.ToString());
             sender.Visible = false;
         };
         GangTheftSubMenu.AddItem(GangTheftTargets);
@@ -595,6 +639,26 @@ public class GangInteraction : IContactMenuInteraction
 
         return true;
     }
-    
-}
+    private class GangDisplay
+    {
+        public GangDisplay()
+        {
+
+        }
+        public GangDisplay(Gang gang, string currentFormattedName)
+        {
+            Gang = gang;
+            CurrentFormattedName = currentFormattedName;
+        }
+
+        public Gang Gang { get; set; }
+        public string CurrentFormattedName { get; set; }
+
+        public override string ToString()
+        {
+            return CurrentFormattedName;
+        }
+    }
+
+    }
 

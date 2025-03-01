@@ -40,7 +40,7 @@ public class TaxiSpawnTask : CivilianSpawnTask
         if(TaxiFirm != null)
         {
             TaxiFirm.SetPedStats(CreatedPedExt);
-            CreatedPedExt.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(TaxiFirm.PercentageWithMelee), RandomItems.RandomPercent(TaxiFirm.PercentageWithSidearms), RandomItems.RandomPercent(TaxiFirm.PercentageWithLongGuns), PersonType, true);
+            CreatedPedExt.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(TaxiFirm.PercentageWithMelee), RandomItems.RandomPercent(TaxiFirm.PercentageWithSidearms), RandomItems.RandomPercent(TaxiFirm.PercentageWithLongGuns), PersonType, true, true);
         }
 
 
