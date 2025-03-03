@@ -22,19 +22,19 @@ public class Jurisdictions : IJurisdictions
     {
         AgencyProvider = agencyProvider;
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ZoneFile = LSRDirectory.GetFiles("ZoneJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ZoneFile != null)
+        FileInfo ZoneFile = LSRDirectory.GetFiles($"ZoneJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ZoneFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}", 0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneFile.FullName);
         }
         else if (File.Exists(ZoneConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config  {ZoneConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config  {ZoneConfigFileName}", 0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
         }
         else
@@ -50,15 +50,15 @@ public class Jurisdictions : IJurisdictions
         }
 
 
-        FileInfo CountyFile = LSRDirectory.GetFiles("CountyJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (CountyFile != null)
+        FileInfo CountyFile = LSRDirectory.GetFiles($"CountyJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (CountyFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}", 0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyFile.FullName);
         }
         else if (File.Exists(CountyConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config  {CountyConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config  {CountyConfigFileName}", 0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyConfigFileName);
         }
         else

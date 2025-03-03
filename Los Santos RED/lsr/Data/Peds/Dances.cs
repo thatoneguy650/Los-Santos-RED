@@ -14,18 +14,18 @@ public class Dances : IDances
     {
 
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Dances*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Dances{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Dances config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Dances config: {ConfigFile.FullName}", 0);
             DanceLookups = Serialization.DeserializeParams<DanceData>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Dances config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Dances config  {ConfigFileName}", 0);
             DanceLookups = Serialization.DeserializeParams<DanceData>(ConfigFileName);
         }
         else

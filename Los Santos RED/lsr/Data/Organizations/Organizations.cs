@@ -28,14 +28,14 @@ public class Organizations : IOrganizations
     {
 
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Organizations*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Organizations{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Organizations Config: {taskFile.FullName}", 0);
-            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Organizations Config: {ConfigFile.FullName}", 0);
+            PossibleOrganizations = Serialization.DeserializeParam<PossibleOrganizations>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {

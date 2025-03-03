@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 public class Settings : ISettingsProvideable
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public SettingsManager SettingsManager { get; private set; }
 
 
@@ -19,14 +19,15 @@ public class Settings : ISettingsProvideable
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Settings*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Settings{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
             SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\Settings{configName}.xml";
         }
         else if (File.Exists(ConfigFileName))
         {

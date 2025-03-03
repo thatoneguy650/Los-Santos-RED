@@ -17,24 +17,24 @@ public class GangTerritories : IGangTerritories
     {
         GangProvider = gangProvider;
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("GangTerritories*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"GangTerritories{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ConfigFile.FullName}", 0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ConfigFile.FullName);
         }
         else if (File.Exists(ZoneConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ZoneConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ZoneConfigFileName}", 0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
         }
         else
         {
             EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
-            
+
             DefaultConfig();
             DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();

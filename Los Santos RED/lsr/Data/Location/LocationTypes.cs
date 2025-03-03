@@ -15,11 +15,11 @@ public class LocationTypes : ILocationTypes
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\LocationTypes.xml";
     public LocationTypeManager LocationTypeNames { get; private set; }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("LocationTypes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"LocationTypes{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded LocationTypes config: {ConfigFile.FullName}", 0);
             LocationTypeNames = Serialization.DeserializeParam<LocationTypeManager>(ConfigFile.FullName);

@@ -71,18 +71,18 @@ public class ModItems : IModItems
     {
         return PossibleItems.VehicleItems.FirstOrDefault(x => x.ModelName.ToLower() == modelName.ToLower());
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("ModItems*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"ModItems{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}", 0);
             PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Mod Items config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Mod Items config  {ConfigFileName}", 0);
             PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFileName);
         }
         else

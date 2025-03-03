@@ -14,18 +14,18 @@ public class Zones : IZones
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
     public List<Zone> ZoneList { get; private set; } = new List<Zone>();
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Zones*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Zones{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Zones config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Zones config: {ConfigFile.FullName}", 0);
             ZoneList = Serialization.DeserializeParams<Zone>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Zones config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Zones config  {ConfigFileName}", 0);
             ZoneList = Serialization.DeserializeParams<Zone>(ConfigFileName);
         }
         else

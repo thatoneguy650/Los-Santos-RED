@@ -15,11 +15,11 @@ public class GameSaves : IGameSaves
     }
     public List<GameSave> GameSaveList { get; private set; } = new List<GameSave>();
     public int NextSaveGameNumber => GameSaveList.Count + 1;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("SaveGames*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"SaveGames{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Games Saves config: {ConfigFile.FullName}", 0);
             GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFile.FullName);

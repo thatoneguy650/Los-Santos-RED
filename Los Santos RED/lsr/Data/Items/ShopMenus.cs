@@ -26,18 +26,18 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus = new ShopMenuTypes();
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("ShopMenus*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"ShopMenus{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}", 0);
             PossibleShopMenus = Serialization.DeserializeParam<ShopMenuTypes>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFileName}", 0);
             PossibleShopMenus = Serialization.DeserializeParam<ShopMenuTypes>(ConfigFileName);
         }
         else

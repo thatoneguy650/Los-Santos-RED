@@ -79,11 +79,11 @@ public class PlacesOfInterest : IPlacesOfInterest
         Gangs = gangs;
         PossibleLocations = new PossibleLocations();
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Locations*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Locations{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);
             PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFile.FullName);
@@ -95,7 +95,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         }
         else
         {
-            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);    
+            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();

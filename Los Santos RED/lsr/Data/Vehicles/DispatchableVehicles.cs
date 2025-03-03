@@ -127,11 +127,11 @@ public class DispatchableVehicles : IDispatchableVehicles
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
 
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("DispatchableVehicles*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"DispatchableVehicles{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Dispatchable Vehicles config: {ConfigFile.FullName}", 0);
             VehicleGroupLookup = Serialization.DeserializeParams<DispatchableVehicleGroup>(ConfigFile.FullName);
@@ -153,12 +153,12 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig_LPP();
         }
 
-//#if DEBUG
-//        foreach (DispatchableVehicleGroup dispatchableVehicleGroup in VehicleGroupLookup)
-//        {
-//            dispatchableVehicleGroup.DispatchableVehicles.RemoveAll(x => x.ModelName == "jester2" || x.ModelName == "dune5" || x.ModelName == "blazer5");
-//        }
-//#endif
+        //#if DEBUG
+        //        foreach (DispatchableVehicleGroup dispatchableVehicleGroup in VehicleGroupLookup)
+        //        {
+        //            dispatchableVehicleGroup.DispatchableVehicles.RemoveAll(x => x.ModelName == "jester2" || x.ModelName == "dune5" || x.ModelName == "blazer5");
+        //        }
+        //#endif
     }
     private void DefaultConfig_FullExpandedJurisdiction()
     {

@@ -24,14 +24,14 @@ public class Contacts : IContacts
     {
         PossibleContacts = new PossibleContacts();
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Contacts*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Contacts{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Contacts Config: {taskFile.FullName}", 0);
-            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Contacts Config: {ConfigFile.FullName}", 0);
+            PossibleContacts = Serialization.DeserializeParam<PossibleContacts>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
@@ -47,7 +47,6 @@ public class Contacts : IContacts
             DefaultConfig();
         }
     }
-
 
 
     public GangContact GetGangContactData(string contactName)

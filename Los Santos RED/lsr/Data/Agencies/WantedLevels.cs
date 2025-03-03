@@ -23,14 +23,14 @@ public class WantedLevels : IWantedLevels
     {
 
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("WantedLevels*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"WantedLevels{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded WantedLevels Config: {taskFile.FullName}", 0);
-            WantedLevelList = Serialization.DeserializeParams<WantedLevel>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded WantedLevels Config: {ConfigFile.FullName}", 0);
+            WantedLevelList = Serialization.DeserializeParams<WantedLevel>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {

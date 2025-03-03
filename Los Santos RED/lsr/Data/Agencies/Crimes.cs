@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 public class Crimes : ICrimes
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Crimes.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\Crimes.xml";
     private List<Crime> DefaultCrimeList;
     private Crime KillingPolice;
     private Crime TerroristActivity;
@@ -72,24 +72,25 @@ public class Crimes : ICrimes
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes{configName}.xml"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Crimes config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Crimes config  {ConfigFileName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFileName);
         }
         else
         {
-            EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);       
+            EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);
             DefaultConfig();
         }
     }

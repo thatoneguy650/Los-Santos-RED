@@ -41,18 +41,18 @@ public class Gangs : IGangs
 
     }
     public List<Gang> AllGangs => GangsList;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Gangs*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Gangs{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Gangs config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Gangs config: {ConfigFile.FullName}", 0);
             GangsList = Serialization.DeserializeParams<Gang>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Gangs config  {ConfigFileName}",0);
+            EntryPoint.WriteToConsole($"Loaded Gangs config  {ConfigFileName}", 0);
             GangsList = Serialization.DeserializeParams<Gang>(ConfigFileName);
         }
         else

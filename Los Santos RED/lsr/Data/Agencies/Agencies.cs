@@ -54,14 +54,14 @@ public class Agencies : IAgencies
     {
 
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo taskFile = taskDirectory.GetFiles("Agencies*.xml").OrderByDescending(x=> x.Name).FirstOrDefault();
-        if(taskFile != null)
+        FileInfo ConfigFile = taskDirectory.GetFiles($"Agencies{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Agencies Config: {taskFile.FullName}",0);
-            AgenciesList = Serialization.DeserializeParams<Agency>(taskFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Agencies Config: {ConfigFile.FullName}", 0);
+            AgenciesList = Serialization.DeserializeParams<Agency>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {

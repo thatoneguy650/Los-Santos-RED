@@ -16,13 +16,13 @@ public class PedGroups : IPedGroups
     {
 
     }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("PedGroups*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"PedGroups{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
-            EntryPoint.WriteToConsole($"Loaded Ped Groups config: {ConfigFile.FullName}",0);
+            EntryPoint.WriteToConsole($"Loaded Ped Groups config: {ConfigFile.FullName}", 0);
             PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))

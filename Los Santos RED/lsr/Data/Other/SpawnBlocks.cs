@@ -17,11 +17,11 @@ public class SpawnBlocks : ISpawnBlocks
         PossibleSpawnBlocks = new PossibleSpawnBlocks();
     }
     public PossibleSpawnBlocks PossibleSpawnBlocks { get; private set; }
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("SpawnBlocks*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"SpawnBlocks{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Spawn Blocks config: {ConfigFile.FullName}", 0);
             PossibleSpawnBlocks = Serialization.DeserializeParam<PossibleSpawnBlocks>(ConfigFile.FullName);

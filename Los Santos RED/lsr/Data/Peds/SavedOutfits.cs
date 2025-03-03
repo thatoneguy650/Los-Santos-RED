@@ -13,11 +13,11 @@ public class SavedOutfits : ISavedOutfits
     {
     }
     public List<SavedOutfit> SavedOutfitList { get; private set; } = new List<SavedOutfit>();
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("SavedOutfits*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"SavedOutfits{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Saved Outfits config: {ConfigFile.FullName}", 0);
             SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFile.FullName);

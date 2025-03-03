@@ -13,11 +13,11 @@ public class Cellphones : ICellphones
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Cellphones.xml";
     private List<CellphoneData> CellphoneList;
-    public void ReadConfig()
+    public void ReadConfig(string configName)
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("Cellphones*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null)
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Cellphones{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Cellphones config: {ConfigFile.FullName}", 0);
             CellphoneList = Serialization.DeserializeParams<CellphoneData>(ConfigFile.FullName);
