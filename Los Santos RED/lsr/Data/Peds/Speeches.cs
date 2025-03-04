@@ -16,8 +16,10 @@ public class Speeches : ISpeeches
     }
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "Speeches*.xml" : $"Speeches_{configName}.xml";
+
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Speeches{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Speeches config: {ConfigFile.FullName}", 0);

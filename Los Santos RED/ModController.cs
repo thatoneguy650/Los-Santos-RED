@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr
         public bool RunVanilla { get; set; } = true;
         public bool RunMenuOnly { get; set; } = true;
         public bool IsDisplayingAlertScreen { get; set; } = false;
-        public void Setup(string configName)
+        public void Setup(GameConfig Config)
         {
             IsRunning = true;
             EntryPoint.IsLoadingAltConfig = false;
@@ -58,7 +58,7 @@ namespace LosSantosRED.lsr
 
 
             ModDataFileManager = new ModDataFileManager();
-            ModDataFileManager.Setup(configName);
+            ModDataFileManager.Setup(Config);
             GameFiber.Yield();
 
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
@@ -142,8 +142,10 @@ namespace LosSantosRED.lsr
             UI.SetupDebugMenu();
             Game.FadeScreenIn(500, true);
             DisplayLoadSuccessfulMessage();
-            Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {configName} Config Loaded");
-            EntryPoint.WriteToConsole($"Loaded {configName} config", 0);
+
+            string ConfigName = string.IsNullOrEmpty(Config.ConfigName) ? "No Config" : Config.ConfigName + " Config";
+            Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {ConfigName} Loaded");
+            EntryPoint.WriteToConsole($"Loaded {ConfigName}", 0);
         }
         public void SetupFileOnly()
         {
@@ -152,7 +154,7 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
             ModDataFileManager = new ModDataFileManager();
-            ModDataFileManager.Setup("Default");
+            ModDataFileManager.Setup(null);
         }
         public void Dispose()
         {

@@ -74,14 +74,16 @@ public class Crimes : ICrimes
     public bool IsBackendChanged { get; set; } = false;
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "Crimes*.xml" : $"Crimes_{configName}.xml";
+
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes{configName}.xml"; // for serialization
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {

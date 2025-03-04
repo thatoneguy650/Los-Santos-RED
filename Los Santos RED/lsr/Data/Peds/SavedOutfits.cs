@@ -8,19 +8,22 @@ using System.Linq;
 
 public class SavedOutfits : ISavedOutfits
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\SavedOutfits.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\SavedOutfits.xml";
     public SavedOutfits()
     {
     }
     public List<SavedOutfit> SavedOutfitList { get; private set; } = new List<SavedOutfit>();
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "SavedOutfits*.xml" : $"SavedOutfits_{configName}.xml";
+
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"SavedOutfits{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Saved Outfits config: {ConfigFile.FullName}", 0);
             SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}";
         }
         else if (File.Exists(ConfigFileName))
         {

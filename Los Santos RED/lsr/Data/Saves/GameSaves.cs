@@ -8,7 +8,7 @@ using System.Linq;
 
 public class GameSaves : IGameSaves
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\SaveGames.xml";
+    private string ConfigFileName = "Plugins\\LosSantosRED\\SaveGames.xml";
     private GameSave PlayingSave;
     public GameSaves()
     {
@@ -17,12 +17,15 @@ public class GameSaves : IGameSaves
     public int NextSaveGameNumber => GameSaveList.Count + 1;
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "SaveGames*.xml" : $"SaveGames_{configName}.xml";
+
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"SaveGames{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Games Saves config: {ConfigFile.FullName}", 0);
             GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFile.FullName);
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}";
         }
         else if (File.Exists(ConfigFileName))
         {

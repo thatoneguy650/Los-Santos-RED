@@ -29,6 +29,7 @@ public class ConfigMenu : ModUIMenu
         ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Crown;
         ConfigUIMenu.SetBannerType(EntryPoint.LSRedColor);
         CreateConfigManagerMenu();
+        CreateCustomConfigCuratorMenu();
     }
 
     public override void Hide()
@@ -54,19 +55,30 @@ public class ConfigMenu : ModUIMenu
     }
     public void Update()
     {
+        ConfigUIMenu.Clear();
         CreateConfigManagerMenu();
+        CreateCustomConfigCuratorMenu();
     }
     private void CreateConfigManagerMenu()
     {
-        ConfigUIMenu.Clear();
-
         UIMenuItem ShowGameConfigsMenu = new UIMenuItem("Configs", "Shows a list of configurations.");
-        ShowGameConfigsMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        ShowGameConfigsMenu.RightBadge = UIMenuItem.BadgeStyle.Mask;
         ShowGameConfigsMenu.Activated += (s, e) =>
         {
             UI.ConfigPauseMenu.Toggle();
             ConfigUIMenu.Visible = false;
         };
         ConfigUIMenu.AddItem(ShowGameConfigsMenu);
+    }
+    private void CreateCustomConfigCuratorMenu()
+    {
+        UIMenuItem ShowConfigCuratorMenu = new UIMenuItem("Config Curator", "Create a custom config bundle.");
+        ShowConfigCuratorMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        ShowConfigCuratorMenu.Activated += (s, e) =>
+        {
+            UI.ConfigPauseMenu.Toggle();
+            ConfigUIMenu.Visible = false;
+        };
+        ConfigUIMenu.AddItem(ShowConfigCuratorMenu);
     }
 }
