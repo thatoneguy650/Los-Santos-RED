@@ -255,6 +255,13 @@ public class RepairGarage : GameLocation
         }
         Player.CurrentVehicle.SetRandomColor();
         Player.CurrentVehicle.SetRandomPlate();
+
+        Player.CurrentVehicle.SetNotWanted();
+
+
+        //Player.CurrentVehicle.HasBeenDescribedByDispatch = false;
+        //Player.CurrentVehicle.HasBeenSeenByPoliceDuringWanted = false;
+        //Player.CurrentVehicle.GameTimeToReportStolen = false;
     }
     private void RepairVehicle()
     {

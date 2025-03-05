@@ -101,7 +101,7 @@ public class WeaponInventory
         EmptyHolster = emptyHolster;
         FullHolster = fullHolster;
     }
-    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson, bool usesLongGunWheneverPossible)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson, bool usesLongGunWheneverPossible, bool giveLongGunInitially)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
         EntryPoint.WriteToConsole($"{WeaponOwner.Handle} IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
         bool hasOVerride = false;
@@ -177,13 +177,13 @@ public class WeaponInventory
             {
                 EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN {WeaponOwner.Handle}");
                 LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
-            }     
-            //if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
-            //{
-            //    NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
-            //    LongGun.ApplyVariation(WeaponOwner.Pedestrian);
-            //    //EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
-            //}
+            }
+            if (giveLongGunInitially && LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
+                LongGun.ApplyVariation(WeaponOwner.Pedestrian);
+                //EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
+            }
         }
         if (dispatchablePerson != null)
         {

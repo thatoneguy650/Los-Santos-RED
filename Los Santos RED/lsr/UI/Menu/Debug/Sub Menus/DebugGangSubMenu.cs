@@ -51,7 +51,7 @@ public class DebugGangSubMenu : DebugSubMenu
         UIMenuListScrollerItem<Gang> SetGangRepHostile = new UIMenuListScrollerItem<Gang>("Set Gang Hostile", "Sets the selected gang to a hostile reputation", Gangs.GetAllGangs());
         SetGangRepHostile.Activated += (menu, item) =>
         {
-            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, SetGangRepHostile.SelectedItem.HostileRepLevel, false);
+            Player.RelationshipManager.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, SetGangRepHostile.SelectedItem.HostileRepLevel- 2000, false);
             menu.Visible = false;
         };
         UIMenuItem DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");

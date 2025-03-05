@@ -157,6 +157,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "civmerit" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Purge", ItemType.Vehicles) { OverrideMakeName = "Cheval", OverrideClassName = "Sedan", ModelName = "purge", Description = "After all the yuppies in Vinewood decided they wanted Karin and Coil electric vehicles, we stuck a small underpowered gasoline engine in our floundering SURGE to minimize the losses.", });
 
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Schyster PMP 600", ItemType.Vehicles) { OverrideMakeName = "Schyster", OverrideClassName = "Sedan", ModelName = "civpmp600" });
