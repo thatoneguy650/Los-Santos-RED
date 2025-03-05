@@ -25,7 +25,7 @@ public class GameSaves : IGameSaves
         {
             EntryPoint.WriteToConsole($"Loaded Games Saves config: {ConfigFile.FullName}", 0);
             GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}";
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.Name}";
         }
         else if (File.Exists(ConfigFileName))
         {

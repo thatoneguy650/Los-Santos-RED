@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
 
         bool AreFilesAvailable(GameConfig config);
         void Load(GameConfig config);
+        void SerializeAllSettings();
     }
 }

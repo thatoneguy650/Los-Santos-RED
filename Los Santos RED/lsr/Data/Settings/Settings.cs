@@ -29,7 +29,7 @@ public class Settings : ISettingsProvideable
         {
             EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
             SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}";
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.Name}";
         }
         else if (File.Exists(ConfigFileName))
         {

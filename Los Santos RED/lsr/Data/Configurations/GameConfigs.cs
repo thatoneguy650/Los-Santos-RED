@@ -89,10 +89,12 @@ public class GameConfigs : IGameConfigs
             Game.DisplayNotification($"Error Loading {config.ConfigName} config");
         }
     }
+    public void SerializeAllSettings()
+    {
+        Serialization.SerializeParams(CustomConfigList, ConfigFileName);
+    }
     public bool AreFilesAvailable(GameConfig config)
     {
-        DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        List<FileInfo> allFiles = taskDirectory.GetFiles("*.xml").ToList();
         FileInfo[] configFiles =
         {
             GetConfigFile(config.AgenciesConfig, "Agencies"),
@@ -131,10 +133,8 @@ public class GameConfigs : IGameConfigs
             GetConfigFile(config.IssueableWeaponsConfig, "IssuableWeapons"),
             GetConfigFile(config.WeaponsConfig, "Weapons")
         };
-        foreach (FileInfo cfg in configFiles)
-        {
-            if (cfg == null) return false;
-        }
+
+        foreach (FileInfo cfg in configFiles) if (cfg == null) return false;
         return true;
     }
     private FileInfo GetConfigFile(string configValue, string configKey)

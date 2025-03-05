@@ -23,7 +23,7 @@ public class SavedOutfits : ISavedOutfits
         {
             EntryPoint.WriteToConsole($"Loaded Saved Outfits config: {ConfigFile.FullName}", 0);
             SavedOutfitList = Serialization.DeserializeParams<SavedOutfit>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}";
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.Name}";
         }
         else if (File.Exists(ConfigFileName))
         {

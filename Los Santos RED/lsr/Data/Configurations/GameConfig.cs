@@ -27,6 +27,45 @@ public class GameConfig
     public GameConfig()
     {
     }
+    public GameConfig(string configName,string suffix)
+    {
+        ConfigName = configName;
+        AgenciesConfig = suffix;
+        CellphonesConfig = suffix;
+        ContactsConfig = suffix;
+        CountyJurisdictionsConfig = suffix;
+        CraftableItemsConfig = suffix;
+        CrimesConfig = suffix;
+        DancesConfig = suffix;
+        DispatchablePeopleConfig = suffix;
+        DispatchableVehiclesConfig = suffix;
+        GangsConfig = suffix;
+        GangTerritoriesConfig = suffix;
+        GesturesConfig = suffix;
+        HeadsConfig = suffix;
+        InteriorsConfig = suffix;
+        IntoxicantsConfig = suffix;
+        IssueableWeaponsConfig = suffix;
+        LocationsConfig = suffix;
+        LocationTypesConfig = suffix;
+        ModItemsConfig = suffix;
+        NamesConfig = suffix;
+        OrganizationsConfig = suffix;
+        PedGroupsConfig = suffix;
+        PhysicalitemsConfig = suffix;
+        PlateTypesConfig = suffix;
+        SavedOutfitsConfig = suffix;
+        SaveGamesConfig = suffix;
+        SettingsConfig = suffix;
+        ShopMenusConfig = suffix;
+        SpawnBlocksConfig = suffix;
+        SpeechesConfig = suffix;
+        StreetsConfig = suffix;
+        WantedLevelsConfig = suffix;
+        WeaponsConfig = suffix;
+        ZoneJurisdictionsConfig = suffix;
+        ZonesConfig = suffix;
+    }
     public GameConfig(string suffix)
     {
         ConfigName = suffix;
@@ -150,9 +189,9 @@ public class GameConfig
     public string WeaponsConfig { get; set; }
     public string ZoneJurisdictionsConfig { get; set; }
     public string ZonesConfig { get; set; }
-    public string[] toArray()
+    public List<string> toList()
     {
-        return new string[]
+        return new List<string>
         {
             AgenciesConfig,
             CellphonesConfig,
@@ -190,5 +229,9 @@ public class GameConfig
             ZoneJurisdictionsConfig,
             ZonesConfig
         };
+    }
+    public override string ToString()
+    {
+        return ConfigName;
     }
 }

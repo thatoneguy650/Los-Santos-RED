@@ -83,7 +83,7 @@ public class Crimes : ICrimes
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.FullName}"; // for serialization
+            ConfigFileName = $"Plugins\\LosSantosRED\\{ConfigFile.Name}"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {
