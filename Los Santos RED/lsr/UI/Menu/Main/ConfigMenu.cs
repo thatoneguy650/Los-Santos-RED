@@ -111,7 +111,8 @@ public class ConfigMenu : ModUIMenu
         createConfigMenu.OnItemSelect += OnItemSelect;
         createConfigMenu.OnListChange += OnListChange;
 
-        CreateItemSubMenu(createConfigMenu, "Create New Config", new GameConfig("New Config", "Default"));
+        NewConfig = new GameConfig("New Config", "Default");
+        CreateItemSubMenu(createConfigMenu, "Create New Config", NewConfig);
     }
     private void UpdateSettings(UIMenu sender, UIMenuItem selectedItem, int index, PropertyInfo[] MyProperties, GameConfig ToSet)
     {
@@ -193,15 +194,17 @@ public class ConfigMenu : ModUIMenu
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == SaveConfigsToFile) // Issues: Can't Save multiple configs for some reason because shit doesn't refresh
+        EntryPoint.WriteToConsole($"{selectedItem == SaveConfigsToFile}, {selectedItem == AddConfigToFile}");
+        if (selectedItem == SaveConfigsToFile) 
         {
             GameConfigs.SerializeAllSettings();
+            Update(); // Needed to update UIMenu to update CustomConfigList. Can't place below conditions or else SaveConfigsToFile obj not recognized for some reason.
         }
         else if (selectedItem == AddConfigToFile)
         {
             GameConfigs.CustomConfigList.Add(NewConfig);
-            NewConfig = new GameConfig("New Config", "Default"); // reset gameconfig
-            GameConfigs.SerializeAllSettings();
+            GameConfigs.SerializeAllSettings(); 
+            Update(); 
         }
         sender.Visible = false;
     }
