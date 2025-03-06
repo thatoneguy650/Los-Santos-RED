@@ -154,7 +154,7 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
             ModDataFileManager = new ModDataFileManager();
-            ModDataFileManager.Setup(null);
+            ModDataFileManager.Setup(new GameConfig("Default"));
         }
         public void Dispose()
         {
