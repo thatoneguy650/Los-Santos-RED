@@ -20,8 +20,10 @@ public class Weapons : IWeapons
     private List<WeaponInformation> WeaponsList;
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "Weapons*.xml" : $"Weapons_{configName}.xml";
+
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Weapons{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Weapons config: {ConfigFile.FullName}", 0);
@@ -29,7 +31,7 @@ public class Weapons : IWeapons
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Issuable Weapons config  {ConfigFileName}", 0);
+            EntryPoint.WriteToConsole($"Loaded Weapons config  {ConfigFileName}", 0);
             WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFileName);
         }
         else

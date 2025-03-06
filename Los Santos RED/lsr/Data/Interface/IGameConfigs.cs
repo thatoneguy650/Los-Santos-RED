@@ -6,7 +6,11 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IGameConfigs
     {
-        List<GameConfig> GameConfigList { get; }
+        List<GameConfig> SuffixConfigList { get; }
+        List<GameConfig> CustomConfigList { get; }
+
+        bool AreFilesAvailable(GameConfig config);
         void Load(GameConfig config);
+        void SerializeAllSettings();
     }
 }
