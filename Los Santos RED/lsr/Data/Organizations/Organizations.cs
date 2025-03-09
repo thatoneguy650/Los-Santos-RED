@@ -30,8 +30,10 @@ public class Organizations : IOrganizations
     }
     public void ReadConfig(string configName)
     {
+        string fileName = string.IsNullOrEmpty(configName) ? "Organizations*.xml" : $"Organizations_{configName}.xml";
+
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = taskDirectory.GetFiles($"Organizations{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = taskDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Organizations Config: {ConfigFile.FullName}", 0);

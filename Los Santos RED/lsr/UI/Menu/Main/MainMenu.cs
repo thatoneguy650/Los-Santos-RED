@@ -34,9 +34,10 @@ public class MainMenu : ModUIMenu
     private ILocationInteractable Player;
     private IActivityPerformable ActivityPerformable;
     private ICrimes Crimes;
+    private IGameConfigs GameConfigs;
 
     public MainMenu(MenuPool menuPool, IActionable actionablePlayer, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, 
-        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures, IActivityPerformable activityPerformable, IAgencies agencies, ICrimes crimes, IIntoxicants intoxicants, IShopMenus shopMenus)
+        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures, IActivityPerformable activityPerformable, IAgencies agencies, ICrimes crimes, IIntoxicants intoxicants, IShopMenus shopMenus, IGameConfigs gameConfigs)
     {
         MenuPool = menuPool;
         ActionablePlayer = actionablePlayer;
@@ -61,7 +62,7 @@ public class MainMenu : ModUIMenu
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
         PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies, ActionablePlayer);
-        ConfigMenu = new ConfigMenu(MenuPool, Main, ui);
+        ConfigMenu = new ConfigMenu(MenuPool, Main, ui,gameConfigs);
     }
 
     public void Setup()
