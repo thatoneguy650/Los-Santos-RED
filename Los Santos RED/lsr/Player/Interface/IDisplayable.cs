@@ -64,5 +64,6 @@ namespace LosSantosRED.lsr.Interface
         IntimidationManager IntimidationManager { get; }
         GroupManager GroupManager { get; }
         StealthManager StealthManager { get; }
+        RacingManager RacingManager { get; }
     }
 }

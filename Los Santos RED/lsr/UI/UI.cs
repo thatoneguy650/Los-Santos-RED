@@ -77,7 +77,7 @@ public class UI : IMenuProvideable
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, 
         RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, 
         IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, 
-        IActivityPerformable activityPerformable, ICrimes crimes, ILocationTypes locationTypes, IIntoxicants intoxicants, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, IInteractionable interactionable, Mod.Crafting crafting)
+        IActivityPerformable activityPerformable, ICrimes crimes, ILocationTypes locationTypes, IIntoxicants intoxicants, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager, IInteractionable interactionable, Mod.Crafting crafting, IViolateable violateable)
     {
         DisplayablePlayer = displayablePlayer;
         ActionablePlayer = actionablePlayer;
@@ -105,7 +105,7 @@ public class UI : IMenuProvideable
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
         TimerBarController = new TimerBarController(displayablePlayer, TimerBarPool, Settings);
         MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
-        LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this);
+        LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this, violateable);
         TopRightMenu = new TopRightMenu(DisplayablePlayer, Time, Settings, this);
         ConfigPauseMenu = new ConfigPauseMenu(saveablePlayer, Time, Settings, modDataFileManager.GameConfigs);
     }

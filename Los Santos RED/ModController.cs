@@ -108,7 +108,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, 
                 ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList, 
-                ModDataFileManager.ShopMenus, Player, ModDataFileManager.Crimes, ModDataFileManager.LocationTypes, ModDataFileManager.Intoxicants, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager, Player, Crafting);
+                ModDataFileManager.ShopMenus, Player, ModDataFileManager.Crimes, ModDataFileManager.LocationTypes, ModDataFileManager.Intoxicants, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager, Player, Crafting, Player);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, ModDataFileManager.Settings, UI, PedSwap);

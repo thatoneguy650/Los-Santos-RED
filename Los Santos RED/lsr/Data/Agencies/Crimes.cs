@@ -48,6 +48,7 @@ public class Crimes : ICrimes
     private Crime RunningARedLight;
     private Crime FelonySpeeding;
     private Crime DrivingStolenVehicle;
+    private Crime FicticiousLicensePlate;
     private Crime SuspiciousActivity;
     private Crime InsultingOfficer;
     private Crime Harassment;
@@ -72,16 +73,15 @@ public class Crimes : ICrimes
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig(string configName)
+    public void ReadConfig(string notused)
     {
         SetupCrimes();
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"Crimes{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ConfigFile != null && !configName.Equals("Default"))
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}", 0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
-            ConfigFileName = $"Plugins\\LosSantosRED\\Crimes{configName}.xml"; // for serialization
         }
         else if (File.Exists(ConfigFileName))
         {
@@ -174,9 +174,14 @@ public class Crimes : ICrimes
         RunningARedLight = new Crime(StaticStrings.RunningARedLightCrimeID, "Running a Red Light", 1, false, 36, false, false, false) { CanReleaseOnTalkItOut = true, IsTrafficViolation = true, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You ~r~ran a red light~s~~n~Use indicators/blinkers for turns" };
         FelonySpeeding = new Crime(StaticStrings.FelonySpeedingCrimeID, "Felony Speeding", 1, false, 37, false, false, false) { CanReleaseOnTalkItOut = true, IsTrafficViolation = true, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~felony speeding~s~" };
         DrivingStolenVehicle = new Crime(StaticStrings.DrivingStolenVehicleCrimeID, "Driving a Stolen Vehicle", 2, false, 38, false, false, false) { ShowsWarning = true, WarningMessage = "You are driving a ~r~stolen vehicle~s~~n~Reported vehicles attract police attention" };
-        SuspiciousActivity = new Crime(StaticStrings.SuspiciousActivityCrimeID, "Suspicious Activity", 1, false, 39, false, false, false) { GracePeriod = 180000, CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, ShowsWarning = true, WarningMessage = "You are ~r~acting suspicious~s~~n~Leave the area to avoid issues" };  
-        InsultingOfficer = new Crime(StaticStrings.InsultingOfficerCrimeID, "Insulting a Police Officer", 2, false, 40, false, false, true);
-        Harassment = new Crime(StaticStrings.HarassmentCrimeID, "Harassment", 1, false, 41, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, MaxReportingDistance = 15f, CanReleaseOnCite = true, WarningMessage = "You are ~r~harassing citizens~s~" };
+
+        FicticiousLicensePlate = new Crime(StaticStrings.FicticiousLicensePlateCrimeID, "Ficticious Plates", 2, false, 39, false, false, false) { ShowsWarning = true, WarningMessage = "You are driving a vehicle with ~r~ficticious plates~s~~n~Use plates that belong to the same vehicle type to blend in" };
+
+
+
+        SuspiciousActivity = new Crime(StaticStrings.SuspiciousActivityCrimeID, "Suspicious Activity", 1, false, 40, false, false, false) { GracePeriod = 180000, CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, ShowsWarning = true, WarningMessage = "You are ~r~acting suspicious~s~~n~Leave the area to avoid issues" };  
+        InsultingOfficer = new Crime(StaticStrings.InsultingOfficerCrimeID, "Insulting a Police Officer", 2, false, 41, false, false, true);
+        Harassment = new Crime(StaticStrings.HarassmentCrimeID, "Harassment", 1, false, 42, true, false, false) { CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, MaxReportingDistance = 15f, CanReleaseOnCite = true, WarningMessage = "You are ~r~harassing citizens~s~" };
         Speeding = new Crime(StaticStrings.SpeedingCrimeID, "Speeding", 1, false, 44, false, false, false) { CanReleaseOnTalkItOut = true, Enabled = false, IsTrafficViolation = true, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~speeding~s~" };
         IndecentExposure = new Crime(StaticStrings.IndecentExposureCrimeID, "Indecent Exposure", 1, false, 46, true, false, false) { MaxReportingDistance = 15f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are guilt of ~r~indecent exposure~s~" };
         StandingOnVehicle = new Crime(StaticStrings.StandingOnVehicleCrimeID, "Standing On Vehicle", 1, false, 48, true, false, false) { MaxReportingDistance = 20f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~standing on vehicles~s~", };
@@ -230,6 +235,7 @@ public class Crimes : ICrimes
              RunningARedLight,
              FelonySpeeding,
              DrivingStolenVehicle,
+             FicticiousLicensePlate,
              SuspiciousActivity,
              InsultingOfficer,
              Harassment,
@@ -301,6 +307,7 @@ public class Crimes : ICrimes
              RunningARedLight,
              FelonySpeeding,
              DrivingStolenVehicle,
+             FicticiousLicensePlate,
              SuspiciousActivity,
              InsultingOfficer,
              Harassment,

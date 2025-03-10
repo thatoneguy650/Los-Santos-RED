@@ -104,6 +104,7 @@ public static class StaticStrings
     public static readonly string RunningARedLightCrimeID = "RunningARedLight";
     public static readonly string FelonySpeedingCrimeID = "FelonySpeeding";
     public static readonly string DrivingStolenVehicleCrimeID = "DrivingStolenVehicle";
+    public static readonly string FicticiousLicensePlateCrimeID = "FicticiousLicensePlate";
     public static readonly string SuspiciousActivityCrimeID = "SuspiciousActivity";
     public static readonly string InsultingOfficerCrimeID = "InsultingOfficer";
     public static readonly string HarassmentCrimeID = "Harassment";

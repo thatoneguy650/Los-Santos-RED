@@ -22,6 +22,7 @@ public class PlateController
         Zones = zones;
         PlateTypes = plateTypes;
         Settings = settings;
+
     }
     public void UpdatePlates()
     {
@@ -30,7 +31,7 @@ public class PlateController
             try
             {
                 int VehiclesUpdated = 0;
-                foreach (VehicleExt MyCar in Vehicles.NonServiceVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType && !x.CanNeverUpdatePlate).ToList().Take(20))
+                foreach (VehicleExt MyCar in Vehicles.NonServiceVehicles.Where(x => x.Vehicle.Exists() && !x.HasBeenEnteredByPlayer && !x.HasUpdatedPlateType && !x.CanNeverUpdatePlate).ToList().Take(20))
                 {
                     if (MyCar.Vehicle.Exists())
                     {

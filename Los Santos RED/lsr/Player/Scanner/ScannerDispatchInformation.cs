@@ -16,6 +16,8 @@ public class ScannerDispatchInformation
     public Dispatch AssaultingCiviliansWithDeadlyWeapon { get; private set; }
     public Dispatch AssaultingOfficer { get; private set; }
     public Dispatch AttemptingSuicide { get; private set; }
+
+
     public Dispatch AttemptToReacquireSuspect { get; private set; }
     public Dispatch CarryingWeapon { get; private set; }
     public Dispatch ChangedVehicles { get; private set; }
@@ -97,6 +99,9 @@ public class ScannerDispatchInformation
     public Dispatch StoppingTrains { get; private set; }
     public Dispatch TheftDispatch { get; private set; }
     public Dispatch Shoplifting { get; private set; }
+
+
+    public Dispatch FicticiousPlates { get; private set; }
     public void Setup()
     {
         OfficerDown = new Dispatch()
@@ -558,6 +563,23 @@ public class ScannerDispatchInformation
                 new AudioSet(new List<string>() { crime_9_14a_attempted_suicide.Anattemptedsuicide.FileName },"an attempted suicide")
             }
         };
+
+        FicticiousPlates = new Dispatch()
+        {
+            Name = "Ficticious Plates",
+            IncludeDrivingVehicle = true,
+            VehicleIncludesIn = true,
+            LocationDescription = LocationSpecificity.Street,
+            CanAlwaysBeInterrupted = true,
+            MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName },"a suspicious vehicle"),
+                //new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
+            },
+        };
+
+
+
         FelonySpeeding = new Dispatch()
         {
             Name = "Felony Speeding",

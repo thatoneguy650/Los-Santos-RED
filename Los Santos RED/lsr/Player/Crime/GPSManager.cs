@@ -39,27 +39,33 @@ public class GPSManager
     }
     public void Dispose()
     {
-        RemoveGPSRoute();
+        RemoveGPSRoute(false);
     }
     public void Reset()
     {
-        RemoveGPSRoute();
+        RemoveGPSRoute(true);
     }
-    public void AddGPSRoute(string Name, Vector3 position)
+    public void AddGPSRoute(string Name, Vector3 position, bool DisplaySubtitle)
     {
        if(NativeFunction.Natives.IS_WAYPOINT_ACTIVE<bool>())
         {
             NativeFunction.Natives.xD8E694757BCEA8E9();//_DELETE_WAYPOINT
         }
         NativeFunction.Natives.SET_NEW_WAYPOINT(position.X, position.Y);
-        Game.DisplaySubtitle($"Adding Waypoint To {Name}");
+        if (DisplaySubtitle)
+        {
+            Game.DisplaySubtitle($"Adding Waypoint To {Name}");
+        }
     }
-    public void RemoveGPSRoute()
+    public void RemoveGPSRoute(bool DisplaySubtitle)
     {
         if (NativeFunction.Natives.IS_WAYPOINT_ACTIVE<bool>())
         {
             NativeFunction.Natives.xD8E694757BCEA8E9();//_DELETE_WAYPOINT
-            Game.DisplaySubtitle("Waypoint Removed");
+            if (DisplaySubtitle)
+            {
+                Game.DisplaySubtitle("Waypoint Removed");
+            }
         }
     }
     public Vector3 GetGPSRoutePosition()

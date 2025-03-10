@@ -1,12 +1,48 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LosSantosRED.lsr.UI.Menu.Debug.Sub_Menus
+
+public class DebugRacingSubMenu : DebugSubMenu
 {
-    internal class DebugRacingSubMenu
+    private List<VehicleRace> PossibleRaces = new List<VehicleRace>();
+    private IVehicleRaces VehicleRaces;
+    public DebugRacingSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IVehicleRaces vehicleRaces) : base(debug, menuPool, player)
     {
+        VehicleRaces = vehicleRaces;
+    }
+
+    public override void AddItems()
+    {
+        SubMenu = MenuPool.AddSubMenu(Debug, "Racing Menu");
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Do vehicle racing";
+        SubMenu.SetBannerType(EntryPoint.LSRedColor);
+        CreateMenu();
+    }
+    public override void Update()
+    {
+
+    }
+    private void CreateMenu()
+    {
+        SubMenu.Clear();
+        foreach(VehicleRace vr in VehicleRaces.VehicleRaceTypeManager.VehiclesRaces)
+        {
+            UIMenuItem generalOne = new UIMenuItem(vr.Name, "Start a the specific race.");
+            generalOne.Activated += (sender, selectedItem) =>
+            {
+                Player.RacingManager.StartDebugRace(vr);
+
+                sender.Visible = false;
+            };
+            SubMenu.AddItem(generalOne);
+        }
     }
 }
+

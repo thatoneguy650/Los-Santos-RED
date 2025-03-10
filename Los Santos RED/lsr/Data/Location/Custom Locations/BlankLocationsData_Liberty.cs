@@ -22,9 +22,21 @@ public class BlankLocationsData_Liberty
         Checkpoints();
         RooftopSnipers();
         OtherCops();
+        AncelottinGang();
+        GambettiGang();
+        LupisellaGang();
+        MessinaGang();
+        PavanoGang();
+        KhangpaeGang();
+        TriadGang();
         PetrovicGang();
-        YardiesGang();
         SpanishLordsGang();
+        UptownGang();
+        HolHustGang();
+        AodGang();
+        LostGang();
+        YardiesGang();
+
     }
     private void RooftopSnipers()
     {
@@ -633,7 +645,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -660,7 +672,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -690,7 +702,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -719,7 +731,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -754,7 +766,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -781,7 +793,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -811,7 +823,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -846,7 +858,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -873,7 +885,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -903,7 +915,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -938,7 +950,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -965,7 +977,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -995,7 +1007,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1030,7 +1042,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1057,7 +1069,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1087,7 +1099,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1116,7 +1128,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -1151,7 +1163,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1178,7 +1190,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1208,7 +1220,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1243,7 +1255,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1270,7 +1282,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1300,7 +1312,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1335,7 +1347,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1362,7 +1374,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1392,7 +1404,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1427,7 +1439,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1454,7 +1466,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1484,7 +1496,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1513,7 +1525,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -1548,7 +1560,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1575,7 +1587,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1605,7 +1617,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1640,7 +1652,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1667,7 +1679,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1697,7 +1709,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1733,7 +1745,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1760,7 +1772,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1789,7 +1801,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -1824,7 +1836,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1851,7 +1863,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1881,7 +1893,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -1910,7 +1922,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -1945,7 +1957,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -1972,7 +1984,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2002,7 +2014,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2037,7 +2049,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2064,7 +2076,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2094,7 +2106,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2123,7 +2135,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2158,7 +2170,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2185,7 +2197,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2215,7 +2227,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2244,7 +2256,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2279,7 +2291,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2306,7 +2318,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2336,7 +2348,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2365,7 +2377,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2401,7 +2413,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2428,7 +2440,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2457,7 +2469,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2492,7 +2504,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2519,7 +2531,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2549,7 +2561,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2578,7 +2590,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2614,7 +2626,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2641,7 +2653,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2671,7 +2683,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2700,7 +2712,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2735,7 +2747,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2762,7 +2774,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2792,7 +2804,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2821,7 +2833,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2856,7 +2868,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -2883,7 +2895,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2913,7 +2925,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -2942,7 +2954,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -2977,7 +2989,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3004,7 +3016,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3034,7 +3046,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3063,7 +3075,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3098,7 +3110,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3125,7 +3137,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3155,7 +3167,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3184,7 +3196,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3219,7 +3231,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3246,7 +3258,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3276,7 +3288,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3305,7 +3317,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3341,7 +3353,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3368,7 +3380,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3398,7 +3410,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3427,7 +3439,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3462,7 +3474,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3489,7 +3501,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3518,7 +3530,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3553,7 +3565,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3580,7 +3592,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3609,7 +3621,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3645,7 +3657,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3672,7 +3684,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3702,7 +3714,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3737,7 +3749,7 @@ public class BlankLocationsData_Liberty
                             MinHourSpawn = 0,
                             MaxHourSpawn = 24,
                             MinWantedLevelSpawn = 0,
-                            MaxWantedLevelSpawn = 3,
+                            MaxWantedLevelSpawn = 4,
                             PossiblePedSpawns = new List<ConditionalLocation>()
                             {
                                 new LEConditionalLocation()
@@ -3764,7 +3776,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3794,7 +3806,7 @@ public class BlankLocationsData_Liberty
                                             MinHourSpawn = 0,
                                             MaxHourSpawn = 24,
                                             MinWantedLevelSpawn = 0,
-                                            MaxWantedLevelSpawn = 3,
+                                            MaxWantedLevelSpawn = 4,
 
 
 
@@ -3823,7 +3835,7 @@ public class BlankLocationsData_Liberty
                                         MinHourSpawn = 0,
                                         MaxHourSpawn = 24,
                                         MinWantedLevelSpawn = 0,
-                                        MaxWantedLevelSpawn = 3,
+                                        MaxWantedLevelSpawn = 4,
                                         LongGunAlwaysEquipped = false,
 
 
@@ -3836,6 +3848,6455 @@ public class BlankLocationsData_Liberty
         BlankLocationPlaces.Add(ColonyIslandCops2);
     }
 
+
+    private void AncelottinGang()
+    {
+        BlankLocation AncelottiHonkers = new BlankLocation()
+        {
+
+            Name = "AncelottiHonkers",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(-1354.888f, 510.0261f, 9.363672f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            InteriorID = 67586,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1342.407f, 518.8824f, 10.01684f),
+                                            Heading = 72.11568f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1342.54f, 521.6884f, 10.01822f),
+                                            Heading = 100.7823f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1335.88f, 516.9401f, 10.01021f),
+                                            Heading = 91.55523f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1344.131f, 498.4292f, 10.01021f),
+                                            Heading = 1.412311f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1354.888f, 510.0261f, 9.363672f),
+                                            Heading = 181.2512f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        }; //interior
+        BlankLocationPlaces.Add(AncelottiHonkers);
+        BlankLocation AncelottiHouse = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1281.088f, 748.9422f, 14.02908f),
+                                            Heading = 261.0979f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1281.218f, 747.1935f, 14.02908f),
+                                            Heading = 279.7828f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1274.195f, 751.9827f, 12.00912f),
+                                        Heading = 270.27f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            Name = "AncelottiHouse",
+            Description = "",
+            EntrancePosition = new Vector3(-1274.195f, 751.9827f, 12.00912f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AncelottiHouse);
+        BlankLocation AncelottiPizzaThis = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1318.894f, 1000.006f, 24.80426f),
+                                            Heading = 358.1175f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1319.964f, 1000.068f, 24.90013f),
+                                            Heading = 0.9251531f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1319.616f, 1005.551f, 24.27114f),
+                                        Heading = 270.1079f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            Name = "AncelottiPizzaThis",
+            Description = "",
+            EntrancePosition = new Vector3(-1319.616f, 1005.551f, 24.27114f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AncelottiPizzaThis);
+        BlankLocation AncelottiHouse2 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1279.93f, 1238.773f, 25.75601f),
+                                            Heading = 246.2866f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1279.457f, 1239.617f, 25.75601f),
+                                            Heading = 234.0314f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1272.842f, 1234.057f, 24.90157f),
+                                        Heading = 155.8833f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            Name = "AncelottiHouse2",
+            Description = "",
+            EntrancePosition = new Vector3(-1272.842f, 1234.057f, 24.90157f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AncelottiHouse2);
+        BlankLocation AncelottiCleaners = new BlankLocation()
+        {
+
+            Name = "AncelottiCleaners",
+            Description = "",
+            EntrancePosition = new Vector3(-1449.496f, 1132.442f, 29.46717f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1449.496f, 1132.442f, 29.46717f),
+                                            Heading = 284.3813f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1449.199f, 1131.275f, 29.46699f),
+                                            Heading = 302.83f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_AA_SMOKE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(AncelottiCleaners);
+        BlankLocation AncelottiGarages = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1215.986f, 1264.374f, 23.54687f),
+                                            Heading = 62.88677f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1217.762f, 1265.266f, 23.54788f),
+                                            Heading = 241.0338f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1215.377f, 1267.308f, 22.89254f),
+                                        Heading = 63.58024f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            Name = "AncelottiGarages",
+            Description = "",
+            EntrancePosition = new Vector3(-1215.377f, 1267.308f, 22.89254f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AncelottiGarages);
+    }
+
+    private void GambettiGang()
+    {
+        BlankLocation GambettiMarioBY = new BlankLocation()
+        {
+
+            Name = "GambettiMarioBY",
+            Description = "",
+            EntrancePosition = new Vector3(72.48227f, 232.936f, 14.67881f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(72.48227f, 232.936f, 14.67881f),
+                                            Heading = 91.11575f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(71.24015f, 232.9196f, 14.67348f),
+                                            Heading = 268.7274f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(GambettiMarioBY);
+        BlankLocation GambettiStreet = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(32.78203f, 236.5352f, 14.67114f),
+                                            Heading = 1.491724f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(33.81213f, 236.4431f, 14.67529f),
+                                            Heading = 358.7962f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(37.23869f, 235.6022f, 14.05649f),
+                                        Heading = 180.3486f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            Name = "GambettiStreet",
+            Description = "",
+            EntrancePosition = new Vector3(37.23869f, 235.6022f, 14.05649f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(GambettiStreet);
+        BlankLocation GambettiAlDenti = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(170.3216f, -136.8503f, 14.76152f),
+                                            Heading = 225.8048f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(169.2885f, -137.287f, 14.76122f),
+                                            Heading = 216.6167f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(176.4462f, -137.3461f, 14.12011f),
+                                        Heading = 181.1783f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            Name = "GambettiAlDenti",
+            Description = "",
+            EntrancePosition = new Vector3(176.4462f, -137.3461f, 14.12011f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(GambettiAlDenti);
+        BlankLocation GambettiSuffolk = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 16,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-38.57289f, 207.5464f, 14.62026f),
+                                            Heading = 275.0419f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-38.61805f, 208.4624f, 14.61983f),
+                                            Heading = 265.6258f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-31.29272f, 209.0046f, 13.68697f),
+                                        Heading = 359.9147f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            Name = "GambettiSuffolk",
+            Description = "",
+            EntrancePosition = new Vector3(-31.29272f, 209.0046f, 13.68697f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(GambettiSuffolk);
+        BlankLocation GambettiCityHall = new BlankLocation()
+        {
+
+            Name = "GambettiCityHall",
+            Description = "",
+            EntrancePosition = new Vector3(128.0231f, 164.8131f, 15.20244f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(128.0231f, 164.8131f, 15.20244f),
+                                            Heading = 177.4202f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(126.9162f, 164.7469f, 15.20244f),
+                                            Heading = 181.4519f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(GambettiCityHall);
+        BlankLocation GambettiCityHall2 = new BlankLocation()
+        {
+
+            Name = "GambettiCityHall2",
+            Description = "",
+            EntrancePosition = new Vector3(19.05459f, 178.5555f, 14.76581f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(19.05459f, 178.5555f, 14.76581f),
+                                            Heading = 1.074511f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(20.29286f, 178.4865f, 14.76468f),
+                                            Heading = 359.1416f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(GambettiCityHall2);
+        BlankLocation GambettiFeldspar = new BlankLocation()
+        {
+
+            Name = "GambettiFeldspar",
+            Description = "",
+            EntrancePosition = new Vector3(-94.75925f, 158.3789f, 5.267494f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 14,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-94.75925f, 158.3789f, 5.267494f),
+                                            Heading = 114.5125f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-95.12589f, 159.1213f, 5.227471f),
+                                            Heading = 113.219f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(GambettiFeldspar);
+        BlankLocation GambettiErsatz = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(7.521808f, 288.3621f, 14.48354f),
+                                            Heading = 92.85258f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(7.655271f, 287.4253f, 14.48458f),
+                                            Heading = 93.03582f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(2.063804f, 289.296f, 13.83997f),
+                                        Heading = 358.2276f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+            Name = "GambettiErsatz",
+            Description = "",
+            EntrancePosition = new Vector3(2.063804f, 289.296f, 13.83997f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(GambettiErsatz);
+
+    }
+
+    private void LupisellaGang()
+    {
+        BlankLocation LupisellaBlock = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1301.016f, 2347.162f, 20.08677f),
+                                            Heading = 183.1393f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1302.027f, 2347.187f, 20.08677f),
+                                            Heading = 177.5564f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1306.208f, 2333.91f, 12.05332f),
+                                        Heading = 114.3722f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            Name = "LupisellaBlock",
+            Description = "",
+            EntrancePosition = new Vector3(1306.208f, 2333.91f, 12.05332f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LupisellaBlock);
+        BlankLocation LupisellaCabin = new BlankLocation()
+        {
+
+            Name = "LupisellaCabin",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1450.259f, 2045.227f, 16.22648f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 3,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1461.685f, 2038.687f, 16.79448f),
+                                            Heading = 136.3462f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1461.182f, 2041.537f, 16.86924f),
+                                            Heading = 19.00734f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1460.365f, 2044.947f, 16.86924f),
+                                            Heading = 200.4964f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1459.135f, 2043.909f, 16.86924f),
+                                            Heading = 221.2324f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_CLIPBOARD_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1450.259f, 2045.227f, 16.22648f),
+                                            Heading = 47.14442f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1456.749f, 2035.957f, 16.26124f),
+                                            Heading = 3.279457f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaCabin);
+        BlankLocation LupisellaTriangle = new BlankLocation()
+        {
+
+            Name = "LupisellaTriangle",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1451.727f, 2211.518f, 15.95439f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 3,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1380.79f, 2163.813f, 16.71495f),
+                                            Heading = 140.3605f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CASINO",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1441.082f, 2207.431f, 16.66237f),
+                                            Heading = 309.0697f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1438.595f, 2209.937f, 16.66237f),
+                                            Heading = 254.0794f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CASINO",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1451.727f, 2211.518f, 15.95439f),
+                                            Heading = 1.046725f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 16,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1392.557f, 2157.893f, 16.25814f),
+                                            Heading = 226.5761f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaTriangle);
+        BlankLocation LupisellaTriangleInside = new BlankLocation()
+        {
+
+            Name = "LupisellaTriangleInside",
+            Description = "",
+            EntrancePosition = new Vector3(1435.173f, 2190.587f, 17.72179f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            InteriorID = 113666,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1435.173f, 2190.587f, 17.72179f),
+                                            Heading = 222.4488f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CASINO",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1409.312f, 2166.203f, 17.72196f),
+                                            Heading = 227.2596f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1409.312f, 2166.203f, 17.72196f),
+                                            Heading = 227.2596f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_FACILITY",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1388.732f, 2167.961f, 16.72199f),
+                                            Heading = 43.06167f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_ARMY",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        }; //interior
+        BlankLocationPlaces.Add(LupisellaTriangleInside);
+        BlankLocation LupisellaBlocks2 = new BlankLocation()
+        {
+
+            Name = "LupisellaBlocks2",
+            Description = "",
+            EntrancePosition = new Vector3(1407.586f, 2301.73f, 10.91479f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1407.586f, 2301.73f, 10.91479f),
+                                            Heading = 268.5659f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1408.97f, 2302.023f, 10.91478f),
+                                            Heading = 94.06642f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaBlocks2);
+        BlankLocation LupisellaFlanger = new BlankLocation()
+        {
+
+            Name = "LupisellaFlanger",
+            Description = "",
+            EntrancePosition = new Vector3(1507.623f, 2325.037f, 10.96453f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1507.623f, 2325.037f, 10.96453f),
+                                            Heading = 271.7417f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1507.65f, 2326.41f, 10.96453f),
+                                            Heading = 267.8455f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaFlanger);
+        BlankLocation LupisellaAlcatraz = new BlankLocation()
+        {
+
+            Name = "LupisellaAlcatraz",
+            Description = "",
+            EntrancePosition = new Vector3(1603.091f, 2123.269f, 17.86467f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1603.091f, 2123.269f, 17.86467f),
+                                            Heading = 90.12063f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1603.167f, 2121.548f, 17.86467f),
+                                            Heading = 89.7944f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaAlcatraz);
+        BlankLocation LupisellaBlock3 = new BlankLocation()
+        {
+
+            Name = "LupisellaBlock3",
+            Description = "",
+            EntrancePosition = new Vector3(1335.946f, 2254.304f, 10.70501f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1335.946f, 2254.304f, 10.70501f),
+                                            Heading = 246.3346f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1335.379f, 2253.342f, 10.70501f),
+                                            Heading = 247.3597f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_AA_SMOKE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaBlock3);
+        BlankLocation LupisellaBodyDump = new BlankLocation()
+        {
+
+            Name = "LupisellaBodyDump",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1598.176f, 2440.565f, 4.551487f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 20,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1597.045f, 2444.954f, 5.061442f),
+                                            Heading = 325.5471f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1595.85f, 2445.844f, 5.017694f),
+                                            Heading = 323.5613f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1610.779f, 2469.378f, 3.190312f),
+                                            Heading = 320.2166f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1613.188f, 2471.349f, 2.813836f),
+                                            Heading = 314.1112f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_INSPECT_STAND",
+                                                "WORLD_HUMAN_INSPECT_CROUCH",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1598.176f, 2440.565f, 4.551487f),
+                                            Heading = 338.9202f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LupisellaBodyDump);
+
+    }
+    private void MessinaGang()
+    {
+        BlankLocation MessinaSquare = new BlankLocation()
+        {
+
+            Name = "MessinaSquare",
+            Description = "",
+            EntrancePosition = new Vector3(83.73531f, 978.3295f, 14.71328f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(83.73531f, 978.3295f, 14.71328f),
+                                            Heading = 267.7945f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(83.7447f, 977.4066f, 14.71324f),
+                                            Heading = 268.5063f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaSquare);
+        BlankLocation MessinaJunction = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(15.32245f, 949.8828f, 14.81619f),
+                                            Heading = 252.2207f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(15.19765f, 948.7469f, 14.81619f),
+                                            Heading = 278.3394f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(23.56182f, 947.2537f, 14.04991f),
+                                        Heading = 179.2383f,
+                                    IsEmpty = true,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            Name = "MessinaJunction",
+            Description = "",
+            EntrancePosition = new Vector3(23.56182f, 947.2537f, 14.04991f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(MessinaJunction);
+        BlankLocation MessinaPizza = new BlankLocation()
+        {
+
+            Name = "MessinaPizza",
+            Description = "",
+            EntrancePosition = new Vector3(-93.18594f, 1025.948f, 14.76096f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-93.18594f, 1025.948f, 14.76096f),
+                                            Heading = 358.7756f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-93.96526f, 1025.938f, 14.76096f),
+                                            Heading = 0.6930794f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaPizza);
+        BlankLocation MessinaTower = new BlankLocation()
+        {
+
+            Name = "MessinaTower",
+            Description = "",
+            EntrancePosition = new Vector3(-173.0394f, 1085.167f, 15.02567f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-173.0394f, 1085.167f, 15.02567f),
+                                            Heading = 266.5729f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-173.0472f, 1086.035f, 15.02567f),
+                                            Heading = 269.2255f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaTower);
+        BlankLocation MessinaHome = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-175.6243f, 863.0717f, 14.04042f),
+                                            Heading = 3.256542f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-176.5672f, 862.9732f, 14.04042f),
+                                            Heading = 0.8035054f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-174.6256f, 873.5905f, 11.5797f),
+                                        Heading = 86.57639f,
+                                    IsEmpty = true,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            Name = "MessinaHome",
+            Description = "",
+            EntrancePosition = new Vector3(-174.6256f, 873.5905f, 11.5797f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(MessinaHome);
+        BlankLocation MessinaRimmers = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-52.35004f, 889.7041f, 14.81517f),
+                                            Heading = 179.6572f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-51.41967f, 889.7411f, 14.81514f),
+                                            Heading = 143.5801f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-63.35028f, 894.5917f, 14.04116f),
+                                        Heading = 179.9867f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            Name = "MessinaRimmers",
+            Description = "",
+            EntrancePosition = new Vector3(-63.35028f, 894.5917f, 14.04116f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(MessinaRimmers);
+        BlankLocation MessinaCentral = new BlankLocation()
+        {
+
+            Name = "MessinaCentral",
+            Description = "",
+            EntrancePosition = new Vector3(152.8445f, 891.554f, 14.75818f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(152.8445f, 891.554f, 14.75818f),
+                                            Heading = 179.5025f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(151.957f, 891.5311f, 14.75816f),
+                                            Heading = 178.4214f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaCentral);
+        BlankLocation MessinaCathedral = new BlankLocation()
+        {
+
+            Name = "MessinaCathedral",
+            Description = "",
+            EntrancePosition = new Vector3(230.8114f, 991.6428f, 15.76451f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(230.8114f, 991.6428f, 15.76451f),
+                                            Heading = 40.34569f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(229.8671f, 990.8692f, 15.76451f),
+                                            Heading = 48.32359f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaCathedral);
+        BlankLocation MessinaPark = new BlankLocation()
+        {
+
+            Name = "MessinaPark",
+            Description = "",
+            EntrancePosition = new Vector3(138.0528f, 1152.604f, 13.07685f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(138.0528f, 1152.604f, 13.07685f),
+                                            Heading = 100.0038f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(138.3062f, 1151.798f, 13.07685f),
+                                            Heading = 89.23592f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaPark);
+        BlankLocation MessinaPark2 = new BlankLocation()
+        {
+
+            Name = "MessinaPark2",
+            Description = "",
+            EntrancePosition = new Vector3(32.76894f, 1164.057f, 12.40407f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(32.76894f, 1164.057f, 12.40407f),
+                                            Heading = 359.7913f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(33.49879f, 1164.073f, 12.40407f),
+                                            Heading = 358.7981f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaPark2);
+        BlankLocation MessinaWilbert = new BlankLocation()
+        {
+
+            Name = "MessinaWilbert",
+            Description = "",
+            EntrancePosition = new Vector3(-45.43157f, 1228.374f, 10.96097f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_MESSINA",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-45.43157f, 1228.374f, 10.96097f),
+                                            Heading = 1.423842f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-46.24593f, 1228.389f, 10.96097f),
+                                            Heading = 0.5861487f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_AA_COFFEE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(MessinaWilbert);
+
+    }
+
+    private void PavanoGang()
+    {
+        BlankLocation PavanoTower1 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(102.6382f, 1795.276f, 20.43974f),
+                                            Heading = 0.6414985f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(103.652f, 1795.22f, 20.43974f),
+                                            Heading = 0.8030295f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(92.97209f, 1800.243f, 19.73783f),
+                                        Heading = 0.2984261f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            Name = "PavanoTower1",
+            Description = "",
+            EntrancePosition = new Vector3(92.97209f, 1800.243f, 19.73783f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(PavanoTower1);
+        BlankLocation PavanoTower2 = new BlankLocation()
+        {
+
+            Name = "PavanoTower2",
+            Description = "",
+            EntrancePosition = new Vector3(138.29f, 1793.616f, 26.02802f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(138.29f, 1793.616f, 26.02802f),
+                                            Heading = 182.411f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(137.4272f, 1793.6f, 26.02731f),
+                                            Heading = 182.2232f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoTower2);
+        BlankLocation PavanoPark = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(7.616632f, 1644.216f, 14.69785f),
+                                            Heading = 359.3174f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(8.343884f, 1644.175f, 14.70043f),
+                                            Heading = 6.950731f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(6.858032f, 1650.251f, 14.0243f),
+                                        Heading = 268.3399f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            Name = "PavanoPark",
+            Description = "",
+            EntrancePosition = new Vector3(6.858032f, 1650.251f, 14.0243f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(PavanoPark);
+        BlankLocation PavanoPark2 = new BlankLocation()
+        {
+
+            Name = "PavanoPark2",
+            Description = "",
+            EntrancePosition = new Vector3(-87.08617f, 1638.173f, 13.57591f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-87.08617f, 1638.173f, 13.57591f),
+                                            Heading = 156.6432f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-86.47011f, 1637.841f, 13.57806f),
+                                            Heading = 139.2261f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoPark2);
+        BlankLocation PavanoStateB = new BlankLocation()
+        {
+
+            Name = "PavanoStateB",
+            Description = "",
+            EntrancePosition = new Vector3(210.4964f, 1731.246f, 20.43578f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(210.4964f, 1731.246f, 20.43578f),
+                                            Heading = 1.306429f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(211.6855f, 1731.265f, 20.43575f),
+                                            Heading = 359.2593f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoStateB);
+        BlankLocation PavanoAlley = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(310.5503f, 1553.653f, 14.71365f),
+                                            Heading = 273.3993f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(312.3363f, 1553.586f, 14.71365f),
+                                            Heading = 84.30576f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(315.4411f, 1551.918f, 13.94037f),
+                                        Heading = 268.0463f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            Name = "PavanoAlley",
+            Description = "",
+            EntrancePosition = new Vector3(315.4411f, 1551.918f, 13.94037f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(PavanoAlley);
+        BlankLocation PavanoDeKoch = new BlankLocation()
+        {
+
+            Name = "PavanoDeKoch",
+            Description = "",
+            EntrancePosition = new Vector3(351.3917f, 1466.715f, 14.71385f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(351.3917f, 1466.715f, 14.71385f),
+                                            Heading = 269.9776f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(351.2662f, 1467.586f, 14.71385f),
+                                            Heading = 269.0881f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoDeKoch);
+        BlankLocation PavanoView = new BlankLocation()
+        {
+
+            Name = "PavanoView",
+            Description = "",
+            EntrancePosition = new Vector3(377.1019f, 1346.771f, 14.7133f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(377.1019f, 1346.771f, 14.7133f),
+                                            Heading = 267.6965f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(377.0999f, 1345.885f, 14.71252f),
+                                            Heading = 270.2363f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoView);
+        BlankLocation PavanoAlley2 = new BlankLocation()
+        {
+
+            Name = "PavanoAlley2",
+            Description = "",
+            EntrancePosition = new Vector3(244.0724f, 1788.297f, 20.38193f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(244.0724f, 1788.297f, 20.38193f),
+                                            Heading = 357.0328f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(244.041f, 1789.707f, 20.38795f),
+                                            Heading = 179.8688f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoAlley2);
+        BlankLocation PavanoColumbus = new BlankLocation()
+        {
+
+            Name = "PavanoColumbus",
+            Description = "",
+            EntrancePosition = new Vector3(123.0912f, 1678.171f, 14.76889f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(123.0912f, 1678.171f, 14.76889f),
+                                            Heading = 182.8932f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(122.2373f, 1678.145f, 14.76832f),
+                                            Heading = 181.8349f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PavanoColumbus);
+
+    }
+
+    private void KhangpaeGang()
+    {
+        BlankLocation KkangpaeWaterFront = new BlankLocation()
+        {
+
+            Name = "KkangpaeWaterFront",
+            Description = "",
+            EntrancePosition = new Vector3(-571.4893f, 1481.629f, 4.366717f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-571.4893f, 1481.629f, 4.366717f),
+                                            Heading = 90.34357f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-572.9838f, 1481.644f, 4.366717f),
+                                            Heading = 267.5033f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeWaterFront);
+        BlankLocation KkangpaeWaterFront2 = new BlankLocation()
+        {
+
+            Name = "KkangpaeWaterFront2",
+            Description = "",
+            EntrancePosition = new Vector3(-601.9121f, 1330.767f, 4.21608f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-601.9121f, 1330.767f, 4.21608f),
+                                            Heading = 213.3994f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-603.0631f, 1330.011f, 4.21608f),
+                                            Heading = 225.0585f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeWaterFront2);
+        BlankLocation KkangpaeWaterFront3 = new BlankLocation()
+        {
+
+            Name = "KkangpaeWaterFront3",
+            Description = "",
+            EntrancePosition = new Vector3(-690.6245f, 1246.839f, 3.461464f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-690.6245f, 1246.839f, 3.461464f),
+                                            Heading = 183.2816f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-691.6246f, 1246.834f, 3.461464f),
+                                            Heading = 187.6818f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeWaterFront3);
+        BlankLocation KkangpaeLockup = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-780.4469f, 1543.182f, 13.56419f),
+                                            Heading = 95.26931f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-780.5257f, 1542.285f, 13.56056f),
+                                            Heading = 96.30148f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-777.5654f, 1540.002f, 12.99034f),
+                                        Heading = 271.9701f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeGarage",
+            Description = "",
+            EntrancePosition = new Vector3(-777.5654f, 1540.002f, 12.99034f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeLockup);
+        BlankLocation KkangpaeTattoo = new BlankLocation()
+        {
+
+            Name = "KkangpaeTattoo",
+            Description = "",
+            EntrancePosition = new Vector3(-1000.672f, 1615.33f, 19.47197f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1000.672f, 1615.33f, 19.47197f),
+                                            Heading = 181.2966f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1000.054f, 1615.518f, 19.45498f),
+                                            Heading = 186.6648f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeTattoo);
+        BlankLocation KkangpaeMrFuk = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1005.802f, 1571.065f, 19.76662f),
+                                            Heading = 91.42207f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1005.762f, 1572.119f, 19.76757f),
+                                            Heading = 87.69986f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1010.889f, 1570.355f, 19.04609f),
+                                        Heading = 359.7769f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeMrFuk",
+            Description = "",
+            EntrancePosition = new Vector3(-1010.889f, 1570.355f, 19.04609f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeMrFuk);
+        BlankLocation KkangpaeKakagawa = new BlankLocation()
+        {
+
+            Name = "KkangpaeKakagawa",
+            Description = "",
+            EntrancePosition = new Vector3(-1155.293f, 1490.566f, 23.22098f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1155.293f, 1490.566f, 23.22098f),
+                                            Heading = 271.8781f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1155.269f, 1489.032f, 23.22081f),
+                                            Heading = 272.9294f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeKakagawa);
+        BlankLocation KkangpaeSpanky = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 18,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1147.337f, 1390.934f, 19.81607f),
+                                            Heading = 269.4826f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1147.474f, 1391.911f, 19.81655f),
+                                            Heading = 271.9419f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1141.885f, 1392.678f, 19.13541f),
+                                        Heading = 178.5647f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeSpanky",
+            Description = "",
+            EntrancePosition = new Vector3(-1141.885f, 1392.678f, 19.13541f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeSpanky);
+        BlankLocation KkangpaeKoreshSq = new BlankLocation()
+        {
+
+            Name = "KkangpaeKoreshSq",
+            Description = "",
+            EntrancePosition = new Vector3(-1080.507f, 1405.152f, 23.56852f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1080.507f, 1405.152f, 23.56852f),
+                                            Heading = 91.18325f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1080.48f, 1404.235f, 23.5685f),
+                                            Heading = 91.6984f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeKoreshSq);
+        BlankLocation KkangpaeOffices = new BlankLocation()
+        {
+
+            Name = "KkangpaeOffices",
+            Description = "",
+            EntrancePosition = new Vector3(-916.506f, 1324.708f, 19.5585f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-916.506f, 1324.708f, 19.5585f),
+                                            Heading = 90.53297f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-916.4893f, 1323.841f, 19.5585f),
+                                            Heading = 91.35294f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeOffices);
+        BlankLocation KkangpaeAlleySteps = new BlankLocation()
+        {
+
+            Name = "KkangpaeAlleySteps",
+            Description = "",
+            EntrancePosition = new Vector3(-1210.19f, 1373.812f, 22.98534f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1210.19f, 1373.812f, 22.98534f),
+                                            Heading = 2.181629f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1211.004f, 1373.784f, 22.98552f),
+                                            Heading = 357.224f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeAlleySteps);
+        BlankLocation KkangpaeErotica = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1249.753f, 1616.579f, 23.00982f),
+                                            Heading = 272.9919f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1249.808f, 1617.868f, 23.00942f),
+                                            Heading = 273.5631f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1245.343f, 1617.774f, 22.42315f),
+                                        Heading = 79.68229f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeErotica",
+            Description = "",
+            EntrancePosition = new Vector3(-1245.343f, 1617.774f, 22.42315f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeErotica);
+        BlankLocation KkangpaeGarages2 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1059.527f, 1645.927f, 18.80495f),
+                                            Heading = 90.15751f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1060.793f, 1645.91f, 18.70853f),
+                                            Heading = 268.0052f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1059.625f, 1644.961f, 18.79903f),
+                                            Heading = 39.4474f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1062.691f, 1642.404f, 17.87553f),
+                                        Heading = 2.616594f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeGarages2",
+            Description = "",
+            EntrancePosition = new Vector3(-1062.691f, 1642.404f, 17.87553f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeGarages2);
+        BlankLocation KkangpaeLaundry = new BlankLocation()
+        {
+
+            Name = "KkangpaeLaundry",
+            Description = "",
+            EntrancePosition = new Vector3(-805.9043f, 1618.525f, 13.60345f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-805.9043f, 1618.525f, 13.60345f),
+                                            Heading = 181.4285f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-804.9774f, 1618.503f, 13.60345f),
+                                            Heading = 186.241f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeLaundry);
+        BlankLocation KkangpaeGozushi = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1013.558f, 1809.57f, 21.77605f),
+                                            Heading = 359.337f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1014.313f, 1809.578f, 21.77586f),
+                                            Heading = 356.7967f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1026.924f, 1805.179f, 21.17312f),
+                                        Heading = 178.0261f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeGozushi",
+            Description = "",
+            EntrancePosition = new Vector3(-1026.924f, 1805.179f, 21.17312f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeGozushi);
+        BlankLocation KkangpaeSqaure = new BlankLocation()
+        {
+
+            Name = "KkangpaeSqaure",
+            Description = "",
+            EntrancePosition = new Vector3(-1224.599f, 1856.645f, 20.57278f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1224.599f, 1856.645f, 20.57278f),
+                                            Heading = 91.46455f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1224.624f, 1857.502f, 20.57278f),
+                                            Heading = 89.68976f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeSqaure);
+        BlankLocation KkangpaeBighorn = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1108.285f, 2166.185f, 27.74875f),
+                                            Heading = 271.3477f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1108.346f, 2165.137f, 27.74966f),
+                                            Heading = 269.337f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1102.706f, 2167.413f, 26.97584f),
+                                        Heading = 177.6403f,
+                                },
+                            }
+                    }
+            },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeBighorn",
+            Description = "",
+            EntrancePosition = new Vector3(-1102.706f, 2167.413f, 26.97584f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeBighorn);
+        BlankLocation KkangpaeBite = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.3274f, 2196.831f, 20.51253f),
+                                            Heading = 89.9465f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.29f, 2197.56f, 20.51253f),
+                                            Heading = 89.77574f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-754.8597f, 2182.453f, 19.78052f),
+                                        Heading = 272.3572f,
+                                    IsEmpty = false,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            Name = "KkangpaeBite",
+            Description = "",
+            EntrancePosition = new Vector3(-754.8597f, 2182.453f, 19.78052f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(KkangpaeBite);
+        BlankLocation KkangpaeCuisine = new BlankLocation()
+        {
+
+            Name = "KkangpaeCuisine",
+            Description = "",
+            EntrancePosition = new Vector3(-784.1915f, 1762.503f, 26.46432f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-784.1915f, 1762.503f, 26.46432f),
+                                            Heading = 182.5372f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-783.0187f, 1762.525f, 26.4659f),
+                                            Heading = 178.1389f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(KkangpaeCuisine);
+
+    }
+
+    private void TriadGang()
+    {
+        BlankLocation TriadStreet = new BlankLocation()
+        {
+
+            Name = "TriadStreet",
+            Description = "",
+            EntrancePosition = new Vector3(247.7431f, 131.8762f, 15.20141f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(247.7431f, 131.8762f, 15.20141f),
+                                            Heading = 29.75146f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(246.9359f, 131.3658f, 15.20141f),
+                                            Heading = 31.13165f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet);
+        BlankLocation TriadStreet2 = new BlankLocation()
+        {
+
+            Name = "TriadStreet2",
+            Description = "",
+            EntrancePosition = new Vector3(256.9587f, 55.54659f, 14.7601f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(256.9587f, 55.54659f, 14.7601f),
+                                            Heading = 87.65568f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(256.9993f, 54.77523f, 14.75925f),
+                                            Heading = 91.00845f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet2);
+        BlankLocation TriadStreet3 = new BlankLocation()
+        {
+
+            Name = "TriadStreet3",
+            Description = "",
+            EntrancePosition = new Vector3(320.829f, 12.61634f, 14.77163f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(320.829f, 12.61634f, 14.77163f),
+                                            Heading = 175.3779f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(320.113f, 12.61075f, 14.77163f),
+                                            Heading = 182.1518f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet3);
+        BlankLocation TriadStreet4 = new BlankLocation()
+        {
+
+            Name = "TriadStreet4",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(313.4558f, 44.77863f, 14.76246f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(313.4558f, 44.77863f, 14.76246f),
+                                            Heading = 108.6177f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(312.794f, 46.18323f, 14.75961f),
+                                            Heading = 132.4179f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(309.3086f, 42.75834f, 14.76591f),
+                                            Heading = 294.6251f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(306.6272f, 44.08677f, 14.76505f),
+                                            Heading = 264.2014f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    }
+
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(299.0294f, 41.41854f, 13.99496f),
+                                            Heading = 178.3689f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet4);
+        BlankLocation TriadStreet5 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(230.2047f, 131.9957f, 15.51356f),
+                                            Heading = 270.9149f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(230.1209f, 131.1217f, 15.51356f),
+                                            Heading = 267.269f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(234.0642f, 124.7465f, 14.01854f),
+                                        Heading = 181.2395f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            Name = "TriadStreet5",
+            Description = "",
+            EntrancePosition = new Vector3(234.0642f, 124.7465f, 14.01854f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(TriadStreet5);
+        BlankLocation TriadStreet6 = new BlankLocation()
+        {
+
+            Name = "TriadStreet6",
+            Description = "",
+            EntrancePosition = new Vector3(243.7366f, 145.9383f, 14.76393f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 17,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(243.7366f, 145.9383f, 14.76393f),
+                                            Heading = 155.0832f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(242.9847f, 146.6161f, 14.76357f),
+                                            Heading = 159.182f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet6);
+        BlankLocation TriadStreet7 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 16,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(247.2991f, 52.29225f, 14.75236f),
+                                            Heading = 268.5446f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(247.218f, 50.87874f, 14.75463f),
+                                            Heading = 268.4127f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(243.1232f, 46.86388f, 14.08408f),
+                                        Heading = 269.894f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            Name = "TriadStreet7",
+            Description = "",
+            EntrancePosition = new Vector3(247.2991f, 52.29225f, 14.75236f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(TriadStreet7);
+        BlankLocation TriadStreet8 = new BlankLocation()
+        {
+
+            Name = "TriadStreet8",
+            Description = "",
+            EntrancePosition = new Vector3(254.183f, 113.8661f, 14.76254f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(254.183f, 113.8661f, 14.76254f),
+                                            Heading = 354.4641f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(253.9465f, 115.4141f, 14.76421f),
+                                            Heading = 186.1902f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet8);
+        BlankLocation TriadStreet9 = new BlankLocation()
+        {
+
+            Name = "TriadStreet9",
+            Description = "",
+            EntrancePosition = new Vector3(237.1486f, 71.6002f, 14.76196f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(237.1486f, 71.6002f, 14.76196f),
+                                            Heading = 357.6227f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(238.5029f, 71.5227f, 14.76253f),
+                                            Heading = 358.8286f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadStreet9);
+        BlankLocation TriadParking = new BlankLocation()
+        {
+
+            Name = "TriadParking",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(333.5168f, 148.6803f, 13.9372f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(334.3547f, 146.5753f, 14.61184f),
+                                            Heading = 177.0485f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(334.4878f, 143.8822f, 14.72976f),
+                                            Heading = 3.626181f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(333.6156f, 143.7873f, 14.7214f),
+                                            Heading = 359.9373f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(331.6558f, 142.8965f, 17.36077f),
+                                            Heading = 355.1356f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(333.5168f, 148.6803f, 13.9372f),
+                                            Heading = 115.5975f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(TriadParking);
+
+    }
 
     private void PetrovicGang()
     {
@@ -3853,7 +10314,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 8,
             MaxHourSpawn = 16,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -3896,8 +10357,9 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
+            MaxHourSpawn = 24,
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
             Location = new Vector3(1051.202f,232.595f,15.33756f),
@@ -3993,9 +10455,9 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-            Percentage = 60f,
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 8,
-            MaxHourSpawn = 14,
+            MaxHourSpawn = 16,
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
             Location = new Vector3(1116.795f,12.65497f,14.93323f),
@@ -4067,7 +10529,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4141,7 +10603,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 12,
             MaxHourSpawn = 20,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4203,8 +10665,9 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
+            MaxHourSpawn = 24,
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
             Location = new Vector3(1353.559f,46.04258f,17.79775f),
@@ -4322,7 +10785,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 18,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4389,7 +10852,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 18,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4435,7 +10898,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4486,7 +10949,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 18,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4552,7 +11015,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 16,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4587,7 +11050,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 16,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4665,7 +11128,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 16,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4696,7 +11159,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 16,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4771,7 +11234,5892 @@ public class BlankLocationsData_Liberty
             },
         };
         BlankLocationPlaces.Add(PetrovicBeachgate);
+        //more!!! non converts
+        BlankLocation PetrovicHome = new BlankLocation()
+        {
+
+            Name = "PetrovicHome",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1076.853f, -25.42395f, 13.36073f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            InteriorID = 88834,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1102.523f, -21.64999f, 16.2777f),
+                                            Heading = 270.0482f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "PROP_HUMAN_BBQ",
+                                                "WORLD_HUMAN_DRUG_PROCESSORS_COKE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1092.259f, -19.63508f, 16.2777f),
+                                            Heading = 188.9128f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT",
+                                                "WORLD_HUMAN_AA_SMOKE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1092.295f, -21.92762f, 16.2777f),
+                                            Heading = 358.8919f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1093.481f, -22.07043f, 16.27769f),
+                                            Heading = 12.9685f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1076.853f, -25.42395f, 13.36073f),
+                                            Heading = 4.276759f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        }; //interior
+        BlankLocationPlaces.Add(PetrovicHome);
+        BlankLocation PetrovicMasterson = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1418.873f, 194.1715f, 21.52926f),
+                                            Heading = 269.3707f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1418.756f, 195.7192f, 21.54207f),
+                                            Heading = 267.6179f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1425.172f, 192.4428f, 20.78341f),
+                                        Heading = 359.0621f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            Name = "PetrovicMasterson",
+            Description = "",
+            EntrancePosition = new Vector3(1425.172f, 192.4428f, 20.78341f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(PetrovicMasterson);
+        BlankLocation PetrovicAlexeis = new BlankLocation()
+        {
+
+            Name = "PetrovicAlexeis",
+            Description = "",
+            EntrancePosition = new Vector3(1135.145f, 215.1884f, 18.7699f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 16,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1135.145f, 215.1884f, 18.7699f),
+                                            Heading = 265.6195f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1135.11f, 216.3598f, 18.81138f),
+                                            Heading = 268.7603f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PetrovicAlexeis);
+        BlankLocation PetrovicLaundromat = new BlankLocation()
+        {
+
+            Name = "PetrovicLaundromat",
+            Description = "",
+            EntrancePosition = new Vector3(1250.569f, 171.2465f, 20.27625f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1250.569f, 171.2465f, 20.27625f),
+                                            Heading = 104.3423f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1250.922f, 170.0503f, 20.25072f),
+                                            Heading = 101.0594f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(PetrovicLaundromat);
+        BlankLocation PetrovicHome2 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1193.487f, 298.6674f, 24.71638f),
+                                            Heading = 219.7444f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1196.496f, 302.849f, 21.9922f),
+                                        Heading = 197.944f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
+            Name = "PetrovicHome2",
+            Description = "",
+            EntrancePosition = new Vector3(1193.487f, 298.6674f, 24.71638f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(PetrovicHome2);
+
     }
+
+    private void SpanishLordsGang()
+    {
+        BlankLocation SpanLordsMem = new BlankLocation()
+        {
+
+            Name = "SpanLordsMem",
+            FullName = "",
+            Description = "2 Spanish Lords at Hernan Memorial",
+            MapIcon = 78,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(811.6744f, 1869.621f, 10.9797f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "Liberty",
+
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            MenuID = "",
+
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                    Name = "",
+                    Percentage = defaultSpawnPercentage,
+                    MinHourSpawn = 8,
+                    MaxHourSpawn = 20,
+                    MaxWantedLevelSpawn = 4,
+                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    {
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(811.6744f, 1869.621f, 10.9797f),
+                            Heading = 262.1925f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                            },
+                            MaxWantedLevelSpawn = 4,
+                        },
+                        new GangConditionalLocation()
+                        {
+                            Location = new Vector3(811.6653f, 1870.759f, 10.96288f),
+                            Heading = 258.0417f,
+                            AssociationID = "",
+                            RequiredPedGroup = "",
+                            RequiredVehicleGroup = "",
+                            TaskRequirements = TaskRequirements.Guard,
+                            ForcedScenarios = new List<String>()
+                            {
+                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                            },
+                            MaxWantedLevelSpawn = 4,
+                        },
+                    },
+                    PossibleVehicleSpawns = new List<ConditionalLocation>() {
+                   },
+                },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>() { },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            VehiclePreviewLocation = new SpawnPlace() { },
+        };
+        BlankLocationPlaces.Add(SpanLordsMem);
+        BlankLocation SpanishLordsBasketball = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBasketball",
+            Description = "",
+            EntrancePosition = new Vector3(557.9919f, 2034.14f, 14.5395f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 4,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(557.9919f, 2034.14f, 14.5395f),
+                                            Heading = 221.0592f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CASINO",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(557.4238f, 2033.133f, 14.5395f),
+                                            Heading = 300.942f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBasketball);
+        BlankLocation SpanishLordsBlocks = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBlocks",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(617.1314f, 2023.676f, 16.94814f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(617.1314f, 2023.676f, 16.94814f),
+                                            Heading = 342.796f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(600.4146f, 2001.644f, 16.96493f),
+                                            Heading = 249.5234f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(602.0458f, 2000.762f, 16.96542f),
+                                            Heading = 57.3554f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(600.9976f, 1999.838f, 16.96445f),
+                                            Heading = 16.9324f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(615.6309f, 2031.731f, 15.84769f),
+                                            Heading = 144.0499f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(611.8477f, 2033.963f, 16.1017f),
+                                            Heading = 141.1463f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBlocks);
+        BlankLocation SpanishLordsBlocks2 = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBlocks2",
+            Description = "",
+            EntrancePosition = new Vector3(676.0126f, 1945.854f, 9.848968f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(676.0126f, 1945.854f, 9.848968f),
+                                            Heading = 306.0933f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(675.697f, 1946.676f, 9.884265f),
+                                            Heading = 269.9267f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBlocks2);
+        BlankLocation SpanishLordsSwitchSt = new BlankLocation()
+        {
+
+            Name = "SpanishLordsSwitchSt",
+            Description = "",
+            EntrancePosition = new Vector3(798.3217f, 2045.696f, 18.17941f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 16,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(798.3217f, 2045.696f, 18.17941f),
+                                            Heading = 205.9291f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(799.1834f, 2046.195f, 18.17941f),
+                                            Heading = 185.5197f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsSwitchSt);
+        BlankLocation SpanishLordsFolsom = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(703.6315f, 2151.521f, 17.22648f),
+                                            Heading = 359.7403f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRINKING_FACILITY"
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(705.1905f, 2151.458f, 17.39209f),
+                                            Heading = 10.98074f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT"
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(706.3038f, 2159.385f, 16.91493f),
+                                        Heading = 77.53199f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            Name = "SpanishLordsFolsom",
+            Description = "",
+            EntrancePosition = new Vector3(706.3038f, 2159.385f, 16.91493f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(SpanishLordsFolsom);
+        BlankLocation SpanishLordsButterflyCabin = new BlankLocation()
+        {
+
+            Name = "SpanishLordsButterflyCabin",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(544.2592f, 2352.597f, 17.14791f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(540.7457f, 2357.627f, 18.16157f),
+                                            Heading = 62.83598f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(544.3738f, 2357.82f, 17.77132f),
+                                            Heading = 273.0719f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(537.7017f, 2356.656f, 18.16157f),
+                                            Heading = 298.1473f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(537.6066f, 2358.586f, 18.16157f),
+                                            Heading = 244.238f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(544.2592f, 2352.597f, 17.14791f),
+                                            Heading = 43.74239f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(540.8048f, 2346.397f, 17.07111f),
+                                            Heading = 95.20958f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 4,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsButterflyCabin);
+        BlankLocation SpanishLordsValdez = new BlankLocation()
+        {
+
+            Name = "SpanishLordsValdez",
+            Description = "",
+            EntrancePosition = new Vector3(1024.478f, 2296.503f, 36.70207f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1024.478f, 2296.503f, 36.70207f),
+                                            Heading = 262.1475f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1024.104f, 2295.813f, 36.68025f),
+                                            Heading = 239.2251f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsValdez);
+        BlankLocation SpanishLordsCorner = new BlankLocation()
+        {
+
+            Name = "SpanishLordsCorner",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(997.8193f, 1973.162f, 13.5274f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 3,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(994.3502f, 1963.395f, 15.85094f),
+                                            Heading = 92.3622f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(991.045f, 1965.061f, 14.24833f),
+                                            Heading = 90.06734f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(991.0338f, 1964.142f, 14.24833f),
+                                            Heading = 71.95461f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(997.8193f, 1973.162f, 13.5274f),
+                                            Heading = 271.2206f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1016.665f, 1967.265f, 13.52401f),
+                                            Heading = 3.723292f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsCorner);
+        BlankLocation SpanishLordsPark = new BlankLocation()
+        {
+
+            Name = "SpanishLordsPark",
+            Description = "",
+            EntrancePosition = new Vector3(737.7163f, 2362.255f, 26.16826f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(737.7163f, 2362.255f, 26.16826f),
+                                            Heading = 8.662255f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(738.4009f, 2362.346f, 26.18497f),
+                                            Heading = 8.363561f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsPark);
+        BlankLocation SpanishLordsLotus = new BlankLocation()
+        {
+
+            Name = "SpanishLordsLotus",
+            Description = "",
+            EntrancePosition = new Vector3(873.9929f, 2091.853f, 24.60303f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(873.9929f, 2091.853f, 24.60303f),
+                                            Heading = 178.2518f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(872.6816f, 2091.715f, 24.60303f),
+                                            Heading = 185.8716f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsLotus);
+        BlankLocation SpanishLordsBlocks3 = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBlocks3",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1192.597f, 2271.808f, 20.24261f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 3,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1189.522f, 2265.845f, 20.86401f),
+                                            Heading = 219.3602f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1190.097f, 2266.584f, 20.864f),
+                                            Heading = 183.3793f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1190.487f, 2264.962f, 20.86401f),
+                                            Heading = 19.84033f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1192.597f, 2271.808f, 20.24261f),
+                                            Heading = 81.88879f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 16,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1201.701f, 2258.509f, 20.25892f),
+                                            Heading = 226.1502f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBlocks3);
+        BlankLocation SpanishLordsBlocks4 = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBlocks4",
+            Description = "",
+            EntrancePosition = new Vector3(1221.936f, 2202.096f, 16.84509f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1221.936f, 2202.096f, 16.84509f),
+                                            Heading = 3.811977f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1220.37f, 2202.122f, 16.84509f),
+                                            Heading = 358.8205f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBlocks4);
+        BlankLocation SpanishLordsAutoShop = new BlankLocation()
+        {
+
+            Name = "SpanishLordsAutoShop",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1205.91f, 2097.298f, 16.0931f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1213.079f, 2099.536f, 16.93636f),
+                                            Heading = 34.94679f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_GUARD_STAND_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1214.007f, 2100.206f, 16.90004f),
+                                            Heading = 37.67293f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1218.448f, 2093.605f, 16.85694f),
+                                            Heading = 342.1092f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1217.275f, 2094.4f, 16.85593f),
+                                            Heading = 325.0153f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_CLIPBOARD_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1205.91f, 2097.298f, 16.0931f),
+                                            Heading = 315.5219f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1219.218f, 2097.713f, 16.29062f),
+                                            Heading = 226.278f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsAutoShop);
+        BlankLocation SpanishLordsHammer = new BlankLocation()
+        {
+
+            Name = "SpanishLordsHammer",
+            Description = "",
+            EntrancePosition = new Vector3(1144.372f, 2264.297f, 16.8431f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1144.372f, 2264.297f, 16.8431f),
+                                            Heading = 136.5653f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1145.168f, 2263.519f, 16.83316f),
+                                            Heading = 138.1465f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsHammer);
+        BlankLocation SpanishLordsAttica = new BlankLocation()
+        {
+
+            Name = "SpanishLordsAttica",
+            Description = "",
+            EntrancePosition = new Vector3(925.8395f, 2097.052f, 26.57742f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(925.8395f, 2097.052f, 26.57742f),
+                                            Heading = 106.7113f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(925.9544f, 2096.078f, 26.56761f),
+                                            Heading = 101.6826f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsAttica);
+        BlankLocation SpanishLordsBlocks5 = new BlankLocation()
+        {
+
+            Name = "SpanishLordsBlocks5",
+            Description = "",
+            EntrancePosition = new Vector3(674.3111f, 1866.907f, 11.60816f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(674.3111f, 1866.907f, 11.60816f),
+                                            Heading = 319.6241f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(675.2188f, 1866.206f, 11.60816f),
+                                            Heading = 327.9651f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(SpanishLordsBlocks5);
+
+    }
+
+    private void HolHustGang()
+    {
+        BlankLocation HustlersSprunk = new BlankLocation()
+        {
+
+            Name = "HustlersSprunk",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(933.8857f, 1957.303f, 14.8477f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            InteriorID = 172034,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 19,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(933.8857f, 1957.303f, 14.8477f),
+                                            Heading = 337.5721f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(952.8941f, 1951.081f, 14.8477f),
+                                            Heading = 21.77995f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(951.8707f, 1953.552f, 14.8477f),
+                                            Heading = 191.2004f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(950.3953f, 1952.807f, 14.8477f),
+                                            Heading = 232.3982f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(942.9815f, 1962.527f, 16.24864f),
+                                            Heading = 183.3846f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(925.7125f, 1945.713f, 14.50593f),
+                                            Heading = 0.8748494f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        }; //interior
+        BlankLocationPlaces.Add(HustlersSprunk);
+        BlankLocation HustlersBlock = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-272.9401f, 1960.713f, 18.86179f),
+                                            Heading = 4.910076f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-273.9228f, 1960.727f, 18.86179f),
+                                            Heading = 347.3505f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-274.2355f, 1970.004f, 18.16135f),
+                                        Heading = 180.378f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            Name = "HustlersBlock",
+            Description = "",
+            EntrancePosition = new Vector3(-274.2355f, 1970.004f, 18.16135f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(HustlersBlock);
+        BlankLocation HustlersBlock2 = new BlankLocation()
+        {
+
+            Name = "HustlersBlock2",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(-251.7597f, 2014.311f, 18.1423f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-260.7271f, 2024.446f, 18.862f),
+                                            Heading = 249.6301f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-258.894f, 2024.949f, 18.85401f),
+                                            Heading = 101.2989f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-252.2874f, 2022.956f, 18.80116f),
+                                            Heading = 158.8806f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-252.8168f, 2021.451f, 18.80008f),
+                                            Heading = 341.1935f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-251.7597f, 2014.311f, 18.1423f),
+                                            Heading = 160.3956f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-246.4068f, 2021.306f, 18.15407f),
+                                            Heading = 47.43872f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBlock2);
+        BlankLocation HustlersBlock3 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(158.5448f, 2010.774f, 18.83068f),
+                                            Heading = 125.3245f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(159.2203f, 2009.65f, 18.83068f),
+                                            Heading = 106.8842f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(155.2973f, 2032.302f, 17.96054f),
+                                        Heading = 266.9731f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            Name = "HustlersBlock3",
+            Description = "",
+            EntrancePosition = new Vector3(155.2973f, 2032.302f, 17.96054f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(HustlersBlock3);
+        BlankLocation HustlersBlock4 = new BlankLocation()
+        {
+
+            Name = "HustlersBlock4",
+            Description = "",
+            EntrancePosition = new Vector3(114.6603f, 1988.504f, 18.43402f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(114.6603f, 1988.504f, 18.43402f),
+                                            Heading = 146.2155f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(113.6372f, 1987.206f, 18.4385f),
+                                            Heading = 308.1097f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBlock4);
+        BlankLocation HustlersBBCourts = new BlankLocation()
+        {
+
+            Name = "HustlersBBCourts",
+            Description = "",
+            EntrancePosition = new Vector3(27.67035f, 1947.568f, 20.44954f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(27.67035f, 1947.568f, 20.44954f),
+                                            Heading = 89.55726f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(27.75593f, 1948.567f, 20.44954f),
+                                            Heading = 91.50203f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBBCourts);
+        BlankLocation HustlersTwat = new BlankLocation()
+        {
+
+            Name = "HustlersTwat",
+            Description = "",
+            EntrancePosition = new Vector3(-101.9269f, 1890.343f, 12.73699f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-101.9269f, 1890.343f, 12.73699f),
+                                            Heading = 90.22813f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-101.9837f, 1889.301f, 12.80247f),
+                                            Heading = 95.24944f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersTwat);
+        BlankLocation HustlersBlock5 = new BlankLocation()
+        {
+
+            Name = "HustlersBlock5",
+            Description = "",
+            EntrancePosition = new Vector3(-242.8304f, 1748.691f, 17.47898f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-242.8304f, 1748.691f, 17.47898f),
+                                            Heading = 270.7826f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-242.8879f, 1749.353f, 17.47836f),
+                                            Heading = 270.6313f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBlock5);
+        BlankLocation HustlersPark = new BlankLocation()
+        {
+
+            Name = "HustlersPark",
+            Description = "",
+            EntrancePosition = new Vector3(-6.503558f, 1208.334f, 3.424065f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-6.503558f, 1208.334f, 3.424065f),
+                                            Heading = 272.9309f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-6.699773f, 1209.391f, 3.421892f),
+                                            Heading = 273.3445f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersPark);
+        BlankLocation HustlersBankCorner = new BlankLocation()
+        {
+
+            Name = "HustlersBankCorner",
+            Description = "",
+            EntrancePosition = new Vector3(-145.7838f, 1683.436f, 14.7602f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-145.7838f, 1683.436f, 14.7602f),
+                                            Heading = 198.4298f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-147.1679f, 1682.953f, 14.75968f),
+                                            Heading = 237.7976f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBankCorner);
+        BlankLocation HustlersBurger = new BlankLocation()
+        {
+
+            Name = "HustlersBurger",
+            Description = "",
+            EntrancePosition = new Vector3(-203.7681f, 1683.467f, 12.88448f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 14,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-203.7681f, 1683.467f, 12.88448f),
+                                            Heading = 94.22587f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-203.7875f, 1684.189f, 12.8854f),
+                                            Heading = 94.18714f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBurger);
+        BlankLocation HustlersStyle = new BlankLocation()
+        {
+
+            Name = "HustlersStyle",
+            Description = "",
+            EntrancePosition = new Vector3(-227.14f, 1889.685f, 15.47174f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-227.14f, 1889.685f, 15.47174f),
+                                            Heading = 274.434f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-227.1412f, 1890.754f, 15.47174f),
+                                            Heading = 272.0949f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersStyle);
+        BlankLocation HustlersBlock6 = new BlankLocation()
+        {
+
+            Name = "HustlersBlock6",
+            Description = "",
+            EntrancePosition = new Vector3(-130.6612f, 2107.179f, 20.42315f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-130.6612f, 2107.179f, 20.42315f),
+                                            Heading = 210.2232f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-129.8799f, 2107.711f, 20.42418f),
+                                            Heading = 212.858f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersBlock6);
+        BlankLocation HustlersUnderBridge = new BlankLocation()
+        {
+
+            Name = "HustlersUnderBridge",
+            Description = "",
+            EntrancePosition = new Vector3(426.7823f, 1515.439f, 8.448785f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(426.7823f, 1515.439f, 8.448785f),
+                                            Heading = 270.9568f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(426.7317f, 1514.082f, 8.448785f),
+                                            Heading = 266.329f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersUnderBridge);
+        BlankLocation HustlersPark2 = new BlankLocation()
+        {
+
+            Name = "HustlersPark2",
+            Description = "",
+            EntrancePosition = new Vector3(-61.64191f, 1602.783f, 12.31144f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-61.64191f, 1602.783f, 12.31144f),
+                                            Heading = 288.2362f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-61.45448f, 1601.588f, 12.37199f),
+                                            Heading = 295.6778f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HustlersPark2);
+    }
+
+    private void AodGang()
+    {
+        BlankLocation AodDiner = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-156.9996f, 737.7203f, 14.23953f),
+                                            Heading = 13.56679f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-155.4918f, 737.7178f, 14.36263f),
+                                            Heading = 4.593013f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-162.1211f, 734.6867f, 13.27417f),
+                                        Heading = 359.336f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-158.1828f, 743.571f, 13.45133f),
+                                        Heading = 267.0504f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANGELS",
+            Name = "AodDiner",
+            Description = "",
+            EntrancePosition = new Vector3(-162.1211f, 734.6867f, 13.27417f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AodDiner);
+        BlankLocation AodCommunity = new BlankLocation()
+        {
+
+            Name = "AodCommunity",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(2032.62f, 1239.758f, 25.18448f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_ANGELS",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 20,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(2036.73f, 1242.742f, 25.70454f),
+                                            Heading = 90.21704f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-78.97172f, 2054.74f, 20.30567f),
+                                            Heading = 160.4086f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-76.90724f, 2051.268f, 20.29469f),
+                                            Heading = 89.77721f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-76.8615f, 2052.595f, 20.29335f),
+                                            Heading = 96.04617f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STUPOR_CLUBHOUSE",
+                                                "WORLD_HUMAN_STUPOR",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(2032.62f, 1239.758f, 25.18448f),
+                                            Heading = 0.4643726f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(2031.78f, 1244.731f, 25.17965f),
+                                            Heading = 297.6171f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(2031.802f, 1247.436f, 25.18022f),
+                                            Heading = 296.4234f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(AodCommunity);
+        BlankLocation AodLimbo = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.3274f, 2196.831f, 20.51253f),
+                                            Heading = 89.9465f,
+                                            MinHourSpawn = 18,
+                                            MaxHourSpawn = 20,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.29f, 2197.56f, 20.51253f),
+                                            Heading = 89.77574f,
+                                            MinHourSpawn = 18,
+                                            MaxHourSpawn = 20,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-754.8597f, 2182.453f, 19.78052f),
+                                        Heading = 272.3572f,
+                                        IsEmpty = false,
+                                        MinHourSpawn = 20,
+                                        MaxHourSpawn = 24,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-754.8597f, 2182.453f, 19.78052f),
+                                        Heading = 272.3572f,
+                                        IsEmpty = false,
+                                        MinHourSpawn = 20,
+                                        MaxHourSpawn = 24,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANGELS",
+            Name = "AodLimbo",
+            Description = "",
+            EntrancePosition = new Vector3(-754.8597f, 2182.453f, 19.78052f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AodLimbo);
+        BlankLocation AodScrap = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 22,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.3274f, 2196.831f, 20.51253f),
+                                            Heading = 89.9465f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                                "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-751.29f, 2197.56f, 20.51253f),
+                                            Heading = 89.77574f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-252.8676f, 854.4429f, 6.707807f),
+                                        Heading = 349.2722f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-254.204f, 854.6855f, 6.714098f),
+                                        Heading = 345.8728f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_ANGELS",
+            Name = "AodScrap",
+            Description = "",
+            EntrancePosition = new Vector3(-252.8676f, 854.4429f, 6.707807f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(AodScrap);
+        BlankLocation AodScrap2 = new BlankLocation()
+        {
+
+            Name = "AodScrap2",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(1280.752f, 1154.906f, 26.01654f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_ANGELS",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1280.752f, 1154.906f, 26.01654f),
+                                            Heading = 358.3793f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1280.142f, 1151.425f, 26.32723f),
+                                            Heading = 183.2842f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1280.097f, 1149.08f, 26.32723f),
+                                            Heading = 359.2186f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1281.999f, 1148.853f, 26.32723f),
+                                            Heading = 25.82615f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STUPOR_CLUBHOUSE",
+                                                "WORLD_HUMAN_STUPOR",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1276.881f, 1158.206f, 25.4833f),
+                                            Heading = 258.5092f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1281.008f, 1159.129f, 25.48474f),
+                                            Heading = 221.6832f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(AodScrap2);
+
+
+
+
+
+
+
+
+
+
+    }
+
+    private void LostGang()
+    {
+        BlankLocation LostHonkersCP = new BlankLocation()
+        {
+
+            Name = "LostHonkersCP",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(-1376.096f, 458.3227f, 9.562305f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1379.702f, 448.3032f, 10.04338f),
+                                            Heading = 268.2005f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1379.59f, 449.989f, 10.0434f),
+                                            Heading = 250.9974f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1375.208f, 449.8713f, 10.04384f),
+                                            Heading = 103.8994f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1377.166f, 451.3575f, 10.04356f),
+                                            Heading = 152.0862f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1375.968f, 446.5561f, 10.07577f),
+                                            Heading = 44.6555f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1376.096f, 458.3227f, 9.562305f),
+                                            Heading = 91.08441f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1376.029f, 455.1564f, 9.561684f),
+                                            Heading = 91.0808f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1368.221f, 445.7012f, 9.562824f),
+                                            Heading = 202.7643f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1365.285f, 447.1527f, 9.562803f),
+                                            Heading = 203.0308f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LostHonkersCP);
+        BlankLocation LostHardtack = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 23,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1828.149f, 660.0641f, 12.5407f),
+                                            Heading = 348.4327f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1827.229f, 660.0388f, 12.54087f),
+                                            Heading = 359.165f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1825.443f, 665.3831f, 11.56585f),
+                                        Heading = 182.3113f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1822.229f, 664.2549f, 11.56537f),
+                                        Heading = 184.7067f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            Name = "LostHardtack",
+            Description = "",
+            EntrancePosition = new Vector3(-1825.443f, 665.3831f, 11.56585f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LostHardtack);
+        BlankLocation LostBlock = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 18,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1844.208f, 538.6031f, 7.101818f),
+                                            Heading = 91.03706f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1844.198f, 539.4734f, 7.103068f),
+                                            Heading = 90.96889f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1845.13f, 532.4124f, 6.635712f),
+                                        Heading = 137.6688f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1844.808f, 530.5572f, 6.652855f),
+                                        Heading = 139.2734f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            Name = "LostBlock",
+            Description = "",
+            EntrancePosition = new Vector3(-1845.13f, 532.4124f, 6.635712f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LostBlock);
+        BlankLocation LostBlock2 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 23,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1797.512f, 584.0159f, 6.809204f),
+                                            Heading = 355.396f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_MUSICIAN",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1797.902f, 587.575f, 6.779629f),
+                                            Heading = 178.8566f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1799.961f, 587.0161f, 6.788938f),
+                                            Heading = 208.4347f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1800.81f, 585.3819f, 6.800952f),
+                                            Heading = 229.1242f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1796.119f, 586.7354f, 6.772004f),
+                                            Heading = 155.9949f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_PARTYING",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1794.688f, 585.5372f, 6.770759f),
+                                            Heading = 126.4429f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRINKING",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1797.469f, 580.9626f, 6.299311f),
+                                        Heading = 4.019263f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1791.802f, 586.0363f, 6.227337f),
+                                        Heading = 92.16045f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1798.026f, 591.009f, 6.215022f),
+                                        Heading = 185.919f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1802.87f, 585.7045f, 6.264699f),
+                                        Heading = 268.9051f,
+                                },
+                            },
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            Name = "LostBlock2",
+            Description = "",
+            EntrancePosition = new Vector3(-1797.469f, 580.9626f, 6.299311f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LostBlock2);
+        BlankLocation LostDiner = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1190.216f, 936.6941f, 15.66362f),
+                                            Heading = 340.5001f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1189.235f, 936.8538f, 15.62122f),
+                                            Heading = 342.7975f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1189.576f, 941.447f, 15.01071f),
+                                        Heading = 140.0037f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1192.236f, 939.1833f, 15.18274f),
+                                        Heading = 144.5579f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            Name = "LostDiner",
+            Description = "",
+            EntrancePosition = new Vector3(1189.576f, 941.447f, 15.01071f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LostDiner);
+        BlankLocation LostBlock3 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1633.952f, 763.5078f, 22.95208f),
+                                            Heading = 2.493968f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1634.798f, 763.4322f, 22.95276f),
+                                            Heading = 358.4658f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(-1626.995f, 768.0521f, 22.3841f),
+                                        Heading = 91.32539f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            Name = "LostBlock3",
+            Description = "",
+            EntrancePosition = new Vector3(-1626.995f, 768.0521f, 22.3841f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(LostBlock3);
+        BlankLocation LostHouse = new BlankLocation()
+        {
+
+            Name = "LostHouse",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(-1344.081f, 843.863f, 24.2707f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 16,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1346.079f, 843.9521f, 24.87172f),
+                                            Heading = 42.96614f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1347.841f, 845.7986f, 25.158f),
+                                            Heading = 217.0836f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1351.606f, 847.7762f, 25.45008f),
+                                            Heading = 186.2756f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_DRINKING_CASINO_TERRACE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1347.737f, 847.2216f, 25.3681f),
+                                            Heading = 202.3455f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_SMOKING_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1344.081f, 843.863f, 24.2707f),
+                                            Heading = 1.033443f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LostHouse);
+        BlankLocation LostAlley = new BlankLocation()
+        {
+
+            Name = "LostAlley",
+            Description = "",
+            EntrancePosition = new Vector3(-1359.828f, 867.1675f, 25.49144f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 22,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1359.828f, 867.1675f, 25.49144f),
+                                            Heading = 92.13306f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-1361.63f, 867.2947f, 25.49144f),
+                                            Heading = 267.7621f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                                "WORLD_HUMAN_DRINKING_FACILITY",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(LostAlley);
+
+    }
+
+    private void UptownGang()
+    {
+        BlankLocation UptownCowboy = new BlankLocation()
+        {
+
+            Name = "UptownCowboy",
+            Description = "",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(-79.64777f, 2052.8f, 19.63912f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-80.69177f, 2054.08f, 20.28928f),
+                                            Heading = 213.0483f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_INSPECT_CROUCH",
+                                                "WORLD_HUMAN_INSPECT_STAND",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-78.97172f, 2054.74f, 20.30567f),
+                                            Heading = 160.4086f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-79.81969f, 2052.173f, 19.63668f),
+                                            Heading = 297.8694f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(-79.10217f, 2049.97f, 19.62909f),
+                                            Heading = 294.9358f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            ForcedScenarios = new List<string>()
+                                            {},
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 3,
+
+
+
+
+                                    },
+                        },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(UptownCowboy);
+        BlankLocation UptownBlock = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(96.16191f, 2139.752f, 20.56667f),
+                                            Heading = 267.9662f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(97.5478f, 2139.422f, 20.56667f),
+                                            Heading = 81.44434f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(96.45052f, 2133.375f, 19.76387f),
+                                        Heading = 29.50385f,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(98.98656f, 2133.462f, 19.92022f),
+                                        Heading = 27.5295f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
+            Name = "UptownBlock",
+            Description = "",
+            EntrancePosition = new Vector3(96.45052f, 2133.375f, 19.76387f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(UptownBlock);
+        BlankLocation UptownBlock2 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(94.12988f, 2165.436f, 18.7542f),
+                                            Heading = 3.855219f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(93.07771f, 2165.333f, 18.7542f),
+                                            Heading = 3.675136f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                                "WORLD_HUMAN_DRUG_DEALER",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(131.116f, 2165.851f, 17.98447f),
+                                        Heading = 357.8248f,
+                                    IsEmpty = false,
+                                            MinHourSpawn = 22,
+                                            MaxHourSpawn = 24,
+                                },
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(133.7932f, 2165.439f, 18.03648f),
+                                        Heading = 1.011264f,
+                                    IsEmpty = false,
+                                            MinHourSpawn = 22,
+                                            MaxHourSpawn = 24,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
+            Name = "UptownBlock2",
+            Description = "",
+            EntrancePosition = new Vector3(94.12988f, 2165.436f, 18.7542f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(UptownBlock2);
+
+
+
+
+
+
+
+
+
+    }
+
     private void YardiesGang()
     {
         BlankLocation YardiesBumbaclot = new BlankLocation()
@@ -4788,7 +17136,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 16,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4817,7 +17165,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 16,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4905,7 +17253,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 18,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -4927,7 +17275,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -5006,7 +17354,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 10,
             MaxHourSpawn = 18,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -5040,7 +17388,7 @@ public class BlankLocationsData_Liberty
             },
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
             MaxHourSpawn = 23,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -5126,7 +17474,7 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 12,
             MaxHourSpawn = 20,
             PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -5200,8 +17548,9 @@ public class BlankLocationsData_Liberty
             PossibleGroupSpawns = new List<ConditionalGroup>() {
             new ConditionalGroup() {
             Name = "",
-
+            Percentage = defaultSpawnPercentage,
             MinHourSpawn = 18,
+            MaxHourSpawn = 24,
             PossiblePedSpawns = new List<ConditionalLocation>() {
             new GangConditionalLocation() {
             Location = new Vector3(1773.581f,632.506f,23.12693f),
@@ -5476,79 +17825,492 @@ public class BlankLocationsData_Liberty
             VehicleDeliveryLocations = new List<SpawnPlace>() { },
         };
         BlankLocationPlaces.Add(YardiesAlley2);
-
-    }
-    private void SpanishLordsGang()
-    {
-        BlankLocation SpanLordsMem = new BlankLocation()
+        BlankLocation YardiesBurgershot = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1865.978f, 726.0427f, 22.37967f),
+                                            Heading = 91.44577f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1865.95f, 727.2113f, 22.37967f),
+                                            Heading = 92.96597f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_DRINKING",
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1861.01f, 725.2467f, 21.54011f),
+                                        Heading = 272.5944f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            Name = "YardiesBurgershot",
+            Description = "",
+            EntrancePosition = new Vector3(1861.01f, 725.2467f, 21.54011f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(YardiesBurgershot);
+        BlankLocation YardiesAlPizza = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 18,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1674.01f, 718.6381f, 26.07837f),
+                                            Heading = 182.6806f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1674.806f, 718.4825f, 26.03683f),
+                                            Heading = 178.369f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1676.551f, 715.4472f, 25.18301f),
+                                        Heading = 91.5689f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            Name = "YardiesAlPizza",
+            Description = "",
+            EntrancePosition = new Vector3(1676.551f, 715.4472f, 25.18301f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(YardiesAlPizza);
+        BlankLocation YardiesBlock = new BlankLocation()
         {
 
-            Name = "SpanLordsMem",
-            FullName = "",
-            Description = "2 Spanish Lords at Hernan Memorial",
-            MapIcon = 78,
-            MapIconScale = 1f,
-            EntrancePosition = new Vector3(811.6744f, 1869.621f, 10.9797f),
+            Name = "YardiesBlock",
+            Description = "",
+            EntrancePosition = new Vector3(1785.33f, 713.1031f, 24.2921f),
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
 
-
-            AssignedAssociationID = "AMBIENT_GANG_SPANISH",
-            MenuID = "",
-
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
-            {
-                new ConditionalGroup()
                 {
-                    Name = "",
-                    Percentage = defaultSpawnPercentage,
-                    MinHourSpawn = 8,
-                    MaxHourSpawn = 20,
-                    MaxWantedLevelSpawn = 6,
-                    PossiblePedSpawns = new List<ConditionalLocation>()
+                    new ConditionalGroup()
                     {
-                        new GangConditionalLocation()
-                        {
-                            Location = new Vector3(811.6744f, 1869.621f, 10.9797f),
-                            Heading = 262.1925f,
-                            AssociationID = "",
-                            RequiredPedGroup = "",
-                            RequiredVehicleGroup = "",
-                            TaskRequirements = TaskRequirements.Guard,
-                            ForcedScenarios = new List<String>()
-                            {
-                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
-                                "WORLD_HUMAN_DRUG_DEALER_HARD",
-                            },
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 14,
+                            MaxHourSpawn = 23,
+                            MinWantedLevelSpawn = 0,
                             MaxWantedLevelSpawn = 6,
-                        },
-                        new GangConditionalLocation()
-                        {
-                            Location = new Vector3(811.6653f, 1870.759f, 10.96288f),
-                            Heading = 258.0417f,
-                            AssociationID = "",
-                            RequiredPedGroup = "",
-                            RequiredVehicleGroup = "",
-                            TaskRequirements = TaskRequirements.Guard,
-                            ForcedScenarios = new List<String>()
+                            PossiblePedSpawns = new List<ConditionalLocation>()
                             {
-                                "WORLD_HUMAN_HANG_OUT_STREET",
-                                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1785.33f, 713.1031f, 24.2921f),
+                                            Heading = 269.1364f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1785.336f, 712.3278f, 24.29296f),
+                                            Heading = 272.5494f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
                             },
-                            MaxWantedLevelSpawn = 6,
-                        },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
                     },
-                    PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                   },
                 },
-            },
-            PossiblePedSpawns = new List<ConditionalLocation>() { },
-            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
-            VehiclePreviewLocation = new SpawnPlace() { },
         };
-        BlankLocationPlaces.Add(SpanLordsMem);
+        BlankLocationPlaces.Add(YardiesBlock);
+        BlankLocation YardiesBlock2 = new BlankLocation()
+        {
+
+            Name = "YardiesBlock2",
+            Description = "",
+            EntrancePosition = new Vector3(1768.689f, 665.1475f, 23.01879f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 10,
+                            MaxHourSpawn = 18,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1768.689f, 665.1475f, 23.01879f),
+                                            Heading = 358.9816f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1767.835f, 665.2197f, 23.01879f),
+                                            Heading = 356.9689f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(YardiesBlock2);
+        BlankLocation YardiesStore = new BlankLocation()
+        {
+
+            Name = "YardiesStore",
+            Description = "",
+            EntrancePosition = new Vector3(1618.201f, 615.1682f, 31.26449f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = -1f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = -1f,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 6,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1618.201f, 615.1682f, 31.26449f),
+                                            Heading = 64.86868f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1618.815f, 615.9364f, 31.26449f),
+                                            Heading = 62.36359f,
+                                            Percentage = 0f,
+                                            AssociationID = "",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            IsEmpty = true,
+
+                                            AllowAirVehicle = false,
+                                            AllowBoat = false,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                            },
+                                            OverrideNightPercentage = -1f,
+                                            OverrideDayPercentage = -1f,
+                                            OverridePoorWeatherPercentage = -1f,
+                                            MinHourSpawn = 0,
+                                            MaxHourSpawn = 24,
+                                            MinWantedLevelSpawn = 0,
+                                            MaxWantedLevelSpawn = 6,
+
+
+
+
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {},
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(YardiesStore);
+        BlankLocation YardiesEarpSt = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 12,
+                            MaxHourSpawn = 24,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1460.539f, 523.9868f, 35.5916f),
+                                            Heading = 271.2274f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1460.486f, 524.8422f, 35.59051f),
+                                            Heading = 273.0463f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1463.883f, 525.3993f, 34.91597f),
+                                        Heading = 180.7651f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            Name = "YardiesEarpSt",
+            Description = "",
+            EntrancePosition = new Vector3(1463.883f, 525.3993f, 34.91597f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(YardiesEarpSt);
+        BlankLocation YardiesBlock3 = new BlankLocation()
+        {
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                            Percentage = defaultSpawnPercentage,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 16,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1744.536f, 737.4148f, 24.30181f),
+                                            Heading = 0.7416951f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_LEANING_CASINO_TERRACE",
+                                                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                                            },
+                                    },
+                                    new GangConditionalLocation()
+                                    {
+                                        Location = new Vector3(1743.282f, 737.4814f, 24.30298f),
+                                            Heading = 1.621169f,
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_SMOKING_POT",
+                                                "WORLD_HUMAN_DRUG_DEALER_HARD",
+                                            },
+                                    },
+                            },
+                            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                            {
+                                new GangConditionalLocation()
+                                {
+                                    Location = new Vector3(1749.632f, 759.1354f, 24.24877f),
+                                        Heading = 259.8718f,
+                                },
+                            }
+                    }
+                },
+            AssignedAssociationID = "AMBIENT_GANG_YARDIES",
+            Name = "YardiesBlock3",
+            Description = "",
+            EntrancePosition = new Vector3(1749.632f, 759.1354f, 24.24877f),
+            EntranceHeading = 0f,
+        };
+        BlankLocationPlaces.Add(YardiesBlock3);
 
     }
 }

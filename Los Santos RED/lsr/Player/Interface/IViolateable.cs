@@ -78,6 +78,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsRidingOnTrain { get; set; }
         bool RecentlyGotOutOfVehicle { get; }
         Violations Violations { get; }
+        bool IsInWantedActiveMode { get; }
 
         //  bool IsLootingBody { get; }
 

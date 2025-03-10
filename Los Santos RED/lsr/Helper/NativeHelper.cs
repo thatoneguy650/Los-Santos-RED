@@ -92,7 +92,30 @@ namespace LosSantosRED.lsr.Helper
         }
 
 
+        public static string AddOrdinal(int num)
+        {
+            if (num <= 0) return num.ToString();
 
+            switch (num % 100)
+            {
+                case 11:
+                case 12:
+                case 13:
+                    return num + "th";
+            }
+
+            switch (num % 10)
+            {
+                case 1:
+                    return num + "st";
+                case 2:
+                    return num + "nd";
+                case 3:
+                    return num + "rd";
+                default:
+                    return num + "th";
+            }
+        }
         public static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
         {
             DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
@@ -691,6 +714,7 @@ namespace LosSantosRED.lsr.Helper
                 vehicleVariation.LicensePlate = new LSR.Vehicles.LicensePlate();
                 vehicleVariation.LicensePlate.PlateNumber = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT<string>(vehicle);
                 vehicleVariation.LicensePlate.PlateType = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(vehicle);
+                vehicleVariation.LicensePlate.OriginalModelHash = vehicle.Model.Hash;
                 vehicleVariation.WheelType = NativeFunction.Natives.GET_VEHICLE_WHEEL_TYPE<int>(vehicle);
                 vehicleVariation.WindowTint = NativeFunction.Natives.GET_VEHICLE_WINDOW_TINT<int>(vehicle);
                 int customWheelID = 23;
