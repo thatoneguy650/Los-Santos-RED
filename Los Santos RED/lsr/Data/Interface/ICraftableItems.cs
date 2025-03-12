@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
     {
         List<CraftableItem> Items { get; }
         Dictionary<string, CraftableItemLookupModel> CraftablesLookup { get; set; }
+        Dictionary<string, List<string>> IngredientCraftableLookup { get; set; }
 
         CraftableItem Get(string name);
         void SerializeAllSettings();

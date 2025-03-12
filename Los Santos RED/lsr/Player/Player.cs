@@ -500,7 +500,8 @@ namespace Mod
         public bool IsInPoliceVehicle { get; private set; }
         public Dispatcher Dispatcher { get; set; }
         public bool IsBlockingTraffic { get; set; }
-        //public bool IsConsideredNight { get; private set; }
+        public Crafting Crafting { get; set; }
+        public bool IsConsideredNight { get; private set; }
 
         //public bool IsPoorWeather => Weather.IsPoorWeather;
 

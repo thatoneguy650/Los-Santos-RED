@@ -8,4 +8,5 @@ public class Ingredient
 {
     public string IngredientName { get; set; }
     public int Quantity { get; set; }
+    public bool IsConsumed { get; set; } = true;
 }

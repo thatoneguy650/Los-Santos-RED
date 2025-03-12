@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(MoneyTheftInteract))]
 [XmlInclude(typeof(ItemTheftInteract))]
 [XmlInclude(typeof(SalonInteract))]
+[XmlInclude(typeof(CraftInteriortInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract

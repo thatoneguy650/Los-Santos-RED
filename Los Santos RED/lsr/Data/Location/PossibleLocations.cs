@@ -54,6 +54,7 @@ public class PossibleLocations
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
     public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
     public List<MilitaryBase> MilitaryBases { get; private set; } = new List<MilitaryBase>();
+    public List<ExteriorCraftingLocation> ExteriorCraftingLocations { get; private set; } = new List<ExteriorCraftingLocation>();
 
 
 
@@ -128,6 +129,7 @@ public class PossibleLocations
         AllLocations.AddRange(ATMMachines);
         AllLocations.AddRange(CashRegisters);
         AllLocations.AddRange(GasPumps);
+        AllLocations.AddRange(ExteriorCraftingLocations);
         AllLocations.AddRange(BodyExports);
         return AllLocations;
     }
