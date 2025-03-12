@@ -483,7 +483,11 @@ public class ModItems : IModItems
             new HardwareItem("Fuse", "Tssss...", ItemType.Equipment)
             {
                 ItemSubType = ItemSubType.Misc,
-            }
+            },
+            new HardwareItem("pH strip", "One test where coming up positive is good?", ItemType.Equipment)
+            {
+                ItemSubType = ItemSubType.Misc,
+            },
         });
     }
     private void DefaultConfig_Armor()

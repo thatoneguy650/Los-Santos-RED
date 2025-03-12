@@ -49,22 +49,51 @@ public class CraftableItems : ICraftableItems
     {
         CraftableList = new List<CraftableItem>()
         {
-            new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() {
+            new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() 
+            {
                 new Ingredient() { IngredientName =  "Chesty", Quantity = 2 }
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1, Cooldown = 2000},
-            new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
-                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000, CraftingFlag = "CutCocaine"},
-            new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
+            }) 
+            { 
+                CrimeId = StaticStrings.DealingDrugsCrimeID, 
+                ResultantAmount = 1,
+                Cooldown = 2000
+            },
+            
+            new CraftableItem("Cut Cocaine", "Crack", 
+            new List<Ingredient>() 
+            {
+                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1},
+                new Ingredient() { IngredientName = "Bottle of Raine Water", Quantity = 2},
+                new Ingredient() { IngredientName = "Baking Soda", Quantity = 2}
+            }) 
+            { CrimeId = StaticStrings.DealingDrugsCrimeID, 
+                ResultantAmount = 2, 
+                Cooldown = 2000, 
+                CraftingFlag = "CutCocaine"
+            },
+            
+            new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() 
+            {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
                 new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 , IsConsumed = false}
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true, AnimationDictionary= "gestures@f@standing@casual", AnimationName = "gesture_bye_soft"},
+            }) 
+            { CrimeId = StaticStrings.DealingGunsCrimeID, 
+                ResultantAmount = 2, 
+                Cooldown = 2000, 
+                SingleUnit = true, 
+                AnimationDictionary= "gestures@f@standing@casual", 
+                AnimationName = "gesture_bye_soft"
+            },
+            
             new CraftableItem("Lean","Lean", new List<Ingredient>()
             {
                 new Ingredient() { IngredientName = "Cup of Sprunk", Quantity = 1},
                 new Ingredient() { IngredientName = "P's & Q's", Quantity = 1},
                 new Ingredient() { IngredientName = "Chesty", Quantity = 1}
-            }){ ResultantAmount = 1 , Cooldown = 2000},
+            })
+            { ResultantAmount = 1 , 
+                Cooldown = 2000
+            },
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }

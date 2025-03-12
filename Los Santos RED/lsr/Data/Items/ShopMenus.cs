@@ -588,6 +588,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Fuse",2),
                 new MenuItem("Scrap Metal", 3),
                 new MenuItem("Metal Tube", 4),
+                new MenuItem("pH strip", 5),
 
             }),
             new ShopMenu("SportingGoodsMenu","SportingGoods",new List<MenuItem>() {
