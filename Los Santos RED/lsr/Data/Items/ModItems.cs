@@ -964,8 +964,7 @@ public class ModItems : IModItems
                 ItemSubType = ItemSubType.Coffee},//perfecto
             new DrinkItem("Chemicals", "For Science! Mix responsibly... or don't.", ItemType.Drinks){
                 ModelItemID = "ng_proc_paintcan02a",
-                HealthChangeAmount = -SmallHealthRecover,
-                SleepChangeAmount = MediumSleepRecover + 2.0f,
+                SleepChangeAmount = MediumSleepRecover,
                 ThirstChangeAmount = -MediumThirstRecover,
                 ItemSubType = ItemSubType.Misc},
             new DrinkItem("Speedball Coffee", "Caffeine tripe-shot, guarana, bat guano, and mate.", ItemType.Drinks){

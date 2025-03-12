@@ -126,7 +126,7 @@ namespace Mod
         {
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, craftItem.CraftableItem.AnimationDictionary, craftItem.CraftableItem.AnimationName, 4.0f, -4.0f, -1, 0, 0, false, false, false);
         }
-        public void CraftItem(string productName, Dictionary<string,ModItem> itemsToRemove, int quantity = 1)
+        public void CraftItem(string productName, Dictionary<string,ModItem> itemsToRemove, int quantity = 1, string craftingFlag = null)
         {
             if (IsCrafting)
             {
@@ -135,7 +135,7 @@ namespace Mod
             }
             Player.ActivityManager.StopDynamicActivity();
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
-            CraftingMenu.Toggle();
+            CraftingMenu.Hide();
             DeductIngredientsFromInventory(itemsToRemove, craftItem, quantity);
             Player.IsSetDisabledControls = true;
             IsCrafting = true;
@@ -157,7 +157,7 @@ namespace Mod
             }
             Player.IsSetDisabledControls = false;
             Game.DisplayNotification($"~g~{productName} ~w~crafted");
-
+            CraftingMenu.Show(craftingFlag);
         }
     }
 }

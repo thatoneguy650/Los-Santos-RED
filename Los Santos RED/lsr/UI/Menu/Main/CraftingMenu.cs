@@ -38,7 +38,14 @@ public class CraftingMenu : ModUIMenu
         if (!Menu.Visible)
         {
             Create();
-            Menu.Visible = true;
+            if(Menu.MenuItems.Count > 0)
+            {
+                Menu.Visible = true;
+            }
+            else
+            {
+                Game.DisplayNotification($"You have no clue what to make with this stuff here.");
+            }
         }
     }
     public void Show(string craftingFlag)
@@ -47,7 +54,14 @@ public class CraftingMenu : ModUIMenu
         {
             Menu.Clear();
             CreateCraftableItems(craftingFlag);
-            Menu.Visible = true;
+            if (Menu.MenuItems.Count > 0)
+            {
+                Menu.Visible = true;
+            }
+            else
+            {
+                Game.DisplayNotification($"You have no clue what to make with this stuff here.");
+            }
         }
     }
     public override void Toggle()
@@ -90,7 +104,7 @@ public class CraftingMenu : ModUIMenu
                             UIMenuItem itemMenu = new UIMenuItem(craftableItemObject.Name, craftableItemObject.IngredientList);
                             itemMenu.Activated += (s, e) =>
                             {
-                                Crafting.CraftItem(itemMenu.Text, itemsToRemove);
+                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, craftingFlag: craftingFlag);
                             };
                             Menu.AddItem(itemMenu);
                         }
@@ -100,7 +114,7 @@ public class CraftingMenu : ModUIMenu
                             itemMenu.Value = 1;
                             itemMenu.Activated += (s, e) =>
                             {
-                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, itemMenu.Value);
+                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, itemMenu.Value, craftingFlag: craftingFlag);
                             };
                             Menu.AddItem(itemMenu);
                         }

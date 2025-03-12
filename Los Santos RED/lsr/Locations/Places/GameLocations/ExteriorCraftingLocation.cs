@@ -25,20 +25,8 @@ public class ExteriorCraftingLocation : GameLocation
     {
         if (CanInteract)
         {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.Crafting.CraftingMenu.Show(CraftingFlag);
-            bool IsCancelled = false;
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
-            {
-                Player.WeaponEquipment.SetUnarmed();
-                if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
-                {
-                    IsCancelled = true;
-                    Player.Crafting.CraftingMenu.Hide();
-                    break;
-                }
-                GameFiber.Yield();
-            }
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         }
     }
     public override void AddLocation(PossibleLocations possibleLocations)
