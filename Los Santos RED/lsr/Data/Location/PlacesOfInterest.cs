@@ -403,7 +403,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
            new ExteriorCraftingLocation(new Vector3(1389.315f, 3604.739f,38.94193f),302.1837f,"Craft Meth","")
            {
-              CraftingFlag = "CutCocaine" ,
+              CraftingFlag = "DrugLab" ,
            },
         };
     }
