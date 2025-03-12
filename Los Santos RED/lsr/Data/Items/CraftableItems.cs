@@ -57,8 +57,14 @@ public class CraftableItems : ICraftableItems
             }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000, CraftingFlag = "CutCocaine"},
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
-                new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
+                new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 , IsConsumed = false}
             }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true, AnimationDictionary= "gestures@f@standing@casual", AnimationName = "gesture_bye_soft"},
+            new CraftableItem("Lean","Lean", new List<Ingredient>()
+            {
+                new Ingredient() { IngredientName = "Cup of Sprunk", Quantity = 1},
+                new Ingredient() { IngredientName = "P's & Q's", Quantity = 1},
+                new Ingredient() { IngredientName = "Chesty", Quantity = 1}
+            }){ ResultantAmount = 1 , Cooldown = 2000},
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }

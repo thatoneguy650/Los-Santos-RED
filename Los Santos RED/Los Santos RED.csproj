@@ -510,6 +510,7 @@
     <Compile Include="lsr\Player\Interface\IVehicleManageable.cs" />
     <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\HardwareItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CraftableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />

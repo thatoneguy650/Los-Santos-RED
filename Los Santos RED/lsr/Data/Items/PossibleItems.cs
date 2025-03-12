@@ -42,5 +42,6 @@ public class PossibleItems
     public List<ValuableItem> ValuableItems { get; private set; } = new List<ValuableItem>();
     public List<EquipmentItem> EquipmentItems { get; private set; } = new List<EquipmentItem>();
     public List<BodyArmorItem> BodyArmorItems { get; private set; } = new List<BodyArmorItem>();
+    public List<HardwareItem> HardwareItems { get; private set; } = new List<HardwareItem>();
 }
 
