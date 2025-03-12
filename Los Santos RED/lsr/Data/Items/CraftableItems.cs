@@ -51,12 +51,16 @@ public class CraftableItems : ICraftableItems
         {
             new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() 
             {
-                new Ingredient() { IngredientName =  "Chesty", Quantity = 2 }
+                new Ingredient() { IngredientName =  "Chesty", Quantity = 5 },
+                new Ingredient() { IngredientName =  "pH strip", Quantity = 3 },
+                new Ingredient() { IngredientName =  "Chemicals", Quantity = 1 },
+                new Ingredient() { IngredientName =  "BlazeBox Ignite", Quantity = 5 }
             }) 
             { 
                 CrimeId = StaticStrings.DealingDrugsCrimeID, 
                 ResultantAmount = 1,
-                Cooldown = 2000
+                Cooldown = 2000,
+                CraftingFlag = "DrugLab"
             },
             
             new CraftableItem("Cut Cocaine", "Crack", 
@@ -69,7 +73,7 @@ public class CraftableItems : ICraftableItems
             { CrimeId = StaticStrings.DealingDrugsCrimeID, 
                 ResultantAmount = 2, 
                 Cooldown = 2000, 
-                CraftingFlag = "CutCocaine"
+                CraftingFlag = "DrugLab"
             },
             
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() 
@@ -94,6 +98,19 @@ public class CraftableItems : ICraftableItems
             { ResultantAmount = 1 , 
                 Cooldown = 2000
             },
+            new CraftableItem("DIY pipe bomb","Pipe Bomb", new List<Ingredient>()
+            {
+                new Ingredient() { IngredientName = "Metal Tube", Quantity = 1},
+                new Ingredient() { IngredientName = "Flint Duct Tape", Quantity = 1},
+                new Ingredient() { IngredientName = "Fuse", Quantity = 1},
+                new Ingredient() { IngredientName = "Scrap Metal", Quantity = 3}
+            })
+            {
+                CrimeId = StaticStrings.TerroristActivityCrimeID,
+                Cooldown = 5000,
+                ResultantAmount = 1,
+                SingleUnit= true,
+            }
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }
