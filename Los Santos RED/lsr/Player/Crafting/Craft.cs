@@ -84,7 +84,7 @@ namespace Mod
         }
         public int GetQuantityOfCraftable(CraftableItemLookupModel craftItem, Dictionary<string, ModItem> itemsToRemove, string craftingFlag = null)
         {
-            if ((!string.IsNullOrEmpty(craftItem.CraftableItem.CraftingFlag)) && craftingFlag != craftItem.CraftableItem.CraftingFlag)
+            if (craftItem.CraftableItem.CraftingFlags != null && !craftItem.CraftableItem.CraftingFlags.Contains(craftingFlag))
             {
                 return 0;
             }
