@@ -80,9 +80,13 @@ public class Respawning// : IRespawning
     public DateTime BailPostingTime { get; private set; }
     public int HospitalDuration { get; private set; }
     public int HospitalFee { get; private set; }
-    public int HospitalBillPastDue { get; private set; }
+    public int HospitalBillPastDue { get; set; }
     public int BailFee { get; private set; }
-    public int BailFeePastDue { get; private set; }
+    public int BailFeePastDue { get; set; }
+    public void PayPastDueHospitalBills()
+    {
+        HospitalBillPastDue = 0;
+    }
     public void PayPastDueBail()
     {
         BailFeePastDue = 0;

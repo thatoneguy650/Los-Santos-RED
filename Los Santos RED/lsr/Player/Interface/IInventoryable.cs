@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInventoryable
     {
+        Respawning Respawning { get; }
         RelationshipManager RelationshipManager { get; }
         CellPhone CellPhone { get; }
         Licenses Licenses { get; }
