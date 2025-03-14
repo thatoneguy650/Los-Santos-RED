@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
 using Rage.Native;
@@ -171,6 +172,22 @@ public class Hospital : GameLocation, ILocationRespawnable, ILicensePlatePreview
                 medicalTreatment.AddToMenu(this, treatmentOptionsSubMenu,Player);
             }
         }
+        UIMenuItem PayHospitalBills = new UIMenuItem("Pay Hospital Bills", "Pay your outstanding hospital bills.") { RightLabel = $"${Player.Respawning.HospitalBillPastDue}" };
+        PayHospitalBills.Activated += (sender, selectedItem) =>
+        {
+            if (Player.BankAccounts.GetMoney(true) <= Player.Respawning.HospitalBillPastDue)
+            {
+                new GTANotification(Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction.").Display();
+                NativeHelper.PlayErrorSound();
+                return;
+            }
+            Player.BankAccounts.GiveMoney(-1 * Player.Respawning.HospitalBillPastDue, true);
+            new GTANotification(Name, "~g~Accepted", $"Your hospital bills have been paid.").Display();
+            Player.Respawning.PayPastDueHospitalBills();
+            PayHospitalBills.Enabled = Player.Respawning.HospitalBillPastDue > 0;
+        };
+        PayHospitalBills.Enabled = Player.Respawning.HospitalBillPastDue > 0;
+        InteractionMenu.AddItem(PayHospitalBills);
         InteractionMenu.Visible = true;
         ProcessInteractionMenu();
     }
