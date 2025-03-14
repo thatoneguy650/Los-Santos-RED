@@ -60,7 +60,7 @@ public class UI : IMenuProvideable
 
     public AboutMenu AboutMenu { get; private set; }
     public PlayerInfoMenu PlayerInfoMenu { get; private set; }
-   // public ConfigPauseMenu ConfigPauseMenu { get; private set; }
+    public ConfigPauseMenu ConfigPauseMenu { get; private set; }
     public SavePauseMenu SavePauseMenu { get; private set; }
     public MessagesMenu MessagesMenu { get; private set; }
 
@@ -92,7 +92,7 @@ public class UI : IMenuProvideable
         TimerBarPool = new TimerBarPool();
         DeathMenu = new DeathMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable,agencies, crimes, intoxicants, shopMenus);
+        MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable,agencies, crimes, intoxicants, shopMenus, modDataFileManager.GameConfigs);
         DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems, crimes, plateTypes, names, modDataFileManager, policeRespondable, interactionable);
         CraftableItems = modDataFileManager.CraftableItems;
         Crafting = crafting;
@@ -107,7 +107,7 @@ public class UI : IMenuProvideable
         MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
         LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this, violateable);
         TopRightMenu = new TopRightMenu(DisplayablePlayer, Time, Settings, this);
-        //ConfigPauseMenu = new ConfigPauseMenu(saveablePlayer, Time, Settings, modDataFileManager.GameConfigs);
+        ConfigPauseMenu = new ConfigPauseMenu(saveablePlayer, Time, Settings, modDataFileManager.GameConfigs);
     }
     public void Setup()
     {
@@ -117,7 +117,7 @@ public class UI : IMenuProvideable
         MainMenu.Setup();
         PlayerInfoMenu.Setup();
         SavePauseMenu.Setup();
-        //ConfigPauseMenu.Setup();
+        ConfigPauseMenu.Setup();
         MessagesMenu.Setup();
         AboutMenu.Setup();
         ActionPopUpMenu.Setup();
@@ -267,7 +267,7 @@ public class UI : IMenuProvideable
         TimerBarPool.Draw();
         MenuPool.ProcessMenus();
         PlayerInfoMenu.Update();
-        //ConfigPauseMenu.Update();
+        ConfigPauseMenu.Update();
         SavePauseMenu.Update();
         MessagesMenu.Update();
         AboutMenu.Update();
