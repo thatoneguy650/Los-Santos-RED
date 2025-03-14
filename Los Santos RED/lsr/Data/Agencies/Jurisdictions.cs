@@ -22,13 +22,12 @@ public class Jurisdictions : IJurisdictions
     {
         AgencyProvider = agencyProvider;
     }
-    public void ReadConfig(string zoneConfigName, string countyConfigName)
+    public void ReadConfig(string configName)
     {
-        string zoneFileName = string.IsNullOrEmpty(zoneConfigName) ? "ZoneJurisdictions*.xml" : $"ZoneJurisdictions_{zoneConfigName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ZoneFile = LSRDirectory.GetFiles(zoneFileName).OrderByDescending(x => x.Name).FirstOrDefault();
-        if (ZoneFile != null && !zoneConfigName.Equals("Default"))
+        FileInfo ZoneFile = LSRDirectory.GetFiles($"ZoneJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ZoneFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}", 0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneFile.FullName);
@@ -50,10 +49,9 @@ public class Jurisdictions : IJurisdictions
             DefaultZoneConfig_LibertyPP();
         }
 
-        string countyFileName = string.IsNullOrEmpty(countyConfigName) ? "CountyJurisdictions*.xml" : $"CountyJurisdictions_{countyConfigName}.xml";
 
-        FileInfo CountyFile = LSRDirectory.GetFiles(countyFileName).OrderByDescending(x => x.Name).FirstOrDefault();
-        if (CountyFile != null && !countyConfigName.Equals("Default"))
+        FileInfo CountyFile = LSRDirectory.GetFiles($"CountyJurisdictions{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (CountyFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}", 0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyFile.FullName);

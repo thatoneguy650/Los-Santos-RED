@@ -60,114 +60,117 @@ public class ModDataFileManager
 
     }
 
-    public void Setup(GameConfig config)
+    public void Setup(string configName)
     {
+        if (configName.Equals("Default")) configName = "*";
+        else configName = "_" + configName;
+
         SetupAlternateConfigs();
         Settings = new Settings();
-        Settings.ReadConfig(config.SettingsConfig);
+        Settings.ReadConfig("");
         GameFiber.Yield();
         Weapons = new Weapons();
-        Weapons.ReadConfig(config.WeaponsConfig);
+        Weapons.ReadConfig(configName);
         GameFiber.Yield();
         PhysicalItems = new PhysicalItems();
-        PhysicalItems.ReadConfig(config.PhysicalitemsConfig);
+        PhysicalItems.ReadConfig(configName);
         GameFiber.Yield();
         Intoxicants = new Intoxicants();
-        Intoxicants.ReadConfig(config.IntoxicantsConfig);
+        Intoxicants.ReadConfig(configName);
         GameFiber.Yield();
 
         Cellphones = new Cellphones();
-        Cellphones.ReadConfig(config.CellphonesConfig);
+        Cellphones.ReadConfig(configName);
         GameFiber.Yield();
 
         ModItems = new ModItems();
-        ModItems.ReadConfig(config.ModItemsConfig);
+        ModItems.ReadConfig(configName);
         ModItems.Setup(PhysicalItems, Weapons, Intoxicants, Cellphones);
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
-        ShopMenus.ReadConfig(config.ShopMenusConfig);
+        ShopMenus.ReadConfig(configName);
         ShopMenus.Setup(ModItems);
         GameFiber.Yield();
         LocationTypes = new LocationTypes();
-        LocationTypes.ReadConfig(config.LocationTypesConfig);
+        LocationTypes.ReadConfig(configName);
         GameFiber.Yield();
         Zones = new Zones();
-        Zones.ReadConfig(config.ZonesConfig);
+        Zones.ReadConfig(configName);
         Zones.Setup(LocationTypes);
         GameFiber.Yield();
         PlateTypes = new PlateTypes();
-        PlateTypes.ReadConfig(config.PlateTypesConfig);
+        PlateTypes.ReadConfig(configName);
         GameFiber.Yield();
         Streets = new Streets();
-        Streets.ReadConfig(config.StreetsConfig);
+        Streets.ReadConfig(configName);
         GameFiber.Yield();
         Names = new Names();
-        Names.ReadConfig(config.NamesConfig);
+        Names.ReadConfig(configName);
         GameFiber.Yield();
         Heads = new Heads();
-        Heads.ReadConfig(config.HeadsConfig);
+        Heads.ReadConfig(configName);
         GameFiber.Yield();
         DispatchableVehicles = new DispatchableVehicles();
-        DispatchableVehicles.ReadConfig(config.DispatchableVehiclesConfig);
+        DispatchableVehicles.ReadConfig(configName);
         DispatchableVehicles.Setup(PlateTypes);
         GameFiber.Yield();
         IssueableWeapons = new IssueableWeapons();
-        IssueableWeapons.ReadConfig(config.IssueableWeaponsConfig);
+        IssueableWeapons.ReadConfig(configName);
         GameFiber.Yield();
         DispatchablePeople = new DispatchablePeople();
-        DispatchablePeople.ReadConfig(config.DispatchablePeopleConfig);
+        DispatchablePeople.ReadConfig(configName);
         DispatchablePeople.Setup(IssueableWeapons);
         GameFiber.Yield();
 
         Contacts = new Contacts();
-        Contacts.ReadConfig(config.ContactsConfig);
+        Contacts.ReadConfig(configName);
         GameFiber.Yield();
 
 
         Agencies = new Agencies();
-        Agencies.ReadConfig(config.AgenciesConfig);
+        Agencies.ReadConfig(configName);
         Agencies.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();
         Gangs = new Gangs();
-        Gangs.ReadConfig(config.GangsConfig);
+        Gangs.ReadConfig(configName);
         Gangs.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons, Contacts);
         GameFiber.Yield();
         PlacesOfInterest = new PlacesOfInterest(ShopMenus, Gangs);
-        PlacesOfInterest.ReadConfig(config.LocationsConfig);
+        PlacesOfInterest.ReadConfig(configName);
         PlacesOfInterest.Setup();
         GameFiber.Yield();
         Jurisdictions = new Jurisdictions(Agencies);
-        Jurisdictions.ReadConfig(config.ZoneJurisdictionsConfig,config.CountyJurisdictionsConfig);
+        Jurisdictions.ReadConfig(configName);
         GameFiber.Yield();
         GangTerritories = new GangTerritories(Gangs);
-        GangTerritories.ReadConfig(config.GangTerritoriesConfig);
+        GangTerritories.ReadConfig(configName);
         Gangs.CheckTerritory(GangTerritories);
         GameFiber.Yield();
         RadioStations = new RadioStations();
         RadioStations.ReadConfig(); // no config file
         GameFiber.Yield();
         RelationshipGroups = new PedGroups();
-        RelationshipGroups.ReadConfig(config.PedGroupsConfig);
+        RelationshipGroups.ReadConfig(configName);
         GameFiber.Yield();
         Scenarios = new Scenarios();
         GameFiber.Yield();
         Crimes = new Crimes();
-        Crimes.ReadConfig(config.CrimesConfig);
+        Crimes.ReadConfig(configName);
         GameFiber.Yield();
         GameSaves = new GameSaves();
-        GameSaves.ReadConfig(config.SaveGamesConfig);
+        GameSaves.ReadConfig(configName);
         GameFiber.Yield();
         Interiors = new Interiors();
-        Interiors.ReadConfig(config.InteriorsConfig);
+        Interiors.ReadConfig(configName);
         GameFiber.Yield();
         DanceList = new Dances();
-        DanceList.ReadConfig(config.DancesConfig);
+        DanceList.ReadConfig(configName);
         GameFiber.Yield();
         GestureList = new Gestures();
-        GestureList.ReadConfig(config.GesturesConfig);
+        GestureList.ReadConfig(configName);
         GameFiber.Yield();
         SpeechList = new Speeches();
-        SpeechList.ReadConfig(config.SpeechesConfig);
+        SpeechList.ReadConfig(configName);
         GameFiber.Yield();
         Seats = new Seats();
         Seats.ReadConfig(); // no config file
@@ -186,12 +189,12 @@ public class ModDataFileManager
 
 
         CraftableItems = new CraftableItems(ModItems);
-        CraftableItems.ReadConfig(config.CraftableItemsConfig);
+        CraftableItems.ReadConfig(configName);
         GameFiber.Yield();
 
 #if DEBUG
         WantedLevels = new WantedLevels();
-        WantedLevels.ReadConfig(config.WantedLevelsConfig);
+        WantedLevels.ReadConfig(configName);
         WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();
 
@@ -208,7 +211,7 @@ public class ModDataFileManager
         //GameFiber.Yield();
 
         SavedOutfits = new SavedOutfits();
-        SavedOutfits.ReadConfig(config.SavedOutfitsConfig);
+        SavedOutfits.ReadConfig(configName);
         GameFiber.Yield();
 
 
@@ -217,17 +220,16 @@ public class ModDataFileManager
         GameFiber.Yield();
 
         Organizations = new Organizations();
-        Organizations.ReadConfig(config.OrganizationsConfig);
+        Organizations.ReadConfig(configName);
         Organizations.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons, Contacts);
         GameFiber.Yield();
 
         Contacts.Setup(Organizations);
 
         SpawnBlocks = new SpawnBlocks();
-        SpawnBlocks.ReadConfig(config.SpawnBlocksConfig);
+        SpawnBlocks.ReadConfig(configName);
 
-        GameConfigs = new GameConfigs();
-        GameConfigs.ReadConfig();
+        GameConfigs = new GameConfigs(this);
         GameConfigs.Setup();
 
         VehicleRaces = new VehicleRaces();

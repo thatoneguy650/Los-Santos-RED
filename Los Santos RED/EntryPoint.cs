@@ -40,7 +40,7 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
-    public static GameConfig LoadedConfig { get; set; } = new GameConfig("");
+    public static string ConfigName { get; set; } = "Default";
     public static bool IsLoadingAltConfig { get; set; } = false;
     public static void Main()
     {
@@ -74,7 +74,7 @@ public static class EntryPoint
                     RemoveNotification();
 
                     ModController = new ModController();
-                    ModController.Setup(LoadedConfig);
+                    ModController.Setup(ConfigName);
                 }
             }
 

@@ -19,10 +19,8 @@ public class SpawnBlocks : ISpawnBlocks
     public PossibleSpawnBlocks PossibleSpawnBlocks { get; private set; }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "SpawnBlocks*.xml" : $"SpawnBlocks_{configName}.xml";
-
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"SpawnBlocks{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Spawn Blocks config: {ConfigFile.FullName}", 0);
