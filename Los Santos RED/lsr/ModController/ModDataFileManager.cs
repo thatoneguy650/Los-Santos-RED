@@ -13,7 +13,6 @@ public class ModDataFileManager
     public Agencies Agencies;
     public Crimes Crimes;
     public GameSaves GameSaves;
-    public GameConfigs GameConfigs;
     public Gangs Gangs;
     public GangTerritories GangTerritories;
     public Interiors Interiors;
@@ -62,8 +61,7 @@ public class ModDataFileManager
 
     public void Setup(string configName)
     {
-        if (configName.Equals("Default")) configName = "*";
-        else configName = "_" + configName;
+        //configName = "*";
 
         SetupAlternateConfigs();
         Settings = new Settings();
@@ -229,8 +227,6 @@ public class ModDataFileManager
         SpawnBlocks = new SpawnBlocks();
         SpawnBlocks.ReadConfig(configName);
 
-        GameConfigs = new GameConfigs(this);
-        GameConfigs.Setup();
 
         VehicleRaces = new VehicleRaces();
         VehicleRaces.ReadConfig(configName);

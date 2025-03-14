@@ -14,7 +14,7 @@ public class MainMenu : ModUIMenu
     private PedSwapMenu PedSwapMenu;
    // private SaveMenu SaveMenu;
     private SettingsMenu SettingsMenu;
-    private ConfigMenu ConfigMenu;
+    //private ConfigMenu ConfigMenu;
 
     private IGangs Gangs;
     private IActionable ActionablePlayer;
@@ -61,7 +61,7 @@ public class MainMenu : ModUIMenu
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
         PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies, ActionablePlayer);
-        ConfigMenu = new ConfigMenu(MenuPool, Main, ui);
+        //ConfigMenu = new ConfigMenu(MenuPool, Main, ui);
     }
 
     public void Setup()
@@ -70,7 +70,7 @@ public class MainMenu : ModUIMenu
         MenuPool.Add(Main);
         SettingsMenu.Setup();    
         PedSwapMenu.Setup();
-        ConfigMenu.Setup();
+        //ConfigMenu.Setup();
         CreateMainMenu();
     }
 
