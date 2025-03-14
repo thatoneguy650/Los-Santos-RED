@@ -100,7 +100,7 @@ public class Crimes : ICrimes
     }
     public void SerializeAllSettings()
     {
-        Serialization.SerializeParams(CrimeList == null ? new List<Crime>() : CrimeList, ConfigFileName);
+        Serialization.SerializeParams(CrimeList == null ? new List<Crime>() : CrimeList, ConfigFileName); 
     }
 
     private void SetupCrimes()
