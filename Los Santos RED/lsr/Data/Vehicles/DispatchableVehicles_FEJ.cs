@@ -250,19 +250,19 @@ public class DispatchableVehicles_FEJ
     {
         LSFDVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(FireTruck, 100, 100) { RequiredLiveries = new List<int>() { 0 } ,MinOccupants = 2, MaxOccupants = 4 }
+            new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(0, 100) } } },  MinOccupants = 2, MaxOccupants = 4 }
         };
         LSCOFDVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(FireTruck, 100, 100) { RequiredLiveries = new List<int>() { 2 } ,MinOccupants = 2, MaxOccupants = 4 }
+            new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(2, 100) } } }, MinOccupants = 2, MaxOccupants = 4 }
         };
         BCFDVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(FireTruck, 100, 100) { RequiredLiveries = new List<int>() { 1 } ,MinOccupants = 2, MaxOccupants = 4 }
+            new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(1, 100) } } },MinOccupants = 2, MaxOccupants = 4 }
         };
         SanFireVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(FireTruck, 100, 100) { RequiredLiveries = new List<int>() { 3 } ,MinOccupants = 2, MaxOccupants = 4 }
+            new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(3, 100) } } },MinOccupants = 2, MaxOccupants = 4 }
         };
     }
 
@@ -2426,9 +2426,18 @@ public class DispatchableVehicles_FEJ
     public DispatchableVehicle Create_PoliceRadius(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceRadius, ambientPercent, wantedPercent);
-        if (liveryID != -1)
+        if (liveryID != -1 && liveryID != 11)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         if (policeVehicleType == PoliceVehicleType.Marked)
         {
@@ -2805,14 +2814,23 @@ public class DispatchableVehicles_FEJ
     public DispatchableVehicle Create_PoliceBuffaloS(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBuffaloS, ambientPercent, wantedPercent);
-        if (liveryID != -1)
+        if (liveryID != -1 && liveryID != 16)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
 
         //Extras 1 - siren , 2 = ram bar, 4 = searchlights 5 = antenna, 9 = divider, 12 = radio
 
-        if(policeVehicleType == PoliceVehicleType.Marked)
+        if (policeVehicleType == PoliceVehicleType.Marked)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() 
             { 

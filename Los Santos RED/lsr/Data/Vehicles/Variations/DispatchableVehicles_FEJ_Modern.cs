@@ -347,8 +347,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceGauntlet(10,10,3,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceGauntlet(10,10,3,false,PoliceVehicleType.SlicktopMarked,-1,-1,-1,-1,-1,"",""),
 
-            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(7,7,16,true,PoliceVehicleType.Unmarked, -1, -1, -1, -1, -1, "", ""),
-            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(7,7,16,true,PoliceVehicleType.SlicktopMarked, -1, -1, -1, -1, -1, "", ""),     
+            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(7,7,4,false,PoliceVehicleType.Marked, -1, -1, -1, -1, -1, "", ""),
+            DispatchableVehicles_FEJ.Create_PoliceBuffaloS(7,7,4,false,PoliceVehicleType.SlicktopMarked, -1, -1, -1, -1, -1, "", ""),     
             DispatchableVehicles_FEJ.Create_PoliceFugitive(5,5,4,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(5,5,4,false,PoliceVehicleType.SlicktopMarked,-1,-1,-1,-1,-1,"",""),
 
