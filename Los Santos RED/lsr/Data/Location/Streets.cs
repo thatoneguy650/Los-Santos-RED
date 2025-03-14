@@ -18,10 +18,8 @@ public class Streets : IStreets
     public List<Street> StreetsList { get; private set; }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Streets*.xml" : $"Streets_{configName}.xml";
-
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Streets{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Streets config: {ConfigFile.FullName}", 0);

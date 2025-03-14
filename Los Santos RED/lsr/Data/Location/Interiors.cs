@@ -24,10 +24,8 @@ public class Interiors : IInteriors
     public PossibleInteriors PossibleInteriors { get; private set; }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Interiors*.xml" : $"Interiors_{configName}.xml";
-
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Interiors{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFile.FullName}", 0);

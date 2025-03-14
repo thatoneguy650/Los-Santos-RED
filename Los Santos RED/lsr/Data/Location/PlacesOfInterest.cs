@@ -81,10 +81,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Locations*.xml" : $"Locations_{configName}.xml";
-
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles($"Locations{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);

@@ -28,20 +28,20 @@ public class ConfigGameTab
         GameConfigs = gameConfigs;
         TabView = tabView;
     }
-    public void AddSuffixItems()
+    public void AddConfigItems()
     {
         List<UIMenuItem> configListItems = new List<UIMenuItem>();
-        UIMenuItem configCount = new UIMenuItem($"Number of Configs: {GameConfigs.SuffixConfigList.Count()}", "") { Enabled = false };
+        UIMenuItem configCount = new UIMenuItem($"Number of Configs: {GameConfigs.GameConfigList.Count()}", "") { Enabled = false };
         configListItems.Add(configCount);
-        if (GameConfigs.SuffixConfigList != null && GameConfigs.SuffixConfigList.Any())
+        if (GameConfigs.GameConfigList != null && GameConfigs.GameConfigList.Any())
         {
             int index = 1;
-            foreach (GameConfig config in GameConfigs.SuffixConfigList)
+            foreach (GameConfig config in GameConfigs.GameConfigList)
             {
                 UIMenuItem loadItem;
                 if (config != null)
                 {
-                    loadItem = new UIMenuItem(config.ConfigName, "") { };
+                    loadItem = new UIMenuItem(config.configName, "") { };
                     loadItem.Activated += (s, e) =>
                     {
                         SimpleWarning popUpWarning = new SimpleWarning("Load", "Are you sure you want to load this config?", "", Player.ButtonPrompts, Settings);
@@ -63,45 +63,7 @@ public class ConfigGameTab
                 index++;
             }
         }
-        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("SUFFIXES", configListItems);
-        TabView.AddTab(interactiveListItem2);
-    }
-    public void AddCustomConfigItems()
-    {
-        List<UIMenuItem> configListItems = new List<UIMenuItem>();
-        UIMenuItem configCount = new UIMenuItem($"Number of Configs: {GameConfigs.CustomConfigList.Count()}", "") { Enabled = false };
-        configListItems.Add(configCount);
-        if (GameConfigs.CustomConfigList != null && GameConfigs.CustomConfigList.Any())
-        {
-            int index = 1;
-            foreach (GameConfig config in GameConfigs.CustomConfigList)
-            {
-                UIMenuItem loadItem;
-                if (config != null)
-                {
-                    loadItem = new UIMenuItem(config.ConfigName, "") { Enabled = GameConfigs.AreFilesAvailable(config) };
-                    loadItem.Activated += (s, e) =>
-                    {
-                        SimpleWarning popUpWarning = new SimpleWarning("Load", "Are you sure you want to load this config?", "", Player.ButtonPrompts, Settings);
-                        popUpWarning.Show();
-                        if (popUpWarning.IsAccepted)
-                        {
-                            TabView.Visible = false;
-                            Game.IsPaused = false;
-
-                            GameConfigs.Load(config);
-                        }
-                    };
-                }
-                else
-                {
-                    loadItem = new UIMenuItem($"{index.ToString("D2")} - Empty Config", "") { Enabled = false };
-                }
-                configListItems.Add(loadItem);
-                index++;
-            }
-        }
-        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("CUSTOM", configListItems);
+        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("LOAD", configListItems);
         TabView.AddTab(interactiveListItem2);
     }
 }
