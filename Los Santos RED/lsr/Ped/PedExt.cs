@@ -992,14 +992,35 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         
     }
+    //public virtual void SetPersistent()
+    //{
+
+    //}
+    //public virtual void SetNonPersistent()
+    //{
+
+    //}
+
     public virtual void SetPersistent()
     {
-
+        if (!WasModSpawned && Pedestrian.Exists() && !Pedestrian.IsPersistent)
+        {
+            WasEverSetPersistent = true;
+            Pedestrian.IsPersistent = true;
+            EntryPoint.WriteToConsole($"STORING PED {Handle} MAKING PERSIS");
+        }
     }
     public virtual void SetNonPersistent()
     {
-
+        if (!WasModSpawned && Pedestrian.Exists() && Pedestrian.IsPersistent)
+        {
+            Pedestrian.IsPersistent = false;
+            EntryPoint.WriteToConsole($"RELEASING PED {Handle} MAKING NON PERSIS");
+        }
     }
+
+
+
     public void SetBaseStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
     {
         if (!Pedestrian.Exists())

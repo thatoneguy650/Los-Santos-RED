@@ -134,7 +134,7 @@ public class BusRide
         if (HasRoute)
         {
             ChosenRoute.OnRouteStart();
-            Player.GPSManager.AddGPSRoute("Bus Destination", ChosenRoute.DestinationStop.BusStop.EntrancePosition);
+            Player.GPSManager.AddGPSRoute("Bus Destination", ChosenRoute.DestinationStop.BusStop.EntrancePosition, true);
         }
         while (Player.IsAliveAndFree && Player.IsInVehicle && Player.IsNotWanted && HasRoute)
         {
@@ -142,7 +142,7 @@ public class BusRide
             {
                 ChosenRoute.OnArrivedAtStop();
                 TaskDriver();
-                Player.GPSManager.AddGPSRoute("Bus Destination", ChosenRoute.DestinationStop.BusStop.EntrancePosition);
+                Player.GPSManager.AddGPSRoute("Bus Destination", ChosenRoute.DestinationStop.BusStop.EntrancePosition, true);
             }
             if (Player.ButtonPrompts.IsPressed("BusRouteInfo"))
             {
@@ -153,7 +153,7 @@ public class BusRide
         }
         Player.ButtonPrompts.RemovePrompts("BusRideActivity");
 
-        Player.GPSManager.RemoveGPSRoute();
+        Player.GPSManager.RemoveGPSRoute(true);
 
     }
     private void TaskDriver()

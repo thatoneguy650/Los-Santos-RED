@@ -9,6 +9,7 @@ namespace LSR.Vehicles
     [Serializable]
     public class LicensePlate
     {
+
         public LicensePlate()
         {
 
@@ -16,11 +17,13 @@ namespace LSR.Vehicles
         public string PlateNumber { get; set; }
         public bool IsWanted { get; set; }
         public int PlateType { get; set; }
-        public LicensePlate(string plateNumber, int plateType, bool isWanted)
+        public uint OriginalModelHash { get; set; }
+        public LicensePlate(string plateNumber, int plateType, bool isWanted, uint originalModelHash)
         {
             PlateNumber = plateNumber;
             PlateType = plateType;
             IsWanted = isWanted;
+            OriginalModelHash = originalModelHash;
         }
         public override string ToString()
         {

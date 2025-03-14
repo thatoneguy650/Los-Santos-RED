@@ -36,22 +36,22 @@ public class TaxiDriver : PedExt, IWeaponIssuable
             SetPersistent();
         }
     }
-    public override void SetPersistent()
-    {
-        if (!WasModSpawned && Pedestrian.Exists() && !Pedestrian.IsPersistent)
-        {
-            WasEverSetPersistent = true;
-            Pedestrian.IsPersistent = true;
-            EntryPoint.WriteToConsole($"STORING PED {Handle} MAKING PERSIS");
-        }
-    }
-    public override void SetNonPersistent()
-    {
-        if (!WasModSpawned && Pedestrian.Exists() && Pedestrian.IsPersistent)
-        {
-            Pedestrian.IsPersistent = false;
-            EntryPoint.WriteToConsole($"RELEASING PED {Handle} MAKING NON PERSIS");
-        }
-    }
+    //public override void SetPersistent()
+    //{
+    //    if (!WasModSpawned && Pedestrian.Exists() && !Pedestrian.IsPersistent)
+    //    {
+    //        WasEverSetPersistent = true;
+    //        Pedestrian.IsPersistent = true;
+    //        EntryPoint.WriteToConsole($"STORING PED {Handle} MAKING PERSIS");
+    //    }
+    //}
+    //public override void SetNonPersistent()
+    //{
+    //    if (!WasModSpawned && Pedestrian.Exists() && Pedestrian.IsPersistent)
+    //    {
+    //        Pedestrian.IsPersistent = false;
+    //        EntryPoint.WriteToConsole($"RELEASING PED {Handle} MAKING NON PERSIS");
+    //    }
+    //}
 }
 

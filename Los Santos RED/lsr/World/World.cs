@@ -83,7 +83,6 @@ namespace Mod
             SetMemoryItems();
             CheckSpecialCircumstances();
         }
-
         private void CheckSpecialCircumstances()
         {
             IsFEJInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfej"));
@@ -97,7 +96,6 @@ namespace Mod
             //    NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
             //}
         }
-
         private void SetMemoryItems()
         {
             if (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
@@ -105,7 +103,6 @@ namespace Mod
                 NativeMemory.SetMPGlobals();
             }
         }
-
         public void Update()
         {
             if(Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)

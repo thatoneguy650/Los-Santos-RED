@@ -20,6 +20,8 @@ public class TimerBarController
     private BarTimerBar SearchMode;
     private int itemsDisplaying;
     private ISettingsProvideable Settings;
+    private TextTimerBar RaceTimer;
+
     private bool IsTimeToUpdate => Game.GameTime - GameTimeLastUpdated >= 250;
     public int ItemsDisplaying { get; private set; }
     public TimerBarController(IDisplayable player, TimerBarPool timerBarPool, ISettingsProvideable settings)
@@ -42,6 +44,12 @@ public class TimerBarController
         SearchMode.BackgroundColor = Color.FromArgb(100, 202, 169, 66);
         SearchMode.ForegroundColor = Color.FromArgb(255, 202, 169, 66);//Yellow
 
+
+
+
+        RaceTimer = new TextTimerBar("Time","00:00.000");
+        Player.RacingManager.SetRaceTimer(RaceTimer);
+
         //if (TimerBarPool != null)
         //{
         //    TimerBarPool.Add(StaminaBar, Intoxication, SearchMode);
@@ -53,6 +61,7 @@ public class TimerBarController
         UpdateStamina();
         UpdateIntoxication();
         UpdateSearchMode();
+        UpdateRaceTimer();
         ItemsDisplaying = itemsDisplaying;
         TimerBarPool.OrderBy(x => x.Label);
         GameTimeLastUpdated = Game.GameTime;
@@ -64,6 +73,18 @@ public class TimerBarController
     public void Dispose()
     {
 
+    }
+    private void UpdateRaceTimer()
+    {
+        if(!Player.RacingManager.IsRacing)
+        {
+            SafeRemove(RaceTimer);
+        }
+        else
+        {
+            itemsDisplaying++;
+            SafeAdd(RaceTimer);
+        }
     }
     private void UpdateStamina()
     {
@@ -104,14 +125,14 @@ public class TimerBarController
             SafeRemove(SearchMode);
         }
     }
-    private void SafeRemove(BarTimerBar toRemove)
+    private void SafeRemove(TimerBarBase toRemove)
     {
         if (TimerBarPool.Contains(toRemove))
         {
             TimerBarPool.Remove(toRemove);
         }
     }
-    private void SafeAdd(BarTimerBar toAdd)
+    private void SafeAdd(TimerBarBase toAdd)
     {
         if (!TimerBarPool.Contains(toAdd))
         {

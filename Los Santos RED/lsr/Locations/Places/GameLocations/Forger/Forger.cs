@@ -246,7 +246,7 @@ public class Forger : GameLocation
             }
             Player.BankAccounts.GiveMoney(-1 * RandomPlateCost, false);
             string newText = RandomItems.RandomString(8);
-            LicensePlate licensePlate = new LicensePlate(newText, 1, false);
+            LicensePlate licensePlate = new LicensePlate(newText, 1, false, 0);
             LicensePlateItem toAdd = new LicensePlateItem($"{newText}") { Description = licensePlate.GenerateDescription(), LicensePlate = licensePlate };
             Player.Inventory.Add(toAdd, 1.0f);
             PlaySuccessSound();
@@ -289,7 +289,7 @@ public class Forger : GameLocation
                 return;
             }
             Player.BankAccounts.GiveMoney(-1 * CustomPlateCost, false);
-            LicensePlate licensePlate = new LicensePlate(customPlateTextMenuItem.RightLabel, customPlateTypeMenuItem.SelectedItem.Index, false);
+            LicensePlate licensePlate = new LicensePlate(customPlateTextMenuItem.RightLabel, customPlateTypeMenuItem.SelectedItem.Index, false, 0);
             LicensePlateItem toAdd = new LicensePlateItem($"{customPlateTextMenuItem.RightLabel}") { Description = licensePlate.GenerateDescription(), LicensePlate = licensePlate };
             Player.Inventory.Add(toAdd, 1.0f);
             PlaySuccessSound();

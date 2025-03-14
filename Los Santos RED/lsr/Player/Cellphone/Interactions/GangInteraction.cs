@@ -613,7 +613,7 @@ public class GangInteraction : IContactMenuInteraction
         GangDen myDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded, Player.CurrentLocation);
         if (myDen != null)
         {
-            Player.GPSManager.AddGPSRoute(myDen.Name, myDen.EntrancePosition);
+            Player.GPSManager.AddGPSRoute(myDen.Name, myDen.EntrancePosition, true);
             List<string> Replies = new List<string>() {
                     $"Our {ActiveGang.DenName} is located on {myDen.FullStreetAddress} come see us.",
                     $"Come check out our {ActiveGang.DenName} on {myDen.FullStreetAddress}.",

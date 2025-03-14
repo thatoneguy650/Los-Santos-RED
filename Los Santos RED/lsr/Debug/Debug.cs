@@ -1173,18 +1173,24 @@ public class Debug
 
     private void DebugNumpad5()
 {
-        CanineUnit k9 = World.Pedestrians.PoliceCanines.Where(x => x.Pedestrian.Exists()).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
-        if(k9 == null)
+        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
         {
             return;
         }
-        if(!k9.Pedestrian.Exists())
-        {
-            return;
-        }
-        NativeFunction.Natives.PLAY_ANIMAL_VOCALIZATION(k9.Pedestrian, 2, "BARK");
-        Game.DisplaySubtitle("Bark Played");
-        GameFiber.Sleep(500);
+        Game.DisplaySubtitle($"Has Ficticious Plate {Player.CurrentVehicle?.HasObviousFicticiousPlate(Player)} {Player.CurrentVehicle?.CarPlate?.OriginalModelHash} {Player.CurrentVehicle?.Vehicle.Model.Hash}");
+
+        //CanineUnit k9 = World.Pedestrians.PoliceCanines.Where(x => x.Pedestrian.Exists()).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
+        //if(k9 == null)
+        //{
+        //    return;
+        //}
+        //if(!k9.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
+        //NativeFunction.Natives.PLAY_ANIMAL_VOCALIZATION(k9.Pedestrian, 2, "BARK");
+        //Game.DisplaySubtitle("Bark Played");
+        //GameFiber.Sleep(500);
 
         //NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME(2,(int)GameControl.VehicleNextRadioTrack, 1.0f);
         //GameFiber.Sleep(100);
@@ -2803,34 +2809,34 @@ GameFiber.StartNew(delegate
 
     }
     private void DebugNumpad9()
-{
-World.Pedestrians.ClearSpawned();
-World.Vehicles.ClearSpawned(true);
+    {
+        World.Pedestrians.ClearSpawned();
+        World.Vehicles.ClearSpawned(true);
 
 
-if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
-{
-    Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
-    Settings.SettingsManager.EMSSettings.ManageDispatching = false;
-    Settings.SettingsManager.GangSettings.ManageDispatching = false;
-    Settings.SettingsManager.FireSettings.ManageDispatching = false;
-    Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
-    Settings.SettingsManager.TaxiSettings.ManageDispatching = false;
-    Settings.SettingsManager.CivilianSettings.ManageDispatching = false;
-    Game.DisplaySubtitle("Dispatching Disabled");
-}
-else
-{
-    Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = true;
-    Settings.SettingsManager.EMSSettings.ManageDispatching = true;
-    Settings.SettingsManager.GangSettings.ManageDispatching = true;
-    Settings.SettingsManager.FireSettings.ManageDispatching = true;
-    Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
-    Settings.SettingsManager.TaxiSettings.ManageDispatching = true;
-    Settings.SettingsManager.CivilianSettings.ManageDispatching = true;
-    Dispatcher.DebugResetLocations();
-    Game.DisplaySubtitle("Dispatching Enabled");
-}
+        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        {
+            Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
+            Settings.SettingsManager.EMSSettings.ManageDispatching = false;
+            Settings.SettingsManager.GangSettings.ManageDispatching = false;
+            Settings.SettingsManager.FireSettings.ManageDispatching = false;
+            Settings.SettingsManager.SecuritySettings.ManageDispatching = false;
+            Settings.SettingsManager.TaxiSettings.ManageDispatching = false;
+            Settings.SettingsManager.CivilianSettings.ManageDispatching = false;
+            Game.DisplaySubtitle("Dispatching Disabled");
+        }
+        else
+        {
+            Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = true;
+            Settings.SettingsManager.EMSSettings.ManageDispatching = true;
+            Settings.SettingsManager.GangSettings.ManageDispatching = true;
+            Settings.SettingsManager.FireSettings.ManageDispatching = true;
+            Settings.SettingsManager.SecuritySettings.ManageDispatching = true;
+            Settings.SettingsManager.TaxiSettings.ManageDispatching = true;
+            Settings.SettingsManager.CivilianSettings.ManageDispatching = true;
+            Dispatcher.DebugResetLocations();
+            Game.DisplaySubtitle("Dispatching Enabled");
+        }
 
 
 

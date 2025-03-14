@@ -152,8 +152,8 @@ public class GameSaves : IGameSaves
             new VehicleSaveStatus("comet2", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ 
                 InventoryItems = new List<InventorySave>() { new InventorySave("DIC Lighter",1.0f), }
             , WeaponInventory = new List<StoredWeapon>() {new StoredWeapon(1593441988, Vector3.Zero, new WeaponVariation(new List<WeaponComponent>() { new WeaponComponent("Extended Clip") } ), 120), },
-                VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } },
-            new VehicleSaveStatus("velum", new Vector3(-1222.977f, -3338.955f, 14.87685f), 94.55769f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 27, LicensePlate = new LSR.Vehicles.LicensePlate("81VAU819", 0, false) } },
+                VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate(" LS RED ", 0, false, Game.GetHashKey("comet2")) } },
+            new VehicleSaveStatus("velum", new Vector3(-1222.977f, -3338.955f, 14.87685f), 94.55769f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 27, LicensePlate = new LSR.Vehicles.LicensePlate("81VAU819", 0, false, Game.GetHashKey("velum")) } },
         }
         );
 
@@ -342,7 +342,7 @@ public class GameSaves : IGameSaves
                     new VehicleMod(50,3),
 
                 }
-                , LicensePlate = new LSR.Vehicles.LicensePlate("5GNU769", 0, false)
+                , LicensePlate = new LSR.Vehicles.LicensePlate("5GNU7697", 0, false, Game.GetHashKey("stalion"))
             } }
                                                                                                                                                                  }); ;
 
@@ -388,7 +388,7 @@ public class GameSaves : IGameSaves
         };
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() { 
             new VehicleSaveStatus("emperor", new Vector3(-76.17985f, -1457.356f, 31.50146f), 207.2386f) { 
-                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("LD2", 0, false) } }
+                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("LD2", 0, false, Game.GetHashKey("emperor")) } }
         };
         PedVariation Variation = new PedVariation(
             new List<PedComponent>() {
@@ -571,7 +571,7 @@ public class GameSaves : IGameSaves
         };
         GameSave GameSave = new GameSave("Niko Bellic", 19500, "MP_M_FREEMODE_01", true, Variation, Weapons, new List<VehicleSaveStatus>() {
             new VehicleSaveStatus("comet2", new Vector3(866.8428f, -1594.666f, 30.80709f), 84.34846f) { VehicleVariation = new VehicleVariation() {
-                PrimaryColor = 38, SecondaryColor = 38, LicensePlate = new LSR.Vehicles.LicensePlate("4YDR8567", 0, false)
+                PrimaryColor = 38, SecondaryColor = 38, LicensePlate = new LSR.Vehicles.LicensePlate("4YDR8567", 0, false, Game.GetHashKey("comet2"))
             } }
                                                                                                                                                                  }); 
         GameSave.PlayerPosition = new Vector3(860.6456f, -1591.222f, 31.7381f);
@@ -614,7 +614,7 @@ public class GameSaves : IGameSaves
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
         {
-            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false, Game.GetHashKey("oracle2")) } }
         };
         List<StoredWeapon> Weapons = new List<StoredWeapon>
         {
@@ -662,7 +662,7 @@ public class GameSaves : IGameSaves
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() 
         {
-            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } } 
+            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false, Game.GetHashKey("oracle2")) } } 
         };
         List<StoredWeapon> Weapons = new List<StoredWeapon>
         {
@@ -685,7 +685,7 @@ public class GameSaves : IGameSaves
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() 
         {
-            new VehicleSaveStatus("zion", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("1RCT244", 0, false) } } 
+            new VehicleSaveStatus("zion", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("1RCT244", 0, false, Game.GetHashKey("zion")) } } 
         };
         List<StoredWeapon> Weapons = new List<StoredWeapon>
         {
@@ -708,7 +708,7 @@ public class GameSaves : IGameSaves
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
         {
-            new VehicleSaveStatus("police2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+            new VehicleSaveStatus("police2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false, Game.GetHashKey("police2")) } }
         };
         List<StoredWeapon> Weapons = new List<StoredWeapon>
         {
@@ -748,7 +748,7 @@ public class GameSaves : IGameSaves
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
         {
-            new VehicleSaveStatus("police", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+            new VehicleSaveStatus("police", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false, Game.GetHashKey("police")) } }
         };
         List<StoredWeapon> Weapons = new List<StoredWeapon>
         {
@@ -812,7 +812,7 @@ public class GameSaves : IGameSaves
         };
         PedVariation TestVar1 = new PedVariation(new List<PedComponent>() { new PedComponent(3, 4, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 21, 2, 0), new PedComponent(8, 10, 0, 0), new PedComponent(11, 4, 0, 0) }, new List<PedPropComponent>() { });
 
-        GameSave TestGameSave = new GameSave("Michael Jones", 950000, "MP_M_FREEMODE_01", true, TestVar1, weapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
+        GameSave TestGameSave = new GameSave("Michael Jones", 950000, "MP_M_FREEMODE_01", true, TestVar1, weapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false, Game.GetHashKey("sentinel")) } }
                                                                                                                                                                 });
 
         TestGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
@@ -843,7 +843,7 @@ public class GameSaves : IGameSaves
         };
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() {
             new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) {
-                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
+                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false, Game.GetHashKey("sentinel")) } }
         };
         PedVariation Variation = new PedVariation(
             new List<PedComponent>() {

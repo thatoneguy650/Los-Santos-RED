@@ -54,7 +54,7 @@ public class ModDataFileManager
     public Contacts Contacts;
     public TestAnimations TestAnimations;
     public SpawnBlocks SpawnBlocks;
-
+    public VehicleRaces VehicleRaces;
     public ModDataFileManager()
     {
 
@@ -229,6 +229,11 @@ public class ModDataFileManager
         GameConfigs = new GameConfigs();
         GameConfigs.ReadConfig();
         GameConfigs.Setup();
+
+        VehicleRaces = new VehicleRaces();
+        VehicleRaces.ReadConfig(configName);
+
+
         GameFiber.Yield();
     }
     private void SetupAlternateConfigs()

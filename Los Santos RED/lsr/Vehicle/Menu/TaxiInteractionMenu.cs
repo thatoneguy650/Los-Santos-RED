@@ -201,7 +201,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
 
 
         TaxiRide.UpdateDestination(spawnLocation.FinalPosition, Player.Character.Position, gameLocation.Name);
-        Player.GPSManager.AddGPSRoute(gameLocation.Name, spawnLocation.FinalPosition);
+        Player.GPSManager.AddGPSRoute(gameLocation.Name, spawnLocation.FinalPosition, true);
     }
 
     private void SetDestinationMarker()
@@ -238,7 +238,7 @@ public class TaxiInteractionMenu : VehicleInteractionMenu
 
         VehicleInteractMenu.SubtitleText = "Destination: Marker";
         TaxiRide.UpdateDestination(spawnLocation.FinalPosition, Player.Character.Position, "Marker");
-        Player.GPSManager.AddGPSRoute("Marker", spawnLocation.FinalPosition);
+        Player.GPSManager.AddGPSRoute("Marker", spawnLocation.FinalPosition, true);
     }
     private void AddDrivingStyleMenu()
     {

@@ -597,7 +597,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                 WheelType = 1,
                 WindowTint = 0,
                 PearlescentColor = 0,
-                LicensePlate = new LSR.Vehicles.LicensePlate("",0, false),
+                //LicensePlate = new LSR.Vehicles.LicensePlate("",0, false),
                 VehicleExtras = new List<VehicleExtra>()
                     {
                         new VehicleExtra(0,false),

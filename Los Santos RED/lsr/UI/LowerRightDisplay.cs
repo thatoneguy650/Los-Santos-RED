@@ -16,6 +16,7 @@ public class LowerRightDisplay
     private ITimeReportable Time;
     private ISettingsProvideable Settings;
     private UI UI;
+    private IViolateable Violateable;
 
     private float lowerRightHeighSpace;
 
@@ -34,12 +35,13 @@ public class LowerRightDisplay
 
     private string overrideTimeDisplay = "";
     private bool playerIsInVehicle = false;
-    public LowerRightDisplay(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI ui)
+    public LowerRightDisplay(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI ui, IViolateable violateable)
     {
         DisplayablePlayer = displayablePlayer;
         Time = time;
         Settings = settings;
         UI = ui;
+        Violateable = violateable;
         StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
@@ -481,6 +483,10 @@ public class LowerRightDisplay
                 if (DisplayablePlayer.CurrentVehicle.WasReportedStolen)
                 {
                     CurrentSpeedDisplay += $" ~r~Vehicle Reported Stolen{UI.CurrentDefaultTextColor}";
+                }
+                else if (DisplayablePlayer.CurrentVehicle.HasObviousFicticiousPlate(Violateable))
+                {
+                    CurrentSpeedDisplay += $" ~r~Ficticious Plate{UI.CurrentDefaultTextColor}";
                 }
                 else if (DisplayablePlayer.CurrentVehicle.HasBeenSeenByPoliceDuringWanted)
                 {

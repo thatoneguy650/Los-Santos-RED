@@ -19,7 +19,7 @@ public class Settings : ISettingsProvideable
 
     [XmlIgnore]
     public bool IsBackendChanged { get; set; } = false;
-    public void ReadConfig(string configName)
+    public void ReadConfig(string NOTUSED)
     {
         string fileName = string.IsNullOrEmpty(configName) ? "Settings*.xml" : $"Settings_{configName}.xml";
 

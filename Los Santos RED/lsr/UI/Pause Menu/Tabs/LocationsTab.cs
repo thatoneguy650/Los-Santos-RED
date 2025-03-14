@@ -41,7 +41,7 @@ public class LocationsTab : ITabbableMenu
         removeGPSTTI = new TabTextItem("Remove GPS", "Remove GPS", "Remove the GPS Blip");
         removeGPSTTI.Activated += (s, e) =>
         {
-            Player.GPSManager.RemoveGPSRoute();
+            Player.GPSManager.RemoveGPSRoute(true);
         };
         items.Add(removeGPSTTI);
 
@@ -94,7 +94,7 @@ public class LocationsTab : ITabbableMenu
                     GameLocation toGPS = DirectoryLocations.FirstOrDefault(x => x.Name == selectedItem.Name && x.StreetAddress == streetAddress);
                     if (toGPS != null)
                     {
-                        Player.GPSManager.AddGPSRoute(toGPS.Name, toGPS.EntrancePosition);
+                        Player.GPSManager.AddGPSRoute(toGPS.Name, toGPS.EntrancePosition, true);
                     }
                 }
             };

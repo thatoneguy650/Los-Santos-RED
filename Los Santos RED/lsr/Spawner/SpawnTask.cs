@@ -56,6 +56,7 @@ public abstract class SpawnTask
     public bool AddEmptyVehicleBlip { get; set; } = false;
     public TaskRequirements SpawnRequirement { get; set; }
     public bool SpawnWithAllWeapons { get; set; } = false;
+    public bool DoPersistantEntityCheck { get; set; } = true;
     public Vector3 Position
     {
         get

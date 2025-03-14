@@ -153,7 +153,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
         //VehicleExporter exporter = PlacesOfInterest.PossibleLocations.VehicleExporters.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
         if (exporter != null)
         {
-            Player.GPSManager.AddGPSRoute(exporter.Name, exporter.EntrancePosition);
+            Player.GPSManager.AddGPSRoute(exporter.Name, exporter.EntrancePosition, true);
             List<string> Replies = new List<string>() {
                     $"Our shop is located on {exporter.FullStreetAddress} come see us.",
                     $"Come check out our shop on {exporter.FullStreetAddress}.",

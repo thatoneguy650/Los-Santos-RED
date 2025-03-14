@@ -107,6 +107,10 @@ public class CivilianSpawnTask : SpawnTask
                 PersonType?.SetPedVariation(createdPed, PossibleHeads, true);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
+
+
+                EntryPoint.WriteToConsole("CIV SPAWN POINT PED CREATED");
+
                 return Person;
             }
             return null;
@@ -133,11 +137,13 @@ public class CivilianSpawnTask : SpawnTask
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
             World.Vehicles.CleanupAmbient();
-            if (Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn && NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, 0.1f, 0.5f, 1f, 0))
+            if (DoPersistantEntityCheck && Settings.SettingsManager.WorldSettings.CheckAreaBeforeVehicleSpawn && NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(Position.X, Position.Y, Position.Z, 0.1f, 0.5f, 1f, 0))
             {
+                EntryPoint.WriteToConsole("CIV SPAWN POINT OBSCURED");
                 return null;
             }
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
+            EntryPoint.WriteToConsole($"TRYING TO SPAWN {VehicleType.ModelName}");
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
 
@@ -145,6 +151,7 @@ public class CivilianSpawnTask : SpawnTask
 
             if (!SpawnedVehicle.Exists())
             {
+                EntryPoint.WriteToConsole($"TRYING TO SPAWN {VehicleType.ModelName} AND IT DOESNT EXIST");
                 return null;
             }
             VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
@@ -157,10 +164,13 @@ public class CivilianSpawnTask : SpawnTask
             GameFiber.Yield();
             if (!SpawnedVehicle.Exists())
             {
+                EntryPoint.WriteToConsole($"TRYING TO SPAWN {VehicleType.ModelName} AND IT DOESNT EXIST 2");
                 return null;
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, SetPersistent);
             CreatedVehicles.Add(CreatedVehicle);
+
+            EntryPoint.WriteToConsole("CIV SPAWN FINAL VEHICLE");
             return CreatedVehicle;
         }
         catch (Exception ex)

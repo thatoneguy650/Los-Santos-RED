@@ -20,7 +20,7 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IContactRelateable, ILicenseable, IPropertyOwnable,
                           ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable, IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable,
                           IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable, IOutfitManageable, IArmorManageable, IRestrictedAreaManagable, ITaxiRideable, IGangBackupable, IInteriorManageable, 
-                            ICuffable, IIntimidationManageable, ICasinoGamePlayable, IVehicleManageable, IStealthManageable
+                            ICuffable, IIntimidationManageable, ICasinoGamePlayable, IVehicleManageable, IStealthManageable, IRaceable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -178,6 +178,7 @@ namespace Mod
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
             VehicleManager = new VehicleManager(this, World, Settings);
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
+            RacingManager = new RacingManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -227,6 +228,7 @@ namespace Mod
         public InteriorManager InteriorManager { get; private set; }
         public WeatherReporting Weather { get; set; }
         public StealthManager StealthManager { get; private set; }
+        public RacingManager RacingManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -536,6 +538,7 @@ namespace Mod
             CuffManager.Setup();
             RadarDetector.Setup();
             GamblingManager.Setup();
+            RacingManager.Setup();
             VehicleManager.Setup();
             StealthManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -642,6 +645,7 @@ namespace Mod
             IntimidationManager.Update();
             VehicleManager.Update();
             StealthManager.Update();
+            RacingManager.Update();
             //UpdateHiding();
         }
 
@@ -865,6 +869,7 @@ namespace Mod
             GamblingManager.Dipsose();
             VehicleManager.Dispose();
             StealthManager.Dispose();
+            RacingManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -2428,6 +2433,12 @@ namespace Mod
             else
             {
                 CurrentVehicle.Update(this);
+            }
+
+
+            if(IsNotWanted && !CriminalHistory.HasHistory && CurrentVehicle != null && CurrentVehicle.HasBeenSeenByPoliceDuringWanted)
+            {
+                CurrentVehicle.HasBeenSeenByPoliceDuringWanted = false;
             }
         }
         private void UpdateLookedAtPed()

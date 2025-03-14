@@ -160,7 +160,7 @@ public class GunDealerInteraction : IContactMenuInteraction
     {
         if (gunStore != null)
         {
-            Player.GPSManager.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);
+            Player.GPSManager.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition, true);
             List<string> Replies = new List<string>() {
                     $"Our shop is located on {gunStore.FullStreetAddress} come see us.",
                     $"Come check out our shop on {gunStore.FullStreetAddress}.",

@@ -419,6 +419,10 @@ public class GangDispatcher
         {
             return;
         }
+        if(Player.IsWanted)
+        {
+            return;
+        }
         Gang EnemyGang;
         if (Settings.SettingsManager.GangSettings.AllowHitSquadsOnlyEnemy)
         {

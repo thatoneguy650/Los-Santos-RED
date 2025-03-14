@@ -120,8 +120,31 @@ namespace LSR.Vehicles
         }
         public uint GameTimeToReportStolen { get; set; } = 0;
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
-        public bool HasOriginalPlate => CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
+        public bool HasOriginalPlate => CarPlate != null && OriginalLicensePlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
         public bool IsWanted => CarPlate != null && CarPlate.IsWanted;// CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
+
+
+        public bool HasObviousFicticiousPlate(IViolateable player)
+        {
+            if (CarPlate == null)
+            {
+                return true;
+            }
+            if (HasOriginalPlate)
+            {
+                return false;
+            }
+            if(!Vehicle.Exists())
+            {
+                return false;
+            }
+            if (CarPlate.OriginalModelHash != Vehicle.Model.Hash)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool CopsRecognizeAsStolen
         {
             get
@@ -339,7 +362,7 @@ namespace LSR.Vehicles
             {
                 Handle = vehicle.Handle;
                 DescriptionColor = Vehicle.PrimaryColor;
-                CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle), false);
+                CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle), false, vehicle.Model.Hash);
                 OriginalLicensePlate = CarPlate;
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
@@ -348,7 +371,7 @@ namespace LSR.Vehicles
             }
             else
             {
-                CarPlate = new LicensePlate("UNKNOWN", 0, false);
+                CarPlate = new LicensePlate("UNKNOWN", 0, false, 0);
                 OriginalLicensePlate = CarPlate;
             }
             Radio = new Radio(this);
@@ -741,14 +764,16 @@ namespace LSR.Vehicles
         }
         public void SetRandomPlate()
         {
-            string randomPlate = RandomItems.RandomString(8);
-            OriginalLicensePlate = new LicensePlate(randomPlate, 0, false);
-            CarPlate = new LicensePlate(randomPlate, 0, false);
-            EntryPoint.WriteToConsole($"SET PLATE {randomPlate}");
-            if(!Vehicle.Exists())
-            { 
-                return; 
+            if (!Vehicle.Exists())
+            {
+                return;
             }
+            string randomPlate = RandomItems.RandomString(8);
+            uint modelHash = Vehicle.Model.Hash;
+            OriginalLicensePlate = new LicensePlate(randomPlate, 0, false, modelHash);
+            CarPlate = new LicensePlate(randomPlate, 0, false, modelHash);
+            EntryPoint.WriteToConsole($"SET PLATE {randomPlate}");
+  
             Vehicle.LicensePlate = randomPlate;
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle, 0);
             EntryPoint.WriteToConsole($"SET PLATE FINISH {randomPlate}");
@@ -772,7 +797,7 @@ namespace LSR.Vehicles
 
         public virtual bool CanNeverUpdatePlate => false;
 
-        public bool HasBeenSeenByPoliceDuringWanted { get; private set; }
+        public bool HasBeenSeenByPoliceDuringWanted { get; set; }
 
         private int ClosestColor(List<Color> colors, Color target)
         {

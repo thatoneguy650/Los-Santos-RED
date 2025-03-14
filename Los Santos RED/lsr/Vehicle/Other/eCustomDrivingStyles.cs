@@ -56,7 +56,8 @@ public enum eCustomDrivingStyles : int
 
 
 
-	 
+    RacingOLD = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,//(int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288 | 4194304,
+    Racing = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int)VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,//(int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288 | 4194304,
 
 
     //Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,

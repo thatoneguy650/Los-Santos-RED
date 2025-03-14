@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 
 public class Interiors_Liberty
@@ -21,7 +22,7 @@ public class Interiors_Liberty
     {
         LibertyCityInteriors = new PossibleInteriors();
         GeneralInteriors();
-
+        Banks();
         Serialization.SerializeParam(LibertyCityInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Interiors_{StaticStrings.LibertyConfigSuffix}.xml");
 
 
@@ -55,29 +56,250 @@ public class Interiors_Liberty
         Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
 
     }
+
+    private void Banks()
+    {
+        List<TheftInteractItem> SafetyDepositBoxStealItems = new List<TheftInteractItem>() {
+                            new TheftInteractItem() {
+                                ModItemName = "Marked Cash Stack",//2500 at forger
+                                Percentage = 150,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Gold Ring",//125
+                                Percentage = 55,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Silver Ring",//13
+                                Percentage = 35,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Gold Ring",//worht 2 dollars
+                                Percentage = 7,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Silver Ring",//worth 1 dollar
+                                Percentage = 5,
+                            },
+                        };
+        int SafetyDepositBoxStealMinItems = 1;
+        int SafetyDepositBoxStealMaxItems = 10;
+
+
+        List<TheftInteractItem> SafetyDepositBoxLargeStealItems = new List<TheftInteractItem>() {
+                            new TheftInteractItem() {
+                                ModItemName = "Marked Cash Stack",//2500 at forger
+                                MaxItems = 3,
+                                Percentage = 400,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Gold Ring",//125
+                                MaxItems = 4,
+                                Percentage = 55,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Silver Ring",//13
+                                MaxItems = 5,
+                                Percentage = 35,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Gold Ring",//worht 2 dollars
+                                Percentage = 2,
+                            },
+                            new TheftInteractItem() {
+                                ModItemName = "Fake Silver Ring",//worth 1 dollar
+                                Percentage = 2,
+                            },
+                        };
+
+        int SafetyDepositBoxStealMinLargeItems = 1;
+        int SafetyDepositBoxStealMaxLargeItems = 15;
+
+        LibertyCityInteriors.BankInteriors.AddRange(new List<BankInterior>()
+        {
+            new BankInterior(25858,"Bank Of Liberty") {
+                SearchLocations = new List<Vector3>(){new Vector3(217.8289f, 27.17734f, 15.40732f),new Vector3(236.4546f, 23.64848f, 15.40731f),new Vector3(232.7605f, 19.77981f, 8.907292f)},
+                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+
+                    new InteriorDoor(3863802474,new Vector3(210.2651f, 30.79712f, 15.64099f)) { LockWhenClosed = true },//Left 1
+                    new InteriorDoor(866127123,new Vector3(210.2651f, 23.80737f, 15.64099f)) { LockWhenClosed = true },//Left 2
+
+                    new InteriorDoor(3863802474,new Vector3(210.2651f, 26.80957f, 15.64099f)) { LockWhenClosed = true },//Right 1
+                    new InteriorDoor(866127123,new Vector3(210.2651f, 27.79492f, 15.64099f)) { LockWhenClosed = true },//Right 2
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("bolDrawer1",new Vector3(231.1804f, 25.4906f, 15.40732f), 120.5218f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("bolDrawer2",new Vector3(228.4528f, 29.75732f, 15.40731f), 122.7199f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("bolDrawer3",new Vector3(225.3774f, 33.99172f, 15.40731f), 124.7775f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(220.8931f, 22.25491f, 8.907288f),360f-274.3875f,-.4f), //1
+                        Heading = 274.3875f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(217.3838f, 21.82025f, 8.90728f),360f-91.61941f,-.4f), //2
+                        Heading = 91.61941f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault3",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(217.2888f, 20.62871f, 8.90728f),360f-90.78756f,-.4f),  //3
+                        Heading = 90.78756f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault4",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(217.3019f, 18.76634f, 8.90728f),360f-91.83313f,-.4f), //4
+                        Heading = 91.83313f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault5",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(217.2644f, 17.38053f, 8.90728f),360f-89.10315f,-.4f), //5
+                        Heading = 89.10315f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault6",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(218.5396f, 16.75767f, 8.907285f),360f-180.9633f,-.4f),  //6
+                        Heading = 180.9633f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVault7",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(219.7897f, 16.7446f, 8.90729f),360f-181.6117f,-.4f),  //7
+                        Heading = 181.6117f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolVaultSmSafe",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(220.3102f, 16.82383f, 8.907287f),360f-268.7439f,-.4f),  //8
+                        Heading = 268.7439f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bolInnerVaultLaSafe",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(220.2592f, 18.05546f, 8.907285f),360f-268.8512f,-.4f),  //9
+                        Heading = 268.8512f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+            },
+        });
+    }
+
     private void GeneralInteriors()
     {
         LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             new Interior(76290,"Perestroika") { },
             new Interior(138498, "Laundromat"){  },
+            new Interior(134146, "Laundromat - Alderney City"),
             new Interior(160514,"Broker Fire Station"){  },
             new Interior(176898, "Bohan Fire Station"){  },
 
 
             new Interior(27394, "Memory Lanes"){  },
-            new Interior(151554, "Beechwood Apts 2"),
-            new Interior(119042, "Beechwood Apts 1"),
+            new Interior(151554,"Beechwood Apts 2"),
+            new Interior(119042,"Beechwood Apts 1"),
             new Interior(35330, "Beechwood Apts 3"),
-            new Interior(118786, "Homebrew Cafe"){  },
+            new Interior(118786,"Homebrew Cafe"){  },
             new Interior(37634, "Beechwood Apts 5"),
-            
+
+            new Interior(88834, "Old Couples House - Firefly Island"),
+            new Interior(158978, "Drug Den - Schlotter Broker"),
             new Interior(24578, "JJ China Limited"),
+            new Interior(85506, "Mr Fuk's - Alderney City"),
+
 
             new Interior(124418, "Burger Shot")
-            { 
-               
-                Doors = new List<InteriorDoor>()  
+            {
+
+                Doors = new List<InteriorDoor>()
                 { 
                     //FRONT
                     new InteriorDoor(3024662465, new Vector3(1890.526f, 718.3006f, 25.46795f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
@@ -105,8 +327,11 @@ public class Interiors_Liberty
 
             new Interior(139266, "The Libertonian"),
 
+            new Interior(113666, "The Triangle Club - Bohan"),
+            new Interior(67586, "Honkers - Tudor"),
 
-
+            new Interior(172034, "Sprunk Factory - Bohan Industrial"),
+            new Interior(72194, "Abandoned Factory - Bohan Industrial"),
 
 
             //burger shot beechwoodd city
@@ -114,7 +339,7 @@ public class Interiors_Liberty
 
         });
 
-        LibertyCityInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>() 
+        LibertyCityInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
              new ResidenceInterior(152578,"Playboy X Penthouse") {
                 IsTeleportEntry = true,

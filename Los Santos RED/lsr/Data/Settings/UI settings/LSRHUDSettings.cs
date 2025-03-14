@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 public class LSRHUDSettings : ISettingsDefaultable
 {
@@ -124,6 +125,23 @@ public class LSRHUDSettings : ISettingsDefaultable
     public bool ShowStaminaDisplay { get; set; }
     public bool ShowIntoxicationDisplay { get; set; }
     public bool ShowSearchModeDisplay { get; set; }
+
+
+
+
+
+
+    [Description("X Position of position when racing. 0.0-1.0")]
+    public float RacingPositionPositionX { get; set; }
+    [Description("Y Position of position when racing. 0.0-1.0")]
+    public float RacingPositionPositionY { get; set; }
+    [Description("Scale of position when racing. 0.0-1.0")]
+    public float RacingPositionScale { get; set; }
+    [Description("Color of position when racing. .net standard color names are valid")]
+    public string RacingPositionColor { get; set; }
+    [Description("Font ID position when racing. GTA Font Enum")]
+    public int RacingPositionFont { get; set; }
+    public int RacingPositionJustificationID { get; set; }
 
 
     [OnDeserialized()]
@@ -255,5 +273,15 @@ public class LSRHUDSettings : ISettingsDefaultable
         ZoneDisplayShowState = false;
         ZoneDisplayShowBorough = true;
         ZoneDisplayShowCounty = true;
+
+
+
+        RacingPositionPositionX = 0.98f;
+        RacingPositionPositionY = 0.6f;
+        RacingPositionScale = 2.5f;
+        RacingPositionColor = "White";
+        RacingPositionFont = (int)GTAFont.FontChaletLondon;
+        RacingPositionJustificationID = 2;
+
     }
 }

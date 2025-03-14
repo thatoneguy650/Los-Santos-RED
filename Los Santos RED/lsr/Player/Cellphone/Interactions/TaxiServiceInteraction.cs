@@ -249,7 +249,7 @@ public class TaxiServiceInteraction : IContactMenuInteraction
     {
         if (locationName != null)
         {
-            Player.GPSManager.AddGPSRoute(locationName.Name, locationName.EntrancePosition);
+            Player.GPSManager.AddGPSRoute(locationName.Name, locationName.EntrancePosition, true);
             List<string> Replies = new List<string>() {
                     $"Our shop is located on {locationName.FullStreetAddress} come see us.",
                     $"Come check out our shop on {locationName.FullStreetAddress}.",
