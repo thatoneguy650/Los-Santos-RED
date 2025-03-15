@@ -15,8 +15,10 @@ public class VehicleRaces : IVehicleRaces
     public VehicleRaceTypeManager VehicleRaceTypeManager { get; private set; }
     public void ReadConfig(string configName)
     {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles($"VehicleRaces{configName}.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        string fileName = string.IsNullOrEmpty(configName) ? "VehicleRaces*.xml" : $"VehicleRaces_{configName}.xml";
+
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED"); 
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded VehicleRaces config: {ConfigFile.FullName}", 0);
