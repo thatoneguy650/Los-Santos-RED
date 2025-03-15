@@ -134,6 +134,7 @@ namespace Mod
                 return;
             }
             Player.ActivityManager.StopDynamicActivity();
+            //Key always exists because this is invoked only from crafting menu which has populated items that are valid and can be crafted.
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
             CraftingMenu.Hide();
             DeductIngredientsFromInventory(itemsToRemove, craftItem, quantity);
@@ -143,17 +144,17 @@ namespace Mod
             {
                 PerformAnimation(craftItem);
             }
-            if (!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
+            if (!string.IsNullOrEmpty(craftItem.CraftableItem.CrimeId))
             {
-                Player.Violations.SetContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
+                Player.Violations.SetContinuouslyViolating(craftItem.CraftableItem.CrimeId);
             }
-            GameFiber.Wait(CraftableItems.CraftablesLookup[productName].CraftableItem.Cooldown);
-            ModItem itemToGive = ModItems.Get(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant);
-            itemToGive.AddToPlayerInventory(Player, quantity * (CraftableItems.CraftablesLookup[productName].CraftableItem.SingleUnit ? 1 : CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
+            GameFiber.Wait(craftItem.CraftableItem.Cooldown);
+            ModItem itemToGive = ModItems.Get(craftItem.CraftableItem.Resultant);
+            itemToGive.AddToPlayerInventory(Player, quantity * (craftItem.CraftableItem.SingleUnit ? 1 : craftItem.CraftableItem.ResultantAmount));
             IsCrafting = false;
-            if (!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
+            if (!string.IsNullOrEmpty(craftItem.CraftableItem.CrimeId))
             {
-                Player.Violations.StopContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
+                Player.Violations.StopContinuouslyViolating(craftItem.CraftableItem.CrimeId);
             }
             Player.IsSetDisabledControls = false;
             Game.DisplayNotification($"~g~{productName} ~w~crafted");
