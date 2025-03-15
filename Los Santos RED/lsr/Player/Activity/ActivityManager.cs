@@ -30,6 +30,7 @@ public class ActivityManager
     private IPlateChangeable PlateChangeable;
     private ILocationInteractable LocationInteractable;
     private IPlacesOfInterest PlacesOfInterest;
+    private IVehicleRaces VehicleRaces;
 
     private ITimeControllable Time;
     private IRadioStations RadioStations;
@@ -231,7 +232,7 @@ public class ActivityManager
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones)
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces)
     {
         Player = player;
         Settings = settings;
@@ -258,6 +259,7 @@ public class ActivityManager
         GangTerritories = gangTerritories;
         VehicleSeatDoorData = vehicleSeatDoorData;
         Cellphones = cellphones;
+        VehicleRaces = vehicleRaces;
     }
     public void Setup()
     {
@@ -902,7 +904,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable);
+            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces);
             Interaction.Start();  
         }
     }

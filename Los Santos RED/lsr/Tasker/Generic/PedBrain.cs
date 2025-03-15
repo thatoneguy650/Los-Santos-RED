@@ -47,7 +47,7 @@ public class PedBrain
             }
             if (PedExt.NeedsTaskAssignmentCheck)
             {
-                if (PedExt.DistanceToPlayer <= 300f)//200f)
+                if (PedExt.DistanceToPlayer <= 300f || PedExt.WasModSpawned)//200f)
                 {
                     UpdateCurrentTask();//has yields if it does anything
                 }

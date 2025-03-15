@@ -101,7 +101,7 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IContacts contacts)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IContacts contacts, IVehicleRaces vehicleRaces)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -159,7 +159,7 @@ namespace Mod
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
             ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
-                gangTerritories, VehicleSeatDoorData, cellphones);
+                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);

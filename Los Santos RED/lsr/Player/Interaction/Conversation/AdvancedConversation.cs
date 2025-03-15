@@ -26,9 +26,10 @@ public class AdvancedConversation
     private UIMenu QuestionSubMenu;
     private IEntityProvideable World;
     private ILocationInteractable LocationInteractable;
+    private IVehicleRaces VehicleRaces;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
     public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, 
-        IEntityProvideable world, ILocationInteractable locationInteractable)
+        IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces)
     {
         Player = player;
         ConversationSimple = conversation_Simple;
@@ -41,6 +42,7 @@ public class AdvancedConversation
         Speeches = speeches;
         World = world;
         LocationInteractable = locationInteractable;
+        VehicleRaces = vehicleRaces;
     }
     public void Setup()
     {
@@ -88,12 +90,24 @@ public class AdvancedConversation
         ConversationSimple.ConversingPed?.AddSpecificInteraction(LocationInteractable, MenuPool, ConversationMenu, this);
         AddSpecificReply();
         AddQuestions();
+        if (ConversationSimple.ConversingPed != null && ConversationSimple.ConversingPed.CanCurrentlyRacePlayer)
+        {
+            AddRaceMenu();
+        }
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
         Cancel.Activated += (menu, item) =>
         {
             Dispose();
         };
         ConversationMenu.AddItem(Cancel);
+    }
+
+    private void AddRaceMenu()
+    {
+        UIMenu challengeToRaceSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Challenge To Race");
+        challengeToRaceSubMenu.RemoveBanner();
+        VehicleRaceMenu vehicleRaceMenu = new VehicleRaceMenu(MenuPool, challengeToRaceSubMenu, ConversationSimple.ConversingPed, VehicleRaces);
+        vehicleRaceMenu.Setup();
     }
 
     private void AddQuestions()
@@ -298,6 +312,11 @@ public class AdvancedConversation
             };
         }
         ConversationSimple.PedReply(PossibleReplies.PickRandom());
+    }
+
+    public void StartRaceWithPed()
+    {
+
     }
 }
 
