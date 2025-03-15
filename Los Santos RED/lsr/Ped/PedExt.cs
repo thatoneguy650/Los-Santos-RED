@@ -467,7 +467,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsLoadedInTrunk { get; set; }
     public virtual bool HasWeapon => false;
 
-    public bool CanCurrentlyRacePlayer { get; set; }
+    public bool CanCurrentlyRacePlayer => IsInVehicle && IsDriver && !IsWanted && !IsDead && !IsUnconscious;
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -1136,22 +1136,22 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         };
 
 
-        UIMenuItem challengeRaceInteract = new UIMenuItem("Challenge to Race", "Challenge the current ped to a race.");
-        challengeRaceInteract.Activated += (menu, item) =>
-        {
-            menu.Visible = false;
-            advancedConversation.StartRaceWithPed();
-        };
+        //UIMenuItem challengeRaceInteract = new UIMenuItem("Challenge to Race", "Challenge the current ped to a race.");
+        //challengeRaceInteract.Activated += (menu, item) =>
+        //{
+        //    menu.Visible = false;
+        //    advancedConversation.StartRaceWithPed();
+        //};
 
 
         if (HasMenu)
         {
             headerMenu.AddItem(transactionInteract);
         }
-        if(IsInVehicle && IsDriver)
-        {
-            headerMenu.AddItem(challengeRaceInteract);
-        }
+        //if(IsInVehicle && IsDriver)
+        //{
+        //    headerMenu.AddItem(challengeRaceInteract);
+        //}
     }
     public virtual void ShowPedInfoNotification(uint pedHeadshotHandle)
     {

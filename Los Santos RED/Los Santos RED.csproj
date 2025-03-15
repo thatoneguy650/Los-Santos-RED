@@ -536,7 +536,7 @@
     <Compile Include="lsr\Player\Racing\PlayerVehicleRacer.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRace.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRaceCheckpoint.cs" />
-    <Compile Include="lsr\Player\Racing\VehicleRaceMenu.cs" />
+    <Compile Include="lsr\Player\Racing\VehicleRacesMenu.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRacer.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRaceStartingPosition.cs" />
     <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />

@@ -908,6 +908,13 @@ public class ActivityManager
             Interaction.Start();  
         }
     }
+    public void EndInteraction()
+    {
+        if (Interaction != null)
+        {
+            Interaction.Dispose();
+        }
+    }
     public void StartHoldUp()
     {
         if (!IsInteracting && CanHoldUpTargettedPed)

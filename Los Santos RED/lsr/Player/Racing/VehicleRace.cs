@@ -184,7 +184,7 @@ public class VehicleRace
         //IsActive = false;
     }
 
-    internal void AddToMenu(MenuPool menuPool, UIMenu raceMenu)
+    internal void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
     {
         UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
         vehicleRaceMenuItem.RemoveBanner();

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 public interface IAdvancedConversationable
 {
     PedExt ConversingPed { get; }
+
+    void CancelConversation();
+    void Dispose();
     void OnAdvancedConversationStopped();
     void PedReply(string v);
     void SaySpeech(SpeechData speechData, UIMenu menuToActivate);

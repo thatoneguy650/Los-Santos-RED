@@ -27,6 +27,7 @@ public class AdvancedConversation
     private IEntityProvideable World;
     private ILocationInteractable LocationInteractable;
     private IVehicleRaces VehicleRaces;
+    private UIMenu RaceChallengeSubMenu;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
     public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, 
         IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces)
@@ -61,6 +62,7 @@ public class AdvancedConversation
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
+                EntryPoint.WriteToConsole($"ADVANCED CONVERSATION DISPOSED {MenuPool.IsAnyMenuOpen()}");
                 Dispose();
             }
             catch (Exception ex)
@@ -73,9 +75,18 @@ public class AdvancedConversation
     }
     public void Dispose()
     {
+        EntryPoint.WriteToConsole("ADVANCED CONVERSATION DISPOSED 2");
         ConversationMenu.Visible = false;
         ConversationSimple.OnAdvancedConversationStopped();
         
+    }
+    public void DisposeConversation()
+    {
+        EntryPoint.WriteToConsole("ADVANCED CONVERSATION DISPOSED 1");
+        ConversationMenu.Visible = false;
+        ConversationSimple.OnAdvancedConversationStopped();
+        ConversationSimple.CancelConversation();
+        ConversationSimple.Dispose();
     }
     private void CreateMenu()
     {
@@ -92,6 +103,7 @@ public class AdvancedConversation
         AddQuestions();
         if (ConversationSimple.ConversingPed != null && ConversationSimple.ConversingPed.CanCurrentlyRacePlayer)
         {
+            EntryPoint.WriteToConsole("UpdateMenuItems AddRaceMenu");
             AddRaceMenu();
         }
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
@@ -101,15 +113,13 @@ public class AdvancedConversation
         };
         ConversationMenu.AddItem(Cancel);
     }
-
     private void AddRaceMenu()
     {
-        UIMenu challengeToRaceSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Challenge To Race");
-        challengeToRaceSubMenu.RemoveBanner();
-        VehicleRaceMenu vehicleRaceMenu = new VehicleRaceMenu(MenuPool, challengeToRaceSubMenu, ConversationSimple.ConversingPed, VehicleRaces);
+        RaceChallengeSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Challenge To Race");
+        RaceChallengeSubMenu.RemoveBanner();
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceChallengeSubMenu, ConversationSimple.ConversingPed, VehicleRaces,PlacesOfInterest,World,Player, true, this);
         vehicleRaceMenu.Setup();
     }
-
     private void AddQuestions()
     {
         QuestionSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Ask A Question");
@@ -117,7 +127,6 @@ public class AdvancedConversation
         AddDrugItemQuestions();
         AddGangItemQuestions();
     }
-
     public void StartTransactionWithPed()
     {
         ConversationSimple?.TransitionToTransaction();
@@ -312,11 +321,6 @@ public class AdvancedConversation
             };
         }
         ConversationSimple.PedReply(PossibleReplies.PickRandom());
-    }
-
-    public void StartRaceWithPed()
-    {
-
     }
 }
 

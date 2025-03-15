@@ -79,8 +79,14 @@ public class Conversation : Interaction, IAdvancedConversationable
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+
+        if(AdvancedConversation != null)
+        {
+            AdvancedConversation.Dispose();
+        }
+
         IsDisposed = true;
-        //EntryPoint.WriteToConsoleTestLong("CONVERSATION DISPOSE RAN");
+        EntryPoint.WriteToConsole("CONVERSATION DISPOSE RAN");
     }
     public override void Start()
     {
@@ -119,6 +125,10 @@ public class Conversation : Interaction, IAdvancedConversationable
     public void OnAdvancedConversationStopped()
     {
         IsActivelyConversing = false;
+    }
+    public void CancelConversation()
+    {
+        CancelledConversation = true;
     }
     public void SaySpeech(SpeechData tosay, UIMenu toShow)
     {
