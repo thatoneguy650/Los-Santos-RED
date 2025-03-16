@@ -35,8 +35,9 @@ public class Conversation : Interaction, IAdvancedConversationable
     private List<string> GreetPedPositivePossibilities;
     private IEntityProvideable World;
     private ILocationInteractable LocationInteractable;
+    private IVehicleRaces VehicleRaces;
     public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories,
-        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable)
+        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces)
     {
         Player = player;
         Ped = ped;
@@ -56,6 +57,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         GreetPedPositivePossibilities = new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" };
         Speeches = speeches;
         World = world;
+        VehicleRaces = vehicleRaces;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
@@ -77,8 +79,14 @@ public class Conversation : Interaction, IAdvancedConversationable
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+
+        if(AdvancedConversation != null)
+        {
+            AdvancedConversation.Dispose();
+        }
+
         IsDisposed = true;
-        //EntryPoint.WriteToConsoleTestLong("CONVERSATION DISPOSE RAN");
+        EntryPoint.WriteToConsole("CONVERSATION DISPOSE RAN");
     }
     public override void Start()
     {
@@ -117,6 +125,10 @@ public class Conversation : Interaction, IAdvancedConversationable
     public void OnAdvancedConversationStopped()
     {
         IsActivelyConversing = false;
+    }
+    public void CancelConversation()
+    {
+        CancelledConversation = true;
     }
     public void SaySpeech(SpeechData tosay, UIMenu toShow)
     {
@@ -366,7 +378,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     }
     private void AskQuestion()
     {
-        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable);
+        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces);
         AdvancedConversation.Setup();
         AdvancedConversation.Show();
         IsActivelyConversing = true;

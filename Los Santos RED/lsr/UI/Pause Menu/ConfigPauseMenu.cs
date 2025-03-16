@@ -63,10 +63,11 @@ public class ConfigPauseMenu
     {
         //tabView.MoneySubtitle = Player.BankAccounts.TotalMoney.ToString("C0");
         //tabView.Money = Time.CurrentTime;
-        tabView.Name = EntryPoint.ConfigName ?? "Default";
+        tabView.Name = string.IsNullOrEmpty(EntryPoint.LoadedConfig.ConfigName) ? "None" : $"{EntryPoint.LoadedConfig.ConfigName}";
         tabView.Tabs.Clear();
 
-        NewGameConfigTab.AddConfigItems();
+        NewGameConfigTab.AddSuffixItems();
+        NewGameConfigTab.AddCustomConfigItems();
 
         tabView.RefreshIndex();
     }

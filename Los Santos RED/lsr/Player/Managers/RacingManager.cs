@@ -86,9 +86,50 @@ public class RacingManager
         {
             NativeHelper.DisablePlayerMovementControl();
             GameFiber.Yield();
-        }
-        
+        }  
         race.Start(Targetable,World,Settings);
+    }
+    public bool StartPointToPointRace(VehicleRace race, PedExt pedExt)
+    {
+        if (race == null)
+        {
+            return false;
+        }
+        if (pedExt == null)
+        {
+            return false;
+        }
+        if(!pedExt.Pedestrian.Exists())
+        {
+            return false;
+        }
+        uint vehicleHandle = 0;
+        if(pedExt.Pedestrian.CurrentVehicle.Exists())
+        {
+            vehicleHandle = pedExt.Pedestrian.CurrentVehicle.Handle;
+        }
+        if(vehicleHandle == 0)
+        {
+            return false;
+        }
+        VehicleExt racerVehicle = World.Vehicles.GetVehicleExt(pedExt.Pedestrian.CurrentVehicle);
+
+        if(racerVehicle == null)
+        {
+            return false; 
+        }
+        pedExt.SetPersistent();
+        pedExt.WasModSpawned = true;
+        List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
+        AIVehicleRacer challenger = new AIVehicleRacer(pedExt, racerVehicle) { WasSpawnedForRace = true };
+
+        vehicleRacers.Add(challenger);
+        pedExt.AddBlip();
+        PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(Player.CurrentVehicle, Player, Settings);
+        race.Setup(vehicleRacers, playerRacer);
+        race.Start(Targetable, World, Settings);
+
+        return true;
     }
     private AIVehicleRacer SpawnRacer(VehicleRaceStartingPosition vehicleRaceStartingPosition, bool addBlip)
     {

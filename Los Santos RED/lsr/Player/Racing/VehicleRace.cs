@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -180,6 +182,21 @@ public class VehicleRace
     {
         GameTimeFinishedRace = Game.GameTime;
         //IsActive = false;
+    }
+
+    internal void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
+    {
+        UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
+        vehicleRaceMenuItem.RemoveBanner();
+        UIMenuItem startRace = new UIMenuItem(Name);
+
+        startRace.Activated += (sender, selectedItem) =>
+        {
+
+            sender.Visible = false;
+        };
+
+        vehicleRaceMenuItem.AddItem(startRace);
     }
 }
 

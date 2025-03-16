@@ -184,6 +184,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             promptText += " (!)";
         }
+        if(IsInVehicle && IsDriver)
+        {
+            promptText += " (R)";
+        }
         return promptText;
     }
     public string TransactionPrompt(IButtonPromptable player)
@@ -462,6 +466,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeBuried => IsUnconscious || IsDead;
     public bool IsLoadedInTrunk { get; set; }
     public virtual bool HasWeapon => false;
+
+    public bool CanCurrentlyRacePlayer => IsInVehicle && IsDriver && !IsWanted && !IsDead && !IsUnconscious;
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -1128,10 +1134,24 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             menu.Visible = false;
             advancedConversation.StartTransactionWithPed();
         };
+
+
+        //UIMenuItem challengeRaceInteract = new UIMenuItem("Challenge to Race", "Challenge the current ped to a race.");
+        //challengeRaceInteract.Activated += (menu, item) =>
+        //{
+        //    menu.Visible = false;
+        //    advancedConversation.StartRaceWithPed();
+        //};
+
+
         if (HasMenu)
         {
             headerMenu.AddItem(transactionInteract);
         }
+        //if(IsInVehicle && IsDriver)
+        //{
+        //    headerMenu.AddItem(challengeRaceInteract);
+        //}
     }
     public virtual void ShowPedInfoNotification(uint pedHeadshotHandle)
     {

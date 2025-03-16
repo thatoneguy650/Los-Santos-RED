@@ -52,6 +52,8 @@ namespace LosSantosRED.lsr.Data
         public int OfficerFriendlyMoneySpent { get; set; }
         public int OfficerFriendlyDebt { get; set; }
         public int OfficerFriendlyReputation { get; set; }
+        public int HospitalDebt { get; set; }
+        public int BailFees { get; set; }
         public float HungerValue { get; set; }
         public float ThirstValue { get; set; }
         public float SleepValue { get; set; }
@@ -100,6 +102,7 @@ namespace LosSantosRED.lsr.Data
             SaveWeapons(player, weapons);
             SaveVehicles(player);
             SaveReputation(player);
+            SaveDebt(player);
             SaveContacts(player, time);
             SavePostition(player);
             SaveHumanState(player);
@@ -206,6 +209,11 @@ namespace LosSantosRED.lsr.Data
                 GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
             
+        }
+        private void SaveDebt(ISaveable player)
+        {
+            HospitalDebt = player.Respawning.HospitalBillPastDue;
+            BailFees = player.Respawning.BailFeePastDue;
         }
         private void SaveContacts(ISaveable player, ITimeReportable time)
         {
@@ -329,6 +337,7 @@ namespace LosSantosRED.lsr.Data
                 LoadRelationships(player, gangs, contacts, time);
                 LoadContacts(player, gangs);    
                 LoadResidences(player, placesOfInterest, modItems, settings);
+                LoadDebt(player);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
@@ -642,6 +651,11 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
+        }
+        private void LoadDebt (IInventoryable player)
+        {
+            player.Respawning.BailFeePastDue = BailFees;
+            player.Respawning.HospitalBillPastDue = HospitalDebt;
         }
         private void LoadHumanState(IInventoryable player)
         {

@@ -46,6 +46,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsAiming { get; }
         bool IsAlive { get; }
         Dispatcher Dispatcher { get; }
+        VehicleExt CurrentVehicle { get; }
+        RacingManager RacingManager { get; }
 
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);
 

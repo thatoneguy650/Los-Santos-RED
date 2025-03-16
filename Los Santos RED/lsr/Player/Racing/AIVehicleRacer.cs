@@ -25,11 +25,15 @@ public class AIVehicleRacer : VehicleRacer
         {
             return;
         }
+        if(HasFinishedRace)
+        {
+            return;
+        }
         base.Update(vehicleRace);
         PedExt.CurrentTask?.Update();
         if (VehicleExt != null && VehicleExt.Vehicle.Exists())
         {
-            NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(VehicleExt.Vehicle, 1.5f);
+            NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(VehicleExt.Vehicle, 2.0f);
         }
         if (Game.GameTime - GameTimeLastClearedFront > 200 && vehicleRace.HasRaceStarted)
         {
