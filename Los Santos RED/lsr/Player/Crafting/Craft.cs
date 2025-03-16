@@ -72,11 +72,11 @@ namespace Mod
             }
             return ingredientLookup;
         }
-        private void DeductIngredientsFromInventory(Dictionary<string,ModItem> itemsToRemove, CraftableItemLookupModel craftItem, int quantity)
+        private void DeductIngredientsFromInventory(Dictionary<string, ModItem> itemsToRemove, CraftableItemLookupModel craftItem, int quantity)
         {
-            foreach(Ingredient ingredient in craftItem.IngredientLookup.Values)
+            foreach (Ingredient ingredient in craftItem.IngredientLookup.Values)
             {
-                if(ingredient.IsConsumed)
+                if (ingredient.IsConsumed)
                 {
                     Player.Inventory.Remove(itemsToRemove[ingredient.IngredientName], craftItem.IngredientLookup[ingredient.IngredientName].Quantity * quantity);
                 }
@@ -84,7 +84,7 @@ namespace Mod
         }
         public int GetQuantityOfCraftable(CraftableItemLookupModel craftItem, Dictionary<string, ModItem> itemsToRemove, string craftingFlag = null)
         {
-            if (craftItem.CraftableItem.CraftingFlags != null && !craftItem.CraftableItem.CraftingFlags.Contains(craftingFlag))
+            if (craftItem.CraftableItem.CraftingFlags != null && craftItem.CraftableItem.CraftingFlags.Count > 0 && !craftItem.CraftableItem.CraftingFlags.Contains(craftingFlag))
             {
                 return 0;
             }
@@ -116,7 +116,7 @@ namespace Mod
                     }
                 }
             }
-            if(ingredientsSatisfied != ingredientsToSatisfy)
+            if (ingredientsSatisfied != ingredientsToSatisfy)
             {
                 return 0;
             }
@@ -126,7 +126,7 @@ namespace Mod
         {
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, craftItem.CraftableItem.AnimationDictionary, craftItem.CraftableItem.AnimationName, 4.0f, -4.0f, -1, 0, 0, false, false, false);
         }
-        public void CraftItem(string productName, Dictionary<string,ModItem> itemsToRemove, int quantity = 1, string craftingFlag = null)
+        public void CraftItem(string productName, Dictionary<string, ModItem> itemsToRemove, int quantity = 1, string craftingFlag = null)
         {
             if (IsCrafting)
             {
@@ -134,27 +134,26 @@ namespace Mod
                 return;
             }
             Player.ActivityManager.StopDynamicActivity();
-            //Key always exists because this is invoked only from crafting menu which has populated items that are valid and can be crafted.
             CraftableItemLookupModel craftItem = CraftableItems.CraftablesLookup[productName];
             CraftingMenu.Hide();
             DeductIngredientsFromInventory(itemsToRemove, craftItem, quantity);
             Player.IsSetDisabledControls = true;
             IsCrafting = true;
-            if((!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationDictionary)) && (!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationName)))
+            if ((!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationDictionary)) && (!string.IsNullOrEmpty(craftItem.CraftableItem.AnimationName)))
             {
                 PerformAnimation(craftItem);
             }
-            if (!string.IsNullOrEmpty(craftItem.CraftableItem.CrimeId))
+            if (!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
             {
-                Player.Violations.SetContinuouslyViolating(craftItem.CraftableItem.CrimeId);
+                Player.Violations.SetContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
             }
-            GameFiber.Wait(craftItem.CraftableItem.Cooldown);
-            ModItem itemToGive = ModItems.Get(craftItem.CraftableItem.Resultant);
-            itemToGive.AddToPlayerInventory(Player, quantity * (craftItem.CraftableItem.SingleUnit ? 1 : craftItem.CraftableItem.ResultantAmount));
+            GameFiber.Wait(CraftableItems.CraftablesLookup[productName].CraftableItem.Cooldown);
+            ModItem itemToGive = ModItems.Get(CraftableItems.CraftablesLookup[productName].CraftableItem.Resultant);
+            itemToGive.AddToPlayerInventory(Player, quantity * (CraftableItems.CraftablesLookup[productName].CraftableItem.SingleUnit ? 1 : CraftableItems.CraftablesLookup[productName].CraftableItem.ResultantAmount));
             IsCrafting = false;
-            if (!string.IsNullOrEmpty(craftItem.CraftableItem.CrimeId))
+            if (!string.IsNullOrEmpty(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId))
             {
-                Player.Violations.StopContinuouslyViolating(craftItem.CraftableItem.CrimeId);
+                Player.Violations.StopContinuouslyViolating(CraftableItems.CraftablesLookup[productName].CraftableItem.CrimeId);
             }
             Player.IsSetDisabledControls = false;
             Game.DisplayNotification($"~g~{productName} ~w~crafted");

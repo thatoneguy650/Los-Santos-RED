@@ -22,6 +22,7 @@ public class CraftableItem
     public string AnimationName { get; set; }
     public int ResultantAmount { get; set; }
     public bool SingleUnit { get; set; }
+    public string Category { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public int Cooldown { get; set;}
     public string CrimeId { get; set; }
@@ -40,12 +41,12 @@ public class CraftableItem
             return _ingredientList;
         }
     }
-    private string GetIngredients()
+    public string GetIngredients(int quantity = 1)
     {
         StringBuilder ingredientStringBuilder = new StringBuilder();
         foreach (var ingredient in Ingredients)
         {
-            ingredientStringBuilder.Append($"X{ingredient.Quantity} {ingredient.IngredientName}\n");
+            ingredientStringBuilder.Append($"X{ingredient.Quantity * quantity} {ingredient.IngredientName}\n");
         }
         return ingredientStringBuilder.ToString().Trim();
     }

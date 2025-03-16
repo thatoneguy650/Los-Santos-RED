@@ -62,7 +62,8 @@ public class CraftableItems : ICraftableItems
                 CrimeId = StaticStrings.DealingDrugsCrimeID, 
                 ResultantAmount = 1,
                 Cooldown = 2000,
-                CraftingFlags = new HashSet<string>{ "DrugLab" } 
+                CraftingFlags = new HashSet<string>{ "DrugLab","JOURNEY" },
+                Category = "Narcotics",
             },
             
             new CraftableItem("Cut Cocaine", "Crack", 
@@ -75,7 +76,8 @@ public class CraftableItems : ICraftableItems
             { CrimeId = StaticStrings.DealingDrugsCrimeID, 
                 ResultantAmount = 2, 
                 Cooldown = 2000,
-                CraftingFlags = new HashSet<string>{ "DrugLab", "Stove" }
+                CraftingFlags = new HashSet<string>{ "DrugLab", "Stove" },
+                Category = "Narcotics",
             },
             
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() 

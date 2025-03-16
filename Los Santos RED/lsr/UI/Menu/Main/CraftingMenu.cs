@@ -9,6 +9,7 @@ using System.Linq;
 
 public class CraftingMenu : ModUIMenu
 {
+    const string UNCATEGORIZED = "Uncategorized";
     private UIMenu Menu;
     private MenuPool MenuPool;
     private ICraftableItems CraftableItems;
@@ -38,7 +39,7 @@ public class CraftingMenu : ModUIMenu
         if (!Menu.Visible)
         {
             Create();
-            if(Menu.MenuItems.Count > 0)
+            if (Menu.MenuItems.Count > 0)
             {
                 Menu.Visible = true;
             }
@@ -83,7 +84,12 @@ public class CraftingMenu : ModUIMenu
     private void CreateCraftableItems(string craftingFlag = null)
     {
         HashSet<string> craftableItemsChecked = new HashSet<string>();
-        Dictionary<string, ModItem> itemsToRemove = new Dictionary<string,ModItem>();
+        Dictionary<string, ModItem> itemsToRemove = new Dictionary<string, ModItem>();
+        Dictionary<string, UIMenu> categoryMenus = new Dictionary<string, UIMenu>();
+        if(craftingFlag == null && LocationInteractablePlayer.IsInVehicle)
+        {
+            craftingFlag = LocationInteractablePlayer.CurrentVehicle.VehicleModelName;
+        }
         foreach (InventoryItem item in LocationInteractablePlayer.Inventory.ItemsList)
         {
             if (Crafting.CraftableItems.IngredientCraftableLookup.ContainsKey(item.ModItem.Name))
@@ -98,7 +104,9 @@ public class CraftingMenu : ModUIMenu
                     if (quantity > 0)
                     {
                         craftableItemsChecked.Add(craftableItem);
-                        var craftableItemObject = Crafting.CraftableItems.CraftablesLookup[craftableItem].CraftableItem;
+                        CraftableItem craftableItemObject = Crafting.CraftableItems.CraftablesLookup[craftableItem].CraftableItem;
+
+                        UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItemObject.Category, categoryMenus);
                         if (craftableItemObject.SingleUnit)
                         {
                             UIMenuItem itemMenu = new UIMenuItem(craftableItemObject.Name, craftableItemObject.IngredientList);
@@ -106,21 +114,65 @@ public class CraftingMenu : ModUIMenu
                             {
                                 Crafting.CraftItem(itemMenu.Text, itemsToRemove, craftingFlag: craftingFlag);
                             };
-                            Menu.AddItem(itemMenu);
+                            uIMenu.AddItem(itemMenu);
                         }
                         else
                         {
                             UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItemObject.Name, craftableItemObject.IngredientList, 1, quantity, 1);
                             itemMenu.Value = 1;
+                            itemMenu.IndexChanged += (s, oldIndex, newIndex) =>
+                            {
+                                itemMenu.Description = craftableItemObject.GetIngredients(newIndex+1);
+                            };
                             itemMenu.Activated += (s, e) =>
                             {
                                 Crafting.CraftItem(itemMenu.Text, itemsToRemove, itemMenu.Value, craftingFlag: craftingFlag);
                             };
-                            Menu.AddItem(itemMenu);
+                            uIMenu.AddItem(itemMenu);
                         }
                     }
                 }
             }
+        }
+        MenuPool.AddRange(categoryMenus.Values);
+        Menu.OnMenuClose += (sender) =>
+        {
+            foreach(UIMenu categoryMenu in categoryMenus.Values)
+            {
+                MenuPool.Remove(categoryMenu);
+            }
+        };
+    }
+
+
+    private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus)
+    {
+        if(string.IsNullOrEmpty(category))
+        {
+            if(categoryMenus.ContainsKey(UNCATEGORIZED))
+            {
+                return categoryMenus[UNCATEGORIZED];
+            }
+            else
+            {
+                categoryMenus.Add(UNCATEGORIZED, new UIMenu(UNCATEGORIZED, ""));
+                UIMenuItem bindItem = new UIMenuItem(UNCATEGORIZED);
+                Menu.AddItem(bindItem);
+                Menu.BindMenuToItem(categoryMenus[UNCATEGORIZED], bindItem);
+                return categoryMenus[UNCATEGORIZED];
+            }
+        }
+        if(categoryMenus.ContainsKey(category))
+        {
+            return categoryMenus[category];
+        }
+        else
+        {
+            categoryMenus.Add(category, new UIMenu(category, ""));
+            UIMenuItem bindItem = new UIMenuItem(category);
+            Menu.AddItem(bindItem);
+            Menu.BindMenuToItem(categoryMenus[category], bindItem);
+            return categoryMenus[category];
         }
     }
 }
