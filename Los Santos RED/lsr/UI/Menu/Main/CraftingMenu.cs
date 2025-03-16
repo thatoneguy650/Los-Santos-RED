@@ -83,60 +83,72 @@ public class CraftingMenu : ModUIMenu
     }
     private void CreateCraftableItems(string craftingFlag = null)
     {
-        HashSet<string> craftableItemsChecked = new HashSet<string>();
-        Dictionary<string, ModItem> itemsToRemove = new Dictionary<string, ModItem>();
         Dictionary<string, UIMenu> categoryMenus = new Dictionary<string, UIMenu>();
-        if(craftingFlag == null && LocationInteractablePlayer.IsInVehicle)
+        if (craftingFlag == null && LocationInteractablePlayer.IsInVehicle)
         {
             craftingFlag = LocationInteractablePlayer.CurrentVehicle.VehicleModelName;
         }
-        foreach (InventoryItem item in LocationInteractablePlayer.Inventory.ItemsList)
+        foreach(CraftableItem craftableItem in CraftableItems.Items)
         {
-            if (Crafting.CraftableItems.IngredientCraftableLookup.ContainsKey(item.ModItem.Name))
+            if (craftableItem.CraftingFlags != null && craftableItem.CraftingFlags.Count > 0 && !craftableItem.CraftingFlags.Contains(craftingFlag))
             {
-                foreach (string craftableItem in Crafting.CraftableItems.IngredientCraftableLookup[item.ModItem.Name])
+                continue;
+            }
+            int quantity = 0;
+            int ingredientsSatisfied = 0;
+            int ingredientsToSatisfy = craftableItem.Ingredients.Count;
+            foreach(Ingredient ingredient in craftableItem.Ingredients)
+            {
+                InventoryItem ingredientInInventory = LocationInteractablePlayer.Inventory.ItemsList.Find(x => x.ModItem.Name == ingredient.IngredientName);
+                if(ingredientInInventory == null)
                 {
-                    if (craftableItemsChecked.Contains(craftableItem))
+                    break;
+                }
+                int instancesCraftable = ingredientInInventory.Amount / ingredient.Quantity;
+                if (instancesCraftable == 0)
+                {
+                    quantity = 0;
+                    break;
+                }
+                else
+                {
+                    quantity = quantity == 0 ? instancesCraftable : Math.Min(quantity, instancesCraftable);
+                    ingredientsSatisfied++;
+                }
+            }
+            if (ingredientsSatisfied != ingredientsToSatisfy || quantity==0)
+            {
+                continue;
+            }
+            if (quantity > 0)
+            {
+                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
+                if (craftableItem.SingleUnit)
+                {
+                    UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
+                    itemMenu.Activated += (s, e) =>
                     {
-                        continue;
-                    }
-                    int quantity = Crafting.GetQuantityOfCraftable(CraftableItems.CraftablesLookup[craftableItem], itemsToRemove, craftingFlag);
-                    if (quantity > 0)
+                        Crafting.CraftItem(itemMenu.Text, craftingFlag: craftingFlag);
+                    };
+                    uIMenu.AddItem(itemMenu);
+                }
+                else
+                {
+                    UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList, 1, quantity, 1);
+                    itemMenu.Value = 1;
+                    itemMenu.IndexChanged += (s, oldIndex, newIndex) =>
                     {
-                        craftableItemsChecked.Add(craftableItem);
-                        CraftableItem craftableItemObject = Crafting.CraftableItems.CraftablesLookup[craftableItem].CraftableItem;
-
-                        UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItemObject.Category, categoryMenus);
-                        if (craftableItemObject.SingleUnit)
-                        {
-                            UIMenuItem itemMenu = new UIMenuItem(craftableItemObject.Name, craftableItemObject.IngredientList);
-                            itemMenu.Activated += (s, e) =>
-                            {
-                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, craftingFlag: craftingFlag);
-                            };
-                            uIMenu.AddItem(itemMenu);
-                        }
-                        else
-                        {
-                            UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItemObject.Name, craftableItemObject.IngredientList, 1, quantity, 1);
-                            itemMenu.Value = 1;
-                            itemMenu.IndexChanged += (s, oldIndex, newIndex) =>
-                            {
-                                itemMenu.Description = craftableItemObject.GetIngredients(newIndex+1);
-                            };
-                            itemMenu.Activated += (s, e) =>
-                            {
-                                Crafting.CraftItem(itemMenu.Text, itemsToRemove, itemMenu.Value, craftingFlag: craftingFlag);
-                            };
-                            uIMenu.AddItem(itemMenu);
-                        }
-                    }
+                        itemMenu.Description = craftableItem.GetIngredients(newIndex + 1);
+                    };
+                    itemMenu.Activated += (s, e) =>
+                    {
+                        Crafting.CraftItem(itemMenu.Text, itemMenu.Value, craftingFlag: craftingFlag);
+                    };
+                    uIMenu.AddItem(itemMenu);
                 }
             }
         }
     }
-
-
     private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus)
     {
         if(string.IsNullOrEmpty(category))
@@ -162,5 +174,14 @@ public class CraftingMenu : ModUIMenu
             categoryMenus.Add(category, subMenu);
             return subMenu;
         }
+    }
+    internal void RedrawCraftingMenu(string craftingFlag)
+    {
+        foreach(UIMenu m in Menu.Children.Values)
+        {
+            m.Clear();
+            MenuPool.Remove(m);
+        }
+        Show(craftingFlag);
     }
 }

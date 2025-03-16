@@ -13,8 +13,6 @@ public class CraftableItems : ICraftableItems
     private IModItems ModItems;
 
     public Dictionary<string, CraftableItemLookupModel> CraftablesLookup { get; set; }
-    public Dictionary<string, List<string>> IngredientCraftableLookup { get; set; }
-
     public CraftableItem Get(string name)
     {
         return CraftableList.FirstOrDefault(x => x.Name == name);
