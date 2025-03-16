@@ -134,14 +134,6 @@ public class CraftingMenu : ModUIMenu
                 }
             }
         }
-        MenuPool.AddRange(categoryMenus.Values);
-        Menu.OnMenuClose += (sender) =>
-        {
-            foreach(UIMenu categoryMenu in categoryMenus.Values)
-            {
-                MenuPool.Remove(categoryMenu);
-            }
-        };
     }
 
 
@@ -155,11 +147,9 @@ public class CraftingMenu : ModUIMenu
             }
             else
             {
-                categoryMenus.Add(UNCATEGORIZED, new UIMenu(UNCATEGORIZED, ""));
-                UIMenuItem bindItem = new UIMenuItem(UNCATEGORIZED);
-                Menu.AddItem(bindItem);
-                Menu.BindMenuToItem(categoryMenus[UNCATEGORIZED], bindItem);
-                return categoryMenus[UNCATEGORIZED];
+                UIMenu subMenu = MenuPool.AddSubMenu(Menu, UNCATEGORIZED);
+                categoryMenus.Add(UNCATEGORIZED, subMenu);
+                return subMenu;
             }
         }
         if(categoryMenus.ContainsKey(category))
@@ -168,11 +158,9 @@ public class CraftingMenu : ModUIMenu
         }
         else
         {
-            categoryMenus.Add(category, new UIMenu(category, ""));
-            UIMenuItem bindItem = new UIMenuItem(category);
-            Menu.AddItem(bindItem);
-            Menu.BindMenuToItem(categoryMenus[category], bindItem);
-            return categoryMenus[category];
+            UIMenu subMenu = MenuPool.AddSubMenu(Menu, category);
+            categoryMenus.Add(category, subMenu);
+            return subMenu;
         }
     }
 }
