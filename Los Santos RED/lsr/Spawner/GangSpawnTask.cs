@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 
@@ -34,6 +35,7 @@ public class GangSpawnTask : SpawnTask
     public bool IsBackupSquad { get; set; } = false;
     public bool IsGeneralBackup { get; set; } = false;
     public int PedSpawnLimit { get; set; } = 99;
+    public List<GangTerritory> GangTerritories { get; set; }
 
     public override void AttemptSpawn()
     {
@@ -294,7 +296,8 @@ public class GangSpawnTask : SpawnTask
             ForceSidearm = true;
             ForceLongGun = true;
         }
-        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
+        GangTerritory gt = GangTerritories == null ? null : GangTerritories.FirstOrDefault(x => x.ZoneInternalGameName.Equals(World.Zones.GetZone(ped.Position).InternalGameName));
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun, gt);
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;

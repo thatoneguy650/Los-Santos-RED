@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Interface
         List<SpawnError> SpawnErrors { get; }
         ModDataFileManager ModDataFileManager { get; }
         ILocationInteractable LocationInteractable { get; }
+        IZones Zones { get; }
+        IGangTerritories GangTerritories { get; }
         bool IsFEJInstalled { get; }
 
         void LoadMPMap();
