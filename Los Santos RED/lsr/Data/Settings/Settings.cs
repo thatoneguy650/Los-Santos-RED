@@ -302,6 +302,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.PoliceSettings.GeneralFineAmount = 1000;
         SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount = 2000;
+        SettingsManager.PoliceSettings.BribeCorruptCopsOnly = true;
 
         SettingsManager.PoliceSettings.RecentlySeenTime = 10000;
         SettingsManager.PoliceSettings.KillLimit_Wanted4 = 3;

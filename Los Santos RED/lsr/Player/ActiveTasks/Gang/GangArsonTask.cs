@@ -148,14 +148,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            List<ZoneJurisdiction> hiringGangTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
+            List<GangTerritory> hiringGangTerritories = GangTerritories.GetGangTerritory(HiringGang.ID);
             if (hiringGangTerritories == null || !hiringGangTerritories.Any())
             {
                 return;
             }
             List<GameLocation> PossibleSpots = PlacesOfInterest.PossibleLocations.RacketeeringTaskLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).ToList();
             List<GameLocation> AvailableSpots = new List<GameLocation>();
-            List<ZoneJurisdiction> availableTerritories = new List<ZoneJurisdiction>();
+            List<GangTerritory> availableTerritories = new List<GangTerritory>();
             EnemyGang = null;
             if (WillTorchEnemyTurf)
             {
@@ -186,7 +186,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            ZoneJurisdiction selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            GangTerritory selectedTerritory = availableTerritories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
             if (WillTorchEnemyTurf && EnemyGang == null)
             {
                 EnemyGang = Zones.GetZone(availableTerritories.FirstOrDefault().ZoneInternalGameName).AssignedGang;

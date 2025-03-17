@@ -949,7 +949,7 @@ public class Pedestrians : ITaskerReportable
             Zone CurrentZone = Zones.GetZone(Pedestrian.Position);
             if (CurrentZone != null)
             {
-                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
+                List<GangTerritory> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
                 if (!totalTerritories.Any(x => x.ZoneInternalGameName == CurrentZone.InternalGameName))
                 {
                     Delete(Pedestrian);
@@ -958,7 +958,7 @@ public class Pedestrians : ITaskerReportable
             }
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World);// { CanBeAmbientTasked = canBeAmbientTasked, WasPersistentOnCreate = WasPersistentOnCreate };
-        gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips, false, false, false);
+        gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips, false, false, false, Zones.GetZone(Pedestrian.Position), GangTerritories.GetGangTerritory(MyGang.ID));
         if(!Pedestrian.Exists())
         {
             return;

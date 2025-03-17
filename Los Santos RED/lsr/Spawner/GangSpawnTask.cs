@@ -294,7 +294,7 @@ public class GangSpawnTask : SpawnTask
             ForceSidearm = true;
             ForceLongGun = true;
         }
-        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun,World.Zones.GetZone(ped.Position),World.GangTerritories.GetGangTerritory(Gang.ID));
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;
