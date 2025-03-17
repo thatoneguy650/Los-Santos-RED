@@ -841,6 +841,10 @@ public class GameLocation : ILocationDispatchable
     {
         return Name;
     }
+    public void RefreshDistances()
+    {
+        distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
+    }
     public void Update(ITimeReportable time)
     {
         if (IsNearby)

@@ -31,6 +31,9 @@ public class Firefighter : PedExt, IWeaponIssuable
     public bool IsUsingMountedWeapon { get; set; } = false;
     public bool IsRespondingToInvestigation { get; set; }
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
+
+    public bool IsCorrupt { get; private set; }
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -44,6 +47,7 @@ public class Firefighter : PedExt, IWeaponIssuable
             {
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
+
                 PlayerPerception.Update(perceptable, placeLastSeen);
                 UpdateVehicleState();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
@@ -52,6 +56,11 @@ public class Firefighter : PedExt, IWeaponIssuable
                     {
                         GameFiber.Yield();
                     }
+                    if (ShouldCheckCrimes)
+                    {
+                        PedViolations.Update(policeRespondable, true);//possible yield in here!, REMOVED FOR NOW
+                    }
+                    PedPerception.Update();
                     if (Settings.SettingsManager.FireSettings.AllowAlerts)
                     {
                         PedAlerts.Update(policeRespondable, world);
@@ -78,6 +87,17 @@ public class Firefighter : PedExt, IWeaponIssuable
         {
             GroupName = AssignedAgency.MemberName;
         }
+        Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        {
+            IsCorrupt = true;
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
+            Money = RandomItems.GetRandomNumberInt(AssignedAgency.CorruptMoneyMin, AssignedAgency.CorruptMoneyMax);
+        }
+        if (IsCorrupt)
+        {
+            WillCallPolice = false;
+        }
         if (addBlip)
         {
             AddBlip();
@@ -97,10 +117,10 @@ public class Firefighter : PedExt, IWeaponIssuable
         }
         return ExtraItems;
     }
-    public override string InteractPrompt(IButtonPromptable player)
-    {
-        return $"Talk to {FormattedName}";
-    }
+    //public override string InteractPrompt(IButtonPromptable player)
+    //{
+    //    return $"Talk to {FormattedName}";
+    //}
     public override void MatchPlayerPedType(IPedSwappable Player)
     {
         Player.RemoveAgencyStatus();

@@ -21,6 +21,7 @@ public class LEDispatcher
     private readonly INameProvideable Names;
     private readonly IPlacesOfInterest PlacesOfInterest;
     private readonly IModItems ModItems;
+    private readonly IShopMenus ShopMenus;
 
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
@@ -160,7 +161,8 @@ public class LEDispatcher
     private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit && (GameTimeLastSpawnedOrRecalledHeli == 0 || Game.GameTime - GameTimeLastSpawnedOrRecalledHeli >= DelayBetweenHeliSpawnAfterSpawnOrRecall);
     private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
     private bool TotalIsWanted => World.TotalWantedLevel > 0;
-    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons,
+        INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems, IShopMenus shopMenus)
     {
         Player = player;
         World = world;
@@ -173,7 +175,8 @@ public class LEDispatcher
         Names = names;
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
-        MarshalDispatcher = new MarshalDispatcher(Player, this, Settings, World, Weapons, Names, PlacesOfInterest, ModItems, Agencies);
+        ShopMenus = shopMenus;
+        MarshalDispatcher = new MarshalDispatcher(Player, this, Settings, World, Weapons, Names, PlacesOfInterest, ModItems, Agencies, ShopMenus);
     }
     private float LikelyHoodOfAnySpawn
     {
@@ -968,7 +971,7 @@ public class LEDispatcher
         {
             return;
         }
-        LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, vehicleExt.DispatchableVehicle, null, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false);
+        LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, vehicleExt.DispatchableVehicle, null, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false, ShopMenus);
         spawnTask.SpawnWithAllWeapons = true;
         EntryPoint.WriteToConsole($"DEBUG LE DISPATCH RESPAWNING RAPPELLED PED VehicleType:{vehicleExt?.DispatchableVehicle} PersonType:{null} RequiredPedGroup:{vehicleExt?.DispatchableVehicle?.RequiredPedGroup} GroupName:{null}");
         spawnTask.SpawnAsPassenger(vehicleExt, seatIndex);
@@ -1382,7 +1385,7 @@ public class LEDispatcher
 
             }
 
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, addCanine);
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, addCanine, ShopMenus);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy && !isOffDuty;
             spawnTask.ClearVehicleArea = clearArea;
@@ -1873,7 +1876,7 @@ public class LEDispatcher
             Roadblock.Dispose();
             GameFiber.Yield();
         }
-        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force, ModItems, enableCarBlocks,enableSpikeStrips,enableOtherBarriers);
+        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force, ModItems, enableCarBlocks,enableSpikeStrips,enableOtherBarriers, ShopMenus);
         Roadblock.SpawnRoadblock();
         GameFiber.Yield();
         GameTimeLastSpawnedRoadblock = Game.GameTime;    

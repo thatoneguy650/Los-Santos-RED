@@ -170,6 +170,7 @@ public class GangSettings : ISettingsDefaultable
     public bool AllowBackupAssaultSpawns { get; set; }
     public bool AllowNonEnemyTargets { get; set; }
 
+
     public GangSettings()
     {
         SetDefault();
@@ -316,7 +317,10 @@ public class GangSettings : ISettingsDefaultable
 
         AllowNonEnemyTargets = true;
 
-       // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
+        // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
+
+
+
     }
 
 }

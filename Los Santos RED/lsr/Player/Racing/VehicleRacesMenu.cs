@@ -19,15 +19,18 @@ public class VehicleRacesMenu
     private IVehicleRaces VehicleRaces;
     private UIMenu TrackMenu;
     private UIMenu trackSubMenu;
+    private UIMenuItem trackSubMenuItem;
     private GameLocation SelectedPointDestination;
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private IInteractionable Player;
     private UIMenu bettingSubMenu;
+    private UIMenuItem bettingSubMenuItem;
     private UIMenuItem startRaceMenuItem;
     private UIMenuNumericScrollerItem<int> MoneyBetScoller;
     private UIMenuCheckboxItem RaceForPinksCheckbox;
     private AdvancedConversation AdvancedConversation;
+    private UIMenuItem raceToMarkerPositionMenuItem;
 
     public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation)
     {
@@ -59,22 +62,22 @@ public class VehicleRacesMenu
         };
         RaceMenu.AddItem(startRaceMenuItem);
 
-        RaceMenu.OnMenuOpen += (sender) =>
-        {
-            if(PedExt != null && PedExt.Pedestrian.Exists())
-            {
-                PedExt.Pedestrian.BlockPermanentEvents = true;
-                PedExt.Pedestrian.Tasks.Pause(-1);
-            }
-        };
-        RaceMenu.OnMenuClose += (sender) =>
-        {
-            if (PedExt != null && PedExt.Pedestrian.Exists())
-            {
-                PedExt.Pedestrian.BlockPermanentEvents = false;
-                PedExt.Pedestrian.Tasks.Clear();
-            }
-        };
+        //RaceMenu.OnMenuOpen += (sender) =>
+        //{
+        //    if(PedExt != null && PedExt.Pedestrian.Exists())
+        //    {
+        //        PedExt.Pedestrian.BlockPermanentEvents = true;
+        //        PedExt.Pedestrian.Tasks.Pause(-1);
+        //    }
+        //};
+        //RaceMenu.OnMenuClose += (sender) =>
+        //{
+        //    if (PedExt != null && PedExt.Pedestrian.Exists())
+        //    {
+        //        PedExt.Pedestrian.BlockPermanentEvents = false;
+        //        PedExt.Pedestrian.Tasks.Clear();
+        //    }
+        //};
     }
 
 
@@ -98,7 +101,7 @@ public class VehicleRacesMenu
 
         AdvancedConversation?.DisposeConversation();
         GameFiber.Yield();
-        Player.RacingManager.StartPointToPointRace(newRace, PedExt);
+        Player.RacingManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value,RaceForPinksCheckbox.Checked);
         return true;
     }
 
@@ -106,6 +109,7 @@ public class VehicleRacesMenu
     {
 
         trackSubMenu = MenuPool.AddSubMenu(RaceMenu,(IsPointRace ? "Finish Point" : "Track"));
+        trackSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
         trackSubMenu.RemoveBanner();
         if (IsPointRace)
         {
@@ -118,20 +122,48 @@ public class VehicleRacesMenu
     }
     private void AddPointDestinations()
     {
+        Vector3 MarkerPosOrig = Player.GPSManager.GetGPSRoutePosition();
+        raceToMarkerPositionMenuItem = new UIMenuItem("Marker Position", "Set the finish line at the current marker position") { RightLabel = Math.Round(Player.Character.DistanceTo2D(MarkerPosOrig) * 0.000621371, 2).ToString() + " Miles away" };
+        raceToMarkerPositionMenuItem.Activated += (menu, item) =>
+        {
+            SelectedPointDestination = new GameLocation(MarkerPosOrig, 0, "Marker Position", "");
+            Game.DisplaySubtitle($"Selected: {SelectedPointDestination?.Name}");
+            UpdateStartRaceDescription();
+        };
+        trackSubMenu.AddItem(raceToMarkerPositionMenuItem);
+        if (MarkerPosOrig == Vector3.Zero)
+        {
+            raceToMarkerPositionMenuItem.Enabled = false;
+        }
+
+
+
+
         List<GameLocation> AllLocations = PlacesOfInterest.AllLocations().Where(x => x.IsEnabled && x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation)).ToList();
+
+
+        AllLocations.ForEach(x => x.RefreshDistances());
+
         foreach (string typeName in AllLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
-            UIMenuListScrollerItem<GameLocation> myLocationType = new UIMenuListScrollerItem<GameLocation>($"{typeName}", "Select a finish line destination", AllLocations.Where(x => x.TypeName == typeName).OrderBy(x=> x.EntrancePosition.DistanceTo2D(Player.Character)));
-            myLocationType.Activated += (menu, item) =>
+            UIMenu typeNameMenu = MenuPool.AddSubMenu(trackSubMenu,typeName);
+            List<GameLocation> FilteredItems = AllLocations.Where(x => x.TypeName == typeName).OrderBy(x => x.DistanceToPlayer).ToList();
+            foreach (GameLocation location in FilteredItems)
             {
-                SelectedPointDestination = myLocationType.SelectedItem;
-                Game.DisplaySubtitle($"Selected: {SelectedPointDestination?.Name}");
-                UpdateStartRaceDescription();
-            };
-            trackSubMenu.AddItem(myLocationType);
+                location.RefreshDistances();
+                UIMenuItem uIMenuItem = new UIMenuItem(location.Name, location.Description) { RightLabel = Math.Round(location.DistanceToPlayer * 0.000621371, 2).ToString() + " Miles away" };
+                uIMenuItem.Activated += (menu, item) =>
+                {
+                    SelectedPointDestination = location;
+                    Game.DisplaySubtitle($"Selected: {SelectedPointDestination?.Name}");
+                    UpdateStartRaceDescription();
+                };
+                typeNameMenu.AddItem(uIMenuItem);
+            }
         }
         EntryPoint.WriteToConsole("VehicleRacesMenu AddPointDestinations");
     }
+
 
     private void UpdateStartRaceDescription()
     {
@@ -145,6 +177,23 @@ public class VehicleRacesMenu
             finalDescription += $"~n~Bet Amount: ~r~${MoneyBetScoller.Value}~s~";
         }
         startRaceMenuItem.Description = finalDescription;
+
+
+
+        trackSubMenuItem.RightLabel = SelectedPointDestination?.Name;
+        if(RaceForPinksCheckbox.Checked)
+        {
+            bettingSubMenuItem.RightLabel = "Pink Slip Race";
+        }
+        else if (MoneyBetScoller.Value > 0)
+        {
+            bettingSubMenuItem.RightLabel = $"~r~${MoneyBetScoller.Value}~s~";
+        }
+        else
+        {
+            bettingSubMenuItem.RightLabel = "";
+        }
+        
     }
     private void AddTracks()
     {
@@ -156,8 +205,9 @@ public class VehicleRacesMenu
     private void AddBettingSubMenu()
     {
         bettingSubMenu = MenuPool.AddSubMenu(RaceMenu, "Betting");
+        bettingSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
         bettingSubMenu.RemoveBanner();
-        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", "Enter the cash bet amount. Only winners are paid.", 0, 5000, 100) { Formatter = v => "$" + v + "" };
+        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", "Enter the cash bet amount. Only winners are paid.", 0, Player.BankAccounts.GetMoney(false), 100) { Formatter = v => "$" + v + "" };
         RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false);
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
@@ -186,6 +236,9 @@ public class VehicleRacesMenu
         }
         bettingSubMenu.AddItem(MoneyBetScoller);
         bettingSubMenu.AddItem(RaceForPinksCheckbox);
+
+
+        
     }
 }
 

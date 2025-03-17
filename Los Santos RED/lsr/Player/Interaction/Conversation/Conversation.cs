@@ -36,8 +36,9 @@ public class Conversation : Interaction, IAdvancedConversationable
     private IEntityProvideable World;
     private ILocationInteractable LocationInteractable;
     private IVehicleRaces VehicleRaces;
+    private ITargetable Targetable;
     public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories,
-        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces)
+        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces, ITargetable targetable)
     {
         Player = player;
         Ped = ped;
@@ -51,6 +52,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         GangTerritories = gangTerritories;
         Speeches = speeches;
         LocationInteractable = locationInteractable;
+        Targetable = targetable;
         GreetPlayerNegativePossibilites = new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" };
         GreetPlayerPositivePossibilities = new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" };
         GreetPedNegativePossibilites = new List<string>() { "GENERIC_WHATEVER" };
@@ -61,7 +63,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
-    private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.ActivityManager.CanConverse;
+    private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= (Player.IsInVehicle ? 20f : 6f) && Ped.CanConverse && Player.ActivityManager.CanConverse;
     public PedExt ConversingPed => Ped;
     public override void Dispose()
     {
@@ -76,7 +78,10 @@ public class Conversation : Interaction, IAdvancedConversationable
         {
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
+            Ped.CurrentTask?.Stop();
+            Ped.CurrentTask = null;
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            //Ped.SetNonPersistent();
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
 
@@ -298,8 +303,34 @@ public class Conversation : Interaction, IAdvancedConversationable
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             IsBlockedEvents = true;
-            //EntryPoint.WriteToConsoleTestLong("CONVERSATION BLOCKED EVENTS");
-            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+
+            Ped.CurrentTask = new GeneralBeStationary(ConversingPed, ConversingPed, Targetable, World, Settings);
+
+            //Ped.SetPersistent();
+            EntryPoint.WriteToConsole("CONVERSATION BLOCKED EVENTS");
+            //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+
+           // NativeFunction.Natives.TASK_PAUSE(Ped.Pedestrian, -1);
+            //if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
+            //{
+            //    EntryPoint.WriteToConsole("CONVERSATION ASSIGNED VEHICLE TASK");
+            //    unsafe
+            //    {
+            //        NativeFunction.Natives.TASK_PAUSE(Ped.Pedestrian, -1);
+
+
+            //        int lol = 0;
+            //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //        //NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+            //        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, -1);
+            //        //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+            //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //    }
+            //}
+
         }
         else if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
         {

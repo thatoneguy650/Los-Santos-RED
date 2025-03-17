@@ -9,6 +9,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 public class PedExt : IComplexTaskable, ISeatAssignable
 {
@@ -41,6 +42,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     protected bool HasGivenTooCloseWarning;
     protected uint GameTimePlayerLastDamagedCarOnFoot;
     protected uint GameTimePlayerLastStoodOnCar;
+
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -100,7 +102,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && !IsCowering && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll 
+    public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && !IsCowering && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll
         && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
@@ -151,6 +153,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool IsAnimal { get; set; } = false;
     public virtual int DefaultCombatFlag { get; set; } = 0;
     public virtual int DefaultEnterExitFlag { get; set; } = 0;
+
+
     public virtual string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;
@@ -278,6 +282,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInAirVehicle => IsInPlane || IsInHelicopter;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsInWrithe { get; set; } = false;
+    public bool IgnorePlayerCrimes { get; private set; }
     public virtual bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
     public bool IsNearSpawnPosition => Pedestrian.Exists() && Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;////15f;//15f
@@ -349,6 +354,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     //EntryPoint.WriteToConsoleTestLong($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
                     RelationshipGroupName = RelationshipGroupName.ToUpper();
                 }
+                //if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
+                //{
+                //    return false;
+                //}
                 if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
                 {
                     return false;
@@ -492,7 +501,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     }
                     if (ShouldCheckCrimes)
                     {
-                        PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                        PedViolations.Update(policeRespondable, false);//possible yield in here!, REMOVED FOR NOW
                     }
                     PedPerception.Update();
                     if (policeRespondable.CanBustPeds)
@@ -886,7 +895,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu, bool matchWithMenu)
     {
-         //EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
+        //EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
         ShopMenu = shopMenu;
         if (shopMenu == null)
         {
@@ -898,6 +907,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
             }
+            //EntryPoint.WriteToConsole($"SetupTransactionItems {shopMenu.ID} {shopMenu.GroupName} {menuItem.ModItemName} SellToPlayer:{menuItem.NumberOfItemsToSellToPlayer} PurchaseFromPlayer:{menuItem.NumberOfItemsToPurchaseFromPlayer}");
         }
         ItemDesires.AddDesiredItem(shopMenu, matchWithMenu);
        // EntryPoint.WriteToConsole("SetupTransactionItems END");
@@ -1075,6 +1085,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
         myBlip.Color = BlipColor;
         myBlip.Scale = BlipSize;
+        //if(IsCop)
+        //{
+        //    myBlip.Sprite = BlipSprite.Police;
+        //}
 
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)myBlip.Handle, true);
 
@@ -1716,4 +1730,37 @@ ENDENUM
     {
 
     }
+
+    public virtual void OnStartedPersonTransactionAnimation(bool isIllicilt, bool isWeapon)
+    {
+        if (isIllicilt)
+        {
+            if (isWeapon)
+            {
+                IsDealingIllegalGuns = true;
+            }
+            else
+            {
+                IsDealingDrugs = true;
+            }
+            IgnorePlayerCrimes = true;
+        }
+    }
+
+    public virtual void OnEndedPersonTransactionAnimation(bool isIllicilt, bool isWeapon)
+    {
+        if (isIllicilt)
+        {
+            if (isWeapon)
+            {
+                IsDealingIllegalGuns = false;
+            }
+            else
+            {
+                IsDealingDrugs = false;
+            }
+            IgnorePlayerCrimes = false;
+        }
+    }
+
 }

@@ -93,6 +93,9 @@ public static class RandomItems
 
     }
 
-
+    internal static bool RandomPercent(object policeHitsquadPercentage)
+    {
+        throw new NotImplementedException();
+    }
 }
 

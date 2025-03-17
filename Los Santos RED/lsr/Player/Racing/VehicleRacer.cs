@@ -30,6 +30,7 @@ public class VehicleRacer
     public VehicleExt VehicleExt { get; set; }
     public virtual string RacerName => "Racer";
     public bool HasFinishedRace => GameTimeFinishedRace > 0;
+    public virtual bool IsPlayer => false;
     public virtual void Dispose()
     {
 
@@ -85,7 +86,7 @@ public class VehicleRacer
     private string ConvertMSToTime(uint TotalGameTime)
     {
         TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
-        string answer = string.Format("{0:D2}:{1:D2}.{2:D3}",
+        string answer = string.Format("{0:00}:{1:00}.{2:000}",
                                 t.Minutes,
                                 t.Seconds,
                                 t.Milliseconds);
@@ -96,13 +97,18 @@ public class VehicleRacer
     {
 
     }
-    public virtual void OnFinishedRace(int finalPosition)
+    public virtual void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
     {
 
     }
     public virtual void SetRaceStart(VehicleRace vehicleRace)
     {
         GameTimeStartedRace = Game.GameTime;
+    }
+
+    public virtual void HandleWinningBet(int betAmount)
+    {
+ 
     }
 }
 

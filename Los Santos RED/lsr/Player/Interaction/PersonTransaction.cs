@@ -713,18 +713,20 @@ public class PersonTransaction : Interaction
             if (isWeapon)
             {
                 Player.IsDealingIllegalGuns = true;
-                Ped.IsDealingIllegalGuns = true;
             }
             else
             {
                 Player.IsDealingDrugs = true;
-                Ped.IsDealingDrugs = true;
             }
         }
+        Ped.OnStartedPersonTransactionAnimation(menuItem.IsIllicilt, isWeapon);
+
+
+
         Player.ButtonPrompts.Clear();
         if (allowSpeaking)
         {
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENERIC" }, true);
         }
         if (Ped.Pedestrian.Exists())
         {
@@ -815,14 +817,13 @@ public class PersonTransaction : Interaction
             if (isWeapon)
             {
                 Player.IsDealingIllegalGuns = false;
-                Ped.IsDealingIllegalGuns = false;
             }
             else
             {
                 Player.IsDealingDrugs = false;
-                Ped.IsDealingDrugs = false;
             }
         }
+        Ped.OnEndedPersonTransactionAnimation(menuItem.IsIllicilt, isWeapon);
     }
     private void StartSellAnimation(ModItem modItem, MenuItem menuItem, int totalItems, bool allowSpeaking)
     {

@@ -32,9 +32,10 @@ public class SecurityDispatcher
     private IPlacesOfInterest PlacesOfInterest;
     private ICrimes Crimes;
     private IModItems ModItems;
+    private IShopMenus ShopMenus;
 
     public SecurityDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, 
-        IPlacesOfInterest placesOfInterest, ICrimes crimes, IModItems modItems)
+        IPlacesOfInterest placesOfInterest, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
     {
         Player = player;
         World = world;
@@ -48,6 +49,7 @@ public class SecurityDispatcher
         PlacesOfInterest = placesOfInterest;
         Crimes = crimes;
         ModItems = modItems;
+        ShopMenus = shopMenus;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<SecurityGuard> DeletableOfficers => World.Pedestrians.SecurityGuardList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -141,7 +143,7 @@ public class SecurityDispatcher
         try
         {
             //EntryPoint.WriteToConsoleTestLong($"Security Dispatcher, SPAWN TASK STARTING");
-            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
+            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems, ShopMenus);
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
             securitySpawnTask.ClearVehicleArea = clearArea;

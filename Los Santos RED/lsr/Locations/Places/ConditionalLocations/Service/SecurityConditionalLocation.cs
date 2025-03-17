@@ -42,18 +42,18 @@ public class SecurityConditionalLocation : ConditionalLocation
     {
         try
         {
-            EntryPoint.WriteToConsole("RUN SECURITY SPAWN TASK HAS EXECUTED");
-            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
+            //EntryPoint.WriteToConsole("RUN SECURITY SPAWN TASK HAS EXECUTED");
+            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems, ShopMenus);
             securitySpawnTask.AllowAnySpawn = true;
             securitySpawnTask.AllowBuddySpawn = false;
             securitySpawnTask.ClearVehicleArea = true;
             securitySpawnTask.SpawnRequirement = TaskRequirements;
             securitySpawnTask.PlacePedOnGround = DispatchableVehicle == null; //true;
             securitySpawnTask.AttemptSpawn();
-            EntryPoint.WriteToConsole("SECUIRTY RUN SPAWN TASK PRE POST RUN");
+            //EntryPoint.WriteToConsole("SECUIRTY RUN SPAWN TASK PRE POST RUN");
             securitySpawnTask.PostRun(this, GameLocation);
 
-            securitySpawnTask.CreatedPeople.ForEach(x => { EntryPoint.WriteToConsole($"I CREATED SECURITY {x.Handle}"); });
+            //securitySpawnTask.CreatedPeople.ForEach(x => { EntryPoint.WriteToConsole($"I CREATED SECURITY {x.Handle}"); });
 
             //securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             //securitySpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.Other));

@@ -26,6 +26,7 @@ public class EMT : PedExt
     public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public override bool GenerateUnconsciousAlerts { get; set; } = false;
     public bool IsRespondingToInvestigation { get; set; }
+    public bool IsCorrupt { get; set; } = false;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -47,6 +48,11 @@ public class EMT : PedExt
                     {
                         GameFiber.Yield();
                     }
+                    if (ShouldCheckCrimes)
+                    {
+                        PedViolations.Update(policeRespondable, true);//possible yield in here!, REMOVED FOR NOW
+                    }
+                    PedPerception.Update();
                     if (Settings.SettingsManager.EMSSettings.AllowAlerts)
                     {
                         PedAlerts.Update(policeRespondable, world);
@@ -57,11 +63,22 @@ public class EMT : PedExt
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, IShopMenus shopMenus)
     {
         if (!Pedestrian.Exists())
         {
             return;
+        }
+        Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        {
+            IsCorrupt = true;
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
+            Money = RandomItems.GetRandomNumberInt(AssignedAgency.CorruptMoneyMin, AssignedAgency.CorruptMoneyMax);
+        }
+        if(IsCorrupt)
+        {
+            WillCallPolice = false;
         }
         if (addBlip)
         {
@@ -81,10 +98,10 @@ public class EMT : PedExt
         }
         return ExtraItems;
     }
-    public override string InteractPrompt(IButtonPromptable player)
-    {
-        return $"Talk to {FormattedName}";
-    }
+    //public override string InteractPrompt(IButtonPromptable player)
+    //{
+    //    return $"Talk to {FormattedName}";
+    //}
     public override void MatchPlayerPedType(IPedSwappable Player)
     {
         Player.RemoveAgencyStatus();

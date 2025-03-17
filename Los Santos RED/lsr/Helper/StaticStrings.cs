@@ -137,6 +137,7 @@ public static class StaticStrings
     public static readonly string HeroinDealerMenuGroupID = "HeroinDealerMenu";
     public static readonly string CrackDealerMenuGroupID = "CrackDealerMenu";
     public static readonly string CokeDealerMenuGroupID = "CokeDealerMenu";
+    public static readonly string CorruptDealerMenuGroupID = "CorruptDealerMenu";
 
     public static readonly string MarijuanaCustomerMenuGroupID = "MarijuanaCustomerMenu";
     public static readonly string ToiletCleanerCustomerMenuGroupID = "ToiletCleanerCustomerMenu";

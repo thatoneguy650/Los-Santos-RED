@@ -109,6 +109,9 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
             }
         }
     }
+
+    public bool IsCorrupt { get; private set; }
+
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
@@ -118,13 +121,19 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         Voice.ResetSpeech();
         Voice.Speak(currentPlayer);
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, IShopMenus shopMenus)
     {
         if (!Pedestrian.Exists())
         {
             return;
         }
-        Pedestrian.Money = 0;
+        Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        {
+            IsCorrupt = true;
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
+            Money = RandomItems.GetRandomNumberInt(AssignedAgency.CorruptMoneyMin, AssignedAgency.CorruptMoneyMax);
+        }
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.SecuritySettings.OverrideHealth, Settings.SettingsManager.SecuritySettings.OverrideArmor, Settings.SettingsManager.SecuritySettings.OverrideAccuracy);
         if (!Pedestrian.Exists())
         {
@@ -211,6 +220,10 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
                     {
                         GameFiber.Yield();
                     }
+                    if (ShouldCheckCrimes)
+                    {
+                        PedViolations.Update(policeRespondable, true);//possible yield in here!, REMOVED FOR NOW
+                    }
                     PedPerception.Update();
                     if (Settings.SettingsManager.SecuritySettings.AllowAlerts)
                     {
@@ -233,10 +246,10 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         return ExtraItems;
     }
-    public override string InteractPrompt(IButtonPromptable player)
-    {
-        return $"Talk to {FormattedName}";
-    }
+    //public override string InteractPrompt(IButtonPromptable player)
+    //{
+    //    return $"Talk to {FormattedName}";
+    //}
     //protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
     //{
     //    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)

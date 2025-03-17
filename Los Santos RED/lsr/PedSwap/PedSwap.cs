@@ -397,7 +397,7 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new SecurityGuardSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, Crimes, ModItems);
+                    SpawnTask carSpawn = new SecurityGuardSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, Crimes, ModItems, ShopMenus);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
@@ -463,7 +463,7 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, ModItems, false);
+                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), toBecome, false, Settings, Weapons, Names, true, World, ModItems, false, ShopMenus);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.WillAddDriver = false;
                     carSpawn.AttemptSpawn();
@@ -591,7 +591,7 @@ public class PedSwap : IPedSwap
             vehicleSpawn.GetClosestStreet(false);
             if (vehicleSpawn.HasSpawns)
             {
-                SpawnTask carSpawn = new EMTSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, true, World, ModItems);
+                SpawnTask carSpawn = new EMTSpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings), toBecome, false, Settings, Weapons, Names, true, World, ModItems, ShopMenus);
                 carSpawn.AllowAnySpawn = true;
                 carSpawn.WillAddDriver = false;
                 carSpawn.AttemptSpawn();

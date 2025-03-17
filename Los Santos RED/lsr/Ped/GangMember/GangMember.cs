@@ -76,7 +76,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     {
                         GameFiber.Yield();//TR TEST 28
                     }
-                    PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                    PedViolations.Update(policeRespondable, false);//possible yield in here!, REMOVED FOR NOW
                     PedPerception.Update();
                     if (policeRespondable.CanBustPeds)
                     {

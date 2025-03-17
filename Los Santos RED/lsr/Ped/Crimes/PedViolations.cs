@@ -87,14 +87,14 @@ public class PedViolations
 
     public bool IsVisiblyArmed { get; set; }
 
-    public void Update(IPoliceRespondable player)
+    public void Update(IPoliceRespondable player, bool OnlyCorrupt)
     {
         if (Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes)
         {
             CrimesViolating.Clear();
             if (!PedExt.IsArrested)
             {
-                CheckCrimes(player);
+                CheckCrimes(player, OnlyCorrupt);
 
                 if (IsWanted && !PedExt.IsDead && !PedExt.IsArrested)
                 {
@@ -164,10 +164,27 @@ public class PedViolations
             //EntryPoint.WriteToConsoleTestLong($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
         }
     }
-    private void CheckCrimes(IPoliceRespondable player)
+    private void CheckCrimes(IPoliceRespondable player, bool OnlyCorrupt)
     {
         if (PedExt.Pedestrian.Exists() && !PedExt.IsBusted)
         {
+            if(OnlyCorrupt)
+            {
+                if (PedExt.IsDealingDrugs)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+                }
+                if (PedExt.IsDealingIllegalGuns)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));//lslife integration?
+                }
+                return;
+            }
+
+
+
+
+
             if (PedExt.IsZombie)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
@@ -240,14 +257,7 @@ public class PedViolations
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.HitCarWithCarCrimeID));
             }
 
-            if (PedExt.IsDealingDrugs)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
-            }
-            if (PedExt.IsDealingIllegalGuns)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));//lslife integration?
-            }
+
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
             {
                 foreach (Cop cop in World.Pedestrians.AllPoliceList)

@@ -11,12 +11,14 @@ public class SecurityGuardSpawnTask : SpawnTask
     private Agency Agency;
     private Vehicle SpawnedVehicle;
     private ICrimes Crimes;
+    private IShopMenus ShopMenus;
     public SecurityGuardSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, 
-        bool addOptionalPassengers, IEntityProvideable world, ICrimes crimes, IModItems modItems) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
+        bool addOptionalPassengers, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         Crimes = crimes;
-}
+        ShopMenus = shopMenus;
+    }
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
     {
@@ -203,7 +205,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         }      
         //World.Pedestrians.AddEntity(primarySecurityGuard);
-        primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
+        primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip, ShopMenus);
         if (ped.Exists())
         {
             primarySecurityGuard.SpawnPosition = ped.Position;

@@ -41,8 +41,10 @@ public class GangDispatcher
     private uint TimeBetweenHitSquads;
     private uint GameTimeLastDispatchedHitSquad;
     private uint GameTimeLastAttemptedAssaultSpawn;
+    private Dispatcher Dispatcher;
 
-    public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories,
+        IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems, Dispatcher dispatcher)
     {
         Player = player;
         World = world;
@@ -58,6 +60,7 @@ public class GangDispatcher
         ShopMenus = shopMenus;
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
+        Dispatcher = dispatcher;
         TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
         GameTimeLastDispatchedHitSquad = Game.GameTime;
     }
@@ -454,8 +457,6 @@ public class GangDispatcher
             }
         }
     }
-
-
     public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn, string requiredVehicleModel)
     {
         if (requestedGang == null)
@@ -502,7 +503,6 @@ public class GangDispatcher
         }
         return false;
     }
-
     public void Dispose()
     {
 

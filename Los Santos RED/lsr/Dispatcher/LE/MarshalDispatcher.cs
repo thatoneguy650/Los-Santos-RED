@@ -20,6 +20,7 @@ public class MarshalDispatcher
     private IModItems ModItems;
     private IEntityProvideable World;
     private IAgencies Agencies;
+    private IShopMenus ShopMenus;
 
     private uint TimeBetweenMarshals;
     private uint GameTimeLastDispatchedMarshals;
@@ -36,7 +37,8 @@ public class MarshalDispatcher
     private bool IsTimeToDispatchMarshals => Game.GameTime - GameTimeLastDispatchedMarshals >= TimeBetweenMarshals;
     private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedAmbientPolice < Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3 && World.Vehicles.SpawnedAmbientPoliceVehiclesCount < Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted3;//a few more than default so they spawnzo
 
-    public MarshalDispatcher(IDispatchable player, LEDispatcher lEDispatcher, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems, IAgencies agencies)
+    public MarshalDispatcher(IDispatchable player, LEDispatcher lEDispatcher, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, 
+        IModItems modItems, IAgencies agencies, IShopMenus shopMenus)
     {
         Player = player;
         LEDispatcher = lEDispatcher;
@@ -47,6 +49,7 @@ public class MarshalDispatcher
         ModItems = modItems;
         World = world;
         Agencies = agencies;
+        ShopMenus = shopMenus;
         GameTimeNotWantedToAttemptDispatch = RandomItems.GetRandomNumber(Settings.SettingsManager.PoliceSettings.MinTimeOfAPBBetweenMarshalsAPBResponse, Settings.SettingsManager.PoliceSettings.MaxTimeOfAPBBetweenMarshalsAPBResponse);
         TimeBetweenMarshals = RandomItems.GetRandomNumber(Settings.SettingsManager.PoliceSettings.MinTimeBetweenMarshalsAPBResponse, Settings.SettingsManager.PoliceSettings.MaxTimeBetweenMarshalsAPBResponse);
     }
@@ -143,7 +146,7 @@ public class MarshalDispatcher
             {
                 addCanine = true;
             }
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9, ShopMenus);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearVehicleArea = clearArea;

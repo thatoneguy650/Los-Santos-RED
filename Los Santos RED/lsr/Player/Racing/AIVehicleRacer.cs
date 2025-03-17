@@ -48,10 +48,6 @@ public class AIVehicleRacer : VehicleRacer
     }
     public override void Dispose()
     {
-        if(!WasSpawnedForRace)
-        {
-            return;
-        }
         if (PedExt != null)
         {
             PedExt.DeleteBlip();
@@ -59,6 +55,8 @@ public class AIVehicleRacer : VehicleRacer
             PedExt.CanBeAmbientTasked = true;
             PedExt.CanBeTasked = true;
             PedExt.CanBeIdleTasked = true;
+            PedExt.CurrentTask?.Stop();
+            PedExt.CurrentTask = null;
         }
         if (VehicleExt != null)
         {
@@ -160,7 +158,11 @@ public class AIVehicleRacer : VehicleRacer
         }
     }
 
-
+    public override void HandleWinningBet(int betAmount)
+    {
+        PedExt.Money += betAmount;
+        base.HandleWinningBet(betAmount);
+    }
 
 
 

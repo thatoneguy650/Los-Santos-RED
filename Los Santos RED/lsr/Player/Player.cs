@@ -159,7 +159,7 @@ namespace Mod
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
             ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
-                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces);
+                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces, this);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);

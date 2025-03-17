@@ -1005,7 +1005,7 @@ public class Pedestrians : ITaskerReportable
             return;
         }
         Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
-        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln", Settings.SettingsManager.PoliceSettings.SightDistance);
+        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln", Settings.SettingsManager.PoliceSettings.SightDistance, ShopMenus);
         if(!Pedestrian.Exists())
         {
             return;
@@ -1037,7 +1037,7 @@ public class Pedestrians : ITaskerReportable
             return;
         }
         SecurityGuard mySecurityGuard = new SecurityGuard(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
-        mySecurityGuard.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.SecuritySettings.AttachBlipsToAmbientPeds);
+        mySecurityGuard.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.SecuritySettings.AttachBlipsToAmbientPeds, ShopMenus);
         if (!Pedestrian.Exists())
         {
             return;

@@ -26,6 +26,7 @@ public class PlayerVehicleRacer : VehicleRacer
     public int CurrentPosition { get; private set; }
     public string CurrentTime { get; private set; } = "";
     public override string RacerName => Player.PlayerName;
+    public override bool IsPlayer => true;
 
     public PlayerVehicleRacer(VehicleExt vehicleExt, IRaceable player, ISettingsProvideable settings) : base(vehicleExt)
     {
@@ -156,7 +157,7 @@ public class PlayerVehicleRacer : VehicleRacer
         PlayCheckpointSound();
         base.OnReachedCheckpoint();
     }
-    public override void OnFinishedRace(int finalPosition)
+    public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
     {
         if (CheckpointBlip.Exists())
         {
@@ -184,9 +185,9 @@ public class PlayerVehicleRacer : VehicleRacer
         {
             Game.DisplayHelp(ex.Message);
         }
-        VehicleRace.EndRace();
+        vehicleRace.OnPlayerFinishedRace();
         Player.RacingManager.StopRacing();
-        base.OnFinishedRace(finalPosition);
+        base.OnFinishedRace(finalPosition, vehicleRace);
     }
     private void PlayCheckpointSound()
     {
@@ -205,8 +206,12 @@ public class PlayerVehicleRacer : VehicleRacer
     public override void SetRaceStart(VehicleRace vehicleRace)
     {
         Player.IsSetDisabledControls = false;
-        Player.RacingManager.StartRacing();
+        Player.RacingManager.StartRacing(vehicleRace);
         base.SetRaceStart(vehicleRace);
+    }
+    public override void HandleWinningBet(int betAmount)
+    {
+        base.HandleWinningBet(betAmount);
     }
 }
 

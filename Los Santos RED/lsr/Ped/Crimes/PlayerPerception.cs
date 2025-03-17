@@ -95,7 +95,10 @@ public class PlayerPerception
                 {
                     UpdateTargetLineOfSight(Target.IsWanted);
                 }
-                UpdateWitnessedCrimes();
+                if (!Originator.IsCop)//shouldnt be needed for cops as its all tracked in the police thing and they act as a mesh NET
+                {
+                    UpdateWitnessedCrimes();
+                }
             }
             else
             {
@@ -322,9 +325,6 @@ public class PlayerPerception
         GameTimeLastLOSCheck = Game.GameTime;
         return true;
     }
-
-
-
     private bool UpdateTargetLineOfSight_Old(bool IsWanted)
     {
         float expectedSightDistance = 60f;
@@ -470,10 +470,6 @@ public class PlayerPerception
         }
         return false;
     }
-
-
-
-
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
         PositionLastSeenCrime = PositionToReport;
@@ -487,13 +483,11 @@ public class PlayerPerception
         {
             ExistingEvent.UpdateWitnessed(VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport);
         }
-
         //EntryPoint.WriteToConsole($"AddWitnessedCrime {Originator.Handle} {CrimeToAdd.Name}");
-
     }
     public void UpdateWitnessedCrimes()
     {
-        if(!Originator.Pedestrian.Exists() || Originator.IsUnconscious)
+        if(!Originator.Pedestrian.Exists() || Originator.IsUnconscious || Originator.IgnorePlayerCrimes)
         {
             return;
         }

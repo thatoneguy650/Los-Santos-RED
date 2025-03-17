@@ -10,10 +10,13 @@ public class EMTSpawnTask : SpawnTask
 {
     private Agency Agency;
     private Vehicle SpawnedVehicle;
-    public EMTSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems) 
+    private IShopMenus ShopMenus;
+    public EMTSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, 
+        INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
+        ShopMenus = shopMenus;
     }
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
@@ -200,7 +203,7 @@ public class EMTSpawnTask : SpawnTask
         bool isMale = PersonType.IsMale(ped);
         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
-        PrimaryEmt.SetStats(PersonType, Weapons, AddBlip);
+        PrimaryEmt.SetStats(PersonType, Weapons, AddBlip, ShopMenus);
         if (ped.Exists())
         {
             PrimaryEmt.SpawnPosition = ped.Position;

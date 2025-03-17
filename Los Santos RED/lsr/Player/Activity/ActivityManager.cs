@@ -31,6 +31,7 @@ public class ActivityManager
     private ILocationInteractable LocationInteractable;
     private IPlacesOfInterest PlacesOfInterest;
     private IVehicleRaces VehicleRaces;
+    private ITargetable Targetable;
 
     private ITimeControllable Time;
     private IRadioStations RadioStations;
@@ -94,7 +95,7 @@ public class ActivityManager
         !Player.IsIncapacitated &&
         !Player.IsVisiblyArmed &&
         !Player.IsMovingDynamically &&
-        ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) &&
+        ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 50f) || !Player.IsMovingFast) &&
         (LowerBodyActivity == null || !IsPerformingActivity);
     public bool CanConverseWithLookedAtPed => 
         Player.CurrentLookedAtPed != null && 
@@ -229,10 +230,10 @@ public class ActivityManager
     public bool IsUsingIllegalItem { get; set; }
     public bool IsHidingInObject { get; set; }
 
-    public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
-        ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
-        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces)
+    public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, 
+        ILocationInteractable locationInteractable,ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, IDances dances, IEntityProvideable world, IIntoxicants intoxicants, 
+        IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces, ITargetable targetable)
     {
         Player = player;
         Settings = settings;
@@ -260,6 +261,7 @@ public class ActivityManager
         VehicleSeatDoorData = vehicleSeatDoorData;
         Cellphones = cellphones;
         VehicleRaces = vehicleRaces;
+        Targetable = targetable;
     }
     public void Setup()
     {
@@ -904,7 +906,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces);
+            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces, Targetable);
             Interaction.Start();  
         }
     }

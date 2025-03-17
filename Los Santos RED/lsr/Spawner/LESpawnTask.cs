@@ -15,11 +15,13 @@ public class LESpawnTask : SpawnTask
     private Vehicle SpawnedVehicle;
     private string UnitCode;
     private bool AddCanine;
+    private IShopMenus ShopMenus;
     public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers,
-        IEntityProvideable world, IModItems modItems, bool addCanine) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
+        IEntityProvideable world, IModItems modItems, bool addCanine, IShopMenus shopMenus) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         AddCanine = addCanine;
+        ShopMenus = shopMenus;
     }
 
     public List<Cop> SpawnedCops { get; set; } = new List<Cop>();
@@ -456,7 +458,7 @@ public class LESpawnTask : SpawnTask
             sightDistance = PersonType.OverrideSightDistance;
             EntryPoint.WriteToConsole($"OverrideSightDistance {sightDistance} IN THE COPS");
         }
-        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance, ShopMenus);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())
         {
             PrimaryCop.SpawnPosition = Pedestrian.Position;
@@ -486,7 +488,7 @@ public class LESpawnTask : SpawnTask
             sightDistance = Settings.SettingsManager.PoliceSettings.SightDistance_Aircraft;
         }
         World.Pedestrians.AddEntity(PrimaryCop);
-        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance);
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance, ShopMenus);
         //PrimaryCop.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {

@@ -219,7 +219,7 @@ namespace LosSantosRED.lsr
             int tested = 0;
             foreach (Cop cop in World.Pedestrians.AllPoliceList.OrderBy(x=>x.DistanceToPlayer))
             {
-                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive && !cop.IsUnconscious)
+                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive && !cop.IsUnconscious && !cop.IgnorePlayerCrimes)
                 {
                     if (cop.CanSeePlayer)
                     {

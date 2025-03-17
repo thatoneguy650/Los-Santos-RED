@@ -1,4 +1,5 @@
 ﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,9 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; }
         bool IsSetDisabledControls { get; set; }
         RacingManager RacingManager { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        BankAccounts BankAccounts { get; }
+        VehicleOwnership VehicleOwnership { get; }
+        Ped Character { get; }
     }
 }

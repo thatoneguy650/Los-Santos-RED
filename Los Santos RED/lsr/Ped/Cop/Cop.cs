@@ -85,6 +85,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override bool KnowsGangAreas => true;
     public bool IsUsingMountedWeapon { get; set; } = false;
     public PedExt CurrentTarget { get; set; }
+
+
+    public bool IsCorrupt { get; set; } = false;
+
+
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
     public override bool NeedsFullUpdate
     {
@@ -213,7 +218,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     //    Voice.ResetSpeech();
     //    Voice.Speak(currentPlayer);
     //}
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName, float sightDistance)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName, float sightDistance, IShopMenus shopMenus)
     {
         if (!Pedestrian.Exists())
         {
@@ -250,6 +255,14 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         else
         {
             GroupName = "Cop";
+        }
+        Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        {
+            IsCorrupt = true;
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
+            Money = RandomItems.GetRandomNumberInt(AssignedAgency.CorruptMoneyMin, AssignedAgency.CorruptMoneyMax);
+            EntryPoint.WriteToConsole($"COP IS MARKED AS CORRUPT {AssignedAgency.CorruptMenuGroup}");
         }
         GameFiber.Yield();
         if (!Pedestrian.Exists())
@@ -501,10 +514,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         policeRespondable.OfficerMIAWatcher.AddMIA(this, Position);
         EntryPoint.WriteToConsole($"AddPossibleMIA {Handle} IsAlerted{PedAlerts.IsAlerted}");
     }
-    public override string InteractPrompt(IButtonPromptable player)
-    {
-        return $"Talk to {FormattedName}";
-    }
+    //public override string InteractPrompt(IButtonPromptable player)
+    //{
+    //    return $"Talk to {FormattedName}";
+    //}
     public override void OnHeardGunfire(IPoliceRespondable policeRespondable)
     {
         if(policeRespondable.Investigation.IsActive)
