@@ -49,16 +49,70 @@ public class CraftableItems : ICraftableItems
     {
         CraftableList = new List<CraftableItem>()
         {
-            new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() {
-                new Ingredient() { IngredientName =  "Chesty", Quantity = 2 }
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 1, Cooldown = 2000},
-            new CraftableItem("Cut Cocaine", "Crack", new List<Ingredient>() {
-                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1}
-            }) { CrimeId = StaticStrings.DealingDrugsCrimeID, ResultantAmount = 2, Cooldown = 2000},
-            new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() {
+            new CraftableItem("Methamphetamine", "Methamphetamine", new List<Ingredient>() 
+            {
+                new Ingredient() { IngredientName =  "Chesty", Quantity = 5 },
+                new Ingredient() { IngredientName =  "pH strip", Quantity = 3 },
+                new Ingredient() { IngredientName =  "Chemicals", Quantity = 1 },
+                new Ingredient() { IngredientName =  "BlazeBox Ignite", Quantity = 5 }
+            }) 
+            { 
+                CrimeId = StaticStrings.DealingDrugsCrimeID, 
+                ResultantAmount = 1,
+                Cooldown = 2000,
+                CraftingFlags = new HashSet<string>{ "DrugLab","JOURNEY" },
+                Category = "Narcotics",
+            },
+            
+            new CraftableItem("Cut Cocaine", "Crack", 
+            new List<Ingredient>() 
+            {
+                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1},
+                new Ingredient() { IngredientName = "Bottle of Raine Water", Quantity = 2},
+                new Ingredient() { IngredientName = "Baking Soda", Quantity = 2}
+            }) 
+            { CrimeId = StaticStrings.DealingDrugsCrimeID, 
+                ResultantAmount = 2, 
+                Cooldown = 2000,
+                CraftingFlags = new HashSet<string>{ "DrugLab", "Stove" },
+                Category = "Narcotics",
+            },
+            
+            new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>() 
+            {
                 new Ingredient() { IngredientName =  "NOGO Vodka", Quantity = 1 },
-                new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 }
-            }) { CrimeId = StaticStrings.DealingGunsCrimeID, ResultantAmount = 2, Cooldown = 2000, SingleUnit = true},
+                new Ingredient() { IngredientName =  "DIC Lighter", Quantity = 1 , IsConsumed = false}
+            }) 
+            { CrimeId = StaticStrings.DealingGunsCrimeID, 
+                ResultantAmount = 2, 
+                Cooldown = 2000, 
+                SingleUnit = true, 
+                AnimationDictionary= "gestures@f@standing@casual", 
+                AnimationName = "gesture_bye_soft"
+            },
+            
+            new CraftableItem("Lean","Lean", new List<Ingredient>()
+            {
+                new Ingredient() { IngredientName = "Cup of Sprunk", Quantity = 1},
+                new Ingredient() { IngredientName = "P's & Q's", Quantity = 1},
+                new Ingredient() { IngredientName = "Chesty", Quantity = 1}
+            })
+            { ResultantAmount = 1 , 
+                Cooldown = 2000
+            },
+            new CraftableItem("DIY pipe bomb","Pipe Bomb", new List<Ingredient>()
+            {
+                new Ingredient() { IngredientName = "Metal Tube", Quantity = 1},
+                new Ingredient() { IngredientName = "Flint Duct Tape", Quantity = 1},
+                new Ingredient() { IngredientName = "Fuse", Quantity = 1},
+                new Ingredient() { IngredientName = "Scrap Metal", Quantity = 3}
+            })
+            {
+                CrimeId = StaticStrings.TerroristActivityCrimeID,
+                Cooldown = 5000,
+                ResultantAmount = 1,
+                SingleUnit= true,
+            }
         };
         Serialization.SerializeParams(CraftableList, ConfigFileName);
     }
@@ -67,4 +121,3 @@ public class CraftableItems : ICraftableItems
         Serialization.SerializeParams(CraftableList == null ? new List<CraftableItem>() : CraftableList, ConfigFileName);
     }
 }
-//

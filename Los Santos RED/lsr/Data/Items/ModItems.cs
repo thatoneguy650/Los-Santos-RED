@@ -288,6 +288,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.EquipmentItems);
         AllItems.AddRange(PossibleItems.BodyArmorItems);
         AllItems.AddRange(PossibleItems.RadarDetectorItems);
+        AllItems.AddRange(PossibleItems.HardwareItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -383,6 +384,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.EquipmentItems);
         AllItems.AddRange(PossibleItems.BodyArmorItems);
         AllItems.AddRange(PossibleItems.RadarDetectorItems);
+        AllItems.AddRange(PossibleItems.HardwareItems);
         return AllItems;
     }
     public void Setup(PhysicalItems physicalItems, IWeapons weapons, IIntoxicants intoxicants, ICellphones cellphones)
@@ -461,11 +463,35 @@ public class ModItems : IModItems
         DefaultConfig_Services();
         DefaultConfig_Valuables();
         DefaultConfig_FEE();
+        DefaultConfig_HardwareItems();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
     private void DefaultConfig_FEE()
     {
 
+    }
+    private void DefaultConfig_HardwareItems()
+    {
+        PossibleItems.HardwareItems.AddRange(new List<HardwareItem> 
+        { 
+            new HardwareItem("Scrap Metal", "Peices of metal, what could go wrong?", ItemType.Equipment)
+            {
+                ItemSubType = ItemSubType.Misc,
+            },
+            new HardwareItem("Metal Tube", "A steel tube, pretty innocent.", ItemType.Equipment)
+            {
+                ItemSubType = ItemSubType.Misc,
+                ModelItemID = "w_at_sr_supp_2",
+            },
+            new HardwareItem("Fuse", "Tssss...", ItemType.Equipment)
+            {
+                ItemSubType = ItemSubType.Misc,
+            },
+            new HardwareItem("pH strip", "One test where coming up positive is good?", ItemType.Equipment)
+            {
+                ItemSubType = ItemSubType.Misc,
+            },
+        });
     }
     private void DefaultConfig_Armor()
     {
@@ -518,8 +544,6 @@ public class ModItems : IModItems
             new ValuableItem("Police ID Card","Police Identification Card", ItemType.Valuables) {
                 ModelItemID = "p_ld_id_card_01",
                 ItemSubType = ItemSubType.Identification },
-            new ValuableItem("Pseudoephedrine", "Pseudoephedrine, usually found in anti-allergy medicines.", ItemType.Valuables) {
-                ItemSubType = ItemSubType.Medication}
         });
     }
     private void DefaultConfig_Drinks()
@@ -923,6 +947,15 @@ public class ModItems : IModItems
                 FindPercentage = 1,
                 IntoxicationPerInterval = 0.1f,
                 ItemSubType = ItemSubType.Beer },
+
+            new DrinkItem("Lean", "Sippin' slow, movin' dreamy.", ItemType.Drugs){
+                ModelItemID = "prop_plastic_cup_02", //Cluckin Bell cup
+                IntoxicantName = "Low Proof Alcohol",
+                HungerChangeAmount = TinyHungerRecover,
+                SleepChangeAmount= -1.0f * TinySleepRecover,
+                ItemSubType= ItemSubType.Narcotic,
+                IntoxicationPerInterval = 0.2f,
+                FindPercentage = 1},
             //Bean Machine
             new DrinkItem("High Noon Coffee", "Drip coffee, carbonated water, fruit syrup and taurine.", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",
@@ -936,6 +969,11 @@ public class ModItems : IModItems
                 SleepChangeAmount = MediumSleepRecover + 2.0f, 
                 ThirstChangeAmount = MediumThirstRecover + 2.0f,
                 ItemSubType = ItemSubType.Coffee},//perfecto
+            new DrinkItem("Chemicals", "For Science! Mix responsibly... or don't.", ItemType.Drinks){
+                ModelItemID = "ng_proc_paintcan02a",
+                SleepChangeAmount = MediumSleepRecover,
+                ThirstChangeAmount = -MediumThirstRecover,
+                ItemSubType = ItemSubType.Misc},
             new DrinkItem("Speedball Coffee", "Caffeine tripe-shot, guarana, bat guano, and mate.", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",
                 HealthChangeAmount = MediumHealthRecover + 5, 
@@ -1047,7 +1085,6 @@ public class ModItems : IModItems
                 ThirstChangeAmount = MediumThirstRecover,
                 SleepChangeAmount = SmallSleepRecover,
                 ItemSubType = ItemSubType.Dessert},
-
         });;
     }
     private void DefaultConfig_Drugs()
@@ -1453,6 +1490,12 @@ public class ModItems : IModItems
                 SleepChangeAmount = SmallSleepRecover, 
                 ItemSubType = ItemSubType.Snack, 
                 FindPercentage = 10 },
+            //Misc items
+            new FoodItem("Baking Soda","",ItemType.Food){
+                ModelItemID = "v_ret_247_soappowder2",
+                ItemSubType = ItemSubType.Misc,
+                FindPercentage = 10
+            },
             //Taco Bomb
             new FoodItem("Breakfast Burrito", ItemType.Food) {
                 ModelItemID = "prop_food_bs_burger2"
@@ -2349,10 +2392,12 @@ public class ModItems : IModItems
                 ModelItemID = "ex_prop_exec_lighter_01", PercentLostOnUse = 0.02f, FindPercentage = 1,ItemSubType = ItemSubType.Lighter },
             new LighterItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!") {
                 ModelItemID = "lux_prop_lighter_luxe",  PercentLostOnUse = 0.02f, FindPercentage = 1,ItemSubType = ItemSubType.Lighter },
+            new LighterItem("BlazeBox Ignite","Ignite more than just a spark!") {
+                PercentLostOnUse = 0.02f, FindPercentage = 1,ItemSubType = ItemSubType.Lighter },
         });
         PossibleItems.TapeItems.AddRange(new List<TapeItem>
         {
-            new TapeItem("Flint Duct Tape","~r~CURRENTLY UNUSED~s~ Sticks to anything! Ducts, wrists, windows, mouths, and more.") {
+            new TapeItem("Flint Duct Tape","Sticks to anything! Ducts, wrists, windows, mouths, and more.") {
                 ModelItemID = "gr_prop_gr_tape_01", FindPercentage = 10,ItemSubType = ItemSubType.Tool },
         });
         PossibleItems.HammerItems.AddRange(new List<HammerItem>

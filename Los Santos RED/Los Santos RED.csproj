@@ -204,9 +204,11 @@
     <Compile Include="lsr\Locations\Interiors\Barber\SalonPurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\FakeCustomizeInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\CraftInteriortInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangArsonTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
@@ -518,6 +520,7 @@
     <Compile Include="lsr\Player\Interface\IVehicleManageable.cs" />
     <Compile Include="lsr\Player\IntimidationManager\IntimidationManager.cs" />
     <Compile Include="lsr\Player\Inventory\Items\BodyArmorItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\HardwareItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CellphoneItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\CraftableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />

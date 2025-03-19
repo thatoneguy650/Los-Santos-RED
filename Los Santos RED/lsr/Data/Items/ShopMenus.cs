@@ -586,6 +586,12 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("Power Metal Side Drill", 250),
                 new MenuItem("Power Metal Custom Side Drill", 575),
+                new MenuItem("BlazeBox Ignite", 1),
+                new MenuItem("Fuse",2),
+                new MenuItem("Scrap Metal", 3),
+                new MenuItem("Metal Tube", 4),
+                new MenuItem("pH strip", 5),
+
             }),
             new ShopMenu("SportingGoodsMenu","SportingGoods",new List<MenuItem>() {
                 new MenuItem("GASH Black Umbrella", 25),
@@ -623,7 +629,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("P's & Q's", 2),
                 new MenuItem("Meteorite Bar", 2),
                 new MenuItem("Donut", 1),
- 
 
 
                 //new MenuItem("Strawberry Rails Cereal", 7),
@@ -633,7 +638,7 @@ public class ShopMenus : IShopMenus
                 //new MenuItem("Bottle of JUNK Energy", 2),
                 //new MenuItem("Can of Orang-O-Tang", 1),
                 //new MenuItem("Bottle of GREY Water", 3),
-                
+                new MenuItem("Baking Soda",3),
 
 
 
@@ -907,7 +912,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Dippo Lighter", 20), }),
             new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
                 new MenuItem("Chesty", 19, 0),
-                new MenuItem("Pseudoephedrine", 25,0) { NumberOfItemsToSellToPlayer = 5},
 
 
 
@@ -1311,7 +1315,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Baking Soda", 3),}),
             new ShopMenu("GrainOfTruthMenu","Grain Of Truth",new List<MenuItem>() {
                 new MenuItem("White Bread", 3),
                 new MenuItem("Carton of Milk", 4),

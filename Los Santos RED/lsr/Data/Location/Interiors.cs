@@ -233,7 +233,6 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Barber
-            
 
             //Clothes
             new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },
@@ -1705,6 +1704,10 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-22.23354f, -1.567997E-05f, 19.01349f),
                         UseNavmesh = false,
                     },
+                    new CraftInteriortInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
