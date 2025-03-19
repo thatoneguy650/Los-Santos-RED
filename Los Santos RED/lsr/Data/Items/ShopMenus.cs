@@ -236,7 +236,7 @@ public class ShopMenus : IShopMenus
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {
-            vapidMenu.Items.Add(new MenuItem("Vapid Interceptor", 35000, 15000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara Service", 32000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara 4x2", 30000, 14000));

@@ -106,7 +106,7 @@ public class DispatchableVehicles_FEJ_Stanier
         //Sheriff TEST
         BCSOVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            DispatchableVehicles_FEJ.Create_PoliceTransporter(2,0,0,false,100,false,true,134,-1,-1,-1,-1,""),
+            //DispatchableVehicles_FEJ.Create_PoliceTransporter(2,0,0,false,100,false,true,134,-1,-1,-1,-1,""),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceStanier, 25, 20){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("polmav", 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter", RequiredLiveries = new List<int>() { 10 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },
             new DispatchableVehicle("annihilator", 1, 150) { RequiredGroupIsDriverOnly = true, RequiredPedGroup = "Pilot",GroupName = "Helicopter",RequiredLiveries = new List<int>() { 5 }, MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 4 },

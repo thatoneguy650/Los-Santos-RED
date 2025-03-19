@@ -102,7 +102,7 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = PossibleItems.Copy();
 
         //Taxi Service 
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servinterceptor" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini Interdictor", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servinterceptor" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servstanier2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Vivanite Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "taxvivaniteliv" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Dilettante Service", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "servdilettante" });
@@ -151,7 +151,7 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = PossibleItems.Copy();
 
         //Sedans
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Interceptor", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civesperanto", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
