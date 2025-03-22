@@ -414,23 +414,371 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Businesses = new List<Business>()
         {
-            new Business(new Vector3(1642.008f,4853.488f,42.08408f),97.45349f,"Counterfeit Cash", "100% Authentic... Until someone checks.")
+            new Business(new Vector3(1642.008f,4853.488f,42.08408f),97.45349f,"Counterfeit Cash", "100% Authentic... Until someone checks")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 TypeName = "Business",
-                PurchasePrice = 200000,
-                PayoutMax = 5000,
-                PayoutFrequency = 2
+                PurchasePrice = 80000,
+                PayoutMax = 1500,
+                PayoutFrequency = 7
             },
             new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 TypeName = "Business",
-                PurchasePrice = 200000,
+                PurchasePrice = 150000,
                 PayoutMax = 2000,
                 PayoutFrequency = 7
+            },
+            new Business(new Vector3(1676.758f,4870.649f,42.04252f),102.7236f,"Money Laundering", "Squeeky clean!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 70000,
+                PayoutMax = 1000,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(2221.945f,5614.832f,54.90165f),108.9486f,"Marijuana Farm", "Some of that real, sticky-icky-icky")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 200000,
+                PayoutMax = 2500,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(-300.8926f,6256.562f,31.49338f),225.6843f,"The Hen House", "Bar and Nightclub")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 250000,
+                PayoutMax = 4000,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(-2175.607f,4294.904f,49.06128f),243.9958f,"Hookies", "Seafood diner and possible gang front")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 130000,
+                PayoutMax = 1800,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(-2565.647f,2307.251f,33.21548f),93.17658f,"Ron Gas Station", "Sandwiches may be expired")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 400000,
+                PayoutMax = 5000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-2525.638f, 2359.816f, 52.58325f),
+                CameraDirection = new Vector3(-0.443386f, -0.8399138f, -0.3129755f),
+                CameraRotation = new Rotator(-18.23864f, 1.123669E-05f, 152.1707f)
+            },
+            new Business(new Vector3(-3053.309f,633.8527f,7.330782f),294.4778f,"Money Laundering", "Squeeky Clean!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 95000,
+                PayoutMax = 1700,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(-3047.513f,589.8976f,7.789078f),18.75011f,"24/7 Store", "For your convenience")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 100000,
+                PayoutMax = 1800,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(-2963.455f,432.2544f,15.27685f),85.53827f,"Hang Ten", "Grill house and boat rentals")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 50000,
+                PayoutMax = 750,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-2988.155f, 425.9732f, 24.26533f),
+                CameraDirection = new Vector3(0.9634f, 0.1927236f, -0.1863278f),
+                CameraRotation = new Rotator(-10.73856f, -2.17248E-07f, -78.68758f)
+            },
+            new Business(new Vector3(-239.1577f,-1397.865f,31.27976f),279.3601f,"Glass Heroes", "Auto Repiars")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 100000,
+                PayoutMax = 1000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-170.5534f, -1383.44f, 43.91586f),
+                CameraDirection = new Vector3(-0.961247f, 0.01569098f, -0.2752417f),
+                CameraRotation = new Rotator(-15.97642f, 1.501403E-05f, 89.06481f)
+            },
+            new Business(new Vector3(-156.4597f,-1348.434f,29.92068f),268.629f,"Flints Autos", "Auto Repiars")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 100000,
+                PayoutMax = 1000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-138.0298f, -1372.587f, 37.17933f),
+                CameraDirection = new Vector3(-0.3920832f, 0.9187839f, -0.04590108f),
+                CameraRotation = new Rotator(-2.630862f, 3.311863E-06f, 23.10995f)
+            },
+            new Business(new Vector3(-80.79027f,-1326.16f,29.26125f),89.24571f,"Tire Nutz", "Auto Repiars")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 100000,
+                PayoutMax = 1000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-87.90244f, -1358.552f, 32.28375f),
+                CameraDirection = new Vector3(0.6017359f, 0.7933005f, 0.09267268f),
+                CameraRotation = new Rotator(5.317383f, -3.215489E-06f, -37.18112f)
+            },
+            new Business(new Vector3(171.3589f,-1722.85f,29.3917f),140.8733f,"Ronnie's Car Wash", "Car wash and detailing")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 35000,
+                PayoutMax = 400,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
+                CameraDirection = new Vector3(0.5641191f, 0.7830818f, -0.2618254f),
+                CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f)
+            },
+            new Business(new Vector3(164.0835f,-1674.781f,29.77432f),143.8548f,"Auto Repairs", "Rims, tires, brakes, services")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 130000,
+                PayoutMax = 1750,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(133.653f, -1673.378f, 45.79798f),
+                CameraDirection = new Vector3(0.9003189f, -0.1247166f, -0.4169793f),
+                CameraRotation = new Rotator(-24.64402f, -1.174165E-06f, -97.8867f)
+            },
+            new Business(new Vector3(226.5831f,-1791.536f,28.70468f),158.2527f,"Money Laundering", "Squeeky Clean!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 140000,
+                PayoutMax = 2000,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(222.6193f,-1842.751f,27.12089f),321.626f,"Money Laundering", "Squeeky Clean!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 140000,
+                PayoutMax = 2000,
+                PayoutFrequency = 7
+            },
+            new Business(new Vector3(1138.891f,-322.3859f,67.14568f),10.44588f,"Marijuana Lockup", "Some of that real, sticky-icky-icky")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 130000,
+                PayoutMax = 1750,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
+                CameraDirection = new Vector3(0.8799238f, -0.3966516f, -0.2615371f),
+                CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f)
+            },
+            new Business(new Vector3(896.3864f,-1036.389f,35.11312f),0.4175867f,"Counterfeit Cash", "100% Authentic... Until someone checks")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 80000,
+                PayoutMax = 1450,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(905.6483f, -1019.085f, 43.15132f),
+                CameraDirection = new Vector3(-0.5088631f, -0.8077428f, -0.2976743f),
+                CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f)
+            },
+            new Business(new Vector3(-556.3671f,275.7033f,83.0806f),174.1707f,"Tequi-la-la", "Bar and nightclub")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 500000,
+                PayoutMax = 8000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-532.7866f, 254.4823f, 96.91456f),
+                CameraDirection = new Vector3(-0.6234604f, 0.7193789f, -0.3062534f),
+                CameraRotation = new Rotator(-17.83359f, -3.228724E-05f, 40.91433f)
+            },
+            new Business(new Vector3(135.7922f,-1279.147f,29.36923f),301.3301f,"Vanilla Unicorn", "Chain of topless bars")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 500000,
+                PayoutMax = 8000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(165.9552f, -1301.587f, 44.00117f),
+                CameraDirection = new Vector3(-0.9497553f, 0.1919609f, -0.2472163f),
+                CameraRotation = new Rotator(-14.31285f, -3.304213E-06f, 78.57353f)
+            },
+            new Business(new Vector3(-1392.368f,-640.1716f,28.6737f),124.154f,"Bahama Mamas", "Where evolution stops and the party starts!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 1000000,
+                PayoutMax = 20000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-1401.865f, -566.8721f, 42.81586f),
+                CameraDirection = new Vector3(0.3209493f, -0.9259464f, -0.1990349f),
+                CameraRotation = new Rotator(-11.48053f, 1.96021E-06f, -160.8828f)
+            },
+            new Business(new Vector3(962.2736f,-2189.392f,30.50459f),85.48328f,"Raven Slaughterhouse", "Slop and mystery meat")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 650000,
+                PayoutMax = 10000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(909.6688f, -2190.49f, 53.41785f),
+                CameraDirection = new Vector3(0.9087162f, 0.1699713f, -0.3812409f),
+                CameraRotation = new Rotator(-22.41057f, 7.388176E-06f, -79.4055f)
+            },
+            new Business(new Vector3(1437.496f,-1491.862f,63.62201f),163.8885f,"Trap House", "Selling misery since the 80's")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 40000,
+                PayoutMax = 500,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(1433.439f, -1511.435f, 70.56494f),
+                CameraDirection = new Vector3(0.2961854f, 0.9360009f, 0.1902011f),
+                CameraRotation = new Rotator(-10.96452f, -5.000482E-06f, -17.55931f)
+            },
+            new Business(new Vector3(1145.066f,-1402.109f,34.80017f),184.3666f,"Welding Factory", "Manufacturing metal goods")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 40000,
+                PayoutMax = 500,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(1146.684f, -1439.009f, 54.74323f),
+                CameraDirection = new Vector3(-0.01859828f, 0.9760022f, -0.2169648f),
+                CameraRotation = new Rotator(-12.53082f, -1.4759E-06f, 1.091671f)
+            },
+            new Business(new Vector3(816.5741f,-1074.92f,28.70289f),180.4692f,"Liquor Market", "Brown bags and 40 ounces")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 158000,
+                PayoutMax = 865,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(795.7516f, -1087.679f, 36.96582f),
+                CameraDirection = new Vector3(0.627211f, 0.7312167f, -0.2681951f),
+                CameraRotation = new Rotator(-15.55689f, -1.772483E-06f, -40.62179f)
+            },
+            new Business(new Vector3(758.9064f,-697.2536f,28.76577f),271.9622f,"Counterfeit Factory", "Passports, driving licenses and cash")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 80000,
+                PayoutMax = 1450,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(789.9556f, -705.2029f, 53.16024f),
+                CameraDirection = new Vector3(-0.9082488f, -0.002581001f, -0.4184226f),
+                CameraRotation = new Rotator(-24.73504f, 3.084433E-07f, 90.16282f)
+            },
+            new Business(new Vector3(489.0005f,-921.6695f,26.37737f),272.7067f,"Counterfeit Factory", "Passports, driving licenses and cash")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 80000,
+                PayoutMax = 1450,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
+                CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
+                CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f)
+            },
+            new Business(new Vector3(-1564.563f,-406.298f,42.38402f),232.9444f,"Apartment Complex", "Overpriced apartments to rent")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 700000,
+                PayoutMax = 15000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-1524.149f, -424.5001f, 66.97356f),
+                CameraDirection = new Vector3(-0.7458491f, 0.5968142f, -0.295841f),
+                CameraRotation = new Rotator(-17.20797f, -2.681345E-06f, 51.33387f)
+            },
+            new Business(new Vector3(847.0793f,-112.657f,79.77465f),286.9653f,"Money Laundering", "Squeeky Clean!")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 200000,
+                PayoutMax = 3500,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
+                CameraDirection = new Vector3(-0.8868939f, -0.280221f, -0.367281f),
+                CameraRotation = new Rotator(-21.54803f, 4.589637E-07f, 107.5343f)
+            },
+            new Business(new Vector3(-70.42547f,6253.906f,31.09008f),122.5636f,"Clucking Bell Farms", "Est. 1917")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 2000000,
+                PayoutMax = 35000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
+                CameraDirection = new Vector3(-0.8868939f, -0.280221f, -0.367281f),
+                CameraRotation = new Rotator(-21.54803f, 4.589637E-07f, 107.5343f)
+            },
+            new Business(new Vector3(26.24912f,-1409.279f,29.44853f),182.4005f,"Chop Shop", "Sending car parts across the world")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 78000,
+                PayoutMax = 1000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
+                CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
+                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f)
+            },
+            new Business(new Vector3(-41.2124f,-1748.196f,29.57104f),324.8786f,"LTD Gas Station", "Get it before it's gone")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 265000,
+                PayoutMax = 2000,
+                PayoutFrequency = 7
+                ,CameraPosition = new Vector3(-50.07359f, -1785.026f, 39.80648f),
+                CameraDirection = new Vector3(-0.1055305f, 0.9686547f, -0.2248807f),
+                CameraRotation = new Rotator(-12.99586f, -1.259561E-05f, 6.217593f)
             },
         };
     }
