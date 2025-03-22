@@ -208,16 +208,16 @@ public class AdvancedConversation
             ReplyUnknown();
             return;
         }
-        List<ZoneJurisdiction> foundTerritory = GangTerritories.GetGangTerritory(gang.ID);
+        List<GangTerritory> foundTerritory = GangTerritories.GetGangTerritory(gang.ID);
         if (foundTerritory == null || !foundTerritory.Any())
         {
             ReplyUnknown();
             return;
         }
         List<Zone> FoundZones = new List<Zone>();
-        foreach (ZoneJurisdiction zoneJurisdiction in foundTerritory)
+        foreach (GangTerritory gt in foundTerritory)
         {
-            Zone foundZone = Zones.GetZone(zoneJurisdiction.ZoneInternalGameName);
+            Zone foundZone = Zones.GetZone(gt.ZoneInternalGameName);
             if(foundZone != null)
             {
                 FoundZones.Add(foundZone);
