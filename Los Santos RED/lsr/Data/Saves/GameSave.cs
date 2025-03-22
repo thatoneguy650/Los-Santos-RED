@@ -81,6 +81,7 @@ namespace LosSantosRED.lsr.Data
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+        public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
 
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
@@ -110,6 +111,7 @@ namespace LosSantosRED.lsr.Data
             SaveResidences(player);
             SaveAgencies(player);
             SaveCellPhone(player); 
+            SaveBusinesses(player);
         }
         private void SaveDemographics(ISaveable player)
         {
@@ -271,6 +273,40 @@ namespace LosSantosRED.lsr.Data
                 PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
             }
         }
+        private void SaveBusinesses(ISaveable player)
+        {
+            SavedBusinesses.Clear();
+            foreach (Business biz in player.Properties.Businesses)
+            {
+                if (biz.IsOwned)
+                {
+                    SavedBusiness myBiz = new SavedBusiness(biz.Name, biz.IsOwned);
+                    myBiz.DateOfLastPayout = biz.DatePayoutPaid;
+                    myBiz.PayoutDate = biz.DatePayoutDue;
+                    if (biz.WeaponStorage != null)
+                    {
+                        myBiz.WeaponInventory = new List<StoredWeapon>();
+                        foreach (StoredWeapon storedWeapon in biz.WeaponStorage.StoredWeapons)
+                        {
+                            myBiz.WeaponInventory.Add(storedWeapon.Copy());
+                        }
+                    }
+                    if (biz.SimpleInventory != null)
+                    {
+                        myBiz.InventoryItems = new List<InventorySave>();
+                        foreach (InventoryItem ii in biz.SimpleInventory.ItemsList)
+                        {
+                            myBiz.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                        }
+                    }
+                    if (biz.CashStorage != null)
+                    {
+                        myBiz.StoredCash = biz.CashStorage.StoredCash;
+                    }
+                    SavedBusinesses.Add(myBiz);
+                }
+            }
+        }
         private void SaveResidences(ISaveable player)
         {
             SavedResidences.Clear();
@@ -342,6 +378,7 @@ namespace LosSantosRED.lsr.Data
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
+                LoadBusinesses(player,placesOfInterest,modItems,settings);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -647,6 +684,41 @@ namespace LosSantosRED.lsr.Data
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }
                         savedPlace.CashStorage.StoredCash = res.StoredCash;
+                        savedPlace.RefreshUI();
+                    }
+                }
+            }
+        }
+        private void LoadBusinesses(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        {
+            foreach (SavedBusiness biz in SavedBusinesses)
+            {
+                if (biz.IsOwnedByPlayer)
+                {
+                    Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddBusiness(savedPlace);
+                        savedPlace.IsOwned = biz.IsOwnedByPlayer;
+                        savedPlace.DatePayoutDue = biz.PayoutDate;
+                        savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
+                        if (savedPlace.WeaponStorage == null)
+                        {
+                            savedPlace.WeaponStorage = new WeaponStorage(settings);
+                        }
+                        if (savedPlace.SimpleInventory == null)
+                        {
+                            savedPlace.SimpleInventory = new SimpleInventory(settings);
+                        }
+                        foreach (StoredWeapon storedWeap in biz.WeaponInventory)
+                        {
+                            savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                        }
+                        foreach (InventorySave stest in biz.InventoryItems)
+                        {
+                            savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                        }
+                        savedPlace.CashStorage.StoredCash = biz.StoredCash;
                         savedPlace.RefreshUI();
                     }
                 }

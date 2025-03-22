@@ -71,6 +71,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<PlasticSurgeryClinic> PlasticSurgeryClinics;
     private List<BarberShop> BarberShopPlaces;
     private List<ExteriorCraftingLocation> ExteriorCraftingLocations;
+    private List<Business> Businesses;
     private PedCustomizerLocation DefaultPedCustomizerLocation;
 
     public PossibleLocations PossibleLocations { get; private set; }
@@ -114,6 +115,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<ILocationSetupable> AllLocations = new List<ILocationSetupable>();
         AllLocations.AddRange(PossibleLocations.Airports);
         AllLocations.AddRange(PossibleLocations.Residences);
+        AllLocations.AddRange(PossibleLocations.Businesses);
         return AllLocations;
     }
     public List<GameLocation> AllLocations()
@@ -222,6 +224,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_PlasticSurgeryClinics();
         DefaultConfig_TattooShops();
         DefaultConfig_ExteriorCraftingLocations();
+        DefaultConfig_Businesses();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -271,7 +274,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
         PossibleLocations.TattooShops.AddRange(TattooShopPlaces);
         PossibleLocations.ExteriorCraftingLocations.AddRange(ExteriorCraftingLocations);
-
+        PossibleLocations.Businesses.AddRange(Businesses);
         PossibleLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
 
@@ -405,6 +408,30 @@ public class PlacesOfInterest : IPlacesOfInterest
            {
               CraftingFlag = "DrugLab" ,
            },
+        };
+    }
+    private void DefaultConfig_Businesses()
+    {
+        Businesses = new List<Business>()
+        {
+            new Business(new Vector3(1642.008f,4853.488f,42.08408f),97.45349f,"Counterfeit Cash", "100% Authentic... Until someone checks.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 200000,
+                PayoutMax = 5000,
+                PayoutFrequency = 2
+            },
+            new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 200000,
+                PayoutMax = 5000,
+                PayoutFrequency = 2
+            },
         };
     }
     private void DefaultConfig_TattooShops()

@@ -13,7 +13,7 @@ public class ExteriorCraftingLocation : GameLocation
     {
 
     }
-    public override string TypeName { get; set; } = "CraftingLocation";
+    public override string TypeName { get; set; } = "Crafting Location";
     public override int MapIcon { get; set; } = 537;//873;//162;
     public string CraftingFlag { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player)

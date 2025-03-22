@@ -19,6 +19,7 @@ public class Properties
         Time = time;
     }
     public List<Residence> Residences { get; private set; } = new List<Residence>();
+    public List<Business> Businesses { get; private set; } = new List<Business>();
 
     public void Setup()
     {
@@ -31,6 +32,13 @@ public class Properties
             if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
             {
                 residence.ReRent(Player, Time);
+            }
+        }
+        foreach(Business business in Businesses)
+        {
+            if(business.DatePayoutDue !=null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >=0)
+            {
+                business.Payout(Player, Time);
             }
         }
     }
@@ -61,6 +69,22 @@ public class Properties
             Residences.Remove(toAdd);
         }
     }
+    public void AddBusiness(Business toAdd)
+    {
+        if (!Businesses.Any(x => x.Name == toAdd.Name))
+        {
+            Businesses.Add(toAdd);
+        }
+    }
+    public void RemoveBusiness(Business toRemove)
+    {
+        if (!Businesses.Any(x => x.Name == toRemove.Name))
+        {
+            toRemove.Reset();
+            Businesses.Remove(toRemove);
+        }
+    }
+
 
 }
 

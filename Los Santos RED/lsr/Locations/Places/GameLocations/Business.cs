@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -9,24 +10,66 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Business : GameLocation
+public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
 {
+    private UIMenu OfferSubMenu;
+    private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
+    private UIMenuItem PurchaseBusinessMenuItem;
+    private UIMenuItem SellBusinessItem;
+
+
     public Business() : base()
     {
 
     }
-    public override string TypeName { get; set; } = "Business";
-    public override int MapIcon { get; set; } = 408;
-    public override string ButtonPromptText { get; set; }
-    public override int RegisterCashMin { get; set; } = 200;
-    public override int RegisterCashMax { get; set; } = 1450;
-    public Business(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public void Setup()
     {
-        MenuID = menuID;
+        if (SimpleInventory == null)
+        {
+            SimpleInventory = new SimpleInventory(Settings);
+        }
+        if (WeaponStorage == null)
+        {
+            WeaponStorage = new WeaponStorage(Settings);
+        }
+        if (CashStorage == null)
+        {
+            CashStorage = new CashStorage();
+        }
+    }
+    public override string TypeName { get; set; } = "Business";
+    public override int MapIcon { get; set; } = (int)BlipSprite.BusinessForSale;
+    public override string ButtonPromptText { get; set; }
+    public int PurchasePrice { get; set; }
+    public int PayoutFrequency { get; set; }
+    public int PayoutMin { get; set; }
+    public int PayoutMax { get; set; }
+    public int PayoutVariance { get; set; }
+    public int SalesPrice { get; set; }
+    [XmlIgnore]
+    public DateTime DatePayoutDue { get; set; }
+    [XmlIgnore]
+    public DateTime DatePayoutPaid { get; set; }
+    [XmlIgnore]
+    public SimpleInventory SimpleInventory { get; set; }
+    [XmlIgnore]
+    public WeaponStorage WeaponStorage { get; set; }
+
+    [XmlIgnore]
+    public CashStorage CashStorage { get; set; }
+    [XmlIgnore]
+    public bool IsOwned { get; set; } = false;
+    public bool CanBuy => !IsOwned && PurchasePrice > 0;
+
+    public GameLocation GameLocation => throw new NotImplementedException();
+
+    public Business(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    {
+        ButtonPromptText = GetButtonPromptText();
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
-        ButtonPromptText = $"Inquire about {Name}";
+        ButtonPromptText = GetButtonPromptText();
         return true;
     }
     public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
@@ -38,5 +81,238 @@ public class Business : GameLocation
     {
         possibleLocations.Businesses.Add(this);
         base.AddLocation(possibleLocations);
+    }
+    public override void OnInteract()
+    {
+        StandardInteract(null, false);
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        Player.IsTransacting = true;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                SetupLocationCamera(locationCamera, isInside, false);
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                if (!HasBannerImage)
+                {
+                    InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+                }
+                GenerateBusinessMenu(isInside);
+                while (IsAnyMenuVisible || Time.IsFastForwarding)
+                {
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+                DisposeInteractionMenu();
+                DisposeCamera(isInside);
+                DisposeInterior();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+                Player.IsTransacting = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "BusinessInteract");
+    }
+    private void GenerateBusinessMenu(bool isInside)
+    {
+        InteractionMenu.Clear();
+        AddInquireItems();
+        AddInteractionItems(isInside);
+    }
+    private void AddInquireItems()
+    {
+        if ((!IsOwned && CanBuy))
+        {
+            OfferSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Make an Offer");
+            string offerDescription = "";
+            if (CanBuy)
+            {
+                offerDescription += "buy ";
+            }
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Select to {offerDescription.Trim()}";
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
+            if (HasBannerImage)
+            {
+                BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
+                OfferSubMenu.SetBannerType(BannerImage);
+            }
+            if (!HasBannerImage)
+            {
+                OfferSubMenu.SetBannerType(EntryPoint.LSRedColor);
+            }
+            PurchaseBusinessMenuItem = new UIMenuItem("Purchase", "Select to purchase this business.") { RightLabel = CanPurchaseRightLabel };
+            if (CanBuy)
+            {
+                PurchaseBusinessMenuItem.Activated += (sender, e) =>
+                {
+                    if (Purchase())
+                    {
+                        MenuPool.CloseAllMenus();
+                        GenerateBusinessMenu(false);
+                    }
+                };
+                OfferSubMenu.AddItem(PurchaseBusinessMenuItem);
+            }
+        }
+    }
+    internal void Payout(IPropertyOwnable player, ITimeReportable time)
+    {
+        try
+        {
+            if (player == null)
+            {
+                return;
+            }
+            DatePayoutPaid = time.CurrentDateTime;
+            DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+            CashStorage.StoredCash = CashStorage.StoredCash + PayoutMax;
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
+            Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
+        }
+    }
+    public override void Reset()
+    {
+        IsOwned = false;
+        WeaponStorage.Reset();
+        SimpleInventory.Reset();
+        UpdateStoredData();
+        CashStorage.Reset();
+
+    }
+    private void AddInteractionItems(bool isInside)
+    {
+        if (!IsOwned)
+        {
+            return;
+        }
+        CreateOwnershipInteractionMenu();
+
+        bool withAnimations = Interior?.IsTeleportEntry == true;
+
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, null, null, !isInside, null, null);
+        WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations, !isInside);
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, !isInside);
+    }
+
+    private void CreateOwnershipInteractionMenu()
+    {
+        if (IsOwned)
+        {
+            SellBusinessItem = new UIMenuItem("Sell Business", "Sell the current business.") { RightLabel = SalesPrice.ToString("C0") };
+            SellBusinessItem.Activated += (sender, e) =>
+            {
+                OnSold();
+                MenuPool.CloseAllMenus();
+                Interior?.ForceExitPlayer(Player, this);
+            };
+            InteractionMenu.AddItem(SellBusinessItem);
+        }
+    }
+    private void OnSold()
+    {
+        Reset();
+        Player.Properties.RemoveBusiness(this);
+        Player.BankAccounts.GiveMoney(SalesPrice, true);
+        PlaySuccessSound();
+        DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
+    }
+    private bool Purchase()
+    {
+        if (CanBuy && Player.BankAccounts.GetMoney(true) >= PurchasePrice)
+        {
+            OnPurchased();
+            return true;
+        }
+        PlayErrorSound();
+        DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
+        return false;
+    }
+    private void OnPurchased()
+    {
+        Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
+        IsOwned = true;
+        UpdateStoredData();
+        Player.Properties.AddBusiness(this);
+        AddInteractionItems(false);
+        PlaySuccessSound();
+        DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
+        DatePayoutPaid = Time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+    }
+    private void UpdateStoredData()
+    {
+        ButtonPromptText = GetButtonPromptText();
+        if (Blip.Exists())
+        {
+            Blip.Sprite = IsOwned ? BlipSprite.Business : BlipSprite.BusinessForSale;
+        }
+    }
+    private string GetButtonPromptText()
+    {
+        if (IsOwned)
+        {
+            return $"Manage {Name}";
+        }
+        else
+        {
+            return $"Inquire About {Name}";
+        }
+    }
+    public void RefreshUI()
+    {
+        UpdateStoredData();
+    }
+    public void CreateInventoryMenu(bool withItems, bool withWeapons, bool withCash, List<ItemType> AllowedItemTypes, List<ItemType> DisallowedItemTypes, bool removeBanner, string overrideItemTitle, string overrideItemDescription)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Visible = true;
+        InteractionMenu.Clear();
+        bool withAnimations = Interior?.IsTeleportEntry == true;
+        if (withItems)
+        {
+            SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, withAnimations, AllowedItemTypes, DisallowedItemTypes, removeBanner, overrideItemTitle, overrideItemDescription);
+        }
+        if (withWeapons)
+        {
+            WeaponStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, Weapons, ModItems, withAnimations, removeBanner);
+        }
+        if (withCash)
+        {
+            CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, removeBanner);
+        }
+        while (IsAnyMenuVisible || Time.IsFastForwarding)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
     }
 }
