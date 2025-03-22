@@ -429,8 +429,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 TypeName = "Business",
                 PurchasePrice = 200000,
-                PayoutMax = 5000,
-                PayoutFrequency = 2
+                PayoutMax = 2000,
+                PayoutFrequency = 7
             },
         };
     }
