@@ -589,17 +589,19 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.6017359f, 0.7933005f, 0.09267268f),
                 CameraRotation = new Rotator(5.317383f, -3.215489E-06f, -37.18112f)
             },
-            new Business(new Vector3(171.3589f,-1722.85f,29.3917f),140.8733f,"Ronnie's Car Wash", "Car wash and detailing")
+            new Business(new Vector3(171.3589f,-1722.85f,29.3917f),140.8733f,"Ronnie's Car Wash", "Weed farm, operating as a car wash")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 TypeName = "Business",
                 PurchasePrice = 80000,
                 PayoutMin = 1200,
-                PayoutMax = 1500,
+                PayoutMax = 2900,
                 PayoutFrequency = 7,
                 SalesPrice = 40000,
                 FullName = "Davis, Ronnie's Car Wash",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 100,
                 CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
                 CameraDirection = new Vector3(0.5641191f, 0.7830818f, -0.2618254f),
                 CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f)
@@ -749,7 +751,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 SalesPrice = 25000,
                 FullName = "El Burro Heights, Trap House",
                 PossibleModItemPayouts = new List<string>() { "Marijana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
-                ModItemPayoutAmount = 250,
+                ModItemPayoutAmount = 100,
                 CameraPosition = new Vector3(1433.439f, -1511.435f, 70.56494f),
                 CameraDirection = new Vector3(0.2961854f, 0.9360009f, 0.1902011f),
                 CameraRotation = new Rotator(-10.96452f, -5.000482E-06f, -17.55931f)
