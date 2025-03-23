@@ -776,6 +776,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PurchasePrice = 265000,
                 PayoutMax = 2000,
                 PayoutFrequency = 7
+                ,SalesPrice = 100000
                 ,CameraPosition = new Vector3(-50.07359f, -1785.026f, 39.80648f),
                 CameraDirection = new Vector3(-0.1055305f, 0.9686547f, -0.2248807f),
                 CameraRotation = new Rotator(-12.99586f, -1.259561E-05f, 6.217593f)
