@@ -819,9 +819,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutMax = 10000,
                 PayoutFrequency = 7,
                 SalesPrice = 50000,
-                CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
-                CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
-                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f)
+                CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
+                CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
+                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f)
             },
             new Business(new Vector3(387.4825f, 3584.651f, 33.29222f), 354.1629f,"Cocaine Lockup", "I'm in love with the coco")
             {
@@ -832,9 +832,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutMax = 25000,
                 PayoutFrequency = 7,
                 SalesPrice = 250000,
-                CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
-                CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
-                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f)
+                CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
+                CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
+                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f)
             },
             new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "I am the one who knocks")
             {
