@@ -784,6 +784,81 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.1055305f, 0.9686547f, -0.2248807f),
                 CameraRotation = new Rotator(-12.99586f, -1.259561E-05f, 6.217593f)
             },
+            new Business(new Vector3(1593.743f, 6460.229f, 25.31715f), 331.519f,"Up-n-Atom", "Once It Pings, Eat Like Kings")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 200000,
+                PayoutMax = 4000,
+                PayoutFrequency = 7,
+                SalesPrice = 100000,
+                CameraPosition = new Vector3(1593.212f, 6429.884f, 34.6632f),
+                CameraDirection = new Vector3(-0.1131209f, 0.9638129f, -0.2413884f),
+                CameraRotation = new Rotator(-13.9685f, 9.787667E-06f, 6.694073f)
+            },
+            new Business(new Vector3(1730.835f, 6419.954f, 35.03722f), 154.021f,"24/7 Store", "For your convenience")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 150000,
+                PayoutMax = 3400,
+                PayoutFrequency = 7,
+                SalesPrice = 100000,
+                CameraPosition = new Vector3(1724.077f, 6395.91f, 38.88764f),
+                CameraDirection = new Vector3(0.4497497f, 0.8909742f, -0.06237188f),
+                CameraRotation = new Rotator(-3.575966f, -1.176229E-06f, -26.78393f)
+            },
+            new Business(new Vector3(2848.69f, 4450.263f, 48.51294f), 109.1559f,"Weed Farm", "Some of that real sticky-icky-icky")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 91000,
+                PayoutMax = 10000,
+                PayoutFrequency = 7,
+                SalesPrice = 50000,
+                CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
+                CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
+                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f)
+            },
+            new Business(new Vector3(387.4825f, 3584.651f, 33.29222f), 354.1629f,"Cocaine Lockup", "I'm in love with the coco")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 400000,
+                PayoutMax = 25000,
+                PayoutFrequency = 7,
+                SalesPrice = 250000,
+                CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
+                CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
+                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f)
+            },
+            new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "I am the one who knocks")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 78500,
+                PayoutMax = 1950,
+                PayoutFrequency = 7,
+                SalesPrice = 50000,
+            },
+            new Business(new Vector3(53.5123f, 6337.641f, 31.63568f), 29.41703f,"Meth lab", "I am the one who knocks")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 340000,
+                PayoutMax = 15000,
+                PayoutFrequency = 7,
+                SalesPrice = 100000,
+                CameraPosition = new Vector3(54.10071f, 6366.07f, 39.03773f),
+                CameraDirection = new Vector3(-0.2491756f, -0.9603184f, -0.1253003f),
+                CameraRotation = new Rotator(-7.198101f, 9.89639E-06f, 165.4541f)
+            },
         };
     }
     private void DefaultConfig_TattooShops()
