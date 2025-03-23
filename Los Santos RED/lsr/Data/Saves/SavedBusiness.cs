@@ -23,12 +23,12 @@ public class SavedBusiness
     public bool IsOwnedByPlayer { get; set; } = false;
     public DateTime PayoutDate { get; set; }
     public DateTime DateOfLastPayout { get; set; }
-
+    public bool IsPayoutInModItems { get; set; } = false;
+    public string ModItemToPayout { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
     public int StoredCash { get; set; }
-
 
 }
 

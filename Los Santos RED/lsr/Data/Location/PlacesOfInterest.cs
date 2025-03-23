@@ -420,8 +420,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 TypeName = "Business",
                 PurchasePrice = 80000,
+                PayoutMin = 1200,
                 PayoutMax = 1500,
-                PayoutFrequency = 7
+                PayoutFrequency = 7,
+                PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
+                ModItemPayoutAmount = 5,
             },
             new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
             {
@@ -475,8 +478,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 400000,
                 PayoutMax = 5000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-2525.638f, 2359.816f, 52.58325f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-2525.638f, 2359.816f, 52.58325f),
                 CameraDirection = new Vector3(-0.443386f, -0.8399138f, -0.3129755f),
                 CameraRotation = new Rotator(-18.23864f, 1.123669E-05f, 152.1707f)
             },
@@ -505,8 +508,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 50000,
                 PayoutMax = 750,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-2988.155f, 425.9732f, 24.26533f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-2988.155f, 425.9732f, 24.26533f),
                 CameraDirection = new Vector3(0.9634f, 0.1927236f, -0.1863278f),
                 CameraRotation = new Rotator(-10.73856f, -2.17248E-07f, -78.68758f)
             },
@@ -517,8 +520,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 100000,
                 PayoutMax = 1000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-170.5534f, -1383.44f, 43.91586f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-170.5534f, -1383.44f, 43.91586f),
                 CameraDirection = new Vector3(-0.961247f, 0.01569098f, -0.2752417f),
                 CameraRotation = new Rotator(-15.97642f, 1.501403E-05f, 89.06481f)
             },
@@ -529,8 +532,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 100000,
                 PayoutMax = 1000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-138.0298f, -1372.587f, 37.17933f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-138.0298f, -1372.587f, 37.17933f),
                 CameraDirection = new Vector3(-0.3920832f, 0.9187839f, -0.04590108f),
                 CameraRotation = new Rotator(-2.630862f, 3.311863E-06f, 23.10995f)
             },
@@ -541,8 +544,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 100000,
                 PayoutMax = 1000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-87.90244f, -1358.552f, 32.28375f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-87.90244f, -1358.552f, 32.28375f),
                 CameraDirection = new Vector3(0.6017359f, 0.7933005f, 0.09267268f),
                 CameraRotation = new Rotator(5.317383f, -3.215489E-06f, -37.18112f)
             },
@@ -553,8 +556,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 35000,
                 PayoutMax = 400,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
                 CameraDirection = new Vector3(0.5641191f, 0.7830818f, -0.2618254f),
                 CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f)
             },
@@ -565,8 +568,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 130000,
                 PayoutMax = 1750,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(133.653f, -1673.378f, 45.79798f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(133.653f, -1673.378f, 45.79798f),
                 CameraDirection = new Vector3(0.9003189f, -0.1247166f, -0.4169793f),
                 CameraRotation = new Rotator(-24.64402f, -1.174165E-06f, -97.8867f)
             },
@@ -595,8 +598,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 130000,
                 PayoutMax = 1750,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
                 CameraDirection = new Vector3(0.8799238f, -0.3966516f, -0.2615371f),
                 CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f)
             },
@@ -607,8 +610,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 80000,
                 PayoutMax = 1450,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(905.6483f, -1019.085f, 43.15132f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(905.6483f, -1019.085f, 43.15132f),
                 CameraDirection = new Vector3(-0.5088631f, -0.8077428f, -0.2976743f),
                 CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f)
             },
@@ -619,8 +622,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 500000,
                 PayoutMax = 8000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-532.7866f, 254.4823f, 96.91456f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-532.7866f, 254.4823f, 96.91456f),
                 CameraDirection = new Vector3(-0.6234604f, 0.7193789f, -0.3062534f),
                 CameraRotation = new Rotator(-17.83359f, -3.228724E-05f, 40.91433f)
             },
@@ -631,8 +634,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 500000,
                 PayoutMax = 8000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(165.9552f, -1301.587f, 44.00117f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(165.9552f, -1301.587f, 44.00117f),
                 CameraDirection = new Vector3(-0.9497553f, 0.1919609f, -0.2472163f),
                 CameraRotation = new Rotator(-14.31285f, -3.304213E-06f, 78.57353f)
             },
@@ -643,8 +646,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 1000000,
                 PayoutMax = 20000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-1401.865f, -566.8721f, 42.81586f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1401.865f, -566.8721f, 42.81586f),
                 CameraDirection = new Vector3(0.3209493f, -0.9259464f, -0.1990349f),
                 CameraRotation = new Rotator(-11.48053f, 1.96021E-06f, -160.8828f)
             },
@@ -655,8 +658,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 650000,
                 PayoutMax = 10000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(909.6688f, -2190.49f, 53.41785f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(909.6688f, -2190.49f, 53.41785f),
                 CameraDirection = new Vector3(0.9087162f, 0.1699713f, -0.3812409f),
                 CameraRotation = new Rotator(-22.41057f, 7.388176E-06f, -79.4055f)
             },
@@ -667,8 +670,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 40000,
                 PayoutMax = 500,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(1433.439f, -1511.435f, 70.56494f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1433.439f, -1511.435f, 70.56494f),
                 CameraDirection = new Vector3(0.2961854f, 0.9360009f, 0.1902011f),
                 CameraRotation = new Rotator(-10.96452f, -5.000482E-06f, -17.55931f)
             },
@@ -679,8 +682,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 40000,
                 PayoutMax = 500,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(1146.684f, -1439.009f, 54.74323f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1146.684f, -1439.009f, 54.74323f),
                 CameraDirection = new Vector3(-0.01859828f, 0.9760022f, -0.2169648f),
                 CameraRotation = new Rotator(-12.53082f, -1.4759E-06f, 1.091671f)
             },
@@ -691,8 +694,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 158000,
                 PayoutMax = 865,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(795.7516f, -1087.679f, 36.96582f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(795.7516f, -1087.679f, 36.96582f),
                 CameraDirection = new Vector3(0.627211f, 0.7312167f, -0.2681951f),
                 CameraRotation = new Rotator(-15.55689f, -1.772483E-06f, -40.62179f)
             },
@@ -703,8 +706,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 80000,
                 PayoutMax = 1450,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(789.9556f, -705.2029f, 53.16024f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(789.9556f, -705.2029f, 53.16024f),
                 CameraDirection = new Vector3(-0.9082488f, -0.002581001f, -0.4184226f),
                 CameraRotation = new Rotator(-24.73504f, 3.084433E-07f, 90.16282f)
             },
@@ -715,8 +718,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 80000,
                 PayoutMax = 1450,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
                 CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
                 CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f)
             },
@@ -727,8 +730,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 700000,
                 PayoutMax = 15000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-1524.149f, -424.5001f, 66.97356f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1524.149f, -424.5001f, 66.97356f),
                 CameraDirection = new Vector3(-0.7458491f, 0.5968142f, -0.295841f),
                 CameraRotation = new Rotator(-17.20797f, -2.681345E-06f, 51.33387f)
             },
@@ -739,8 +742,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 200000,
                 PayoutMax = 3500,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
                 CameraDirection = new Vector3(-0.8868939f, -0.280221f, -0.367281f),
                 CameraRotation = new Rotator(-21.54803f, 4.589637E-07f, 107.5343f)
             },
@@ -751,8 +754,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 2000000,
                 PayoutMax = 35000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(862.5848f, -107.4133f, 91.30139f),
                 CameraDirection = new Vector3(-0.8868939f, -0.280221f, -0.367281f),
                 CameraRotation = new Rotator(-21.54803f, 4.589637E-07f, 107.5343f)
             },
@@ -763,8 +766,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 78000,
                 PayoutMax = 1000,
-                PayoutFrequency = 7
-                ,CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
                 CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
                 CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f)
             },
@@ -775,9 +778,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 TypeName = "Business",
                 PurchasePrice = 265000,
                 PayoutMax = 2000,
-                PayoutFrequency = 7
-                ,SalesPrice = 100000
-                ,CameraPosition = new Vector3(-50.07359f, -1785.026f, 39.80648f),
+                PayoutFrequency = 7,
+                SalesPrice = 100000,
+                CameraPosition = new Vector3(-50.07359f, -1785.026f, 39.80648f),
                 CameraDirection = new Vector3(-0.1055305f, 0.9686547f, -0.2248807f),
                 CameraRotation = new Rotator(-12.99586f, -1.259561E-05f, 6.217593f)
             },

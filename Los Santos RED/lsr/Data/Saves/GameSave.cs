@@ -283,6 +283,8 @@ namespace LosSantosRED.lsr.Data
                     SavedBusiness myBiz = new SavedBusiness(biz.Name, biz.IsOwned);
                     myBiz.DateOfLastPayout = biz.DatePayoutPaid;
                     myBiz.PayoutDate = biz.DatePayoutDue;
+                    myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
+                    myBiz.ModItemToPayout = biz.ModItemToPayout;
                     if (biz.WeaponStorage != null)
                     {
                         myBiz.WeaponInventory = new List<StoredWeapon>();
@@ -702,6 +704,8 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.IsOwned = biz.IsOwnedByPlayer;
                         savedPlace.DatePayoutDue = biz.PayoutDate;
                         savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
+                        savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
+                        savedPlace.ModItemToPayout = biz.ModItemToPayout;
                         if (savedPlace.WeaponStorage == null)
                         {
                             savedPlace.WeaponStorage = new WeaponStorage(settings);

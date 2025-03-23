@@ -44,8 +44,13 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public int PayoutFrequency { get; set; }
     public int PayoutMin { get; set; }
     public int PayoutMax { get; set; }
-    public int PayoutVariance { get; set; }
+    public bool IsPayoutInModItems { get; set; } = false;
+    public List<string> PossibleModItemPayouts { get; set; }
+    public int ModItemPayoutAmount { get; set; } = 1;
+    public bool IsPayoutDepositedToBank { get; set; } = false;
     public int SalesPrice { get; set; }
+    [XmlIgnore]
+    public string ModItemToPayout { get; set; }
     [XmlIgnore]
     public DateTime DatePayoutDue { get; set; }
     [XmlIgnore]
@@ -172,15 +177,39 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             {
                 return;
             }
+            int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
             DatePayoutPaid = time.CurrentDateTime;
             DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
-            CashStorage.StoredCash = CashStorage.StoredCash + PayoutMax;
+
+            if (IsPayoutInModItems)
+            {
+                ModItem itemToAdd = ModItems.Get(ModItemToPayout);
+                SimpleInventory.Add(itemToAdd, numberOfPaymentsToProcess * ModItemPayoutAmount);
+            }
+            else
+            {
+                int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
+                if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
+                {
+                    player.BankAccounts.BankAccountList.First().Money += payoutAmount;
+                }
+                else
+                {
+                    CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
+                }
+            }
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
-            Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
+            Game.DisplayNotification($"ERROR in Payout {ex.Message}");
         }
+    }
+    private int CalculatePayoutAmount(int numberOfPaymentsToProcess)
+    {
+        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
+        int payoutAmount = PayoutMax * numberOfPaymentsToProcess / PayoutFrequency;
+        return payoutAmount;
     }
     public override void Reset()
     {
@@ -189,7 +218,8 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-
+        IsPayoutInModItems = false;
+        ModItemToPayout = String.Empty;
     }
     private void AddInteractionItems(bool isInside)
     {
@@ -206,6 +236,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, withAnimations, !isInside);
     }
 
+    //Make a function for description rendering
     private void CreateOwnershipInteractionMenu()
     {
         if (IsOwned)
@@ -218,6 +249,47 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellBusinessItem);
+            UIMenuItem payoutDescription = new UIMenuItem(IsPayoutInModItems ? ModItemToPayout : "Cash");
+            UIMenuCheckboxItem payoutToBankMenuItem = new UIMenuCheckboxItem("Deposit to Bank?", IsPayoutDepositedToBank);
+            payoutToBankMenuItem.CheckboxEvent += (s, c) =>
+            {
+                IsPayoutDepositedToBank = c;
+            };
+            if (PossibleModItemPayouts != null && PossibleModItemPayouts.Count > 0)
+            {
+                UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Produce", "Your payout option.");
+                foreach (string modItem in PossibleModItemPayouts)
+                {
+                    payoutItemScrollerItem.Items.Add(modItem);
+                }
+                payoutItemScrollerItem.Activated += (sender, selectedItem) =>
+                {
+                    ModItemToPayout = payoutItemScrollerItem.SelectedItem;
+                    UpdatePayoutDescription(payoutDescription);
+                };
+                UIMenuCheckboxItem payOutInModItems = new UIMenuCheckboxItem("Produce Items", IsPayoutInModItems);
+                payOutInModItems.CheckboxEvent += (s, c) =>
+                {
+                    IsPayoutInModItems = c;
+                    ModItemToPayout = payoutItemScrollerItem.SelectedItem;
+                    UpdatePayoutDescription(payoutDescription);
+                };
+                InteractionMenu.AddItems(payoutDescription, payoutToBankMenuItem, payOutInModItems, payoutItemScrollerItem);
+            }
+        }
+    }
+    private void UpdatePayoutDescription(UIMenuItem payoutDescription)
+    {
+        if (IsPayoutInModItems)
+        {
+            payoutDescription.Text = ModItemToPayout;
+            payoutDescription.Description = $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
+        }
+        else
+        {
+            payoutDescription.Text = "Cash";
+            payoutDescription.Description = $"Around {PayoutMin} to {PayoutMax} every {PayoutFrequency} day(s)";
+
         }
     }
     private void OnSold()
