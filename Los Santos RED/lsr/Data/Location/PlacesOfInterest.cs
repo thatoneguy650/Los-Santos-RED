@@ -988,6 +988,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.2491756f, -0.9603184f, -0.1253003f),
                 CameraRotation = new Rotator(-7.198101f, 9.89639E-06f, 165.4541f)
             },
+            new Business(new Vector3(345.4399f, -977.869f, 29.38964f), 272.7354f,"Nightclub", "Watered down drinks and walks of shame")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 3000000,
+                PayoutMin = 8000,
+                PayoutMax = 30000,
+                PayoutFrequency = 7,
+                SalesPrice = 500000,
+                FullName = "Mission Row, Nightclub",
+                CameraPosition = new Vector3(351.2087f, -958.4147f, 31.16909f),
+                CameraDirection = new Vector3(-0.3868311f, -0.9181641f, 0.085653f),
+                CameraRotation = new Rotator(4.913576f, -2.560057E-05f, 157.1539f)
+            },
         };
     }
     private void DefaultConfig_TattooShops()
