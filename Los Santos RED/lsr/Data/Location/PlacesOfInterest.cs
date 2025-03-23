@@ -902,7 +902,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutMin = 1200,
                 PayoutMax = 2600,
                 PayoutFrequency = 7,
-                SalesPrice = 100,
+                SalesPrice = 100000,
                 FullName = "Paleto Bay, Up-n-Atom",
                 CameraPosition = new Vector3(1593.212f, 6429.884f, 34.6632f),
                 CameraDirection = new Vector3(-0.1131209f, 0.9638129f, -0.2413884f),
@@ -1002,6 +1002,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(351.2087f, -958.4147f, 31.16909f),
                 CameraDirection = new Vector3(-0.3868311f, -0.9181641f, 0.085653f),
                 CameraRotation = new Rotator(4.913576f, -2.560057E-05f, 157.1539f)
+            },
+            new Business(new Vector3(90.53289f, 297.8887f, 110.2102f), 338.5868f,"Up-n-Atom", "Once It Pings, Eat Like Kings")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 800000,
+                PayoutMin = 2500,
+                PayoutMax = 8000,
+                PayoutFrequency = 7,
+                SalesPrice = 400000,
+                FullName = "Vinewood, Up-n-Atom",
+                CameraPosition = new Vector3(45.79728f, 254.0175f, 122.3145f),
+                CameraDirection = new Vector3(0.8227352f, 0.5073356f, -0.2563541f),
+                CameraRotation = new Rotator(-14.85384f, 1.722417E-05f, -58.34015f)
             },
         };
     }
