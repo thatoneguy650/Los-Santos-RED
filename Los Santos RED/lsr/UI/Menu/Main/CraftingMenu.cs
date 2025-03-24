@@ -90,6 +90,10 @@ public class CraftingMenu : ModUIMenu
         }
         foreach(CraftableItem craftableItem in CraftableItems.Items)
         {
+            if (!string.IsNullOrEmpty(craftingFlag) && craftableItem.CraftingFlags != null && !craftableItem.CraftingFlags.Contains(craftingFlag))
+            {
+                continue;
+            }
             if (craftableItem.CraftingFlags != null && craftableItem.CraftingFlags.Count > 0 && !craftableItem.CraftingFlags.Contains(craftingFlag))
             {
                 continue;
@@ -112,7 +116,10 @@ public class CraftingMenu : ModUIMenu
                 }
                 else
                 {
-                    quantity = quantity == 0 ? instancesCraftable : Math.Min(quantity, instancesCraftable);
+                    if (ingredient.IsConsumed)
+                    {
+                        quantity = quantity == 0 ? instancesCraftable : Math.Min(quantity, instancesCraftable);
+                    }
                     ingredientsSatisfied++;
                 }
             }
