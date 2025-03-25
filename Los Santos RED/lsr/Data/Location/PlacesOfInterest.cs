@@ -1018,6 +1018,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.8227352f, 0.5073356f, -0.2563541f),
                 CameraRotation = new Rotator(-14.85384f, 1.722417E-05f, -58.34015f)
             },
+            new Business(new Vector3(143.224f, -1656.096f, 29.48878f), 226.5995f,"Meth Lab", "I'm the one who knocks")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 220000,
+                PayoutMin = 5000,
+                PayoutMax = 10000,
+                PayoutFrequency = 5,
+                SalesPrice = 100000,
+                FullName = "Davis, meth lab",
+            },
         };
     }
     private void DefaultConfig_TattooShops()
