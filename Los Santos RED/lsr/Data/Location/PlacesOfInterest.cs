@@ -983,7 +983,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 SalesPrice = 500000,
                 FullName = "Paleto Bay, Meth Lab",
                 PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
-                ModItemPayoutAmount = 2000,
+                ModItemPayoutAmount = 150,
                 CameraPosition = new Vector3(54.10071f, 6366.07f, 39.03773f),
                 CameraDirection = new Vector3(-0.2491756f, -0.9603184f, -0.1253003f),
                 CameraRotation = new Rotator(-7.198101f, 9.89639E-06f, 165.4541f)
@@ -1029,6 +1029,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutFrequency = 5,
                 SalesPrice = 100000,
                 FullName = "Davis, meth lab",
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 150,
             },
         };
     }
