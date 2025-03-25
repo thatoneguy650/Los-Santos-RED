@@ -19,7 +19,6 @@ public class SavedBusiness
     }
 
     public string Name { get; set; }
-    public Vector3 Position { get; set; }
     public bool IsOwnedByPlayer { get; set; } = false;
     public DateTime PayoutDate { get; set; }
     public DateTime DateOfLastPayout { get; set; }
