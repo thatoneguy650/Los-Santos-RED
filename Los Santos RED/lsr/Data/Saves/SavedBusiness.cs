@@ -23,6 +23,7 @@ public class SavedBusiness
     public DateTime PayoutDate { get; set; }
     public DateTime DateOfLastPayout { get; set; }
     public bool IsPayoutInModItems { get; set; } = false;
+    public bool IsPayoutDepositedToBank { get; set; }
     public string ModItemToPayout { get; set; }
     public Vector3 EntrancePosition { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();

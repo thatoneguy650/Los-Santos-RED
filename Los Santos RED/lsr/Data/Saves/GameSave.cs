@@ -286,6 +286,7 @@ namespace LosSantosRED.lsr.Data
                     myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
                     myBiz.ModItemToPayout = biz.ModItemToPayout;
                     myBiz.EntrancePosition = biz.EntrancePosition;
+                    myBiz.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
                     if (biz.WeaponStorage != null)
                     {
                         myBiz.WeaponInventory = new List<StoredWeapon>();
@@ -707,6 +708,7 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
                         savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
                         savedPlace.ModItemToPayout = biz.ModItemToPayout;
+                        savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
                         if (savedPlace.WeaponStorage == null)
                         {
                             savedPlace.WeaponStorage = new WeaponStorage(settings);
