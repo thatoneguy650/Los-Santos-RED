@@ -285,6 +285,7 @@ namespace LosSantosRED.lsr.Data
                     myBiz.PayoutDate = biz.DatePayoutDue;
                     myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
                     myBiz.ModItemToPayout = biz.ModItemToPayout;
+                    myBiz.EntrancePosition = biz.EntrancePosition;
                     if (biz.WeaponStorage != null)
                     {
                         myBiz.WeaponInventory = new List<StoredWeapon>();
@@ -697,7 +698,7 @@ namespace LosSantosRED.lsr.Data
             {
                 if (biz.IsOwnedByPlayer)
                 {
-                    Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name).FirstOrDefault();
+                    Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name && x.EntrancePosition == biz.EntrancePosition).FirstOrDefault();
                     if (savedPlace != null)
                     {
                         player.Properties.AddBusiness(savedPlace);

@@ -25,6 +25,7 @@ public class SavedBusiness
     public DateTime DateOfLastPayout { get; set; }
     public bool IsPayoutInModItems { get; set; } = false;
     public string ModItemToPayout { get; set; }
+    public Vector3 EntrancePosition { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
