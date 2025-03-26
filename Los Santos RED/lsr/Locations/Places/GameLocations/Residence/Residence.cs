@@ -32,6 +32,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
+    private UIMenuItem RentOutPropertyItem;
     private bool HasTeleported = false;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
@@ -58,6 +59,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public CashStorage CashStorage { get; set; }
     [XmlIgnore]
     public ResidenceInterior ResidenceInterior { get; set; }
+    [XmlIgnore]
+    public bool IsRentedOut { get; set; } = false;
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -478,7 +481,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 MenuPool.CloseAllMenus();
                 Interior?.ForceExitPlayer(Player, this);
             };
-            InteractionMenu.AddItem(SellHouseItem);
+            RentOutPropertyItem = new UIMenuItem("Rent out the Property", $"Rent out the property to earn ${RentalFee} every {RentalDays} day(s).");
+            RentOutPropertyItem.Activated += (sender, e) =>
+            {
+                Interior?.ForceExitPlayer(Player, this);
+            };
+            InteractionMenu.AddItems(SellHouseItem, RentOutPropertyItem);
         }
     }
     private void CreateRestInteractionMenu()

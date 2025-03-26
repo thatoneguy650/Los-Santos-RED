@@ -288,7 +288,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         else
         {
             payoutDescription.Text = "Cash";
-            payoutDescription.Description = $"Around {PayoutMin} to {PayoutMax} every {PayoutFrequency} day(s)";
+            payoutDescription.Description = $"Around ${PayoutMin} to ${PayoutMax} every {PayoutFrequency} day(s)";
 
         }
     }
