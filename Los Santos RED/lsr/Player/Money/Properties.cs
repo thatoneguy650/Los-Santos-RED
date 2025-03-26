@@ -71,14 +71,14 @@ public class Properties
     }
     public void AddBusiness(Business toAdd)
     {
-        if (!Businesses.Any(x => x.Name == toAdd.Name))
+        if (!Businesses.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
         {
             Businesses.Add(toAdd);
         }
     }
     public void RemoveBusiness(Business toRemove)
     {
-        if (!Businesses.Any(x => x.Name == toRemove.Name))
+        if (!Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
         {
             toRemove.Reset();
             Businesses.Remove(toRemove);
