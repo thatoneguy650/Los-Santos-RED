@@ -1176,9 +1176,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Paleto Bay, Counterfeit cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 3,
-                CameraPosition = new Vector3(315.1307f, -765.52f, 35.17923f),
-                CameraDirection = new Vector3(-0.9482352f, 0.316846f, -0.02141672f),
-                CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f)
             },
             new Business(new Vector3(-163.8875f, 6334.429f, 31.58056f), 314.6334f,"Document Forgery", "Passports, driving licenses and cash")
             {
@@ -1210,6 +1207,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Paleto Bay, Cocaine Lockup",
                 PossibleModItemPayouts = new List<string>() { "Cocaine" },
                 ModItemPayoutAmount = 150,
+            },
+            new Business(new Vector3(-69.84018f, -1230.73f, 28.94209f), 227.2082f,"Underground Fight Club", "Is that your blood?")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 70000,
+                PayoutMin = 1200,
+                PayoutMax = 2500,
+                PayoutFrequency = 5,
+                SalesPrice = 10000,
+                FullName = "Strawberry, Underground fight club",
             },
         };
     }
