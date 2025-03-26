@@ -1219,6 +1219,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutFrequency = 5,
                 SalesPrice = 10000,
                 FullName = "Strawberry, Underground fight club",
+                CameraPosition = new Vector3(-54.95205f, -1226.661f, 30.48394f),
+                CameraDirection = new Vector3(-0.9745888f, -0.2231278f, -0.01976705f),
+                CameraRotation = new Rotator(-1.132642f, -8.272548E-07f, 102.8954f)
             },
         };
     }
