@@ -1208,7 +1208,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossibleModItemPayouts = new List<string>() { "Cocaine" },
                 ModItemPayoutAmount = 150,
             },
-            new Business(new Vector3(-69.84018f, -1230.73f, 28.94209f), 227.2082f,"Underground Fight Club", "Is that your blood?")
+             new Business(new Vector3(-69.84018f, -1230.73f, 28.94209f), 227.2082f,"Underground Fight Club", "Is that your blood?")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -1221,7 +1221,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Strawberry, Underground fight club",
                 CameraPosition = new Vector3(-54.95205f, -1226.661f, 30.48394f),
                 CameraDirection = new Vector3(-0.9745888f, -0.2231278f, -0.01976705f),
-                CameraRotation = new Rotator(-1.132642f, -8.272548E-07f, 102.8954f) 
+                CameraRotation = new Rotator(-1.132642f, -8.272548E-07f, 102.8954f)
             },
         };
     }
