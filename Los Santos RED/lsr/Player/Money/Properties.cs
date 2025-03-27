@@ -33,6 +33,10 @@ public class Properties
             {
                 residence.ReRent(Player, Time);
             }
+            else if(residence.IsOwned && residence.IsRentedOut && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
+            {
+                residence.Payout(Player, Time);
+            }
         }
         foreach(Business business in Businesses)
         {

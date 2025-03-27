@@ -193,7 +193,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
                 if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
                 {
-                    player.BankAccounts.BankAccountList.First().Money += payoutAmount;
+                    player.BankAccounts.GiveMoney(payoutAmount, true);
                 }
                 else
                 {
@@ -201,7 +201,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 }
             }
             int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
-            Game.Console.Print($"Going to be adding {salesPriceToAdd}");
             CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
         }
         catch (Exception ex)

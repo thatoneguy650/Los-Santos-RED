@@ -345,6 +345,10 @@ namespace LosSantosRED.lsr.Data
                     {
                         myRes.StoredCash = res.CashStorage.StoredCash;
                     }
+                    if(res.IsRentedOut)
+                    {
+                        myRes.IsRentedOut = res.IsRentedOut;
+                    }
                     SavedResidences.Add(myRes);
                 }
             }
@@ -688,6 +692,7 @@ namespace LosSantosRED.lsr.Data
                         {
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }
+                        savedPlace.IsRentedOut = res.IsRentedOut;
                         savedPlace.CashStorage.StoredCash = res.StoredCash;
                         savedPlace.RefreshUI();
                     }
