@@ -20,7 +20,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
 
     public Business() : base()
     {
-
     }
     public void Setup()
     {
@@ -49,6 +48,10 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public int ModItemPayoutAmount { get; set; } = 1;
     public bool IsPayoutDepositedToBank { get; set; } = false;
     public int SalesPrice { get; set; }
+    public int MaxSalesPrice { get; set; }
+    public int GrowthPercentage { get; set; } = 20;
+    [XmlIgnore]
+    public int CurrentSalesPrice { get; set; }
     [XmlIgnore]
     public string ModItemToPayout { get; set; }
     [XmlIgnore]
@@ -59,7 +62,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public SimpleInventory SimpleInventory { get; set; }
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }
-
     [XmlIgnore]
     public CashStorage CashStorage { get; set; }
     [XmlIgnore]
@@ -198,6 +200,9 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                     CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
                 }
             }
+            int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
+            Game.Console.Print($"Going to be adding {salesPriceToAdd}");
+            CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
         }
         catch (Exception ex)
         {
@@ -208,7 +213,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     private int CalculatePayoutAmount(int numberOfPaymentsToProcess)
     {
         int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
-        int payoutAmount = PayoutMax * numberOfPaymentsToProcess / PayoutFrequency;
+        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
         return payoutAmount;
     }
     public override void Reset()
@@ -241,7 +246,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     {
         if (IsOwned)
         {
-            SellBusinessItem = new UIMenuItem("Sell Business", "Sell the current business.") { RightLabel = SalesPrice.ToString("C0") };
+            SellBusinessItem = new UIMenuItem("Sell Business", "Sell the current business.") { RightLabel = CurrentSalesPrice.ToString("C0") };
             SellBusinessItem.Activated += (sender, e) =>
             {
                 OnSold();
@@ -296,9 +301,9 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     {
         Reset();
         Player.Properties.RemoveBusiness(this);
-        Player.BankAccounts.GiveMoney(SalesPrice, true);
+        Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
-        DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
+        DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
     }
     private bool Purchase()
     {
@@ -322,6 +327,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
         DatePayoutPaid = Time.CurrentDateTime;
         DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+        CurrentSalesPrice = SalesPrice;
     }
     private void UpdateStoredData()
     {

@@ -28,7 +28,7 @@ public class SavedBusiness
     public Vector3 EntrancePosition { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
-
+    public int CurrentSalesPrice { get; set; }
     public int StoredCash { get; set; }
 
 }
