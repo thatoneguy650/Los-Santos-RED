@@ -8789,7 +8789,7 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("ChopShopExit",new Vector3(970.9332f, -2987.278f, -39.64696f), 0.9743451f,"Exit"),
-                    new StandardInteriorInteract("ChopShopStandard",new Vector3(964.3622f, -3003.421f, -39.63989f), 91.28143f,"Manage"),
+                    new StandardInteriorInteract("ChopShopStandard",new Vector3(965.5502f, -3003.387f, -39.63989f), 267.6558f,"Manage"),
                 }
             },
         });
