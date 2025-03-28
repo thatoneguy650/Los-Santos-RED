@@ -466,6 +466,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Mount Chiliad, Marijuana Farm",
                 PossibleModItemPayouts = new List<string>() { "Marijuana" },
                 ModItemPayoutAmount = 5,
+                InteriorID = 247297,
             },
             new Business(new Vector3(-300.8926f,6256.562f,31.49338f),225.6843f,"The Hen House", "Bar and Nightclub")
             {
@@ -605,7 +606,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 100,
                 CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
                 CameraDirection = new Vector3(0.5641191f, 0.7830818f, -0.2618254f),
-                CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f)
+                CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f),
+                InteriorID = 247297,
             },
             new Business(new Vector3(164.0835f,-1674.781f,29.77432f),143.8548f,"Auto Repairs", "Rims, tires, brakes, services")
             {
@@ -661,7 +663,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 80,
                 CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
                 CameraDirection = new Vector3(0.8799238f, -0.3966516f, -0.2615371f),
-                CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f)
+                CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f),
+                InteriorID = 247297,
             },
             new Business(new Vector3(896.3864f,-1036.389f,35.11312f),0.4175867f,"Counterfeit Cash", "100% Authentic... Until someone checks")
             {
@@ -679,6 +682,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(905.6483f, -1019.085f, 43.15132f),
                 CameraDirection = new Vector3(-0.5088631f, -0.8077428f, -0.2976743f),
                 CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f),
+                InteriorID = 247809,
             },
             new Business(new Vector3(-556.3671f,275.7033f,83.0806f),174.1707f,"Tequi-la-la", "Bar and nightclub")
             {
@@ -802,7 +806,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 10,
                 CameraPosition = new Vector3(789.9556f, -705.2029f, 53.16024f),
                 CameraDirection = new Vector3(-0.9082488f, -0.002581001f, -0.4184226f),
-                CameraRotation = new Rotator(-24.73504f, 3.084433E-07f, 90.16282f)
+                CameraRotation = new Rotator(-24.73504f, 3.084433E-07f, 90.16282f),
+                InteriorID = 246785,
             },
             new Business(new Vector3(489.0005f,-921.6695f,26.37737f),272.7067f,"Document Forgery", "Passports, driving licenses and cash")
             {
@@ -819,7 +824,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 10,
                 CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
                 CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
-                CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f)
+                CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f),
+                InteriorID = 246785,
             },
             new Business(new Vector3(-1564.563f,-406.298f,42.38402f),232.9444f,"Apartment Complex", "Overpriced apartments to rent")
             {
@@ -863,7 +869,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Strawberry, Chop Shop",
                 CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
                 CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
-                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f)
+                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f),
+                InteriorID = 252673,
             },
             new Business(new Vector3(-41.2124f,-1748.196f,29.57104f),324.8786f,"LTD Gas Station", "Get it before it's gone")
             {
@@ -925,7 +932,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 80,
                 CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
                 CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
-                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f)
+                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f),
+                InteriorID = 247297,
             },
             new Business(new Vector3(387.4825f, 3584.651f, 33.29222f), 354.1629f,"Cocaine Lockup", "White lines, blowing through my mind")
             {
@@ -942,7 +950,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 150,
                 CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
                 CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
-                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f)
+                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f),
+                InteriorID = 247553,
             },
             new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "I am the one who knocks")
             {
@@ -957,6 +966,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Sandy Shores, Meth lab",
                 PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
                 ModItemPayoutAmount = 150,
+                InteriorID = 247041,
             },
             new Business(new Vector3(53.5123f, 6337.641f, 31.63568f), 29.41703f,"Meth lab", "I am the one who knocks")
             {
@@ -973,7 +983,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 150,
                 CameraPosition = new Vector3(54.10071f, 6366.07f, 39.03773f),
                 CameraDirection = new Vector3(-0.2491756f, -0.9603184f, -0.1253003f),
-                CameraRotation = new Rotator(-7.198101f, 9.89639E-06f, 165.4541f)
+                CameraRotation = new Rotator(-7.198101f, 9.89639E-06f, 165.4541f),
+                InteriorID = 247041,
             },
             new Business(new Vector3(345.4399f, -977.869f, 29.38964f), 272.7354f,"Nightclub", "Watered down drinks and walks of shame")
             {
@@ -1018,6 +1029,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Davis, meth lab",
                 PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
                 ModItemPayoutAmount = 150,
+                InteriorID = 247041,
             },
             new Business(new Vector3(-330.3881f, -2778.993f, 5.327325f), 92.50141f,"Cocaine Lockup", "White lines, blowing through my mind")
             {
@@ -1034,7 +1046,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 150,
                 CameraPosition = new Vector3(-366.1764f, -2800.33f, 17.63865f),
                 CameraDirection = new Vector3(0.8524437f, 0.4840781f, -0.1975048f),
-                CameraRotation = new Rotator(-11.39108f, 2.177323E-06f, -60.40901f)
+                CameraRotation = new Rotator(-11.39108f, 2.177323E-06f, -60.40901f),
+                InteriorID = 247553,
             },
             new Business(new Vector3(-315.6085f, -2697.716f, 7.550228f), 226.0123f,"Cargo Warehouse", "Shipping exotic goods, across the world")
             {
@@ -1066,7 +1079,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 150,
                 CameraPosition = new Vector3(42.24175f, -2549.59f, 10.88742f),
                 CameraDirection = new Vector3(0.4517514f, -0.8873327f, -0.09252753f),
-                CameraRotation = new Rotator(-5.309031f, -8.574519E-07f, -153.0188f)
+                CameraRotation = new Rotator(-5.309031f, -8.574519E-07f, -153.0188f),
+                InteriorID = 247041,
             },
             new Business(new Vector3(136.386f, -2472.364f, 6.095337f), 237.264f,"Weed Farm", "Some of that real sticky-icky-icky")
             {
@@ -1083,7 +1097,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 80,
                 CameraPosition = new Vector3(162.2531f, -2480.832f, 16.79303f),
                 CameraDirection = new Vector3(-0.9306918f, 0.3065094f, -0.1996613f),
-                CameraRotation = new Rotator(-11.51715f, -5.881395E-06f, 71.77148f)
+                CameraRotation = new Rotator(-11.51715f, -5.881395E-06f, 71.77148f),
+                InteriorID = 247297,
             },
             new Business(new Vector3(671.9716f, -2667.485f, 6.284046f), 95.11238f,"Counterfeit cash", "100% Authentic... Until someone checks")
             {
@@ -1100,7 +1115,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 3,
                 CameraPosition = new Vector3(636.1689f, -2680.112f, 19.03612f),
                 CameraDirection = new Vector3(0.9569521f, 0.1698848f, -0.2353336f),
-                CameraRotation = new Rotator(-13.61129f, -1.537279E-06f, -79.93333f)
+                CameraRotation = new Rotator(-13.61129f, -1.537279E-06f, -79.93333f),
+                InteriorID = 247809,
             },
             new Business(new Vector3(-192.5632f, -2658.867f, 6.001201f), 92.46732f,"Chop Shop", "Sending car parts across the world")
             {
@@ -1115,7 +1131,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "LS Port, Chop Shop",
                 CameraPosition = new Vector3(-213.7048f, -2616.886f, 27.04369f),
                 CameraDirection = new Vector3(0.4743162f, -0.8614286f, -0.1815624f),
-                CameraRotation = new Rotator(-10.46078f, -2.170509E-06f, -151.1621f)
+                CameraRotation = new Rotator(-10.46078f, -2.170509E-06f, -151.1621f),
+                InteriorID = 252673,
             },
             new Business(new Vector3(843.533f, -2192.687f, 30.28367f), 356.9373f,"Chop Shop", "Sending car parts across the world")
             {
@@ -1130,7 +1147,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Industrial, Chop Shop",
                 CameraPosition = new Vector3(863.6913f, -2173.662f, 40.69595f),
                 CameraDirection = new Vector3(-0.5714509f, -0.8048077f, -0.160401f),
-                CameraRotation = new Rotator(-9.230175f, -3.89238E-06f, 144.6235f)
+                CameraRotation = new Rotator(-9.230175f, -3.89238E-06f, 144.6235f),
+                InteriorID = 252673,
             },
             new Business(new Vector3(871.5431f, -2100.549f, 30.4787f), 87.3041f,"Nightclub", "Watered down drinks and walks of shame")
             {
@@ -1162,7 +1180,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 10,
                 CameraPosition = new Vector3(315.1307f, -765.52f, 35.17923f),
                 CameraDirection = new Vector3(-0.9482352f, 0.316846f, -0.02141672f),
-                CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f)
+                CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f),
+                InteriorID = 246785,
             },
             new Business(new Vector3(-413.9902f, 6171.561f, 31.47821f), 317.4844f,"Counterfeit cash", "100% Authentic... Until someone checks")
             {
@@ -1177,6 +1196,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Paleto Bay, Counterfeit cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 3,
+                InteriorID = 247809,
             },
             new Business(new Vector3(-163.8875f, 6334.429f, 31.58056f), 314.6334f,"Document Forgery", "Passports, driving licenses and cash")
             {
@@ -1193,7 +1213,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 3,
                 CameraPosition = new Vector3(-146.9652f, 6341.884f, 36.4751f),
                 CameraDirection = new Vector3(-0.8773398f, -0.446115f, -0.1767941f),
-                CameraRotation = new Rotator(-10.18308f, 3.036032E-06f, 116.9527f)
+                CameraRotation = new Rotator(-10.18308f, 3.036032E-06f, 116.9527f),
+                InteriorID = 246785,
             },
             new Business(new Vector3(-288.3814f, 6299.165f, 31.49225f), 44.36363f,"Cocaine Lockup", "White lines, blowing through my mind")
             {
@@ -1208,6 +1229,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Paleto Bay, Cocaine Lockup",
                 PossibleModItemPayouts = new List<string>() { "Cocaine" },
                 ModItemPayoutAmount = 150,
+                InteriorID = 247553,
             },
              new Business(new Vector3(-69.84018f, -1230.73f, 28.94209f), 227.2082f,"Underground Fight Club", "Is that your blood?")
             {
