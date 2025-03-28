@@ -46,6 +46,10 @@ public class CraftableItem
         StringBuilder ingredientStringBuilder = new StringBuilder();
         foreach (var ingredient in Ingredients)
         {
+            if (!ingredient.IsConsumed)
+            {
+                quantity = 1;
+            }
             ingredientStringBuilder.Append($"X{ingredient.Quantity * quantity} {ingredient.IngredientName}\n");
         }
         return ingredientStringBuilder.ToString().Trim();
