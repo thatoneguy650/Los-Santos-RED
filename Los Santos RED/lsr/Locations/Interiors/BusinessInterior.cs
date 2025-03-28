@@ -51,10 +51,6 @@ public class BusinessInterior : Interior
     public void SetBusiness(Business newBusiness)
     {
         business = newBusiness;
-        //foreach (RestInteract test in RestInteracts)
-        //{
-        //    test.RestableLocation = newBusiness;
-        //}
         foreach (InventoryInteract test in InventoryInteracts)
         {
             test.InventoryableLocation = newBusiness;
