@@ -66,6 +66,8 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public CashStorage CashStorage { get; set; }
     [XmlIgnore]
     public bool IsOwned { get; set; } = false;
+    [XmlIgnore]
+    public BusinessInterior BusinessInterior { get; set; }
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
 
     public GameLocation GameLocation => throw new NotImplementedException();
@@ -91,7 +93,31 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     }
     public override void OnInteract()
     {
-        StandardInteract(null, false);
+        if (BusinessInterior != null && BusinessInterior.IsTeleportEntry && IsOwned)
+        {
+            DoEntranceCamera(false);
+            BusinessInterior.SetBusiness(this);
+            BusinessInterior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+    }
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
+    IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+    {
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
+        if (HasInterior)
+        {
+            BusinessInterior = interiors.PossibleInteriors.BusinessInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
+            interior = BusinessInterior;
+            if (BusinessInterior != null)
+            {
+                BusinessInterior.SetBusiness(this);
+            }
+        }
     }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {

@@ -427,6 +427,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Grapeseed Main St, Counterfeit Cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 3,
+                InteriorID = 247809
             },
             new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
             {
@@ -677,7 +678,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 3,
                 CameraPosition = new Vector3(905.6483f, -1019.085f, 43.15132f),
                 CameraDirection = new Vector3(-0.5088631f, -0.8077428f, -0.2976743f),
-                CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f)
+                CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f),
             },
             new Business(new Vector3(-556.3671f,275.7033f,83.0806f),174.1707f,"Tequi-la-la", "Bar and nightclub")
             {
@@ -737,7 +738,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Cypress Flats, Raven Slaughterhouse",
                 CameraPosition = new Vector3(909.6688f, -2190.49f, 53.41785f),
                 CameraDirection = new Vector3(0.9087162f, 0.1699713f, -0.3812409f),
-                CameraRotation = new Rotator(-22.41057f, 7.388176E-06f, -79.4055f)
+                CameraRotation = new Rotator(-22.41057f, 7.388176E-06f, -79.4055f),
             },
             new Business(new Vector3(1437.496f,-1491.862f,63.62201f),163.8885f,"Trap House", "Selling misery since the 80's")
             {
