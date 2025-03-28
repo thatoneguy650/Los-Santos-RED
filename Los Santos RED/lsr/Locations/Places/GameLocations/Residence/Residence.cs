@@ -485,11 +485,15 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         RentOutPropertyItem = new UIMenuItem("Stop renting out the property","");
         RentOutPropertyItem.Activated += (sender, e) =>
         {
-            MenuPool.CloseAllMenus();
-            Interior?.ForceExitPlayer(Player, this);
-            IsRentedOut = false;
+            OnStopRentingOut();
         };
         InteractionMenu.AddItem(RentOutPropertyItem);
+    }
+    private void OnStopRentingOut()
+    {
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
+        IsRentedOut = false;
     }
     private void AddInteractionItems(bool isInside)
     {
@@ -536,21 +540,26 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 MenuPool.CloseAllMenus();
                 Interior?.ForceExitPlayer(Player, this);
             };
+            //If you own the property and it is rentable.
             if(RentalFee > 0)
             {
                 RentOutPropertyItem = new UIMenuItem("Rent out the Property", $"Rent out the property to earn ${RentalFee} every {RentalDays} day(s).");
                 RentOutPropertyItem.Activated += (sender, e) =>
                 {
-                    MenuPool.CloseAllMenus();
-                    Interior?.ForceExitPlayer(Player, this);
-                    IsRentedOut = true;
-                    DateRentalPaymentPaid = Time.CurrentDateTime;
-                    DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
+                    OnRentOutProperty();
                 };
                 InteractionMenu.AddItem(RentOutPropertyItem);
             }
             InteractionMenu.AddItem(SellHouseItem);
         }
+    }
+    private void OnRentOutProperty()
+    {
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
+        IsRentedOut = true;
+        DateRentalPaymentPaid = Time.CurrentDateTime;
+        DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
     }
     private void CreateRestInteractionMenu()
     {
