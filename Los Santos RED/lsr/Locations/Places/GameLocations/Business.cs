@@ -95,6 +95,11 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     {
         if (BusinessInterior != null && BusinessInterior.IsTeleportEntry && IsOwned)
         {
+            if(BusinessInterior.IsMPInterior && !World.IsMPMapLoaded)
+            {
+                StandardInteract(null, false);
+                return;
+            }
             DoEntranceCamera(false);
             BusinessInterior.SetBusiness(this);
             BusinessInterior.Teleport(Player, this, StoreCamera);
