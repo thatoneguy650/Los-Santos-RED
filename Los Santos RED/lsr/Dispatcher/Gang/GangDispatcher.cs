@@ -746,6 +746,7 @@ public class GangDispatcher
             gangSpawnTask.IsBackupSquad = isBackupSquad;
             gangSpawnTask.IsGeneralBackup = isGeneralBackup;
             gangSpawnTask.PedSpawnLimit = pedspawnLimit;
+            gangSpawnTask.GangTerritories = GangTerritories.GetGangTerritory(Gang.ID);
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {

@@ -253,7 +253,7 @@ public class GangTab
     private List<Tuple<string, string>> Addterritory(GangReputation gr)
     {
         List<Tuple<string, string>> toReturn = new List<Tuple<string, string>>();
-        List<ZoneJurisdiction> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
+        List<GangTerritory> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
         string startString = "Zones:";
 
         toReturn.Add(new Tuple<string, string>(startString,""));
@@ -261,9 +261,9 @@ public class GangTab
 
         if (gangTerritory != null && gangTerritory.Any())
         {
-            foreach (ZoneJurisdiction zj in gangTerritory)
+            foreach (GangTerritory gt in gangTerritory)
             {
-                Zone myZone = Zones.GetZone(zj.ZoneInternalGameName);
+                Zone myZone = Zones.GetZone(gt.ZoneInternalGameName);
                 if (myZone != null)
                 {
                     toReturn.Add(new Tuple<string, string>("~p~" + myZone.DisplayName,""));

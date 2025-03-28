@@ -140,12 +140,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(TargetGang.ID)?.Where(x=> x.Priority == 0).ToList();
+            List<GangTerritory> totalTerritories = GangTerritories.GetGangTerritory(TargetGang.ID)?.Where(x=> x.Priority == 0).ToList();
             if(totalTerritories == null || !totalTerritories.Any())
             {
                 return;
             }
-            ZoneJurisdiction selectedTerritory = totalTerritories.PickRandom();
+            GangTerritory selectedTerritory = totalTerritories.PickRandom();
             if (selectedTerritory != null)
             {
                 TargetZone = Zones.GetZone(selectedTerritory.ZoneInternalGameName);

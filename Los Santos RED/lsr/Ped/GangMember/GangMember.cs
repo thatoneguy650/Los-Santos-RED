@@ -54,6 +54,10 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool IsGangMember { get; set; } = true;
     public bool IsGeneralBackup { get; internal set; }
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
+    private bool WillDealDrugs { get; set; } = false;
+    private bool WillHaveLongGuns { get; set; } = false;
+    private bool WillHaveSidearms { get; set; } = false;
+    private bool WillHaveMelee { get; set; } = false;
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -135,7 +139,7 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         return false;
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun)
+    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun, GangTerritory gt)
     {
         if (!Pedestrian.Exists())
         {
@@ -144,17 +148,23 @@ public class GangMember : PedExt, IWeaponIssuable
         Pedestrian.Money = 0;
         IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
-        WillFight = RandomItems.RandomPercent(Gang.FightPercentage);
         WillCallPolice = false;
-        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
-        WillAlwaysFightPolice = RandomItems.RandomPercent(Gang.AlwaysFightPolicePercentage);
+
+        WillFight = RandomItems.RandomPercent(gt == null ? Gang.FightPercentage : gt.FightPercentage);
+        WillFightPolice = RandomItems.RandomPercent(gt == null ? Gang.FightPolicePercentage : gt.FightPolicePercentage);
+        WillAlwaysFightPolice = RandomItems.RandomPercent(gt == null ? Gang.AlwaysFightPolicePercentage : gt.AlwaysFightPolicePercentage);
+        WillDealDrugs = RandomItems.RandomPercent(gt == null ? Gang.DrugDealerPercentage : gt.DrugDealerPercentage);
+        WillHaveLongGuns = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithLongGuns : gt.PercentageWithLongGuns);
+        WillHaveSidearms = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithSidearms : gt.PercentageWithSidearms);
+        WillHaveMelee = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithMelee : gt.PercentageWithMelee);
+
         if (IsHitSquad || IsBackupSquad || IsGeneralBackup)
         {
             WillFight = true;
             WillFightPolice = true;
             WillAlwaysFightPolice = true;
         }
-        if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
+        if (WillDealDrugs)
         {
             SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup), false);
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
@@ -172,7 +182,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson, true, true);
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || WillHaveMelee, IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || WillHaveSidearms, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || WillHaveLongGuns, dispatchablePerson, true, true);
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
@@ -284,7 +294,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 if (KillingZone != null)
                 {
                     //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
-                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    List<GangTerritory> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
                     if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
@@ -326,7 +336,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 if (KillingZone != null)
                 {
                     //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
-                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    List<GangTerritory> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
                     if (totalTerritories != null && totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
                         //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
@@ -359,7 +369,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 Zone KillingZone = Zones.GetZone(Pedestrian.Position);
                 if (KillingZone != null)
                 {
-                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    List<GangTerritory> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
                     if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
                     {
                         RepToRemove -= Settings.SettingsManager.GangSettings.RepDeductedCarjackedTerritory;
