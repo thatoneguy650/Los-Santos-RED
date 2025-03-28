@@ -427,7 +427,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Grapeseed Main St, Counterfeit Cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 3,
-                InteriorID = 247809
+                InteriorID = 247809,
             },
             new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
             {
