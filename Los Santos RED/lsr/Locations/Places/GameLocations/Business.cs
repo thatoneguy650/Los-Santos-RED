@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
+public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable
 {
     private UIMenu OfferSubMenu;
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
@@ -39,33 +39,18 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public override string TypeName { get; set; } = "Business";
     public override int MapIcon { get; set; } = (int)BlipSprite.BusinessForSale;
     public override string ButtonPromptText { get; set; }
-    public int PurchasePrice { get; set; }
-    public int PayoutFrequency { get; set; }
-    public int PayoutMin { get; set; }
-    public int PayoutMax { get; set; }
     public bool IsPayoutInModItems { get; set; } = false;
     public List<string> PossibleModItemPayouts { get; set; }
     public int ModItemPayoutAmount { get; set; } = 1;
     public bool IsPayoutDepositedToBank { get; set; } = false;
-    public int SalesPrice { get; set; }
-    public int MaxSalesPrice { get; set; }
-    public int GrowthPercentage { get; set; } = 20;
-    [XmlIgnore]
-    public int CurrentSalesPrice { get; set; }
     [XmlIgnore]
     public string ModItemToPayout { get; set; }
-    [XmlIgnore]
-    public DateTime DatePayoutDue { get; set; }
-    [XmlIgnore]
-    public DateTime DatePayoutPaid { get; set; }
     [XmlIgnore]
     public SimpleInventory SimpleInventory { get; set; }
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }
     [XmlIgnore]
     public CashStorage CashStorage { get; set; }
-    [XmlIgnore]
-    public bool IsOwned { get; set; } = false;
     [XmlIgnore]
     public BusinessInterior BusinessInterior { get; set; }
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
@@ -202,7 +187,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             }
         }
     }
-    internal void Payout(IPropertyOwnable player, ITimeReportable time)
+    public override void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {
@@ -239,12 +224,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
             Game.DisplayNotification($"ERROR in Payout {ex.Message}");
         }
-    }
-    private int CalculatePayoutAmount(int numberOfPaymentsToProcess)
-    {
-        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
-        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
-        return payoutAmount;
     }
     public override void Reset()
     {
@@ -330,7 +309,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     private void OnSold()
     {
         Reset();
-        Player.Properties.RemoveBusiness(this);
+        Player.Properties.RemovePayoutProperty(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -351,7 +330,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         UpdateStoredData();
-        Player.Properties.AddBusiness(this);
+        Player.Properties.AddPayoutProperty(this);
         AddInteractionItems(false);
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");

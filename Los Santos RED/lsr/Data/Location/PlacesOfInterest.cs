@@ -429,18 +429,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 3,
                 InteriorID = 247809,
             },
-            new Business(new Vector3(1702.884f,4917.281f,42.22485f),145.2132f,"LTD Gas Station", "Get it before it's gone")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 250000,
-                PayoutMin = 2000,
-                PayoutMax = 5000,
-                PayoutFrequency = 5,
-                SalesPrice = 125000,
-                FullName = "Grapeseed Main St, LTD Gas Station",
-            },
             new Business(new Vector3(1676.758f,4870.649f,42.04252f),102.7236f,"Money Laundering", "Squeeky clean!")
             {
                 OpenTime = 0,
@@ -492,21 +480,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 SalesPrice = 98000,
                 FullName = "Hookies",
             },
-            new Business(new Vector3(-2565.647f,2307.251f,33.21548f),93.17658f,"Ron Gas Station", "Sandwiches may be expired")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 800000,
-                PayoutMin = 8000,
-                PayoutMax = 20000,
-                PayoutFrequency = 5,
-                SalesPrice = 600000,
-                FullName = "Zancudo, Ron Gas Station",
-                CameraPosition = new Vector3(-2525.638f, 2359.816f, 52.58325f),
-                CameraDirection = new Vector3(-0.443386f, -0.8399138f, -0.3129755f),
-                CameraRotation = new Rotator(-18.23864f, 1.123669E-05f, 152.1707f)
-            },
             new Business(new Vector3(-3053.309f,633.8527f,7.330782f),294.4778f,"Money Laundering", "Squeeky Clean!")
             {
                 OpenTime = 0,
@@ -518,18 +491,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutFrequency = 5,
                 SalesPrice = 100000,
                 FullName = "Ineseno Road, Money Laundering",
-            },
-            new Business(new Vector3(-3047.513f,589.8976f,7.789078f),18.75011f,"24/7 Store", "For your convenience")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 400000,
-                PayoutMin = 1000,
-                PayoutMax = 5000,
-                PayoutFrequency = 5,
-                SalesPrice = 200000,
-                FullName = "Ineseno Road, 24/7 Store",
             },
             new Business(new Vector3(-2963.455f,432.2544f,15.27685f),85.53827f,"Hang Ten", "Grill house and boat rentals")
             {
@@ -684,21 +645,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f),
                 InteriorID = 247809,
             },
-            new Business(new Vector3(-556.3671f,275.7033f,83.0806f),174.1707f,"Tequi-la-la", "Bar and nightclub")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 1000000,
-                PayoutMin = 6000,
-                PayoutMax = 20000,
-                PayoutFrequency = 5,
-                SalesPrice = 500000,
-                FullName = "West Vinewood, Tequi-la-la",
-                CameraPosition = new Vector3(-532.7866f, 254.4823f, 96.91456f),
-                CameraDirection = new Vector3(-0.6234604f, 0.7193789f, -0.3062534f),
-                CameraRotation = new Rotator(-17.83359f, -3.228724E-05f, 40.91433f)
-            },
             new Business(new Vector3(135.7922f,-1279.147f,29.36923f),301.3301f,"Vanilla Unicorn", "Chain of topless bars")
             {
                 OpenTime = 0,
@@ -713,21 +659,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(165.9552f, -1301.587f, 44.00117f),
                 CameraDirection = new Vector3(-0.9497553f, 0.1919609f, -0.2472163f),
                 CameraRotation = new Rotator(-14.31285f, -3.304213E-06f, 78.57353f)
-            },
-            new Business(new Vector3(-1392.368f,-640.1716f,28.6737f),124.154f,"Bahama Mamas", "Where evolution stops and the party starts!")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 2500000,
-                PayoutMin = 10000,
-                PayoutMax = 30500,
-                PayoutFrequency = 5,
-                SalesPrice = 1000000,
-                FullName = "Del Perro, Bahama Mamas",
-                CameraPosition = new Vector3(-1401.865f, -566.8721f, 42.81586f),
-                CameraDirection = new Vector3(0.3209493f, -0.9259464f, -0.1990349f),
-                CameraRotation = new Rotator(-11.48053f, 1.96021E-06f, -160.8828f)
             },
             new Business(new Vector3(962.2736f,-2189.392f,30.50459f),85.48328f,"Raven Slaughterhouse", "Slop and mystery meat")
             {
@@ -775,21 +706,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(1146.684f, -1439.009f, 54.74323f),
                 CameraDirection = new Vector3(-0.01859828f, 0.9760022f, -0.2169648f),
                 CameraRotation = new Rotator(-12.53082f, -1.4759E-06f, 1.091671f)
-            },
-            new Business(new Vector3(816.5741f,-1074.92f,28.70289f),180.4692f,"Liquor Market", "Brown bags and 40 ounces")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 432000,
-                PayoutMin = 3000,
-                PayoutMax = 4800,
-                PayoutFrequency = 5,
-                SalesPrice = 200000,
-                FullName = "La Mesa, Liquor Market",
-                CameraPosition = new Vector3(795.7516f, -1087.679f, 36.96582f),
-                CameraDirection = new Vector3(0.627211f, 0.7312167f, -0.2681951f),
-                CameraRotation = new Rotator(-15.55689f, -1.772483E-06f, -40.62179f)
             },
             new Business(new Vector3(758.9064f,-697.2536f,28.76577f),271.9622f,"Document Forgery", "Passports, driving licenses and cash")
             {
@@ -871,51 +787,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
                 CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f),
                 InteriorID = 252673,
-            },
-            new Business(new Vector3(-41.2124f,-1748.196f,29.57104f),324.8786f,"LTD Gas Station", "Get it before it's gone")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 800000,
-                PayoutMin = 3000,
-                PayoutMax = 9000,
-                PayoutFrequency = 5,
-                SalesPrice = 500000,
-                FullName = "Strawberry, LTD Gas Station",
-                CameraPosition = new Vector3(-50.07359f, -1785.026f, 39.80648f),
-                CameraDirection = new Vector3(-0.1055305f, 0.9686547f, -0.2248807f),
-                CameraRotation = new Rotator(-12.99586f, -1.259561E-05f, 6.217593f)
-            },
-            new Business(new Vector3(1593.743f, 6460.229f, 25.31715f), 331.519f,"Up-n-Atom", "Once It Pings, Eat Like Kings")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 350000,
-                PayoutMin = 1200,
-                PayoutMax = 2600,
-                PayoutFrequency = 5,
-                SalesPrice = 100000,
-                FullName = "Paleto Bay, Up-n-Atom",
-                CameraPosition = new Vector3(1593.212f, 6429.884f, 34.6632f),
-                CameraDirection = new Vector3(-0.1131209f, 0.9638129f, -0.2413884f),
-                CameraRotation = new Rotator(-13.9685f, 9.787667E-06f, 6.694073f)
-            },
-            new Business(new Vector3(1730.835f, 6419.954f, 35.03722f), 154.021f,"24/7 Store", "For your convenience")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 750000,
-                PayoutMin = 3000,
-                PayoutMax = 8000,
-                PayoutFrequency = 5,
-                SalesPrice = 500000,
-                FullName = "Paleto Bay, 24/7 Store",
-                CameraPosition = new Vector3(1724.077f, 6395.91f, 38.88764f),
-                CameraDirection = new Vector3(0.4497497f, 0.8909742f, -0.06237188f),
-                CameraRotation = new Rotator(-3.575966f, -1.176229E-06f, -26.78393f)
             },
             new Business(new Vector3(2848.69f, 4450.263f, 48.51294f), 109.1559f,"Weed Farm", "Some of that real sticky-icky-icky")
             {
@@ -1001,21 +872,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.3868311f, -0.9181641f, 0.085653f),
                 CameraRotation = new Rotator(4.913576f, -2.560057E-05f, 157.1539f)
             },
-            new Business(new Vector3(90.53289f, 297.8887f, 110.2102f), 338.5868f,"Up-n-Atom", "Once It Pings, Eat Like Kings")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 800000,
-                PayoutMin = 2500,
-                PayoutMax = 8000,
-                PayoutFrequency = 5,
-                SalesPrice = 400000,
-                FullName = "Vinewood, Up-n-Atom",
-                CameraPosition = new Vector3(45.79728f, 254.0175f, 122.3145f),
-                CameraDirection = new Vector3(0.8227352f, 0.5073356f, -0.2563541f),
-                CameraRotation = new Rotator(-14.85384f, 1.722417E-05f, -58.34015f)
-            },
             new Business(new Vector3(143.224f, -1656.096f, 29.48878f), 226.5995f,"Meth Lab", "I'm the one who knocks")
             {
                 OpenTime = 0,
@@ -1100,7 +956,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-11.51715f, -5.881395E-06f, 71.77148f),
                 InteriorID = 247297,
             },
-            new Business(new Vector3(671.9716f, -2667.485f, 6.284046f), 95.11238f,"Counterfeit cash", "100% Authentic... Until someone checks")
+            new Business(new Vector3(671.9716f, -2667.485f, 6.284046f), 95.11238f,"Counterfeit Cash", "100% Authentic... Until someone checks")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -1110,7 +966,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutMax = 3500,
                 PayoutFrequency = 5,
                 SalesPrice = 50000,
-                FullName = "LS Port, Counterfeit cash",
+                FullName = "LS Port, Counterfeit Cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 1,
                 CameraPosition = new Vector3(636.1689f, -2680.112f, 19.03612f),
@@ -1183,7 +1039,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f),
                 InteriorID = 246785,
             },
-            new Business(new Vector3(-413.9902f, 6171.561f, 31.47821f), 317.4844f,"Counterfeit cash", "100% Authentic... Until someone checks")
+            new Business(new Vector3(-413.9902f, 6171.561f, 31.47821f), 317.4844f,"Counterfeit Cash", "100% Authentic... Until someone checks")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -1193,7 +1049,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutMax = 3500,
                 PayoutFrequency = 5,
                 SalesPrice = 50000,
-                FullName = "Paleto Bay, Counterfeit cash",
+                FullName = "Paleto Bay, Counterfeit Cash",
                 PossibleModItemPayouts = new List<string>() { "Marked Cash Stack" },
                 ModItemPayoutAmount = 1,
                 InteriorID = 247809,

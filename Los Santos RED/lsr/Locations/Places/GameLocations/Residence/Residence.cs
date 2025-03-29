@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, IPayoutDisbursable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -44,8 +44,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
 
     }
     [XmlIgnore]
-    public bool IsOwned { get; set; } = false;
-    [XmlIgnore]
     public bool IsRented { get; set; } = false;
     [XmlIgnore]
     public DateTime DateRentalPaymentDue { get; set; }
@@ -66,8 +64,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public bool IsOwnedOrRented => IsOwned || IsRented;
     public int RentalDays { get; set; }
     public int RentalFee { get; set; }
-    public int PurchasePrice { get; set; }
-    public int SalesPrice { get; set; }
     public int ResidenceID { get; set; } = -999;
     public bool HasHeaderApartmentBuilding { get; set; } = false;
     public bool DisableInteractAfterPurchase { get; set; } = false;
@@ -79,6 +75,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding && (!IsOwnedOrRented || (IsOwnedOrRented && !DisableInteractAfterPurchase));
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public GameLocation GameLocation => this;
+
+
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
@@ -328,7 +326,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         CashStorage.Reset();
         IsRentedOut = false;
     }
-    public void Payout(IPropertyOwnable player, ITimeReportable time)
+    public override void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {

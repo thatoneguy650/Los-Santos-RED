@@ -20,6 +20,7 @@ public class Properties
     }
     public List<Residence> Residences { get; private set; } = new List<Residence>();
     public List<Business> Businesses { get; private set; } = new List<Business>();
+    public List<GameLocation> PayoutProperties { get; private set; } = new List<GameLocation>();
 
     public void Setup()
     {
@@ -38,9 +39,16 @@ public class Properties
                 residence.Payout(Player, Time);
             }
         }
+        foreach(GameLocation location in PayoutProperties)
+        {
+            if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
+            {
+                location.Payout(Player, Time);
+            }
+        }
         foreach(Business business in Businesses)
         {
-            if(business.DatePayoutDue !=null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >=0)
+            if (business.DatePayoutDue != null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >= 0)
             {
                 business.Payout(Player, Time);
             }
@@ -73,22 +81,21 @@ public class Properties
             Residences.Remove(toAdd);
         }
     }
-    public void AddBusiness(Business toAdd)
+    public void AddPayoutProperty(GameLocation toAdd)
     {
-        if (!Businesses.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
+        if (!PayoutProperties.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
         {
-            Businesses.Add(toAdd);
+            PayoutProperties.Add(toAdd);
         }
     }
-    public void RemoveBusiness(Business toRemove)
+    public void RemovePayoutProperty(GameLocation toRemove)
     {
-        if (!Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        if (!PayoutProperties.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
         {
             toRemove.Reset();
-            Businesses.Remove(toRemove);
+            PayoutProperties.Remove(toRemove);
         }
     }
-
 
 }
 

@@ -276,7 +276,7 @@ namespace LosSantosRED.lsr.Data
         private void SaveBusinesses(ISaveable player)
         {
             SavedBusinesses.Clear();
-            foreach (Business biz in player.Properties.Businesses)
+            foreach (Business biz in player.Properties.PayoutProperties)
             {
                 if (biz.IsOwned)
                 {
@@ -708,7 +708,7 @@ namespace LosSantosRED.lsr.Data
                     Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name && x.EntrancePosition == biz.EntrancePosition).FirstOrDefault();
                     if (savedPlace != null)
                     {
-                        player.Properties.AddBusiness(savedPlace);
+                        player.Properties.AddPayoutProperty(savedPlace);
                         savedPlace.IsOwned = biz.IsOwnedByPlayer;
                         savedPlace.DatePayoutDue = biz.PayoutDate;
                         savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
