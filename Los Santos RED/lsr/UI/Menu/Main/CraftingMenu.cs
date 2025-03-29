@@ -90,7 +90,7 @@ public class CraftingMenu : ModUIMenu
         }
         foreach(CraftableItem craftableItem in CraftableItems.Items)
         {
-            if(!string.IsNullOrEmpty(craftingFlag) && craftableItem.CraftingFlags != null && !craftableItem.CraftingFlags.Contains(craftingFlag))
+            if (!string.IsNullOrEmpty(craftingFlag) && craftableItem.CraftingFlags != null && !craftableItem.CraftingFlags.Contains(craftingFlag))
             {
                 continue;
             }
@@ -116,7 +116,7 @@ public class CraftingMenu : ModUIMenu
                 }
                 else
                 {
-                    if(ingredient.IsConsumed)
+                    if (ingredient.IsConsumed)
                     {
                         quantity = quantity == 0 ? instancesCraftable : Math.Min(quantity, instancesCraftable);
                     }
