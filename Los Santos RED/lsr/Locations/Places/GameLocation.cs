@@ -594,7 +594,11 @@ public class GameLocation : ILocationDispatchable
             UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}"};
             businessManagementButton.Activated += (s,i) =>
             {
-                Purchase();
+                if(Purchase())
+                {
+                    MenuPool.CloseAllMenus();
+                    InteractionMenu.Clear();
+                }
             };
             InteractionMenu.AddItem(businessManagementButton);
         }
@@ -603,28 +607,39 @@ public class GameLocation : ILocationDispatchable
             UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}"};
             businessManagementButton.Activated += (s, i) =>
             {
-                Sell();
+                OnSold();
             };
             InteractionMenu.AddItem(businessManagementButton);
         }
     }
-    public virtual void Purchase()
+    public virtual bool Purchase()
     {
         if (Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
-            Player.Properties.AddPayoutProperty(this);
-            Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
-            IsOwned = true;
-            DatePayoutPaid = Time.CurrentDateTime;
-            DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
-            CurrentSalesPrice = SalesPrice;
+            OnPurchased();
+            DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
+            return true;
         }
+        DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
+        return false;
     }
-    public virtual void Sell()
+    public virtual void OnPurchased()
+    {
+        Player.Properties.AddPayoutProperty(this);
+        Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
+        IsOwned = true;
+        DatePayoutPaid = Time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+        CurrentSalesPrice = SalesPrice;
+    }
+    public virtual void OnSold()
     {
         Player.Properties.RemovePayoutProperty(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
         IsOwned = false;
+        DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
     }
     public virtual void HandleVariableItems()
     {
@@ -1375,6 +1390,32 @@ public class GameLocation : ILocationDispatchable
         int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
         int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
         return payoutAmount;
+    }
+    public void AddInteractionToMerchant(UIMenu headerMenu, AdvancedConversation conversation)
+    {
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Purchase();
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Player.Properties.RemovePayoutProperty(this);
+                Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
+                IsOwned = false;
+                DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
     }
     //public virtual void UpdatePrompts()
     //{

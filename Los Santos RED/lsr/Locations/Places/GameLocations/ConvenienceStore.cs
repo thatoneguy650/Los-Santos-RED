@@ -20,10 +20,10 @@ public class ConvenienceStore : GameLocation, IGasPumpable
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalHoldups;
     public override string ButtonPromptText { get; set; }
     public int PricePerGallon { get; set; } = 3;
-    public override int PurchasePrice { get; set; } = 5000;
-    public override int SalesPrice { get; set; } = 5000;
-    public override int PayoutMin { get; set; } = 500;
-    public override int PayoutMax { get; set; } = 500;
+    public override int PurchasePrice { get; set; } = 200000;
+    public override int SalesPrice { get; set; } = 100000;
+    public override int PayoutMin { get; set; } = 1000;
+    public override int PayoutMax { get; set; } = 5000;
     public override bool IsOwnable { get; set; } = true;
     public ConvenienceStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

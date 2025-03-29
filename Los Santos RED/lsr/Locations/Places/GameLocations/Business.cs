@@ -306,15 +306,15 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
 
         }
     }
-    private void OnSold()
+    public override void OnSold()
     {
         Reset();
-        Player.Properties.RemovePayoutProperty(this);
+        Player.Properties.RemoveBusiness(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
     }
-    private bool Purchase()
+    public override bool Purchase()
     {
         if (CanBuy && Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
@@ -325,12 +325,12 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
         return false;
     }
-    private void OnPurchased()
+    public override void OnPurchased()
     {
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         UpdateStoredData();
-        Player.Properties.AddPayoutProperty(this);
+        Player.Properties.AddBusiness(this);
         AddInteractionItems(false);
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");

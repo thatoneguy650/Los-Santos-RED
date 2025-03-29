@@ -115,8 +115,7 @@ public class Merchant : PedExt, IWeaponIssuable
     public override void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
     {
         base.AddSpecificInteraction(player, menuPool, headerMenu, advancedConversation);
-        UIMenuItem buyBusinessButton = new UIMenuItem("Buy Business");
-        headerMenu.AddItem(buyBusinessButton);
+        AssociatedStore.AddInteractionToMerchant(headerMenu, advancedConversation);
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {

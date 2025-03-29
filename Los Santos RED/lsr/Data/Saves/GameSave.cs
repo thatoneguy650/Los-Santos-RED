@@ -82,6 +82,7 @@ namespace LosSantosRED.lsr.Data
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();
+        public List<SavedPayoutProperty> SavedPayoutProperties { get; set; } = new List<SavedPayoutProperty>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
 
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
@@ -112,7 +113,9 @@ namespace LosSantosRED.lsr.Data
             SaveAgencies(player);
             SaveCellPhone(player); 
             SaveBusinesses(player);
+            SavePayoutProperties(player);
         }
+
         private void SaveDemographics(ISaveable player)
         {
             PlayerName = player.PlayerName;
@@ -276,7 +279,7 @@ namespace LosSantosRED.lsr.Data
         private void SaveBusinesses(ISaveable player)
         {
             SavedBusinesses.Clear();
-            foreach (Business biz in player.Properties.PayoutProperties)
+            foreach (Business biz in player.Properties.Businesses)
             {
                 if (biz.IsOwned)
                 {
@@ -309,6 +312,22 @@ namespace LosSantosRED.lsr.Data
                         myBiz.StoredCash = biz.CashStorage.StoredCash;
                     }
                     SavedBusinesses.Add(myBiz);
+                }
+            }
+        }
+        private void SavePayoutProperties(ISaveable player)
+        {
+            SavedPayoutProperties.Clear();
+            foreach (GameLocation property in player.Properties.PayoutProperties)
+            {
+                if (property.IsOwned)
+                {
+                    SavedPayoutProperty myBiz = new SavedPayoutProperty(property.Name, property.IsOwned);
+                    myBiz.DateOfLastPayout = property.DatePayoutPaid;
+                    myBiz.PayoutDate = property.DatePayoutDue;
+                    myBiz.EntrancePosition = property.EntrancePosition;
+                    myBiz.CurrentSalesPrice = property.CurrentSalesPrice;
+                    SavedPayoutProperties.Add(myBiz);
                 }
             }
         }
@@ -388,6 +407,7 @@ namespace LosSantosRED.lsr.Data
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
                 LoadBusinesses(player,placesOfInterest,modItems,settings);
+                LoadPayoutProperties(player, placesOfInterest);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -399,6 +419,8 @@ namespace LosSantosRED.lsr.Data
                 Game.DisplayNotification("Error Loading Save");
             }
         }
+
+
         private void LoadMoney(IInventoryable player)
         {
             player.BankAccounts.Reset();
@@ -734,6 +756,24 @@ namespace LosSantosRED.lsr.Data
                         }
                         savedPlace.CashStorage.StoredCash = biz.StoredCash;
                         savedPlace.RefreshUI();
+                    }
+                }
+            }
+        }
+        private void LoadPayoutProperties(IInventoryable player, IPlacesOfInterest placesOfInterest)
+        {
+            foreach (SavedPayoutProperty savedProperty in SavedPayoutProperties)
+            {
+                if (savedProperty.IsOwnedByPlayer)
+                {
+                    GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == savedProperty.Name && x.EntrancePosition == savedProperty.EntrancePosition).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddPayoutProperty(savedPlace);
+                        savedPlace.IsOwned = savedProperty.IsOwnedByPlayer;
+                        savedPlace.DatePayoutDue = savedProperty.PayoutDate;
+                        savedPlace.DatePayoutPaid = savedProperty.DateOfLastPayout;
+                        savedPlace.CurrentSalesPrice = savedProperty.CurrentSalesPrice;
                     }
                 }
             }
