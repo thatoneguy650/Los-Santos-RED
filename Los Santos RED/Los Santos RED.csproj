@@ -213,6 +213,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
+    <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangArsonTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangAmbushTask.cs" />
