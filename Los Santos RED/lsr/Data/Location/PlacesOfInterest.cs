@@ -552,7 +552,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.6017359f, 0.7933005f, 0.09267268f),
                 CameraRotation = new Rotator(5.317383f, -3.215489E-06f, -37.18112f)
             },
-            new Business(new Vector3(171.3589f,-1722.85f,29.3917f),140.8733f,"Ronnie's Car Wash", "Weed farm, operating as a car wash")
+            new Business(new Vector3(171.3589f,-1722.85f,29.3917f),140.8733f,"Ronnie's Car Wash", "Luxury car wash and detailing")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -563,12 +563,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PayoutFrequency = 5,
                 SalesPrice = 40000,
                 FullName = "Davis, Ronnie's Car Wash",
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 20,
                 CameraPosition = new Vector3(149.6389f, -1752.682f, 39.49769f),
                 CameraDirection = new Vector3(0.5641191f, 0.7830818f, -0.2618254f),
                 CameraRotation = new Rotator(-15.1784f, 2.653901E-06f, -35.76835f),
-                InteriorID = 247297,
             },
             new Business(new Vector3(164.0835f,-1674.781f,29.77432f),143.8548f,"Auto Repairs", "Rims, tires, brakes, services")
             {
@@ -645,36 +642,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-17.31797f, -1.78863E-06f, 147.7898f),
                 InteriorID = 247809,
             },
-            new Business(new Vector3(135.7922f,-1279.147f,29.36923f),301.3301f,"Vanilla Unicorn", "Chain of topless bars")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 1500000,
-                PayoutMin = 5000,
-                PayoutMax = 22000,
-                PayoutFrequency = 5,
-                SalesPrice = 500000,
-                FullName = "Strawberry, Vanilla Unicorn",
-                CameraPosition = new Vector3(165.9552f, -1301.587f, 44.00117f),
-                CameraDirection = new Vector3(-0.9497553f, 0.1919609f, -0.2472163f),
-                CameraRotation = new Rotator(-14.31285f, -3.304213E-06f, 78.57353f)
-            },
-            new Business(new Vector3(962.2736f,-2189.392f,30.50459f),85.48328f,"Raven Slaughterhouse", "Slop and mystery meat")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 2000000,
-                PayoutMin = 10000,
-                PayoutMax = 30000,
-                PayoutFrequency = 5,
-                SalesPrice = 1000000,
-                FullName = "Cypress Flats, Raven Slaughterhouse",
-                CameraPosition = new Vector3(909.6688f, -2190.49f, 53.41785f),
-                CameraDirection = new Vector3(0.9087162f, 0.1699713f, -0.3812409f),
-                CameraRotation = new Rotator(-22.41057f, 7.388176E-06f, -79.4055f),
-            },
             new Business(new Vector3(1437.496f,-1491.862f,63.62201f),163.8885f,"Trap House", "Selling misery since the 80's")
             {
                 OpenTime = 0,
@@ -688,9 +655,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "El Burro Heights, Trap House",
                 PossibleModItemPayouts = new List<string>() { "Marijana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
                 ModItemPayoutAmount = 20,
-                CameraPosition = new Vector3(1433.439f, -1511.435f, 70.56494f),
-                CameraDirection = new Vector3(0.2961854f, 0.9360009f, 0.1902011f),
-                CameraRotation = new Rotator(-10.96452f, -5.000482E-06f, -17.55931f)
+                CameraPosition = new Vector3(0f, 0f, 0f),
+                CameraDirection = new Vector3(0f, 0f, 0f),
+                CameraRotation = new Rotator(0f, 0f, 0f)
             },
             new Business(new Vector3(1145.066f,-1402.109f,34.80017f),184.3666f,"Welding Factory", "Manufacturing metal goods")
             {
@@ -742,21 +709,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
                 CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f),
                 InteriorID = 246785,
-            },
-            new Business(new Vector3(-1564.563f,-406.298f,42.38402f),232.9444f,"Apartment Complex", "Overpriced apartments to rent")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                TypeName = "Business",
-                PurchasePrice = 850000,
-                PayoutMin = 4500,
-                PayoutMax = 25000,
-                PayoutFrequency = 5,
-                SalesPrice = 200000,
-                FullName = "Pacific Bluffs, Apartment Complex",
-                CameraPosition = new Vector3(-1524.149f, -424.5001f, 66.97356f),
-                CameraDirection = new Vector3(-0.7458491f, 0.5968142f, -0.295841f),
-                CameraRotation = new Rotator(-17.20797f, -2.681345E-06f, 51.33387f)
             },
             new Business(new Vector3(847.0793f,-112.657f,79.77465f),286.9653f,"Money Laundering", "Squeeky Clean!")
             {
