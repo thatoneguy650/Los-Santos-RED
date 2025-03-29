@@ -507,7 +507,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.9634f, 0.1927236f, -0.1863278f),
                 CameraRotation = new Rotator(-10.73856f, -2.17248E-07f, -78.68758f)
             },
-            new Business(new Vector3(-239.1577f,-1397.865f,31.27976f),279.3601f,"Glass Heroes", "Auto Repiars")
+            new Business(new Vector3(-239.1577f,-1397.865f,31.27976f),279.3601f,"Glass Heroes", "Auto Repairs")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -522,7 +522,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.961247f, 0.01569098f, -0.2752417f),
                 CameraRotation = new Rotator(-15.97642f, 1.501403E-05f, 89.06481f)
             },
-            new Business(new Vector3(-156.4597f,-1348.434f,29.92068f),268.629f,"Flints Autos", "Auto Repiars")
+            new Business(new Vector3(-156.4597f,-1348.434f,29.92068f),268.629f,"Flints Autos", "Auto Repairs")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -537,7 +537,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.3920832f, 0.9187839f, -0.04590108f),
                 CameraRotation = new Rotator(-2.630862f, 3.311863E-06f, 23.10995f)
             },
-            new Business(new Vector3(-80.79027f,-1326.16f,29.26125f),89.24571f,"Tire Nutz", "Auto Repiars")
+            new Business(new Vector3(-80.79027f,-1326.16f,29.26125f),89.24571f,"Tire Nutz", "Auto Repairs")
             {
                 OpenTime = 0,
                 CloseTime = 24,
