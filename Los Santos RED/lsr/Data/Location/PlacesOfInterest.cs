@@ -776,6 +776,24 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f),
                 InteriorID = 247553,
             },
+            new Business(new Vector3(387.4825f, 3584.651f, 33.29222f), 354.1629f,"Cocaine Lockup", "White lines, blowing through my mind")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                TypeName = "Business",
+                PurchasePrice = 850000,
+                PayoutMin = 6000,
+                PayoutMax = 20500,
+                PayoutFrequency = 5,
+                SalesPrice = 500000,
+                FullName = "Paleto Bay, Cocaine Lockup Warehouse",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 400,
+                CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
+                CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
+                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f),
+                InteriorID = 247553,
+            },
             new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "I am the one who knocks")
             {
                 OpenTime = 0,
