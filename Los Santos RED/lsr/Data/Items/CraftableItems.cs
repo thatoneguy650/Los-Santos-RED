@@ -64,7 +64,7 @@ public class CraftableItems : ICraftableItems
                 Category = "Narcotics",
             },
             
-            new CraftableItem("Cut Cocaine", "Crack", 
+            new CraftableItem("Cook Crack", "Crack", 
             new List<Ingredient>() 
             {
                 new Ingredient() { IngredientName =  "Cocaine", Quantity = 1},

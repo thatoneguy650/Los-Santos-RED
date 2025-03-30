@@ -262,7 +262,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             IsCorrupt = true;
             SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
             Money = RandomItems.GetRandomNumberInt(AssignedAgency.CorruptMoneyMin, AssignedAgency.CorruptMoneyMax);
-            EntryPoint.WriteToConsole($"COP IS MARKED AS CORRUPT {AssignedAgency.CorruptMenuGroup}");
+            EntryPoint.WriteToConsole($"{AssignedAgency.ID}: {AssignedAgency.MemberName} IS MARKED AS CORRUPT {AssignedAgency.CorruptMenuGroup}");
         }
         GameFiber.Yield();
         if (!Pedestrian.Exists())
