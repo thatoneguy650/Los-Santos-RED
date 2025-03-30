@@ -18,7 +18,6 @@ namespace Mod
     public class World : IEntityLoggable, IEntityProvideable
     {
         private int totalWantedLevel;
-        private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
         private ICrimes Crimes;
@@ -26,7 +25,6 @@ namespace Mod
         private ITimeControllable Time;
         private IInteriors Interiors;
         private IShopMenus ShopMenus;
-        private IGangTerritories GangTerritories;
         private IGangs Gangs;
         private IStreets Streets;
         private IPlacesOfInterest PlacesOfInterest;
@@ -62,6 +60,8 @@ namespace Mod
         public Vehicles Vehicles { get; private set; }
         public Pedestrians Pedestrians { get; private set; }
         public Places Places { get; private set; }
+        public IZones Zones { get; set; }
+        public IGangTerritories GangTerritories { get; set; }
         public int CitizenWantedLevel { get; set; }
         public int TotalWantedLevel { get; set; } = 0;
         public Vector3 PoliceBackupPoint { get; set; }

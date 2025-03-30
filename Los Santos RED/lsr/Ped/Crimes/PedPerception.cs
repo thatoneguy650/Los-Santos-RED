@@ -91,7 +91,7 @@ public class PedPerception
                 {
                     VehicleWitnessed = tryingToEnter.Handle;
                 }
-                uint currentWeapon;
+                uint currentWeapon = 0;
                 NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(CurrentCriminal.Pedestrian, out currentWeapon, true);
                 if (currentWeapon != 2725352035 && currentWeapon != 0)
                 {

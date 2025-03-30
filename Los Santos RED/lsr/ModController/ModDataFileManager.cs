@@ -141,6 +141,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         GangTerritories = new GangTerritories(Gangs);
         GangTerritories.ReadConfig(config.GangTerritoriesConfig);
+        GangTerritories.Setup();
         Gangs.CheckTerritory(GangTerritories);
         GameFiber.Yield();
         RadioStations = new RadioStations();

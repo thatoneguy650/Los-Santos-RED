@@ -81,13 +81,13 @@ public class ZonesTab
         List<Tuple<string, string>> toReturn = new List<Tuple<string, string>>();
         foreach (GangReputation gr in Player.RelationshipManager.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Member).ThenByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
         {
-            List<ZoneJurisdiction> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
+            List<GangTerritory> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
 
             if (gangTerritory != null && gangTerritory.Any())
             {
-                foreach (ZoneJurisdiction zj in gangTerritory)
+                foreach (GangTerritory gt in gangTerritory)
                 {
-                    Zone gangZone = Zones.GetZone(zj.ZoneInternalGameName);
+                    Zone gangZone = Zones.GetZone(gt.ZoneInternalGameName);
                     if (gangZone != null && gangZone == zone)
                     {
                         toReturn.Add(new Tuple<string, string>($"{gr.Gang.ShortName} {gr.ToBlip()}", "")); break;

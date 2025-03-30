@@ -1095,7 +1095,7 @@ public class Gangs : IGangs
     {
         foreach(Gang gang in GangsList)
         {
-            List<ZoneJurisdiction> totalTerritory = gangTerritories.GetGangTerritory(gang.ID);
+            List<GangTerritory> totalTerritory = gangTerritories.GetGangTerritory(gang.ID);
             if(totalTerritory == null || !totalTerritory.Any())
             {
                 EntryPoint.WriteToConsole($"${gang.ID} HAS NO TERRITORY",0);

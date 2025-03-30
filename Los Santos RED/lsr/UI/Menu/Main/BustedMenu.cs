@@ -18,6 +18,7 @@ public class BustedMenu : ModUIMenu
     private UIMenuItem PayFine;
     private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
+    private IEntityProvideable World;
     private IPoliceRespondable Player;
     private UIMenuItem ResistArrest;
     private IRespawning Respawning;
@@ -42,7 +43,7 @@ public class BustedMenu : ModUIMenu
             return bribedesc;
         }
     }
-    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
+    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time, IEntityProvideable world)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
@@ -51,6 +52,7 @@ public class BustedMenu : ModUIMenu
         Player = policeRespondable;
         Time = time;
         MenuPool = menuPool;
+        World = world;
     }
     public void Setup()
     {
@@ -268,6 +270,13 @@ public class BustedMenu : ModUIMenu
     }
     private void AddBribeOptions()
     {
+        if (Settings.SettingsManager.PoliceSettings.BribeCorruptCopsOnly)
+        {
+            Cop cop = World.Pedestrians.PoliceList.Where(x => x.DistanceToPlayer <= 20f && x.HeightToPlayer <= 5f && !x.IsInVehicle && !x.IsUnconscious && !x.IsInWrithe && !x.IsDead && !x.Pedestrian.IsRagdoll).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+            if (!cop?.IsCorrupt == true) return;
+        }
+
         string bribeText = "Bribe Police";
         if (IsDetained)
         {
