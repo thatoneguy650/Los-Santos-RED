@@ -776,7 +776,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f),
                 InteriorID = 247553,
             },
-            new Business(new Vector3(387.4825f, 3584.651f, 33.29222f), 354.1629f,"Cocaine Lockup", "White lines, blowing through my mind")
+            new Business(new Vector3(-54.98885f, 6392.416f, 31.62328f), 44.883f,"Cocaine Lockup", "White lines, blowing through my mind")
             {
                 OpenTime = 0,
                 CloseTime = 24,
