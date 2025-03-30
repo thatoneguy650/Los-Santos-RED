@@ -11,6 +11,10 @@ using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
+    private bool WillDealDrugs = false;
+    private bool WillHaveLongGuns = false;
+    private bool WillHaveSidearms = false;
+    private bool WillHaveMelee = false;
     public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name,gang.MemberName, world)
     {
         Gang = gang;
@@ -54,10 +58,6 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool IsGangMember { get; set; } = true;
     public bool IsGeneralBackup { get; internal set; }
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
-    private bool WillDealDrugs { get; set; } = false;
-    private bool WillHaveLongGuns { get; set; } = false;
-    private bool WillHaveSidearms { get; set; } = false;
-    private bool WillHaveMelee { get; set; } = false;
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {

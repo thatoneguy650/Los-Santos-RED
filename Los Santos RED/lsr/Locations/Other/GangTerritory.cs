@@ -14,7 +14,6 @@ public class GangTerritory
     public string GangID { get; set; } = "";
     public int Priority { get; set; } = 99;
     public int AmbientSpawnChance { get; set; } = 0;
-    public int WantedSpawnChance { get; set; } = 0;
     [XmlIgnore]
     public float DrugDealerPercentage { get; set; } = -1f;
     // Arsenal
@@ -35,22 +34,20 @@ public class GangTerritory
     {
 
     }
-    public GangTerritory(string gangID, string zoneInternalName, int priority, int ambientSpawnChance, int wantedSpawnChance)
+    public GangTerritory(string gangID, string zoneInternalName, int priority, int ambientSpawnChance)
     {
         GangID = gangID;
         ZoneInternalGameName = zoneInternalName;
         Priority = priority;
         AmbientSpawnChance = ambientSpawnChance;
-        WantedSpawnChance = wantedSpawnChance;
     }
-    public GangTerritory(string gangID, string zoneInternalName, int priority, int ambientSpawnChance, int wantedSpawnChance, float drugDealerPercentage, float percentageWithLongGuns, 
+    public GangTerritory(string gangID, string zoneInternalName, int priority, int ambientSpawnChance, float drugDealerPercentage, float percentageWithLongGuns, 
         float percentageWithSidearms, float percentageWithMelee, float fightPercentage, float fightPolicePercentage, float alwaysFightPolicePercentage)
     {
         GangID = gangID;
         ZoneInternalGameName = zoneInternalName;
         Priority = priority;
         AmbientSpawnChance = ambientSpawnChance;
-        WantedSpawnChance = wantedSpawnChance;
         DrugDealerPercentage = drugDealerPercentage;
         PercentageWithLongGuns = percentageWithLongGuns;
         PercentageWithSidearms = percentageWithSidearms;
@@ -59,27 +56,9 @@ public class GangTerritory
         FightPolicePercentage = fightPolicePercentage;
         AlwaysFightPolicePercentage = alwaysFightPolicePercentage;
     }
-    public bool CanCurrentlySpawn(int WantedLevel)
+    public int CurrentSpawnChance()
     {
-        if (WantedLevel > 0)
-        {
-            return WantedSpawnChance > 0;
-        }
-        else
-        {
-            return AmbientSpawnChance > 0;
-        }
-    }
-    public int CurrentSpawnChance(int WantedLevel)
-    {
-        if (WantedLevel > 0)
-        {
-            return WantedSpawnChance;
-        }
-        else
-        {
-            return AmbientSpawnChance;
-        }
+        return AmbientSpawnChance;
     }
     public void Setup(Gang gang)
     {

@@ -36,6 +36,7 @@ public class GangSpawnTask : SpawnTask
     public bool IsGeneralBackup { get; set; } = false;
     public int PedSpawnLimit { get; set; } = 99;
     public List<GangTerritory> GangTerritories { get; set; }
+    public GangTerritory GangTerritory { get; set; }
 
     public override void AttemptSpawn()
     {
@@ -296,8 +297,7 @@ public class GangSpawnTask : SpawnTask
             ForceSidearm = true;
             ForceLongGun = true;
         }
-        GangTerritory gt = GangTerritories == null ? null : GangTerritories.FirstOrDefault(x => x.ZoneInternalGameName.Equals(World.Zones.GetZone(ped.Position).InternalGameName));
-        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun, gt);
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun, GangTerritory);
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;
