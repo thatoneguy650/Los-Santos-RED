@@ -67,6 +67,7 @@ namespace LosSantosRED.lsr.Interface
         IntimidationManager IntimidationManager { get; }
         Vector3 Position { get; }
         bool IsInWantedActiveMode { get; }
+        float VehicleSpeedMPH { get; }
         //bool IsHostile(Gang gang);
     }
 }

@@ -259,37 +259,35 @@ public class ModDataFileManager
     private void SetupFullModernTraffic()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic");
-        string Description = "Adds DLC vehicles to the vanilla traffic. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " +
-            "There are two variations available:" + Environment.NewLine +
-            "'Full Modern Traffic' adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." + Environment.NewLine +
-            "'Modern Traffic Base' does not include any edits to DLC vehicles and adds no new models." + Environment.NewLine +
-            "" + Environment.NewLine +
-            "Incompatible with Los Santos 2008 config." + Environment.NewLine +
-            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
-            "PMP 600 - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
-            "Presidente - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
+        //string Description = "Adds DLC vehicles and vehicle edits to the vanilla traffic. Adds most normal vehicles to the corresponding traffic. Works with MP or SP map (traffic groups are identical). " + + Environment.NewLine +
+        //    "" + Environment.NewLine +
+        //    "Incompatible with Los Santos 2008 config." + Environment.NewLine +
+        //    "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
+        //    "PMP 600 - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
+        //    "Presidente - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere.";
+        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description);
 
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\");
         string Description2 = "" +
             "Adds DLC vehicles to the vanilla traffic." +
-            "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." +
+            "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." + Environment.NewLine +
             "Incompatible with Los Santos 2008 config." + Environment.NewLine +
+            "Install the greskfullmoderntraffic_novanillagang_addon.oiv after greskfullmoderntraffic.oiv to remove all vanilla gang spawns." + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
             "PMP 600 - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
             "Presidente - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\readme.txt", Description2);
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description2);
 
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\");
-        string Description3 = "" +
-            "Adds DLC vehicles to the vanilla traffic." +
-            "Does not add any new vehicles." +
-            "Incompatible with Los Santos 2008 config.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\readme.txt", Description3);
+        //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\");
+        //string Description3 = "" +
+        //    "Adds DLC vehicles to the vanilla traffic." +
+        //    "Does not add any new vehicles." +
+        //    "Incompatible with Los Santos 2008 config.";
+        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\readme.txt", Description3);
 
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Uninstaller\\");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\");
         string Description4 = "Uninstaller OIV for any version.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Uninstaller\\readme.txt", Description4);
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\readme.txt", Description4);
     }
     private void SetupAddonPlatesConfig()
     {

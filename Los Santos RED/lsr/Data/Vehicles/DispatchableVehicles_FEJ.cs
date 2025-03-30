@@ -14,11 +14,11 @@ public class DispatchableVehicles_FEJ
     public string PoliceMerit = "polmeritliv";
     public string PoliceEsperanto = "polesperantoliv";
     public string PoliceTransporter = "poltransporterliv";
-    
-    public string PoliceStanier = "police";
+
+    public string PoliceStanier = "polstanier2";//"police";
     public string StanierUnmarked = "police4";
-    public string PoliceGauntlet = "polgauntlet";   
-    public string PoliceTorrence = "police3";
+    public string PoliceGauntlet = "polgauntlet";
+    public string PoliceTorrence = "polgemini";//"police3";
     public string PoliceBison = "polbisonliv";
     public string PoliceStanierOld = "polstanieroldliv";
     public string PoliceLandstalkerXL = "pollandstalkerxlliv";
@@ -75,6 +75,37 @@ public class DispatchableVehicles_FEJ
     public string CivilianInterceptor = "civinterceptor";
     public string CivilianStanierSecondGen = "civstanier2";
     public string CivilianMerit = "civmerit";
+
+    //Modkits
+    //981_polpurge_modkit
+    //983_polgranger3600liv_modkit
+    //984_polcaracaraliv_modkit
+    //985_police3_modkit
+    //986_polbuffalostxliv_modkit
+    //987_polaleutianliv_modkit
+    //988_polfugitiveliv_modkit
+    //989_pollandstalkerxlliv_modkit
+    //990_polgresleyliv_modkit
+    //991_polbisonliv_modkit
+    //992_polterminusliv_modkit
+    //993_police_modkit
+    //994_polbuffalosliv_modkit
+    //995_firetruckliv_modkit
+    //996_polradiusliv_modkit
+    //978_ambulanceliv_modkit
+    //998_annihilatorliv_modkit
+    //979_polvindicatorliv_modkit
+    //977_polmavliv_modkit
+    //976_polfroggerliv_modkit
+    //975_polthrustliv_modkit
+    //974_polverusliv_modkit
+    //973_polsanchezliv_modkit
+    //972_polvstrliv_modkit
+    //971_taxivivaniteliv_modkit
+    //970_servstanier2_modkit
+    //969_servinterceptor_modkit
+    //968_servdilettante_modkit
+    //967_polriataliv_modkit
     public List<int> DefaultOptionalColors { get; private set; } = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 61, 62, 64, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 112 };
 
     public List<string> LibertyPlates { get; private set; } = new List<string>() { "Liberty", };
@@ -138,18 +169,25 @@ public class DispatchableVehicles_FEJ
     {
         PoliceHeliVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(PoliceMaverick, 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 0 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
-            new DispatchableVehicle(PoliceFrogger, 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            //new DispatchableVehicle(PoliceMaverick, 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 0 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            //new DispatchableVehicle(PoliceFrogger, 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 2 },RequiredPrimaryColorID = 134, RequiredSecondaryColorID = 0, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             //new DispatchableVehicle("annihilator", 1,50) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             //Create_PoliceMaverick1stGen(1,5,0,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",-1),
             //Create_PoliceMaverick1stGen(1,5,1,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",0),
+
+            Create_PoliceFrogger(1,50,2,false,134,0,0,4,3,4,"Pilot","", true),
+            Create_PoliceMaverick(1,100,0,false,134,0,0,4,3,4,"Pilot","", true),
         };
 
         SheriffHeliVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(PoliceFrogger, 1,200) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
-            new DispatchableVehicle(PoliceMaverick, 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            //new DispatchableVehicle(PoliceFrogger, 1,200) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
+            //new DispatchableVehicle(PoliceMaverick, 1,100) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 1 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 },
             //Create_PoliceMaverick1stGen(1,5,4,false,PoliceVehicleType.Marked,134,0,4,3,4,"Pilot","",-1),
+
+
+            Create_PoliceFrogger(1,200,4,false,-1,-1,0,4,3,4,"Pilot","", true),
+            Create_PoliceMaverick(1,100,1,false,-1,-1,0,4,3,4,"Pilot","", true),
         };
 
         ArmyVehicles_FEJ = new List<DispatchableVehicle>()
@@ -165,7 +203,10 @@ public class DispatchableVehicles_FEJ
     
             //Heli
             new DispatchableVehicle("valkyrie2", 1,20) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxRandomDirtLevel = 15.0f,ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle(PoliceAnnihilator, 1, 45) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 3 },RequiredPrimaryColorID = 153,RequiredSecondaryColorID = 153, MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, MinOccupants = 3, MaxOccupants = 4 },
+            Create_PoliceAnnihilator(1,45,3,false,153,6,10,3,4,"Pilot","",true),
+
+
+
             new DispatchableVehicle("buzzard",1,20) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
             new DispatchableVehicle("hunter",1,15) { RequiredPedGroup = "Pilot", RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 2, MaxOccupants = 2, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.InAirVehicle,50)  } },
         };
@@ -194,8 +235,7 @@ public class DispatchableVehicles_FEJ
             Create_MilitaryHumvee(50,50,-1,false,MilitaryVehicleType.Armed,-1,6,10,2,4,"",""),
             
             //HELI
-            new DispatchableVehicle(PoliceAnnihilator, 1, 45) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,RequiredLiveries = new List<int>() { 4 },RequiredPrimaryColorID = 153,RequiredSecondaryColorID = 153, MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, MinOccupants = 3, MaxOccupants = 4 },
-
+            Create_PoliceAnnihilator(1,45,4,false,153,6,10,3,4,"Pilot","",true),
             //JETS
             new DispatchableVehicle("lazer",1,5) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1,SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.InAirVehicle, 150) } },
             new DispatchableVehicle("hydra",1,5) { RequiredPedGroup = "Pilot",RequiredGroupIsDriverOnly = true,MaxOccupants = 1,SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.InAirVehicle, 150) } },
@@ -207,9 +247,9 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle("dinghy5", 50, 50) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 1,MaxOccupants = 2, MaxWantedLevelSpawn = 2, },
             new DispatchableVehicle("dinghy5", 0, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 38, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, },
             new DispatchableVehicle("seashark2", 50, 50) { RequiredLiveries = new List<int>() { 2,3 }, MaxOccupants = 1 },
-            new DispatchableVehicle(PoliceFrogger,1,50) { RequiredLiveries = new List<int>() { 1 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
-            //new DispatchableVehicle("polmavliv", 1,30) { GroupName = "Helicopter",RequiredLiveries = new List<int>() { 4 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
-            new DispatchableVehicle(PoliceAnnihilator, 1,100) { GroupName = "Helicopter",RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
+            //new DispatchableVehicle(PoliceFrogger,1,50) { RequiredLiveries = new List<int>() { 1 },MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 3 },
+            Create_PoliceFrogger(1,50,1,false,-1,-1,0,4,2,3,"","Helicopter",false),
+            Create_PoliceAnnihilator(1,100,0,false,-1,0,4,2,3,"","Helicopter",false),
         };
 
         MarshalsServiceVehicles_FEJ = DispatchableVehicles.MarshalsServiceVehicles.Copy();//for now
@@ -224,24 +264,24 @@ public class DispatchableVehicles_FEJ
     {
         LSFDEMTVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 1 } }
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(1, 100) } } }, }
         };
         LSCOFDEMSVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 1 } }
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(1, 100) } } }, }
         };
         BCFDEMSVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 3 } }
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(3, 100) } } }, }
         };
         SAMSVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 4 } }
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(4, 100) } } }, }
         };
         MRHVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 0 } } };
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(0, 100) } } }, } };
         LSMCVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle(Ambulance, 100, 100) { RequiredLiveries = new List<int>() { 2 } } };
+            new DispatchableVehicle(Ambulance, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(2, 100) } } }, } };
 
     }
     private void Fire()
@@ -263,14 +303,77 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(3, 100) } } },MinOccupants = 2, MaxOccupants = 4 }
         };
     }
-
-    public DispatchableVehicle Create_PoliceRaiden(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor, PoliceServiceType policeServiceType)
+    public DispatchableVehicle Create_PoliceFrogger(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor, int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
     {
-        DispatchableVehicle intermediate = Create_PoliceRaiden(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
-        intermediate.RequiredDashColorID = requiredDashboardColor;
-        return intermediate;
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceFrogger, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        toReturn.RequiredGroupIsDriverOnly = RequiredGroupIsDriverOnly;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+
+        toReturn.RequiredPrimaryColorID = requiredColor;
+        toReturn.RequiredSecondaryColorID = requiredSecondaryColor;
+        return toReturn;
     }
-    public DispatchableVehicle Create_PoliceRaiden(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
+
+    public DispatchableVehicle Create_PoliceAnnihilator(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceAnnihilator, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        toReturn.RequiredGroupIsDriverOnly = RequiredGroupIsDriverOnly;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
+
+    public DispatchableVehicle Create_PoliceMaverick(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor,int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceMaverick, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        toReturn.RequiredGroupIsDriverOnly = RequiredGroupIsDriverOnly;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        toReturn.RequiredPrimaryColorID = requiredColor;
+        toReturn.RequiredSecondaryColorID = requiredSecondaryColor;
+        return toReturn;
+    }
+
+
+
+   public DispatchableVehicle Create_PoliceRaiden(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
     {
         DispatchableVehicle intermediate = Create_PoliceRaiden(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.RequiredDashColorID = requiredDashboardColor;
@@ -505,12 +608,7 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
-    public DispatchableVehicle Create_PolicePurge(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor, PoliceServiceType policeServiceType)
-    {
-        DispatchableVehicle intermediate = Create_PolicePurge(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
-        intermediate.RequiredDashColorID = requiredDashboardColor;
-        return intermediate;
-    }
+
     public DispatchableVehicle Create_PolicePurge(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
     {
         DispatchableVehicle intermediate = Create_PolicePurge(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
@@ -745,6 +843,13 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
+
+    public DispatchableVehicle Create_PoliceStanier(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
+    {
+        DispatchableVehicle intermediate = Create_PoliceStanier(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.RequiredDashColorID = requiredDashboardColor;
+        return intermediate;
+    }
     public DispatchableVehicle Create_PoliceStanier(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceStanier, ambientPercent, wantedPercent);
@@ -761,263 +866,120 @@ public class DispatchableVehicles_FEJ
                     },
                 };
         }
-        if (policeVehicleType == PoliceVehicleType.Marked || policeVehicleType == PoliceVehicleType.MarkedFlatLightbar || policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
+        //            new ModKitDescription("Pushbar - 42", 42),
+       //new ModKitDescription("Aerials - 43", 43),
+         //   new ModKitDescription("Searchlights - 44", 44),
+        //            //3 = new flat siren,4 = valor siren, 5 = old libertybar
+        if (policeVehicleType == PoliceVehicleType.Marked || policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
-                new DispatchableVehicleExtra(1, true, 100), 
-                new DispatchableVehicleExtra(2, false, 100)
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked || policeVehicleType == PoliceVehicleType.Unmarked || policeVehicleType == PoliceVehicleType.Detective)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100), 
-                new DispatchableVehicleExtra(2, false, 100)
-            };
-        }
-        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
-        return toReturn;
-    }
-    public DispatchableVehicle Create_PoliceOracle(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
-    {
-        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceOracle, ambientPercent, wantedPercent);
-        if (liveryID != -1)
-        {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
-        }
-        //Extras 1- LED Siren, 2 - ram bar, 3 - flat lightbar, 4 = valor lightbar, 5 searchlights,6 = front alprs, 7 = rear alprs,8 = camera, 9 - divider, 10 = shotguns, 11 = computer, 12 = radio
-        if (policeVehicleType == PoliceVehicleType.Marked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, true, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(6, true, 45),
-                new DispatchableVehicleExtra(7, true, 45),
-                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(3, false, 100), 
+                new DispatchableVehicleExtra(4, true, 100),
+                new DispatchableVehicleExtra(5, false, 100),
                 new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(10, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
             };
-        }
-        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(6, true, 45),
-                new DispatchableVehicleExtra(7, true, 45),
-                new DispatchableVehicleExtra(8, true, 75),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(10, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
+
+
+
         }
         else if (policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
                 new DispatchableVehicleExtra(3, true, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(6, true, 45),
-                new DispatchableVehicleExtra(7, true, 45),
-                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(5, false, 100),
                 new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(10, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
             };
+
         }
-        else if (policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
+        else if (policeVehicleType == PoliceVehicleType.MarkedOriginalLightbar)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, true, 100),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(6, true, 45),
-                new DispatchableVehicleExtra(7, true, 45),
-                new DispatchableVehicleExtra(8, true, 75),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(10, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.Unmarked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
                 new DispatchableVehicleExtra(3, false, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(6, true, 45),
-                new DispatchableVehicleExtra(7, true, 45),
-                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(5, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(10, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked || policeVehicleType == PoliceVehicleType.Unmarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(9, true, 100),
             };
         }
         else if (policeVehicleType == PoliceVehicleType.Detective)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
             {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 5),
                 new DispatchableVehicleExtra(3, false, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 25),
-                new DispatchableVehicleExtra(6, false, 100),
-                new DispatchableVehicleExtra(7, false, 100),
-                new DispatchableVehicleExtra(8, false, 75),
+                new DispatchableVehicleExtra(5, false, 100),
                 new DispatchableVehicleExtra(9, false, 100),
-                new DispatchableVehicleExtra(10, false, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, false, 100),
             };
         }
+
+        if(policeVehicleType != PoliceVehicleType.Detective)
+        {
+            if (toReturn.VehicleMods == null)
+            {
+                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+            }
+            toReturn.VehicleMods.Add(new DispatchableVehicleMod(42, 35)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,10),
+                            new DispatchableVehicleModValue(1,40),
+                            new DispatchableVehicleModValue(2,40),
+                            new DispatchableVehicleModValue(3,10),
+                            new DispatchableVehicleModValue(4,10),
+                        },
+            });
+            toReturn.VehicleMods.Add(new DispatchableVehicleMod(43, 35)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,20),
+                            new DispatchableVehicleModValue(1,20),
+                            new DispatchableVehicleModValue(2,20),
+                            new DispatchableVehicleModValue(3,20),
+                            new DispatchableVehicleModValue(4,20),
+                            new DispatchableVehicleModValue(5,20),
+                            new DispatchableVehicleModValue(6,20),
+                        },
+            });
+        }
+        if (requiredColor != -1)
+        {
+            toReturn.RequiredDashColorID = requiredColor;
+        }
+        toReturn.MatchDashColorToBaseColor = true;
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
-    public DispatchableVehicle Create_PoliceReblaGTS(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
-    {
-        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceReblaGTS, ambientPercent, wantedPercent);
-        if (liveryID != -1)
-        {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
-        }
-        //Extras 1- Siren, 2 - ram bar,3 = flat lightbar, 4 = balor lightbar, 5 top antenna, 6 side antenna,7 = searchlights, 8 = front camera,  9 divider,11 = computer 12 radio
-        if (policeVehicleType == PoliceVehicleType.Marked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, true, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 35),
-                new DispatchableVehicleExtra(6, true, 35),
-                new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 35),
-                new DispatchableVehicleExtra(6, true, 35),
-                new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, true, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 35),
-                new DispatchableVehicleExtra(6, true, 35),
-                new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, true, 100),
-                new DispatchableVehicleExtra(5, true, 35),
-                new DispatchableVehicleExtra(6, true, 35),
-                new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.Unmarked)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                 new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, true, 25),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 35),
-                new DispatchableVehicleExtra(6, true, 35),
-                new DispatchableVehicleExtra(7, true, 65),
-                new DispatchableVehicleExtra(8, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, true, 100),
-            };
-        }
-        else if (policeVehicleType == PoliceVehicleType.Detective)
-        {
-            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
-            {
-                new DispatchableVehicleExtra(1, false, 100),
-                new DispatchableVehicleExtra(2, false, 100),
-                new DispatchableVehicleExtra(3, false, 100),
-                new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 10),
-                new DispatchableVehicleExtra(6, true, 10),
-                new DispatchableVehicleExtra(7, false, 90),
-                new DispatchableVehicleExtra(8, false, 100),
-                new DispatchableVehicleExtra(9, false, 100),
-                new DispatchableVehicleExtra(11, true, 100),
-                new DispatchableVehicleExtra(12, false, 100),
-            };
-        }
-        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
-        return toReturn;
-    }
+
     public DispatchableVehicle Create_PoliceVerus(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int offroadAdditionalPercent)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceVerus, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         //Extras 1 - shovels on front, 2 - front bar
         toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
@@ -1172,7 +1134,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceVSTR, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
 
 
@@ -1414,8 +1385,17 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(SecurityStanier, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
-        }    
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
         //Security Stanier (2nd Gen) - 1 = lightbar, 2 = antenna
         toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
             new DispatchableVehicleExtra(1, true, 45),
@@ -1813,7 +1793,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceVindicator, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         //Vindicator - 1 = Luggage, 2 = Crash Bar
         toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
@@ -1829,7 +1818,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceThrust, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         //Vindicator -  2 = Crash Bar, 3= side luggae, 4 = top luggage
         toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
@@ -1855,6 +1853,12 @@ public class DispatchableVehicles_FEJ
         }
         return toReturn;
     }
+    public DispatchableVehicle Create_PoliceBison(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
+    {
+        DispatchableVehicle intermediate = Create_PoliceBison(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        intermediate.RequiredDashColorID = requiredDashboardColor;
+        return intermediate;
+    }
     public DispatchableVehicle Create_PoliceBison(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBison, ambientPercent, wantedPercent);
@@ -1871,61 +1875,169 @@ public class DispatchableVehicles_FEJ
                     },
                 };
         }
-        //Bison - 1 = Front Bar, 2 = siren, 4 = antenna, 5 spotlight, 9 = divider
-        if (policeVehicleType == PoliceVehicleType.Marked)
+        if (policeVehicleType == PoliceVehicleType.Marked)//2015 syle marked!
         {
+            // 2 = ram bar, 3-5 = siren,6 = top antenna  9 partition, 11 = computer
+
+            //3 = new flat siren,4 = valor siren, 5 = old libertybar
+
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
-                new DispatchableVehicleExtra(1, true, 65),
-                new DispatchableVehicleExtra(2, true, 100),
-                new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(5, true, 65),
+
+
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 100),
+
                 new DispatchableVehicleExtra(9, true, 100),
+
+
+                new DispatchableVehicleExtra(11, true, 100),
             };
         }
-        if (policeVehicleType == PoliceVehicleType.MarkedWithColor)
+        else if (policeVehicleType == PoliceVehicleType.MarkedOriginalLightbar)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
-                new DispatchableVehicleExtra(1, true, 65),
-                new DispatchableVehicleExtra(2, true, 100),
-                new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(5, true, 65),
+
+
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 100),
+
+                new DispatchableVehicleExtra(6, true, 40),
+
                 new DispatchableVehicleExtra(9, true, 100),
+
+                new DispatchableVehicleExtra(11, true, 100),
             };
-            toReturn.RequiredPrimaryColorID = requiredColor;
-            toReturn.RequiredSecondaryColorID = requiredColor;
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, true, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+
+                new DispatchableVehicleExtra(6, true, 40),
+
+                new DispatchableVehicleExtra(9, true, 100),
+
+                new DispatchableVehicleExtra(11, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, true, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+
+                new DispatchableVehicleExtra(6, true, 40),
+
+                new DispatchableVehicleExtra(9, true, 100),
+
+
+                new DispatchableVehicleExtra(11, true, 100),
+            };
         }
         else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
-                new DispatchableVehicleExtra(1, true, 65),
+
                 new DispatchableVehicleExtra(2, false, 100),
-                new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, false, 100),
+
+                new DispatchableVehicleExtra(1, true, 30),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+
                 new DispatchableVehicleExtra(9, true, 100),
+
+
+                new DispatchableVehicleExtra(11, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedNewSlicktop)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(6, true, 40),
+
+                new DispatchableVehicleExtra(9, true, 100),
+
+
+                new DispatchableVehicleExtra(11, true, 100),
             };
         }
         else if (policeVehicleType == PoliceVehicleType.Unmarked)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
-                new DispatchableVehicleExtra(1, true, 65),
+
                 new DispatchableVehicleExtra(2, false, 100),
-                new DispatchableVehicleExtra(4, true, 65),
-                new DispatchableVehicleExtra(5, true, 65),
-                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+
+                new DispatchableVehicleExtra(2, true, 5),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+
+                new DispatchableVehicleExtra(6, false, 100),
+
+                new DispatchableVehicleExtra(9, true, 65),
+                new DispatchableVehicleExtra(11, true, 100),
             };
-            toReturn.RequiredLiveries = new List<int>() { 11 };
         }
         else if (policeVehicleType == PoliceVehicleType.Detective)
         {
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
-                new DispatchableVehicleExtra(1, false, 70),
+
                 new DispatchableVehicleExtra(2, false, 100),
-                new DispatchableVehicleExtra(4, false, 65),
-                new DispatchableVehicleExtra(5, false, 65),
+
+                new DispatchableVehicleExtra(2, true, 5),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+
+                new DispatchableVehicleExtra(6, false, 100),
+
                 new DispatchableVehicleExtra(9, false, 100),
+                new DispatchableVehicleExtra(11, true, 100),
             };
-            toReturn.RequiredLiveries = new List<int>() { 11 };
         }
+        if (requiredColor != -1)
+        {
+            toReturn.RequiredDashColorID = requiredColor;
+        }
+        toReturn.MatchDashColorToBaseColor = true;
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
@@ -2391,7 +2503,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceSanchez, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         if (offroadAdditionalPercent > 0)
@@ -3195,7 +3316,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(ServiceDilettante, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         if (ServiceVehicleType == ServiceVehicleType.Taxi1)
         {
@@ -3268,7 +3398,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(SecurityTorrence, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         if (serviceVehicleType == ServiceVehicleType.Taxi1)
         {
@@ -3377,7 +3516,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(TaxiVivanite, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         if (serviceVehicleType == ServiceVehicleType.Taxi1)
         {
@@ -3483,3 +3631,235 @@ public class DispatchableVehicles_FEJ
     }
 }
 
+/*    public DispatchableVehicle Create_PoliceOracle(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceOracle, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { liveryID };
+        }
+        //Extras 1- LED Siren, 2 - ram bar, 3 - flat lightbar, 4 = valor lightbar, 5 searchlights,6 = front alprs, 7 = rear alprs,8 = camera, 9 - divider, 10 = shotguns, 11 = computer, 12 = radio
+        if (policeVehicleType == PoliceVehicleType.Marked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, true, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 45),
+                new DispatchableVehicleExtra(7, true, 45),
+                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 45),
+                new DispatchableVehicleExtra(7, true, 45),
+                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, true, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 45),
+                new DispatchableVehicleExtra(7, true, 45),
+                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, true, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 45),
+                new DispatchableVehicleExtra(7, true, 45),
+                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.Unmarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 65),
+                new DispatchableVehicleExtra(6, true, 45),
+                new DispatchableVehicleExtra(7, true, 45),
+                new DispatchableVehicleExtra(8, true, 75),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(10, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.Detective)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 5),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 25),
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+                new DispatchableVehicleExtra(8, false, 75),
+                new DispatchableVehicleExtra(9, false, 100),
+                new DispatchableVehicleExtra(10, false, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, false, 100),
+            };
+        }
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
+    public DispatchableVehicle Create_PoliceReblaGTS(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceReblaGTS, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.RequiredLiveries = new List<int>() { liveryID };
+        }
+        //Extras 1- Siren, 2 - ram bar,3 = flat lightbar, 4 = balor lightbar, 5 top antenna, 6 side antenna,7 = searchlights, 8 = front camera,  9 divider,11 = computer 12 radio
+        if (policeVehicleType == PoliceVehicleType.Marked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, true, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 35),
+                new DispatchableVehicleExtra(6, true, 35),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.SlicktopMarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 35),
+                new DispatchableVehicleExtra(6, true, 35),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, true, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 35),
+                new DispatchableVehicleExtra(6, true, 35),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.MarkedValorLightbar)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, true, 100),
+                new DispatchableVehicleExtra(5, true, 35),
+                new DispatchableVehicleExtra(6, true, 35),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.Unmarked)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                 new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, true, 25),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 35),
+                new DispatchableVehicleExtra(6, true, 35),
+                new DispatchableVehicleExtra(7, true, 65),
+                new DispatchableVehicleExtra(8, true, 65),
+                new DispatchableVehicleExtra(9, true, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, true, 100),
+            };
+        }
+        else if (policeVehicleType == PoliceVehicleType.Detective)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+            {
+                new DispatchableVehicleExtra(1, false, 100),
+                new DispatchableVehicleExtra(2, false, 100),
+                new DispatchableVehicleExtra(3, false, 100),
+                new DispatchableVehicleExtra(4, false, 100),
+                new DispatchableVehicleExtra(5, true, 10),
+                new DispatchableVehicleExtra(6, true, 10),
+                new DispatchableVehicleExtra(7, false, 90),
+                new DispatchableVehicleExtra(8, false, 100),
+                new DispatchableVehicleExtra(9, false, 100),
+                new DispatchableVehicleExtra(11, true, 100),
+                new DispatchableVehicleExtra(12, false, 100),
+            };
+        }
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }*/

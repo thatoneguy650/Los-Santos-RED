@@ -178,7 +178,7 @@ public class DispatchableVehicles_FEJ_Stanier
         {
             DispatchableVehicles_FEJ.Create_PoliceGresley(25,25,20,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             new DispatchableVehicle(DispatchableVehicles_FEJ.PoliceGranger, 40, 40) { RequiredLiveries = new List<int>() { 20 } },
-            DispatchableVehicles_FEJ.Create_PoliceBison(40,40,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
+            //DispatchableVehicles_FEJ.Create_PoliceBison(40,40,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceSanchez(10,10,5,false,PoliceVehicleType.Marked,134,-1,2,1,1,"DirtBike","DirtBike",10),
         };
         SADFWParkRangersVehicles_FEJ = new List<DispatchableVehicle>()

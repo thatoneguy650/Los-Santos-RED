@@ -76,7 +76,7 @@ public class GeneralRace : ComplexTask, ILocationReachable
         }
         if (PedGeneral != null && PedGeneral.Pedestrian.Exists())
         {
-            NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
+            //NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, 1.0f);
         }

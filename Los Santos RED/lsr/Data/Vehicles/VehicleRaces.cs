@@ -57,14 +57,29 @@ public class VehicleRaces : IVehicleRaces
             //new VehicleRaceCheckpoint(5,new Vector3(1663.282f, 3858.711f, 34.23738f)),
             //new VehicleRaceCheckpoint(6,new Vector3(1743.253f, 3758.429f, 33.24446f)),
             //new VehicleRaceCheckpoint(7,new Vector3(1968.987f, 3878.23f, 31.663f)),
+
+
+
+
+
+            //new VehicleRaceCheckpoint(0, new Vector3(1775.803f, 3375.738f, 39.1007f)),
+            //new VehicleRaceCheckpoint(1,new Vector3(1582.85f, 3480.25f, 36.21559f)),
+            //new VehicleRaceCheckpoint(2,new Vector3(984.0595f, 3535.763f, 33.54565f)),
+            //new VehicleRaceCheckpoint(3,new Vector3(956.1648f, 3634.594f, 32.08199f)),
+            //new VehicleRaceCheckpoint(4,new Vector3(1308.131f, 3652.568f, 32.76283f)),
+            //new VehicleRaceCheckpoint(5,new Vector3(1628.509f, 3824.556f, 34.63056f)),
+            //new VehicleRaceCheckpoint(6,new Vector3(1740.17f, 3764.768f, 33.48697f)),
+            //new VehicleRaceCheckpoint(7,new Vector3(1975.885f, 3888.242f, 31.93978f)),
+
+
             new VehicleRaceCheckpoint(0, new Vector3(1775.803f, 3375.738f, 39.1007f)),
-            new VehicleRaceCheckpoint(1,new Vector3(1582.85f, 3480.25f, 36.21559f)),
-            new VehicleRaceCheckpoint(2,new Vector3(984.0595f, 3535.763f, 33.54565f)),
-            new VehicleRaceCheckpoint(3,new Vector3(956.1648f, 3634.594f, 32.08199f)),
-            new VehicleRaceCheckpoint(4,new Vector3(1308.131f, 3652.568f, 32.76283f)),
-            new VehicleRaceCheckpoint(5,new Vector3(1628.509f, 3824.556f, 34.63056f)),
-            new VehicleRaceCheckpoint(6,new Vector3(1740.17f, 3764.768f, 33.48697f)),
-            new VehicleRaceCheckpoint(7,new Vector3(1975.885f, 3888.242f, 31.93978f)),
+            new VehicleRaceCheckpoint(1,new Vector3(1702.318f, 3499.852f, 35.91494f)),
+            new VehicleRaceCheckpoint(2,new Vector3(935.6216f, 3535.946f, 33.43148f)),
+            new VehicleRaceCheckpoint(3,new Vector3(931.0949f, 3626.907f, 31.86987f)),
+            new VehicleRaceCheckpoint(4,new Vector3(1540.138f, 3751.758f, 33.91103f)),
+            new VehicleRaceCheckpoint(5,new Vector3(1603.251f, 3673.23f, 33.89013f)),
+            new VehicleRaceCheckpoint(6,new Vector3(1979.965f, 3889.917f, 31.88055f)),
+
         };
         VehicleRace sandyDebug = new VehicleRace("Sandy Shores Debug Race", vehicleRaceCheckpoints, vehicleRaceStartingPositions);
         VehicleRaceTypeManager.VehiclesRaces.Add(sandyDebug);

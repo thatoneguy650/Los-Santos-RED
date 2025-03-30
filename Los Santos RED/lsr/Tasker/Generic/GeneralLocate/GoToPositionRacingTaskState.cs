@@ -114,7 +114,8 @@ class GoToPositionRacingTaskState : TaskState
         }
         else
         {
-            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 900.0f,1, "DUMMY_MODEL_FOR_SCRIPT", (int)eCustomDrivingStyles.Racing,20f,-1);
+            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 900.0f,1,
+                "DUMMY_MODEL_FOR_SCRIPT", (int)eCustomDrivingStyles.RacingNew, 20f,-1);
             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 900.0f, (int)eCustomDrivingStyles.Racing, 20f); //30f speed
         }
         GametimeLastRetasked = Game.GameTime;
