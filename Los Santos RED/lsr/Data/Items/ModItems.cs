@@ -177,7 +177,7 @@ public class ModItems : IModItems
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
 
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Full Modern Traffic\\ModItems_FullModernTraffic.xml");
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems_FullModernTraffic.xml");
     }
     private void DefaultConfig_LosSantos2008()
     {

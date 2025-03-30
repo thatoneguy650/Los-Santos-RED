@@ -2096,6 +2096,12 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SunderedTaxiVehicles_FEJ_Modern),
         };
 
+
+        //foreach(DispatchableVehicleGroup test in VehicleGroupLookupFEJ)
+        //{
+        //    test.DispatchableVehicles.RemoveAll(x => x.ModelName != "polstanier2" && x.ModelName != "polgauntlet" && x.ModelName != "polgemini" && x.ModelName != "polbisonliv");
+        //}
+
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }

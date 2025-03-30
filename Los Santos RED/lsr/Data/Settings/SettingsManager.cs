@@ -272,6 +272,7 @@ public class SettingsManager
         LSRHUDSettings.ShowStaminaDisplay = false;
         LSRHUDSettings.ShowStreetDisplay = false;
         LSRHUDSettings.ShowZoneDisplay = false;
+        LSRHUDSettings.VehicleDisplayEnabled = false;
         UIGeneralSettings.ShowVehicleInteractionPrompt = false;
         UIGeneralSettings.ShowVehicleInteractionPromptInVehicle = false;
         WeatherSettings.ReportWeather = false;

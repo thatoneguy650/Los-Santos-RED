@@ -876,7 +876,7 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(3, false, 100), 
                 new DispatchableVehicleExtra(4, true, 100),
-                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(9, true, 100),
             };
 
@@ -889,7 +889,7 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(3, true, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(9, true, 100),
             };
 
@@ -900,7 +900,7 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(3, false, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, true, 100),
+                new DispatchableVehicleExtra(1, true, 100),
                 new DispatchableVehicleExtra(9, true, 100),
             };
         }
@@ -910,7 +910,7 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(3, false, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(9, true, 100),
             };
         }
@@ -920,7 +920,7 @@ public class DispatchableVehicles_FEJ
             {
                 new DispatchableVehicleExtra(3, false, 100),
                 new DispatchableVehicleExtra(4, false, 100),
-                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(1, false, 100),
                 new DispatchableVehicleExtra(9, false, 100),
             };
         }
