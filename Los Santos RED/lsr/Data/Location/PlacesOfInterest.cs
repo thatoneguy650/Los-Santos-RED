@@ -789,9 +789,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 FullName = "Paleto Bay, Cocaine Lockup Warehouse",
                 PossibleModItemPayouts = new List<string>() { "Cocaine" },
                 ModItemPayoutAmount = 400,
-                CameraPosition = new Vector3(391.7299f, 3603.892f, 40.10847f),
-                CameraDirection = new Vector3(-0.2399576f, -0.9391178f, -0.245923f),
-                CameraRotation = new Rotator(-14.23639f, -3.963708E-06f, 165.6668f),
+                CameraPosition = new Vector3(-56.97371f, 6426.408f, 43.47006f),
+                CameraDirection = new Vector3(0.1119988f, -0.9698855f, -0.2162832f),
+                CameraRotation = new Rotator(-12.49082f, 7.870247E-06f, -173.4129f),
                 InteriorID = 247553,
             },
             new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "I am the one who knocks")
