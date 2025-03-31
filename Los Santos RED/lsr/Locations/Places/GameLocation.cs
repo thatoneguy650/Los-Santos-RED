@@ -589,27 +589,29 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AddPropertyManagement()
     {
-        if(IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
         {
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}"};
-            businessManagementButton.Activated += (s,i) =>
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            businessManagementButton.Activated += (s, i) =>
             {
-                if(Purchase())
+                if (Purchase())
                 {
                     MenuPool.CloseAllMenus();
                     InteractionMenu.Clear();
                 }
             };
-            InteractionMenu.AddItem(businessManagementButton);
+            subMenu.AddItem(businessManagementButton);
         }
-        else if(IsOwned && Player.BankAccounts.BankAccountList.Any())
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
         {
-            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}"};
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Manage {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
             businessManagementButton.Activated += (s, i) =>
             {
                 OnSold();
             };
-            InteractionMenu.AddItem(businessManagementButton);
+            subMenu.AddItem(businessManagementButton);
         }
     }
     public virtual bool Purchase()
@@ -1395,7 +1397,7 @@ public class GameLocation : ILocationDispatchable
     {
         if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
         {
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}" };
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
             businessManagementButton.Activated += (s, i) =>
             {
                 Purchase();
