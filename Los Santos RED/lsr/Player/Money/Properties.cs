@@ -19,6 +19,8 @@ public class Properties
         Time = time;
     }
     public List<Residence> Residences { get; private set; } = new List<Residence>();
+    public List<Business> Businesses { get; private set; } = new List<Business>();
+    public List<GameLocation> PayoutProperties { get; private set; } = new List<GameLocation>();
 
     public void Setup()
     {
@@ -26,12 +28,38 @@ public class Properties
     }
     public void Update()
     {
+        int businessesPayingOut = 0;
         foreach (Residence residence in Residences)
         {
             if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
             {
                 residence.ReRent(Player, Time);
             }
+            else if(residence.IsOwned && residence.IsRentedOut && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
+            {
+                residence.Payout(Player, Time);
+                businessesPayingOut++;
+            }
+        }
+        foreach(GameLocation location in PayoutProperties)
+        {
+            if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
+            {
+                location.Payout(Player, Time);
+                businessesPayingOut++;
+            }
+        }
+        foreach(Business business in Businesses)
+        {
+            if (business.DatePayoutDue != null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >= 0)
+            {
+                business.Payout(Player, Time);
+                businessesPayingOut++;
+            }
+        }
+        if(businessesPayingOut > 0)
+        {
+            Game.DisplayNotification($"{businessesPayingOut} of your investment(s) have paid out.");
         }
     }
     public void Dispose()
@@ -61,6 +89,35 @@ public class Properties
             Residences.Remove(toAdd);
         }
     }
-
+    public void AddPayoutProperty(GameLocation toAdd)
+    {
+        if (!PayoutProperties.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
+        {
+            PayoutProperties.Add(toAdd);
+        }
+    }
+    public void RemovePayoutProperty(GameLocation toRemove)
+    {
+        if (!PayoutProperties.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        {
+            toRemove.Reset();
+            PayoutProperties.Remove(toRemove);
+        }
+    }
+    public void AddBusiness(Business toAdd)
+    {
+        if (!Businesses.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
+        {
+            Businesses.Add(toAdd);
+        }
+    }
+    public void RemoveBusiness(Business toRemove)
+    {
+        if (!Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        {
+            toRemove.Reset();
+            Businesses.Remove(toRemove);
+        }
+    }
 }
 

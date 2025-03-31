@@ -25,6 +25,7 @@ public class PossibleLocations
     public List<Hospital> Hospitals { get; private set; } = new List<Hospital>();
     public List<FireStation> FireStations { get; private set; } = new List<FireStation>();
     public List<Restaurant> Restaurants { get; private set; } = new List<Restaurant>();
+    public List<Business> Businesses { get; private set; } = new List<Business>();
     public List<Pharmacy> Pharmacies { get; private set; } = new List<Pharmacy>();
     public List<Dispensary> Dispensaries { get; private set; } = new List<Dispensary>();
     public List<HeadShop> HeadShops { get; private set; } = new List<HeadShop>();
@@ -99,6 +100,7 @@ public class PossibleLocations
         AllLocations.AddRange(CityHalls);
         AllLocations.AddRange(VendingMachines);
         AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Businesses);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(Dispensaries);
         AllLocations.AddRange(HeadShops);
@@ -143,6 +145,7 @@ public class PossibleLocations
         AllLocations.AddRange(Residences);
         AllLocations.AddRange(ApartmentBuildings);
         AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Businesses);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(Dispensaries);
         AllLocations.AddRange(HeadShops);
@@ -179,6 +182,7 @@ public class PossibleLocations
         AllLocations.AddRange(PawnShops);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Businesses);
         AllLocations.AddRange(Landmarks);
         AllLocations.AddRange(SportingGoodsStores);
         AllLocations.AddRange(BarberShops);
@@ -212,6 +216,7 @@ public class PossibleLocations
         AllLocations.AddRange(CarCrushers);
         AllLocations.AddRange(Hotels);
         AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Businesses);
         AllLocations.AddRange(Pharmacies);
         AllLocations.AddRange(Dispensaries);
         AllLocations.AddRange(HeadShops);

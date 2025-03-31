@@ -81,6 +81,8 @@ namespace LosSantosRED.lsr.Data
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+        public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();
+        public List<SavedPayoutProperty> SavedPayoutProperties { get; set; } = new List<SavedPayoutProperty>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
 
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
@@ -110,7 +112,10 @@ namespace LosSantosRED.lsr.Data
             SaveResidences(player);
             SaveAgencies(player);
             SaveCellPhone(player); 
+            SaveBusinesses(player);
+            SavePayoutProperties(player);
         }
+
         private void SaveDemographics(ISaveable player)
         {
             PlayerName = player.PlayerName;
@@ -271,6 +276,61 @@ namespace LosSantosRED.lsr.Data
                 PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
             }
         }
+        private void SaveBusinesses(ISaveable player)
+        {
+            SavedBusinesses.Clear();
+            foreach (Business biz in player.Properties.Businesses)
+            {
+                if (biz.IsOwned)
+                {
+                    SavedBusiness myBiz = new SavedBusiness(biz.Name, biz.IsOwned);
+                    myBiz.DateOfLastPayout = biz.DatePayoutPaid;
+                    myBiz.PayoutDate = biz.DatePayoutDue;
+                    myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
+                    myBiz.ModItemToPayout = biz.ModItemToPayout;
+                    myBiz.EntrancePosition = biz.EntrancePosition;
+                    myBiz.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+                    myBiz.CurrentSalesPrice = biz.CurrentSalesPrice;
+                    if (biz.WeaponStorage != null)
+                    {
+                        myBiz.WeaponInventory = new List<StoredWeapon>();
+                        foreach (StoredWeapon storedWeapon in biz.WeaponStorage.StoredWeapons)
+                        {
+                            myBiz.WeaponInventory.Add(storedWeapon.Copy());
+                        }
+                    }
+                    if (biz.SimpleInventory != null)
+                    {
+                        myBiz.InventoryItems = new List<InventorySave>();
+                        foreach (InventoryItem ii in biz.SimpleInventory.ItemsList)
+                        {
+                            myBiz.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                        }
+                    }
+                    if (biz.CashStorage != null)
+                    {
+                        myBiz.StoredCash = biz.CashStorage.StoredCash;
+                    }
+                    SavedBusinesses.Add(myBiz);
+                }
+            }
+        }
+        private void SavePayoutProperties(ISaveable player)
+        {
+            SavedPayoutProperties.Clear();
+            foreach (GameLocation property in player.Properties.PayoutProperties)
+            {
+                if (property.IsOwned)
+                {
+                    SavedPayoutProperty myBiz = new SavedPayoutProperty(property.Name, property.IsOwned);
+                    myBiz.DateOfLastPayout = property.DatePayoutPaid;
+                    myBiz.PayoutDate = property.DatePayoutDue;
+                    myBiz.EntrancePosition = property.EntrancePosition;
+                    myBiz.CurrentSalesPrice = property.CurrentSalesPrice;
+                    SavedPayoutProperties.Add(myBiz);
+                }
+            }
+        }
         private void SaveResidences(ISaveable player)
         {
             SavedResidences.Clear();
@@ -303,6 +363,10 @@ namespace LosSantosRED.lsr.Data
                     if(res.CashStorage != null)
                     {
                         myRes.StoredCash = res.CashStorage.StoredCash;
+                    }
+                    if(res.IsRentedOut)
+                    {
+                        myRes.IsRentedOut = res.IsRentedOut;
                     }
                     SavedResidences.Add(myRes);
                 }
@@ -342,6 +406,8 @@ namespace LosSantosRED.lsr.Data
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
+                LoadBusinesses(player,placesOfInterest,modItems,settings);
+                LoadPayoutProperties(player, placesOfInterest);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -353,6 +419,8 @@ namespace LosSantosRED.lsr.Data
                 Game.DisplayNotification("Error Loading Save");
             }
         }
+
+
         private void LoadMoney(IInventoryable player)
         {
             player.BankAccounts.Reset();
@@ -646,8 +714,66 @@ namespace LosSantosRED.lsr.Data
                         {
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }
+                        savedPlace.IsRentedOut = res.IsRentedOut;
                         savedPlace.CashStorage.StoredCash = res.StoredCash;
                         savedPlace.RefreshUI();
+                    }
+                }
+            }
+        }
+        private void LoadBusinesses(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        {
+            foreach (SavedBusiness biz in SavedBusinesses)
+            {
+                if (biz.IsOwnedByPlayer)
+                {
+                    Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name && x.EntrancePosition == biz.EntrancePosition).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddPayoutProperty(savedPlace);
+                        savedPlace.IsOwned = biz.IsOwnedByPlayer;
+                        savedPlace.DatePayoutDue = biz.PayoutDate;
+                        savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
+                        savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
+                        savedPlace.ModItemToPayout = biz.ModItemToPayout;
+                        savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+                        savedPlace.CurrentSalesPrice = biz.CurrentSalesPrice;
+                        if (savedPlace.WeaponStorage == null)
+                        {
+                            savedPlace.WeaponStorage = new WeaponStorage(settings);
+                        }
+                        if (savedPlace.SimpleInventory == null)
+                        {
+                            savedPlace.SimpleInventory = new SimpleInventory(settings);
+                        }
+                        foreach (StoredWeapon storedWeap in biz.WeaponInventory)
+                        {
+                            savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                        }
+                        foreach (InventorySave stest in biz.InventoryItems)
+                        {
+                            savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                        }
+                        savedPlace.CashStorage.StoredCash = biz.StoredCash;
+                        savedPlace.RefreshUI();
+                    }
+                }
+            }
+        }
+        private void LoadPayoutProperties(IInventoryable player, IPlacesOfInterest placesOfInterest)
+        {
+            foreach (SavedPayoutProperty savedProperty in SavedPayoutProperties)
+            {
+                if (savedProperty.IsOwnedByPlayer)
+                {
+                    GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == savedProperty.Name && x.EntrancePosition == savedProperty.EntrancePosition).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddPayoutProperty(savedPlace);
+                        savedPlace.IsOwned = savedProperty.IsOwnedByPlayer;
+                        savedPlace.DatePayoutDue = savedProperty.PayoutDate;
+                        savedPlace.DatePayoutPaid = savedProperty.DateOfLastPayout;
+                        savedPlace.CurrentSalesPrice = savedProperty.CurrentSalesPrice;
                     }
                 }
             }

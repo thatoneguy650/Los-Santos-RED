@@ -8,6 +8,7 @@ using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -337,6 +338,24 @@ public class GameLocation : ILocationDispatchable
     public virtual bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract;
     public string MapTeleportString => IsOnSPMap && !IsOnMPMap ? "(SP)" : IsOnMPMap && !IsOnSPMap ? "(MP)" : "";
 
+    #region Business Ownership
+    public virtual int PurchasePrice { get; set; }
+    public virtual int PayoutFrequency { get; set; } = 7;
+    public virtual int PayoutMin { get; set; }
+    public virtual int PayoutMax { get; set; }
+    public virtual int SalesPrice { get; set; }
+    public virtual int MaxSalesPrice { get; set; }
+    public virtual bool IsOwnable { get; set; }
+    public int GrowthPercentage { get; set; } = 20;
+    [XmlIgnore]
+    public int CurrentSalesPrice { get; set; }
+    [XmlIgnore]
+    public DateTime DatePayoutDue { get; set; }
+    [XmlIgnore]
+    public DateTime DatePayoutPaid { get; set; }
+    [XmlIgnore]
+    public virtual bool IsOwned { get; set; } = false;
+    #endregion
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -550,6 +569,7 @@ public class GameLocation : ILocationDispatchable
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+                AddPropertyManagement();
                 InteractionMenu.Visible = true;
                 Transaction.ProcessTransactionMenu();
                 Transaction.DisposeTransactionMenu();
@@ -566,6 +586,62 @@ public class GameLocation : ILocationDispatchable
                 EntryPoint.ModController.CrashUnload();
             }
         }, "StandardInteract");
+    }
+    public virtual void AddPropertyManagement()
+    {
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                if (Purchase())
+                {
+                    MenuPool.CloseAllMenus();
+                    InteractionMenu.Clear();
+                }
+            };
+            subMenu.AddItem(businessManagementButton);
+        }
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Manage {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                OnSold();
+            };
+            subMenu.AddItem(businessManagementButton);
+        }
+    }
+    public virtual bool Purchase()
+    {
+        if (Player.BankAccounts.GetMoney(true) >= PurchasePrice)
+        {
+            OnPurchased();
+            DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
+            return true;
+        }
+        DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
+        return false;
+    }
+    public virtual void OnPurchased()
+    {
+        Player.Properties.AddPayoutProperty(this);
+        Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
+        IsOwned = true;
+        DatePayoutPaid = Time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+        CurrentSalesPrice = SalesPrice;
+    }
+    public virtual void OnSold()
+    {
+        Player.Properties.RemovePayoutProperty(this);
+        Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
+        IsOwned = false;
+        DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
     }
     public virtual void HandleVariableItems()
     {
@@ -1305,8 +1381,44 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
-
-
+    public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
+    {
+        int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+        int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
+        player.BankAccounts.GiveMoney(payoutAmount, true);
+    }
+    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
+    {
+        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
+        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
+        return payoutAmount;
+    }
+    public void AddInteractionToMerchant(UIMenu headerMenu, AdvancedConversation conversation)
+    {
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Purchase();
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Player.Properties.RemovePayoutProperty(this);
+                Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
+                IsOwned = false;
+                DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
+    }
     //public virtual void UpdatePrompts()
     //{
 

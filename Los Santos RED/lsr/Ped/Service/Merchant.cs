@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +58,7 @@ public class Merchant : PedExt, IWeaponIssuable
             return;
         }
         Pedestrian.Money = 0;
-
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
-
         if(store == null || store.VendorMoneyMin == -1 || store.VendorMoneyMax == -1)
         {
             Money = RandomItems.GetRandomNumberInt(MerchantMoneyMin(), MerchantMoneyMax());
@@ -85,7 +85,6 @@ public class Merchant : PedExt, IWeaponIssuable
         {
             LocationTaskRequirements = new LocationTaskRequirements();
         }
-
         if (store != null && SetupMenus)
         {
             SetupTransactionItems(store.Menu, true);
@@ -108,11 +107,15 @@ public class Merchant : PedExt, IWeaponIssuable
             //EntryPoint.WriteToConsole("Merchant Issues Weapons");
             WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(store.VendorMeleePercent), forceSidearm || RandomItems.RandomPercent(store.VendorSidearmPercent), forceLongGun || RandomItems.RandomPercent(store.VendorLongGunPercent), dispatchablePerson, true, true);
         }
-
         if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
+    }
+    public override void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
+    {
+        base.AddSpecificInteraction(player, menuPool, headerMenu, advancedConversation);
+        AssociatedStore.AddInteractionToMerchant(headerMenu, advancedConversation);
     }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
