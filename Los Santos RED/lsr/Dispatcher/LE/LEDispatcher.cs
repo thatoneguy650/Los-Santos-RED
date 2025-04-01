@@ -423,9 +423,9 @@ public class LEDispatcher
     {
         get
         {
-            float MaxWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen;
-            float MaxWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen;
-            float MaxNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted;
+            float MaxWantedUnseen = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseenHeli : Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen;
+            float MaxWantedSeen = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeenHeli : Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen;
+            float MaxNotWanted = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWantedHeli : Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted;
             if(World.TotalWantedLevel > Player.WantedLevel)
             {
                 return MaxWantedUnseen;
@@ -455,9 +455,9 @@ public class LEDispatcher
     {
         get
         {
-            float MinWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseen;
-            float MinWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeen;
-            float MinNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWanted;
+            float MinWantedUnseen = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseenHeli : Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseen;
+            float MinWantedSeen = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeenHeli : Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeen;
+            float MinNotWanted = HasNeedToSpawnHeli ? Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWantedHeli : Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWanted;
             float MinScalerUnseen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseenScalar; //40f;
             float MinScalerSeen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeenScalar; //40f;
             if (World.TotalWantedLevel > Player.WantedLevel)
