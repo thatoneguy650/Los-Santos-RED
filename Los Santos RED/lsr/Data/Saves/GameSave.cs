@@ -339,7 +339,7 @@ namespace LosSantosRED.lsr.Data
                 if (res.IsOwned || res.IsRented)
                 {
                     SavedResidence myRes = new SavedResidence(res.Name, res.IsOwned, res.IsRented);
-                    if (res.IsRented)
+                    if (res.IsRented || res.IsRentedOut)
                     {
                         myRes.DateOfLastRentalPayment = res.DateRentalPaymentPaid;
                         myRes.RentalPaymentDate = res.DateRentalPaymentDue;
