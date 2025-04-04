@@ -1384,6 +1384,8 @@ public class GameLocation : ILocationDispatchable
     public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+        DatePayoutPaid = time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
         int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
         player.BankAccounts.GiveMoney(payoutAmount, true);
     }

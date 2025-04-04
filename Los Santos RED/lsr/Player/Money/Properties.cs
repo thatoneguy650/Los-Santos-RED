@@ -83,7 +83,7 @@ public class Properties
     }
     public void RemoveResidence(Residence toAdd)
     {
-        if (!Residences.Any(x => x.Name == toAdd.Name))
+        if (Residences.Any(x => x.Name == toAdd.Name))
         {
             toAdd.Reset();
             Residences.Remove(toAdd);
@@ -98,7 +98,7 @@ public class Properties
     }
     public void RemovePayoutProperty(GameLocation toRemove)
     {
-        if (!PayoutProperties.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        if (PayoutProperties.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
         {
             toRemove.Reset();
             PayoutProperties.Remove(toRemove);
@@ -113,7 +113,7 @@ public class Properties
     }
     public void RemoveBusiness(Business toRemove)
     {
-        if (!Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        if (Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
         {
             toRemove.Reset();
             Businesses.Remove(toRemove);
