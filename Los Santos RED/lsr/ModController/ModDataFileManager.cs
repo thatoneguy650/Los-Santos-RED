@@ -349,24 +349,6 @@ public class ModDataFileManager
             + Environment.NewLine +
             "2. Copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-            ""
-            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-            "Model Credits:"
-            + Environment.NewLine +
-            "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
-            + Environment.NewLine +
-            "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
-            + Environment.NewLine +
-            "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
-            + Environment.NewLine + Environment.NewLine +
-            "Creator Links"
-            + Environment.NewLine +
-            "Yard1 - https://www.gta5-mods.com/users/Yard1/files"
-            + Environment.NewLine +
-            "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
-            + Environment.NewLine +
-            "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
-            + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
         
@@ -451,7 +433,7 @@ public class ModDataFileManager
             + Environment.NewLine +
             "3a. OPTIONAL: Install 'Full Modern Traffic'. Updates traffic to be more modern and adds some lore friendly vehicles. Follow the readme in the 'AlternateConfigs\\FullModernTraffic' folder"
             + Environment.NewLine +
-            "4. Install 'Peter Badoingy Map Fixes'. Fixes some issues with the map to better work with LSR. MUST INSTALL AFTER LC. Install the badoingylcfixes.oiv from the 'Files' folder"
+            "4. Install 'Peter Badoingy Map Fixes'. Fixes some issues with the map to better work with LSR. MUST INSTALL AFTER LC. Download and install the badoingylcfixes.oiv from https://drive.google.com/file/d/1-98LN-PGtfKpOspUK-jeSl7MEnrDNY0G/view"
             + Environment.NewLine +
             $"5. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LibertyConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
              + Environment.NewLine +

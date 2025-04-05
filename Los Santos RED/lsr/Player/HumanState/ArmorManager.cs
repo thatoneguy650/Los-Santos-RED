@@ -41,7 +41,7 @@ public class ArmorManager
         RemoveArmor();
         AddArmorItem(equipmentItem);
         EquippedArmorItem = equipmentItem;
-        Game.DisplaySubtitle($"Added Armor {equipmentItem.Name}");
+        //Game.DisplaySubtitle($"Added Armor {equipmentItem.Name}");
     }
     private void AddArmorItem(BodyArmorItem equipmentItem)
     {

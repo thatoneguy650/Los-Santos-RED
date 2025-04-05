@@ -399,7 +399,6 @@ public class CivilianSettings : ISettingsDefaultable
         HidingInUnknownVehicleRecognizeIncreaseTime = 500;
         NeverSeenPlayerRecognizeIncreaseTime = 500;
         SeenPlayerRecognizeDecreaseTime = 1000;
-            
 
 
     }

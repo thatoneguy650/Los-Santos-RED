@@ -100,6 +100,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     public List<DispatchableVehicle> DOAVehicles;
 
     private List<DispatchableVehicle> OffDutyCopVehicles;
+    private DispatchableVehicles_RaceCars DispatchableVehicles_RaceCars;
     private List<DispatchableVehicle> LCPDVehicles;
     private List<DispatchableVehicle> TaxiVehicles;
     private List<DispatchableVehicle> RideshareVehicles;
@@ -438,6 +439,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("granger", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
             new DispatchableVehicle("washington", 20, 0) { MaxOccupants = 1,MaxWantedLevelSpawn = 0,RequiredPedGroup = "OffDuty", },
         };
+        //RaceCars
+        DispatchableVehicles_RaceCars = new DispatchableVehicles_RaceCars(this);
+        DispatchableVehicles_RaceCars.DefaultConfig();
+
 
         //Gangs
         LostMCVehicles = new List<DispatchableVehicle>();
@@ -1521,7 +1526,13 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
 
+
+
+
+
         };
+        VehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
+
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
         Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
     }
@@ -1573,7 +1584,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.HMSVehicles_FEJ_LC));
 
-
+        LibertyVehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_LPP()
@@ -1632,7 +1643,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", dispatchableVehicles_LPP.HMSVehicles_FEJ_LC));
 
-
+        LibertyVehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\DispatchableVehicles_{StaticStrings.LPPConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()
@@ -1686,6 +1697,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
         };
+        SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
         //SunshineDream
     }
@@ -1759,6 +1771,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
         };
+        SunshineDreamVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
     }
     private void DefaultConfig_LosSantos_2008()
@@ -1883,7 +1896,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_2008.SunderedTaxiVehicles2008_FEJ),
         };
 
-
+        OldVehicleLookupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(OldVehicleLookupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchableVehicles_LosSantos2008.xml");
 
     }
@@ -2101,7 +2114,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         //{
         //    test.DispatchableVehicles.RemoveAll(x => x.ModelName != "polstanier2" && x.ModelName != "polgauntlet" && x.ModelName != "polgemini" && x.ModelName != "polbisonliv");
         //}
-
+        VehicleGroupLookupFEJ.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
@@ -2208,7 +2221,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("ShitiTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.ShitiTaxiVehicles),
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.SunderedTaxiVehicles),
         };
-
+        VehicleGroupLookupFEJ.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\DispatchableVehicles_FullExpandedJurisdiction_AttackOfTheStaniers.xml");
     }
 

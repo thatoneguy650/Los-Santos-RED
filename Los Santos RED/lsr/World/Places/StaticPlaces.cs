@@ -38,10 +38,11 @@ public class StaticPlaces
     private IHeads Heads;
     private IDispatchablePeople DispatchablePeople;
     private IClothesNames ClothesNames;
+    private ModDataFileManager ModDataFileManager;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
         IAgencies agencies, ITimeControllable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes, IPlateTypes plateTypes, 
-        IOrganizations associations, IContacts contacts, IModItems modItems, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, IClothesNames clothesNames)
+        IOrganizations associations, IContacts contacts, IModItems modItems, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, IClothesNames clothesNames, ModDataFileManager modDataFileManager)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -69,12 +70,13 @@ public class StaticPlaces
         Heads = heads;
         DispatchablePeople= dispatchablePeople;
         ClothesNames = clothesNames;
+        ModDataFileManager = modDataFileManager;
     }
     public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
     {
         foreach (GameLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors, locationInteractable, ModItems, Weapons, Time, PlacesOfInterest, IssuableWeapons, Heads, DispatchablePeople);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World, Streets, LocationTypes, Settings, PlateTypes, Associations, Contacts, Interiors, locationInteractable, ModItems, Weapons, Time, PlacesOfInterest, IssuableWeapons, Heads, DispatchablePeople, ModDataFileManager);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {

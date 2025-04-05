@@ -32,6 +32,7 @@ public class GameLocation : ILocationDispatchable
     protected IShopMenus ShopMenus;
     protected IPlateTypes PlateTypes;
     protected IOrganizations Associations;
+    protected ModDataFileManager ModDataFileManager;
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
@@ -499,7 +500,8 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
         IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, 
-        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, 
+        IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -512,6 +514,7 @@ public class GameLocation : ILocationDispatchable
         ModItems = modItems;
         Weapons = weapons;
         Time = time;
+        ModDataFileManager = modDataFileManager;
 
 
         VendorMeleeWeapons = issuableWeapons.GetWeaponData(VendorMeleeWeaponsID);

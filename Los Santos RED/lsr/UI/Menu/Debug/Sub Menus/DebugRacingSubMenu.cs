@@ -32,11 +32,12 @@ public class DebugRacingSubMenu : DebugSubMenu
     private void CreateMenu()
     {
         SubMenu.Clear();
-        foreach(VehicleRace vr in VehicleRaces.VehicleRaceTypeManager.VehiclesRaces)
+        foreach(VehicleRaceTrack vrt in VehicleRaces.VehicleRaceTypeManager.VehicleRaceTracks)
         {
-            UIMenuItem generalOne = new UIMenuItem(vr.Name, "Start a the specific race.");
+            UIMenuItem generalOne = new UIMenuItem(vrt.Name, "Start a the specific race.");
             generalOne.Activated += (sender, selectedItem) =>
             {
+                VehicleRace vr = new VehicleRace(vrt.Name, vrt);
                 Player.RacingManager.StartDebugRace(vr);
 
                 sender.Visible = false;

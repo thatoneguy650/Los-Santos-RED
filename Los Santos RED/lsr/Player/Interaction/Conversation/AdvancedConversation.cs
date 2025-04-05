@@ -27,10 +27,12 @@ public class AdvancedConversation
     private IEntityProvideable World;
     private ILocationInteractable LocationInteractable;
     private IVehicleRaces VehicleRaces;
+    private IDispatchablePeople DispatchablePeople;
+    private IDispatchableVehicles DispatchableVehicles;
     private UIMenu RaceChallengeSubMenu;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
     public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, 
-        IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces)
+        IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
     {
         Player = player;
         ConversationSimple = conversation_Simple;
@@ -44,6 +46,8 @@ public class AdvancedConversation
         World = world;
         LocationInteractable = locationInteractable;
         VehicleRaces = vehicleRaces;
+        DispatchableVehicles = dispatchableVehicles;
+        DispatchablePeople = dispatchablePeople;
     }
     public void Setup()
     {
@@ -117,7 +121,7 @@ public class AdvancedConversation
     {
         RaceChallengeSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Challenge To Race");
         RaceChallengeSubMenu.RemoveBanner();
-        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceChallengeSubMenu, ConversationSimple.ConversingPed, VehicleRaces,PlacesOfInterest,World,Player, true, this);
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceChallengeSubMenu, ConversationSimple.ConversingPed, VehicleRaces,PlacesOfInterest,World,Player, true, this, DispatchableVehicles);
         vehicleRaceMenu.Setup();
     }
     private void AddQuestions()

@@ -170,6 +170,7 @@
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
     <Compile Include="lsr\Data\Vehicles\ePoliceServiceType.cs" />
     <Compile Include="lsr\Data\Vehicles\MilitaryVehicleType.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicleGroupType.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2008.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_2015.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_LC.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="lsr\Data\Vehicles\OldDispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_FEJ_Stanier.cs" />
     <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_LPP.cs" />
+    <Compile Include="lsr\Data\Vehicles\Variations\DispatchableVehicles_RaceCars.cs" />
     <Compile Include="lsr\Data\Vehicles\VehicleRaces.cs" />
     <Compile Include="lsr\Data\Vehicles\VehicleRaceTypeManager.cs" />
     <Compile Include="lsr\Dispatcher\Items\eSpawnAdjustment.cs" />
@@ -215,6 +217,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangArsonTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
@@ -548,6 +551,7 @@
     <Compile Include="lsr\Player\Racing\VehicleRacesMenu.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRacer.cs" />
     <Compile Include="lsr\Player\Racing\VehicleRaceStartingPosition.cs" />
+    <Compile Include="lsr\Player\Racing\VehicleRaceTrack.cs" />
     <Compile Include="lsr\Player\Respawning\BribeActivity.cs" />
     <Compile Include="lsr\Player\Respawning\PedGeneralInteract.cs" />
     <Compile Include="lsr\Player\Respawning\PedPlayerInteract.cs" />

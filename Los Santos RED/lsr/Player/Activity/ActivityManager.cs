@@ -49,6 +49,8 @@ public class ActivityManager
     private IGangTerritories GangTerritories;
     private ICellphones Cellphones;
     private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+    private IDispatchablePeople DispatchablePeople;
+    private IDispatchableVehicles DispatchableVehicles;
     private HideableObject HideableObject;
 
     private DynamicActivity LowerBodyActivity;
@@ -233,7 +235,7 @@ public class ActivityManager
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, 
         ILocationInteractable locationInteractable,ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, IDances dances, IEntityProvideable world, IIntoxicants intoxicants, 
         IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces, ITargetable targetable)
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces, ITargetable targetable, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
     {
         Player = player;
         Settings = settings;
@@ -262,6 +264,8 @@ public class ActivityManager
         Cellphones = cellphones;
         VehicleRaces = vehicleRaces;
         Targetable = targetable;
+        DispatchableVehicles = dispatchableVehicles;
+        DispatchablePeople = dispatchablePeople;
     }
     public void Setup()
     {
@@ -906,7 +910,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces, Targetable);
+            Interaction = new Conversation(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces, Targetable, DispatchableVehicles, DispatchablePeople);
             Interaction.Start();  
         }
     }

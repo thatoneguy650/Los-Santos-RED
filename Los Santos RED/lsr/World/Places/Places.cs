@@ -51,7 +51,7 @@ public class Places
         ModItems = modItems;
         DynamicPlaces = new DynamicPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Time);
         StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time, names, pedGroups, Jurisdictions, 
-            GangTerritories, locationTypes, plateTypes, Associations, Contacts, ModItems, issuableWeapons,heads,dispatchablePeople, clothesNames);
+            GangTerritories, locationTypes, plateTypes, Associations, Contacts, ModItems, issuableWeapons,heads,dispatchablePeople, clothesNames, World.ModDataFileManager);
     }
     public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
     public DynamicPlaces DynamicPlaces { get; private set; }

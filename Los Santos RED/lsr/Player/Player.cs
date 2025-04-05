@@ -80,6 +80,8 @@ namespace Mod
         private ISeats Seats;
         private IAgencies Agencies;
         private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+        private IDispatchablePeople DispatchablePeople;
+        private IDispatchableVehicles DispatchableVehicles;
         private Vehicle VehicleTryingToEnter;
         private int SeatTryingToEnter;
         private bool currentlyHasScrewdriver;
@@ -101,7 +103,8 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IContacts contacts, IVehicleRaces vehicleRaces)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, 
+            ICellphones cellphones, IContacts contacts, IVehicleRaces vehicleRaces, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -125,6 +128,8 @@ namespace Mod
             Agencies = agencies;
             VehicleSeatDoorData = vehicleSeatDoorData;
             Contacts = contacts;
+            DispatchableVehicles = dispatchableVehicles;
+            DispatchablePeople = dispatchablePeople;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -158,8 +163,9 @@ namespace Mod
             GPSManager = new GPSManager(this, World, Settings, TimeControllable);
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
-            ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
-                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces, this);
+            ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, 
+                this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
+                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces, this, DispatchableVehicles, DispatchablePeople);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);

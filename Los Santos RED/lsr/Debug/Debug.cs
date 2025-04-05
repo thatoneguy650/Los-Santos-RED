@@ -538,6 +538,20 @@ public class Debug
         }
 
 
+
+        foreach(PedExt pedext in World.Pedestrians.LivingPeople)
+        {
+            if(!pedext.Pedestrian.Exists())
+            {
+                continue;
+            }
+            bool takesDamageInvehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 250, true);
+            bool flyThroughwindscreen = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 32, true);
+
+            EntryPoint.WriteToConsole($"{pedext.Handle} {pedext.GroupName} {pedext.Pedestrian.Health} takesDamageInvehicle{takesDamageInvehicle} flyThroughwindscreen{flyThroughwindscreen}");
+        }
+
+
         //int trackID = NativeFunction.Natives.GET_AUDIBLE_MUSIC_TRACK_TEXT_ID<int>();
 
 

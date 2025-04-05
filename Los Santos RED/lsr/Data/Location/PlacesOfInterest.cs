@@ -52,6 +52,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<GasStation> GasStations;
     private List<Bar> Bars;
     private List<FoodStand> FoodStands;
+    private List<RaceMeetup> RaceMeetups;
     private List<Forger> Forgers;
     private List<GamblingDen> GamblingDens;
     private List<RepairGarage> RepairGarages;
@@ -205,6 +206,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_GasStations();
         DefaultConfig_Bars();
         DefaultConfig_FoodStands();
+        DefaultConfig_RaceMeetups();
         DefaultConfig_IllicitMarketplaces();
         DefaultConfig_BlankLocations();
         DefaultConfig_Dealerships();
@@ -253,6 +255,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GasStations.AddRange(GasStations);
         PossibleLocations.Bars.AddRange(Bars);
         PossibleLocations.FoodStands.AddRange(FoodStands);
+        PossibleLocations.RaceMeetups.AddRange(RaceMeetups);
         PossibleLocations.CarDealerships.AddRange(Dealerships);
         PossibleLocations.VehicleExporters.AddRange(VehicleExporters);
         PossibleLocations.Forgers.AddRange(Forgers);
@@ -2355,6 +2358,14 @@ public class PlacesOfInterest : IPlacesOfInterest
             new FoodStand(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f, "Roadside Fruit", "Should Be OK To Eat","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f) }, },
             new FoodStand(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, "Grapeseed Fruit", "Grapeseed Fruit","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f) }, },
             new FoodStand(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f, "Roadside Fruit", "Roadside Fruit","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f) }, },
+        };
+    }
+    private void DefaultConfig_RaceMeetups()
+    {
+        RaceMeetups = new List<RaceMeetup>()
+        {
+            new RaceMeetup(new Vector3(-156.2684f,-1348.708f,29.91607f), 266.4901f, "Strawberry Race Meetup", "Meetup with other racers from the Strawberry area",""),
+        
         };
     }
     private void DefaultConfig_Bars()
@@ -6614,6 +6625,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.GasStations.AddRange(GasStations);
         OldPossibleLocations.Bars.AddRange(Bars);
         OldPossibleLocations.FoodStands.AddRange(FoodStands);
+        OldPossibleLocations.RaceMeetups.AddRange(RaceMeetups);
         OldPossibleLocations.CarDealerships.AddRange(Dealerships);
         OldPossibleLocations.VehicleExporters.AddRange(VehicleExporters);
         OldPossibleLocations.GamblingDens.AddRange(GamblingDens);

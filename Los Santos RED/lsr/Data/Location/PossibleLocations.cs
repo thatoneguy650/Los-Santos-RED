@@ -64,7 +64,7 @@ public class PossibleLocations
     public List<TattooShop> TattooShops { get; private set; } = new List<TattooShop>();
 
 
-
+    public List<RaceMeetup> RaceMeetups { get; private set; } = new List<RaceMeetup>();
     public List<ATMMachine> ATMMachines { get; private set; } = new List<ATMMachine>();
     public List<GasPump> GasPumps { get; private set; } = new List<GasPump>();
     public List<CashRegister> CashRegisters { get; private set; } = new List<CashRegister>();
@@ -111,6 +111,7 @@ public class PossibleLocations
         AllLocations.AddRange(GasStations);
         AllLocations.AddRange(Bars);
         AllLocations.AddRange(FoodStands);
+        AllLocations.AddRange(RaceMeetups);
         AllLocations.AddRange(CarDealerships);
         AllLocations.AddRange(VehicleExporters);
         AllLocations.AddRange(Forgers);
@@ -133,6 +134,7 @@ public class PossibleLocations
         AllLocations.AddRange(GasPumps);
         AllLocations.AddRange(ExteriorCraftingLocations);
         AllLocations.AddRange(BodyExports);
+        AllLocations.AddRange(RaceMeetups);
         return AllLocations;
     }
 

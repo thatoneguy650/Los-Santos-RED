@@ -78,7 +78,7 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer,
                 NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions,
                 ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList,
-                ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts, ModDataFileManager.VehicleRaces);
+                ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData, ModDataFileManager.Cellphones, ModDataFileManager.Contacts, ModDataFileManager.VehicleRaces, ModDataFileManager.DispatchableVehicles, ModDataFileManager.DispatchablePeople);
             World.Setup(Player, Player);
             GameFiber.Yield();
             Player.Setup();

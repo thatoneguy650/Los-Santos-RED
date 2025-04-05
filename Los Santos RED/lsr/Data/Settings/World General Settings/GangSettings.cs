@@ -169,7 +169,8 @@ public class GangSettings : ISettingsDefaultable
     public int FleeingSpeakPercentage { get; set; }
     public bool AllowBackupAssaultSpawns { get; set; }
     public bool AllowNonEnemyTargets { get; set; }
-
+    public bool AllowFlyThroughWindshield { get; set; }
+    public float FlyThroughWindshieldPercent { get; set; }
 
     public GangSettings()
     {
@@ -214,21 +215,21 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-        TotalSpawnedMembersLimit = 10;// 8;// 10;////12;// 16;//5
-        TotalSpawnedAmbientMembersLimit = 8;// 4;// 5;// 8;
+        TotalSpawnedMembersLimit = 14;// 10;// 8;// 10;////12;// 16;//5
+        TotalSpawnedAmbientMembersLimit = 10;// 8;// 4;// 5;// 8;
 
-        TotalSpawnedAmbientMembersLimit_Downtown = 6;// 4;// 5;
+        TotalSpawnedAmbientMembersLimit_Downtown = 8;// 6;// 4;// 5;
         TotalSpawnedAmbientMembersLimit_Wilderness = 2;
         TotalSpawnedAmbientMembersLimit_Rural = 3;
-        TotalSpawnedAmbientMembersLimit_Suburb = 4;
+        TotalSpawnedAmbientMembersLimit_Suburb = 5;// 4;
         TotalSpawnedAmbientMembersLimit_Industrial = 4;// 3;// 4;
 
-        AmbientSpawnPercentage = 60;
+        AmbientSpawnPercentage = 70;// 60;
         AmbientSpawnPercentage_Wilderness = 35;
         AmbientSpawnPercentage_Rural = 45;
-        AmbientSpawnPercentage_Suburb = 55;
+        AmbientSpawnPercentage_Suburb = 60;// 55;
         AmbientSpawnPercentage_Industrial = 55;
-        AmbientSpawnPercentage_Downtown = 75;
+        AmbientSpawnPercentage_Downtown = 85;// 75;
 
 
 
@@ -318,7 +319,7 @@ public class GangSettings : ISettingsDefaultable
         AllowNonEnemyTargets = true;
 
         // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
-
+        AllowFlyThroughWindshield = true;
 
 
     }

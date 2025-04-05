@@ -477,7 +477,7 @@ public class LESpawnTask : SpawnTask
 
         RelationshipGroup rg = new RelationshipGroup("COP");
         ped.RelationshipGroup = rg;
-        //NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
+        NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
         bool isMale = true;
         CanineUnit PrimaryCop = new CanineUnit(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomDogName(isMale), PersonType.ModelName, World);
 

@@ -58,9 +58,9 @@ public class TimerBarController
     public void Update()
     {
         itemsDisplaying = 0;
-        UpdateStamina();
-        UpdateIntoxication();
-        UpdateSearchMode();
+        //UpdateStamina();
+        //UpdateIntoxication();
+        //UpdateSearchMode();
         UpdateRaceTimer();
         ItemsDisplaying = itemsDisplaying;
         TimerBarPool.OrderBy(x => x.Label);
@@ -138,6 +138,7 @@ public class TimerBarController
         {
             TimerBarPool.Add(toAdd);
         }
+
     }
 }
 

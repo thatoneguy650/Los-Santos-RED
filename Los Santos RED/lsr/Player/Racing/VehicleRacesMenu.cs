@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 
 public class VehicleRacesMenu
@@ -31,8 +32,13 @@ public class VehicleRacesMenu
     private UIMenuCheckboxItem RaceForPinksCheckbox;
     private AdvancedConversation AdvancedConversation;
     private UIMenuItem raceToMarkerPositionMenuItem;
+    private UIMenu opponentsSubMenu;
+    private UIMenuItem opponentsSubMenuItem;
+    private IDispatchableVehicles DispatchableVehicles;
+    private DispatchableVehicleGroup selectedOpponentVehicles;
+    private VehicleRaceTrack SelectedTrack;
 
-    public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation)
+    public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation, IDispatchableVehicles dispatchableVehicles)
     {
         MenuPool = menuPool;
         RaceMenu = raceSubMenu;
@@ -43,15 +49,18 @@ public class VehicleRacesMenu
         World = world;
         Player = player;
         AdvancedConversation = advancedConversation;
+        DispatchableVehicles = dispatchableVehicles;
     }
 
     public bool IsPointRace { get; private set; }
-
     public void Setup()
     {
         EntryPoint.WriteToConsole("VehicleRacesMenu START RAN");
         AddTrackSubMenu();
         AddBettingSubMenu();
+        AddOpponentsSubMenu();
+
+
         startRaceMenuItem = new UIMenuItem("Start Race", "Select to start the current race");
         startRaceMenuItem.Activated += (menu, item) =>
         {      
@@ -61,47 +70,69 @@ public class VehicleRacesMenu
             }            
         };
         RaceMenu.AddItem(startRaceMenuItem);
-
-        //RaceMenu.OnMenuOpen += (sender) =>
-        //{
-        //    if(PedExt != null && PedExt.Pedestrian.Exists())
-        //    {
-        //        PedExt.Pedestrian.BlockPermanentEvents = true;
-        //        PedExt.Pedestrian.Tasks.Pause(-1);
-        //    }
-        //};
-        //RaceMenu.OnMenuClose += (sender) =>
-        //{
-        //    if (PedExt != null && PedExt.Pedestrian.Exists())
-        //    {
-        //        PedExt.Pedestrian.BlockPermanentEvents = false;
-        //        PedExt.Pedestrian.Tasks.Clear();
-        //    }
-        //};
     }
-
-
-
     private bool AttemptStartRace(UIMenu uIMenu)
     {
-        if(SelectedPointDestination == null)
+        if(IsPointRace)
+        {
+            return AttemptStartPointRace(uIMenu);
+        }
+        else
+        {
+            return AttemptStartRegularRace(uIMenu);
+        }
+    }
+    private bool AttemptStartRegularRace(UIMenu uIMenu)
+    {
+        if (SelectedTrack == null)
+        {
+            Game.DisplaySubtitle("No Race Track Set");
+            return false;
+        }
+        VehicleRace newRace = new VehicleRace(SelectedTrack.Name, SelectedTrack);
+        uIMenu.Visible = false;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                MenuPool.CloseAllMenus();
+                while (Player.ActivityManager.IsInteractingWithLocation)
+                {
+                    GameFiber.Yield();
+                }
+                //GameFiber.Sleep(1000);
+                Player.RacingManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "RaceMeetupInteract");
+
+
+
+        
+        return true;
+    }
+    private bool AttemptStartPointRace(UIMenu uIMenu)
+    {
+        if (SelectedPointDestination == null)
         {
             Game.DisplaySubtitle("No Race Finish Set");
             return false;
         }
         Vector3 FinishPosition = NativeHelper.GetStreetPosition(SelectedPointDestination.EntrancePosition, false);
-        if(FinishPosition == Vector3.Zero)
+        if (FinishPosition == Vector3.Zero)
         {
             FinishPosition = SelectedPointDestination.EntrancePosition;
         }
-        VehicleRace newRace = new VehicleRace("PointToPointRace",new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0,FinishPosition) },null);
-
+        VehicleRace newRace = new VehicleRace("PointToPointRace", new VehicleRaceTrack("PointToPointRace", new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0, FinishPosition) }, null));
         //Player.ActivityManager.EndInteraction();
         uIMenu.Visible = false;
-
         AdvancedConversation?.DisposeConversation();
         GameFiber.Yield();
-        Player.RacingManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value,RaceForPinksCheckbox.Checked);
+        Player.RacingManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked);
         return true;
     }
 
@@ -119,6 +150,38 @@ public class VehicleRacesMenu
         {
             AddTracks();
         }
+    }
+    private void AddTracks()
+    {
+        foreach (VehicleRaceTrack vehicleRaceTrack in VehicleRaces.VehicleRaceTypeManager.VehicleRaceTracks)
+        {
+            UIMenuItem trackName = new UIMenuItem(vehicleRaceTrack.Name);
+            trackName.Activated += (sender, selectedItem) =>
+            {
+                SelectedTrack = vehicleRaceTrack;
+                Game.DisplaySubtitle($"Selected Track: {vehicleRaceTrack.Name}");
+            };
+            trackSubMenu.AddItem(trackName);
+        }
+    }
+    private void AddOpponentsSubMenu()
+    {
+        if(IsPointRace)
+        {
+            return;
+        }
+        opponentsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Opponents");
+        opponentsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
+        opponentsSubMenu.RemoveBanner();
+
+        UIMenuListScrollerItem<DispatchableVehicleGroup> opponentVehicleScroller = new UIMenuListScrollerItem<DispatchableVehicleGroup>("Vehicles", "Select opponent vehicle group list", DispatchableVehicles.AllVehicles.Where(x => x.DispatchbleVehicleGroupType == DispatchbleVehicleGroupType.Racing));
+        opponentVehicleScroller.Activated += (menu, item) =>
+        {
+            selectedOpponentVehicles = opponentVehicleScroller.SelectedItem;
+            Game.DisplaySubtitle($"Selected: {opponentVehicleScroller.SelectedItem.DispatchableVehicleGroupID}");
+        };
+        opponentsSubMenu.AddItem(opponentVehicleScroller);
+
     }
     private void AddPointDestinations()
     {
@@ -195,13 +258,7 @@ public class VehicleRacesMenu
         }
         
     }
-    private void AddTracks()
-    {
-        foreach (VehicleRace vehicleRace in VehicleRaces.VehicleRaceTypeManager.VehiclesRaces)
-        {
-            vehicleRace.AddTrackToMenu(MenuPool, RaceMenu);
-        }
-    }
+
     private void AddBettingSubMenu()
     {
         bettingSubMenu = MenuPool.AddSubMenu(RaceMenu, "Betting");

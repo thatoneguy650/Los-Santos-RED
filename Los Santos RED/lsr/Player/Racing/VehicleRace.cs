@@ -28,23 +28,22 @@ public class VehicleRace
     private IRaceable Player;
     private AIVehicleRacer AIWinner;
     private List<VehicleRacer> Finishers = new List<VehicleRacer>();
-    public VehicleRace(string name, List<VehicleRaceCheckpoint> raceCheckpoints, List<VehicleRaceStartingPosition> vehicleRaceStartingPositions)
+    public VehicleRace(string name, VehicleRaceTrack vehicleRaceTrack)
     {
         Name = name;
-        RaceCheckpoints = raceCheckpoints;
-        VehicleRaceStartingPositions = vehicleRaceStartingPositions;
+        VehicleRaceTrack = vehicleRaceTrack;
     }
     public VehicleRace()
     {
     }
 
-    public string Name { get; set; }
 
+    public string Name { get; set; }
     public bool IsCountdownEnabled { get; set; } = true;
     public bool AreRacerBlipsEnabled { get; set; } = true;
-    public List<VehicleRaceCheckpoint> RaceCheckpoints { get; set; }
-    public List<VehicleRaceStartingPosition> VehicleRaceStartingPositions { get; set; }
-
+    //public List<VehicleRaceCheckpoint> RaceCheckpoints { get; set; }
+    //public List<VehicleRaceStartingPosition> VehicleRaceStartingPositions { get; set; }
+    public VehicleRaceTrack VehicleRaceTrack { get; set; }
     public bool HasRaceStarted => GameTimeStartedRace > 0;
 
     [XmlIgnore]
@@ -66,7 +65,7 @@ public class VehicleRace
     public PlayerVehicleRacer PlayerRacer { get; set; }
     public void Setup(List<AIVehicleRacer> aivehicleRacers, PlayerVehicleRacer playerRacer, int betAmount, bool isForPinks)
     {
-        VehicleRaceCheckpoint finishCheckpoint = RaceCheckpoints.OrderByDescending(x => x.Order).FirstOrDefault();
+        VehicleRaceCheckpoint finishCheckpoint = VehicleRaceTrack.RaceCheckpoints.OrderByDescending(x => x.Order).FirstOrDefault();
         if(finishCheckpoint != null)
         {
             finishCheckpoint.IsFinish = true;
@@ -222,6 +221,8 @@ public class VehicleRace
             EntryPoint.WriteToConsole($"Player is winner giving {winAmount}");
         }
     }
+
+
     public void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
     {
         UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
@@ -229,7 +230,9 @@ public class VehicleRace
         UIMenuItem startRace = new UIMenuItem(Name);
         startRace.Activated += (sender, selectedItem) =>
         {
-            sender.Visible = false;
+
+                sender.Visible = false;
+            
         };
         vehicleRaceMenuItem.AddItem(startRace);
     }

@@ -38,7 +38,7 @@ public class VehicleRaces : IVehicleRaces
     private void DefaultConfig()
     {
         VehicleRaceTypeManager = new VehicleRaceTypeManager();
-        VehicleRaceTypeManager.VehiclesRaces = new List<VehicleRace>();
+        VehicleRaceTypeManager.VehicleRaceTracks = new List<VehicleRaceTrack>();
       
         List<VehicleRaceStartingPosition> vehicleRaceStartingPositions = new List<VehicleRaceStartingPosition>() 
         {
@@ -81,8 +81,8 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(6,new Vector3(1979.965f, 3889.917f, 31.88055f)),
 
         };
-        VehicleRace sandyDebug = new VehicleRace("Sandy Shores Debug Race", vehicleRaceCheckpoints, vehicleRaceStartingPositions);
-        VehicleRaceTypeManager.VehiclesRaces.Add(sandyDebug);
+        VehicleRaceTrack sandyDebug = new VehicleRaceTrack("Sandy Shores Debug Race", vehicleRaceCheckpoints, vehicleRaceStartingPositions);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(sandyDebug);
 
 
 
@@ -107,8 +107,8 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(9,new Vector3(-643.3143f, 130.383f, 56.60829f)),
             new VehicleRaceCheckpoint(10,new Vector3(-996.1489f, 71.36115f, 51.30039f)),
         };
-        VehicleRace vinewoodDebug = new VehicleRace("Vinewood Debug Race", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
-        VehicleRaceTypeManager.VehiclesRaces.Add(vinewoodDebug);
+        VehicleRaceTrack vinewoodDebug = new VehicleRaceTrack("Vinewood Debug Race", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodDebug);
 
         List<VehicleRaceStartingPosition> vehicleRaceStartingPositions3 = new List<VehicleRaceStartingPosition>()
         {
@@ -123,8 +123,8 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(1,new Vector3(-2172.701f, -344.3154f, 12.60608f)),
 
         };
-        VehicleRace vinewoodLONGDebug = new VehicleRace("Vinewood LONG Debug Race", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
-        VehicleRaceTypeManager.VehiclesRaces.Add(vinewoodLONGDebug);
+        VehicleRaceTrack vinewoodLONGDebug = new VehicleRaceTrack("Vinewood LONG Debug Race", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodLONGDebug);
         Serialization.SerializeParam(VehicleRaceTypeManager, ConfigFileName);
     }
 }

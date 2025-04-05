@@ -277,6 +277,24 @@ public class DebugVehicleSubMenu : DebugSubMenu
         vehicleItemsMenu.AddItem(VehicleExtraMenuItem);
 
 
+
+
+        UIMenuNumericScrollerItem<int> VehicleWheelTypeMenuItem = new UIMenuNumericScrollerItem<int>("Set Wheel Type", "Set the vehicle wheel type", 0, 12, 1) { Value = 1 };
+        VehicleWheelTypeMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(Player.InterestedVehicle.Vehicle, VehicleWheelTypeMenuItem.Value);
+                Game.DisplaySubtitle($"SET_VEHICLE_WHEEL_TYPE {VehicleWheelTypeMenuItem.Value} ");
+            }
+        };
+        vehicleItemsMenu.AddItem(VehicleWheelTypeMenuItem);
+
+
+
+        //NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(vehicleExt.Vehicle, WheelType);
+
+
         List<int> possibleToggles = new List<int>() { 17,18,19,20,21,22 };
 
         UIMenuListScrollerItem<int> VehicleToggleMenuItem = new UIMenuListScrollerItem<int>("Set Toggle", "Set the vehicle toggle", possibleToggles);

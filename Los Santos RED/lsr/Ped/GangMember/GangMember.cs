@@ -187,6 +187,11 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
+        if (Pedestrian.Exists() && Settings.SettingsManager.GangSettings.AllowFlyThroughWindshield)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)32, true);
+        }
+
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

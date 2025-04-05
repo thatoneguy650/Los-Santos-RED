@@ -16,8 +16,19 @@ public class DispatchableVehicleGroup
         DispatchableVehicleGroupID = dispatchableVehicleGroupID;
         DispatchableVehicles = dispatchableVehicles;
     }
-
+    public DispatchableVehicleGroup(string dispatchableVehicleGroupID, List<DispatchableVehicle> dispatchableVehicles, DispatchbleVehicleGroupType dispatchbleVehicleGroupType)
+    {
+        DispatchableVehicleGroupID = dispatchableVehicleGroupID;
+        DispatchableVehicles = dispatchableVehicles;
+        DispatchbleVehicleGroupType = dispatchbleVehicleGroupType;
+    }
     public string DispatchableVehicleGroupID { get; set; }
     public List<DispatchableVehicle> DispatchableVehicles { get; set; }
+    public DispatchbleVehicleGroupType DispatchbleVehicleGroupType { get; set; } = DispatchbleVehicleGroupType.Other;
+
+    public override string ToString()
+    {
+        return DispatchableVehicleGroupID.ToString();
+    }
 }
 

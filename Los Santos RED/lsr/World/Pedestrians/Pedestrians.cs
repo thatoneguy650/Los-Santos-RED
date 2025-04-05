@@ -900,9 +900,6 @@ public class Pedestrians : ITaskerReportable
         {
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)327, true);
         }
-
-
-
         if (Pedestrian.IsPersistent)
         {
             createdPedExt.WasPersistentOnCreate = true;

@@ -20,5 +20,7 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         VehicleOwnership VehicleOwnership { get; }
         Ped Character { get; }
+        VehicleExt PreviousVehicle { get; }
+        bool IsInVehicle { get; }
     }
 }

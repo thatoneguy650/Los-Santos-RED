@@ -43,12 +43,12 @@ public class VehicleRacer
             return;
         }
         VehicleRace = vehicleRace;
-        TargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == 0).FirstOrDefault();
+        TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == 0).FirstOrDefault();
         if(TargetCheckpoint == null)
         {
             return;
         }
-        AfterTargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == 1).FirstOrDefault();
+        AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == 1).FirstOrDefault();
     }
     public virtual void Update(VehicleRace vehicleRace)
     { 
@@ -72,8 +72,8 @@ public class VehicleRacer
             {
                 //EntryPoint.WriteToConsole($"Looking for {TargetCheckpoint.Order + 1}");
                 int nextOrder = TargetCheckpoint.Order + 1;
-                TargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
-                AfterTargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
+                TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
+                AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
                 //EntryPoint.WriteToConsole($"Assigned Next checkpoint {TargetCheckpoint.Order} at {TargetCheckpoint.Position}");
                 OnReachedCheckpoint();
             }
