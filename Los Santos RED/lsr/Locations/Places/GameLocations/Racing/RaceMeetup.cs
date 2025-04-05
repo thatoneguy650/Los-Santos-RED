@@ -25,6 +25,9 @@ public class RaceMeetup : GameLocation
     public override string TypeName { get; set; } = "Race Meetup";
     public override int MapIcon { get; set; } = 38;
     public override string ButtonPromptText { get; set; }
+
+
+    public List<string> SupportedTracks { get;set; } = new List<string>();
     public RaceMeetup(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -106,7 +109,7 @@ public class RaceMeetup : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             RaceSubMenu.SetBannerType(BannerImage);
         }
-        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles);
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks);
         vehicleRaceMenu.Setup();
     }
 

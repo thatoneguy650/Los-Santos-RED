@@ -74,6 +74,9 @@ public class VehicleRace
         PlayerRacer = playerRacer;
         BetAmount = betAmount;
         IsPinkSlipRace = isForPinks;
+
+
+        EntryPoint.WriteToConsole($"Starting Race IsPinkSlipRace{IsPinkSlipRace} BetAmount {BetAmount}");
     }
     public void Start(ITargetable targetable, IEntityProvideable World, ISettingsProvideable Settings, IRaceable player)
     {
@@ -144,7 +147,7 @@ public class VehicleRace
             DoCountdown();
         }     
         GameTimeStartedRace = Game.GameTime;
-        PlayerRacer.ShowMessage("GO!");
+        PlayerRacer.ShowMessage("GO!", "");
     }
     private void DoCountdown()
     {
@@ -152,29 +155,32 @@ public class VehicleRace
         GameTimeStartedCountdown = Game.GameTime;
         string toShow = "";
         string showing = "";
+        HudColor toShowColor = HudColor.RedDark;
         while (Game.GameTime - GameTimeStartedCountdown <= 3000)
         {
             NativeHelper.DisablePlayerMovementControl();
             if (Game.GameTime - GameTimeStartedCountdown < 1000)
             {
                 toShow = "3";
+                toShowColor = HudColor.RedDark;
             }
             else if (Game.GameTime - GameTimeStartedCountdown < 2000)
             {
                 toShow = "2";
+                toShowColor = HudColor.Red;
             }
             else if (Game.GameTime - GameTimeStartedCountdown < 3000)
             {
                 toShow = "1";
+                toShowColor = HudColor.OrangeDark;
             }
             if(toShow != showing)
             {
-                PlayerRacer.ShowMessage(toShow);
+                PlayerRacer.ShowMessage(toShow, "", HudColor.Black, toShowColor, 1000);
                 showing = toShow;
             }
             GameFiber.Yield();
         }
-        //EntryPoint.WriteToConsole("COUNTDOWN END");
     }
     public void OnRacerFinishedRace(VehicleRacer vehicleRacer)
     {
@@ -184,7 +190,7 @@ public class VehicleRace
         }
         Finishers.Add(vehicleRacer);
         int finalPosition = Finishers.Count();
-        if (PlayerRacer.IsPlayer && finalPosition == 1)
+        if (vehicleRacer.IsPlayer && finalPosition == 1)
         {
             IsPlayerWinner = true;
         }
@@ -196,7 +202,8 @@ public class VehicleRace
         }
         if(!PlayerRacer.HasFinishedRace && finalPosition == 1)
         {
-            PlayerRacer.ShowMessage($"Winner: {vehicleRacer.RacerName}", vehicleRacer.GetTotalTimeAsString());
+            //PlayerRacer.ShowMessage($"Winner: {vehicleRacer.RacerName}", vehicleRacer.GetTotalTimeAsString());
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", $"Winner: {vehicleRacer.RacerName}", "Checkered Flag", $"The race has been won by {vehicleRacer.RacerName}~n~Total Time: {vehicleRacer.GetTotalTimeAsString()}");
         }
     }
     public void OnPlayerFinishedRace()
@@ -205,10 +212,12 @@ public class VehicleRace
         GameTimePlayerFinishedRace = Game.GameTime;
         if (IsPinkSlipRace)
         {
+            EntryPoint.WriteToConsole("START HANDLE PINK SLIPS");
             HandlePinkSlips();
         }
         if(BetAmount > 0)
         {
+            EntryPoint.WriteToConsole("START HANDLE BETTING");
             HandleBetting();
         }
     }
@@ -223,24 +232,23 @@ public class VehicleRace
     }
 
 
-    public void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
-    {
-        UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
-        vehicleRaceMenuItem.RemoveBanner();
-        UIMenuItem startRace = new UIMenuItem(Name);
-        startRace.Activated += (sender, selectedItem) =>
-        {
-
-                sender.Visible = false;
-            
-        };
-        vehicleRaceMenuItem.AddItem(startRace);
-    }
+    //public void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
+    //{
+    //    UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
+    //    vehicleRaceMenuItem.RemoveBanner();
+    //    UIMenuItem startRace = new UIMenuItem(Name);
+    //    startRace.Activated += (sender, selectedItem) =>
+    //    {
+    //            sender.Visible = false;
+    //    };
+    //    vehicleRaceMenuItem.AddItem(startRace);
+    //}
     public void Cancel(IRaceable player)
     {
         ReturnBet(player);
         IsActive = false;
-        Game.DisplaySubtitle("You have cancelled the race");
+        //Game.DisplaySubtitle("You have cancelled the race");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Forfeit", "Race Status", "You have cancelled the race, any bets have been returned.");
     }
     private void ReturnBet(IRaceable player)
     {
@@ -252,13 +260,15 @@ public class VehicleRace
     public void Forfeit()
     {
         IsActive = false;
-        Game.DisplaySubtitle("You have forfeited the race");
+        //Game.DisplaySubtitle("You have forfeited the race");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Forfeit", "Race Status", "You have forfeited the race");
     }
     public void HandlePinkSlips()
     {
         //Game.FadeScreenOut(1000, true);
         if(IsPlayerWinner)
         {
+            EntryPoint.WriteToConsole("PINK SLIP WINNER");
             foreach(AIVehicleRacer airacer in AIVehicleRacers)
             {
                 if(airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists() && airacer.PedExt.Pedestrian.CurrentVehicle.Exists())
@@ -283,11 +293,13 @@ public class VehicleRace
                 if (airacer.VehicleExt != null)
                 {
                     Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", "You have acquired the losing race car!");
                 }
             }
         }
         else
         {
+            EntryPoint.WriteToConsole("PINK SLIP LOSER");
             if (Player.Character.CurrentVehicle.Exists())
             {
                 unsafe
@@ -303,8 +315,8 @@ public class VehicleRace
                 }
             }
             Player.VehicleOwnership.RemoveOwnershipOfVehicle(Player.CurrentVehicle);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Pink Slip", "Race Outcome", "You have lost the pinkslip to your car, please exit the vehicle.");
         }
-        //Game.FadeScreenIn(1000, false);
     }
 }
 

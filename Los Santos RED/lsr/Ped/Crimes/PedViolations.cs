@@ -258,21 +258,42 @@ public class PedViolations
             }
 
 
-            if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
+            //if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
+            //{
+            //    foreach (Cop cop in World.Pedestrians.AllPoliceList)
+            //    {
+            //        if (cop.Pedestrian.Exists() && cop.Pedestrian.IsDead)
+            //        {
+            //            if (cop.CheckKilledBy(PedExt.Pedestrian))//this is already logged so only comparing uints? no game calls
+            //            {
+            //                AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//add killing police observed, then get outta here
+            //                //AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//add TerroristActivity just for 4 stars on some peds
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+            //int copsKilledObserved = CrimesObserved.Where(x => x.ID == StaticStrings.KillingPoliceCrimeID).Count();
+            //if (PedExt.CopsKilled > copsKilledObserved)
+            //{
+            //    int difference = PedExt.CopsKilled - copsKilledObserved;
+            //    for (int i = 0; i < difference; i++)
+            //    {
+            //        AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.KillingPoliceCrimeID));
+            //        EntryPoint.WriteToConsole($"{PedExt.Handle} ADDING COP KILLED OBSERVED");
+            //    }
+            //}
+            if(PedExt.CopsKilled > 0)
             {
-                foreach (Cop cop in World.Pedestrians.AllPoliceList)
-                {
-                    if (cop.Pedestrian.Exists() && cop.Pedestrian.IsDead)
-                    {
-                        if (cop.CheckKilledBy(PedExt.Pedestrian))//this is already logged so only comparing uints? no game calls
-                        {
-                            AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//add killing police observed, then get outta here
-                            //AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//add TerroristActivity just for 4 stars on some peds
-                            break;
-                        }
-                    }
-                }
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.KillingPoliceCrimeID));
             }
+            if(PedExt.CopsKilled >= 3)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.TerroristActivityCrimeID));
+            }
+
+
+
             //GameFiber.Yield();
             if (PedExt.Pedestrian.Exists() && !PedExt.IsInVehicle)//do a yiled above
             {

@@ -1731,5 +1731,9 @@ namespace LSR.Vehicles
         {
            
         }
+        public override string ToString()
+        {
+            return GetCarName();
+        }
     }
 }

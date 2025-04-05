@@ -108,7 +108,7 @@ public class GangBrain : PedBrain
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReactedToByCivilians);
 
 
-            WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderByDescending(x=> x.Crime.ResultingWantedLevel).ThenBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             int PlayerCrimePriority = 99;
             foreach (WitnessedCrime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians))
             {

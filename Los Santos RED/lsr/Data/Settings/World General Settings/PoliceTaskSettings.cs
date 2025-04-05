@@ -173,10 +173,10 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
         InvestigationRespondingOfficers_Wanted1 = 2;
         InvestigationRespondingOfficers_Wanted2 = 4;
-        InvestigationRespondingOfficers_Wanted3 = 6;
-        InvestigationRespondingOfficers_Wanted4 = 8;
-        InvestigationRespondingOfficers_Wanted5 = 10;
-        InvestigationRespondingOfficers_Wanted6 = 14;
+        InvestigationRespondingOfficers_Wanted3 = 8;// 6;
+        InvestigationRespondingOfficers_Wanted4 = 10;// 8;
+        InvestigationRespondingOfficers_Wanted5 = 12;// 10;
+        InvestigationRespondingOfficers_Wanted6 = 16;// 14;
 
 
 

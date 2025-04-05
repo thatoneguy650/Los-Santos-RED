@@ -91,7 +91,7 @@ public class GangMember : PedExt, IWeaponIssuable
             }
         }
         ReputationReport.Update(perceptable, world, Settings);
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok       
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok       
     }
 
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
@@ -149,6 +149,9 @@ public class GangMember : PedExt, IWeaponIssuable
         IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
         WillCallPolice = false;
+
+
+        //EntryPoint.WriteToConsole($"{gt == null} {gt?.GangID} {gt?.ZoneInternalGameName} {gt?.PercentageWithSidearms} {gt?.PercentageWithLongGuns}");
 
         WillFight = RandomItems.RandomPercent(gt == null ? Gang.FightPercentage : gt.FightPercentage);
         WillFightPolice = RandomItems.RandomPercent(gt == null ? Gang.FightPolicePercentage : gt.FightPolicePercentage);

@@ -43,6 +43,10 @@ public class AIVehicleRacer : VehicleRacer
     }
     public void AssignTask(VehicleRace vehicleRace, ITargetable Targetable, IEntityProvideable World, ISettingsProvideable Settings)
     {
+        if(PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
         PedExt.CurrentTask = new GeneralRace(PedExt, PedExt, Targetable, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, null, Settings, vehicleRace, this);
         PedExt.CurrentTask.Start();
     }

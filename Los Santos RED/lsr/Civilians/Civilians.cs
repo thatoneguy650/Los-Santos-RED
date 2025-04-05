@@ -408,11 +408,43 @@ public class Civilians
     }
     public void UpdateTotalWanted()
     {
-        PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
-        Vector3 PoliceInterestPoint;
-        if (worstPed != null && worstPed.Pedestrian.Exists() && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        PedExt worstPed = null;//World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        int countLethalForce = 0;
+        int highestPedWantedLevel = 0;
+        foreach (PedExt criminal in World.Pedestrians.Citizens.Where(x => x.IsWanted && !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead))
         {
-            World.TotalWantedLevel = worstPed.WantedLevel;
+            if (worstPed == null || criminal.WantedLevel > worstPed.WantedLevel)
+            {
+                worstPed = criminal;
+                highestPedWantedLevel = worstPed.WantedLevel;
+            }
+            if (criminal.WantedLevel >= 3)
+            {
+                countLethalForce++;
+            }
+        }
+
+
+        if (highestPedWantedLevel >= 3 && countLethalForce >= 10)
+        {
+            highestPedWantedLevel = 6;
+        }
+        else if (highestPedWantedLevel >= 3 && countLethalForce >= 7)
+        {
+            highestPedWantedLevel = 5;
+        }
+        else  if (highestPedWantedLevel >= 3 && countLethalForce >= 4)
+        {
+            highestPedWantedLevel = 4;
+        }
+        
+        
+
+
+        Vector3 PoliceInterestPoint;
+        if (worstPed != null && worstPed.Pedestrian.Exists() && highestPedWantedLevel > PoliceRespondable.WantedLevel)// worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        {
+            World.TotalWantedLevel = highestPedWantedLevel;// worstPed.WantedLevel;
             PoliceInterestPoint = worstPed.PedViolations.PlacePoliceLastSeen;
         }
         else
@@ -443,7 +475,7 @@ public class Civilians
 
         if (worstPed != null)
         {
-            World.CitizenWantedLevel = worstPed.WantedLevel;
+            World.CitizenWantedLevel = highestPedWantedLevel;//worstPed.WantedLevel;
         }
         else
         {

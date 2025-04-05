@@ -168,18 +168,21 @@ public class PlayerVehicleRacer : VehicleRacer
         Player.GPSManager.Reset();
         Game.DisplaySubtitle("");
         string toShow = "";
-        if(finalPosition == 1)
+        HudColor toShowColor = HudColor.Black;
+        if (finalPosition == 1)
         {
             toShow = $"Winner";
+            toShowColor = HudColor.GreenDark;
         }
         else
         {
             toShow = $"Position: {finalPosition}";
+            toShowColor = HudColor.RedLight;
         }
         try
         {
             EntryPoint.WriteToConsole($"Finish Race Total MS {GameTimeFinishedRace - GameTimeStartedRace}");
-            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace));
+            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace), HudColor.Black,toShowColor, 3000);
         }
         catch (Exception ex)
         {
@@ -193,9 +196,9 @@ public class PlayerVehicleRacer : VehicleRacer
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
     }
-    public void ShowMessage(string v)
+    public void ShowMessage(string v, string v1, HudColor color1, HudColor color2, int time)
     {
-        BigMessage.MessageInstance.ShowColoredShard(v, "", HudColor.Black, HudColor.GreenDark, 1000);
+        BigMessage.MessageInstance.ShowColoredShard(v, v1, color1, color2, time);
         PlayCheckpointSound();
     }
     public void ShowMessage(string v, string v1)

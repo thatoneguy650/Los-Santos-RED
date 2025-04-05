@@ -61,7 +61,7 @@ public class EMT : PedExt
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok 
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, IShopMenus shopMenus)
     {

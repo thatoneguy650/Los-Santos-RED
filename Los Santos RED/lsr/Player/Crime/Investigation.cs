@@ -95,7 +95,7 @@ public class Investigation
 
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
 
-    private bool IsMinTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.MinTimeLimit;//60000;//short for testing was 180000
+    private bool IsMinTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= (Settings.SettingsManager.InvestigationSettings.MinTimeLimit + Settings.SettingsManager.InvestigationSettings.AdditionalTimeLimitScalar * InvestigationWantedLevel);//60000;//short for testing was 180000
 
     public bool IsNearPosition { get; private set; }
 

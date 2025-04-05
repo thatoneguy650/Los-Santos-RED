@@ -1016,7 +1016,16 @@ public class DispatchableVehicles_FEJ
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceRiata, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
-            toReturn.RequiredLiveries = new List<int>() { liveryID };
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
         }
         if (policeVehicleType == PoliceVehicleType.Marked)
         {

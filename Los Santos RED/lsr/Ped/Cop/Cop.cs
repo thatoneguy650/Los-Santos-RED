@@ -193,7 +193,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok 
     }
     private void OnStartedRespondingToInvestigation()
     {

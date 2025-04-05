@@ -2364,8 +2364,13 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         RaceMeetups = new List<RaceMeetup>()
         {
-            new RaceMeetup(new Vector3(-156.2684f,-1348.708f,29.91607f), 266.4901f, "Strawberry Race Meetup", "Meetup with other racers from the Strawberry area",""),
-        
+            new RaceMeetup(new Vector3(1528.889f, 3778.284f, 34.51155f), 206.599f, "Sandy Shores Race Meetup", "Meetup with other racers from the Sandy Shores area","")
+            { 
+                CameraPosition = new Vector3(1559.219f, 3781.481f, 40.93672f), 
+                CameraDirection = new Vector3(-0.9409853f, 0.2641553f, -0.2115861f), 
+                CameraRotation = new Rotator(-12.21532f, 1.222972E-05f, 74.3194f),
+                SupportedTracks = new List<string>() { "sandyloop1", "sandyloop2" }
+            },
         };
     }
     private void DefaultConfig_Bars()

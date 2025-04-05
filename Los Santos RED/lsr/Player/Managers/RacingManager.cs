@@ -253,7 +253,7 @@ public class RacingManager
     {
         RaceTimer = raceTimer;
     }
-    public bool StartRegularRace(VehicleRace race, int betAmount, bool isForPinks, DispatchableVehicleGroup selectedOpponentVehicles)
+    public bool StartRegularRace(VehicleRace race, int betAmount, bool isForPinks, DispatchableVehicleGroup selectedOpponentVehicles, int opponents)
     {
         if (race == null)
         {
@@ -267,9 +267,15 @@ public class RacingManager
         Game.FadeScreenOut(1000, true);
         Player.IsSetDisabledControls = true;
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
+        int spawnedRacers = 0;
         foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
         {
             vehicleRacers.Add(SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles));
+            spawnedRacers++;
+            if(spawnedRacers >= opponents)
+            {
+                break;
+            }
         }
         VehicleExt playerVehicle = Player.CurrentVehicle;
         if (playerVehicle == null)
@@ -285,6 +291,7 @@ public class RacingManager
         {
             Game.FadeScreenIn(1000);
             EntryPoint.WriteToConsole("NO PLAYER VEHICLE SELECTED");
+            Player.IsSetDisabledControls = false;
             return false;
         }
         if(!Player.IsInVehicle)

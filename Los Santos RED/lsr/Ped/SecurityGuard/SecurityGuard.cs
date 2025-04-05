@@ -234,7 +234,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok
     }
 
     protected override string GetPedInfoForDisplay()

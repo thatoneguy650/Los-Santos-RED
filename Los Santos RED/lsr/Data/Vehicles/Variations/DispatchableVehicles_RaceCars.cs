@@ -36,20 +36,20 @@ public class DispatchableVehicles_RaceCars
         Motorcycle();
 
         //General Groups
-        GroupsToAdd.Add(new DispatchableVehicleGroup("SportsCars_Racing", RegularSports_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("MuscleCars_Racing", RegularMuscle_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("SuperCars_Racing", RegularSuper_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("RallyCars_Racing", RegularRally_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("Motorcycles_Racing", RegularMotorcycle_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("OffRoad_Racing", RegularOffRoad_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("SportsCars_Racing","Sports Cars","Collection of sports cars", RegularSports_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("MuscleCars_Racing", "Muscle Cars", "Collection of muscle cars", RegularMuscle_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("SuperCars_Racing", "Super Cars", "Collection of super cars", RegularSuper_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("RallyCars_Racing", "Rally Cars", "Collection of rally cars", RegularRally_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Motorcycles_Racing", "Motorcycles", "Collection of racing motorcycles", RegularMotorcycle_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("OffRoad_Racing", "Off-Road", "Collection of off-road vehicles", RegularOffRoad_Group, DispatchbleVehicleGroupType.Racing));
 
         //specialized
-        GroupsToAdd.Add(new DispatchableVehicleGroup("Buffalo_Racing", BuffaloRegular_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("Gauntlet_Racing", GauntletRegular_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("Vigero_Racing", VigeroRegular_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("Dominator_Racing", DominatorRegular_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("OtherMuscle_Racing", OtherMuscleRegular_Group, DispatchbleVehicleGroupType.Racing));
-        GroupsToAdd.Add(new DispatchableVehicleGroup("MuscleRace_Racing", MuscleRace_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Buffalo_Racing", "Bravado Buffalos", "Collection of different generations of Bravado Buffalo", BuffaloRegular_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Gauntlet_Racing", "Bravado Gauntlets", "Collection of different generations of Bravado Gauntlet", GauntletRegular_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Vigero_Racing", "Declasse Vigero", "Collection of different generations of Declasse Ruiner", VigeroRegular_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Dominator_Racing", "Vapid Dominators", "Collection of different generations of Vapid Dominator", DominatorRegular_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("OtherMuscle_Racing", "Other Muscle Cars", "Collection of all muscle cars", OtherMuscleRegular_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("MuscleRace_Racing", "Race Muscle Cars", "Collection of muscle cars with racing liveries", MuscleRace_Group, DispatchbleVehicleGroupType.Racing));
 
 
     }
