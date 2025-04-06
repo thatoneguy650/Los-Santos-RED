@@ -37,7 +37,7 @@ public class DebugVehicleRaceSubMenu : DebugSubMenu
             UIMenuItem generalOne = new UIMenuItem(vrt.Name, "Start a the specific race.");
             generalOne.Activated += (sender, selectedItem) =>
             {
-                VehicleRace vr = new VehicleRace(vrt.Name, vrt);
+                VehicleRace vr = new VehicleRace(vrt.Name, vrt, Player.CurrentVehicle);
                 Player.RacingManager.StartDebugRace(vr);
 
                 sender.Visible = false;

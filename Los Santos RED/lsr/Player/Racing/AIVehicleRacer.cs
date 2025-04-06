@@ -74,7 +74,16 @@ public class AIVehicleRacer : VehicleRacer
     }
 
 
-
+    public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
+    {
+        if(finalPosition == 1 && vehicleRace != null && vehicleRace.BetAmount > 0)
+        {
+            int totalWinAmount = vehicleRace.BetAmount * vehicleRace.VehicleRacers.Count();
+            PedExt.Money += totalWinAmount;
+            EntryPoint.WriteToConsole($"OnFinishedRace AI {PedExt?.Handle} finalPosition:{finalPosition} totalWinAmount:{totalWinAmount}");
+        }  
+        base.OnFinishedRace(finalPosition, vehicleRace);
+    }
     public void ClearFront()
     {
         if (PedExt.IsInHelicopter || !PedExt.Pedestrian.Exists())
@@ -162,11 +171,7 @@ public class AIVehicleRacer : VehicleRacer
         }
     }
 
-    public override void HandleWinningBet(int betAmount)
-    {
-        PedExt.Money += betAmount;
-        base.HandleWinningBet(betAmount);
-    }
+
 
 
 

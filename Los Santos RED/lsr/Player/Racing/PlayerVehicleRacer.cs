@@ -22,12 +22,10 @@ public class PlayerVehicleRacer : VehicleRacer
     private BigMessageThread BigMessage;
     private IRaceable Player;
     private ISettingsProvideable Settings;
-
     public int CurrentPosition { get; private set; }
     public string CurrentTime { get; private set; } = "";
     public override string RacerName => Player.PlayerName;
     public override bool IsPlayer => true;
-
     public PlayerVehicleRacer(VehicleExt vehicleExt, IRaceable player, ISettingsProvideable settings) : base(vehicleExt)
     {
         Player = player;
@@ -42,10 +40,6 @@ public class PlayerVehicleRacer : VehicleRacer
         Player.GPSManager.AddGPSRoute("Checkpoint", TargetCheckpoint.Position, false);
         TotalRacers = vehicleRace.VehicleRacers.Count();
         BigMessage = new BigMessageThread(true);
-
-
-
-
         GameFiber raceGameFiber = GameFiber.StartNew(delegate
         {
             while (vehicleRace.IsActive && !HasFinishedRace)
@@ -64,26 +58,15 @@ public class PlayerVehicleRacer : VehicleRacer
                 }
                 GameFiber.Yield();
             }
-
         }, "RaceGameFiber");
-
-
-
     }
     public override void Update(VehicleRace vehicleRace)
     {
         base.Update(vehicleRace);
         CalculatePosition(vehicleRace);
-
-
-
-
-
-        //Game.DisplaySubtitle($"Position: {CurrentPosition}/{TotalRacers} Time:{CurrentTime}");
     }
     private void CalculatePosition(VehicleRace vehicleRace)
     {
-        //int playerCheckpoint = TargetCheckpoint.Order;
         if(TargetCheckpoint == null || vehicleRace == null || vehicleRace.VehicleRacers == null)
         {
             return;
@@ -91,8 +74,7 @@ public class PlayerVehicleRacer : VehicleRacer
         CurrentPosition = 1+vehicleRace.VehicleRacers.Where(x => x.TargetCheckpoint != null && x.TargetCheckpoint.Order > TargetCheckpoint.Order || (x.TargetCheckpoint.Order == TargetCheckpoint.Order && x.DistanceToCheckpoint < DistanceToCheckpoint)).Count();
         uint currentTime = Game.GameTime - GameTimeStartedRace;
         try
-        {
-            
+        {          
             CurrentTime = ConvertMSToTime(Game.GameTime - GameTimeStartedRace);
             Player.RacingManager.RaceTimer.Text = CurrentTime;
         }
@@ -103,16 +85,14 @@ public class PlayerVehicleRacer : VehicleRacer
             EntryPoint.WriteToConsole(ex.StackTrace);
             Game.DisplayHelp(ex.Message);
         }
-
     }
     private string ConvertMSToTime(uint TotalGameTime)
     {
         TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
-        string answer = string.Format("{0:D2}:{1:D2}.{2:D3}",
+        string answer = string.Format("{0:000}:{1:000}.{2:000}",
                                 t.Minutes,
                                 t.Seconds,
                                 t.Milliseconds);
-
         return answer;
     }
     private void CreateCheckpoint()
@@ -127,9 +107,7 @@ public class PlayerVehicleRacer : VehicleRacer
             toPointAt = AfterTargetCheckpoint.Position;
         }
         int checkpointType = TargetCheckpoint.IsFinish ? 4 : 0;
-        CheckpointID = NativeFunction.Natives.CREATE_CHECKPOINT<int>(checkpointType, TargetCheckpoint.Position, toPointAt, 10f, EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, 100, TargetCheckpoint.Order);
-
-        
+        CheckpointID = NativeFunction.Natives.CREATE_CHECKPOINT<int>(checkpointType, TargetCheckpoint.Position, toPointAt, 10f, EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, 100, TargetCheckpoint.Order);      
     }
     public override void Dispose()
     {
@@ -159,6 +137,16 @@ public class PlayerVehicleRacer : VehicleRacer
     }
     public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
     {
+        RemoveCheckpoints();
+        ShowFinishUI(finalPosition);
+        vehicleRace.OnPlayerFinishedRace();
+
+
+
+        base.OnFinishedRace(finalPosition, vehicleRace);
+    }
+    private void RemoveCheckpoints()
+    {
         if (CheckpointBlip.Exists())
         {
             CheckpointBlip.Delete();
@@ -166,7 +154,9 @@ public class PlayerVehicleRacer : VehicleRacer
         NativeFunction.Natives.DELETE_CHECKPOINT(CheckpointID);
         PlayCheckpointSound();
         Player.GPSManager.Reset();
-        Game.DisplaySubtitle("");
+    }
+    private void ShowFinishUI(int finalPosition)
+    {
         string toShow = "";
         HudColor toShowColor = HudColor.Black;
         if (finalPosition == 1)
@@ -182,15 +172,12 @@ public class PlayerVehicleRacer : VehicleRacer
         try
         {
             EntryPoint.WriteToConsole($"Finish Race Total MS {GameTimeFinishedRace - GameTimeStartedRace}");
-            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace), HudColor.Black,toShowColor, 3000);
+            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace), HudColor.Black, toShowColor, 3000);
         }
         catch (Exception ex)
         {
             Game.DisplayHelp(ex.Message);
         }
-        vehicleRace.OnPlayerFinishedRace();
-        Player.RacingManager.StopRacing();
-        base.OnFinishedRace(finalPosition, vehicleRace);
     }
     private void PlayCheckpointSound()
     {
@@ -212,9 +199,6 @@ public class PlayerVehicleRacer : VehicleRacer
         Player.RacingManager.StartRacing(vehicleRace);
         base.SetRaceStart(vehicleRace);
     }
-    public override void HandleWinningBet(int betAmount)
-    {
-        base.HandleWinningBet(betAmount);
-    }
+
 }
 

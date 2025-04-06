@@ -121,7 +121,7 @@ public class AdvancedConversation
     {
         RaceChallengeSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Challenge To Race");
         RaceChallengeSubMenu.RemoveBanner();
-        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceChallengeSubMenu, ConversationSimple.ConversingPed, VehicleRaces,PlacesOfInterest,World,Player, true, this, DispatchableVehicles, null);
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceChallengeSubMenu, ConversationSimple.ConversingPed, VehicleRaces,PlacesOfInterest,World,Player, true, this, DispatchableVehicles, null, null);
         vehicleRaceMenu.Setup();
     }
     private void AddQuestions()

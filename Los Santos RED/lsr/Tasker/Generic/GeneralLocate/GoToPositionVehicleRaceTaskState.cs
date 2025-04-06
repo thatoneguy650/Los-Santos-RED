@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class GoToPositionRacingTaskState : TaskState
+class GoToPositionVehicleRaceTaskState : TaskState
 {
     private PedExt PedGeneral;
     private IEntityProvideable World;
@@ -25,7 +25,7 @@ class GoToPositionRacingTaskState : TaskState
     private ILocationReachable LocationReachable;
     private uint GametimeLastRetasked;
 
-    public GoToPositionRacingTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placetoDriveTo, ILocationReachable locationReachable)
+    public GoToPositionVehicleRaceTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placetoDriveTo, ILocationReachable locationReachable)
     {
         PedGeneral = pedGeneral;
         Player = player;

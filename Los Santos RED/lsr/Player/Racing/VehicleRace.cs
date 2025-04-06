@@ -22,30 +22,28 @@ public class VehicleRace
     private uint GameTimeFinishedRace;
     private uint GameTimePlayerFinishedRace;
     private bool HasWinner;
-    private int BetAmount;
-    private bool IsPinkSlipRace;
-    private bool IsPlayerWinner;
+    private VehicleExt PlayerVehicle;
+
     private IRaceable Player;
     private AIVehicleRacer AIWinner;
     private List<VehicleRacer> Finishers = new List<VehicleRacer>();
-    public VehicleRace(string name, VehicleRaceTrack vehicleRaceTrack)
+    public VehicleRace(string name, VehicleRaceTrack vehicleRaceTrack, VehicleExt playerVehicle)
     {
         Name = name;
         VehicleRaceTrack = vehicleRaceTrack;
+        PlayerVehicle = playerVehicle;
     }
     public VehicleRace()
     {
     }
-
-
     public string Name { get; set; }
     public bool IsCountdownEnabled { get; set; } = true;
     public bool AreRacerBlipsEnabled { get; set; } = true;
-    //public List<VehicleRaceCheckpoint> RaceCheckpoints { get; set; }
-    //public List<VehicleRaceStartingPosition> VehicleRaceStartingPositions { get; set; }
     public VehicleRaceTrack VehicleRaceTrack { get; set; }
     public bool HasRaceStarted => GameTimeStartedRace > 0;
-
+    public int BetAmount { get; private set; }
+    public bool IsPlayerWinner { get; private set; }
+    public bool IsPinkSlipRace { get ; private set; }   
     [XmlIgnore]
     public bool IsActive { get; set; }
     [XmlIgnore]
@@ -74,8 +72,6 @@ public class VehicleRace
         PlayerRacer = playerRacer;
         BetAmount = betAmount;
         IsPinkSlipRace = isForPinks;
-
-
         EntryPoint.WriteToConsole($"Starting Race IsPinkSlipRace{IsPinkSlipRace} BetAmount {BetAmount}");
     }
     public void Start(ITargetable targetable, IEntityProvideable World, ISettingsProvideable Settings, IRaceable player)
@@ -140,6 +136,105 @@ public class VehicleRace
     {
         SpawnedBlips.Add(checkpointBlip);
     }
+    public void Cancel(IRaceable player)
+    {
+        ReturnBet(player);
+        IsActive = false;
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Cancelled", "Race Status", "You have cancelled the race, any bets have been returned.");
+    }
+    public void Forfeit()
+    {
+        IsActive = false;
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Forfeit", "Race Status", "You have forfeited the race");
+    }
+    public void OnRacerFinishedRace(VehicleRacer vehicleRacer)
+    {
+        if (GameTimeFinishedRace == 0)
+        {
+            GameTimeFinishedRace = Game.GameTime;
+        }
+        Finishers.Add(vehicleRacer);
+        int finalPosition = Finishers.Count();
+        if (vehicleRacer.IsPlayer && finalPosition == 1)
+        {
+            IsPlayerWinner = true;
+        }
+        vehicleRacer.OnFinishedRace(finalPosition, this);
+        EntryPoint.WriteToConsole($" OnRacerFinishedRace {vehicleRacer.RacerName} {finalPosition} IsPlayerWinner:{IsPlayerWinner}");
+        if (!PlayerRacer.HasFinishedRace && finalPosition == 1)
+        {
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Winner", $"{vehicleRacer.RacerName}", $"The race has been won by {vehicleRacer.RacerName}~n~Total Time: {vehicleRacer.GetTotalTimeAsString()}");
+        }
+    }
+    public void OnPlayerFinishedRace()
+    {
+        Player.RacingManager.StopRacing();
+        EntryPoint.WriteToConsole($"OnPlayerFinishedRace IsPlayerWinner: {IsPlayerWinner} GameTimePlayerFinishedRace{GameTimePlayerFinishedRace}");
+        GameTimePlayerFinishedRace = Game.GameTime;
+        if (IsPinkSlipRace)
+        {
+            EntryPoint.WriteToConsole("START HANDLE PINK SLIPS");
+            HandlePinkSlips();
+        }
+        if (BetAmount > 0)
+        {
+            EntryPoint.WriteToConsole("START HANDLE BETTING");
+            HandleBetting();
+        }
+    }
+    public void HandlePinkSlips()
+    {
+        if (IsPlayerWinner)
+        {
+            EntryPoint.WriteToConsole("PINK SLIP WINNER");
+            foreach (AIVehicleRacer airacer in AIVehicleRacers)
+            {
+                if (airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists() && airacer.PedExt.Pedestrian.CurrentVehicle.Exists())
+                {
+                    airacer.PedExt.Pedestrian.ClearLastVehicle();
+                    airacer.PedExt.AssignedVehicle = null;
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, airacer.PedExt.Pedestrian.CurrentVehicle, 27, 10000);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, airacer.PedExt.Pedestrian.CurrentVehicle, airacer.PedExt.DefaultEnterExitFlag);// 256);
+                        NativeFunction.CallByName<uint>("TASK_WANDER_STANDARD", 0, 0, 0);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", airacer.PedExt.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                if (airacer.VehicleExt != null)
+                {
+                    Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", "You have acquired the losing race car!");
+                }
+            }
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("PINK SLIP LOSER");
+            if (Player.Character.CurrentVehicle.Exists())
+            {
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Player.Character.CurrentVehicle, 27, 3000);
+                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Player.Character.CurrentVehicle, 0);// 256);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            Player.VehicleOwnership.RemoveOwnershipOfVehicle(Player.CurrentVehicle);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Pink Slip", "Race Outcome", "You have lost the pinkslip to your car, please exit the vehicle.");
+        }
+    }
+
     private void RacePrelimiary()
     {
         if(IsCountdownEnabled)
@@ -182,45 +277,6 @@ public class VehicleRace
             GameFiber.Yield();
         }
     }
-    public void OnRacerFinishedRace(VehicleRacer vehicleRacer)
-    {
-        if(GameTimeFinishedRace == 0)
-        {
-            GameTimeFinishedRace = Game.GameTime;
-        }
-        Finishers.Add(vehicleRacer);
-        int finalPosition = Finishers.Count();
-        if (vehicleRacer.IsPlayer && finalPosition == 1)
-        {
-            IsPlayerWinner = true;
-        }
-        vehicleRacer.OnFinishedRace(finalPosition, this);    
-        EntryPoint.WriteToConsole($" OnRacerFinishedRace {vehicleRacer.RacerName} {finalPosition} IsPlayerWinner:{IsPlayerWinner}");
-        if (finalPosition == 1 && BetAmount > 0)
-        {
-            vehicleRacer.HandleWinningBet(BetAmount * VehicleRacers.Count());
-        }
-        if(!PlayerRacer.HasFinishedRace && finalPosition == 1)
-        {
-            //PlayerRacer.ShowMessage($"Winner: {vehicleRacer.RacerName}", vehicleRacer.GetTotalTimeAsString());
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", $"Winner: {vehicleRacer.RacerName}", "Checkered Flag", $"The race has been won by {vehicleRacer.RacerName}~n~Total Time: {vehicleRacer.GetTotalTimeAsString()}");
-        }
-    }
-    public void OnPlayerFinishedRace()
-    {
-        EntryPoint.WriteToConsole($"OnPlayerFinishedRace IsPlayerWinner: {IsPlayerWinner} GameTimePlayerFinishedRace{GameTimePlayerFinishedRace}");
-        GameTimePlayerFinishedRace = Game.GameTime;
-        if (IsPinkSlipRace)
-        {
-            EntryPoint.WriteToConsole("START HANDLE PINK SLIPS");
-            HandlePinkSlips();
-        }
-        if(BetAmount > 0)
-        {
-            EntryPoint.WriteToConsole("START HANDLE BETTING");
-            HandleBetting();
-        }
-    }
     private void HandleBetting()
     {
         int winAmount = VehicleRacers.Count() * BetAmount;
@@ -230,92 +286,11 @@ public class VehicleRace
             EntryPoint.WriteToConsole($"Player is winner giving {winAmount}");
         }
     }
-
-
-    //public void AddTrackToMenu(MenuPool menuPool, UIMenu raceMenu)
-    //{
-    //    UIMenu vehicleRaceMenuItem = menuPool.AddSubMenu(raceMenu, Name);
-    //    vehicleRaceMenuItem.RemoveBanner();
-    //    UIMenuItem startRace = new UIMenuItem(Name);
-    //    startRace.Activated += (sender, selectedItem) =>
-    //    {
-    //            sender.Visible = false;
-    //    };
-    //    vehicleRaceMenuItem.AddItem(startRace);
-    //}
-    public void Cancel(IRaceable player)
-    {
-        ReturnBet(player);
-        IsActive = false;
-        //Game.DisplaySubtitle("You have cancelled the race");
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Forfeit", "Race Status", "You have cancelled the race, any bets have been returned.");
-    }
     private void ReturnBet(IRaceable player)
     {
         if(BetAmount > 0)
         {
             player.BankAccounts.GiveMoney(BetAmount, false);
-        }
-    }
-    public void Forfeit()
-    {
-        IsActive = false;
-        //Game.DisplaySubtitle("You have forfeited the race");
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Forfeit", "Race Status", "You have forfeited the race");
-    }
-    public void HandlePinkSlips()
-    {
-        //Game.FadeScreenOut(1000, true);
-        if(IsPlayerWinner)
-        {
-            EntryPoint.WriteToConsole("PINK SLIP WINNER");
-            foreach(AIVehicleRacer airacer in AIVehicleRacers)
-            {
-                if(airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists() && airacer.PedExt.Pedestrian.CurrentVehicle.Exists())
-                {
-                    airacer.PedExt.Pedestrian.ClearLastVehicle();
-                    airacer.PedExt.AssignedVehicle = null;
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, airacer.PedExt.Pedestrian.CurrentVehicle, 27, 10000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, airacer.PedExt.Pedestrian.CurrentVehicle, airacer.PedExt.DefaultEnterExitFlag);// 256);
-                        NativeFunction.CallByName<uint>("TASK_WANDER_STANDARD", 0, 0,0);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", airacer.PedExt.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
-
-                    //NativeFunction.Natives.TASK_WANDER_STANDARD(PedGeneral.Pedestrian, 0, 0);
-                }
-                if (airacer.VehicleExt != null)
-                {
-                    Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", "You have acquired the losing race car!");
-                }
-            }
-        }
-        else
-        {
-            EntryPoint.WriteToConsole("PINK SLIP LOSER");
-            if (Player.Character.CurrentVehicle.Exists())
-            {
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Player.Character.CurrentVehicle, 27, 3000);
-                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Player.Character.CurrentVehicle, 0);// 256);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
-            }
-            Player.VehicleOwnership.RemoveOwnershipOfVehicle(Player.CurrentVehicle);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Pink Slip", "Race Outcome", "You have lost the pinkslip to your car, please exit the vehicle.");
         }
     }
 }

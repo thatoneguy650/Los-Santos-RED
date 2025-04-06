@@ -25,14 +25,12 @@ public class RaceMeetup : GameLocation
     public override string TypeName { get; set; } = "Race Meetup";
     public override int MapIcon { get; set; } = 38;
     public override string ButtonPromptText { get; set; }
-
-
     public List<string> SupportedTracks { get;set; } = new List<string>();
+    public List<string> AllowedOpponentGroups { get; set; } = new List<string>();
     public RaceMeetup(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
     }
-
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Race at {Name}";
@@ -56,7 +54,6 @@ public class RaceMeetup : GameLocation
         {
             return;
         }
-
         if (!CanInteract)
         {
             return;
@@ -83,7 +80,7 @@ public class RaceMeetup : GameLocation
                 SetupLocationCamera(locationCamera, isInside, true);
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
-                GenerateBodyExportMenu();
+                GenerateRaceMenu();
                 ProcessInteractionMenu();
                 DisposeInteractionMenu();
                 DisposeCamera(isInside);
@@ -99,8 +96,9 @@ public class RaceMeetup : GameLocation
             }
         }, "RaceMeetupInteract");
     }
-    private void GenerateBodyExportMenu()
+    private void GenerateRaceMenu()
     {
+        //add tuner shop shit here? or the repair garage?
         RaceSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Find a Race");
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Find a race and setup the items.";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Barber;
@@ -109,7 +107,7 @@ public class RaceMeetup : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             RaceSubMenu.SetBannerType(BannerImage);
         }
-        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks);
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks, AllowedOpponentGroups);
         vehicleRaceMenu.Setup();
     }
 

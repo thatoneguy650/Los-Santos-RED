@@ -85,7 +85,7 @@ public class GeneralRace : ComplexTask, ILocationReachable
     private void GetNewTaskState()
     {
         EntryPoint.WriteToConsole($"AI RACER TASKED {VehicleRacer.TargetCheckpoint.Position}");
-        CurrentTaskState = new GoToPositionRacingTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, VehicleRacer.TargetCheckpoint.Position, this);   
+        CurrentTaskState = new GoToPositionVehicleRaceTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, VehicleRacer.TargetCheckpoint.Position, this);   
     }
 }
 

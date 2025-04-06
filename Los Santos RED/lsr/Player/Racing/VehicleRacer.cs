@@ -19,14 +19,13 @@ public class VehicleRacer
     protected VehicleRace VehicleRace;
     public VehicleRacer()
     {
-    }
 
+    }
     public VehicleRacer(VehicleExt vehicleExt)
     {
         VehicleExt = vehicleExt;
     }
     public float DistanceToCheckpoint { get; private set; }
-
     public VehicleExt VehicleExt { get; set; }
     public virtual string RacerName => "Racer";
     public bool HasFinishedRace => GameTimeFinishedRace > 0;
@@ -35,7 +34,6 @@ public class VehicleRacer
     {
 
     }
-
     public virtual void SetupRace(VehicleRace vehicleRace)
     {
         if(vehicleRace == null)
@@ -59,22 +57,16 @@ public class VehicleRacer
         DistanceToCheckpoint = TargetCheckpoint.Position.DistanceTo(VehicleExt.Vehicle);
         if (DistanceToCheckpoint <= 20f)
         {
-            //EntryPoint.WriteToConsole($"{PedExt?.Handle} have reached checkpoint {TargetCheckpoint.Order} at {TargetCheckpoint.Position}");
             if (TargetCheckpoint.IsFinish)
             {
-                //EntryPoint.WriteToConsole($"{PedExt?.Handle} HAVE FINISHED THE RACE");
-                //OnFinishedRace();
                 GameTimeFinishedRace = Game.GameTime;
                 vehicleRace.OnRacerFinishedRace(this);
-                //TargetCheckpoint = null;
             }
             else
             {
-                //EntryPoint.WriteToConsole($"Looking for {TargetCheckpoint.Order + 1}");
                 int nextOrder = TargetCheckpoint.Order + 1;
                 TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
                 AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
-                //EntryPoint.WriteToConsole($"Assigned Next checkpoint {TargetCheckpoint.Order} at {TargetCheckpoint.Position}");
                 OnReachedCheckpoint();
             }
         }        
@@ -106,7 +98,7 @@ public class VehicleRacer
         GameTimeStartedRace = Game.GameTime;
     }
 
-    public virtual void HandleWinningBet(int betAmount)
+    public virtual void GiveAIBetMoney(int betAmount)
     {
  
     }

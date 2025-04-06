@@ -184,7 +184,7 @@ namespace Mod
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
             VehicleManager = new VehicleManager(this, World, Settings);
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
-            RacingManager = new RacingManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
+            RacingManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -234,7 +234,7 @@ namespace Mod
         public InteriorManager InteriorManager { get; private set; }
         public WeatherReporting Weather { get; set; }
         public StealthManager StealthManager { get; private set; }
-        public RacingManager RacingManager { get; private set; }
+        public VehicleRaceManager RacingManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
