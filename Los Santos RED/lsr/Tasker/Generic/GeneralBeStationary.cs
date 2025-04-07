@@ -52,7 +52,7 @@ public class GeneralBeStationary : ComplexTask
             SubTaskName = CurrentTaskState.DebugName;
             CurrentTaskState.Update();
         }
-        EntryPoint.WriteToConsole("GENERAL RACE UPDATE RAN");
+        //EntryPoint.WriteToConsole("GENERAL RACE UPDATE RAN");
     }
     private void GetNewTaskState()
     {

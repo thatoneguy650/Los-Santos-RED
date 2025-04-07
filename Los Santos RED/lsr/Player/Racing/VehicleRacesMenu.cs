@@ -46,9 +46,11 @@ public class VehicleRacesMenu
     private int totalSelectedOpponents;
     private UIMenu opponentsVehicleGroupSubMenu;
     private UIMenuItem opponentsVehicleGroupSubMenuItem;
+    private int MaxBet;
 
     public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world,
-        IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation, IDispatchableVehicles dispatchableVehicles, List<string> supportedTracks, List<string> allowedOpponentGroups)
+        IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation, IDispatchableVehicles dispatchableVehicles, List<string> supportedTracks,
+        List<string> allowedOpponentGroups, int maxBex)
     {
         MenuPool = menuPool;
         RaceMenu = raceSubMenu;
@@ -62,6 +64,7 @@ public class VehicleRacesMenu
         DispatchableVehicles = dispatchableVehicles;
         SupportedTracks = supportedTracks;
         AllowedOpponentGroups = allowedOpponentGroups;
+        MaxBet = maxBex;
     }
 
     public bool IsPointRace { get; private set; }
@@ -175,10 +178,19 @@ public class VehicleRacesMenu
         opponentsSubMenu.AddItem(totalOpponentsMenuItem);
         opponentsVehicleGroupSubMenu = MenuPool.AddSubMenu(opponentsSubMenu, "Vehicles:");
         opponentsVehicleGroupSubMenuItem = opponentsSubMenu.MenuItems[opponentsSubMenu.MenuItems.Count() - 1];
+
+
+        bool selected = false;
+
         foreach (DispatchableVehicleGroup dvg in DispatchableVehicles.AllVehicles.Where(x => x.DispatchbleVehicleGroupType == DispatchbleVehicleGroupType.Racing))
         {
             if (AllowedOpponentGroups == null || !AllowedOpponentGroups.Any() || AllowedOpponentGroups.Contains(dvg.DispatchableVehicleGroupID))
             {
+                if (!selected)
+                {
+                    selectedOpponentVehicles = dvg;
+                    selected = true;
+                }
                 string fulldescription = dvg.Description;
                 fulldescription += "~n~~n~";
                 foreach (DispatchableVehicle dv in dvg.DispatchableVehicles)
@@ -237,11 +249,11 @@ public class VehicleRacesMenu
     private void UpdateStartRaceDescription()
     {
         string finalDescription = $"Finish Line: ~p~{SelectedPointDestination?.Name}~s~";
-        if(!IsPointRace)
+        if (!IsPointRace)
         {
             finalDescription = $"Track: {SelectedTrack?.Name}";
         }
-        if(RaceForPinksCheckbox?.Checked == true)
+        if (RaceForPinksCheckbox?.Checked == true)
         {
             finalDescription += $"~n~~r~Racing for Pinks~s~";
         }
@@ -251,11 +263,11 @@ public class VehicleRacesMenu
         }
         startRaceMenuItem.Description = finalDescription;
         trackSubMenuItem.RightLabel = SelectedPointDestination?.Name;
-        if(!IsPointRace)
+        if (!IsPointRace)
         {
             trackSubMenuItem.RightLabel = SelectedTrack?.Name;
         }
-        if(RaceForPinksCheckbox.Checked)
+        if (RaceForPinksCheckbox.Checked)
         {
             bettingSubMenuItem.RightLabel = "Pink Slip Race";
         }
@@ -267,11 +279,15 @@ public class VehicleRacesMenu
         {
             bettingSubMenuItem.RightLabel = "";
         }
-        opponentsSubMenuItem.RightLabel = $"({totalSelectedOpponents}) " + selectedOpponentVehicles?.Name;
-        opponentsVehicleGroupSubMenuItem.RightLabel = selectedOpponentVehicles?.Name;
+        if (opponentsSubMenuItem != null)
+        {
+
+            opponentsSubMenuItem.RightLabel = $"({totalSelectedOpponents}) " + selectedOpponentVehicles?.Name;
+            opponentsVehicleGroupSubMenuItem.RightLabel = selectedOpponentVehicles?.Name;
+        }
         if(IsPointRace)
         {
-            if ( selectedPlayerVehicle == null || SelectedPointDestination == null)
+            if (selectedPlayerVehicle == null || SelectedPointDestination == null)
             {
                 startRaceMenuItem.Enabled = false;
             }
@@ -292,14 +308,7 @@ public class VehicleRacesMenu
             }
         }
 
-        if(IsPointRace && (selectedOpponentVehicles == null || selectedPlayerVehicle == null || SelectedTrack == null))
-        {
-            startRaceMenuItem.Enabled = false;
-        }
-        else
-        {
-            startRaceMenuItem.Enabled = true;
-        }
+
 
     }
     private void AddBettingSubMenu()
@@ -311,7 +320,15 @@ public class VehicleRacesMenu
         {
             bettingSubMenu.RemoveBanner();
         }
-        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", "Enter the cash bet amount. Only winners are paid.", 0, Player.BankAccounts.GetMoney(false), 100) { Formatter = v => "$" + v + "" };
+        int scrollerUpperLimit = Player.BankAccounts.GetMoney(false);
+        if (MaxBet != -1)
+        {
+            if(MaxBet  > scrollerUpperLimit)
+            {
+                scrollerUpperLimit = MaxBet;
+            }
+        }
+        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", "Enter the cash bet amount. Only winners are paid.", 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
         RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false);
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
@@ -333,16 +350,12 @@ public class VehicleRacesMenu
             MoneyBetScoller.Enabled = !Checked;
             UpdateStartRaceDescription();
         };
-        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.IsOwnedByPlayer)
+        if(RaceForPinksCheckbox != null && (selectedPlayerVehicle == null || !selectedPlayerVehicle.IsOwnedByPlayer))
         {
             RaceForPinksCheckbox.Enabled = false;
-
         }
         bettingSubMenu.AddItem(MoneyBetScoller);
-        bettingSubMenu.AddItem(RaceForPinksCheckbox);
-
-
-        
+        bettingSubMenu.AddItem(RaceForPinksCheckbox);      
     }
     private bool AttemptStartRace(UIMenu uIMenu)
     {

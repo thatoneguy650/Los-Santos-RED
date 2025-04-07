@@ -2370,7 +2370,16 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.9409853f, 0.2641553f, -0.2115861f), 
                 CameraRotation = new Rotator(-12.21532f, 1.222972E-05f, 74.3194f),
                 SupportedTracks = new List<string>() { "sandyloop1", "sandyloop2" },
+                MaxBax = 3000,
                 AllowedOpponentGroups = new List<string>() {"MuscleCars_Racing","Buffalo_Racing","Gauntlet_Racing","Vigero_Racing","Dominator_Racing","OtherMuscle_Racing" },
+            },
+            new RaceMeetup(new Vector3(119.385f, 6626.409f, 31.95744f), 223.7455f, "Paleto Bay Race Meetup", "Meetup with other racers from the Paleto Bay area","")
+            {
+                CameraPosition = new Vector3(142.2736f, 6626.222f, 39.35808f), 
+                CameraDirection = new Vector3(-0.9640946f, 0.09018292f, -0.2497771f), 
+                CameraRotation = new Rotator(-14.46432f, 4.959682E-06f, 84.65601f),
+                SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1" },
+                MaxBax = 5000,
             },
         };
     }

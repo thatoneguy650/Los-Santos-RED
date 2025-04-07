@@ -1412,21 +1412,65 @@ public class DispatchableVehicles_FEJ
             toReturn.RequiredDashColorID = requiredColor;
         }
         toReturn.MatchDashColorToBaseColor = true;
+        //if (offroadWheelPercentage > 0)
+        //{
+        //    toReturn.WheelType = 3;//SUV
+        //    if (toReturn.VehicleMods == null)
+        //    {
+        //        toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+        //    }
+        //    toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, offroadWheelPercentage)
+        //    {
+        //        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+        //                {
+        //                    new DispatchableVehicleModValue(38,100),
+        //                },
+        //    });
+        //}
+        //else
+        //{
+        //    toReturn.WheelType = 3;//SUV
+        //    if (toReturn.VehicleMods == null)
+        //    {
+        //        toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+        //    }
+        //    toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
+        //    {
+        //        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+        //                {
+        //                    new DispatchableVehicleModValue(39,100),
+        //                },
+        //    });
+        //}
+
+
+
+
+        toReturn.WheelType = 3;//suv
+        if (toReturn.VehicleMods == null)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+        }
+        List<DispatchableVehicleModValue> wheelmodvalues = new List<DispatchableVehicleModValue>()
+        {
+            new DispatchableVehicleModValue(39,100),//new vapid wheels SUV
+        };
         if (offroadWheelPercentage > 0)
         {
-            toReturn.WheelType = 3;//SUV
-            if (toReturn.VehicleMods == null)
-            {
-                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
-            }
-            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, offroadWheelPercentage)
-            {
-                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+            wheelmodvalues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(38,100),
-                        },
-            });
+                            new DispatchableVehicleModValue(38,offroadWheelPercentage),
+                            new DispatchableVehicleModValue(39,80),
+                        };
         }
+        toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
+        {
+            DispatchableVehicleModValues = wheelmodvalues,
+        });
+
+
+
+
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
@@ -2509,34 +2553,18 @@ public class DispatchableVehicles_FEJ
             toReturn.RequiredDashColorID = requiredColor;
         }
         toReturn.MatchDashColorToBaseColor = true;
-        //if (lspdwheels)
-        //{
-        //    if (toReturn.RequiredVariation == null)
-        //    {
-        //        toReturn.RequiredVariation = new VehicleVariation();
-        //    }
-        //    toReturn.RequiredVariation.WheelType = 0;
-        //    toReturn.RequiredVariation.VehicleMods.Add(new VehicleMod(23, 0));
-        //    toReturn.RequiredVariation.PrimaryColor = -1;
-        //    toReturn.RequiredVariation.SecondaryColor = -1;
-        //    toReturn.RequiredVariation.DashboardColor = -1;
-        //}
-        if (hubcapWheelsPercentage > 0)
+        toReturn.WheelType = 3;//SUV
+        if (toReturn.VehicleMods == null)
         {
-            toReturn.WheelType = 0;//sport
-            if (toReturn.VehicleMods == null)
-            {
-                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
-            }
-            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, hubcapWheelsPercentage)
-            {
-                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
-                        {
-                            new DispatchableVehicleModValue(50,15),
-                            new DispatchableVehicleModValue(51,85),
-                        },
-            });
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>();
         }
+        toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
+        {
+            DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                    {
+                        new DispatchableVehicleModValue(39,100),
+                    },
+        });      
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
@@ -3365,34 +3393,28 @@ public class DispatchableVehicles_FEJ
             toReturn.RequiredDashColorID = requiredColor;
         }
         toReturn.MatchDashColorToBaseColor = true;
-
-
-        if (hubcapWheelsPercentage > 0)
+        toReturn.WheelType = 0;//sport
+        if (toReturn.VehicleMods == null)
         {
-            toReturn.WheelType = 0;//sport
-            if(toReturn.VehicleMods == null)
-            {
-                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
-            }
-            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, hubcapWheelsPercentage)
-            {
-                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
-                        {
-                            new DispatchableVehicleModValue(50,15),
-                            new DispatchableVehicleModValue(51,85),
-                        },
-            });
-            //if (toReturn.RequiredVariation == null)
-            //{
-            //    toReturn.RequiredVariation = new VehicleVariation();
-            //}
-            //toReturn.RequiredVariation.WheelType = 0;
-            //toReturn.RequiredVariation.VehicleMods.Add(new VehicleMod(23, 0));
-            //toReturn.RequiredVariation.PrimaryColor = -1;
-            //toReturn.RequiredVariation.SecondaryColor = -1;
-            //toReturn.RequiredVariation.DashboardColor = -1;
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>();
         }
-
+        List<DispatchableVehicleModValue> wheelmodvalues = new List<DispatchableVehicleModValue>()
+        {
+            new DispatchableVehicleModValue(52,100),//new vapid wheels
+        };
+        if(hubcapWheelsPercentage > 0)
+        {
+            wheelmodvalues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(50,(int)Math.Round(hubcapWheelsPercentage/4.0,0)),
+                            new DispatchableVehicleModValue(51,hubcapWheelsPercentage),
+                            new DispatchableVehicleModValue(52,80),
+                        };
+        }
+        toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
+        {
+            DispatchableVehicleModValues = wheelmodvalues,
+        });
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }

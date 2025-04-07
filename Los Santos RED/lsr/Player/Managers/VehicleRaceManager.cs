@@ -159,23 +159,19 @@ public class VehicleRaceManager
         int spawnedRacers = 0;
         foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
         {
-            vehicleRacers.Add(SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles));
+            AIVehicleRacer aIVehicleRacer = SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles);
+            if(aIVehicleRacer == null || aIVehicleRacer.PedExt == null || !aIVehicleRacer.PedExt.Pedestrian.Exists())
+            {
+                continue;
+            }
+            vehicleRacers.Add(aIVehicleRacer);
             spawnedRacers++;
             if(spawnedRacers >= opponents)
             {
                 break;
             }
         }
-        VehicleExt playerVehicle = Player.CurrentVehicle;
-        if (playerVehicle == null)
-        {
-            playerVehicle = Player.PreviousVehicle;
-        }
-        if(playerVehicle == null)
-        {
-            playerVehicle = Player.VehicleOwnership.OwnedVehicles.OrderBy(x => x.DistanceChecker.DistanceToPlayer).FirstOrDefault();
-        }
-        if(playerVehicle == null || !playerVehicle.Vehicle.Exists())
+        if (race.PlayerVehicle == null || !race.PlayerVehicle.Vehicle.Exists())
         {
             Game.FadeScreenIn(1000);
             EntryPoint.WriteToConsole("NO PLAYER VEHICLE SELECTED");
@@ -184,10 +180,10 @@ public class VehicleRaceManager
         }
         if(!Player.IsInVehicle)
         {
-            Player.Character.WarpIntoVehicle(playerVehicle.Vehicle, -1);
+            Player.Character.WarpIntoVehicle(race.PlayerVehicle.Vehicle, -1);
         }     
-        PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(playerVehicle, Player, Settings);
-        MoveVehicleToPosition(playerVehicle, race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order == 0).FirstOrDefault());
+        PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(race.PlayerVehicle, Player, Settings);
+        MoveVehicleToPosition(race.PlayerVehicle, race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order == 0).FirstOrDefault());
         race.Setup(vehicleRacers, playerRacer, betAmount, isForPinks);
         uint GameTimeStartedWatiing = Game.GameTime;
         Game.FadeScreenIn(1000, false);
@@ -262,7 +258,7 @@ public class VehicleRaceManager
         sl.StreetPosition = vehicleRaceStartingPosition.Position;
 
         CivilianSpawnTask cst = new CivilianSpawnTask(sl, aiRaceCar, aiRacePerson, addBlip, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus);
-        cst.ClearVehicleArea = false;
+        cst.ClearVehicleArea = true;
         cst.AllowAnySpawn = true;
         cst.AllowBuddySpawn = false;
         cst.PlacePedOnGround = false;

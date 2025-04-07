@@ -25,7 +25,11 @@ public class AIVehicleRacer : VehicleRacer
         {
             return;
         }
-        if(HasFinishedRace)
+        if (PedExt == null)
+        {
+            return;
+        }
+        if (HasFinishedRace)
         {
             return;
         }
@@ -64,10 +68,13 @@ public class AIVehicleRacer : VehicleRacer
         }
         if (VehicleExt != null)
         {
-            VehicleExt.RemoveBlip();
-            if(VehicleExt.Vehicle.Exists())
+            if (!VehicleExt.IsOwnedByPlayer)
             {
-                VehicleExt.Vehicle.IsPersistent = false;
+                VehicleExt.RemoveBlip();
+                if (VehicleExt.Vehicle.Exists())
+                {
+                    VehicleExt.Vehicle.IsPersistent = false;
+                }
             }
         }
         base.Dispose();
@@ -96,7 +103,7 @@ public class AIVehicleRacer : VehicleRacer
             return;
         }
 
-        EntryPoint.WriteToConsole("RACER CLEARED FRONT FOR ASSISTS");
+        //EntryPoint.WriteToConsole("RACER CLEARED FRONT FOR ASSISTS");
         if (PedExt.DistanceToPlayer <= 20f || raceCar.IsOnScreen)//50f
         {
             CarefulFrontDelete(raceCar);

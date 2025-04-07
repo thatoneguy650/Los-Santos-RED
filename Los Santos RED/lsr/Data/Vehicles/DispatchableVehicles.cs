@@ -2270,34 +2270,34 @@ public class DispatchableVehicles : IDispatchableVehicles
                             new DispatchableVehicleModValue(5,15),
                         },
                     },
-                    new DispatchableVehicleMod(48,100)
-                    {
+                    //new DispatchableVehicleMod(48,100)
+                    //{
   
-                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
-                        {
+                    //    DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                    //    {
 
 
 
-                            new DispatchableVehicleModValue(0,100),//LSPD
-                            new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
-                            new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
-                            new DispatchableVehicleModValue(3,100),//LSPD K9
-                            new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
-                            new DispatchableVehicleModValue(5,100),//LSPD
-                            new DispatchableVehicleModValue(20,100),//LSPD
+                    //        new DispatchableVehicleModValue(0,100),//LSPD
+                    //        new DispatchableVehicleModValue(1,100),//LSPD Medical examiner
+                    //        new DispatchableVehicleModValue(2,100),//LSPD CRIME SCENE
+                    //        new DispatchableVehicleModValue(3,100),//LSPD K9
+                    //        new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
+                    //        new DispatchableVehicleModValue(5,100),//LSPD
+                    //        new DispatchableVehicleModValue(20,100),//LSPD
 
-                            //new DispatchableVehicleModValue(10,100),//SAHP
-                            //new DispatchableVehicleModValue(11,100),//LSSD
-                            //new DispatchableVehicleModValue(13,100),//LSIAPD
-                            //new DispatchableVehicleModValue(15,100),//DPPD
-                            //new DispatchableVehicleModValue(17,100),//LSPP
+                    //        //new DispatchableVehicleModValue(10,100),//SAHP
+                    //        //new DispatchableVehicleModValue(11,100),//LSSD
+                    //        //new DispatchableVehicleModValue(13,100),//LSIAPD
+                    //        //new DispatchableVehicleModValue(15,100),//DPPD
+                    //        //new DispatchableVehicleModValue(17,100),//LSPP
 
-                            //new DispatchableVehicleModValue(22,100),//SAHP
-                            //new DispatchableVehicleModValue(23,100),//LSSD
-                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
-                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
-                        },
-                    },
+                    //        //new DispatchableVehicleModValue(22,100),//SAHP
+                    //        //new DispatchableVehicleModValue(23,100),//LSSD
+                    //        //new DispatchableVehicleModValue(27,100),//PARK RANGER
+                    //        //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
+                    //    },
+                    //},
                 },
         };
 
@@ -2314,18 +2314,6 @@ public class DispatchableVehicles : IDispatchableVehicles
                             new DispatchableVehicleModValue(3,100),//LSPD K9
                             new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
                             new DispatchableVehicleModValue(5,100),//LSPD
-                            new DispatchableVehicleModValue(20,100),//LSPD
-
-                            //new DispatchableVehicleModValue(10,100),//SAHP
-                            //new DispatchableVehicleModValue(11,100),//LSSD
-                            //new DispatchableVehicleModValue(13,100),//LSIAPD
-                            //new DispatchableVehicleModValue(15,100),//DPPD
-                            //new DispatchableVehicleModValue(17,100),//LSPP
-
-                            //new DispatchableVehicleModValue(22,100),//SAHP
-                            //new DispatchableVehicleModValue(23,100),//LSSD
-                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
-                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
                         },
             });
         }
@@ -2335,8 +2323,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(10,100),//SAHP
-                            new DispatchableVehicleModValue(22,100),//SAHP
+                            new DispatchableVehicleModValue(8,100),//SAHP
                         },
             });
         }
@@ -2346,8 +2333,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(11,100),//LSSD
-                            new DispatchableVehicleModValue(23,100),//LSSD
+                            new DispatchableVehicleModValue(9,100),//LSSD
                         },
             });
         }
@@ -2357,7 +2343,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(17,100),
+                            new DispatchableVehicleModValue(15,100),
                         },
             });
         }
@@ -2367,7 +2353,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(15,100),
+                            new DispatchableVehicleModValue(13,100),
                         },
             });
         }
@@ -2377,7 +2363,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(27,100),
+                            new DispatchableVehicleModValue(25,100),
                         },
             });
         }
@@ -2454,18 +2440,7 @@ public class DispatchableVehicles : IDispatchableVehicles
                             new DispatchableVehicleModValue(3,100),//LSPD K9
                             new DispatchableVehicleModValue(4,100),//LSPD Prisoner Transport
                             new DispatchableVehicleModValue(5,100),//LSPD
-                            new DispatchableVehicleModValue(20,100),//LSPD
 
-                            //new DispatchableVehicleModValue(10,100),//SAHP
-                            //new DispatchableVehicleModValue(11,100),//LSSD
-                            //new DispatchableVehicleModValue(13,100),//LSIAPD
-                            //new DispatchableVehicleModValue(15,100),//DPPD
-                            //new DispatchableVehicleModValue(17,100),//LSPP
-
-                            //new DispatchableVehicleModValue(22,100),//SAHP
-                            //new DispatchableVehicleModValue(23,100),//LSSD
-                            //new DispatchableVehicleModValue(27,100),//PARK RANGER
-                            //new DispatchableVehicleModValue(28,100),//PARK RANGER K9
                         },
             });
         }
@@ -2475,8 +2450,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(10,100),//SAHP
-                            new DispatchableVehicleModValue(22,100),//SAHP
+                            new DispatchableVehicleModValue(8,100),//SAHP
                         },
             });
         }
@@ -2486,8 +2460,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(11,100),//LSSD
-                            new DispatchableVehicleModValue(23,100),//LSSD
+                            new DispatchableVehicleModValue(9,100),//LSSD
                         },
             });
         }
@@ -2497,7 +2470,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(17,100),
+                            new DispatchableVehicleModValue(15,100),
                         },
             });
         }
@@ -2507,7 +2480,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(15,100),
+                            new DispatchableVehicleModValue(13,100),
                         },
             });
         }
@@ -2517,7 +2490,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(27,100),
+                            new DispatchableVehicleModValue(25,100),
                         },
             });
         }

@@ -22,7 +22,7 @@ public class VehicleRace
     private uint GameTimeFinishedRace;
     private uint GameTimePlayerFinishedRace;
     private bool HasWinner;
-    private VehicleExt PlayerVehicle;
+   // private VehicleExt PlayerVehicle;
 
     private IRaceable Player;
     private AIVehicleRacer AIWinner;
@@ -43,7 +43,8 @@ public class VehicleRace
     public bool HasRaceStarted => GameTimeStartedRace > 0;
     public int BetAmount { get; private set; }
     public bool IsPlayerWinner { get; private set; }
-    public bool IsPinkSlipRace { get ; private set; }   
+    public bool IsPinkSlipRace { get ; private set; }
+    public VehicleExt PlayerVehicle { get; private set; }
     [XmlIgnore]
     public bool IsActive { get; set; }
     [XmlIgnore]
@@ -104,7 +105,7 @@ public class VehicleRace
                 {
                     IsActive = false;
                 }
-                EntryPoint.WriteToConsole($"GameTimePlayerFinishedRace {GameTimePlayerFinishedRace} IsActive {IsActive}");
+                //EntryPoint.WriteToConsole($"GameTimePlayerFinishedRace {GameTimePlayerFinishedRace} IsActive {IsActive}");
                 if (GameTimePlayerFinishedRace > 0 && Game.GameTime - GameTimePlayerFinishedRace >= 10000)
                 {
                     IsActive = false;
@@ -193,18 +194,21 @@ public class VehicleRace
                 {
                     airacer.PedExt.Pedestrian.ClearLastVehicle();
                     airacer.PedExt.AssignedVehicle = null;
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, airacer.PedExt.Pedestrian.CurrentVehicle, 27, 10000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, airacer.PedExt.Pedestrian.CurrentVehicle, airacer.PedExt.DefaultEnterExitFlag);// 256);
-                        NativeFunction.CallByName<uint>("TASK_WANDER_STANDARD", 0, 0, 0);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", airacer.PedExt.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
+                    //unsafe
+                    //{
+                    //    int lol = 0;
+                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    //    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, airacer.PedExt.Pedestrian.CurrentVehicle, 27, 10000);
+                    //    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, airacer.PedExt.Pedestrian.CurrentVehicle, airacer.PedExt.DefaultEnterExitFlag);// 256);
+                    //    NativeFunction.CallByName<uint>("TASK_WANDER_STANDARD", 0, 0, 0);
+                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", airacer.PedExt.Pedestrian, lol);
+                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    //}
+                    airacer.PedExt.Pedestrian.CurrentVehicle.Velocity = Vector3.Zero;
+                    airacer.PedExt.FullyDelete();
+                    
                 }
                 if (airacer.VehicleExt != null)
                 {
@@ -216,21 +220,21 @@ public class VehicleRace
         else
         {
             EntryPoint.WriteToConsole("PINK SLIP LOSER");
-            if (Player.Character.CurrentVehicle.Exists())
+            if (PlayerVehicle != null && PlayerVehicle.Vehicle.Exists())
             {
                 unsafe
                 {
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Player.Character.CurrentVehicle, 27, 3000);
-                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Player.Character.CurrentVehicle, 0);// 256);
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, PlayerVehicle.Vehicle, 27, 10000);
+                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, PlayerVehicle.Vehicle, 0);// 256);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
             }
-            Player.VehicleOwnership.RemoveOwnershipOfVehicle(Player.CurrentVehicle);
+            Player.VehicleOwnership.RemoveOwnershipOfVehicle(PlayerVehicle);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Pink Slip", "Race Outcome", "You have lost the pinkslip to your car, please exit the vehicle.");
         }
     }
