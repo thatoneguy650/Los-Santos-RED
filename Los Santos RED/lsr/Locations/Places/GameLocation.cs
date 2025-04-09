@@ -601,7 +601,6 @@ public class GameLocation : ILocationDispatchable
                 if (Purchase())
                 {
                     MenuPool.CloseAllMenus();
-                    InteractionMenu.Clear();
                 }
             };
             subMenu.AddItem(businessManagementButton);
