@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rage;
 
 
 public class VehicleRaceTrack
@@ -27,7 +28,16 @@ public class VehicleRaceTrack
     public List<VehicleRaceCheckpoint> RaceCheckpoints { get; set; }
     public List<VehicleRaceStartingPosition> VehicleRaceStartingPositions { get; set; }
 
-
-
+    internal void AddDistanceOffset(Vector3 vector3)
+    {
+        foreach(VehicleRaceCheckpoint vehicleRaceCheckpoint in RaceCheckpoints)
+        {
+            vehicleRaceCheckpoint.Position += vector3;
+        }
+        foreach(VehicleRaceStartingPosition vehicleRaceStartingPosition in VehicleRaceStartingPositions)
+        {
+            vehicleRaceStartingPosition.Position += vector3;
+        }
+    }
 }
 

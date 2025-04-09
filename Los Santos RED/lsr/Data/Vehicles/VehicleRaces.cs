@@ -33,8 +33,16 @@ public class VehicleRaces : IVehicleRaces
         {
             EntryPoint.WriteToConsole($"No VehicleRaces config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_Liberty();
         }
     }
+
+    private void DefaultConfig_Liberty()
+    {
+        VehicleRaces_Liberty vehicleRaces_Liberty = new VehicleRaces_Liberty(this);
+        vehicleRaces_Liberty.DefaultConfig();
+    }
+
     private void DefaultConfig()
     {
         VehicleRaceTypeManager = new VehicleRaceTypeManager();
