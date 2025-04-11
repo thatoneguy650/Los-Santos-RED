@@ -149,7 +149,7 @@ public class TellerSpawnTask : SpawnTask
         {
             return null;
         }
-        EntryPoint.WriteToConsole($"SPAWNED WORKED TELLER AT {Store?.Name}");
+        //EntryPoint.WriteToConsole($"SPAWNED WORKED TELLER AT {Store?.Name}");
         return Vendor;
     }
     protected void SetupPed(Ped ped)

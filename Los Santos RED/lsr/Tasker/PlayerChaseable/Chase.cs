@@ -734,7 +734,13 @@ public class Chase : ComplexTask
 
 
         NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+
+
+        //if (!IsSetFollow && !IsSetPassive)
+        //{
+
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+        //}
         if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
         {
             NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
@@ -891,7 +897,7 @@ public class Chase : ComplexTask
             }
 
 
-            if(Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f)
+            if(Player.WantedLevel <= 2 && (Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f))
             {
                 NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 20f);
                 isSetSlow = true;

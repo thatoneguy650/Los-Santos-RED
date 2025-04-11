@@ -53,6 +53,10 @@ public class AIVehicleRacer : VehicleRacer
         }
         PedExt.CurrentTask = new GeneralRace(PedExt, PedExt, Targetable, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, null, Settings, vehicleRace, this);
         PedExt.CurrentTask.Start();
+
+
+        
+
     }
     public override void Dispose()
     {

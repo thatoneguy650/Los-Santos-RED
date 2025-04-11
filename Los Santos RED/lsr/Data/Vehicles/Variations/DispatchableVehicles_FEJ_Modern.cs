@@ -669,7 +669,7 @@ public class DispatchableVehicles_FEJ_Modern
         USNPSParkRangersVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_PoliceGresley(25,25,20,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"","",-1,75),
-            DispatchableVehicles_FEJ.Create_PoliceBison(40,40,15,false,PoliceVehicleType.Marked,-1,-1,-1,-1,-1,"","",-1,75),
+            DispatchableVehicles_FEJ.Create_PoliceBison(40,40,15,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"","",-1,75),
             DispatchableVehicles_FEJ.Create_PoliceTerminus(20,20,13,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"","",5),
             DispatchableVehicles_FEJ.Create_PoliceTerminus(20,20,13,false,PoliceVehicleType.SlicktopMarked,134,-1,-1,-1,-1,"","",5),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(10,10,17,false,PoliceVehicleType.Marked,134,-1,-1,-1,-1,"","",-1,75),

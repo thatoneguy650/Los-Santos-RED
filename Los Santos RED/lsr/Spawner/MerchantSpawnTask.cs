@@ -165,7 +165,7 @@ public class MerchantSpawnTask : SpawnTask
         {
             return null;
         }
-        EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Store?.Name}");
+        //EntryPoint.WriteToConsole($"SPAWNED WORKED VENDOR AT {Store?.Name}");
         return Vendor;
     }
     protected void SetupPed(Ped ped)

@@ -99,7 +99,7 @@ namespace LosSantosRED.lsr
                             }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
                             {
-                                Cop.AssistManager.PowerAssist(Player.IsWanted);
+                                Cop.AssistManager.PowerAssist(Player.WantedLevel, Player.VehicleSpeedMPH);
                             }
                         }
                         if (Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)

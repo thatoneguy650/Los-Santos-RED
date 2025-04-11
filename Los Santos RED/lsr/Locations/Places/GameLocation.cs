@@ -1198,7 +1198,7 @@ public class GameLocation : ILocationDispatchable
         }
         
         HandleVariableItems();
-        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
+       // EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
         Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
@@ -1208,12 +1208,12 @@ public class GameLocation : ILocationDispatchable
         merchantSpawnTask.SpawnWithAllWeapons = true;
         merchantSpawnTask.AllowBuddySpawn = false;
         merchantSpawnTask.AttemptSpawn();
-        EntryPoint.WriteToConsole($"ADDING VENDOR TO SPAWNED VENDORS LIST {Name} {VendorPersonType.ModelName}");
+        //EntryPoint.WriteToConsole($"ADDING VENDOR TO SPAWNED VENDORS LIST {Name} {VendorPersonType.ModelName}");
 
-        foreach(Merchant merchant in merchantSpawnTask.SpawnedVendors)
-        {
-            EntryPoint.WriteToConsole($"I HAVE CREATED {merchant.Handle}");
-        }
+        //foreach(Merchant merchant in merchantSpawnTask.SpawnedVendors)
+        //{
+        //    EntryPoint.WriteToConsole($"I HAVE CREATED {merchant.Handle}");
+        //}
 
         Vendors.AddRange(merchantSpawnTask.SpawnedVendors);
 

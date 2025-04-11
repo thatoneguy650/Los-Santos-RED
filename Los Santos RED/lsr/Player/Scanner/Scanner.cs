@@ -1855,28 +1855,28 @@ namespace LosSantosRED.lsr
                         AbortedAudio = false;
                         GameFiber.Sleep(1000);
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 1", 5);
+                    //EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 1", 5);
                     uint GameTimeStartedWaitingForAudio = Game.GameTime;
                     while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
                     {
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 2", 5);
+                    //EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 2", 5);
                     if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
                     {
                         RemoveAllNotifications();
                         NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                     }
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 3", 5);
+                    //EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 3", 5);
                     CurrentlyPlaying = MyAudioEvent;
                     CurrentlyPlayingCallIn = dispatchDescription;
                     CurrentlyPlayingDispatch = dispatchToPlay;
-                    EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 4", 5);
+                    //EntryPoint.WriteToConsole($"PLAY AUDIO LIST TEST 4", 5);
                     if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                     {
                         foreach (string audioname in soundsToPlayer)
                         {
-                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
                             if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
                             {
                                 if (Settings.SettingsManager.ScannerSettings.SetVolume)

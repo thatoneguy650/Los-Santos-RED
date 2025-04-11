@@ -20,28 +20,28 @@ public class CopAssistManager
     }
     public void UpdateCollision(bool IsWanted)
     {
-        if (Cop.Pedestrian.Exists() && Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
-        {
-            if (IsWanted)// && Cop.DistanceToPlayer > 15f)
-            {
-                if (!IsSetNoCollision)
-                {
-                    Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
-                    IsSetNoCollision = true;
-                }
+        //if (Cop.Pedestrian.Exists() && Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
+        //{
+        //    if (IsWanted)// && Cop.DistanceToPlayer > 15f)
+        //    {
+        //        if (!IsSetNoCollision)
+        //        {
+        //            Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
+        //            IsSetNoCollision = true;
+        //        }
 
-                //SetClosestVehicleNoCollision();
-            }
-            else
-            {
-                if (IsSetNoCollision)
-                {
-                    Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
-                    IsSetNoCollision = false;
-                }
-            }
+        //        //SetClosestVehicleNoCollision();
+        //    }
+        //    else
+        //    {
+        //        if (IsSetNoCollision)
+        //        {
+        //            Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
+        //            IsSetNoCollision = false;
+        //        }
+        //    }
 
-        }
+        //}
     }
     private void SetClosestVehicleNoCollision()
     {
@@ -142,51 +142,17 @@ public class CopAssistManager
             }
         }
     }
-    public void PowerAssist(bool isWanted)
+    public void PowerAssist(int wantedLevel, float playerVehicleSpeedMPH)
     {
-        if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())//if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && Cop.DistanceToPlayer >= 30f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
+        if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && wantedLevel >= 2 && playerVehicleSpeedMPH >= 20f && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())//if (Cop.IsDriver && Cop.DistanceToPlayer <= 200f && Cop.DistanceToPlayer >= 30f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
         {
             Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
             if (copCar.Exists())
             {
-
-
-
                 NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 2.0f);
-
-
-                //if (!IsCheatFiberRunning)
-                //{
-                //    //EntryPoint.WriteToConsoleTestLong($"POWER ASSIST STARTED {Cop.Handle}");
-                //    IsCheatFiberRunning = true;
-                //    GameFiber.StartNew(delegate
-                //    {
-                //        try
-                //        {
-                //            while (copCar.Exists() && IsCheatFiberRunning)
-                //            {
-                //                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
-                //                GameFiber.Sleep(100);
-                //                //GameFiber.Yield();
-                //            }
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                //            //EntryPoint.ModController.CrashUnload();
-                //        }
-                //    }, "cheatfiber");
-                //}
+              
             }
-            //else
-            //{
-            //    IsCheatFiberRunning = false;
-            //}
         }
-        //else
-        //{
-        //    IsCheatFiberRunning = false;
-        //}
     }
 }
 

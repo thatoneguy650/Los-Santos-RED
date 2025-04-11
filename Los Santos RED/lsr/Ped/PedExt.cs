@@ -42,7 +42,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     protected bool HasGivenTooCloseWarning;
     protected uint GameTimePlayerLastDamagedCarOnFoot;
     protected uint GameTimePlayerLastStoodOnCar;
-
+    //private Vehicle CurrentVehicle;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
@@ -743,10 +743,17 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             if (IsInVehicle)//got in
             {
                 //EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Got In Vehicle", 5);
+                //if(Pedestrian.CurrentVehicle.Exists())
+                //{
+                //    CurrentVehicle = Pedestrian.CurrentVehicle;
+                //}
+
+
                 GameTimeLastEnteredVehicle = Game.GameTime;
             }
             else//got out
             {
+                //CurrentVehicle = null;
                 //EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Go Out of Vehicle", 5);
                 GameTimeLastExitedVehicle = Game.GameTime;
             }
@@ -1085,7 +1092,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         Blip myBlip = Pedestrian.AttachBlip();
 
-        EntryPoint.WriteToConsole($"PEDEXT BLIP CREATED");
+        //EntryPoint.WriteToConsole($"PEDEXT BLIP CREATED");
 
         NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
         NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(BlipName);
@@ -1786,5 +1793,26 @@ ENDENUM
             CiviliansKilled++;
             EntryPoint.WriteToConsole($"{Handle} LOGGING KILLING CIVILIAN TOTAL {CiviliansKilled}");
         }
+    }
+
+    public void OnVehicleHealthDecreased(int amount, bool isCollision)
+    {
+        EntryPoint.WriteToConsole("PED OnVehicleHealthDecreased");
+        if(!Pedestrian.Exists())
+        {
+            return;
+        }
+        if(!Pedestrian.IsPersistent)
+        {
+            return;
+        }
+        if (!Settings.SettingsManager.CivilianSettings.InjureOnVehicleCrash || amount < Settings.SettingsManager.CivilianSettings.VehicleCrashInjureMinVehicleDamageTrigger || !IsInVehicle)
+        {
+            return;
+        }
+        float HealthToRemove = amount * Settings.SettingsManager.CivilianSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(0.8f,1.2f);
+        int healthToRemove = (int)Math.Ceiling(HealthToRemove);
+        Pedestrian.Health = Pedestrian.Health - healthToRemove;
+        EntryPoint.WriteToConsole($"PED EVENT: REMOVING HEALTH IN CRASH DamageAmount:{amount} isCollision{isCollision} healthToRemoved:{healthToRemove} CurrentHealth{Pedestrian.Health}");
     }
 }

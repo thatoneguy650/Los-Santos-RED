@@ -99,7 +99,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public Color Color => Color.FromName(ColorString);
     public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : Classification == Classification.Security ? ResponseType.Security : ResponseType.LawEnforcement;
 
-    public float CorruptMemberPercentage { get; set; } = 30f;
+    public float CorruptMemberPercentage { get; set; } = 10f;
 
     public string CorruptMenuGroup { get; set; } = StaticStrings.CorruptDealerMenuGroupID;
 

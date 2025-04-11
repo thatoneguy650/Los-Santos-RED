@@ -699,6 +699,26 @@ namespace LSR.Vehicles
                 GameFiber.Yield();//TR Added 5
             }
         }
+
+
+
+        public void Update(IEntityProvideable world)
+        {
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
+            if (Health > Vehicle.Health)
+            {
+                GameFiber.Yield();
+                OnHealthDecreased(world);
+                EntryPoint.WriteToConsole("NON PLAYER VEHICLE HEALTH DECREASE LOGGED");
+            }
+            else
+            {
+                Health = Vehicle.Health;
+            }
+        }
         public void OnPoliceSeenCar()
         {
             if (Vehicle.Exists() && DescriptionColor != Vehicle.PrimaryColor)
@@ -935,6 +955,37 @@ namespace LSR.Vehicles
             EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
         }
+
+        private void OnHealthDecreased(IEntityProvideable world)
+        {
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            EntryPoint.WriteToConsole("PED OnHealthDecreased");
+            if (!(Game.GameTime - GameTimeLastUpdatedDamage >= 1000))
+            {
+                Health = Vehicle.Health;
+                return;
+            }
+            GameTimeLastUpdatedDamage = Game.GameTime;
+            int Damage = Health - Vehicle.Health;
+            bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(Vehicle);
+
+
+            //need to get all passenger and KABLAMMO THEM
+            int occupants = 0;
+            foreach(Ped ped in Vehicle.Occupants)
+            {
+                PedExt occupant = world.Pedestrians.GetPedExt(ped.Handle);
+                occupant?.OnVehicleHealthDecreased(Damage, Collided);
+                occupants++;
+            }
+            EntryPoint.WriteToConsole($"PED EVENT Vehicle Crashed Damage {Damage} Collided {Collided} occupants{occupants}", 5);
+            Health = Vehicle.Health;
+        }
+
+
         public void Setup()
         {
             if(!Vehicle.Exists())

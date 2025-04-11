@@ -266,6 +266,17 @@ public class CivilianSettings : ISettingsDefaultable
     public uint NeverSeenPlayerRecognizeIncreaseTime { get; set; }
     public uint SeenPlayerRecognizeDecreaseTime { get; set; }
 
+
+
+
+
+
+    public bool InjureOnVehicleCrash { get; set; }
+    public float VehicleCrashInjureScalar { get; set; }
+    public int VehicleCrashInjureMinVehicleDamageTrigger { get; set; }
+
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -399,6 +410,13 @@ public class CivilianSettings : ISettingsDefaultable
         HidingInUnknownVehicleRecognizeIncreaseTime = 500;
         NeverSeenPlayerRecognizeIncreaseTime = 500;
         SeenPlayerRecognizeDecreaseTime = 1000;
+
+
+        InjureOnVehicleCrash = true;
+
+        VehicleCrashInjureScalar = 0.7f;
+
+        VehicleCrashInjureMinVehicleDamageTrigger = 35;
 
 
     }

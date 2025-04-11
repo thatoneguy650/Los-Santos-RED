@@ -1745,18 +1745,18 @@ public class LEDispatcher
         Agency agency = null;
         List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel, spawnZone, spawnStreet);
 
-        EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 1 {string.Join(",",PossibleAgencies)}");
+        //EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 1 {string.Join(",",PossibleAgencies)}");
 
         if(PossibleAgencies == null)
         {
             return agency;
         }
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
-        EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 2 SELECTED {agency?.FullName}");
+        //EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 2 SELECTED {agency?.FullName}");
         if (agency == null)
         {
             agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel, spawnZone, spawnStreet).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
-            EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 3 SELECTED {agency?.FullName}");
+            //EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 3 SELECTED {agency?.FullName}");
         }
         if (agency == null)
         {
