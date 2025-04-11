@@ -147,7 +147,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     }
     private void GenerateBusinessMenu(bool isInside)
     {
-        InteractionMenu.Clear();
         AddInquireItems();
         AddInteractionItems(isInside);
     }
@@ -375,7 +374,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.Visible = true;
-        InteractionMenu.Clear();
         bool withAnimations = Interior?.IsTeleportEntry == true;
         if (withItems)
         {
