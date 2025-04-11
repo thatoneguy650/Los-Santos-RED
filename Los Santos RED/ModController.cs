@@ -148,7 +148,7 @@ namespace LosSantosRED.lsr
 
             if (!string.IsNullOrEmpty(Config.ConfigName))
             {
-                EntryPoint.WriteToConsole($"Loaded {ConfigName}", 0);
+                EntryPoint.WriteToConsole($"Loaded {ConfigName}", 0); 
             }
         }
         public void SetupFileOnly()
