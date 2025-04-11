@@ -94,6 +94,7 @@ public class VehicleSettings : ISettingsDefaultable
     public bool InjureOnVehicleCrash { get; set; }
     public float VehicleCrashInjureScalar { get; set; }
     public int VehicleCrashInjureMinVehicleDamageTrigger { get; set; }
+    public float VehicleCrashInjureRandomizePercentage { get; set; }
     public bool FuelUsesAnimationsAndProps { get; set; }
     public int PlayerEnteredPersistantVehicleLimit { get; set; }
 
@@ -102,8 +103,6 @@ public class VehicleSettings : ISettingsDefaultable
     public float DebugLastX { get; set; }
     public float DebugLastY { get; set; }
     public float DebugLastZ { get; set; }
-
-
 
 
     [OnDeserialized()]
@@ -171,6 +170,8 @@ public class VehicleSettings : ISettingsDefaultable
         InjureOnVehicleCrash = true;
 
         VehicleCrashInjureScalar = 0.1f;// 0.35f;
+
+        VehicleCrashInjureRandomizePercentage = 0.3f;
 
         VehicleCrashInjureMinVehicleDamageTrigger = 55;
 

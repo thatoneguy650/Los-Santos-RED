@@ -1280,7 +1280,7 @@ namespace Mod
             }
             if (Settings.SettingsManager.VehicleSettings.InjureOnVehicleCrash && (amount >= Settings.SettingsManager.VehicleSettings.VehicleCrashInjureMinVehicleDamageTrigger) && IsInVehicle)
             {
-                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar;
+                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(1.0f - Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage, 1.0f + Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage); ;
                 int healthToRemove = (int)Math.Ceiling(HealthToRemove);
                 HealthManager.ChangeHealth(-1 * healthToRemove);
                 HealthState.SimpleRefresh(this);

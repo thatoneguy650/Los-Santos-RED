@@ -274,7 +274,7 @@ public class CivilianSettings : ISettingsDefaultable
     public bool InjureOnVehicleCrash { get; set; }
     public float VehicleCrashInjureScalar { get; set; }
     public int VehicleCrashInjureMinVehicleDamageTrigger { get; set; }
-
+    public float VehicleCrashInjureRandomizePercentage { get; set; }
 
 
     [OnDeserialized()]
@@ -417,7 +417,7 @@ public class CivilianSettings : ISettingsDefaultable
         VehicleCrashInjureScalar = 0.7f;
 
         VehicleCrashInjureMinVehicleDamageTrigger = 35;
-
+        VehicleCrashInjureRandomizePercentage = 0.3f;
 
     }
 

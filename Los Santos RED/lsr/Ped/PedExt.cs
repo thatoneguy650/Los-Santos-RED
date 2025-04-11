@@ -1810,7 +1810,7 @@ ENDENUM
         {
             return;
         }
-        float HealthToRemove = amount * Settings.SettingsManager.CivilianSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(0.8f,1.2f);
+        float HealthToRemove = amount * Settings.SettingsManager.CivilianSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(1.0f - Settings.SettingsManager.CivilianSettings.VehicleCrashInjureRandomizePercentage, 1.0f + Settings.SettingsManager.CivilianSettings.VehicleCrashInjureRandomizePercentage);
         int healthToRemove = (int)Math.Ceiling(HealthToRemove);
         Pedestrian.Health = Pedestrian.Health - healthToRemove;
         EntryPoint.WriteToConsole($"PED EVENT: REMOVING HEALTH IN CRASH DamageAmount:{amount} isCollision{isCollision} healthToRemoved:{healthToRemove} CurrentHealth{Pedestrian.Health}");
