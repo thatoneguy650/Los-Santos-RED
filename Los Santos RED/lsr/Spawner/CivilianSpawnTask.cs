@@ -206,6 +206,7 @@ public class CivilianSpawnTask : SpawnTask
         bool isMale = PersonType.IsMale(ped);
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
         PedExt CreatedPedExt = new PedExt(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), "", World);
+        CreatedPedExt.WasModSpawned = true;
         World.Pedestrians.AddEntity(CreatedPedExt);
         CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);
         if (ped.Exists())

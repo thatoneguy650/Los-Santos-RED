@@ -144,6 +144,13 @@ public class LSRHUDSettings : ISettingsDefaultable
     public int RacingPositionJustificationID { get; set; }
 
 
+    public float RacingPositionPositionTimeY { get; set; }
+
+    public float RacingPositionPositionLapY { get; set; }
+
+
+    public float RacingPositionSmallerScale { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -277,11 +284,16 @@ public class LSRHUDSettings : ISettingsDefaultable
 
 
         RacingPositionPositionX = 0.98f;
-        RacingPositionPositionY = 0.6f;
+        RacingPositionPositionY = 0.55f;
         RacingPositionScale = 2.5f;
         RacingPositionColor = "White";
         RacingPositionFont = (int)GTAFont.FontChaletLondon;
         RacingPositionJustificationID = 2;
+
+
+        RacingPositionPositionTimeY = 0.7f;
+        RacingPositionPositionLapY = 0.75f;
+        RacingPositionSmallerScale = 0.7f;
 
     }
 }

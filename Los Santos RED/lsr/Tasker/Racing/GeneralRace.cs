@@ -76,16 +76,16 @@ public class GeneralRace : ComplexTask, ILocationReachable
         }
         if (PedGeneral != null && PedGeneral.Pedestrian.Exists())
         {
-            //NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
+            NativeFunction.Natives.SET_DRIVER_ABILITY(PedGeneral.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(PedGeneral.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, 1.0f);
         }
-        EntryPoint.WriteToConsole("GENERAL RACE UPDATE RAN");
+       //EntryPoint.WriteToConsole("GENERAL RACE UPDATE RAN");
     }
     private void GetNewTaskState()
     {
         EntryPoint.WriteToConsole($"AI RACER TASKED {VehicleRacer.TargetCheckpoint.Position}");
-        CurrentTaskState = new GoToPositionRacingTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, VehicleRacer.TargetCheckpoint.Position, this);   
+        CurrentTaskState = new GoToPositionVehicleRaceTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, VehicleRacer.TargetCheckpoint.Position, this);   
     }
 }
 

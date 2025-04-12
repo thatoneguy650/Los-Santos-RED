@@ -164,12 +164,12 @@ namespace LosSantosRED.lsr.Locations
 
             if(isMostlyStationary != IsMostlyStationary)
             {
-                EntryPoint.WriteToConsole($"OnIsMostlyStationaryChanged IsMostlyStationary:{IsMostlyStationary}");
+                //EntryPoint.WriteToConsole($"OnIsMostlyStationaryChanged IsMostlyStationary:{IsMostlyStationary}");
                 isMostlyStationary = IsMostlyStationary;
             }
             if(isVeryStationary != IsVeryStationary)
             {
-                EntryPoint.WriteToConsole($"OnIsVeryStationaryChanged IsVeryStationary:{IsVeryStationary}");
+                //EntryPoint.WriteToConsole($"OnIsVeryStationaryChanged IsVeryStationary:{IsVeryStationary}");
                 isVeryStationary = IsVeryStationary;
             }
         }

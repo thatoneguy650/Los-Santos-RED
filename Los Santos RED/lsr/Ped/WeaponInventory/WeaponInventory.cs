@@ -103,7 +103,7 @@ public class WeaponInventory
     }
     public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson, bool usesLongGunWheneverPossible, bool giveLongGunInitially)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
+       // EntryPoint.WriteToConsole($"{WeaponOwner.Handle} IssueWeapons issueMelee{issueMelee} issueSidearm {issueSidearm} issueLongGun {issueLongGun}");
         bool hasOVerride = false;
         if (issueMelee)
         {
@@ -158,7 +158,7 @@ public class WeaponInventory
         }
         if (issueLongGun)
         {
-            EntryPoint.WriteToConsole($"IssueWeapons issueLongGun START {WeaponOwner.Handle} Override Long Guns{dispatchablePerson?.OverrideAgencyLongGuns} {dispatchablePerson?.DebugName} {dispatchablePerson?.ModelName}");
+            //EntryPoint.WriteToConsole($"IssueWeapons issueLongGun START {WeaponOwner.Handle} Override Long Guns{dispatchablePerson?.OverrideAgencyLongGuns} {dispatchablePerson?.DebugName} {dispatchablePerson?.ModelName}");
             if (dispatchablePerson?.OverrideAgencyLongGuns == true)
             {
                 hasOVerride = true;
@@ -175,7 +175,7 @@ public class WeaponInventory
             }
             else
             {
-                EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN {WeaponOwner.Handle}");
+                //EntryPoint.WriteToConsole($"IssueWeapons issueLongGun RAN {WeaponOwner.Handle}");
                 LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
             }
             if (giveLongGunInitially && LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
@@ -192,7 +192,7 @@ public class WeaponInventory
         }
 
         UsesLongGunWheneverPossible = usesLongGunWheneverPossible;
-        EntryPoint.WriteToConsole($"PED {WeaponOwner.Handle} UsesLongGunWheneverPossible:{UsesLongGunWheneverPossible}");
+        //EntryPoint.WriteToConsole($"PED {WeaponOwner.Handle} UsesLongGunWheneverPossible:{UsesLongGunWheneverPossible}");
 
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
@@ -203,7 +203,7 @@ public class WeaponInventory
     {
         if (prevHasHeavyWeaponOnPerson != HasHeavyWeaponOnPerson)
         {
-            EntryPoint.WriteToConsole($"HasHeavyWeaponOnPerson CHANGED FOR {WeaponOwner.Handle} tO {HasHeavyWeaponOnPerson}");
+           // EntryPoint.WriteToConsole($"HasHeavyWeaponOnPerson CHANGED FOR {WeaponOwner.Handle} tO {HasHeavyWeaponOnPerson}");
             prevHasHeavyWeaponOnPerson = HasHeavyWeaponOnPerson;
         }
 
@@ -219,7 +219,7 @@ public class WeaponInventory
 
         if(!HasHeavyWeaponOnPerson && ShouldHaveHeavyWeaponOnPerson)
         {
-            EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET VALUE HasHeavyWeaponOnPerson 3 {UsesLongGunWheneverPossible}");
             HasHeavyWeaponOnPerson = true;
         }
 

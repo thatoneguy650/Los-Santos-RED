@@ -90,7 +90,7 @@ public class HealthState
         CurrentHealth = Health;
         HasSetup = true;
     }
-    public void Update(IPoliceRespondable CurrentPlayer)
+    public void Update(IPoliceRespondable CurrentPlayer, IEntityProvideable world)
     {
         if(!HasSetup)
         {
@@ -105,7 +105,7 @@ public class HealthState
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
                 MyPed.OnDeath(CurrentPlayer);
-                FlagDamage(CurrentPlayer);
+                FlagDamage(CurrentPlayer, world);
                 return;
             }
             if (CurrentHealth < Health || CurrentArmor < Armor)
@@ -114,8 +114,8 @@ public class HealthState
                 if (MyPed.Pedestrian.Exists() && MyPed.HasExistedFor >= 2000)//4000)//10000)
                 {
                     GameFiber.Yield();
-                    //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
-                    FlagDamage(CurrentPlayer);
+                    EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                    FlagDamage(CurrentPlayer, world);
                     if (Settings.SettingsManager.DamageSettings.ModifyAIDamage)
                     {
                         ModifyDamage();
@@ -283,7 +283,7 @@ public class HealthState
     }
 
 
-    private void FlagDamage(IPoliceRespondable CurrentPlayer)
+    private void FlagDamage(IPoliceRespondable CurrentPlayer, IEntityProvideable world)
     {
         if(CurrentPlayer == null || !MyPed.Pedestrian.Exists())//only flag the player we want to have the damage
         {
@@ -297,6 +297,15 @@ public class HealthState
                 MyPed.WasKilledByPlayer = true;
                 MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.Violations.DamageViolations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+            }
+            else if (MyPed.KillerHandle != 0)
+            {
+                EntryPoint.WriteToConsole($"PED KILLED ANOTHER PED Killer:{MyPed.KillerHandle} Killed: {MyPed.Handle}");
+                PedExt killer = world.Pedestrians.LivingPeople.Where(x => x.Handle == MyPed.KillerHandle).FirstOrDefault();
+                if (killer != null)
+                {
+                    killer.OnKilledPed(MyPed);
+                }
             }
         }
         else

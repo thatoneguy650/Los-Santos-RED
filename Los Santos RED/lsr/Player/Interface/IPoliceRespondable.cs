@@ -84,6 +84,7 @@ namespace LosSantosRED.lsr.Interface
         Cop ClosestCopDriverToPlayer { get; set; }
         Inventory Inventory { get; }
         bool IsInWantedActiveMode { get; }
+        float VehicleSpeedMPH { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);

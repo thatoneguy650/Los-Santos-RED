@@ -17,16 +17,17 @@ public class VehicleRacer
     protected uint GameTimeStartedRace;
     protected uint GameTimeFinishedRace;
     protected VehicleRace VehicleRace;
+
     public VehicleRacer()
     {
-    }
 
+    }
     public VehicleRacer(VehicleExt vehicleExt)
     {
         VehicleExt = vehicleExt;
     }
     public float DistanceToCheckpoint { get; private set; }
-
+    public int CurrentLap { get; protected set; } = 1;
     public VehicleExt VehicleExt { get; set; }
     public virtual string RacerName => "Racer";
     public bool HasFinishedRace => GameTimeFinishedRace > 0;
@@ -35,7 +36,6 @@ public class VehicleRacer
     {
 
     }
-
     public virtual void SetupRace(VehicleRace vehicleRace)
     {
         if(vehicleRace == null)
@@ -43,12 +43,12 @@ public class VehicleRacer
             return;
         }
         VehicleRace = vehicleRace;
-        TargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == 0).FirstOrDefault();
+        TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == 0).FirstOrDefault();
         if(TargetCheckpoint == null)
         {
             return;
         }
-        AfterTargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == 1).FirstOrDefault();
+        AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == 1).FirstOrDefault();
     }
     public virtual void Update(VehicleRace vehicleRace)
     { 
@@ -59,23 +59,29 @@ public class VehicleRacer
         DistanceToCheckpoint = TargetCheckpoint.Position.DistanceTo(VehicleExt.Vehicle);
         if (DistanceToCheckpoint <= 20f)
         {
-            //EntryPoint.WriteToConsole($"{PedExt?.Handle} have reached checkpoint {TargetCheckpoint.Order} at {TargetCheckpoint.Position}");
             if (TargetCheckpoint.IsFinish)
             {
-                //EntryPoint.WriteToConsole($"{PedExt?.Handle} HAVE FINISHED THE RACE");
-                //OnFinishedRace();
-                GameTimeFinishedRace = Game.GameTime;
-                vehicleRace.OnRacerFinishedRace(this);
-                //TargetCheckpoint = null;
+                if (vehicleRace.NumberOfLaps == CurrentLap)
+                {
+                    GameTimeFinishedRace = Game.GameTime;
+                    vehicleRace.OnRacerFinishedRace(this);
+                }
+                else
+                {
+                    CurrentLap++;
+                    int nextOrder = 0;
+                    TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
+                    AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
+                    OnReachedCheckpoint(vehicleRace);
+                    EntryPoint.WriteToConsole($"RACER HAS PASSED FINAL LAP RESETTING CurrentLap{CurrentLap}");
+                }
             }
             else
             {
-                //EntryPoint.WriteToConsole($"Looking for {TargetCheckpoint.Order + 1}");
                 int nextOrder = TargetCheckpoint.Order + 1;
-                TargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
-                AfterTargetCheckpoint = vehicleRace.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
-                //EntryPoint.WriteToConsole($"Assigned Next checkpoint {TargetCheckpoint.Order} at {TargetCheckpoint.Position}");
-                OnReachedCheckpoint();
+                TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
+                AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
+                OnReachedCheckpoint(vehicleRace);
             }
         }        
     }
@@ -93,7 +99,7 @@ public class VehicleRacer
 
         return answer;
     }
-    public virtual void OnReachedCheckpoint()
+    public virtual void OnReachedCheckpoint(VehicleRace vehicleRace)
     {
 
     }
@@ -106,7 +112,7 @@ public class VehicleRacer
         GameTimeStartedRace = Game.GameTime;
     }
 
-    public virtual void HandleWinningBet(int betAmount)
+    public virtual void GiveAIBetMoney(int betAmount)
     {
  
     }

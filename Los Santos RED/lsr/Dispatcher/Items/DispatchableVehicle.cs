@@ -72,6 +72,9 @@ public class DispatchableVehicle
 
     public List<string> RequestedPlateTypes { get; set; }
 
+
+    public int WheelType { get; set; } = -1;
+
     public string GetDescription()
     {
         string description = "";
@@ -253,6 +256,12 @@ public class DispatchableVehicle
         {
             return;
         }
+
+        if(WheelType != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(vehicleExt.Vehicle, WheelType);
+        }
+
         if (VehicleMods != null && VehicleMods.Any())
         { 
             //EntryPoint.WriteToConsole("SETTING VEHICLE MODS");

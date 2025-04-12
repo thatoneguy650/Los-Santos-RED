@@ -32,5 +32,7 @@ namespace LosSantosRED.lsr.Interface
         void ClearSpawned(bool includeCivilians);
         void AddBlip(Blip myBlip);
         void RemoveBlips();
+        void SetTrafficDisabled();
+        void SetTrafficEnabled();
     }
 }

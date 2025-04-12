@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
         bool IsInWantedActiveMode { get; }
-        RacingManager RacingManager { get; }
+        VehicleRaceManager RacingManager { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

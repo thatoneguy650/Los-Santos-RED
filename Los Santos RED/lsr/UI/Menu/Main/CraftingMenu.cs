@@ -125,6 +125,10 @@ public class CraftingMenu : ModUIMenu
             }
             if (ingredientsSatisfied != ingredientsToSatisfy || quantity==0)
             {
+                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
+                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
+                itemMenu.Enabled = false;
+                uIMenu.AddItem(itemMenu);
                 continue;
             }
             if (quantity > 0)

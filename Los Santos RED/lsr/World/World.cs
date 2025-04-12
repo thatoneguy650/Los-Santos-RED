@@ -32,6 +32,7 @@ namespace Mod
         private Blip TotalWantedBlip;
         private float CurrentSpawnMultiplier;
         private bool isSettingDensity;
+        private bool isTrafficDisabled;
 
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups,
             IWeapons weapons, ICrimes crimes, ITimeControllable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IModItems modItems, IPedGroups pedGroups, ILocationTypes locationTypes,
@@ -105,10 +106,9 @@ namespace Mod
         }
         public void Update()
         {
-            if(Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
-            {
-                SetDensity();
-            }
+   
+            SetDensity();
+            
             if (Settings.SettingsManager.WorldSettings.AllowPoliceBackupBlip)
             {
                 if (PoliceBackupPoint == Vector3.Zero)
@@ -214,33 +214,40 @@ namespace Mod
         public void SetDensity()
         {
             CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.DefaultSpawnMultiplier;// 1.0f;
-            if (TotalWantedLevel >= 10)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
+            if (Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
+            { 
+                if (TotalWantedLevel >= 10)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
+                }
+                else if (TotalWantedLevel >= 9)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier;
+                }
+                else if (TotalWantedLevel >= 8)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted8Multiplier;
+                }
+                else if (TotalWantedLevel >= 7)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted7Multiplier;
+                }
+                else if (TotalWantedLevel >= 6)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier;
+                }
+                else if (TotalWantedLevel == 5)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier;
+                }
+                else if (TotalWantedLevel == 4)
+                {
+                    CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
+                }
             }
-            else if (TotalWantedLevel >= 9)
+            if(isTrafficDisabled)
             {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier;
-            }
-            else if (TotalWantedLevel >= 8)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted8Multiplier;
-            }
-            else if (TotalWantedLevel >= 7)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted7Multiplier;
-            }
-            else if (TotalWantedLevel >= 6)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier;
-            }
-            else if (TotalWantedLevel == 5)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier;
-            }
-            else if(TotalWantedLevel == 4)
-            {
-                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
+                CurrentSpawnMultiplier = 0.0f;
             }
             if (CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
             {
@@ -260,7 +267,7 @@ namespace Mod
                             GameFiber.Yield();
                         }
                         isSettingDensity = false;
-                        //EntryPoint.WriteToConsoleTestLong($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
+                        EntryPoint.WriteToConsole($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
                     }
                     catch (Exception ex)
                     {
@@ -323,14 +330,13 @@ namespace Mod
         {
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
         }
-
-        //public void StoreEntities()
-        //{
-        //    //EntryPoint.ModController.AllObjects = Rage.World.GetAllObjects().ToList();
-        //    //GameFiber.Yield();
-        //    //EntryPoint.ModController.AllPeds = Rage.World.GetAllPeds().ToList();
-        //    //GameFiber.Yield();
-        //   // EntryPoint.ModController.AllVehicles = Rage.World.GetAllVehicles().ToList();
-        //}
+        public void SetTrafficDisabled()
+        {
+            isTrafficDisabled = true;
+        }
+        public void SetTrafficEnabled()
+        {
+            isTrafficDisabled = false;
+        }
     }
 }

@@ -97,5 +97,10 @@ public static class RandomItems
     {
         throw new NotImplementedException();
     }
+
+    internal static float GetRandomNumber(object value1, object value2)
+    {
+        throw new NotImplementedException();
+    }
 }
 

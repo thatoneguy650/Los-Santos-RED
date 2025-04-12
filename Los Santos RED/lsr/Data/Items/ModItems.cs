@@ -3428,6 +3428,8 @@ public class ModItems : IModItems
             new WeaponItem("Vom Feuer PMP","The european answer to the drive-by question.", true, ItemType.Weapons) { VanillaName = "Tactical SMG", ModelName = "weapon_tecpistol",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
 
 
+
+            
             //AR
             new WeaponItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false, ItemType.Weapons) { VanillaName = "Assault Rifle", ModelName = "weapon_assaultrifle",PoliceFindDuringPlayerSearchPercentage = 100 },
             new WeaponItem("Shrewsbury A2-1K","The definitive revision of an all-time classic: all it takes is a little work, and looks can kill after all.", true, ItemType.Weapons) { VanillaName = "Assault Rifle Mk2", ModelName = "weapon_assaultrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},

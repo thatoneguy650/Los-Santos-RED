@@ -157,6 +157,10 @@ namespace LosSantosRED.lsr
             {
                 NativeHelper.DisablePlayerControl();
             }
+            if(Player.IsSetDisabledControlsWithCamera)
+            {
+                NativeHelper.DisablePlayerMovementControl();
+            }
 
             if(Player.CuffManager.IsHandcuffed)
             {

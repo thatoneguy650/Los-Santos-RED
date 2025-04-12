@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 public class AIVehicleRacer : VehicleRacer
 {
     uint GameTimeLastClearedFront;
+    private bool hasBeenDisposed;
+
+
     public AIVehicleRacer(PedExt pedExt, VehicleExt vehicleExt) : base(vehicleExt)
     {
         PedExt = pedExt;
@@ -19,13 +22,19 @@ public class AIVehicleRacer : VehicleRacer
     public PedExt PedExt { get; set; }
     public bool WasSpawnedForRace { get; set; }
     public override string RacerName => PedExt == null ? base.RacerName : PedExt.Name;
+
+    public bool IsManualDispose { get; set; } = false;
     public override void Update(VehicleRace vehicleRace)
     {
         if(vehicleRace == null)
         {
             return;
         }
-        if(HasFinishedRace)
+        if (PedExt == null)
+        {
+            return;
+        }
+        if (HasFinishedRace)
         {
             return;
         }
@@ -43,34 +52,63 @@ public class AIVehicleRacer : VehicleRacer
     }
     public void AssignTask(VehicleRace vehicleRace, ITargetable Targetable, IEntityProvideable World, ISettingsProvideable Settings)
     {
+        if(PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
         PedExt.CurrentTask = new GeneralRace(PedExt, PedExt, Targetable, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, null, Settings, vehicleRace, this);
         PedExt.CurrentTask.Start();
+
+
+        
+
     }
     public override void Dispose()
     {
+        if(IsManualDispose)
+        {
+            return;
+        }
         if (PedExt != null)
         {
-            PedExt.DeleteBlip();
             PedExt.SetNonPersistent();
+            if (WasSpawnedForRace)
+            {
+                PedExt.DeleteBlip();
+                if(PedExt.Pedestrian.Exists())
+                {
+                    PedExt.Pedestrian.IsPersistent = false;
+                }
+                PedExt.CanBeIdleTasked = true;
+            }
             PedExt.CanBeAmbientTasked = true;
-            PedExt.CanBeTasked = true;
-            PedExt.CanBeIdleTasked = true;
+            PedExt.CanBeTasked = true;       
             PedExt.CurrentTask?.Stop();
             PedExt.CurrentTask = null;
         }
         if (VehicleExt != null)
         {
-            VehicleExt.RemoveBlip();
-            if(VehicleExt.Vehicle.Exists())
+            if (WasSpawnedForRace && !VehicleExt.IsOwnedByPlayer)
             {
-                VehicleExt.Vehicle.IsPersistent = false;
+                VehicleExt.RemoveBlip();
+                if (VehicleExt.Vehicle.Exists())
+                {
+                    VehicleExt.Vehicle.IsPersistent = false;
+                }
             }
-        }
+        } 
         base.Dispose();
     }
-
-
-
+    public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
+    {
+        if(finalPosition == 1 && vehicleRace != null && vehicleRace.BetAmount > 0)
+        {
+            int totalWinAmount = vehicleRace.BetAmount * vehicleRace.VehicleRacers.Count();
+            PedExt.Money += totalWinAmount;
+            EntryPoint.WriteToConsole($"OnFinishedRace AI {PedExt?.Handle} finalPosition:{finalPosition} totalWinAmount:{totalWinAmount}");
+        }  
+        base.OnFinishedRace(finalPosition, vehicleRace);
+    }
     public void ClearFront()
     {
         if (PedExt.IsInHelicopter || !PedExt.Pedestrian.Exists())
@@ -83,7 +121,7 @@ public class AIVehicleRacer : VehicleRacer
             return;
         }
 
-        EntryPoint.WriteToConsole("RACER CLEARED FRONT FOR ASSISTS");
+        //EntryPoint.WriteToConsole("RACER CLEARED FRONT FOR ASSISTS");
         if (PedExt.DistanceToPlayer <= 20f || raceCar.IsOnScreen)//50f
         {
             CarefulFrontDelete(raceCar);
@@ -95,7 +133,6 @@ public class AIVehicleRacer : VehicleRacer
 
 
     }
-
     private void LargeFrontDelete(Vehicle raceCar)
     {
         if (!raceCar.Exists())
@@ -114,7 +151,6 @@ public class AIVehicleRacer : VehicleRacer
         Vector3 Position = raceCar.GetOffsetPositionFront(length / 2f + distanceInFront);
         NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, range, true, false, false, false);
     }
-
     private void CarefulFrontDelete(Vehicle copCar)
     {
         if (!copCar.Exists())
@@ -157,15 +193,5 @@ public class AIVehicleRacer : VehicleRacer
             }
         }
     }
-
-    public override void HandleWinningBet(int betAmount)
-    {
-        PedExt.Money += betAmount;
-        base.HandleWinningBet(betAmount);
-    }
-
-
-
-
 }
 

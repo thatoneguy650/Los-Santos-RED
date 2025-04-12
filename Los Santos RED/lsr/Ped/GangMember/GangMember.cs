@@ -91,7 +91,7 @@ public class GangMember : PedExt, IWeaponIssuable
             }
         }
         ReputationReport.Update(perceptable, world, Settings);
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok       
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok       
     }
 
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
@@ -150,6 +150,9 @@ public class GangMember : PedExt, IWeaponIssuable
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
         WillCallPolice = false;
 
+
+        //EntryPoint.WriteToConsole($"{gt == null} {gt?.GangID} {gt?.ZoneInternalGameName} {gt?.PercentageWithSidearms} {gt?.PercentageWithLongGuns}");
+
         WillFight = RandomItems.RandomPercent(gt == null ? Gang.FightPercentage : gt.FightPercentage);
         WillFightPolice = RandomItems.RandomPercent(gt == null ? Gang.FightPolicePercentage : gt.FightPolicePercentage);
         WillAlwaysFightPolice = RandomItems.RandomPercent(gt == null ? Gang.AlwaysFightPolicePercentage : gt.AlwaysFightPolicePercentage);
@@ -187,6 +190,11 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
+        if (Pedestrian.Exists() && Settings.SettingsManager.GangSettings.AllowFlyThroughWindshield)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)32, true);
+        }
+
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

@@ -116,8 +116,8 @@ public class Crimes : ICrimes
         FiringWeaponNearPolice = new Crime(StaticStrings.FiringWeaponNearPoliceCrimeID, "Shots Fired Near Police", 3, true, 3, false, false, true) { CanReportBySound = true };
         AimingWeaponAtPolice = new Crime(StaticStrings.AimingWeaponAtPoliceCrimeID, "Aiming Weapons At Police", 3, true, 4, false, false, true);
         HurtingPolice = new Crime(StaticStrings.HurtingPoliceCrimeID, "Assaulting Police", 3, false, 5, true, false, true);// { CanViolateWithoutPerception = true };
-        BrandishingHeavyWeapon = new Crime(StaticStrings.BrandishingHeavyWeaponCrimeID, "Brandishing Heavy Weapon", 3, false, 6, true, true, true);
-        BankRobbery = new Crime(StaticStrings.BankRobberyCrimeID, "Bank Robbery", 3, false, 6, true, true, true);
+        BrandishingHeavyWeapon = new Crime(StaticStrings.BrandishingHeavyWeaponCrimeID, "Brandishing Heavy Weapon", 4, false, 6, true, true, true);
+        BankRobbery = new Crime(StaticStrings.BankRobberyCrimeID, "Bank Robbery", 4, false, 6, true, true, true);
 
 
 

@@ -78,7 +78,7 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> GunshopPeds { get; private set; }
 
     private List<DispatchablePerson> RegularPeds;
-
+    private List<DispatchablePerson> VehicleRacePeds;
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
     private List<DispatchablePerson> NOOSEPeds_Old;
@@ -1851,6 +1851,26 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_f_y_fitness_02",100,100),
         };
 
+        VehicleRacePeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("ig_car3guy2",100,100),
+            new DispatchablePerson("a_m_m_bevhills_02",100,100),
+            new DispatchablePerson("a_m_m_genfat_02",100,100),
+            new DispatchablePerson("a_m_m_eastsa_02",100,100),
+            new DispatchablePerson("a_m_m_afriamer_01",100,100),
+            new DispatchablePerson("a_m_m_stlat_02",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_01",100,100),
+            new DispatchablePerson("a_m_y_beachvesp_02",100,100),
+            new DispatchablePerson("a_m_y_bevhills_01",100,100),
+            new DispatchablePerson("a_m_y_eastsa_02",100,100),
+            new DispatchablePerson("a_f_m_salton_01",100,100),
+            new DispatchablePerson("a_f_y_business_03",100,100),
+            new DispatchablePerson("a_f_m_tourist_01",100,100),
+            new DispatchablePerson("a_f_o_genstreet_01",100,100),
+            new DispatchablePerson("a_f_y_femaleagent",100,100),
+            new DispatchablePerson("a_f_y_fitness_02",100,100),
+        };
+
         ServicePeds();
     }
     private void ServicePeds()
@@ -1981,6 +2001,10 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
+
+
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
+
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
@@ -2723,6 +2747,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
@@ -2900,6 +2925,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
@@ -3062,6 +3088,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
@@ -15524,6 +15551,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
@@ -18161,8 +18189,6 @@ public class DispatchablePeople : IDispatchablePeople
         }
         return toreturn;
     }
-
-
     private DispatchablePerson GetGenericMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int maxWantedLevelSpawn, bool isMale, bool isShortSleeve)
     {
 
@@ -18232,10 +18258,6 @@ public class DispatchablePeople : IDispatchablePeople
             return LongSleeveFemale;
         }
     }
-
-
-
-
     private DispatchablePerson GetGenericMPDetectivePed(int ambientSpawnChance, int wantedSpawnChance,int maxwantedLevelSpawn, bool isMale)
     {
             DispatchablePerson DetectiveMale  = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
@@ -18272,11 +18294,5 @@ public class DispatchablePeople : IDispatchablePeople
             return DetectiveFemale;
         }
     }
-
-
-
-
-   
-
 }
 

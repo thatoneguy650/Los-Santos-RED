@@ -20,6 +20,7 @@ public class TimerBarController
     private BarTimerBar SearchMode;
     private int itemsDisplaying;
     private ISettingsProvideable Settings;
+    //private TextTimerBar BlankBar;
     private TextTimerBar RaceTimer;
 
     private bool IsTimeToUpdate => Game.GameTime - GameTimeLastUpdated >= 250;
@@ -32,6 +33,7 @@ public class TimerBarController
     }
     public void Setup()
     {
+        return;
         StaminaBar = new BarTimerBar("Stamina");
         StaminaBar.BackgroundColor = Color.FromArgb(100, 142, 50, 50);
         StaminaBar.ForegroundColor = Color.FromArgb(255, 181, 48, 48);//Red
@@ -45,7 +47,7 @@ public class TimerBarController
         SearchMode.ForegroundColor = Color.FromArgb(255, 202, 169, 66);//Yellow
 
 
-
+      //  BlankBar = new TextTimerBar("TEST", "HELLO");
 
         RaceTimer = new TextTimerBar("Time","00:00.000");
         Player.RacingManager.SetRaceTimer(RaceTimer);
@@ -57,14 +59,14 @@ public class TimerBarController
     }
     public void Update()
     {
-        itemsDisplaying = 0;
-        UpdateStamina();
-        UpdateIntoxication();
-        UpdateSearchMode();
-        UpdateRaceTimer();
-        ItemsDisplaying = itemsDisplaying;
-        TimerBarPool.OrderBy(x => x.Label);
-        GameTimeLastUpdated = Game.GameTime;
+        //itemsDisplaying = 0;
+        //UpdateStamina();
+        //UpdateIntoxication();
+        //UpdateSearchMode();
+        //UpdateRaceTimer();
+        //ItemsDisplaying = itemsDisplaying;
+        //TimerBarPool.OrderBy(x => x.Label);
+        //GameTimeLastUpdated = Game.GameTime;
 
 
 
@@ -92,10 +94,14 @@ public class TimerBarController
         if (Player.IsAliveAndFree && Player.Sprinting.StaminaPercentage < 1.0f && Settings.SettingsManager.LSRHUDSettings.ShowStaminaDisplay && Player.Sprinting.CanSprint && Player.Sprinting.CanRegainStamina)
         {
             itemsDisplaying++;
+            //ItemsDisplaying++;
+           // SafeAdd(BlankBar);
             SafeAdd(StaminaBar);
+            
         }
         else
         {
+           // SafeRemove(BlankBar);
             SafeRemove(StaminaBar);
         }
     }
@@ -138,6 +144,7 @@ public class TimerBarController
         {
             TimerBarPool.Add(toAdd);
         }
+
     }
 }
 

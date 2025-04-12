@@ -193,7 +193,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
+        CurrentHealthState.Update(policeRespondable, world);//has a yield if they get damaged, seems ok 
     }
     private void OnStartedRespondingToInvestigation()
     {
@@ -257,7 +257,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             GroupName = "Cop";
         }
         Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
-        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage) && !IsAnimal)
         {
             IsCorrupt = true;
             SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);
@@ -310,7 +310,20 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)172, true);
         }
-        if(Settings.SettingsManager.PoliceTaskSettings.AllowMinorReactions)
+
+        if (Settings.SettingsManager.PoliceTaskSettings.EnableConfigFlagPoliceTakeCrashDamage)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)250, true);
+            //EntryPoint.WriteToConsole("COP SET TAKE DAMAGE");
+        }
+        if (Settings.SettingsManager.PoliceTaskSettings.AllowFlyThroughWindshield)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)32, true);
+            //EntryPoint.WriteToConsole("COP SET FLY THRU WINDSHIELD");
+        }
+
+
+        if (Settings.SettingsManager.PoliceTaskSettings.AllowMinorReactions)
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }

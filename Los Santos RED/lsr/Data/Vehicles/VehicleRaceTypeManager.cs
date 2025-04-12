@@ -11,6 +11,6 @@ public class VehicleRaceTypeManager
     {
     }
 
-    public List<VehicleRace> VehiclesRaces { get; set; }
+    public List<VehicleRaceTrack> VehicleRaceTracks { get; set; }
 }
 

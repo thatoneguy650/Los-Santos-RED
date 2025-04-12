@@ -32,6 +32,7 @@ public class GameLocation : ILocationDispatchable
     protected IShopMenus ShopMenus;
     protected IPlateTypes PlateTypes;
     protected IOrganizations Associations;
+    protected ModDataFileManager ModDataFileManager;
     protected Transaction Transaction;
     protected uint NotificationHandle;
     protected readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
@@ -499,7 +500,8 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups,
         IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, 
-        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, 
+        IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
         ShopMenus = shopMenus;
         World = world;
@@ -512,6 +514,7 @@ public class GameLocation : ILocationDispatchable
         ModItems = modItems;
         Weapons = weapons;
         Time = time;
+        ModDataFileManager = modDataFileManager;
 
 
         VendorMeleeWeapons = issuableWeapons.GetWeaponData(VendorMeleeWeaponsID);
@@ -598,7 +601,6 @@ public class GameLocation : ILocationDispatchable
                 if (Purchase())
                 {
                     MenuPool.CloseAllMenus();
-                    InteractionMenu.Clear();
                 }
             };
             subMenu.AddItem(businessManagementButton);
@@ -1195,7 +1197,7 @@ public class GameLocation : ILocationDispatchable
         }
         
         HandleVariableItems();
-        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
+       // EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
         Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
@@ -1205,12 +1207,12 @@ public class GameLocation : ILocationDispatchable
         merchantSpawnTask.SpawnWithAllWeapons = true;
         merchantSpawnTask.AllowBuddySpawn = false;
         merchantSpawnTask.AttemptSpawn();
-        EntryPoint.WriteToConsole($"ADDING VENDOR TO SPAWNED VENDORS LIST {Name} {VendorPersonType.ModelName}");
+        //EntryPoint.WriteToConsole($"ADDING VENDOR TO SPAWNED VENDORS LIST {Name} {VendorPersonType.ModelName}");
 
-        foreach(Merchant merchant in merchantSpawnTask.SpawnedVendors)
-        {
-            EntryPoint.WriteToConsole($"I HAVE CREATED {merchant.Handle}");
-        }
+        //foreach(Merchant merchant in merchantSpawnTask.SpawnedVendors)
+        //{
+        //    EntryPoint.WriteToConsole($"I HAVE CREATED {merchant.Handle}");
+        //}
 
         Vendors.AddRange(merchantSpawnTask.SpawnedVendors);
 
@@ -1384,6 +1386,8 @@ public class GameLocation : ILocationDispatchable
     public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+        DatePayoutPaid = time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
         int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
         player.BankAccounts.GiveMoney(payoutAmount, true);
     }

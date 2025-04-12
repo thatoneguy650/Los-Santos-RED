@@ -15,10 +15,14 @@ namespace LosSantosRED.lsr.Interface
 
         string PlayerName { get; }
         bool IsSetDisabledControls { get; set; }
-        RacingManager RacingManager { get; }
+        VehicleRaceManager RacingManager { get; }
         ButtonPrompts ButtonPrompts { get; }
         BankAccounts BankAccounts { get; }
         VehicleOwnership VehicleOwnership { get; }
         Ped Character { get; }
+        VehicleExt PreviousVehicle { get; }
+        bool IsInVehicle { get; }
+        float VehicleSpeedMPH { get; }
+        bool IsSetDisabledControlsWithCamera { get; set; }
     }
 }

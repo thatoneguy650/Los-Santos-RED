@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,13 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
+
+
+        foreach(VehicleExt vehicleExt in World.Vehicles.AllVehicleList)
+        {
+            vehicleExt.Update(World);
+        }
+
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianOnlyUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
@@ -408,11 +416,43 @@ public class Civilians
     }
     public void UpdateTotalWanted()
     {
-        PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
-        Vector3 PoliceInterestPoint;
-        if (worstPed != null && worstPed.Pedestrian.Exists() && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        PedExt worstPed = null;//World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        int countLethalForce = 0;
+        int highestPedWantedLevel = 0;
+        foreach (PedExt criminal in World.Pedestrians.Citizens.Where(x => x.IsWanted && !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead))
         {
-            World.TotalWantedLevel = worstPed.WantedLevel;
+            if (worstPed == null || criminal.WantedLevel > worstPed.WantedLevel)
+            {
+                worstPed = criminal;
+                highestPedWantedLevel = worstPed.WantedLevel;
+            }
+            if (criminal.WantedLevel >= 3)
+            {
+                countLethalForce++;
+            }
+        }
+
+
+        if (highestPedWantedLevel >= 3 && countLethalForce >= 10)
+        {
+            highestPedWantedLevel = 6;
+        }
+        else if (highestPedWantedLevel >= 3 && countLethalForce >= 7)
+        {
+            highestPedWantedLevel = 5;
+        }
+        else  if (highestPedWantedLevel >= 3 && countLethalForce >= 4)
+        {
+            highestPedWantedLevel = 4;
+        }
+        
+        
+
+
+        Vector3 PoliceInterestPoint;
+        if (worstPed != null && worstPed.Pedestrian.Exists() && highestPedWantedLevel > PoliceRespondable.WantedLevel)// worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        {
+            World.TotalWantedLevel = highestPedWantedLevel;// worstPed.WantedLevel;
             PoliceInterestPoint = worstPed.PedViolations.PlacePoliceLastSeen;
         }
         else
@@ -443,7 +483,7 @@ public class Civilians
 
         if (worstPed != null)
         {
-            World.CitizenWantedLevel = worstPed.WantedLevel;
+            World.CitizenWantedLevel = highestPedWantedLevel;//worstPed.WantedLevel;
         }
         else
         {

@@ -9,13 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class DebugRacingSubMenu : DebugSubMenu
+public class DebugVehicleRaceSubMenu : DebugSubMenu
 {
     private List<VehicleRace> PossibleRaces = new List<VehicleRace>();
     private IVehicleRaces VehicleRaces;
-    public DebugRacingSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IVehicleRaces vehicleRaces) : base(debug, menuPool, player)
+    private IEntityProvideable World;
+    public DebugVehicleRaceSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IVehicleRaces vehicleRaces, IEntityProvideable world) : base(debug, menuPool, player)
     {
         VehicleRaces = vehicleRaces;
+        World = world;
     }
 
     public override void AddItems()
@@ -32,11 +34,12 @@ public class DebugRacingSubMenu : DebugSubMenu
     private void CreateMenu()
     {
         SubMenu.Clear();
-        foreach(VehicleRace vr in VehicleRaces.VehicleRaceTypeManager.VehiclesRaces)
+        foreach(VehicleRaceTrack vrt in VehicleRaces.VehicleRaceTypeManager.VehicleRaceTracks)
         {
-            UIMenuItem generalOne = new UIMenuItem(vr.Name, "Start a the specific race.");
+            UIMenuItem generalOne = new UIMenuItem(vrt.Name, "Start a the specific race.");
             generalOne.Activated += (sender, selectedItem) =>
             {
+                VehicleRace vr = new VehicleRace(vrt.Name, vrt, Player.CurrentVehicle, World, 1,false);
                 Player.RacingManager.StartDebugRace(vr);
 
                 sender.Visible = false;

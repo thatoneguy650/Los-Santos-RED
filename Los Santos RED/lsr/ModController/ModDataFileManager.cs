@@ -325,9 +325,9 @@ public class ModDataFileManager
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full");
         string Description =
             "The preferred way to play LSR. This alternate config is made to include add on ped and vehicles models to completely flesh out the Emergency Services, Military, and Service part of GTA 5. " +
-            "Most lore friendly departments are included and have their own marked units and uniforms. " + 
+            "Most lore friendly departments are included and have their own marked units and uniforms. " +
             "Ped models are from 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford. " +
-            "Vehicle models are from myself, Yard1, Lt.Caine, and AllenKennedy. " +
+            "Vehicle models are from myself " +
             "The Variations subfolder contains some different options. " +
             "The default FEJ config includes only modern vehicles and is mostly DLC vehicles. (buffalo stx, granger 3600, caracara, aleutian, riata, etc.)" +
             //"The 2015 config contains only vehicles that were in the game for the PC release. (buffalo 1st gen, stanier 2nd gen, interceptor, gresley, etc.)" +
@@ -353,23 +353,8 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "Model Credits:"
             + Environment.NewLine +
-            "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1"
-            + Environment.NewLine +
-            "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1."
-            + Environment.NewLine +
-            "Bison - Model by Rockstar Games; UV-Map, template, and assembly by Yard1."
-            + Environment.NewLine + Environment.NewLine +
-            "Creator Links"
-            + Environment.NewLine +
-            "Yard1 - https://www.gta5-mods.com/users/Yard1/files"
-            + Environment.NewLine +
-            "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
-            + Environment.NewLine +
-            "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
-            + Environment.NewLine +
-            "";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
-        
+            "Modern Police Steel Wheel - Adapted from Megarobloxfr";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);      
         string Description2 = "Want to use the built in peds along with the FEJ vehicles? This is the config for you. Be sure to install the FEJ OIV without EUP. Copys over the xmls to the main directory.";
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds");
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\readme.txt", Description2);
@@ -451,7 +436,7 @@ public class ModDataFileManager
             + Environment.NewLine +
             "3a. OPTIONAL: Install 'Full Modern Traffic'. Updates traffic to be more modern and adds some lore friendly vehicles. Follow the readme in the 'AlternateConfigs\\FullModernTraffic' folder"
             + Environment.NewLine +
-            "4. Install 'Peter Badoingy Map Fixes'. Fixes some issues with the map to better work with LSR. MUST INSTALL AFTER LC. Install the badoingylcfixes.oiv from the 'Files' folder"
+            "4. Install 'Peter Badoingy Map Fixes'. Fixes some issues with the map to better work with LSR. MUST INSTALL AFTER LC. Download and install the badoingylcfixes.oiv from https://drive.google.com/file/d/1-98LN-PGtfKpOspUK-jeSl7MEnrDNY0G/view"
             + Environment.NewLine +
             $"5. Copy all of the .xml files from the AlternateConfigs\\{StaticStrings.LibertyConfigFolder} folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist). Be sure to get the variations for any optional installs."
              + Environment.NewLine +

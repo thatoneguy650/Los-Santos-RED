@@ -96,9 +96,9 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world,
     IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
-        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople)
+        ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
-        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, Names, Crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
         if (HasInterior)
         {
             BusinessInterior = interiors.PossibleInteriors.BusinessInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
@@ -147,7 +147,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     }
     private void GenerateBusinessMenu(bool isInside)
     {
-        InteractionMenu.Clear();
         AddInquireItems();
         AddInteractionItems(isInside);
     }
@@ -375,7 +374,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.Visible = true;
-        InteractionMenu.Clear();
         bool withAnimations = Interior?.IsTeleportEntry == true;
         if (withItems)
         {

@@ -37,8 +37,10 @@ public class Conversation : Interaction, IAdvancedConversationable
     private ILocationInteractable LocationInteractable;
     private IVehicleRaces VehicleRaces;
     private ITargetable Targetable;
+    private IDispatchableVehicles DispatchableVehicles;
+    private IDispatchablePeople DispatchablePeople;
     public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories,
-        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces, ITargetable targetable)
+        ISpeeches speeches, IEntityProvideable world, ILocationInteractable locationInteractable, IVehicleRaces vehicleRaces, ITargetable targetable, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
     {
         Player = player;
         Ped = ped;
@@ -60,6 +62,8 @@ public class Conversation : Interaction, IAdvancedConversationable
         Speeches = speeches;
         World = world;
         VehicleRaces = vehicleRaces;
+        DispatchablePeople = dispatchablePeople;
+        DispatchableVehicles = dispatchableVehicles;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
@@ -409,7 +413,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     }
     private void AskQuestion()
     {
-        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces);
+        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World, LocationInteractable, VehicleRaces, DispatchableVehicles, DispatchablePeople);
         AdvancedConversation.Setup();
         AdvancedConversation.Show();
         IsActivelyConversing = true;

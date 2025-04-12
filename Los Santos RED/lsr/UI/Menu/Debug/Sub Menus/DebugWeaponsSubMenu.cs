@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -85,6 +86,19 @@ public class DebugWeaponsSubMenu : DebugSubMenu
         wepaonsItemSubMenu.AddItem(GetRandomWeapon);
         wepaonsItemSubMenu.AddItem(GetRandomUpgradedWeapon);
         wepaonsItemSubMenu.AddItem(GetRandomSuppressedWeapon);
+
+        ;
+
+        UIMenuNumericScrollerItem<int> SetTint = new UIMenuNumericScrollerItem<int>("Set Tint", "Set tint of current weapon", 0, 7, 1);
+        SetTint.Value = 0;
+        //
+        SetTint.Activated += (menu, item) =>
+        {
+            NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, SetTint.Value);
+        };
+        wepaonsItemSubMenu.AddItem(SetTint);
+
+
     }
 }
 

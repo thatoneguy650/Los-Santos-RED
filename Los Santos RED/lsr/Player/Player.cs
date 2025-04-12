@@ -80,6 +80,8 @@ namespace Mod
         private ISeats Seats;
         private IAgencies Agencies;
         private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
+        private IDispatchablePeople DispatchablePeople;
+        private IDispatchableVehicles DispatchableVehicles;
         private Vehicle VehicleTryingToEnter;
         private int SeatTryingToEnter;
         private bool currentlyHasScrewdriver;
@@ -101,7 +103,8 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IContacts contacts, IVehicleRaces vehicleRaces)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies, ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData, 
+            ICellphones cellphones, IContacts contacts, IVehicleRaces vehicleRaces, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -125,6 +128,8 @@ namespace Mod
             Agencies = agencies;
             VehicleSeatDoorData = vehicleSeatDoorData;
             Contacts = contacts;
+            DispatchableVehicles = dispatchableVehicles;
+            DispatchablePeople = dispatchablePeople;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -158,8 +163,9 @@ namespace Mod
             GPSManager = new GPSManager(this, World, Settings, TimeControllable);
             VehicleOwnership = new VehicleOwnership(this, World, Settings);
             BankAccounts = new BankAccounts(this, Settings, PlacesOfInterest);
-            ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
-                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces, this);
+            ActivityManager = new ActivityManager(this, settings, this, this, this, this, this, TimeControllable, RadioStations, Crimes, ModItems, Dances, World, Intoxicants, 
+                this, Speeches, Seats, Weapons, PlacesOfInterest, Zones, shopMenus, gangs, 
+                gangTerritories, VehicleSeatDoorData, cellphones, vehicleRaces, this, DispatchableVehicles, DispatchablePeople);
             HealthManager = new HealthManager(this, Settings);
             ArmorManager = new ArmorManager(this, settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
@@ -178,7 +184,7 @@ namespace Mod
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
             VehicleManager = new VehicleManager(this, World, Settings);
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
-            RacingManager = new RacingManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
+            RacingManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -228,7 +234,7 @@ namespace Mod
         public InteriorManager InteriorManager { get; private set; }
         public WeatherReporting Weather { get; set; }
         public StealthManager StealthManager { get; private set; }
-        public RacingManager RacingManager { get; private set; }
+        public VehicleRaceManager RacingManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -342,6 +348,9 @@ namespace Mod
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
         public bool IsSetDisabledControls { get; set; } = false;
+
+        public bool IsSetDisabledControlsWithCamera { get; set; } = false;
+
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
         public Gang CurrentGang => RelationshipManager.GangRelationships.CurrentGang;
         public bool IsGettingIntoAVehicle
@@ -1274,7 +1283,7 @@ namespace Mod
             }
             if (Settings.SettingsManager.VehicleSettings.InjureOnVehicleCrash && (amount >= Settings.SettingsManager.VehicleSettings.VehicleCrashInjureMinVehicleDamageTrigger) && IsInVehicle)
             {
-                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar;
+                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(1.0f - Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage, 1.0f + Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage); ;
                 int healthToRemove = (int)Math.Ceiling(HealthToRemove);
                 HealthManager.ChangeHealth(-1 * healthToRemove);
                 HealthState.SimpleRefresh(this);

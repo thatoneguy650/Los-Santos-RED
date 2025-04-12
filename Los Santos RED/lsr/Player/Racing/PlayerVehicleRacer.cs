@@ -22,12 +22,11 @@ public class PlayerVehicleRacer : VehicleRacer
     private BigMessageThread BigMessage;
     private IRaceable Player;
     private ISettingsProvideable Settings;
-
     public int CurrentPosition { get; private set; }
     public string CurrentTime { get; private set; } = "";
+    public string CurrentLapDisplay { get; private set; } = "";
     public override string RacerName => Player.PlayerName;
     public override bool IsPlayer => true;
-
     public PlayerVehicleRacer(VehicleExt vehicleExt, IRaceable player, ISettingsProvideable settings) : base(vehicleExt)
     {
         Player = player;
@@ -38,19 +37,18 @@ public class PlayerVehicleRacer : VehicleRacer
         base.SetupRace(vehicleRace);
         CheckpointBlip = new Blip(TargetCheckpoint.Position, 20f) { Color = EntryPoint.LSRedColor };
         vehicleRace.AddBlip(CheckpointBlip);
-        CreateCheckpoint();
+        CreateCheckpoint(vehicleRace);
         Player.GPSManager.AddGPSRoute("Checkpoint", TargetCheckpoint.Position, false);
         TotalRacers = vehicleRace.VehicleRacers.Count();
         BigMessage = new BigMessageThread(true);
-
-
-
-
         GameFiber raceGameFiber = GameFiber.StartNew(delegate
         {
             while (vehicleRace.IsActive && !HasFinishedRace)
             {
                 string finalPos = $"{NativeHelper.AddOrdinal(CurrentPosition)}";
+
+
+
                 if (GameTimeFinishedRace == 0 && CurrentPosition > 0)
                 {
                     NativeHelper.DisplayTextOnScreen(finalPos,
@@ -61,40 +59,54 @@ public class PlayerVehicleRacer : VehicleRacer
                         (GTAFont)Settings.SettingsManager.LSRHUDSettings.RacingPositionFont,
                         (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.RacingPositionJustificationID,
                         false);
+
+
+                    NativeHelper.DisplayTextOnScreen(CurrentTime,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionPositionTimeY,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionPositionX,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionSmallerScale,
+                        Color.FromName(Settings.SettingsManager.LSRHUDSettings.RacingPositionColor),
+                        (GTAFont)Settings.SettingsManager.LSRHUDSettings.RacingPositionFont,
+                        (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.RacingPositionJustificationID,
+                        false);
+
+                    NativeHelper.DisplayTextOnScreen(CurrentLapDisplay,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionPositionLapY,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionPositionX,
+                        Settings.SettingsManager.LSRHUDSettings.RacingPositionSmallerScale,
+                        Color.FromName(Settings.SettingsManager.LSRHUDSettings.RacingPositionColor),
+                        (GTAFont)Settings.SettingsManager.LSRHUDSettings.RacingPositionFont,
+                        (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.RacingPositionJustificationID,
+                        false);
+
+
                 }
                 GameFiber.Yield();
             }
-
         }, "RaceGameFiber");
-
-
-
     }
     public override void Update(VehicleRace vehicleRace)
     {
+        if(HasFinishedRace)
+        {
+            return;
+        }
         base.Update(vehicleRace);
         CalculatePosition(vehicleRace);
-
-
-
-
-
-        //Game.DisplaySubtitle($"Position: {CurrentPosition}/{TotalRacers} Time:{CurrentTime}");
     }
     private void CalculatePosition(VehicleRace vehicleRace)
     {
-        //int playerCheckpoint = TargetCheckpoint.Order;
         if(TargetCheckpoint == null || vehicleRace == null || vehicleRace.VehicleRacers == null)
         {
             return;
         }
-        CurrentPosition = 1+vehicleRace.VehicleRacers.Where(x => x.TargetCheckpoint != null && x.TargetCheckpoint.Order > TargetCheckpoint.Order || (x.TargetCheckpoint.Order == TargetCheckpoint.Order && x.DistanceToCheckpoint < DistanceToCheckpoint)).Count();
+        CurrentPosition = 1+vehicleRace.VehicleRacers.Where(x => (x.CurrentLap > CurrentLap) || (x.CurrentLap == CurrentLap &&  x.TargetCheckpoint != null && x.TargetCheckpoint.Order > TargetCheckpoint.Order || (x.TargetCheckpoint.Order == TargetCheckpoint.Order && x.DistanceToCheckpoint < DistanceToCheckpoint))).Count();
         uint currentTime = Game.GameTime - GameTimeStartedRace;
         try
-        {
-            
+        {          
             CurrentTime = ConvertMSToTime(Game.GameTime - GameTimeStartedRace);
-            Player.RacingManager.RaceTimer.Text = CurrentTime;
+            CurrentLapDisplay = $"Lap {CurrentLap}/{vehicleRace.NumberOfLaps}";
+            //Player.RacingManager.RaceTimer.Text = CurrentTime;
         }
         catch (Exception ex)
         {
@@ -103,21 +115,23 @@ public class PlayerVehicleRacer : VehicleRacer
             EntryPoint.WriteToConsole(ex.StackTrace);
             Game.DisplayHelp(ex.Message);
         }
-
     }
     private string ConvertMSToTime(uint TotalGameTime)
     {
         TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
-        string answer = string.Format("{0:D2}:{1:D2}.{2:D3}",
+        string answer = string.Format("{0:000}:{1:000}.{2:000}",
                                 t.Minutes,
                                 t.Seconds,
                                 t.Milliseconds);
-
         return answer;
     }
-    private void CreateCheckpoint()
+    private void CreateCheckpoint(VehicleRace vehicleRace)
     {
         if(TargetCheckpoint == null)
+        {
+            return;
+        }
+        if(vehicleRace == null)
         {
             return;
         }
@@ -126,10 +140,12 @@ public class PlayerVehicleRacer : VehicleRacer
         {
             toPointAt = AfterTargetCheckpoint.Position;
         }
-        int checkpointType = TargetCheckpoint.IsFinish ? 4 : 0;
-        CheckpointID = NativeFunction.Natives.CREATE_CHECKPOINT<int>(checkpointType, TargetCheckpoint.Position, toPointAt, 10f, EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, 100, TargetCheckpoint.Order);
-
-        
+        int checkpointType = 0;
+        if(TargetCheckpoint.IsFinish)
+        {
+            checkpointType = CurrentLap == vehicleRace.NumberOfLaps ? 4 : 3;
+        }
+        CheckpointID = NativeFunction.Natives.CREATE_CHECKPOINT<int>(checkpointType, TargetCheckpoint.Position, toPointAt, 10f, EntryPoint.LSRedColor.R, EntryPoint.LSRedColor.G, EntryPoint.LSRedColor.B, 100, TargetCheckpoint.Order);      
     }
     public override void Dispose()
     {
@@ -145,7 +161,7 @@ public class PlayerVehicleRacer : VehicleRacer
         }
         Player.RacingManager.StopRacing();
     }
-    public override void OnReachedCheckpoint()
+    public override void OnReachedCheckpoint(VehicleRace vehicleRace)
     {
         if (CheckpointBlip.Exists())
         {
@@ -153,11 +169,21 @@ public class PlayerVehicleRacer : VehicleRacer
         }
         Player.GPSManager.AddGPSRoute("Checkpoint", TargetCheckpoint.Position, false);
         NativeFunction.Natives.DELETE_CHECKPOINT(CheckpointID);
-        CreateCheckpoint();
+        CreateCheckpoint(vehicleRace);
         PlayCheckpointSound();
-        base.OnReachedCheckpoint();
+        base.OnReachedCheckpoint(vehicleRace);
     }
     public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
+    {
+        RemoveCheckpoints();
+        ShowFinishUI(finalPosition);
+        vehicleRace.OnPlayerFinishedRace();
+
+
+
+        base.OnFinishedRace(finalPosition, vehicleRace);
+    }
+    private void RemoveCheckpoints()
     {
         if (CheckpointBlip.Exists())
         {
@@ -166,36 +192,38 @@ public class PlayerVehicleRacer : VehicleRacer
         NativeFunction.Natives.DELETE_CHECKPOINT(CheckpointID);
         PlayCheckpointSound();
         Player.GPSManager.Reset();
-        Game.DisplaySubtitle("");
+    }
+    private void ShowFinishUI(int finalPosition)
+    {
         string toShow = "";
-        if(finalPosition == 1)
+        HudColor toShowColor = HudColor.Black;
+        if (finalPosition == 1)
         {
             toShow = $"Winner";
+            toShowColor = HudColor.GreenDark;
         }
         else
         {
             toShow = $"Position: {finalPosition}";
+            toShowColor = HudColor.RedLight;
         }
         try
         {
             EntryPoint.WriteToConsole($"Finish Race Total MS {GameTimeFinishedRace - GameTimeStartedRace}");
-            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace));
+            ShowMessage(toShow, ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace), HudColor.Black, toShowColor, 3000);
         }
         catch (Exception ex)
         {
             Game.DisplayHelp(ex.Message);
         }
-        vehicleRace.OnPlayerFinishedRace();
-        Player.RacingManager.StopRacing();
-        base.OnFinishedRace(finalPosition, vehicleRace);
     }
     private void PlayCheckpointSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
     }
-    public void ShowMessage(string v)
+    public void ShowMessage(string v, string v1, HudColor color1, HudColor color2, int time)
     {
-        BigMessage.MessageInstance.ShowColoredShard(v, "", HudColor.Black, HudColor.GreenDark, 1000);
+        BigMessage.MessageInstance.ShowColoredShard(v, v1, color1, color2, time);
         PlayCheckpointSound();
     }
     public void ShowMessage(string v, string v1)
@@ -205,13 +233,10 @@ public class PlayerVehicleRacer : VehicleRacer
     }
     public override void SetRaceStart(VehicleRace vehicleRace)
     {
-        Player.IsSetDisabledControls = false;
+        Player.IsSetDisabledControlsWithCamera = false;
         Player.RacingManager.StartRacing(vehicleRace);
         base.SetRaceStart(vehicleRace);
     }
-    public override void HandleWinningBet(int betAmount)
-    {
-        base.HandleWinningBet(betAmount);
-    }
+
 }
 
