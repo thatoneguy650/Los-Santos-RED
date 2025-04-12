@@ -108,7 +108,7 @@ public class RaceMeetup : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             RaceSubMenu.SetBannerType(BannerImage);
         }
-        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks, AllowedOpponentGroups, MaxBax);
+        VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks, AllowedOpponentGroups, MaxBax, DispatchablePeople);
         vehicleRaceMenu.Setup();
     }
 

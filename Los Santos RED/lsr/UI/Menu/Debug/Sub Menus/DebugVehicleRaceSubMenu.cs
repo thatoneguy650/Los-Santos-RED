@@ -13,9 +13,11 @@ public class DebugVehicleRaceSubMenu : DebugSubMenu
 {
     private List<VehicleRace> PossibleRaces = new List<VehicleRace>();
     private IVehicleRaces VehicleRaces;
-    public DebugVehicleRaceSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IVehicleRaces vehicleRaces) : base(debug, menuPool, player)
+    private IEntityProvideable World;
+    public DebugVehicleRaceSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, IVehicleRaces vehicleRaces, IEntityProvideable world) : base(debug, menuPool, player)
     {
         VehicleRaces = vehicleRaces;
+        World = world;
     }
 
     public override void AddItems()
@@ -37,7 +39,7 @@ public class DebugVehicleRaceSubMenu : DebugSubMenu
             UIMenuItem generalOne = new UIMenuItem(vrt.Name, "Start a the specific race.");
             generalOne.Activated += (sender, selectedItem) =>
             {
-                VehicleRace vr = new VehicleRace(vrt.Name, vrt, Player.CurrentVehicle);
+                VehicleRace vr = new VehicleRace(vrt.Name, vrt, Player.CurrentVehicle, World, 1,false);
                 Player.RacingManager.StartDebugRace(vr);
 
                 sender.Visible = false;

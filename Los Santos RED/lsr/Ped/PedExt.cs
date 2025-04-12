@@ -243,6 +243,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
     public bool WasKilledByPlayer { get; set; } = false;
+
+
+    public bool CanTakeVehicleCrashDamage { get; set; } = true;
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
@@ -1803,6 +1806,10 @@ ENDENUM
             return;
         }
         if(!Pedestrian.IsPersistent)
+        {
+            return;
+        }
+        if(!CanTakeVehicleCrashDamage)
         {
             return;
         }

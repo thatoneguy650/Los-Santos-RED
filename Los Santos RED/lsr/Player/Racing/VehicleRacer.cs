@@ -17,6 +17,7 @@ public class VehicleRacer
     protected uint GameTimeStartedRace;
     protected uint GameTimeFinishedRace;
     protected VehicleRace VehicleRace;
+
     public VehicleRacer()
     {
 
@@ -26,6 +27,7 @@ public class VehicleRacer
         VehicleExt = vehicleExt;
     }
     public float DistanceToCheckpoint { get; private set; }
+    public int CurrentLap { get; protected set; } = 1;
     public VehicleExt VehicleExt { get; set; }
     public virtual string RacerName => "Racer";
     public bool HasFinishedRace => GameTimeFinishedRace > 0;
@@ -59,15 +61,27 @@ public class VehicleRacer
         {
             if (TargetCheckpoint.IsFinish)
             {
-                GameTimeFinishedRace = Game.GameTime;
-                vehicleRace.OnRacerFinishedRace(this);
+                if (vehicleRace.NumberOfLaps == CurrentLap)
+                {
+                    GameTimeFinishedRace = Game.GameTime;
+                    vehicleRace.OnRacerFinishedRace(this);
+                }
+                else
+                {
+                    CurrentLap++;
+                    int nextOrder = 0;
+                    TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
+                    AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
+                    OnReachedCheckpoint(vehicleRace);
+                    EntryPoint.WriteToConsole($"RACER HAS PASSED FINAL LAP RESETTING CurrentLap{CurrentLap}");
+                }
             }
             else
             {
                 int nextOrder = TargetCheckpoint.Order + 1;
                 TargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder).FirstOrDefault();
                 AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
-                OnReachedCheckpoint();
+                OnReachedCheckpoint(vehicleRace);
             }
         }        
     }
@@ -85,7 +99,7 @@ public class VehicleRacer
 
         return answer;
     }
-    public virtual void OnReachedCheckpoint()
+    public virtual void OnReachedCheckpoint(VehicleRace vehicleRace)
     {
 
     }

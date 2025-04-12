@@ -164,11 +164,17 @@ public class VehicleRaces : IVehicleRaces
         List<VehicleRaceCheckpoint> paletoLoop1Checkpoints = new List<VehicleRaceCheckpoint>()
         {
             new VehicleRaceCheckpoint(0,new Vector3(143.2037f, 6526.385f, 31.3439f)),
-            new VehicleRaceCheckpoint(1,new Vector3(-215.3243f, 6169.238f, 30.88095f)),
-            new VehicleRaceCheckpoint(2,new Vector3(-294.1931f, 6220.725f, 31.19704f)),
-            new VehicleRaceCheckpoint(3,new Vector3(-358.0514f, 6293.811f, 29.61264f)),
-            new VehicleRaceCheckpoint(4,new Vector3(-181.1622f, 6468.749f, 30.21145f)),
-            new VehicleRaceCheckpoint(5,new Vector3(150.0628f, 6533.176f, 31.4289f)),
+            new VehicleRaceCheckpoint(1,new Vector3(-202.2245f, 6173.541f, 30.57405f)),
+            //new VehicleRaceCheckpoint(2,new Vector3(-341.7607f, 6269.313f, 30.86405f)),
+            //new VehicleRaceCheckpoint(3,new Vector3(-358.0514f, 6293.811f, 29.61264f)),
+            new VehicleRaceCheckpoint(2,new Vector3(-181.1622f, 6468.749f, 30.21145f)),
+            new VehicleRaceCheckpoint(3,new Vector3(150.0628f, 6533.176f, 31.4289f)),
+            //new VehicleRaceCheckpoint(0,new Vector3(143.2037f, 6526.385f, 31.3439f)),
+            //new VehicleRaceCheckpoint(1,new Vector3(-215.3243f, 6169.238f, 30.88095f)),
+            //new VehicleRaceCheckpoint(2,new Vector3(-294.1931f, 6220.725f, 31.19704f)),
+            //new VehicleRaceCheckpoint(3,new Vector3(-358.0514f, 6293.811f, 29.61264f)),
+            //new VehicleRaceCheckpoint(4,new Vector3(-181.1622f, 6468.749f, 30.21145f)),
+            //new VehicleRaceCheckpoint(5,new Vector3(150.0628f, 6533.176f, 31.4289f)),
         };
         VehicleRaceTrack paletoLoop1 = new VehicleRaceTrack("paletoloop1", "Paleto Loop 1", "Paleto Checkpoint Race 1.", paletoLoop1Checkpoints, paletoLoop1Starting);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(paletoLoop1);

@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSetDisabledControls { get; set; }
         CuffManager CuffManager { get; }
         IntimidationManager IntimidationManager { get; }
+        bool IsSetDisabledControlsWithCamera { get; }
 
         //   void CancelCurrentActivity();
         //  void CloseDriverDoor();

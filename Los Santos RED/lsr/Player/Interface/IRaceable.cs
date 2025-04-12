@@ -22,5 +22,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         VehicleExt PreviousVehicle { get; }
         bool IsInVehicle { get; }
+        float VehicleSpeedMPH { get; }
+        bool IsSetDisabledControlsWithCamera { get; set; }
     }
 }
