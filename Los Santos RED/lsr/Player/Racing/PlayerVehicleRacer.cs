@@ -87,6 +87,10 @@ public class PlayerVehicleRacer : VehicleRacer
     }
     public override void Update(VehicleRace vehicleRace)
     {
+        if(HasFinishedRace)
+        {
+            return;
+        }
         base.Update(vehicleRace);
         CalculatePosition(vehicleRace);
     }

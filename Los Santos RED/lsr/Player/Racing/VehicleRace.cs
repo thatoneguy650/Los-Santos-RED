@@ -114,7 +114,7 @@ public class VehicleRace
                     IsActive = false;
                 }
                 //EntryPoint.WriteToConsole($"GameTimePlayerFinishedRace {GameTimePlayerFinishedRace} IsActive {IsActive}");
-                if (GameTimePlayerFinishedRace > 0 && Game.GameTime - GameTimePlayerFinishedRace >= 10000)
+                if (GameTimePlayerFinishedRace > 0 && Game.GameTime - GameTimePlayerFinishedRace >= 5000)
                 {
                     IsActive = false;
                 }
@@ -260,13 +260,12 @@ public class VehicleRace
             Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
             if (airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists())
             {
-                airacer.PedExt.Pedestrian.ClearLastVehicle();
-                airacer.PedExt.AssignedVehicle = null;
+                airacer.IsManualDispose = true;
                 if (airacer.VehicleExt.Vehicle.Exists())
                 {
-                    NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, airacer.VehicleExt.Vehicle, 16);
                     airacer.VehicleExt.Vehicle.Velocity = Vector3.Zero;
-
+                    NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, airacer.VehicleExt.Vehicle, 16);
+                    airacer.PedExt.Pedestrian.Position = airacer.PedExt.Pedestrian.GetOffsetPositionRight(-2f);
                     SpawnLocation spawnLocation = new SpawnLocation(airacer.VehicleExt.Vehicle.Position);
                     spawnLocation.GetClosestStreet(false);
                     spawnLocation.GetClosestSideOfRoad();
@@ -282,25 +281,22 @@ public class VehicleRace
                         airacer.VehicleExt.Vehicle.Heading = spawnLocation.Heading;
                     }
 
+
+                    NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(airacer.VehicleExt.Vehicle, true);
+                    airacer.PedExt.Pedestrian.ClearLastVehicle();
+                    airacer.PedExt.AssignedVehicle = null;
                 }
-                airacer.PedExt.FullyDelete();
-                //airacer.Dispose();
-
-                //airacer.PedExt.Pedestrian.Position = airacer.PedExt.Pedestrian.GetOffsetPositionRight(-1f);
-                //VehicleRaceStartingPosition vrsp =  VehicleRaceTrack.VehicleRaceStartingPositions.FirstOrDefault();
-                //Vector3 walkPos = new Vector3(0f, 0f, 0f);
-                ////if(vrsp != null)
-                ////{
-                ////    walkPos = vrsp.Position;
-                ////}
-                //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(airacer.PedExt.Pedestrian, walkPos.X, walkPos.Y, walkPos.Z, 2.0f, -1, 0f, 0, 0f);
-                //airacer.PedExt.Pedestrian.KeepTasks = true;
-
-                //if(airacer.WasSpawnedForRace)
-                //{
-                    
-                //    airacer.PedExt.FullyDelete();
-                //}
+                airacer.PedExt.SetNonPersistent();
+                airacer.PedExt.DeleteBlip();
+                if (airacer.WasSpawnedForRace)
+                {            
+                    airacer.PedExt.Pedestrian.IsPersistent = false;
+                }
+                airacer.PedExt.ClearTasks(true);
+                airacer.PedExt.CanBeAmbientTasked = true;
+                airacer.PedExt.CanBeTasked = true;
+                airacer.PedExt.CanBeIdleTasked = true;
+                airacer.PedExt.PedBrain.AssignIdleTask();
             }
         }
         GameFiber.Sleep(2000);
@@ -370,9 +366,6 @@ public class VehicleRace
             player.BankAccounts.GiveMoney(BetAmount, false);
         }
     }
-
-
-
     public void ClearStartingArea()
     {
         if (VehicleRaceTrack == null)
@@ -407,12 +400,19 @@ public class VehicleRace
         {
             return;
         }
+        if(VehicleRaceTrack.VehicleRaceStartingPositions == null)
+        {
+            return;
+        }
         foreach (VehicleRaceStartingPosition startingPos in VehicleRaceTrack.VehicleRaceStartingPositions)
         {
             float extendedDistance = 25f;
             NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(startingPos.Position.X - extendedDistance, startingPos.Position.Y - extendedDistance, startingPos.Position.Z - extendedDistance, startingPos.Position.X + extendedDistance, startingPos.Position.Y + extendedDistance, startingPos.Position.Z + extendedDistance, true, false);
         }
-        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(raceSpeedZoneID1);
+        if (raceSpeedZoneID1 != 0)
+        {
+            NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(raceSpeedZoneID1);
+        }
         EntryPoint.WriteToConsole("UnclearStartingArea RAN");
     }
 

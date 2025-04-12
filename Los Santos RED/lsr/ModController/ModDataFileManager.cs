@@ -325,9 +325,9 @@ public class ModDataFileManager
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full");
         string Description =
             "The preferred way to play LSR. This alternate config is made to include add on ped and vehicles models to completely flesh out the Emergency Services, Military, and Service part of GTA 5. " +
-            "Most lore friendly departments are included and have their own marked units and uniforms. " + 
+            "Most lore friendly departments are included and have their own marked units and uniforms. " +
             "Ped models are from 'Emergency uniforms pack - Law & Order 8.3' and 'Emergency uniforms pack - Serve and Rescue' by Alex_Ashford. " +
-            "Vehicle models are from myself, Yard1, Lt.Caine, and AllenKennedy. " +
+            "Vehicle models are from myself " +
             "The Variations subfolder contains some different options. " +
             "The default FEJ config includes only modern vehicles and is mostly DLC vehicles. (buffalo stx, granger 3600, caracara, aleutian, riata, etc.)" +
             //"The 2015 config contains only vehicles that were in the game for the PC release. (buffalo 1st gen, stanier 2nd gen, interceptor, gresley, etc.)" +
@@ -349,9 +349,12 @@ public class ModDataFileManager
             + Environment.NewLine +
             "2. Copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-            "";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
-        
+            ""
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            "Model Credits:"
+            + Environment.NewLine +
+            "Modern Police Steel Wheel - Adapted from Megarobloxfr";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);      
         string Description2 = "Want to use the built in peds along with the FEJ vehicles? This is the config for you. Be sure to install the FEJ OIV without EUP. Copys over the xmls to the main directory.";
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds");
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\readme.txt", Description2);

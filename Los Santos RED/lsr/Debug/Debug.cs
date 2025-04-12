@@ -97,6 +97,7 @@ public class Debug
     private Rage.Object chairProp;
     private Cop LastPed;
     private Rage.Object PumpHandleProp;
+    private bool IsTrafficDisabled;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1187,11 +1188,26 @@ public class Debug
 
     private void DebugNumpad5()
 {
-        if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        if(IsTrafficDisabled)
         {
-            return;
+            World.SetTrafficEnabled();
+            EntryPoint.WriteToConsole("SET TRAFFIC ENABLED");
         }
-        Game.DisplaySubtitle($"Has Ficticious Plate {Player.CurrentVehicle?.HasObviousFicticiousPlate(Player)} {Player.CurrentVehicle?.CarPlate?.OriginalModelHash} {Player.CurrentVehicle?.Vehicle.Model.Hash}");
+        else
+        {
+            World.SetTrafficDisabled();
+            EntryPoint.WriteToConsole("SET TRAFFIC DISABLED");
+        }
+        
+
+        IsTrafficDisabled = !IsTrafficDisabled;
+
+
+        //if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    return;
+        //}
+        //Game.DisplaySubtitle($"Has Ficticious Plate {Player.CurrentVehicle?.HasObviousFicticiousPlate(Player)} {Player.CurrentVehicle?.CarPlate?.OriginalModelHash} {Player.CurrentVehicle?.Vehicle.Model.Hash}");
 
         //CanineUnit k9 = World.Pedestrians.PoliceCanines.Where(x => x.Pedestrian.Exists()).OrderBy(x=> x.DistanceToPlayer).FirstOrDefault();
         //if(k9 == null)

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 public class AIVehicleRacer : VehicleRacer
 {
     uint GameTimeLastClearedFront;
+    private bool hasBeenDisposed;
+
+
     public AIVehicleRacer(PedExt pedExt, VehicleExt vehicleExt) : base(vehicleExt)
     {
         PedExt = pedExt;
@@ -19,6 +22,8 @@ public class AIVehicleRacer : VehicleRacer
     public PedExt PedExt { get; set; }
     public bool WasSpawnedForRace { get; set; }
     public override string RacerName => PedExt == null ? base.RacerName : PedExt.Name;
+
+    public bool IsManualDispose { get; set; } = false;
     public override void Update(VehicleRace vehicleRace)
     {
         if(vehicleRace == null)
@@ -60,6 +65,10 @@ public class AIVehicleRacer : VehicleRacer
     }
     public override void Dispose()
     {
+        if(IsManualDispose)
+        {
+            return;
+        }
         if (PedExt != null)
         {
             PedExt.SetNonPersistent();
@@ -72,7 +81,6 @@ public class AIVehicleRacer : VehicleRacer
                 }
                 PedExt.CanBeIdleTasked = true;
             }
-
             PedExt.CanBeAmbientTasked = true;
             PedExt.CanBeTasked = true;       
             PedExt.CurrentTask?.Stop();
@@ -88,7 +96,7 @@ public class AIVehicleRacer : VehicleRacer
                     VehicleExt.Vehicle.IsPersistent = false;
                 }
             }
-        }
+        } 
         base.Dispose();
     }
     public override void OnFinishedRace(int finalPosition, VehicleRace vehicleRace)
