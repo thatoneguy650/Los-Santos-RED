@@ -491,6 +491,9 @@ public class ModItems : IModItems
             {
                 ItemSubType = ItemSubType.Misc,
             },
+             new HardwareItem("Chemicals", "For Science! Mix responsibly... or don't.", ItemType.Equipment){
+                ModelItemID = "ng_proc_paintcan02a",
+                ItemSubType = ItemSubType.Misc},
         });
     }
     private void DefaultConfig_Armor()
@@ -969,11 +972,6 @@ public class ModItems : IModItems
                 SleepChangeAmount = MediumSleepRecover + 2.0f, 
                 ThirstChangeAmount = MediumThirstRecover + 2.0f,
                 ItemSubType = ItemSubType.Coffee},//perfecto
-            new DrinkItem("Chemicals", "For Science! Mix responsibly... or don't.", ItemType.Drinks){
-                ModelItemID = "ng_proc_paintcan02a",
-                SleepChangeAmount = MediumSleepRecover,
-                ThirstChangeAmount = -MediumThirstRecover,
-                ItemSubType = ItemSubType.Misc},
             new DrinkItem("Speedball Coffee", "Caffeine tripe-shot, guarana, bat guano, and mate.", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",
                 HealthChangeAmount = MediumHealthRecover + 5, 
