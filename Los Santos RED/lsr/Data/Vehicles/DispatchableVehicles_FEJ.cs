@@ -2389,21 +2389,35 @@ public class DispatchableVehicles_FEJ
         {
             toReturn.RequiredDashColorID = requiredDashboardColor;
         }
+ 
+        toReturn.WheelType = 3;//SUV
+        if (toReturn.VehicleMods == null)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+        }
+
         if (offroadWheelPercentage > 0)
         {
-            toReturn.WheelType = 3;//SUV
-            if (toReturn.VehicleMods == null)
-            {
-                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
-            }
-            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, offroadWheelPercentage)
+            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
-                        {
-                            new DispatchableVehicleModValue(38,100),
-                        },
+                    {
+                    new DispatchableVehicleModValue(38,offroadWheelPercentage),
+                        new DispatchableVehicleModValue(39,100-offroadWheelPercentage),
+                    },
             });
         }
+        else
+        {
+            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                    {
+                        new DispatchableVehicleModValue(39,100),
+                    },
+            });
+        }
+        
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }

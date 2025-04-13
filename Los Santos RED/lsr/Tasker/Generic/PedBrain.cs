@@ -220,5 +220,10 @@ public class PedBrain
         }
         return ToIssue;
     }
+
+    public void AssignIdleTask()
+    {
+        SetIdle();
+    }
 }
 

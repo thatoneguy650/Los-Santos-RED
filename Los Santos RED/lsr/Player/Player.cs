@@ -348,6 +348,9 @@ namespace Mod
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
         public bool IsSetDisabledControls { get; set; } = false;
+
+        public bool IsSetDisabledControlsWithCamera { get; set; } = false;
+
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
         public Gang CurrentGang => RelationshipManager.GangRelationships.CurrentGang;
         public bool IsGettingIntoAVehicle
@@ -1280,7 +1283,7 @@ namespace Mod
             }
             if (Settings.SettingsManager.VehicleSettings.InjureOnVehicleCrash && (amount >= Settings.SettingsManager.VehicleSettings.VehicleCrashInjureMinVehicleDamageTrigger) && IsInVehicle)
             {
-                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar;
+                float HealthToRemove = amount * Settings.SettingsManager.VehicleSettings.VehicleCrashInjureScalar * RandomItems.GetRandomNumber(1.0f - Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage, 1.0f + Settings.SettingsManager.VehicleSettings.VehicleCrashInjureRandomizePercentage); ;
                 int healthToRemove = (int)Math.Ceiling(HealthToRemove);
                 HealthManager.ChangeHealth(-1 * healthToRemove);
                 HealthState.SimpleRefresh(this);

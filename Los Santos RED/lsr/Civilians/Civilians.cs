@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,13 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
+
+
+        foreach(VehicleExt vehicleExt in World.Vehicles.AllVehicleList)
+        {
+            vehicleExt.Update(World);
+        }
+
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianOnlyUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);

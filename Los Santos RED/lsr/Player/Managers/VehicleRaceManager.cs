@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -49,7 +50,7 @@ public class VehicleRaceManager
     }
     public void Update()
     {
-        if (IsRacing)
+        if (IsRacing && !IsShowingRaceMenu)
         {
             Player.ButtonPrompts.AttemptAddPrompt("Racing", "Racing Menu", "RacingMenu", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 999, () => { ShowCurrentRaceMenu(); });
         }
@@ -74,7 +75,7 @@ public class VehicleRaceManager
     }
     public void StartDebugRace(VehicleRace race)
     {
-        if(race== null)
+        if (race == null)
         {
             return;
         }
@@ -85,19 +86,19 @@ public class VehicleRaceManager
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
         foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
         {
-            vehicleRacers.Add(SpawnRacer(rsp, race.AreRacerBlipsEnabled, null));
+            vehicleRacers.Add(SpawnRacer(rsp, race.AreRacerBlipsEnabled, null, null));
         }
         PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(Player.CurrentVehicle, Player, Settings);
-        MoveVehicleToPosition(Player.CurrentVehicle, race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order == 0).FirstOrDefault());    
-        race.Setup(vehicleRacers, playerRacer,0, false);
+        MoveVehicleToPosition(Player.CurrentVehicle, race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order == 0).FirstOrDefault());
+        race.Setup(vehicleRacers, playerRacer, 0, false);
         uint GameTimeStartedWatiing = Game.GameTime;
         Game.FadeScreenIn(1000, false);
         while (Game.GameTime - GameTimeStartedWatiing <= 1000)
         {
             NativeHelper.DisablePlayerMovementControl();
             GameFiber.Yield();
-        }  
-        race.Start(Targetable,World,Settings, Player);
+        }
+        race.Start(Targetable, World, Settings, Player);
     }
     public bool StartPointToPointRace(VehicleRace race, PedExt pedExt, int betAmount, bool isForPinks)
     {
@@ -109,40 +110,44 @@ public class VehicleRaceManager
         {
             return false;
         }
-        if(!pedExt.Pedestrian.Exists())
+        if (!pedExt.Pedestrian.Exists())
         {
             return false;
         }
         uint vehicleHandle = 0;
-        if(pedExt.Pedestrian.CurrentVehicle.Exists())
+        if (pedExt.Pedestrian.CurrentVehicle.Exists())
         {
             vehicleHandle = pedExt.Pedestrian.CurrentVehicle.Handle;
         }
-        if(vehicleHandle == 0)
+        if (vehicleHandle == 0)
         {
             return false;
         }
         VehicleExt racerVehicle = World.Vehicles.GetVehicleExt(pedExt.Pedestrian.CurrentVehicle);
-        if(racerVehicle == null)
-        {
-            return false; 
-        }
-        if(Player.BankAccounts.GetMoney(false) < betAmount)
+        if (racerVehicle == null)
         {
             return false;
         }
-        Player.BankAccounts.GiveMoney(-1*betAmount,false);
+        if (Player.BankAccounts.GetMoney(false) < betAmount)
+        {
+            return false;
+        }
+        Player.BankAccounts.GiveMoney(-1 * betAmount, false);
         pedExt.SetPersistent();
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
-        AIVehicleRacer challenger = new AIVehicleRacer(pedExt, racerVehicle) {  };
+        AIVehicleRacer challenger = new AIVehicleRacer(pedExt, racerVehicle) { };
         vehicleRacers.Add(challenger);
         pedExt.AddBlip();
         PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(Player.CurrentVehicle, Player, Settings);
+
+        Player.IsSetDisabledControlsWithCamera = true;
+
         race.Setup(vehicleRacers, playerRacer, betAmount, isForPinks);
         race.Start(Targetable, World, Settings, Player);
         return true;
     }
-    public bool StartRegularRace(VehicleRace race, int betAmount, bool isForPinks, DispatchableVehicleGroup selectedOpponentVehicles, int opponents)
+    public bool StartRegularRace(VehicleRace race, int betAmount, bool isForPinks, DispatchableVehicleGroup selectedOpponentVehicles, DispatchablePersonGroup selectedOpponentPeds, 
+        int numberofOpponents)
     {
         if (race == null)
         {
@@ -154,19 +159,26 @@ public class VehicleRaceManager
         }
         Player.BankAccounts.GiveMoney(-1 * betAmount, false);
         Game.FadeScreenOut(1000, true);
-        Player.IsSetDisabledControls = true;
+        Player.IsSetDisabledControlsWithCamera = true;
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
         int spawnedRacers = 0;
+
+
+        race.ClearStartingArea();
+
+
+
+
         foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
         {
-            AIVehicleRacer aIVehicleRacer = SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles);
-            if(aIVehicleRacer == null || aIVehicleRacer.PedExt == null || !aIVehicleRacer.PedExt.Pedestrian.Exists())
+            AIVehicleRacer aIVehicleRacer = SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles, selectedOpponentPeds);
+            if (aIVehicleRacer == null || aIVehicleRacer.PedExt == null || !aIVehicleRacer.PedExt.Pedestrian.Exists())
             {
                 continue;
             }
             vehicleRacers.Add(aIVehicleRacer);
             spawnedRacers++;
-            if(spawnedRacers >= opponents)
+            if (spawnedRacers >= numberofOpponents)
             {
                 break;
             }
@@ -175,26 +187,31 @@ public class VehicleRaceManager
         {
             Game.FadeScreenIn(1000);
             EntryPoint.WriteToConsole("NO PLAYER VEHICLE SELECTED");
-            Player.IsSetDisabledControls = false;
+            Player.IsSetDisabledControlsWithCamera = false;
             return false;
         }
-        if(!Player.IsInVehicle)
+        if (!Player.IsInVehicle)
         {
             Player.Character.WarpIntoVehicle(race.PlayerVehicle.Vehicle, -1);
-        }     
+        }
         PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(race.PlayerVehicle, Player, Settings);
         MoveVehicleToPosition(race.PlayerVehicle, race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order == 0).FirstOrDefault());
+
+        race.PlayerVehicle.Engine.SetState(true);
+
         race.Setup(vehicleRacers, playerRacer, betAmount, isForPinks);
         uint GameTimeStartedWatiing = Game.GameTime;
         Game.FadeScreenIn(1000, false);
         while (Game.GameTime - GameTimeStartedWatiing <= 1000)
         {
-            NativeHelper.DisablePlayerMovementControl();
+            //NativeHelper.DisablePlayerMovementControl();
             GameFiber.Yield();
         }
         race.Start(Targetable, World, Settings, Player);
         return true;
     }
+
+   
     public void SetRaceTimer(TextTimerBar raceTimer)
     {
         RaceTimer = raceTimer;
@@ -240,23 +257,22 @@ public class VehicleRaceManager
         };
         CurrentRaceMenu.AddItem(CancelRaceMenuItem);
     }
-    private AIVehicleRacer SpawnRacer(VehicleRaceStartingPosition vehicleRaceStartingPosition, bool addBlip, DispatchableVehicleGroup opponentGroup)
+    private AIVehicleRacer SpawnRacer(VehicleRaceStartingPosition vehicleRaceStartingPosition, bool addBlip, DispatchableVehicleGroup opponentVehicleGroup, DispatchablePersonGroup opponentPedGroup)
     {
         List<string> possibleVehicle = new List<string>() { "dominator3", "coquette4", "coquette6", "comet6", "banshee3", "niobe", "stingertt" };
 
         DispatchableVehicle aiRaceCar = new DispatchableVehicle(possibleVehicle.PickRandom(), 100, 100);
-        if (opponentGroup != null)
+        if (opponentVehicleGroup != null)
         {
-            aiRaceCar = opponentGroup.DispatchableVehicles.RandomElementByWeight(x => x.CurrentSpawnChance(0, true));
+            aiRaceCar = opponentVehicleGroup.DispatchableVehicles.RandomElementByWeight(x => x.CurrentSpawnChance(0, true));
         }
-
-
-
         DispatchablePerson aiRacePerson = new DispatchablePerson("ig_car3guy2", 100, 100);
-
+        if (opponentPedGroup != null)
+        {
+            aiRacePerson = opponentPedGroup.DispatchablePeople.RandomElementByWeight(x => x.CurrentSpawnChance(0));
+        }
         SpawnLocation sl = new SpawnLocation(vehicleRaceStartingPosition.Position) { Heading = vehicleRaceStartingPosition.Heading };
         sl.StreetPosition = vehicleRaceStartingPosition.Position;
-
         CivilianSpawnTask cst = new CivilianSpawnTask(sl, aiRaceCar, aiRacePerson, addBlip, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus);
         cst.ClearVehicleArea = true;
         cst.AllowAnySpawn = true;
@@ -266,9 +282,14 @@ public class VehicleRaceManager
         cst.AttemptSpawn();
         //EntryPoint.WriteToConsole("ATTEMPTING TO SPAWN {PEDS");
         VehicleExt createdvehicle = cst.CreatedVehicles.FirstOrDefault();
+        PedExt createdPed = cst.CreatedPeople.FirstOrDefault();
         if (createdvehicle != null && createdvehicle.Vehicle.Exists())
         {
             createdvehicle.Vehicle.IsEngineOn = true;
+        }
+        if(createdPed != null)
+        {
+            createdPed.CanTakeVehicleCrashDamage = false;
         }
         return new AIVehicleRacer(cst.CreatedPeople.FirstOrDefault(), createdvehicle) { WasSpawnedForRace = true };
 

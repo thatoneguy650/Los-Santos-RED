@@ -257,7 +257,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             GroupName = "Cop";
         }
         Money = RandomItems.GetRandomNumberInt(AssignedAgency.MoneyMin, AssignedAgency.MoneyMax);
-        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage))
+        if (RandomItems.RandomPercent(AssignedAgency.CorruptMemberPercentage) && !IsAnimal)
         {
             IsCorrupt = true;
             SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(AssignedAgency.CorruptMenuGroup), false);

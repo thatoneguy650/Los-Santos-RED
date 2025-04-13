@@ -144,8 +144,13 @@ namespace LosSantosRED.lsr
             DisplayLoadSuccessfulMessage();
 
             string ConfigName = string.IsNullOrEmpty(Config.ConfigName) ? "No Config" : Config.ConfigName + " Config";
-            Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {ConfigName} Loaded");
-            EntryPoint.WriteToConsole($"Loaded {ConfigName}", 0);
+            
+
+            if (!string.IsNullOrEmpty(Config.ConfigName))
+            {
+                Game.DisplayNotification($"~s~Los Santos ~r~RED~s~ {ConfigName} Loaded");
+                EntryPoint.WriteToConsole($"Loaded {ConfigName}", 0); 
+            }
         }
         public void SetupFileOnly()
         {
