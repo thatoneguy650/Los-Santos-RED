@@ -591,7 +591,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Scrap Metal", 3),
                 new MenuItem("Metal Tube", 4),
                 new MenuItem("pH strip", 5),
-
+                new MenuItem("Chemicals", 15)
             }),
             new ShopMenu("SportingGoodsMenu","SportingGoods",new List<MenuItem>() {
                 new MenuItem("GASH Black Umbrella", 25),
