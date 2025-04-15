@@ -1233,6 +1233,10 @@ public class PopUpMenu
                 IconNameDefault = "burnerphone_white.png",
                 IconNameSelected = "burnerphone_red.png",
                 IconNameInvalid = "burnerphone_black.png" },
+            new PopUpBox(3, "Property Manager", UI.LandlordMenu.Toggle,"Display information about owned businesses.") {
+                IconNameDefault = "message_white.png",
+                IconNameSelected = "message_red.png",
+                IconNameInvalid = "message_black.png" },
     };
         List<PopUpBox> ActionsSubMenu = new List<PopUpBox>()
         {
