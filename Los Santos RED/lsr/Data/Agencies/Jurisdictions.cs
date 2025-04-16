@@ -24,7 +24,7 @@ public class Jurisdictions : IJurisdictions
     }
     public void ReadConfig(string zoneConfigName, string countyConfigName)
     {
-        string zoneFileName = string.IsNullOrEmpty(zoneConfigName) ? "ZoneJurisdictions*.xml" : $"ZoneJurisdictions_{zoneConfigName}.xml";
+        string zoneFileName = string.IsNullOrEmpty(zoneConfigName) ? "ZoneJurisdictions_*.xml" : $"ZoneJurisdictions_{zoneConfigName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ZoneFile = LSRDirectory.GetFiles(zoneFileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -49,8 +49,17 @@ public class Jurisdictions : IJurisdictions
             DefaultZoneConfig();
             DefaultZoneConfig_LibertyPP();
         }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("ZoneJurisdictions+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Zone Jurisdiction config  {fileInfo.FullName}", 0);
+            List<ZoneJurisdiction> additivePossibleItems = Serialization.DeserializeParams<ZoneJurisdiction>(fileInfo.FullName);
+            ZoneJurisdictionsList.RemoveAll(x => additivePossibleItems.Any(y => y.ZoneInternalGameName == x.ZoneInternalGameName));
+            ZoneJurisdictionsList.AddRange(additivePossibleItems);
+        }
 
-        string countyFileName = string.IsNullOrEmpty(countyConfigName) ? "CountyJurisdictions*.xml" : $"CountyJurisdictions_{countyConfigName}.xml";
+
+        string countyFileName = string.IsNullOrEmpty(countyConfigName) ? "CountyJurisdictions_*.xml" : $"CountyJurisdictions_{countyConfigName}.xml";
 
         FileInfo CountyFile = LSRDirectory.GetFiles(countyFileName).OrderByDescending(x => x.Name).FirstOrDefault();
         if (CountyFile != null && !countyConfigName.Equals("Default"))
@@ -73,6 +82,14 @@ public class Jurisdictions : IJurisdictions
             DefaultCountyConfig_Simple();
             DefaultCountyConfig();
             DefaultCountyConfig_LibertyPP();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("CountyJurisdictions+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE County Jurisdictions config  {fileInfo.FullName}", 0);
+            List<CountyJurisdiction> additivePossibleItems = Serialization.DeserializeParams<CountyJurisdiction>(fileInfo.FullName);
+            CountyJurisdictionList.RemoveAll(x => additivePossibleItems.Any(y => y.CountyID == x.CountyID));
+            CountyJurisdictionList.AddRange(additivePossibleItems);
         }
     }
     public Agency GetMainAgency(string ZoneName, ResponseType responseType)

@@ -41,6 +41,12 @@ public class BodyArmorItem : EquipmentItem
 
         return true;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.BodyArmorItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.BodyArmorItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 
 }
 

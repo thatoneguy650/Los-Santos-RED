@@ -799,7 +799,7 @@ public class WeaponItem : ModItem
                     Position = StoreCam.Position + StoreCam.Direction / 2f;
                     EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW STORECAM EXISTS {StoreCam.Position}");
                 }
-                else if (Transaction.PersonTransaction != null && Transaction.PersonTransaction.TransactionPed != null && Transaction.PersonTransaction.TransactionPed.Pedestrian.Exists())
+                else if (Transaction.PersonTransaction != null && Transaction.PersonTransaction.TransactionPed != null && Transaction.PersonTransaction.TransactionPed.Pedestrian.Exists() && !Transaction.PersonTransaction.TransactionPed.Pedestrian.IsInAnyVehicle(false))
                 {
                     Position = Transaction.PersonTransaction.TransactionPed.Pedestrian.GetOffsetPosition(new Vector3(settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetX, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetY, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetZ));
                     EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW PERSONTRANSACTION DOING ABOVE PED");
@@ -839,7 +839,7 @@ public class WeaponItem : ModItem
                         Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 0.5f) + (StoreCam.Direction.ToNormalized() * LargestSideLength / 2f);//
                         EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW STORECAM EXISTS {StoreCam.Position} 1");
                     }
-                    else if (Transaction.PersonTransaction != null && Transaction.PersonTransaction.TransactionPed != null && Transaction.PersonTransaction.TransactionPed.Pedestrian.Exists())
+                    else if (Transaction.PersonTransaction != null && Transaction.PersonTransaction.TransactionPed != null && Transaction.PersonTransaction.TransactionPed.Pedestrian.Exists() && !Transaction.PersonTransaction.TransactionPed.Pedestrian.IsInAnyVehicle(false))
                     {
                         Position = Transaction.PersonTransaction.TransactionPed.Pedestrian.GetOffsetPosition(new Vector3(settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetX, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetY, settings.SettingsManager.PlayerOtherSettings.PersonTransactionItemOffsetZ));
                         EntryPoint.WriteToConsole($"CREATE WEAPON PREVIEW PERSONTRANSACTION DOING ABOVE PED");
@@ -961,6 +961,12 @@ public class WeaponItem : ModItem
     public override void AddToPlayerInventory(Mod.Player player, int quantity)
     {
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(this.WeaponInformation.ModelName,this.WeaponInformation.AmmoAmount, false);
+    }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.WeaponItems.RemoveAll(x => x.ModelName == ModelName);
+        possibleItems?.WeaponItems.Add(this);
+        base.AddToList(possibleItems);
     }
 }
 

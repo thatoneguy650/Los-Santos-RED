@@ -28,5 +28,11 @@ public class UmbrellaItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.UmbrellaItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.UmbrellaItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

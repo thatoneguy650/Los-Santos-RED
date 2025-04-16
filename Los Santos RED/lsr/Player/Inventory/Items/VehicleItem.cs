@@ -713,5 +713,11 @@ public class VehicleItem : ModItem
         //do nothing with cars
         return null;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.VehicleItems.RemoveAll(x => x.ModelName == ModelName);
+        possibleItems?.VehicleItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

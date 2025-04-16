@@ -148,7 +148,7 @@ public class DispatchablePeople : IDispatchablePeople
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "DispatchablePeople*.xml" : $"DispatchablePeople_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "DispatchablePeople_*.xml" : $"DispatchablePeople_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -173,6 +173,14 @@ public class DispatchablePeople : IDispatchablePeople
             DefaultConfig();
             DefaultConfig_LibertyCity();
             DefaultConfig_LPP();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("DispatchablePeople+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Dispatchable People config  {fileInfo.FullName}", 0);
+            List<DispatchablePersonGroup> additivePossibleItems = Serialization.DeserializeParams<DispatchablePersonGroup>(fileInfo.FullName);
+            PeopleGroupLookup.RemoveAll(x => additivePossibleItems.Any(y=> y.DispatchablePersonGroupID == x.DispatchablePersonGroupID));
+            PeopleGroupLookup.AddRange(additivePossibleItems);
         }
     }
     public List<DispatchablePerson> GetPersonData(string dispatchablePersonGroupID)

@@ -73,7 +73,7 @@ public class ModItems : IModItems
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "ModItems*.xml" : $"ModItems_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "ModItems_*.xml" : $"ModItems_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -95,11 +95,30 @@ public class ModItems : IModItems
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_FullExpandedExperience();
             DefaultConfig_LosSantos2008();
+            DefaultConfig_FullExpandedWeapons();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("ModItems+_*.xml").OrderByDescending(x => x.Name))
+        {
+            PossibleItems additivePossibleItems = Serialization.DeserializeParam<PossibleItems>(fileInfo.FullName);
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Mod Items config  {fileInfo.FullName}", 0);
+            foreach (ModItem modItem in additivePossibleItems.AllItems())
+            {
+                modItem.AddToList(PossibleItems);
+            }
         }
     }
+
+    private void DefaultConfig_FullExpandedWeapons()
+    {
+        PossibleItems newPossibleItems = new PossibleItems();
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86", "A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false, ItemType.Weapons) { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+        Serialization.SerializeParam(newPossibleItems, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ModItems+_{StaticStrings.FEWConfigSuffix}.xml");
+    }
+
     private void DefaultConfig_FullExpandedJurisdiction()
     {
-        PossibleItems newPossibleItems = PossibleItems.Copy();
+        PossibleItems newPossibleItems = new PossibleItems(); //PossibleItems.Copy();
 
         //Taxi Service 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini Interdictor", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servinterceptor" });
@@ -144,15 +163,18 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Vindicator Police", true, ItemType.Vehicles) { OverrideMakeName = "Dinka", ModelName = "polvindicatorliv" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany STR Police", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "polvstrliv" });
         
-        //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ModItems_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\ModItems+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\ModItems+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullModernTraffic()
     {
-        PossibleItems newPossibleItems = PossibleItems.Copy();
+        PossibleItems newPossibleItems = new PossibleItems();//PossibleItems.Copy();
 
+
+        
         //Sedans
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", }); newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { ModelName = "tornado3", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civesperanto", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "kuruma");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
@@ -177,11 +199,11 @@ public class ModItems : IModItems
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
 
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems_FullModernTraffic.xml");
+        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems+_FullModernTraffic.xml");
     }
     private void DefaultConfig_LosSantos2008()
     {
-        PossibleItems oldPossibleItems = PossibleItems.Copy();
+        PossibleItems oldPossibleItems = new PossibleItems(); //PossibleItems.Copy();
 
         //Civilian
         oldPossibleItems.VehicleItems.Add(new VehicleItem("Albany Esperanto", true, ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civesperanto", Description = "Heavy, slow, and full of chrome. See why this was one of the the top police vehicles.... 40 years ago." });
@@ -205,7 +227,7 @@ public class ModItems : IModItems
         oldPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Fugitive Police", true, ItemType.Vehicles) { OverrideMakeName = "Cheval", ModelName = "polfugitiveliv" });
 
 
-        Serialization.SerializeParam(oldPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ModItems_LosSantos2008.xml");
+        Serialization.SerializeParam(oldPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ModItems+_LosSantos2008.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
     {

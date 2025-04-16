@@ -28,5 +28,11 @@ public class ClothingItem : ModItem
         //}
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.ModItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.ModItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

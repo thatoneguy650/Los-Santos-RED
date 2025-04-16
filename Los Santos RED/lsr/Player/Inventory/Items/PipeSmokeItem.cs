@@ -47,6 +47,11 @@ public class PipeSmokeItem : ConsumableItem
         actionable.ActivityManager.StartUpperBodyActivity(activity);
         return true;
     }
-
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.PipeSmokeItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.PipeSmokeItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

@@ -75,6 +75,12 @@ public class LicensePlateItem : ModItem
         };
         sellPlateSubMenu.AddItem(MenuItem);
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.LicensePlateItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.LicensePlateItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 
 }
 

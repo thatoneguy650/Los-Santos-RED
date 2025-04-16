@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         IZones Zones { get; }
         IGangTerritories GangTerritories { get; }
         bool IsFEJInstalled { get; }
+        bool IsTrafficDisabled { get; }
 
         void LoadMPMap();
         void LoadSPMap();

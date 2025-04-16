@@ -383,7 +383,7 @@ public class VehicleRace
                 raceSpeedZoneID1 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(startingPos.Position.X, startingPos.Position.Y, startingPos.Position.Z, 50f, 0f, false);
                 checkedFirst = true;
 
-                NativeFunction.Natives.CLEAR_AREA(startingPos.Position.X, startingPos.Position.Y, startingPos.Position.Z, 150f, true, false, false, false);
+                NativeFunction.Natives.CLEAR_AREA(startingPos.Position.X, startingPos.Position.Y, startingPos.Position.Z, 500f, true, false, false, false);
 
             }
 

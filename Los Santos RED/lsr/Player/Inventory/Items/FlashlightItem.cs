@@ -50,5 +50,11 @@ public class FlashlightItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.FlashlightItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.FlashlightItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

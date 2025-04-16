@@ -84,7 +84,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Locations*.xml" : $"Locations_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Locations_*.xml" : $"Locations_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -105,6 +105,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             DefaultConfig();
             DefaultConfig_LibertyCity();
             DefaultConfig_2008();
+        }
+
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Locations+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Locations config  {fileInfo.FullName}", 0);
+            PossibleLocations additivePossibleItems = Serialization.DeserializeParam<PossibleLocations>(fileInfo.FullName);
+            foreach (GameLocation gameLocatio in additivePossibleItems.InteractableLocations())
+            {
+                gameLocatio.AddLocation(PossibleLocations);
+            }
         }
     }
     public List<GameLocation> InteractableLocations()
@@ -2371,6 +2382,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-12.21532f, 1.222972E-05f, 74.3194f),
                 SupportedTracks = new List<string>() { "sandyloop1", "sandyloop2" },
                 MaxBax = 3000,
+                OpenTime = 0,
+                CloseTime = 24,
                 AllowedOpponentGroups = new List<string>() {"MuscleCars_Racing","Buffalo_Racing","Gauntlet_Racing","Vigero_Racing","Dominator_Racing","OtherMuscle_Racing" },
             },
             new RaceMeetup(new Vector3(119.385f, 6626.409f, 31.95744f), 223.7455f, "Paleto Bay Race Meetup", "Meetup with other racers from the Paleto Bay area","")
@@ -2379,7 +2392,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.9640946f, 0.09018292f, -0.2497771f), 
                 CameraRotation = new Rotator(-14.46432f, 4.959682E-06f, 84.65601f),
                 SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1" },
+                OpenTime = 0,
+                CloseTime = 24,
                 MaxBax = 5000,
+            },
+            new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all the tracks","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                MaxBax = 7000,
             },
         };
     }

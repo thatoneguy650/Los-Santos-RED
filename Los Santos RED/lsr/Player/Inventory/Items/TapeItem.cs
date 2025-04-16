@@ -25,5 +25,11 @@ public class TapeItem : ModItem
         Game.DisplayHelp($"Item: {Name} is currently unused");
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.TapeItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.TapeItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

@@ -56,7 +56,7 @@ public class Agencies : IAgencies
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Agencies*.xml" : $"Agencies_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Agencies_*.xml" : $"Agencies_{configName}.xml";
 
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = taskDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -80,6 +80,14 @@ public class Agencies : IAgencies
             DefaultConfig_LibertyCity();
             DefaultConfig_SunshineDream();
             DefaultConfig();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in taskDirectory.GetFiles("Agencies+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Agencies config  {fileInfo.FullName}", 0);
+            List<Agency> additivePossibleItems = Serialization.DeserializeParams<Agency>(fileInfo.FullName);
+            AgenciesList.RemoveAll(x => additivePossibleItems.Any(y => y.ID == x.ID));
+            AgenciesList.AddRange(additivePossibleItems);
         }
     }
     public Agency GetAgency(string AgencyInitials)

@@ -15,5 +15,11 @@ public class HotelStayItem : ModItem
     {
 
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.HotelStayItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.HotelStayItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

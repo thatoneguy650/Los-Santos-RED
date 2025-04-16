@@ -29,5 +29,11 @@ public class ShovelItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.ShovelItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.ShovelItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

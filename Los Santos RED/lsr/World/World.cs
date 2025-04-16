@@ -73,6 +73,9 @@ namespace Mod
         public bool IsFEJInstalled { get; private set; }
         public bool IsFMTInstalled { get; private set; }
         public string DebugString => "";
+
+
+        public bool IsTrafficDisabled => isTrafficDisabled;
         public void Setup(IInteractionable player, ILocationInteractable locationInteractable)
         {
             DetermineMap();
@@ -333,6 +336,8 @@ namespace Mod
         public void SetTrafficDisabled()
         {
             isTrafficDisabled = true;
+            Vehicles.ClearPolice();
+            Pedestrians.ClearPolice();
         }
         public void SetTrafficEnabled()
         {
