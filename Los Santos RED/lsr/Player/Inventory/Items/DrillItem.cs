@@ -31,5 +31,11 @@ public class DrillItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.DrillItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.DrillItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

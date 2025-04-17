@@ -49,5 +49,11 @@ public class DrinkItem : ConsumableItem
         }
         return description;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.DrinkItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.DrinkItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

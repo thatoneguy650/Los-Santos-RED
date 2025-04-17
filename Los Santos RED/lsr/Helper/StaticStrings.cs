@@ -184,5 +184,8 @@ public static class StaticStrings
 
     public static readonly string LPPConfigSuffix = "LPP";
     public static readonly string LPPConfigFolder = "LibertyPreservationProject";
+
+    public static readonly string FEWConfigSuffix = "FEW";
+    public static readonly string FEWConfigFolder = "FullExpandedWeapons";
 }
 

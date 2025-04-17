@@ -28,7 +28,7 @@ public class ShopMenus : IShopMenus
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "ShopMenus*.xml" : $"ShopMenus_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "ShopMenus_*.xml" : $"ShopMenus_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -49,12 +49,24 @@ public class ShopMenus : IShopMenus
             DefaultConfig_LosSantos2008();
             DefaultConfig_FullModernTraffic();
             DefaultConfig_FullExpandedExperience();
+            DefaultConfig_FullExpandedWeapons();
+        }
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("ShopMenus+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE SHOP MENUS config  {fileInfo.FullName}", 0);
+            ShopMenuTypes additivePossibleItems = Serialization.DeserializeParam<ShopMenuTypes>(fileInfo.FullName);      
+            foreach (ShopMenu shopMenu in additivePossibleItems.ShopMenuList)
+            {
+                PossibleShopMenus.ShopMenuList.RemoveAll(x=> x.ID == shopMenu.ID);
+                PossibleShopMenus.ShopMenuList.Add(shopMenu);
+            }
         }
     }
 
+
     private void DefaultConfig_LosSantos2008()
     {
-        ShopMenuTypes oldPossibleShopMenus = PossibleShopMenus.Copy();
+        ShopMenuTypes oldPossibleShopMenus = new ShopMenuTypes();//PossibleShopMenus.Copy();
         List<string> toRemoveMenus = new List<string>() { "BenefactorGallavanterMenu", "VapidMenu", "LuxuryAutosMenu", "PremiumDeluxeMenu", "AlbanyMenu", "SunshineMenu", "NationalMenu", "PaletoExportMenu" };
         oldPossibleShopMenus.ShopMenuList.RemoveAll(x => toRemoveMenus.Contains(x.ID));
         oldPossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
@@ -223,16 +235,36 @@ public class ShopMenus : IShopMenus
             }),
 
         });
-        Serialization.SerializeParam(oldPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ShopMenus_LosSantos2008.xml");
+        ShopMenuTypes final = new ShopMenuTypes();
+        final.ShopMenuList.AddRange(oldPossibleShopMenus.ShopMenuList);
+        Serialization.SerializeParam(final, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ShopMenus+_LosSantos2008.xml");
     }
+
+    private void DefaultConfig_FullExpandedWeapons()
+    {
+        ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
+        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => y.ModItemName == "Hawk & Little Combat Pistol")).ToList();
+        foreach(ShopMenu shopMenu in shopMenusToUpdate)
+        {
+            foreach(MenuItem menuItem in shopMenu.Items)
+            {
+                if(menuItem.ModItemName == "Hawk & Little Combat Pistol")
+                {
+                    menuItem.ModItemName = "Vom Feuer VF86";
+                }
+            }
+        }
+        ShopMenuTypes final = new ShopMenuTypes();
+        final.ShopMenuList.AddRange(shopMenusToUpdate);
+
+        Serialization.SerializeParam(final, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ShopMenus+_{StaticStrings.FEWConfigSuffix}.xml");
+    }
+
+
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        List<string> toRemoveModItems = new List<string>() { "Weeny Issi", "Declasse Tornado 3" };
-        foreach(ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList)
-        {
-            shopMenu.Items.RemoveAll(x => toRemoveModItems.Contains(x.ModItemName));
-        }
+        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu");
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {
@@ -284,7 +316,9 @@ public class ShopMenus : IShopMenus
             }
             menu.Items.RemoveAll(x => x.ModItemName == "Vapid Contender" || x.ModItemName == "Karin Kuruma");
         }
-        Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ShopMenus_FullModernTraffic.xml");
+        ShopMenuTypes final = new ShopMenuTypes();
+        final.ShopMenuList.AddRange(fejPossibleShopMenus.ShopMenuList);
+        Serialization.SerializeParam(final, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ShopMenus+_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedExperience()
     {

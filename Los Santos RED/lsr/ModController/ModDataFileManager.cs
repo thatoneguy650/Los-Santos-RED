@@ -227,12 +227,15 @@ public class ModDataFileManager
         SpawnBlocks = new SpawnBlocks();
         SpawnBlocks.ReadConfig(config.SpawnBlocksConfig);
 
+
+        VehicleRaces = new VehicleRaces();
+        VehicleRaces.ReadConfig(config.VehicleRacesConfig);
+
         GameConfigs = new GameConfigs();
         GameConfigs.ReadConfig();
         GameConfigs.Setup();
 
-        VehicleRaces = new VehicleRaces();
-        VehicleRaces.ReadConfig(config.VehicleRacesConfig);
+
 
 
         GameFiber.Yield();
@@ -250,12 +253,20 @@ public class ModDataFileManager
         SetupSimple();
         SetupFullModernTraffic();
         SetupRemoveVanillaGangs();
+        SetupFullExpandedWeapons();
     }
     private void SetupRemoveVanillaGangs()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\RemoveVanillaGangs");
         string Description = "Will remove all vanilla gang popgroups and spawning from the world.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\RemoveVanillaGangs\\readme.txt", Description);
+    }
+
+    private void SetupFullExpandedWeapons()
+    {
+        Directory.CreateDirectory($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}");
+        string Description = "TBA.";
+        File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\readme.txt", Description);
     }
     private void SetupFullModernTraffic()
     {

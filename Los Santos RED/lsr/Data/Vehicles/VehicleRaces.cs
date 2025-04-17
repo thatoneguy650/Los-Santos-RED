@@ -51,6 +51,7 @@ public class VehicleRaces : IVehicleRaces
         SandyTracks();
         VineWoodTracks();
         PaletoTracks();
+        CentralTracks();
 
         Serialization.SerializeParam(VehicleRaceTypeManager, ConfigFileName);
     }
@@ -97,7 +98,7 @@ public class VehicleRaces : IVehicleRaces
             //new VehicleRaceCheckpoint(6,new Vector3(1979.965f, 3889.917f, 31.88055f)),
 
         };
-        VehicleRaceTrack sandyDebug = new VehicleRaceTrack("sandyloop1", "Sandy Shores Debug Race", "Simple loop around Sandy Shores", vehicleRaceCheckpoints, vehicleRaceStartingPositions);
+        VehicleRaceTrack sandyDebug = new VehicleRaceTrack("sandyloop1", "Sandy Shores Loop", "Simple loop around Sandy Shores", vehicleRaceCheckpoints, vehicleRaceStartingPositions);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(sandyDebug);
 
         List<VehicleRaceCheckpoint> vehicleRaceCheckpoints7 = new List<VehicleRaceCheckpoint>()
@@ -107,7 +108,7 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(2,new Vector3(984.0595f, 3535.763f, 33.54565f)),
             new VehicleRaceCheckpoint(3,new Vector3(1979.965f, 3889.917f, 31.88055f)),
         };
-        VehicleRaceTrack sandyDebug2 = new VehicleRaceTrack("sandyloop2", "Sandy Shores Debug Race 2", "Smaller loop around Sandy Shores", vehicleRaceCheckpoints7, vehicleRaceStartingPositions);
+        VehicleRaceTrack sandyDebug2 = new VehicleRaceTrack("sandyloop2", "Sandy Shores Small Loop", "Smaller loop around Sandy Shores", vehicleRaceCheckpoints7, vehicleRaceStartingPositions);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(sandyDebug2);
     }
     private void VineWoodTracks()
@@ -133,7 +134,7 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(9,new Vector3(-643.3143f, 130.383f, 56.60829f)),
             new VehicleRaceCheckpoint(10,new Vector3(-996.1489f, 71.36115f, 51.30039f)),
         };
-        VehicleRaceTrack vinewoodDebug = new VehicleRaceTrack("vinewoodRace1", "Vinewood Debug Race", "Long race through Vinewood to the coast", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
+        VehicleRaceTrack vinewoodDebug = new VehicleRaceTrack("vinewoodRace1", "Vinewood Twisted Loop", "Long race through Vinewood to the coast", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodDebug);
 
         List<VehicleRaceStartingPosition> vehicleRaceStartingPositions3 = new List<VehicleRaceStartingPosition>()
@@ -149,8 +150,35 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(1,new Vector3(-2172.701f, -344.3154f, 12.60608f)),
 
         };
-        VehicleRaceTrack vinewoodLONGDebug = new VehicleRaceTrack("vinewoodRace2", "Vinewood LONG Debug Race", "Long race through Vinewood to the coast without many checkpoints.", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
+        VehicleRaceTrack vinewoodLONGDebug = new VehicleRaceTrack("vinewoodRace2", "Vinewood Cross Town", "Long race through Vinewood to the coast without many checkpoints.", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodLONGDebug);
+
+
+
+        List<VehicleRaceStartingPosition> vinewood3start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-1543.546f, -197.2341f, 54.76277f), 38.42368f),
+            new VehicleRaceStartingPosition(1, new Vector3(-1535.816f, -207.0271f, 54.03721f), 38.3179f),
+            new VehicleRaceStartingPosition(2, new Vector3(-1538.248f, -195.0614f, 54.58556f), 43.03611f),
+            new VehicleRaceStartingPosition(3, new Vector3(-1528.094f, -206.51f, 53.52767f), 43.48877f),
+        };
+        List<VehicleRaceCheckpoint> vinewood3checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-1592.985f, -134.3829f, 55.47266f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-1851.486f, 140.209f, 78.69758f)),
+            new VehicleRaceCheckpoint(2, new Vector3(-1746.352f, 812.6461f, 141.1693f)),
+            new VehicleRaceCheckpoint(3, new Vector3(-1633.375f, 1043.433f, 152.5267f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-1471.54f, 1795.392f, 83.93646f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-1531.019f, 2142.836f, 54.96165f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-1654.215f, 2383.382f, 35.76158f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-1754.635f, 2429.498f, 30.93673f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-2012.238f, 2343.076f, 33.18634f)),
+
+        };
+        VehicleRaceTrack vinewood3 = new VehicleRaceTrack("vinewoodRace3", "Morning Wood Mountain Route", "Race through the mountain freeways to Lago Zancudo", vinewood3checkpoints, vinewood3start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewood3);
+
+
     }
     private void PaletoTracks()
     {
@@ -176,7 +204,7 @@ public class VehicleRaces : IVehicleRaces
             //new VehicleRaceCheckpoint(4,new Vector3(-181.1622f, 6468.749f, 30.21145f)),
             //new VehicleRaceCheckpoint(5,new Vector3(150.0628f, 6533.176f, 31.4289f)),
         };
-        VehicleRaceTrack paletoLoop1 = new VehicleRaceTrack("paletoloop1", "Paleto Loop 1", "Paleto Checkpoint Race 1.", paletoLoop1Checkpoints, paletoLoop1Starting);
+        VehicleRaceTrack paletoLoop1 = new VehicleRaceTrack("paletoloop1", "Paleto Bay Loop", "Do a loop around Paleto Bay", paletoLoop1Checkpoints, paletoLoop1Starting);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(paletoLoop1);
 
 
@@ -196,7 +224,7 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(3,new Vector3(-237.6497f, 6163.285f, 31.16849f)),
             new VehicleRaceCheckpoint(4,new Vector3(152.6836f, 6522.836f, 31.30534f)),
         };
-        VehicleRaceTrack paletoLoop2 = new VehicleRaceTrack("paletoloop2", "Paleto Loop 2", "Paleto Checkpoint Race 2.", paletoLoop2Checkpoints, paletoLoop2Starting);
+        VehicleRaceTrack paletoLoop2 = new VehicleRaceTrack("paletoloop2", "Paleto Bay Alternate Loop", "Do a loop around Paleto Bay", paletoLoop2Checkpoints, paletoLoop2Starting);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(paletoLoop2);
 
 
@@ -215,9 +243,76 @@ public class VehicleRaces : IVehicleRaces
 
 
         };
-        VehicleRaceTrack paletoDrag1 = new VehicleRaceTrack("paletodrag1", "Paleto Drag 1", "Paleto Drag Race 1.", paletoDrag1Checkpoints, paletoDrag1Starting);
+        VehicleRaceTrack paletoDrag1 = new VehicleRaceTrack("paletodrag1", "Paleto Bay Drag", "Drag race across paleto bay", paletoDrag1Checkpoints, paletoDrag1Starting);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(paletoDrag1);
 
+    }
+
+
+
+    private void CentralTracks()
+    {
+        List<VehicleRaceStartingPosition> central1start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(68.09341f, -1183.503f, 28.72084f), 2.301179f),
+            new VehicleRaceStartingPosition(1, new Vector3(72.77296f, -1185.764f, 28.65525f), 8.259281f),
+            new VehicleRaceStartingPosition(2, new Vector3(67.94074f, -1197.815f, 28.72175f), 1.318574f),
+            new VehicleRaceStartingPosition(3, new Vector3(73.90773f, -1198.595f, 28.61956f), 0.1617375f),
+        };
+        List<VehicleRaceCheckpoint> central1checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(80.30048f, -1067.49f, 28.79053f)),
+            new VehicleRaceCheckpoint(1, new Vector3(172.9085f, -818.7173f, 30.55356f)),
+            new VehicleRaceCheckpoint(2, new Vector3(303.2614f, -470.1808f, 42.71596f)),
+            new VehicleRaceCheckpoint(3, new Vector3(183.5113f, -337.3925f, 43.44069f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-61.29679f, -245.9679f, 44.78765f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-506.2202f, -272.2784f, 35.05164f)),
+
+        };
+        VehicleRaceTrack central1 = new VehicleRaceTrack("centralRace1", "Strawberry To Rockford City Hall", "Race to rockford city hall from the Strawberry underpass", central1checkpoints, central1start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(central1);
+
+
+        List<VehicleRaceStartingPosition> central2start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-414.8134f, -5.814307f, 46.03317f), 264.2367f),
+            new VehicleRaceStartingPosition(1, new Vector3(-426.5735f, -4.847809f, 45.74813f), 265.0832f),
+            new VehicleRaceStartingPosition(2, new Vector3(-415.077f, -10.34778f, 46.00951f), 259.6769f),
+            new VehicleRaceStartingPosition(3, new Vector3(-426.7999f, -8.770337f, 45.73085f), 259.6824f),
+        };
+        List<VehicleRaceCheckpoint> central2checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-323.7401f, -25.45497f, 47.50704f)),
+            new VehicleRaceCheckpoint(1, new Vector3(514.7919f, -333.9487f, 42.97514f)),
+
+        };
+        VehicleRaceTrack central2 = new VehicleRaceTrack("centralRace2", "Burton Cross Town Drag", "Drag race across central LS starting at Burton", central2checkpoints, central2start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(central2);
+
+        List<VehicleRaceStartingPosition> central3start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(1180.448f, -2556.885f, 34.84329f), 289.645f),
+            new VehicleRaceStartingPosition(1, new Vector3(1171.138f, -2559.885f, 34.25787f), 287.5368f),
+            new VehicleRaceStartingPosition(2, new Vector3(1181.931f, -2560.759f, 34.80701f), 279.2413f),
+            new VehicleRaceStartingPosition(3, new Vector3(1171.136f, -2563.416f, 34.28861f), 286.6383f),
+        };
+        List<VehicleRaceCheckpoint> central3checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(1247.396f, -2525.508f, 41.12943f)),
+            new VehicleRaceCheckpoint(1, new Vector3(1240.541f, -2021.258f, 43.51336f)),
+            new VehicleRaceCheckpoint(2, new Vector3(1068.375f, -1284.138f, 25.21841f)),
+            new VehicleRaceCheckpoint(3, new Vector3(715.1257f, -598.6426f, 35.34497f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-111.2042f, -495.9614f, 29.78688f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-237.5093f, -477.4375f, 25.16191f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-414.4864f, -694.7096f, 36.58041f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-410.9584f, -1352.381f, 36.67314f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-675.6441f, -1716.931f, 36.8155f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-764.5367f, -2088.595f, 33.70555f)),
+            new VehicleRaceCheckpoint(10, new Vector3(189.1148f, -2666.291f, 17.49789f)),
+
+        };
+        VehicleRaceTrack central3 = new VehicleRaceTrack("centralRace3", "LS Freeway Loop", "Loop around the central LS freeway system", central3checkpoints, central3start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(central3);
     }
 }
 

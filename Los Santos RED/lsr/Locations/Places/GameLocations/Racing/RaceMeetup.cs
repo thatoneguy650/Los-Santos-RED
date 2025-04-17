@@ -28,6 +28,7 @@ public class RaceMeetup : GameLocation
     public List<string> SupportedTracks { get;set; } = new List<string>();
     public List<string> AllowedOpponentGroups { get; set; } = new List<string>();
     public int MaxBax { get; set; } = 5000;
+   
     public RaceMeetup(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -111,6 +112,7 @@ public class RaceMeetup : GameLocation
         VehicleRacesMenu vehicleRaceMenu = new VehicleRacesMenu(MenuPool, RaceSubMenu, null, ModDataFileManager.VehicleRaces, PlacesOfInterest, World, Player, false, null, DispatchableVehicles, SupportedTracks, AllowedOpponentGroups, MaxBax, DispatchablePeople);
         vehicleRaceMenu.Setup();
     }
+
 
 }
 

@@ -414,10 +414,10 @@ public class CivilianSettings : ISettingsDefaultable
 
         InjureOnVehicleCrash = true;
 
-        VehicleCrashInjureScalar = 0.7f;
+        VehicleCrashInjureScalar = 0.5f;
 
         VehicleCrashInjureMinVehicleDamageTrigger = 35;
-        VehicleCrashInjureRandomizePercentage = 0.3f;
+        VehicleCrashInjureRandomizePercentage = 0.4f;
 
     }
 

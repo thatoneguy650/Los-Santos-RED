@@ -102,6 +102,11 @@ public class Dispatcher
             return;
         }
 
+        if(World.IsTrafficDisabled)
+        {
+            return;
+        }
+
         //int vehicleCount = World.Vehicles.AllVehicleList.Count();
         //int pedCount = World.Pedestrians.PedExts.Count();
         //EntryPoint.WriteToConsole($"VehicleCount:{vehicleCount} PedCount:{pedCount}");

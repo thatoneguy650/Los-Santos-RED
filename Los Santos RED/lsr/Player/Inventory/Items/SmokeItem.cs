@@ -58,6 +58,11 @@ public class SmokeItem : ConsumableItem
         actionable.ActivityManager.StartUpperBodyActivity(activity);
         return true;
     }
-
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.SmokeItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.SmokeItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

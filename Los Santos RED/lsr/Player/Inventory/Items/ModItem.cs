@@ -821,8 +821,9 @@ public class ModItem
         player.Inventory.Add(this, quantity * this.AmountPerPackage);
     }
 
+    public virtual void AddToList(PossibleItems possibleItems)
+    {
 
-
-
+    }
 }
 

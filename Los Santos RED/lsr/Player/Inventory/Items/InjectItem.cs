@@ -32,6 +32,12 @@ public class InjectItem : ConsumableItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.InjectItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.InjectItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 
 }
 

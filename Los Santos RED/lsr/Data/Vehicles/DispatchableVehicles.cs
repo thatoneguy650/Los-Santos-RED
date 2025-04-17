@@ -130,7 +130,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "DispatchableVehicles*.xml" : $"DispatchableVehicles_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "DispatchableVehicles_*.xml" : $"DispatchableVehicles_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -155,7 +155,14 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig_LibertyCity();
             DefaultConfig_LPP();
         }
-
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("DispatchableVehicles+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Dispatchable Vehicles config  {fileInfo.FullName}", 0);
+            List<DispatchableVehicleGroup> additivePossibleItems = Serialization.DeserializeParams<DispatchableVehicleGroup>(fileInfo.FullName);
+            VehicleGroupLookup.RemoveAll(x => additivePossibleItems.Any(y => y.DispatchableVehicleGroupID == x.DispatchableVehicleGroupID));
+            VehicleGroupLookup.AddRange(additivePossibleItems);
+        }
         //#if DEBUG
         //        foreach (DispatchableVehicleGroup dispatchableVehicleGroup in VehicleGroupLookup)
         //        {

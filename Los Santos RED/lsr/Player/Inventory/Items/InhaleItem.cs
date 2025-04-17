@@ -32,6 +32,12 @@ public class InhaleItem : ConsumableItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.InhaleItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.InhaleItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 
 }
 

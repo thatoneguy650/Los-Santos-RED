@@ -57,7 +57,7 @@ public class IssueableWeapons : IIssuableWeapons
     private List<IssuableWeapon> VendorLongGuns;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "IssuableWeapons*.xml" : $"IssuableWeapons_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "IssuableWeapons_*.xml" : $"IssuableWeapons_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -76,11 +76,76 @@ public class IssueableWeapons : IIssuableWeapons
             EntryPoint.WriteToConsole($"No Issuable Weapons config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_FullModernJurisdiction();
+            DefaultConfig_FullExpandedWeapons();
             DefaultConfig_LosSantos2008();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("IssuableWeapons+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Issuable Weapons config  {fileInfo.FullName}", 0);
+            List<IssuableWeaponsGroup> additivePossibleItems = Serialization.DeserializeParams<IssuableWeaponsGroup>(fileInfo.FullName);
+            IssuableWeaponsGroupLookup.RemoveAll(x => additivePossibleItems.Any(y => y.IssuableWeaponsID == x.IssuableWeaponsID));
+            IssuableWeaponsGroupLookup.AddRange(additivePossibleItems);
         }
     }
 
+    private void DefaultConfig_FullExpandedWeapons()
+    {
+        //COPS
+        List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")}),5),
+        };
+        List<IssuableWeapon> BestSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
 
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 65),
+
+            new IssuableWeapon("weapon_pistol50", new WeaponVariation(), 5),
+            new IssuableWeapon("weapon_appistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip") }), 5),
+        };
+
+        List<IssuableWeapon> HeliSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 65),
+        };
+        List<IssuableWeapon> LimitedSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),35),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")}),35),
+
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 65),
+
+        };
+        List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_FEW = new List<IssuableWeaponsGroup>
+        {
+            new IssuableWeaponsGroup("AllSidearms", AllSidearms_Modern),
+            new IssuableWeaponsGroup("BestSidearms", BestSidearms_Modern),
+            new IssuableWeaponsGroup("HeliSidearms", HeliSidearms_Modern),
+            new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms_Modern),
+        };
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_FEW, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\IssuableWeapons+_{StaticStrings.FEWConfigFolder}.xml");
+
+    }
 
     private void DefaultConfig()
     {

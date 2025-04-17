@@ -358,12 +358,17 @@ public class VehicleRacesMenu
         int scrollerUpperLimit = Player.BankAccounts.GetMoney(false);
         if (MaxBet != -1)
         {
-            if(MaxBet  > scrollerUpperLimit)
+            if(scrollerUpperLimit > MaxBet)
             {
                 scrollerUpperLimit = MaxBet;
             }
         }
-        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", "Enter the cash bet amount. Only winners are paid.", 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
+        string description = $"Enter the cash bet amount. Only winners are paid.";
+        if(MaxBet > 0)
+        {
+            description += $"~n~Max Bet: ${MaxBet}";
+        }
+        MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", description, 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
         RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false);
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
@@ -427,7 +432,7 @@ public class VehicleRacesMenu
                     GameFiber.Yield();
                 }
 
-                 ;
+                 
 
                 if(!Player.RacingManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles, 
                     DispatchablePeople.AllPeople.Where(x => x.DispatchablePersonGroupID == "VehicleRacePeds").FirstOrDefault(), 

@@ -64,7 +64,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
 
 
     public float PercentageWithLongGuns { get; set; } = 100f;
-    public float PercentageUsingLongGunsWheneverPossible { get; set; } = 40f;
+    public float PercentageUsingLongGunsWheneverPossible { get; set; } = 20f;
 
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();

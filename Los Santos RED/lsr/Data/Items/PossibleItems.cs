@@ -43,5 +43,44 @@ public class PossibleItems
     public List<EquipmentItem> EquipmentItems { get; private set; } = new List<EquipmentItem>();
     public List<BodyArmorItem> BodyArmorItems { get; private set; } = new List<BodyArmorItem>();
     public List<HardwareItem> HardwareItems { get; private set; } = new List<HardwareItem>();
+    public List<ModItem> AllItems()
+    {
+        List<ModItem> AllItems = new List<ModItem>();
+        AllItems.AddRange(FlashlightItems);
+        AllItems.AddRange(CellphoneItems);
+        AllItems.AddRange(ModItems);
+        AllItems.AddRange(ShovelItems);
+        AllItems.AddRange(UmbrellaItems);
+        AllItems.AddRange(LicensePlateItems);
+        AllItems.AddRange(LighterItems);
+        AllItems.AddRange(ScrewdriverItems);
+        AllItems.AddRange(TapeItems);
+        AllItems.AddRange(DrillItems);
+        AllItems.AddRange(HammerItems);
+        AllItems.AddRange(PliersItems);
+        AllItems.AddRange(BongItems);
+        AllItems.AddRange(PipeItems);
+        AllItems.AddRange(RollingPapersItems);
+        AllItems.AddRange(FoodItems);
+        AllItems.AddRange(SmokeItems);
+        AllItems.AddRange(PipeSmokeItems);
+        AllItems.AddRange(DrinkItems);
+        AllItems.AddRange(InhaleItems);
+        AllItems.AddRange(IngestItems);
+        AllItems.AddRange(InjectItems);
+        AllItems.AddRange(HotelStayItems);
+        AllItems.AddRange(WeaponItems);
+        AllItems.AddRange(VehicleItems);
+        AllItems.AddRange(BinocularsItems);
+        AllItems.AddRange(RadioItems);
+        AllItems.AddRange(RadarDetectorItems);
+        AllItems.AddRange(ValuableItems);
+        AllItems.AddRange(EquipmentItems);
+        AllItems.AddRange(BodyArmorItems);
+        AllItems.AddRange(HardwareItems);
+        AllItems.AddRange(ModItems);
+        return AllItems;
+    }
+
 }
 

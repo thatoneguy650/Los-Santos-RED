@@ -962,5 +962,11 @@ public class WeaponItem : ModItem
     {
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(this.WeaponInformation.ModelName,this.WeaponInformation.AmmoAmount, false);
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.WeaponItems.RemoveAll(x => x.ModelName == ModelName);
+        possibleItems?.WeaponItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 

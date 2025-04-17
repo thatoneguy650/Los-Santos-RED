@@ -24,7 +24,7 @@ public class Interiors : IInteriors
     public PossibleInteriors PossibleInteriors { get; private set; }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Interiors*.xml" : $"Interiors_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Interiors_*.xml" : $"Interiors_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -43,6 +43,16 @@ public class Interiors : IInteriors
             EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LibertyCity();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Interiors+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Interiors config  {fileInfo.FullName}", 0);
+            PossibleInteriors additivePossibleItems = Serialization.DeserializeParam<PossibleInteriors>(fileInfo.FullName);
+            foreach (Interior interior in additivePossibleItems.AllInteriors())
+            {
+                interior.AddLocation(PossibleInteriors);
+            }
         }
     }
     private void DefaultConfig_LibertyCity()

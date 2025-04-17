@@ -34,7 +34,12 @@ public class EquipmentItem : ConsumableItem
         return true;
     }
 
-
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.EquipmentItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.EquipmentItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 
 
 

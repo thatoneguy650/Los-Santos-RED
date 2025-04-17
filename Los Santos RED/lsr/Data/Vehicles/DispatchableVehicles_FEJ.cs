@@ -3613,7 +3613,14 @@ public class DispatchableVehicles_FEJ
         }
         else if (policeVehicleType == PoliceVehicleType.Detective)
         {
-
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
+                {
+                    new DispatchableVehicleExtra(1,false,100,1),
+                    new DispatchableVehicleExtra(2,false,100,2),
+                    new DispatchableVehicleExtra(3,false,100,3),
+                    new DispatchableVehicleExtra(4,false,100,4),
+                    new DispatchableVehicleExtra(5,false,100,5),
+                };
         }
 
         if (requiredColor != -1)

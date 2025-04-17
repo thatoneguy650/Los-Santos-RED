@@ -43,7 +43,7 @@ public class Gangs : IGangs
     public List<Gang> AllGangs => GangsList;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Gangs*.xml" : $"Gangs_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Gangs_*.xml" : $"Gangs_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -64,6 +64,14 @@ public class Gangs : IGangs
             DefaultConfig_Simple();
             DefaultConfig();
             DefaultConfig_LibertyCity();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Gangs+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Gangs config  {fileInfo.FullName}", 0);
+            List<Gang> additivePossibleItems = Serialization.DeserializeParams<Gang>(fileInfo.FullName);
+            GangsList.RemoveAll(x => additivePossibleItems.Any(y => y.ID == x.ID));
+            GangsList.AddRange(additivePossibleItems);
         }
     }
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)

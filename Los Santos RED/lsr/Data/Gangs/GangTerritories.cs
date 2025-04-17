@@ -19,7 +19,7 @@ public class GangTerritories : IGangTerritories
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "GangTerritories*.xml" : $"GangTerritories_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "GangTerritories_*.xml" : $"GangTerritories_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -42,6 +42,14 @@ public class GangTerritories : IGangTerritories
             DefaultConfig_Simple();
             DefaultConfig_LibertyCity();
             DefaultConfig_SunshineDream();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("GangTerritories+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Gang Territories config  {fileInfo.FullName}", 0);
+            List<GangTerritory> additivePossibleItems = Serialization.DeserializeParams<GangTerritory>(fileInfo.FullName);
+            GangTerritoriesList.RemoveAll(x => additivePossibleItems.Any(y => y.ZoneInternalGameName == x.ZoneInternalGameName));
+            GangTerritoriesList.AddRange(additivePossibleItems);
         }
     }
     public void Setup()

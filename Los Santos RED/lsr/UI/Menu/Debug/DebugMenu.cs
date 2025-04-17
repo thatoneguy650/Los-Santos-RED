@@ -99,7 +99,7 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugLCYMAPSubMenu(Debug, MenuPool, Player));
 #endif
 
-        DebugSubMenus.Add(new DebugVehicleRaceSubMenu(Debug, MenuPool, Player, modDataFileManager.VehicleRaces, world));
+        DebugSubMenus.Add(new DebugVehicleRaceSubMenu(Debug, MenuPool, Player, modDataFileManager.VehicleRaces, world, ModDataFileManager, interactionable));
     }
     public override void Hide()
     {

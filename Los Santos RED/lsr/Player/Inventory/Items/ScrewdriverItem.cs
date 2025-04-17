@@ -29,5 +29,11 @@ public class ScrewdriverItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.ScrewdriverItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.ScrewdriverItems.Add(this);
+        base.AddToList(possibleItems);
+    }
 }
 
