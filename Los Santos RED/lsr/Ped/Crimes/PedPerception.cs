@@ -78,7 +78,7 @@ public class PedPerception
         if (!PedExt.IsGangMember && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && CurrentCriminal.WantedLevel >= 3)))
         {
             uint VehicleWitnessed = 0;
-            uint WeaponWitnessed = 0;
+            uint? WeaponWitnessed = 0;
             WitnessedLocation = CurrentCriminal.Pedestrian.Position;
             if (DistanceToCurrentCriminal <= 60f)
             {
@@ -91,9 +91,9 @@ public class PedPerception
                 {
                     VehicleWitnessed = tryingToEnter.Handle;
                 }
-                uint currentWeapon = 0;
+                uint? currentWeapon = 0;
                 NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(CurrentCriminal.Pedestrian, out currentWeapon, true);
-                if (currentWeapon != 2725352035 && currentWeapon != 0)
+                if (currentWeapon != null && currentWeapon != 2725352035 && currentWeapon != 0)
                 {
                     WeaponWitnessed = currentWeapon;
                 }

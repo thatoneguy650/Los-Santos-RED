@@ -192,7 +192,7 @@ public class ModDataFileManager
 
 #if DEBUG
         WantedLevels = new WantedLevels();
-        WantedLevels.ReadConfig(config.WantedLevelsConfig);
+        WantedLevels.ReadConfig("Default");
         WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
         GameFiber.Yield();
 

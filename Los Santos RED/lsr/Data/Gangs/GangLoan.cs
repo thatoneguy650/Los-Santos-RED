@@ -59,8 +59,8 @@ public class GangLoan
     }
     public void PayLoan()
     {
-        Reset();
         SendPaymentMessage();
+        Reset();
     }
     public void Start(bool sendMessage)
     {
