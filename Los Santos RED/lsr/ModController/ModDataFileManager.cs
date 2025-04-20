@@ -265,7 +265,15 @@ public class ModDataFileManager
     private void SetupFullExpandedWeapons()
     {
         Directory.CreateDirectory($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}");
-        string Description = "TBA.";
+        string Description = "" +
+            "Adds some lore friendly weapon replacements." + Environment.NewLine + Environment.NewLine +
+            "Installation:" + Environment.NewLine +
+            "Install the greskfewinstaller.oiv and move the .xml files into the main directory." + Environment.NewLine + Environment.NewLine +
+            "Credits" + Environment.NewLine + Environment.NewLine +
+            "Reference/Knowledge" + Environment.NewLine +
+            "HeySlickThatsMe, AllenKennedy" + Environment.NewLine + Environment.NewLine +
+            "Models" + Environment.NewLine +
+            "IVA, romunql, rwroclav" + Environment.NewLine + Environment.NewLine;
         File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\readme.txt", Description);
     }
     private void SetupFullModernTraffic()

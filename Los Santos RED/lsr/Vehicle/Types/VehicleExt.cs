@@ -407,6 +407,7 @@ namespace LSR.Vehicles
                 {
                     Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
                 }
+                Windows.CreateWindowList();
             }
         }
         public Color VehicleColor()
@@ -1533,9 +1534,31 @@ namespace LSR.Vehicles
             {
                 return true;
             }
-            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows)
             {
-                return true;
+                //bool noWindowsMoved = true;
+                if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+                {
+                    foreach (Window window in Windows.WindowList)
+                    {
+                        //noWindowsMoved = false;
+                        bool isIntact = NativeFunction.Natives.IS_VEHICLE_WINDOW_INTACT<bool>(Vehicle, window.ID);
+
+                        EntryPoint.WriteToConsole($"VIOLATIONS WINDOW ID {window.ID} isIntact: {isIntact} IsRolledUp{window.IsRolledUp}");
+
+
+                        if (!isIntact && window.IsRolledUp)
+                        {
+                            
+                            return true;
+                        }
+                    }
+                    //if(noWindowsMoved)
+                    //{
+                    //    return true;
+                    //}
+                    //return true;
+                }
             }
             if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors)
             {

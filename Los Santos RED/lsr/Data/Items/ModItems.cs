@@ -112,7 +112,24 @@ public class ModItems : IModItems
     private void DefaultConfig_FullExpandedWeapons()
     {
         PossibleItems newPossibleItems = new PossibleItems();
-        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86", "A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false, ItemType.Weapons) { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+
+
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86", 
+            "The polymer handgun that started it all. Cheap enough to use as a drop gun, reliable enough to silence the witnesses.", 
+            false, ItemType.Weapons) 
+        { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+        
+
+
+        
+        
+        
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer 609",
+            "The LSPD standard issue. Extended capacity in a small package. Good for dumping round after round into the criminals general direction. Who cares if a Post-Op delivery man eats a few?",
+            false, ItemType.Weapons)
+        { VanillaName = "Pistol Mk2", ModelName = "weapon_pistol_mk2", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+
+
         Serialization.SerializeParam(newPossibleItems, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ModItems+_{StaticStrings.FEWConfigSuffix}.xml");
     }
 
@@ -3401,7 +3418,7 @@ public class ModItems : IModItems
 
 
             //Pistola
-            new WeaponItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false, ItemType.Weapons) { VanillaName = "Pistol",ModelName = "weapon_pistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 },
+            new WeaponItem("Hawk & Little PTF092F","The gun that has proven itself on both on the battlefields of the Middle East and the 24/7s of San Andreas. Knock over a store or take out a 17 year old overseas, the choice is yours", false, ItemType.Weapons) { VanillaName = "Pistol",ModelName = "weapon_pistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 },
             new WeaponItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true, ItemType.Weapons) { VanillaName = "Combat Pistol Mk2",ModelName = "weapon_pistol_mk2",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
             new WeaponItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false, ItemType.Weapons) { VanillaName = "Combat Pistol",ModelName = "weapon_combatpistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10},
             new WeaponItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false, ItemType.Weapons) { VanillaName = "Pistol .50",ModelName = "weapon_pistol50",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 2},

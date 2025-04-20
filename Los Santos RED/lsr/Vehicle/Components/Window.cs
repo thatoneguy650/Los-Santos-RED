@@ -30,6 +30,9 @@ namespace LSR.Vehicles
             }
 
 
+            EntryPoint.WriteToConsole($"WINDOW SET STATE START 1 {ID} IsRolledUp{IsRolledUp}");
+
+
             if (RollUp)
             {
                 NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", VehicleToMonitor.Vehicle, ID);

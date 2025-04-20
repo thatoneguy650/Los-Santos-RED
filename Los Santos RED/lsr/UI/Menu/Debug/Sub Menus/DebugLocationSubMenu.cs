@@ -324,7 +324,7 @@ public class DebugLocationSubMenu : DebugSubMenu
                         {
                             FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
                         }
-                        FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
+                        FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * 1.0f;// FreeCamScale;
 
                         NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
 
@@ -386,20 +386,20 @@ public class DebugLocationSubMenu : DebugSubMenu
     
 
 
-                        if (Game.IsKeyDownRightNow(Keys.Up))
+                        if (Game.IsKeyDownRightNow(Keys.LControlKey) && Game.IsKeyDownRightNow(Keys.Left))
                         {
                             FreeCam.FOV += 1.0f;
                             Game.DisplaySubtitle($"FOV: {FreeCam.FOV}");
                             GameFiber.Sleep(100);
                         }
-                        if (Game.IsKeyDownRightNow(Keys.Down))
+                        if (Game.IsKeyDownRightNow(Keys.LControlKey) && Game.IsKeyDownRightNow(Keys.Right))
                         {
                             FreeCam.FOV -= 1.0f;
                             Game.DisplaySubtitle($"FOV: {FreeCam.FOV}");
                             GameFiber.Sleep(100);
                         }
 
-                        if (Game.IsKeyDownRightNow(Keys.Left))
+                        if (Game.IsKeyDownRightNow(Keys.LShiftKey) && Game.IsKeyDownRightNow(Keys.Left))
                         {
 
                             DepthOfField += 0.1f;
@@ -408,7 +408,7 @@ public class DebugLocationSubMenu : DebugSubMenu
                             Game.DisplaySubtitle($"DepthOfField: {DepthOfField}");
                             GameFiber.Sleep(100);
                         }
-                        if (Game.IsKeyDownRightNow(Keys.Right))
+                        if (Game.IsKeyDownRightNow(Keys.LShiftKey) && Game.IsKeyDownRightNow(Keys.Right))
                         {
                             DepthOfField -= 0.1f;
                             DepthOfField.Clamp(0.0f, 1.0f);

@@ -243,7 +243,7 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullExpandedWeapons()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => y.ModItemName == "Hawk & Little Combat Pistol")).ToList();
+        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => y.ModItemName == "Hawk & Little Combat Pistol" || y.ModItemName == "Hawk & Little Thunder")).ToList();
         foreach(ShopMenu shopMenu in shopMenusToUpdate)
         {
             foreach(MenuItem menuItem in shopMenu.Items)
@@ -252,6 +252,12 @@ public class ShopMenus : IShopMenus
                 {
                     menuItem.ModItemName = "Vom Feuer VF86";
                 }
+
+                if (menuItem.ModItemName == "Hawk & Little Thunder")
+                {
+                    menuItem.ModItemName = "Vom Feuer 609";
+                }
+
             }
         }
         ShopMenuTypes final = new ShopMenuTypes();
@@ -264,7 +270,7 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu");
+        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {

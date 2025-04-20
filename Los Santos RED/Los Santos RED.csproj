@@ -151,6 +151,7 @@
     <Compile Include="lsr\Data\Other\SpawnBlocks.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\AppliedOverlayZonePercentage.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Cops\DispatchablePeople_Cops.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Cops\DispatchablePeople_EUP.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_AngelsOfDeath.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Diablos.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_LostMC.cs" />

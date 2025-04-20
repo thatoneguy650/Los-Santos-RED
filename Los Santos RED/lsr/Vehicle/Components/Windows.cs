@@ -46,8 +46,24 @@ namespace LSR.Vehicles
             {
                 toSet = new Window(VehicleToMonitor, windowID);
                 WindowList.Add(toSet);
+                EntryPoint.WriteToConsole($"CREATE WINDOW windowID:{windowID}");
             }
             return toSet;
+        }
+
+        public void CreateWindowList()
+        {
+            if(VehicleToMonitor == null || !VehicleToMonitor.Vehicle.Exists())
+            {
+                return;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                if (NativeFunction.Natives.IS_VEHICLE_WINDOW_INTACT<bool>(VehicleToMonitor.Vehicle, i))
+                {
+                    GetOrCreate(i);
+                }
+            }
         }
     }
 }
