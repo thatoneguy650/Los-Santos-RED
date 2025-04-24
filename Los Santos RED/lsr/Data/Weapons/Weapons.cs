@@ -20,7 +20,7 @@ public class Weapons : IWeapons
     private List<WeaponInformation> WeaponsList;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Weapons*.xml" : $"Weapons_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Weapons_*.xml" : $"Weapons_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -38,8 +38,59 @@ public class Weapons : IWeapons
         {
             EntryPoint.WriteToConsole($"No Weapons config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_FullExpandedWeapons();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Weapons+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Weapons config  {fileInfo.FullName}", 0);
+            List<WeaponInformation> additivePossibleItems = Serialization.DeserializeParams<WeaponInformation>(fileInfo.FullName);
+            WeaponsList.RemoveAll(x => additivePossibleItems.Any(y => y.ModelName == x.ModelName));
+            WeaponsList.AddRange(additivePossibleItems);
         }
     }
+
+    private void DefaultConfig_FullExpandedWeapons()
+    {
+        List<WeaponInformation> fewList = new List<WeaponInformation>();
+        List<WeaponComponent> CompactRifleComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x513F0A63,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x59FF9BF8,ComponentSlot.Magazine),
+            new WeaponComponent("Drum Magazine", 0xC607740E, ComponentSlot.Magazine),
+            new WeaponComponent("Suppressor", 0xA73D4664,ComponentSlot.Muzzle),
+        };
+
+        //
+        fewList.Add(new WeaponInformation("weapon_compactrifle", 120, WeaponCategory.AR, 3, 1649403952, false, true, false, 0.45f, 0.65f, 0.3f, 0.4f, 0.6f, 0.6f, 0.6f, 0.6f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = CompactRifleComponents });
+
+        List<WeaponComponent> SweeperShotgunComponenets = new List<WeaponComponent>
+        {
+            new WeaponComponent("Holographic Sight", 0x420FD713, ComponentSlot.Optic),
+        };
+
+        fewList.Add(new WeaponInformation("weapon_autoshotgun", 32, WeaponCategory.Shotgun, 2, 317205821, false, true, false, 1.2f, 1.4f, 0.9f, 1.2f, 1.0f, 1.5f, 1.0f, 1.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = SweeperShotgunComponenets });
+
+
+
+        List<WeaponComponent> SMGComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x26574997,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x350966FB,ComponentSlot.Magazine),
+            new WeaponComponent("Drum Magazine", 0x79C77076, ComponentSlot.Magazine),
+            new WeaponComponent("Flashlight", 0x7BC4CDDC,ComponentSlot.Light),
+            new WeaponComponent("Scope", 0x3CC6BA57, ComponentSlot.Optic),
+            new WeaponComponent("Holographic Sight", 0x420FD713, ComponentSlot.Optic),
+            new WeaponComponent("Suppressor", 0xC304849A,ComponentSlot.Muzzle),
+            new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring)
+        };
+        fewList.Add(new WeaponInformation("weapon_smg", 90, WeaponCategory.SMG, 2, 736523883, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
+
+
+
+        Serialization.SerializeParam(fewList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\Weapons+_{StaticStrings.FEWConfigSuffix}.xml");
+    }
+
     public bool CanPlayerWeaponSuicide(Ped Pedestrian)
     {
         if (Pedestrian.Inventory.EquippedWeapon != null)

@@ -19,7 +19,7 @@ public class Intoxicants : IIntoxicants
     public List<Intoxicant> Items => IntoxicantList;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Itoxicants*.xml" : $"Itoxicants_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Itoxicants_*.xml" : $"Itoxicants_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -37,6 +37,14 @@ public class Intoxicants : IIntoxicants
         {
             EntryPoint.WriteToConsole($"No Intoxicants config found, creating default", 0);
             DefaultConfig();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Itoxicants+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Intoxicants config  {fileInfo.FullName}", 0);
+            List<Intoxicant> additivePossibleItems = Serialization.DeserializeParams<Intoxicant>(fileInfo.FullName);
+            IntoxicantList.RemoveAll(x => additivePossibleItems.Any(y => y.Name.ToLower() == x.Name.ToLower()));
+            IntoxicantList.AddRange(additivePossibleItems);
         }
     }
     public void SerializeAllSettings()

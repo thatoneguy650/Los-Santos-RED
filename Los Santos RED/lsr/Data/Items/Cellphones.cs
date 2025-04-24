@@ -15,7 +15,7 @@ public class Cellphones : ICellphones
     private List<CellphoneData> CellphoneList;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Cellphones*.xml" : $"Cellphones_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Cellphones_*.xml" : $"Cellphones_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -34,6 +34,14 @@ public class Cellphones : ICellphones
             EntryPoint.WriteToConsole($"No Cellphones config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LosSantos2008();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Cellphones+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Cellphones config  {fileInfo.FullName}", 0);
+            List<CellphoneData> additivePossibleItems = Serialization.DeserializeParams<CellphoneData>(fileInfo.FullName);
+            CellphoneList.RemoveAll(x => additivePossibleItems.Any(y => y.ModItemName.ToLower() == x.ModItemName.ToLower()));
+            CellphoneList.AddRange(additivePossibleItems);
         }
     }
     public void SerializeAllSettings()

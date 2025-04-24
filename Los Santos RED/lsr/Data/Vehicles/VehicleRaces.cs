@@ -15,7 +15,7 @@ public class VehicleRaces : IVehicleRaces
     public VehicleRaceTypeManager VehicleRaceTypeManager { get; private set; }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "VehicleRaces*.xml" : $"VehicleRaces_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "VehicleRaces_*.xml" : $"VehicleRaces_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED"); 
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -34,6 +34,16 @@ public class VehicleRaces : IVehicleRaces
             EntryPoint.WriteToConsole($"No VehicleRaces config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_Liberty();
+        }
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("VehicleRaces+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Vehicle Races config  {fileInfo.FullName}", 0);
+            VehicleRaceTypeManager additivePossibleItems = Serialization.DeserializeParam<VehicleRaceTypeManager>(fileInfo.FullName);
+            foreach (VehicleRaceTrack newItem in additivePossibleItems.VehicleRaceTracks)
+            {
+                VehicleRaceTypeManager.VehicleRaceTracks.RemoveAll(x => x.ID == newItem.ID);
+                VehicleRaceTypeManager.VehicleRaceTracks.Add(newItem);
+            }
         }
     }
 

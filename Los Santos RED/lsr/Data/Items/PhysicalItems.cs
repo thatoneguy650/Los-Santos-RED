@@ -28,7 +28,7 @@ public class PhysicalItems : IPropItems
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "PhysicalItems*.xml" : $"PhysicalItems_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "PhysicalItems_*.xml" : $"PhysicalItems_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -46,6 +46,14 @@ public class PhysicalItems : IPropItems
         {
             EntryPoint.WriteToConsole($"No Physical Items config found, creating default", 0);
             DefaultConfig();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("PhysicalItems+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Physical Items config  {fileInfo.FullName}", 0);
+            List<PhysicalItem> additivePossibleItems = Serialization.DeserializeParams<PhysicalItem>(fileInfo.FullName);
+            PhysicalItemsList.RemoveAll(x => additivePossibleItems.Any(y => y.ID == x.ID));
+            PhysicalItemsList.AddRange(additivePossibleItems);
         }
     }
     private void DefaultConfig()

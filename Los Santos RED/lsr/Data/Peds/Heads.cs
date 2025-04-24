@@ -14,7 +14,7 @@ public class Heads : IHeads
     private List<HeadDataGroup> RandomHeadDataLookup;
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Heads*.xml" : $"Heads_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Heads_*.xml" : $"Heads_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -32,6 +32,14 @@ public class Heads : IHeads
         {
             EntryPoint.WriteToConsole($"No Heads config found, creating default", 0);
             DefaultConfig();
+        }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Heads+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Heads config  {fileInfo.FullName}", 0);
+            List<HeadDataGroup> additivePossibleItems = Serialization.DeserializeParams<HeadDataGroup>(fileInfo.FullName);
+            RandomHeadDataLookup.RemoveAll(x => additivePossibleItems.Any(y => y.HeadDataGroupID == x.HeadDataGroupID));
+            RandomHeadDataLookup.AddRange(additivePossibleItems);
         }
     }
     private void DefaultConfig()

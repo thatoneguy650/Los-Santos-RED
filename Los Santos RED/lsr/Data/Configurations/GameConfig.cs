@@ -61,7 +61,7 @@ public class GameConfig
         SpawnBlocksConfig = suffix;
         SpeechesConfig = suffix;
         StreetsConfig = suffix;
-        WantedLevelsConfig = suffix;
+        //WantedLevelsConfig = suffix;
         WeaponsConfig = suffix;
         ZoneJurisdictionsConfig = suffix;
         ZonesConfig = suffix;
@@ -101,7 +101,7 @@ public class GameConfig
         SpawnBlocksConfig = suffix;
         SpeechesConfig = suffix;
         StreetsConfig = suffix;
-        WantedLevelsConfig = suffix;
+        //WantedLevelsConfig = suffix;
         WeaponsConfig = suffix;
         ZoneJurisdictionsConfig = suffix;
         ZonesConfig = suffix;
@@ -114,7 +114,7 @@ public class GameConfig
         string intoxicants, string issueableWeapons, string locations, string locationTypes,
         string modItems, string names, string organizations, string pedGroups, string physicalitems,
         string plateTypes, string savedOutfits, string saveGames, string settings, string shopMenus,
-        string spawnBlocks, string speeches, string streets, string wantedLevels, string weapons,
+        string spawnBlocks, string speeches, string streets, string weapons,
         string zoneJurisdictions, string zones, string vehicleRaces)
     {
         ConfigName = configName;
@@ -149,7 +149,7 @@ public class GameConfig
         SpawnBlocksConfig = spawnBlocks;
         SpeechesConfig = speeches;
         StreetsConfig = streets;
-        WantedLevelsConfig = wantedLevels;
+        //WantedLevelsConfig = wantedLevels;
         WeaponsConfig = weapons;
         ZoneJurisdictionsConfig = zoneJurisdictions;
         ZonesConfig = zones;
@@ -189,7 +189,7 @@ public class GameConfig
     public string SpeechesConfig { get; set; }
     public string StreetsConfig { get; set; }
     public string VehicleRacesConfig { get; set; }
-    public string WantedLevelsConfig { get; set; }
+    //public string WantedLevelsConfig { get; set; }
     public string WeaponsConfig { get; set; }
     public string ZoneJurisdictionsConfig { get; set; }
     public string ZonesConfig { get; set; }
@@ -229,7 +229,7 @@ public class GameConfig
             SpeechesConfig,
             StreetsConfig,
             VehicleRacesConfig,
-            WantedLevelsConfig,
+            //WantedLevelsConfig,
             WeaponsConfig,
             ZoneJurisdictionsConfig,
             ZonesConfig

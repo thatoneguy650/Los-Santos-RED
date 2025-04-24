@@ -22,6 +22,9 @@ public class DispatchableVehicles_RaceCars
     public List<DispatchableVehicle> RegularMotorcycle_Group { get; private set; }
     public List<DispatchableVehicle> RegularOffRoad_Group { get; private set; }
 
+    public List<DispatchableVehicle> HotringTruck_Group { get; private set; }
+    public List<DispatchableVehicle> Hotring_Group { get; private set; }
+
     public DispatchableVehicles_RaceCars(DispatchableVehicles dispatchableVehicles)
     {
         DispatchableVehicles = dispatchableVehicles;
@@ -34,6 +37,7 @@ public class DispatchableVehicles_RaceCars
         Offroad();
         Rally();
         Motorcycle();
+        Hotring();
 
         //General Groups
         GroupsToAdd.Add(new DispatchableVehicleGroup("SportsCars_Racing","Sports Cars","Collection of sports cars", RegularSports_Group, DispatchbleVehicleGroupType.Racing));
@@ -51,6 +55,9 @@ public class DispatchableVehicles_RaceCars
         GroupsToAdd.Add(new DispatchableVehicleGroup("OtherMuscle_Racing", "Other Muscle Cars", "Collection of all muscle cars", OtherMuscleRegular_Group, DispatchbleVehicleGroupType.Racing));
         GroupsToAdd.Add(new DispatchableVehicleGroup("MuscleRace_Racing", "Race Muscle Cars", "Collection of muscle cars with racing liveries", MuscleRace_Group, DispatchbleVehicleGroupType.Racing));
 
+        //Hotring
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Hotring_Racing", "Hotring Racing", "Collection of Hotring's with racing liveries", Hotring_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Everon_Racing", "Everon Racing", "Collection of Everon's with racing liveries", HotringTruck_Group, DispatchbleVehicleGroupType.Racing));
 
     }
     private void Motorcycle()
@@ -209,6 +216,152 @@ public class DispatchableVehicles_RaceCars
             new DispatchableVehicle("buffalo3", 100, 100),//Race car
             new DispatchableVehicle("stalion2", 100, 100),//Race car
         };
+    }
+    private void Hotring()
+    {
+        Hotring_Group = new List<DispatchableVehicle>
+        {
+            new DispatchableVehicle("gauntlet6",100,100)           
+            {
+                RequiredPrimaryColorID = -1,
+                RequiredSecondaryColorID = -1,
+                MaxRandomDirtLevel = 10.0f,
+                VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                            new DispatchableVehicleModValue(7,15),
+                            new DispatchableVehicleModValue(8,15),
+                            new DispatchableVehicleModValue(9,15),
+                            new DispatchableVehicleModValue(10,15),
+                            new DispatchableVehicleModValue(11,15),
+                            new DispatchableVehicleModValue(12,15),
+                            new DispatchableVehicleModValue(13,15),
+                            new DispatchableVehicleModValue(14,15),
+                            new DispatchableVehicleModValue(15,15),
+                            new DispatchableVehicleModValue(16,15),
+                            new DispatchableVehicleModValue(17,15),
+                            new DispatchableVehicleModValue(18,15),
+                            new DispatchableVehicleModValue(19,15),
+                            new DispatchableVehicleModValue(20,15),
+                            new DispatchableVehicleModValue(21,15),
+                            new DispatchableVehicleModValue(22,15),
+                            new DispatchableVehicleModValue(23,15),
+                            new DispatchableVehicleModValue(24,15),
+                            new DispatchableVehicleModValue(25,15),
+                            new DispatchableVehicleModValue(26,15),
+                            new DispatchableVehicleModValue(27,15),
+                            new DispatchableVehicleModValue(28,15),
+                            new DispatchableVehicleModValue(29,15),
+                            new DispatchableVehicleModValue(30,15),
+                        },
+                    },
+                },
+            },
+            new DispatchableVehicle("hotring", 100, 100)
+            {
+                RequiredPrimaryColorID = -1,
+                RequiredSecondaryColorID = -1,
+                MaxRandomDirtLevel = 10.0f,
+                VehicleMods = new List<DispatchableVehicleMod>()
+    {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                            new DispatchableVehicleModValue(7,15),
+                            new DispatchableVehicleModValue(8,15),
+                            new DispatchableVehicleModValue(9,15),
+                            new DispatchableVehicleModValue(10,15),
+                            new DispatchableVehicleModValue(11,15),
+                            new DispatchableVehicleModValue(12,15),
+                            new DispatchableVehicleModValue(13,15),
+                            new DispatchableVehicleModValue(14,15),
+                            new DispatchableVehicleModValue(15,15),
+                            new DispatchableVehicleModValue(16,15),
+                            new DispatchableVehicleModValue(17,15),
+                            new DispatchableVehicleModValue(18,15),
+                            new DispatchableVehicleModValue(19,15),
+                            new DispatchableVehicleModValue(20,15),
+                            new DispatchableVehicleModValue(21,15),
+                            new DispatchableVehicleModValue(22,15),
+                            new DispatchableVehicleModValue(23,15),
+                            new DispatchableVehicleModValue(24,15),
+                            new DispatchableVehicleModValue(25,15),
+                            new DispatchableVehicleModValue(26,15),
+                            new DispatchableVehicleModValue(27,15),
+                            new DispatchableVehicleModValue(28,15),
+                            new DispatchableVehicleModValue(29,15),
+                            new DispatchableVehicleModValue(30,15),
+                        },
+                    },
+                },
+            },
+        };
+
+        HotringTruck_Group = new List<DispatchableVehicle>()
+       {
+           new DispatchableVehicle("everon2", 100, 100)
+           {
+               RequiredPrimaryColorID = -1,
+               RequiredSecondaryColorID = -1,
+               MaxRandomDirtLevel = 10.0f,
+               VehicleMods = new List<DispatchableVehicleMod>()
+           {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,15),
+                            new DispatchableVehicleModValue(7,15),
+                            new DispatchableVehicleModValue(8,15),
+                            new DispatchableVehicleModValue(9,15),
+                            new DispatchableVehicleModValue(10,15),
+                            new DispatchableVehicleModValue(11,15),
+                            new DispatchableVehicleModValue(12,15),
+                            new DispatchableVehicleModValue(13,15),
+                            new DispatchableVehicleModValue(14,15),
+                            new DispatchableVehicleModValue(15,15),
+                            new DispatchableVehicleModValue(16,15),
+                            new DispatchableVehicleModValue(17,15),
+                            new DispatchableVehicleModValue(18,15),
+                            new DispatchableVehicleModValue(19,15),
+                            new DispatchableVehicleModValue(20,15),
+                            new DispatchableVehicleModValue(21,15),
+                            new DispatchableVehicleModValue(22,15),
+                            new DispatchableVehicleModValue(23,15),
+                            new DispatchableVehicleModValue(24,15),
+                            new DispatchableVehicleModValue(25,15),
+                            new DispatchableVehicleModValue(26,15),
+                            new DispatchableVehicleModValue(27,15),
+                            new DispatchableVehicleModValue(28,15),
+                        },
+                    },
+               },
+           },
+       };
     }
 }
 

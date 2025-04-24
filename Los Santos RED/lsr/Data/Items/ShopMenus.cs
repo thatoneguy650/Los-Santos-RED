@@ -60,6 +60,36 @@ public class ShopMenus : IShopMenus
                 PossibleShopMenus.ShopMenuList.RemoveAll(x=> x.ID == shopMenu.ID);
                 PossibleShopMenus.ShopMenuList.Add(shopMenu);
             }
+
+            foreach (ShopMenuGroupContainer shopMenu in additivePossibleItems.ShopMenuGroupContainers)
+            {
+                PossibleShopMenus.ShopMenuGroupContainers.RemoveAll(x => x.ID == shopMenu.ID);
+                PossibleShopMenus.ShopMenuGroupContainers.Add(shopMenu);
+            }
+            foreach (ShopMenuGroup shopMenu in additivePossibleItems.ShopMenuGroupList)
+            {
+                PossibleShopMenus.ShopMenuGroupList.RemoveAll(x => x.ID == shopMenu.ID);
+                PossibleShopMenus.ShopMenuGroupList.Add(shopMenu);
+            }
+
+            foreach (PropShopMenu shopMenu in additivePossibleItems.PropShopMenus)
+            {
+                PossibleShopMenus.PropShopMenus.RemoveAll(x => x.ShopMenuID == shopMenu.ShopMenuID);
+                PossibleShopMenus.PropShopMenus.Add(shopMenu);
+            }
+
+            foreach (PedVariationShopMenu shopMenu in additivePossibleItems.PedVariationShopMenus)
+            {
+                PossibleShopMenus.PedVariationShopMenus.RemoveAll(x => x.ID == shopMenu.ID);
+                PossibleShopMenus.PedVariationShopMenus.Add(shopMenu);
+            }
+
+            foreach (TreatmentOptions shopMenu in additivePossibleItems.TreatmentOptionsList)
+            {
+                PossibleShopMenus.TreatmentOptionsList.RemoveAll(x => x.ID == shopMenu.ID);
+                PossibleShopMenus.TreatmentOptionsList.Add(shopMenu);
+            }
+
         }
     }
 
@@ -257,7 +287,25 @@ public class ShopMenus : IShopMenus
                 {
                     menuItem.ModItemName = "Vom Feuer 609";
                 }
+                if (menuItem.ModItemName == "Hawk & Little MP6")
+                {
+                    menuItem.ModItemName = "Vom Feuer MP6";
+                }
 
+                if (menuItem.ModItemName == "Shrewsbury Stinkov")
+                {
+                    menuItem.Extras.Add(new MenuItemExtra("Suppressor", 600));
+                }
+
+
+                if (menuItem.ModItemName == "Shrewsbury Defender")
+                {
+                    menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                }
+                if (menuItem.ModItemName == "Hawk & Little MP6" || menuItem.ModItemName == "Vom Feuer MP6")
+                {
+                    menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                }
             }
         }
         ShopMenuTypes final = new ShopMenuTypes();

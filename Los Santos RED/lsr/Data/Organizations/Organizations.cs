@@ -30,7 +30,7 @@ public class Organizations : IOrganizations
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "Organizations*.xml" : $"Organizations_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "Organizations_*.xml" : $"Organizations_{configName}.xml";
 
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = taskDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -51,6 +51,21 @@ public class Organizations : IOrganizations
             DefaultConfig_FullExpanded();
             DefaultConfig_LibertyCity();
             DefaultConfig();
+        }
+        foreach (FileInfo fileInfo in taskDirectory.GetFiles("Organizations+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Organizations config  {fileInfo.FullName}", 0);
+            PossibleOrganizations additivePossibleItems = Serialization.DeserializeParam<PossibleOrganizations>(fileInfo.FullName);
+            foreach (Organization newItem in additivePossibleItems.GeneralOrganizations)
+            {
+                PossibleOrganizations.GeneralOrganizations.RemoveAll(x => x.ID == newItem.ID);
+                PossibleOrganizations.GeneralOrganizations.Add(newItem);
+            }
+            foreach (TaxiFirm newItem in additivePossibleItems.TaxiFirms)
+            {
+                PossibleOrganizations.TaxiFirms.RemoveAll(x => x.ID == newItem.ID);
+                PossibleOrganizations.TaxiFirms.Add(newItem);
+            }
         }
     }
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons, IContacts contacts)

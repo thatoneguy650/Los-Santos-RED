@@ -101,7 +101,7 @@ public class GameConfigs : IGameConfigs
             GetConfigFile(config.CrimesConfig, "Crimes"),
             GetConfigFile(config.ZoneJurisdictionsConfig, "ZoneJurisdictions"),
             GetConfigFile(config.CountyJurisdictionsConfig, "CountyJurisdictions"),
-            GetConfigFile(config.WantedLevelsConfig, "WantedLevels"),
+            //GetConfigFile(config.WantedLevelsConfig, "WantedLevels"),
             GetConfigFile(config.GangsConfig, "Gangs"),
             GetConfigFile(config.GangTerritoriesConfig, "GangTerritories"),
             GetConfigFile(config.CellphonesConfig, "Cellphones"),
@@ -174,7 +174,7 @@ public class GameConfigs : IGameConfigs
                                             "Default","Default", "FullExpandedJurisdiction", "FullExpandedJurisdiction","Default",
                                             "Default","Default", "Default", "Default", "Default", "FullExpandedJurisdiction", "Default",
                                             "Default", "Default", "Default", "FullExpandedJurisdiction", "Default", "Default", "FullModernLicensePlates",
-                                            "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "Default", "FullExpandedJurisdiction", "Default", "Default");
+                                            "Default", "Default", "Default", "Default", "Default", "Default", "Default",  "Default", "FullExpandedJurisdiction", "Default", "Default");
         CustomConfigList.Add(FEJ_FMLP);
     }
     private void AddFEJ_FMLP_FMT()
@@ -183,7 +183,7 @@ public class GameConfigs : IGameConfigs
                                             "Default", "Default", "FullExpandedJurisdiction", "FullExpandedJurisdiction", "Default",
                                             "Default", "Default", "Default", "Default", "Default", "FullExpandedJurisdiction", "Default",
                                             "Default", "FullModernTraffic", "Default", "FullExpandedJurisdiction", "Default", "Default", "FullModernLicensePlates",
-                                            "Default", "Default", "Default", "FullModernTraffic", "Default", "Default", "Default", "Default", "Default", "FullExpandedJurisdiction", "Default", "Default");
+                                            "Default", "Default", "Default", "FullModernTraffic", "Default", "Default", "Default", "Default", "FullExpandedJurisdiction", "Default", "Default");
         CustomConfigList.Add(FEJ_FMLP_FMT);
     }
 }

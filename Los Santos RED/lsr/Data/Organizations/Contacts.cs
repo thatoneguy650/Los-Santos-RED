@@ -48,6 +48,7 @@ public class Contacts : IContacts
             DefaultConfig_LC();
             DefaultConfig();
         }
+
     }
 
 

@@ -23,7 +23,7 @@ public class CraftableItems : ICraftableItems
     }
     public void ReadConfig(string configName)
     {
-        string fileName = string.IsNullOrEmpty(configName) ? "CraftableItems*.xml" : $"CraftableItems_{configName}.xml";
+        string fileName = string.IsNullOrEmpty(configName) ? "CraftableItems_*.xml" : $"CraftableItems_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
@@ -42,7 +42,24 @@ public class CraftableItems : ICraftableItems
             EntryPoint.WriteToConsole($"No Craftable Items config found, creating default", 0);
             DefaultConfig();
         }
+        //Load Additive
+        foreach (FileInfo fileInfo in LSRDirectory.GetFiles("CraftableItems+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Craftable Items config  {fileInfo.FullName}", 0);
+            List<CraftableItem> additivePossibleItems = Serialization.DeserializeParams<CraftableItem>(fileInfo.FullName);
+            CraftableList.RemoveAll(x => additivePossibleItems.Any(y => y.Name.ToLower() == x.Name.ToLower()));
+            CraftableList.AddRange(additivePossibleItems);
+        }
+
+
+
         CraftableList.RemoveAll(x => ModItems.Get(x.Resultant) == null || (x.SingleUnit == false && x.ResultantAmount < 1) || x.Ingredients.Any(y => y.Quantity < 1));
+
+
+
+
+
+
     }
 
     private void DefaultConfig()

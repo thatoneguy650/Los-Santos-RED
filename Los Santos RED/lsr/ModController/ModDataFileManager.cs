@@ -45,7 +45,7 @@ public class ModDataFileManager
     public WeatherForecasts WeatherForecasts;
     public ClothesNames ClothesNames;
     public LanguageStrings LanguageStrings;
-    public WantedLevels WantedLevels;
+    //public WantedLevels WantedLevels;
     public TattooNames TattooNames;
     public SavedOutfits SavedOutfits;
     public VehicleSeatAndDoorLookup VehicleSeatDoorData;
@@ -190,16 +190,16 @@ public class ModDataFileManager
         CraftableItems.ReadConfig(config.CraftableItemsConfig);
         GameFiber.Yield();
 
-#if DEBUG
-        WantedLevels = new WantedLevels();
-        WantedLevels.ReadConfig(config.WantedLevelsConfig);
-        WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
-        GameFiber.Yield();
+//#if DEBUG
+//        WantedLevels = new WantedLevels();
+//        WantedLevels.ReadConfig(config.WantedLevelsConfig);
+//        WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+//        GameFiber.Yield();
 
 
 
 
-#endif
+//#endif
 
         TestAnimations = new TestAnimations();
         TestAnimations.ReadConfig(); // no config file for now

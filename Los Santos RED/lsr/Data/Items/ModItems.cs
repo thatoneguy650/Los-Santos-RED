@@ -118,12 +118,14 @@ public class ModItems : IModItems
             "The polymer handgun that started it all. Cheap enough to use as a drop gun, reliable enough to silence the witnesses.", 
             false, ItemType.Weapons) 
         { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
-        
 
 
-        
-        
-        
+
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer MP6", "This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false, ItemType.Weapons) { VanillaName = "SMG", ModelName = "weapon_smg", PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5 }
+            );
+
+
+
         newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer 609",
             "The LSPD standard issue. Extended capacity in a small package. Good for dumping round after round into the criminals general direction. Who cares if a Post-Op delivery man eats a few?",
             false, ItemType.Weapons)
