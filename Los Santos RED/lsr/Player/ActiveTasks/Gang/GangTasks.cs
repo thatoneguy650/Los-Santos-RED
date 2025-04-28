@@ -221,6 +221,17 @@ public class GangTasks : IPlayerTaskGroup
         newTask.Start();
     }
 
+    public void StartDrugMeetTask(Gang gang, GangContact gangContact, ModItem modItem,int quantity, Gang meetingGang)
+    {
+        GangDrugMeetTask dugMeetTask = new GangDrugMeetTask(Player, Time, Gangs, PlacesOfInterest, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems, PlayerTasks, this, 
+            gangContact, gang, modItem, quantity, meetingGang);
+        AllGenericGangTasks.Add(dugMeetTask);
+        dugMeetTask.Setup();
+        dugMeetTask.Start();
+    }
+
+
+
     public string GetGeneircTaskAbortMessage()
     {
         List<string> Replies = new List<string>() {

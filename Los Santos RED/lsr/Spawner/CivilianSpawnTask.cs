@@ -209,6 +209,10 @@ public class CivilianSpawnTask : SpawnTask
         CreatedPedExt.WasModSpawned = true;
         World.Pedestrians.AddEntity(CreatedPedExt);
         CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);
+        if (SpawnRequirement != TaskRequirements.None)
+        {
+            CreatedPedExt.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
+        }
         if (ped.Exists())
         {
             CreatedPedExt.SpawnPosition = ped.Position;

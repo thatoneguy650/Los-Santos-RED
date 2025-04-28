@@ -54,8 +54,10 @@ public class GangInteraction : IContactMenuInteraction
     private IModItems ModItems;
     private UIMenuItem RequestBackupMenu;
     private UIMenu BackupSubMenu;
+    private UIMenu DrugMeetSubMenu;
 
     private string TargetGangDescription => $"Choose a target gang~n~~n~~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
+    private string GangDescription => $"~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies, IModItems modItems)
     {
         Player = player;
@@ -263,6 +265,9 @@ public class GangInteraction : IContactMenuInteraction
             Player.PlayerTasks.GangTasks.StartGangArson(ActiveGang, GangContact);
             sender.Visible = false;
         };
+
+        AddDrugMeetSubMenu();
+
         JobsSubMenu.AddItem(GangImpoundTheft);
         JobsSubMenu.AddItem(GangBodyDisposal);
         JobsSubMenu.AddItem(GangMoneyPickup);
@@ -275,7 +280,29 @@ public class GangInteraction : IContactMenuInteraction
             JobsSubMenu.AddItem(GangPizza);
         }
     }
+    private void AddDrugMeetSubMenu()
+    {
+        DrugMeetSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Drug Meet");
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Export a large quantity of drugs for a gang.";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.DrugMeetPaymentMin:C0}-{ActiveGang.DrugMeetPaymentMax:C0}~s~";
+        DrugMeetSubMenu.RemoveBanner();
+        UIMenuListScrollerItem<IllicitMarketplace> LocationMenu = new UIMenuListScrollerItem<IllicitMarketplace>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.IllicitMarketplaces.Where(x=> x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
 
+        UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", 500, 5000, 100) { Value = 500 };
+        UIMenuListScrollerItem<ModItem> PossibleItemsMenu = new UIMenuListScrollerItem<ModItem>("Item","",ModItems.AllItems().Where(x=> x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic));
+        UIMenuListScrollerItem<GangDisplay> DealingGangMenu = new UIMenuListScrollerItem<GangDisplay>("Dealing Gang", GangDescription, GetNonHostilGangDisplay());
+        UIMenuItem DrugMeetupStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.DrugMeetPaymentMin:C0}-{ActiveGang.DrugMeetPaymentMax:C0}~s~" };
+        DrugMeetupStart.Activated += (sender, selectedItem) =>
+        {
+            Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value,DealingGangMenu.SelectedItem?.Gang);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
+            sender.Visible = false;
+        };
+        DrugMeetSubMenu.AddItem(LocationMenu);
+        DrugMeetSubMenu.AddItem(PossibleItemsMenu);
+        DrugMeetSubMenu.AddItem(DealingGangMenu);
+        DrugMeetSubMenu.AddItem(quantityScroller);
+        DrugMeetSubMenu.AddItem(DrugMeetupStart);
+    }
     private void AddWheelmanSubMenu()
     {
         WheelManSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Wheelman");
@@ -403,6 +430,41 @@ public class GangInteraction : IContactMenuInteraction
         return toReturn;
 
     }
+
+
+    private List<GangDisplay> GetNonHostilGangDisplay()
+    {
+        List<GangDisplay> toReturn = new List<GangDisplay>();
+        List<Gang> possibleGangs = Gangs.AllGangs.Where(x => x.ID != ActiveGang.ID).ToList();
+        foreach (Gang gang in possibleGangs.OrderByDescending(x => Player.RelationshipManager.GangRelationships.GetReputation(x)?.ReputationLevel))
+        {
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gang);
+            string extra = "";
+            bool shouldAdd = true;
+            if (gr != null)
+            {
+                if (gr.IsEnemy)
+                {
+                    shouldAdd = false;
+                }
+                else if (gr.GangRelationship == GangRespect.Hostile)
+                {
+                    shouldAdd = false;
+                }
+                else if (gr.GangRelationship == GangRespect.Friendly)
+                {
+                    extra = "~g~";
+                }
+            }
+            if (shouldAdd)
+            {
+                toReturn.Add(new GangDisplay(gang, $"{extra}{gang.ShortName}~s~"));
+            }
+        }
+        return toReturn;
+    }
+
+
     private void AddGangAmbushSubMenu()
     {
         GangAmbushSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Ambush");

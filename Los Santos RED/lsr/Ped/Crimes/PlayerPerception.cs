@@ -159,13 +159,18 @@ public class PlayerPerception
     {
         CanSeeTarget = true;
         GameTimeLastSeenTarget = Game.GameTime;
-        PositionLastSeenTarget = Target.Character.Position;
-        VehicleLastSeenTargetIn = Target.CurrentSeenVehicle;
-        WeaponLastSeenTargetWith = Target.WeaponEquipment.CurrentSeenWeapon;
+        if(Target == null || !Target.Character.Exists())
+        {
+            return;
+        }
         if (GameTimeContinuoslySeenTargetSince == 0)
         {
             GameTimeContinuoslySeenTargetSince = Game.GameTime;
         }
+        PositionLastSeenTarget = Target.Character.Position;
+        VehicleLastSeenTargetIn = Target.CurrentSeenVehicle;
+        WeaponLastSeenTargetWith = Target.WeaponEquipment.CurrentSeenWeapon;
+
     }
     private void SetTargetUnseen()
     {

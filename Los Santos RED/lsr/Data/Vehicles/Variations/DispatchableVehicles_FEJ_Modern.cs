@@ -736,8 +736,8 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceGresley(25,25,-1,false,PoliceVehicleType.Unmarked,1,0,3,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceGresley(25,25,-1,false,PoliceVehicleType.Detective,1,0,3,-1,-1,"",""),
 
-            DispatchableVehicles_FEJ.Create_PoliceInterceptor(25,25,-1,true,PoliceVehicleType.Unmarked,1,0,4,-1,-1,"","", -1,0),
-            DispatchableVehicles_FEJ.Create_PoliceInterceptor(25,25,-1,true,PoliceVehicleType.Detective,1,0,4,-1,-1,"","", -1,0),
+            DispatchableVehicles_FEJ.Create_PoliceInterceptor(25,25,-1,true,PoliceVehicleType.Unmarked,1,0,4,-1,-1,"","", 1,0),
+            DispatchableVehicles_FEJ.Create_PoliceInterceptor(25,25,-1,true,PoliceVehicleType.Detective,1,0,4,-1,-1,"","", 1,0),
 
             DispatchableVehicles_FEJ.Create_PoliceRaiden(5,5,-1,true,PoliceVehicleType.Unmarked,1,0,4,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceRaiden(5,5,-1,true,PoliceVehicleType.Detective,1,0,4,-1,-1,"",""),
@@ -763,8 +763,8 @@ public class DispatchableVehicles_FEJ_Modern
             //DispatchableVehicles_FEJ.Create_PoliceReblaGTS(15,15,3,false,PoliceVehicleType.Unmarked,1,0,3,-1,-1,"",""),
             //DispatchableVehicles_FEJ.Create_PoliceReblaGTS(15,15,3,false,PoliceVehicleType.Detective,1,0,3,-1,-1,"",""),
 
-            DispatchableVehicles_FEJ.Create_PoliceRadius(5,5,-1,false,PoliceVehicleType.Unmarked,1,0,3,-1,-1,"","", -1,0),
-            DispatchableVehicles_FEJ.Create_PoliceRadius(5,5,-1,false,PoliceVehicleType.Detective,1,0,3,-1,-1,"","", -1,0),
+            DispatchableVehicles_FEJ.Create_PoliceRadius(5,5,-1,false,PoliceVehicleType.Unmarked,1,0,3,-1,-1,"","", 1,0),
+            DispatchableVehicles_FEJ.Create_PoliceRadius(5,5,-1,false,PoliceVehicleType.Detective,1,0,3,-1,-1,"","", 1,0),
 
             //DispatchableVehicles_FEJ.Create_PoliceOracle(15,15,3,false,PoliceVehicleType.Unmarked,1,0,3,-1,-1,"",""),
             //DispatchableVehicles_FEJ.Create_PoliceOracle(15,15,3,false,PoliceVehicleType.Detective,1,0,3,-1,-1,"",""),

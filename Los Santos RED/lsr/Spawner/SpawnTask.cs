@@ -244,13 +244,18 @@ public abstract class SpawnTask
         CreatedPeople.ForEach(x => {
             World.Pedestrians.AddEntity(x); 
             x.IsLocationSpawned = true; 
-            conditionalLocation?.AddLocationRequirements(x); 
+            conditionalLocation?.AddLocationRequirements(x);
+            //if (SpawnRequirement != TaskRequirements.None)
+            //{
+            //    x.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
+            //    EntryPoint.WriteToConsole($"ADDED EXTRA SPAWN REQUIREMENTS {SpawnRequirement}");
+            //}
             //gameLocation?.AddSpawnedPed(x); 
         });
         CreatedVehicles.ForEach(x => { 
             x.AddVehicleToList(World); 
             x.WasSpawnedEmpty = conditionalLocation?.IsEmptyVehicleSpawn == true;
-            //gameLocation?.AddSpawnedVehicle(x); 
+            //gameLocation?.AddSpawnedVehicle(x);  
         });
     }
 }

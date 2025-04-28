@@ -39,7 +39,8 @@ namespace LSR.Vehicles
         //private List<int> EjectedSeats = new List<int>();
 
         public List<RappelledSeat> RappelledSeats = new List<RappelledSeat>();
-
+        private string storedMakeName;
+        private string storedModelName;
 
         public DispatchableVehicle DispatchableVehicle { get; set; }
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
@@ -614,9 +615,15 @@ namespace LSR.Vehicles
             {
                 return "";
             }
-            string MakeName = NativeHelper.VehicleMakeName(Vehicle.Model.Hash);
-            string ModelName = NativeHelper.VehicleModelName(Vehicle.Model.Hash);
-            string CarName = (MakeName + " " + ModelName).Trim();
+            if (string.IsNullOrEmpty(storedMakeName))
+            {
+                storedMakeName = NativeHelper.VehicleMakeName(Vehicle.Model.Hash);
+            }
+            if (string.IsNullOrEmpty(storedModelName))
+            {
+                storedModelName = NativeHelper.VehicleModelName(Vehicle.Model.Hash);
+            }
+            string CarName = (storedMakeName + " " + storedModelName).Trim();
             return CarName;
         }
         public string GetCarDescription()

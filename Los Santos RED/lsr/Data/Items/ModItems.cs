@@ -3535,7 +3535,7 @@ public class ModItems : IModItems
             new WeaponItem("Sticky Bomb","", true, ItemType.Weapons) { ModelName = "weapon_stickybomb",PoliceFindDuringPlayerSearchPercentage = 85},
             new WeaponItem("Proximity Mines","", true, ItemType.Weapons) { ModelName = "weapon_proxmine",PoliceFindDuringPlayerSearchPercentage = 85},
             new WeaponItem("Snowball","", true, ItemType.Weapons) { ModelName = "weapon_snowball",PoliceFindDuringPlayerSearchPercentage = 0},
-            new WeaponItem("Pipe Bomb","", true, ItemType.Weapons) { ModelName = "weapon_pipebomb",PoliceFindDuringPlayerSearchPercentage = 85},
+            new WeaponItem("Pipe Bomb","Hate someone and like to use the mail? Send them an explosive surprise", true, ItemType.Weapons) { ModelName = "weapon_pipebomb",PoliceFindDuringPlayerSearchPercentage = 85},
             new WeaponItem("Baseball","", true, ItemType.Weapons) { ModelName = "weapon_ball",PoliceFindDuringPlayerSearchPercentage = 0},
             new WeaponItem("Flare","", true, ItemType.Weapons) { ModelName = "weapon_flare",PoliceFindDuringPlayerSearchPercentage = 0},
             new WeaponItem("Acid Package","", true, ItemType.Weapons) { ModelName = "weapon_acidpackage",PoliceFindDuringPlayerSearchPercentage = 85},

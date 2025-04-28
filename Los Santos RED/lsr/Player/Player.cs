@@ -511,6 +511,7 @@ namespace Mod
         public bool IsBlockingTraffic { get; set; }
         public Crafting Crafting { get; set; }
         public bool IsConsideredNight { get; private set; }
+        public bool IsUnconscious { get; internal set; }
 
         //public bool IsPoorWeather => Weather.IsPoorWeather;
 
@@ -2375,6 +2376,7 @@ namespace Mod
                 CurrentVehicle = null;
                 return;
             }
+
             uint newVehicleHandle = vehicle.Handle;
             if (CurrentVehicle == null)
             {

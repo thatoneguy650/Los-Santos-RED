@@ -84,7 +84,7 @@ public class CraftableItems : ICraftableItems
             new CraftableItem("Cook Crack", "Crack", 
             new List<Ingredient>() 
             {
-                new Ingredient() { IngredientName =  "Cocaine", Quantity = 1},
+                new Ingredient() { IngredientName = "Cocaine", Quantity = 1},
                 new Ingredient() { IngredientName = "Bottle of Raine Water", Quantity = 2},
                 new Ingredient() { IngredientName = "Baking Soda", Quantity = 2}
             }) 

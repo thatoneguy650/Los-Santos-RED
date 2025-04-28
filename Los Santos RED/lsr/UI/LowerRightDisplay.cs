@@ -496,6 +496,10 @@ public class LowerRightDisplay
                 {
                     CurrentSpeedDisplay += $" ~o~Plate Known to Police{UI.CurrentDefaultTextColor}";
                 }
+                if (DisplayablePlayer.TimeInCurrentVehicle > 0 && DisplayablePlayer.TimeInCurrentVehicle <= 10000 && DisplayablePlayer.IsNotWanted)
+                {
+                    CurrentSpeedDisplay += " " + DisplayablePlayer.CurrentVehicle.GetCarName();
+                }
             }
         }
         return CurrentSpeedDisplay;

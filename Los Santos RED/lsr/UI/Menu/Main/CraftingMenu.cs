@@ -9,25 +9,27 @@ using System.Linq;
 
 public class CraftingMenu : ModUIMenu
 {
-    const string UNCATEGORIZED = "Uncategorized";
+    const string UNCATEGORIZED = "General Items";//"Uncategorized";
     private UIMenu Menu;
     private MenuPool MenuPool;
     private ICraftableItems CraftableItems;
     private Mod.Crafting Crafting;
     private ILocationInteractable LocationInteractablePlayer;
+    private IModItems ModItems;
 
-    public CraftingMenu(MenuPool menuPool, ICraftableItems craftableItems, Mod.Crafting crafting, ILocationInteractable locationInteractablePlayer)
+    public CraftingMenu(MenuPool menuPool, ICraftableItems craftableItems, Mod.Crafting crafting, ILocationInteractable locationInteractablePlayer, IModItems modItems)
     {
         MenuPool = menuPool;
         CraftableItems = craftableItems;
         Crafting = crafting;
         LocationInteractablePlayer = locationInteractablePlayer;
+        ModItems = modItems;
     }
     public void Setup()
     {
-        Menu = new UIMenu("Crafting", string.Empty);
+        Menu = new UIMenu("Crafting", "Select crafting category");
         Crafting.CraftingMenu = this;
-        Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        Menu.SetBannerType( EntryPoint.LSRedColor);
         MenuPool.Add(Menu);
     }
     public override void Hide()
@@ -45,7 +47,7 @@ public class CraftingMenu : ModUIMenu
             }
             else
             {
-                Game.DisplayNotification($"You have no clue what to make with this stuff here.");
+                Game.DisplayHelp("No craftable items.");// $"You have no clue what to make with this stuff here.");
             }
         }
     }
@@ -61,7 +63,7 @@ public class CraftingMenu : ModUIMenu
             }
             else
             {
-                Game.DisplayNotification($"You have no clue what to make with this stuff here.");
+                Game.DisplayHelp("No craftable items.");// $"You have no clue what to make with this stuff here.");
             }
         }
     }
@@ -126,7 +128,7 @@ public class CraftingMenu : ModUIMenu
             if (ingredientsSatisfied != ingredientsToSatisfy || quantity==0)
             {
                 UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
-                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
+                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems));
                 itemMenu.Enabled = false;
                 uIMenu.AddItem(itemMenu);
                 continue;
@@ -136,7 +138,7 @@ public class CraftingMenu : ModUIMenu
                 UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
                 if (craftableItem.SingleUnit)
                 {
-                    UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.IngredientList);
+                    UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems));
                     itemMenu.Activated += (s, e) =>
                     {
                         Crafting.CraftItem(itemMenu.Text, craftingFlag: craftingFlag);
@@ -145,11 +147,11 @@ public class CraftingMenu : ModUIMenu
                 }
                 else
                 {
-                    UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.IngredientList, 1, quantity, 1);
+                    UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems), 1, quantity, 1);
                     itemMenu.Value = 1;
                     itemMenu.IndexChanged += (s, oldIndex, newIndex) =>
                     {
-                        itemMenu.Description = craftableItem.GetIngredients(newIndex + 1);
+                        itemMenu.Description = craftableItem.GetIngredientDescription(newIndex + 1, ModItems);
                     };
                     itemMenu.Activated += (s, e) =>
                     {
@@ -171,6 +173,7 @@ public class CraftingMenu : ModUIMenu
             else
             {
                 UIMenu subMenu = MenuPool.AddSubMenu(Menu, UNCATEGORIZED);
+                subMenu.SetBannerType(EntryPoint.LSRedColor);
                 categoryMenus.Add(UNCATEGORIZED, subMenu);
                 return subMenu;
             }
@@ -182,6 +185,7 @@ public class CraftingMenu : ModUIMenu
         else
         {
             UIMenu subMenu = MenuPool.AddSubMenu(Menu, category);
+            subMenu.SetBannerType(EntryPoint.LSRedColor);
             categoryMenus.Add(category, subMenu);
             return subMenu;
         }

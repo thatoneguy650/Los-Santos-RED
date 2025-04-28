@@ -97,7 +97,7 @@ public class UI : IMenuProvideable
         DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems, crimes, plateTypes, names, modDataFileManager, policeRespondable, interactionable);
         CraftableItems = modDataFileManager.CraftableItems;
         Crafting = crafting;
-        CraftingMenu = new CraftingMenu(MenuPool, CraftableItems, Crafting, locationInteractableplayer);
+        CraftingMenu = new CraftingMenu(MenuPool, CraftableItems, Crafting, locationInteractableplayer, modItems);
         MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu, CraftingMenu };
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, LocationTypes);
         SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, gameSaves, pedSwap,playerinventory, saveablePlayer, agencies, modDataFileManager.Contacts, interactionable);

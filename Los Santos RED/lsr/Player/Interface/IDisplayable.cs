@@ -65,5 +65,6 @@ namespace LosSantosRED.lsr.Interface
         GroupManager GroupManager { get; }
         StealthManager StealthManager { get; }
         VehicleRaceManager RacingManager { get; }
+        uint TimeInCurrentVehicle { get; }
     }
 }

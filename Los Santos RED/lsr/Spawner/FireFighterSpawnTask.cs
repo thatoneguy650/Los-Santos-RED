@@ -195,6 +195,10 @@ public class FireFighterSpawnTask : SpawnTask
         bool isMale = PersonType.IsMale(ped);
         Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryFirefighter);
+        if (SpawnRequirement != TaskRequirements.None)
+        {
+            PrimaryFirefighter.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
+        }
         PrimaryFirefighter.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
         if (ped.Exists())
         {

@@ -458,6 +458,10 @@ public class LESpawnTask : SpawnTask
             sightDistance = PersonType.OverrideSightDistance;
             //EntryPoint.WriteToConsole($"OverrideSightDistance {sightDistance} IN THE COPS");
         }
+        if (SpawnRequirement != TaskRequirements.None)
+        {
+            PrimaryCop.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
+        }
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance, ShopMenus);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
         if (Pedestrian.Exists())
         {
@@ -490,6 +494,10 @@ public class LESpawnTask : SpawnTask
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode, sightDistance, ShopMenus);
         //PrimaryCop.TaskRequirements = SpawnRequirement;
+        if (SpawnRequirement != TaskRequirements.None)
+        {
+            PrimaryCop.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
+        }
         if (ped.Exists())
         {
             PrimaryCop.SpawnPosition = ped.Position;

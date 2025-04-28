@@ -14,6 +14,7 @@ using static DispatchScannerFiles;
 using LosSantosRED.lsr.Player;
 using System.ComponentModel;
 using System.Collections.Generic;
+using Microsoft.VisualBasic;
 
 [Serializable()]
 [XmlInclude(typeof(ClothingItem))]
