@@ -131,22 +131,50 @@ public class IssueableWeapons : IIssuableWeapons
         };
         List<IssuableWeapon> LimitedSidearms_Modern = new List<IssuableWeapon>()
         {
-            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),35),
-            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")}),35),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(),45),
+            new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight")}),15),
+            new IssuableWeapon("weapon_vintagepistol", new WeaponVariation(),35),
 
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 65),
-            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(), 85),
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 35),
 
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
-            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 85),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 35),
 
         };
+
+
+
+
+        List<IssuableWeapon> MilitarySidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_pistol", new WeaponVariation(),100),
+        };
+        List<IssuableWeapon> MilitaryLongGuns_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
+            new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip")}),45),
+        };
+
+
+
+
+
+
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_FEW = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("AllSidearms", AllSidearms_Modern),
             new IssuableWeaponsGroup("BestSidearms", BestSidearms_Modern),
             new IssuableWeaponsGroup("HeliSidearms", HeliSidearms_Modern),
             new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms_Modern),
+            new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms_Modern),
+            new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns_Modern),
+
+            //MilitarySidearms
+            //MilitaryLongGuns
         };
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_FEW, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\IssuableWeapons+_{StaticStrings.FEWConfigSuffix}.xml");
 

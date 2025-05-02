@@ -84,7 +84,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Suppressor", 0xC304849A,ComponentSlot.Muzzle),
             new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring)
         };
-        fewList.Add(new WeaponInformation("weapon_smg", 90, WeaponCategory.SMG, 2, 736523883, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
+        fewList.Add(new WeaponInformation("weapon_smg", 90, WeaponCategory.SMG, 2, 736523883, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
 
 
 

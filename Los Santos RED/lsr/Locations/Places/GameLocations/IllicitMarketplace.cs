@@ -93,5 +93,10 @@ public class IllicitMarketplace : GameLocation
         }
         base.OnPlayerBecameClose();
     }
+    public override void AddLocation(PossibleLocations possibleLocations)
+    {
+        possibleLocations.IllicitMarketplaces.Add(this);
+        base.AddLocation(possibleLocations);
+    }
 }
 

@@ -273,7 +273,20 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullExpandedWeapons()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => y.ModItemName == "Hawk & Little Combat Pistol" || y.ModItemName == "Hawk & Little Thunder")).ToList();
+
+
+        List<string> UpdatedWeapons = new List<string>()
+        {
+            "Hawk & Little MP6",
+            "Hawk & Little Combat Pistol",
+            "Shrewsbury Stinkov",
+            "Hawk & Little Thunder",
+            "Shrewsbury Defender",
+            "Vom Feuer 1922",
+        };
+
+
+        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => UpdatedWeapons.Contains(y.ModItemName))).ToList();
         foreach(ShopMenu shopMenu in shopMenusToUpdate)
         {
             foreach(MenuItem menuItem in shopMenu.Items)
@@ -282,7 +295,6 @@ public class ShopMenus : IShopMenus
                 {
                     menuItem.ModItemName = "Vom Feuer VF86";
                 }
-
                 if (menuItem.ModItemName == "Hawk & Little Thunder")
                 {
                     menuItem.ModItemName = "Vom Feuer 609";
@@ -291,13 +303,14 @@ public class ShopMenus : IShopMenus
                 {
                     menuItem.ModItemName = "Vom Feuer MP6";
                 }
-
-                if (menuItem.ModItemName == "Shrewsbury Stinkov")
+                if (menuItem.ModItemName == "Hawk & Little MP6")
+                {
+                    menuItem.ModItemName = "Vom Feuer 1922";
+                }
+                if (menuItem.ModItemName == "Hawk & Little 1919A1")
                 {
                     menuItem.Extras.Add(new MenuItemExtra("Suppressor", 600));
                 }
-
-
                 if (menuItem.ModItemName == "Shrewsbury Defender")
                 {
                     menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
@@ -591,14 +604,14 @@ public class ShopMenus : IShopMenus
                 new VariablePriceMenuItem("Hawk & Little Thunder",745, 1250,110, 200) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Hawk & Little Combat Pistol",1200, 1500, 200, 300) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Hawk & Little Desert Slug",1500, 1900, 300, 500) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
-                new VariablePriceMenuItem("Hawk & Little 1919", 1200, 1600, 325, 350) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Hawk & Little 1919 Tactical", 1200, 1600, 325, 350) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Hawk & Little Raging Mare",1500, 2300, 300, 450) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Hawk & Little Raging Mare Dx",1700, 2500, 375, 475) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Vom Feuer P69",855, 1050, 140, 170) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Shrewsbury S7",900, 1500, 220, 330) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Shrewsbury S7A",1200, 1750,325, 450) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
                 new VariablePriceMenuItem("Coil Tesla",950, 1400, 150, 250) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
-                new VariablePriceMenuItem("BS M1922",1400, 1900, 200, 250) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
+                new VariablePriceMenuItem("Vom Feuer 1922",1400, 1900, 200, 250) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 1, },
 
                 new VariablePriceMenuItem("Flint Duct Tape", 5, 10,1,1) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
                 new VariablePriceMenuItem("Flint Multi-Bit Screwdriver", 35, 40, 4, 5) { NumberOfItemsToPurchaseFromPlayer = 1, NumberOfItemsToSellToPlayer = 5, },
@@ -2299,7 +2312,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Hawk & Little Thunder",650),
                 new MenuItem("Hawk & Little Combat Pistol",950),
                 new MenuItem("Hawk & Little Desert Slug",1500),
-                new MenuItem("Hawk & Little 1919",1200),
+                new MenuItem("Hawk & Little 1919 Tactical",1200),
                 new MenuItem("Hawk & Little Raging Mare",1700),
                 new MenuItem("Hawk & Little Raging Mare Dx",1950),
                 new MenuItem("Vom Feuer P69",790),
@@ -2307,7 +2320,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Shrewsbury S7",1100),
                 new MenuItem("Shrewsbury S7A",1200),
                 new MenuItem("Coil Tesla",550),
-                new MenuItem("BS M1922",995),
+                new MenuItem("Vom Feuer 1922",995),
 
             }),
             new ShopMenu("GunVendorMenu", "Gun Vendor", new List<MenuItem>() {
@@ -2690,7 +2703,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -2831,7 +2844,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Flashlight", 95),
                     new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little 1919",900) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",900) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Flashlight", 75),
@@ -2850,7 +2863,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Flashlight", 80),
                     new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("BS M1922",450) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Vom Feuer 1922",450) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
@@ -3171,7 +3184,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 556), } },
-                new MenuItem("Hawk & Little 1919",1134) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 125), } },
@@ -3474,7 +3487,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -3576,7 +3589,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -3678,7 +3691,7 @@ public class ShopMenus : IShopMenus
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 120),
                 //    new MenuItemExtra("Suppressor", 700), } },
-                //new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 50),
                 //    new MenuItemExtra("Suppressor", 200), } },
@@ -3781,7 +3794,7 @@ public class ShopMenus : IShopMenus
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 120),
                 //    new MenuItemExtra("Suppressor", 556), } },
-                //new MenuItem("Hawk & Little 1919",1134) { Extras = new List<MenuItemExtra>() {
+                //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 50),
                 //    new MenuItemExtra("Suppressor", 125), } },
@@ -3902,7 +3915,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 556), } },
-                //new MenuItem("Hawk & Little 1919",1134) { Extras = new List<MenuItemExtra>() {
+                //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 50),
                 //    new MenuItemExtra("Suppressor", 125), } },
@@ -4022,7 +4035,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 556), } },
-                new MenuItem("Hawk & Little 1919",1134) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 125), } },
@@ -4155,7 +4168,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 556), } },
-                new MenuItem("Hawk & Little 1919",1134) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 125), } },
@@ -4274,7 +4287,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -4376,7 +4389,7 @@ public class ShopMenus : IShopMenus
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 120),
                 //    new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -4478,7 +4491,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                //new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 50),
                 //    new MenuItemExtra("Suppressor", 200), } },
@@ -4580,7 +4593,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 200), } },
@@ -4682,7 +4695,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Suppressor", 700), } },
-                //new MenuItem("Hawk & Little 1919",1300) { Extras = new List<MenuItemExtra>() {
+                //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
                 //    new MenuItemExtra("Default Clip", 0),
                 //    new MenuItemExtra("Extended Clip", 50),
                 //    new MenuItemExtra("Suppressor", 200), } },
@@ -4817,7 +4830,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Suppressor", 780),
                     new MenuItemExtra("Compensator", 240), } },
                 new MenuItem("Coil Tesla",550),
-                new MenuItem("BS M1922",995, 750) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Vom Feuer 1922",995, 750) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
@@ -4981,7 +4994,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Flashlight", 95),
                     new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little 1919",1200,900) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1200,900) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Flashlight", 75),
@@ -5020,7 +5033,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Suppressor", 780),
                     new MenuItemExtra("Compensator", 240), } },
                 new MenuItem("Coil Tesla",550, 400),
-                new MenuItem("BS M1922",995, 670) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Vom Feuer 1922",995, 670) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
@@ -5169,7 +5182,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 120),
                     new MenuItemExtra("Flashlight", 95),
                     new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little 1919",1200, 990) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1200, 990) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Flashlight", 75),
@@ -5188,7 +5201,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("BS M1922",995, 656) { Extras = new List<MenuItemExtra>() {
+                new MenuItem("Vom Feuer 1922",995, 656) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
@@ -5812,7 +5825,7 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip",0),
                     new MenuItemExtra("Extended Clip", 75),
                     new MenuItemExtra("Suppressor", 343) },  },
-                new MenuItem("Hawk & Little 1919",1134) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 50),
                     new MenuItemExtra("Suppressor", 125), } },

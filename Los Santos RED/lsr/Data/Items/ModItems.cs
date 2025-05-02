@@ -114,22 +114,29 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = new PossibleItems();
 
 
-        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86", 
-            "The polymer handgun that started it all. Cheap enough to use as a drop gun, reliable enough to silence the witnesses.", 
-            false, ItemType.Weapons) 
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF76",
+            "The polymer handgun that started it all. Cheap enough to use as a drop gun, reliable enough to silence the witnesses.",
+            false, ItemType.Weapons)
         { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
 
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86",
+            "When you need to dump an entire magazine at someone, but can't be bothered to carry something heavier than a few pounds.",
+            false, ItemType.Weapons)
+        { VanillaName = "AP Pistol", ModelName = "weapon_appistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
 
-
-        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer MP6", "This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false, ItemType.Weapons) { VanillaName = "SMG", ModelName = "weapon_smg", PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5 }
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer MP6", 
+            "Vom Feuer's premium SMG made famous during the San Andreas Embassy Siege. Too bad about all those hostages.", false, ItemType.Weapons) 
+        { VanillaName = "SMG", ModelName = "weapon_smg", PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5 }
             );
-
-
 
         newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer 609",
             "The LSPD standard issue. Extended capacity in a small package. Good for dumping round after round into the criminals general direction. Who cares if a Post-Op delivery man eats a few?",
             false, ItemType.Weapons)
         { VanillaName = "Pistol Mk2", ModelName = "weapon_pistol_mk2", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Hawk & Little 1919A1", 
+            "Killing people before there was talking in movies. Accept no substitutes.", true, ItemType.Weapons) 
+        { VanillaName = "Vintage Pistol", ModelName = "weapon_vintagepistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5 });
 
 
         Serialization.SerializeParam(newPossibleItems, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ModItems+_{StaticStrings.FEWConfigSuffix}.xml");
@@ -3431,13 +3438,13 @@ public class ModItems : IModItems
             new WeaponItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false, ItemType.Weapons) { VanillaName = "Pistol .50",ModelName = "weapon_pistol50",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 2},
             new WeaponItem("Vom Feuer P69","Not your grandma's ceramics. Although this pint-sized pistol is small enough to fit into her purse and won't set off a metal detector.", true, ItemType.Weapons) { VanillaName = "Ceramic Pistol",ModelName = "weapon_ceramicpistol",PoliceFindDuringPlayerSearchPercentage = 25, FindPercentage = 2 },
             new WeaponItem("Vom Feuer SCRAMP","High-penetration, fully-automatic pistol. Holds 18 rounds in magazine with option to extend to 36 rounds.", false, ItemType.Weapons) { VanillaName = "AP Pistol",ModelName = "weapon_appistol" ,PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 1},
-            new WeaponItem("Hawk & Little 1919","The heavyweight champion of the magazine fed, semi-automatic handgun world. Delivers accuracy and a serious forearm workout every time.", false, ItemType.Weapons) { VanillaName = "Heavy Pistol",ModelName = "weapon_heavypistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
+            new WeaponItem("Hawk & Little 1919 Tactical","The heavyweight champion of the magazine fed, semi-automatic handgun world. Delivers accuracy and a serious forearm workout every time.", false, ItemType.Weapons) { VanillaName = "Heavy Pistol",ModelName = "weapon_heavypistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
             new WeaponItem("Hawk & Little Raging Mare","A handgun with enough stopping power to drop a crazed rhino, and heavy enough to beat it to death if you're out of ammo.", true, ItemType.Weapons) { VanillaName = "Heavy Revolver",ModelName = "weapon_revolver",PoliceFindDuringPlayerSearchPercentage = 75, FindPercentage = 5},
             new WeaponItem("Hawk & Little Raging Mare Dx","If you can lift it, this is the closest you'll get to shooting someone with a freight train.", true, ItemType.Weapons) { VanillaName = "Heavy Revolver Mk2",ModelName = "weapon_revolver_mk2",PoliceFindDuringPlayerSearchPercentage = 75, FindPercentage = 5},
             new WeaponItem("Shrewsbury S7","Like condoms or hairspray, this fits in your pocket for a night on the town. The price of a bottle at a club, it's half as accurate as a champagne cork, and twice as deadly.", false, ItemType.Weapons) { VanillaName = "SNS Pistol",ModelName = "weapon_snspistol",PoliceFindDuringPlayerSearchPercentage = 25, FindPercentage = 10},
             new WeaponItem("Shrewsbury S7A","The ultimate purse-filler: if you want to make Saturday Night really special, this is your ticket.", true, ItemType.Weapons) { VanillaName = "SNS Pistol Mk2",ModelName = "weapon_snspistol_mk2",PoliceFindDuringPlayerSearchPercentage = 25, FindPercentage = 10},
             new WeaponItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false, ItemType.Weapons) { VanillaName = "Stun Gun",ModelName = "weapon_stungun",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
-            new WeaponItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true, ItemType.Weapons) { VanillaName = "Vintage Pistol",ModelName = "weapon_vintagepistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
+            new WeaponItem("Vom Feuer 1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true, ItemType.Weapons) { VanillaName = "Vintage Pistol",ModelName = "weapon_vintagepistol",PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5},
             new WeaponItem("Vom Feuer Gruber","If you think shooting off without lifting a finger is a problem, there's a pill for that. But if you think it's a plus, we've got you covered.", true, ItemType.Weapons) { VanillaName = "WM 29 Pistol",ModelName = "weapon_pistolxm3",PoliceFindDuringPlayerSearchPercentage = 20, FindPercentage = 5},
 
 
