@@ -96,7 +96,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { DebugName = "<Female LSPD Class A>", MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -123,7 +125,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             //LSPD Class B
             new DispatchablePerson("mp_m_freemode_01",25,25) { DebugName = "<Male LSPD Class B>", MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -153,7 +157,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",25,25) { DebugName = "<Female LSPD Class B>",MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -181,7 +187,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSPD Class C
             new DispatchablePerson("mp_m_freemode_01",55,55) { DebugName = "<Male LSPD Class C>", MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -211,7 +219,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",55,55) { DebugName = "<Female LSPD Class C>",MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -239,7 +249,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 52, 1, 0),//watches
                     new PedComponent(5, 52, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSPD Jacket MALE IS MISSING CHEST?
             new DispatchablePerson("mp_m_freemode_01",5,5) { DebugName = "<Male LSPD Jacket>",MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -261,7 +273,9 @@ public class DispatchablePeople_EUP
             OptionalComponents =
                 new List<PedComponent>() {
                     new PedComponent(9, 28, 0, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { DebugName = "<Female LSPD Jacket>",MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -280,7 +294,9 @@ public class DispatchablePeople_EUP
             OptionalComponents =
                 new List<PedComponent>() {
                     new PedComponent(9, 30, 0, 0), //Ranks
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSPD Raincoat
             new DispatchablePerson("mp_m_freemode_01",1,1) { DebugName = "<Male LSPD Raincoat>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -299,6 +315,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 187, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01",1,1) { DebugName = "<Female LSPD Raincoat>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
@@ -316,6 +334,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 189, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
              },
 
             //LSPD SWAT
@@ -347,7 +367,10 @@ public class DispatchablePeople_EUP
                         new PedComponent(9, 16, 0, 0),
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 220, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,21,0)  }),
+                    new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,21,0)  })
+                ,
+            FullHolster = new PedComponent(7,110,0),
+            EmptyHolster = new PedComponent(7,109,0)//110 has some gold chain too
             },
             new DispatchablePerson("mp_f_freemode_01",0,20) {
                 AccuracyMin = 25
@@ -378,9 +401,11 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 230, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,149,0),new PedPropComponent(1,22,0)  }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)//82 kinda works?
              },
 
-            //LSPD Detective Suit
+            //LSPD Detective Suit, suit covers holster
             new DispatchablePerson("mp_m_freemode_01",5,5) { DebugName = "<Male LSPD Detective Suit>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = MaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -424,12 +449,14 @@ public class DispatchablePeople_EUP
                         new PedComponent(4, 10, 0, 0),
                         new PedComponent(5, 10, 3, 0),
                         new PedComponent(6, 10, 0, 0),
-                        new PedComponent(7, 6, 3, 0),
+                        new PedComponent(7, 6, 2, 0),
                         new PedComponent(8, 88, 0, 0),
                         new PedComponent(9, 24, 0, 0),
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 349, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,6,1),
+            EmptyHolster = new PedComponent(7,5,1)
             },
             new DispatchablePerson("mp_f_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Female LSPD Detective>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
@@ -446,6 +473,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 27, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,6,1),
+            EmptyHolster = new PedComponent(7,5,1)
              },
 
             //LSPD Detective Windbraker
@@ -464,6 +493,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 325, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,6,1),
+            EmptyHolster = new PedComponent(7,5,1)
             },
             new DispatchablePerson("mp_f_freemode_01",5,5) { GroupName = "Detective", DebugName = "<Female LSPD Detective Windbreaker>",RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
@@ -481,6 +512,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 318, 0, 0)},
                     new List<PedPropComponent>() {  }),
+            FullHolster = new PedComponent(7,6,1),
+            EmptyHolster = new PedComponent(7,5,1)
              },
 
             //Metro (little more tactical uniforms)
@@ -496,7 +529,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
             new DispatchablePerson("mp_m_freemode_01",5,5) { MaxWantedLevelSpawn = 3, DebugName = "<Male METRO Div Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,101,0),
@@ -509,7 +544,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) {MaxWantedLevelSpawn = 3, DebugName = "<Female METRO Div Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,101,0),
@@ -522,7 +559,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) {MaxWantedLevelSpawn = 3, DebugName = "<Female METRO Div Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,101,0),
@@ -535,7 +574,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
 
             //Utility (Tactical looking,looks like metro but in LIGHT BLACK, but no armor)
             new DispatchablePerson("mp_m_freemode_01",5,5) { MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Utility Class B>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -550,7 +591,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,37,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",5,5) { MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Utility Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -563,7 +606,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,37,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) {MaxWantedLevelSpawn = 3, DebugName = "<Female LSPD Utility Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -576,7 +621,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,15,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) {MaxWantedLevelSpawn = 3, DebugName = "<Female LSPD Utility Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -589,7 +636,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,15,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Motor Units (Motorcycle cops, we dont have that yet...)
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 3,GroupName = "MotorcycleCop",UnitCode = "Mary", DebugName = "<Male LSPD Motor Unit Class A>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -605,7 +654,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,52,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 3,GroupName = "MotorcycleCop",UnitCode = "Mary", DebugName = "<Male LSPD Motor Unit Class B>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             new PedPropComponent(0,17,1),
             }, new List<PedComponent>() {
@@ -619,7 +670,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,52,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 3,GroupName = "MotorcycleCop",UnitCode = "Mary", DebugName = "<Male LSPD Motor Unit Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             new PedPropComponent(0,17,1),
             }, new List<PedComponent>() {
@@ -633,7 +686,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,52,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) { MaxWantedLevelSpawn = 3,GroupName = "MotorcycleCop",UnitCode = "Mary", DebugName = "<Female LSPD Motor Unit Class A>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             new PedPropComponent(0,17,1),
             }, new List<PedComponent>() {
@@ -661,7 +716,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,52,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) { MaxWantedLevelSpawn = 3,GroupName = "MotorcycleCop",UnitCode = "Mary", DebugName = "<Female LSPD Motor Unit Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             new PedPropComponent(0,17,1),
             }, new List<PedComponent>() {
@@ -675,7 +732,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,52,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Traffic Utility (kinda tactical looking, but no armor)
             new DispatchablePerson("mp_m_freemode_01",1,0) { MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Traffic Utility Class B>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -690,7 +749,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,37,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",1,0) { MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Traffic Utility Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -703,7 +764,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,37,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",1,0) { MaxWantedLevelSpawn = 3, DebugName = "<Female LSPD Traffic Utility Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -716,7 +779,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,15,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",1,0) { MaxWantedLevelSpawn = 3, DebugName = "<Female LSPD Traffic Utility Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,101,0),
@@ -729,7 +794,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,15,0),
             new PedComponent(5,63,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Beach Detail (Still in uniform, just with polo and baseball hat)
             new DispatchablePerson("mp_m_freemode_01",2,0) { MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Beach Detail>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -745,7 +812,9 @@ public class DispatchablePeople_EUP
           new PedComponent(7,8,0),
           new PedComponent(9,0,0),
           new PedComponent(5,48,0),
-           }) },
+           }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",2,0) {MaxWantedLevelSpawn = 3, DebugName = "<Female LSPD Beach Detail>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -758,7 +827,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Detective (with armor)            
             new DispatchablePerson("mp_m_freemode_01",1,1) { OptionalProps = MaleCopOptionalProps,
@@ -774,7 +845,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,24,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_m_freemode_01",1,1) { OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,GroupName = "Detective", ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Male LSPD Raid Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
@@ -788,7 +861,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,17,0),
               new PedComponent(5,59,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
 
             //Animals
             new DispatchablePerson("a_c_husky",50,50) {
@@ -830,7 +905,9 @@ public class DispatchablePeople_EUP
                 ,CombatMovement = 0
                 ,AccuracyMin = 65
                 ,AccuracyMax = 85
-                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) },
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
 
             //Dirt Bike
@@ -858,7 +935,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7,1,0),
                         new PedComponent(9,18,7),
                         new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -883,7 +962,9 @@ public class DispatchablePeople_EUP
                       new PedComponent(7,1,0),
                       new PedComponent(9,22,7),
                       new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
 
             //Bicycle
@@ -910,7 +991,9 @@ public class DispatchablePeople_EUP
                       new PedComponent(7,8,0),
                       new PedComponent(9,0,0),
                       new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -935,7 +1018,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7,8,0),
                         new PedComponent(9,0,0),
                         new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
                 },
         };
         List<DispatchablePerson> LSIAPDPeds_FEJ = new List<DispatchablePerson>() {
@@ -960,7 +1045,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 11, 1, 0), //Ranks
                     new PedComponent(10, 11, 4, 0),
                     new PedComponent(10, 45, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -981,7 +1068,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 10, 1, 0), //Ranks
                     new PedComponent(10, 10, 4, 0), //Ranks
                     new PedComponent(10, 53, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSIA Class B
             new DispatchablePerson("mp_m_freemode_01",25,25) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1004,7 +1093,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 11, 1, 0), //Ranks
                     new PedComponent(10, 11, 4, 0),
                     new PedComponent(10, 44, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",25,25) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -1025,7 +1116,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 10, 1, 0), //Ranks
                     new PedComponent(10, 10, 4, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSIA Class C
             new DispatchablePerson("mp_m_freemode_01",55,55) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1048,7 +1141,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 11, 1, 0), //Ranks
                     new PedComponent(10, 11, 4, 0),
                     new PedComponent(10, 45, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",55,55) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -1069,7 +1164,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(10, 14, 7, 0), //Ranks
                     new PedComponent(10, 14, 8, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Utility
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male LSIA Utility Class B>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -1084,7 +1181,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,65,9),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male LSIA Utility Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
 
               }, new List<PedComponent>() {
@@ -1098,7 +1197,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,65,9),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male LSIA ESU Utility>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -1111,7 +1212,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,0,0),
               new PedComponent(5,65,10),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female LSIA Utility Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -1124,7 +1227,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,15,0),
               new PedComponent(5,65,9),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female LSIA Utility Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -1137,7 +1242,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,15,0),
               new PedComponent(5,65,9),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female LSIA ESU Utility>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -1150,7 +1257,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,1,0),
               new PedComponent(9,15,0),
               new PedComponent(5,65,10),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0) },
 
             //Polos
             new DispatchablePerson("mp_m_freemode_01",2,2) { OptionalProps = MaleCopOptionalProps,
@@ -1166,7 +1275,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",2,2) {OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,DebugName = "<Female LSIA Polo>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
@@ -1180,7 +1291,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,16,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Jacket
             new DispatchablePerson("mp_m_freemode_01",1,1) { DebugName = "<Male LSIA Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -1195,7 +1308,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,28,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",1,1) {DebugName = "<Female LSIA Jacket>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -1208,7 +1323,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,30,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Animals
             new DispatchablePerson("a_c_husky",50,50) {
@@ -1262,6 +1379,9 @@ public class DispatchablePeople_EUP
             ,AccuracyMin = 65
             ,AccuracyMax = 85
             ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+            ,
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             }
         };
         List<DispatchablePerson> RHPDCops_FEJ = new List<DispatchablePerson>() {
@@ -1285,7 +1405,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 11, 5, 0), //Ranks
                     new PedComponent(10, 45, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, RequiredVariation = new PedVariation(
@@ -1305,7 +1427,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 11, 5, 0), //Ranks
                     new PedComponent(10, 53, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //RHPD Class B
             new DispatchablePerson("mp_m_freemode_01",25,25) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1327,7 +1451,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 11, 5, 0), //Ranks
                     new PedComponent(10, 44, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",25,25) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, RequiredVariation = new PedVariation(
@@ -1347,7 +1473,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 10, 5, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //RHPD Class C
             new DispatchablePerson("mp_m_freemode_01",55,55) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1369,7 +1497,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 7, 0, 0), //Ranks
                     new PedComponent(10, 44, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",55,55) { RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, RequiredVariation = new PedVariation(
@@ -1389,7 +1519,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 6, 0, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             new DispatchablePerson("mp_m_freemode_01", 5,5){
     OptionalProps = MaleCopOptionalProps,
@@ -1410,7 +1542,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7, 8, 0),
             new PedComponent(9, 28, 0),
             new PedComponent(5, 0, 0),
-        })},
+        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Raincoat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1429,7 +1563,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 0),
                         new PedComponent(5, 72, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 5,5){
                 OptionalProps = MaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Polo>", RandomizeHead = true,
@@ -1449,7 +1585,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Bicycle Patrol>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1470,7 +1608,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 5,5){
                 OptionalProps = MaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Utility Class B>", RandomizeHead = true,
@@ -1490,7 +1630,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 65, 6),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 5,5){
                 OptionalProps = MaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Utility Class C>", RandomizeHead = true,
@@ -1510,7 +1652,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 65, 6),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Male RHPD Suit>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1570,7 +1714,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 38, 0),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,1),
+            EmptyHolster = new PedComponent(7,5,1)},
             new DispatchablePerson("mp_m_freemode_01", 0, 50){
                 ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT",DebugName = "<Male RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" },
@@ -1591,7 +1737,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 6),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)},
 
             new DispatchablePerson("mp_f_freemode_01", 5,5){
             OptionalProps = FemaleCopOptionalProps,
@@ -1612,7 +1760,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(7, 8, 0),
                     new PedComponent(9, 16, 0),
                     new PedComponent(5, 65, 6),
-                })},
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Utility Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -1631,7 +1781,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 65, 6),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 5,5){
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Polo>", RandomizeHead = true,
@@ -1651,7 +1803,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 1,1){
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Jacket>", RandomizeHead = true,
@@ -1671,7 +1825,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Raincoat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -1690,7 +1846,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female RHPD Bicycle Patrol>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -1711,7 +1869,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 1,1){
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, GroupName = "Detective", DebugName = "<Female RHPD Detective>", RandomizeHead = true,
@@ -1731,7 +1891,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 40, 0),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 1,1){
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, GroupName = "Detective", DebugName = "<Female RHPD Detective (vest)>", RandomizeHead = true,
@@ -1751,7 +1913,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 40, 0),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 0,50){
                 ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT", DebugName = "<Female RHPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -1773,7 +1937,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 6),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)},
 
             //Sniper
             new DispatchablePerson("mp_m_freemode_01", 0,0){
@@ -1805,7 +1971,9 @@ public class DispatchablePeople_EUP
                 ,CombatMovement = 0
                 ,AccuracyMin = 65
                 ,AccuracyMax = 85
-                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //Bicycle
@@ -1817,21 +1985,23 @@ public class DispatchablePeople_EUP
 
 
 
-  new PedPropComponent(0,49,0),
+                  new PedPropComponent(0,49,0),
 
 
-  }, new List<PedComponent>() {
-  new PedComponent(1,101,0),
-  new PedComponent(11,311,16),
-  new PedComponent(3,0,0),
-  new PedComponent(10,0,0),
-  new PedComponent(8,94,1),
-  new PedComponent(4,12,2),
-  new PedComponent(6,2,0),
-  new PedComponent(7,8,0),
-  new PedComponent(9,0,0),
-  new PedComponent(5,48,0),
-   }) },
+                  }, new List<PedComponent>() {
+                  new PedComponent(1,101,0),
+                  new PedComponent(11,311,16),
+                  new PedComponent(3,0,0),
+                  new PedComponent(10,0,0),
+                  new PedComponent(8,94,1),
+                  new PedComponent(4,12,2),
+                  new PedComponent(6,2,0),
+                  new PedComponent(7,8,0),
+                  new PedComponent(9,0,0),
+                  new PedComponent(5,48,0),
+                   }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) {
                 DebugName = "<Female RHPD Bicycle Patrol>", GroupName = "Bicycle", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
 
@@ -1851,7 +2021,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
         };
         List<DispatchablePerson> DPPDCops_FEJ = new List<DispatchablePerson>() {
             //DPPD Class A
@@ -1874,7 +2046,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 11, 5, 0), //Ranks
                     new PedComponent(10, 45, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -1894,7 +2068,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 10, 5, 0), //Ranks
                     new PedComponent(10, 53, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //DPPD Class B
             new DispatchablePerson("mp_m_freemode_01",5,5) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1916,7 +2092,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 11, 5, 0), //Ranks
                     new PedComponent(10, 44, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -1936,7 +2114,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 10, 5, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //DPPD Class C
             new DispatchablePerson("mp_m_freemode_01",65,65) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -1958,7 +2138,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 7, 0, 0), //Ranks
                     new PedComponent(10, 44, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",65,65) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,RequiredVariation = new PedVariation(
@@ -1978,7 +2160,9 @@ public class DispatchablePeople_EUP
                 new List<PedComponent>() {
                     new PedComponent(10, 6, 0, 0), //Ranks
                     new PedComponent(10, 52, 6, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             // Jacket
             new DispatchablePerson("mp_m_freemode_01", 15, 0){
@@ -1997,7 +2181,9 @@ public class DispatchablePeople_EUP
                                                          new PedComponent(7, 8, 0),
                                                          new PedComponent(9, 28, 0),
                                                          new PedComponent(5, 0, 0),
-                                                     })},
+                                                     }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 15, 0){
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female DPPD Jacket>", RandomizeHead = true,
@@ -2014,7 +2200,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 30, 0),
                                                             new PedComponent(5, 48, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // Polo
             new DispatchablePerson("mp_m_freemode_01", 35, 5){
@@ -2033,7 +2221,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 37, 0),
                                                             new PedComponent(5, 48, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 35, 5){
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female DPPD Polo>", RandomizeHead = true,
@@ -2050,7 +2240,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 16, 0),
                                                             new PedComponent(5, 48, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // Utility
             new DispatchablePerson("mp_m_freemode_01", 2, 25){
@@ -2069,7 +2261,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 37, 0),
                                                             new PedComponent(5, 65, 7),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 2, 25){
                 OptionalProps = MaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Male DPPD Utility Class C>", RandomizeHead = true,
@@ -2086,7 +2280,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 37, 0),
                                                             new PedComponent(5, 65, 7),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 2, 25){
                 OptionalProps = FemaleCopOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female DPPD Utility Class B>", RandomizeHead = true,
@@ -2103,7 +2299,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 15, 0),
                                                             new PedComponent(5, 65, 7),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 2, 25){
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 OptionalPropChance = optionalpropschance,MaxWantedLevelSpawn = 3, DebugName = "<Female DPPD Utility Class C>", RandomizeHead = true,
@@ -2144,7 +2342,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 7),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 50){
                 ArmorMin = 50,ArmorMax = 50,GroupName = "SWAT",
                 DebugName = "<Female DPPD SWAT>", RandomizeHead = true,MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,
@@ -2166,7 +2366,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 7),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)},
 
             //Bike
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
@@ -2195,7 +2397,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -2223,7 +2427,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //Detective
@@ -2285,7 +2491,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 39, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
 
             //Sniper
@@ -2304,7 +2512,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 37, 0),
                                                             new PedComponent(5, 65, 7),
-                                                        })
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             ,GroupName = "Sniper"
             ,OverrideAgencyLongGuns = true
             ,OverrideLongGunsID = "GoodSniperLongGuns"
@@ -2337,7 +2547,9 @@ public class DispatchablePeople_EUP
                 new PedComponent(7,8,0),
                 new PedComponent(9,37,0),
                 new PedComponent(5,48,0),
-                }) },
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01",0,0) {
                 DebugName = "<Female DPPD Bicycle Patrol>",
                 RandomizeHead = true,
@@ -2356,7 +2568,9 @@ public class DispatchablePeople_EUP
                 new PedComponent(7,8,0),
                 new PedComponent(9,0,0),
                 new PedComponent(5,48,0),
-                }) },
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
         };
 
@@ -2388,6 +2602,7 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 53, 0, 0),
                         new PedComponent(6, 51, 0, 0),
                         new PedComponent(8, 38, 1, 0),
+                        new PedComponent(7,8,0),
                         new PedComponent(9, 0, 0, 0),
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 200, 2, 0)},
@@ -2403,7 +2618,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -2429,7 +2646,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSSD Class B
             new DispatchablePerson("mp_m_freemode_01",25,25) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -2440,6 +2659,7 @@ public class DispatchablePeople_EUP
                         new PedComponent(4, 25, 0, 0),
                         new PedComponent(5, 53, 0, 0),
                         new PedComponent(6, 51, 0, 0),
+                        new PedComponent(7,8,0),
                         new PedComponent(8, 38, 1, 0),
                         new PedComponent(9, 13, 0, 0),
                         new PedComponent(10, 0, 0, 0),
@@ -2455,7 +2675,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",25,25) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -2480,7 +2702,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //LSSD Class C
             new DispatchablePerson("mp_m_freemode_01",55,55) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -2491,6 +2715,7 @@ public class DispatchablePeople_EUP
                         new PedComponent(4, 25, 0, 0),
                         new PedComponent(5, 53, 0, 0),
                         new PedComponent(6, 51, 0, 0),
+                        new PedComponent(7,8,0),
                         new PedComponent(8, 38, 1, 0),
                         new PedComponent(9, 13, 0, 0),
                         new PedComponent(10, 0, 0, 0),
@@ -2507,7 +2732,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",55,55) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -2533,7 +2760,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 53, 1, 0),//watches
                     new PedComponent(5, 53, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             // Jackets
             new DispatchablePerson("mp_m_freemode_01", 5, 5){
@@ -2551,7 +2780,9 @@ public class DispatchablePeople_EUP
                                                          new PedComponent(7, 8, 0),
                                                          new PedComponent(9, 14, 0),
                                                          new PedComponent(5, 64, 0),
-                                                     })},
+                                                     }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 5, 5){
                 MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Coat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -2570,7 +2801,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 64, 1),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,DebugName = "<Male LSSD Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -2589,7 +2822,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,DebugName = "<Female LSSD Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -2605,7 +2840,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 30, 1),
                                                             new PedComponent(5, 48, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 1, 0){
                 MaxWantedLevelSpawn = 3,DebugName = "<Male LSSD Raincoat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -2621,7 +2858,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 8, 0),
                                                             new PedComponent(9, 28, 1),
                                                             new PedComponent(5, 53, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // Polo
             new DispatchablePerson("mp_m_freemode_01", 15, 3){
@@ -2643,7 +2882,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 15, 3){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female LSSD Polo>",
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
@@ -2663,7 +2904,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // Swat
             new DispatchablePerson("mp_m_freemode_01", 0, 20){
@@ -2698,7 +2941,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 20){
                 MinWantedLevelSpawn = 3
                 ,AccuracyMin = 25
@@ -2731,7 +2976,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)},
 
             // Detective
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
@@ -2753,7 +3000,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 23, 1),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Male LSSD Raid Jacket>", RandomizeHead = true,
                 OptionalProps = MaleCopOptionalProps,
@@ -2770,7 +3019,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 17, 3),
                                                             new PedComponent(5, 60, 1),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Male LSSD Gang Detail Jacket>", RandomizeHead = true,
                 OptionalProps = MaleCopOptionalProps,
@@ -2787,7 +3038,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 17, 3),
                                                             new PedComponent(5, 60, 1),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Armor Protection>", RandomizeHead = true,
                 OptionalProps = FemaleCopOptionalProps,
@@ -2804,7 +3057,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 25, 1),
                                                             new PedComponent(5, 0, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Raid Jacket>", RandomizeHead = true,
                 OptionalProps = FemaleCopOptionalProps,
@@ -2821,7 +3076,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 21, 0),
                                                             new PedComponent(5, 60, 1),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Plain Clothes>", RandomizeHead = true,
                 OptionalProps = FemaleCopOptionalProps,
@@ -2838,7 +3095,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 25, 1),
                                                             new PedComponent(5, 68, 0),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 MaxWantedLevelSpawn = 3,GroupName = "Detective", DebugName = "<Female LSSD Gang Detail Jacket>", RandomizeHead = true,
                 OptionalProps = FemaleCopOptionalProps,
@@ -2855,7 +3114,9 @@ public class DispatchablePeople_EUP
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 21, 3),
                                                             new PedComponent(5, 60, 1),
-                                                        })},
+                                                        }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
 
             //Motor Units
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
@@ -2875,7 +3136,9 @@ public class DispatchablePeople_EUP
                             new PedComponent(7, 8, 0),
                             new PedComponent(9, 0, 0),
                             new PedComponent(5, 53, 0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
                 },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -2894,7 +3157,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 53, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -2913,7 +3178,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 53, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -2932,7 +3199,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 53, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -2951,7 +3220,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 53, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -2970,7 +3241,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 53, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //Dirtbike
@@ -3000,7 +3273,9 @@ public class DispatchablePeople_EUP
                       new PedComponent(9,18,1),
                       new PedComponent(5,48,0),
                     }
-                )
+                ),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -3028,7 +3303,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(9,22,1),
                         new PedComponent(5,48,0),
                     }
-                )
+                ),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
 
             //Bicycle
@@ -3056,7 +3333,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(9,14,0),
                         new PedComponent(5,48,0),
                     }
-                    )
+                    ),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -3081,7 +3360,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7,8,0),
                         new PedComponent(9,16,0),
                         new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
 
@@ -3121,7 +3402,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 15, 15){
                 MaxWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
@@ -3141,7 +3424,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // BCSO Class B
             new DispatchablePerson("mp_m_freemode_01", 25, 25){
@@ -3163,7 +3448,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             new DispatchablePerson("mp_f_freemode_01", 25, 25){
                 MaxWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -3184,7 +3471,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // BCSO Class C
             new DispatchablePerson("mp_m_freemode_01", 35, 35){
@@ -3206,7 +3495,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 35, 35){
                 MaxWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
@@ -3226,7 +3517,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(5, 54, 1, 0),  // watches
                         new PedComponent(5, 54, 2, 0),  // watches
 
-                    }},
+                    },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
 
             // Detective (with armor (male))
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
@@ -3248,7 +3541,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 119, 1),
                         new PedComponent(9, 23, 4),
                         new PedComponent(5, 29, 8),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,119,1),
+EmptyHolster = new PedComponent(7,120,1)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3,GroupName = "Detective",  DebugName = "<Female BCSO Suit>", RandomizeHead = true,
                 OptionalProps = FemaleCopOptionalProps,
@@ -3298,7 +3593,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 20){
                 AccuracyMin = 25
                 ,AccuracyMax = 30
@@ -3329,7 +3626,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)},
 
             //Motorcycle
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
@@ -3349,7 +3648,9 @@ public class DispatchablePeople_EUP
                 new PedComponent(7, 8, 0),
                 new PedComponent(9, 0, 0),
                 new PedComponent(5, 54, 0),
-        })
+        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
     },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -3368,7 +3669,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 54, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -3387,7 +3690,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 54, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -3406,7 +3711,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 54, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -3425,7 +3732,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 54, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -3444,7 +3753,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 54, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //Dirtbike
@@ -3474,7 +3785,9 @@ public class DispatchablePeople_EUP
                       new PedComponent(9,18,1),
                       new PedComponent(5,48,0),
                     }
-                )
+                ),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -3502,7 +3815,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(9,22,0),
                         new PedComponent(5,48,0),
                     }
-                )
+                ),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
 
             //Bicycle
@@ -3529,7 +3844,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) {
                 DebugName = "<Female BCSO Bicycle Uniform>",
                 RandomizeHead = true,
@@ -3551,7 +3868,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,16,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //Pilot
             new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
@@ -3577,7 +3896,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 5, 5){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female PIA Class A>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -3596,7 +3917,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             //Class B
             new DispatchablePerson("mp_m_freemode_01", 20, 20){
                 MaxWantedLevelSpawn = 3, DebugName = "<Male PIA Class B>", RandomizeHead = true,
@@ -3616,7 +3939,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)},
             new DispatchablePerson("mp_f_freemode_01", 20, 20){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female PIA Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -3635,7 +3960,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)},
             //Class C
             new DispatchablePerson("mp_m_freemode_01", 35, 35){
                 MaxWantedLevelSpawn = 3, DebugName = "<Male PIA Class C>", RandomizeHead = true,
@@ -3655,7 +3982,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 35, 35){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female PIA Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -3674,7 +4003,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 35, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)},
             //Jacket
             new DispatchablePerson("mp_m_freemode_01", 10, 10){
                 MaxWantedLevelSpawn = 3, DebugName = "<Male PIA Jacket>", RandomizeHead = true,
@@ -3694,7 +4025,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 5),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 10){
                 MaxWantedLevelSpawn = 3, DebugName = "<Female PIA Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -3713,7 +4046,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 5),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             //PIA TRU 
             new DispatchablePerson("mp_m_freemode_01",0,50) {
                 MinWantedLevelSpawn = 4,
@@ -3743,7 +4078,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,110,0),
               new PedComponent(9,25,5),
               new PedComponent(5,48,0),
-               }) },
+               }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0) },
             new DispatchablePerson("mp_f_freemode_01",0,50) {
                 MinWantedLevelSpawn = 4,
                 MaxWantedLevelSpawn = 4
@@ -3773,7 +4110,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,81,0),
               new PedComponent(9,27,5),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0) },
             //Suit
             new DispatchablePerson("mp_m_freemode_01", 2, 2) {
                 MaxWantedLevelSpawn = 3,DebugName = "<Male PIA Suit>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -3834,7 +4173,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 43, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 2, 2) {
                 MaxWantedLevelSpawn = 3,DebugName = "<Female PIA Special Agent>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -3854,7 +4195,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 45, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             //Field Agent
             new DispatchablePerson("mp_m_freemode_01", 2, 2) {
@@ -3876,7 +4219,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 43, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 2, 2) {
                 MaxWantedLevelSpawn = 3,DebugName = "<Female PIA Field Agent>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -3896,7 +4241,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 45, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             //Windbreaker
             new DispatchablePerson("mp_m_freemode_01", 2, 2) {
@@ -3917,7 +4264,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 43, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 2, 2) {
                 MaxWantedLevelSpawn = 3,DebugName = "<Female PIA Windbreaker>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -3937,7 +4286,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 45, 0),
                         new PedComponent(5, 28, 3),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
         };
         List<DispatchablePerson> NOOSESEPPeds_FEJ = new List<DispatchablePerson>()
@@ -3962,7 +4313,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 10, 10) {
                 ArmorMin = 50, ArmorMax = 50, CombatAbilityMin = 1, CombatAbilityMax = 2,
@@ -3983,7 +4336,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 34, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             //Class C
             new DispatchablePerson("mp_m_freemode_01", 10, 35) {
@@ -4005,7 +4360,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 10, 35) {
                 ArmorMin = 50, ArmorMax = 50, CombatAbilityMin = 1, CombatAbilityMax = 2,
@@ -4027,7 +4384,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 34, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             //Jacket
             new DispatchablePerson("mp_m_freemode_01", 10, 10) {
@@ -4050,7 +4409,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 5),
                         new PedComponent(5, 56, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 10, 10) {
                 ArmorMin = 50, ArmorMax = 50, CombatAbilityMin = 1, CombatAbilityMax = 2,
@@ -4072,7 +4433,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 5),
                         new PedComponent(5, 61, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             //RIOT
             new DispatchablePerson("mp_m_freemode_01", 10, 10) {
@@ -4096,7 +4459,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 10, 10) {
                 MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4, ArmorMin = 50, ArmorMax = 50, CombatAbilityMin = 1, CombatAbilityMax = 2,
@@ -4119,7 +4484,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 34, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             //TRU
             new DispatchablePerson("mp_m_freemode_01", 0, 50) {
@@ -4155,7 +4522,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 5),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 50) {
                 MinWantedLevelSpawn = 4,
@@ -4190,7 +4559,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 5),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)
             },
             //Juggernaut - ewwww
             new DispatchablePerson("mp_m_freemode_01", 0, 0) {
@@ -4296,7 +4667,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             ,GroupName = "Sniper"
             ,OverrideAgencyLongGuns = true
             ,OverrideLongGunsID = "GoodSniperLongGuns"
@@ -4328,7 +4701,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30) {
                 DebugName = "<Female Border Patrol Class C>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -4348,7 +4723,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             //Class B
             new DispatchablePerson("mp_m_freemode_01", 15, 15) {
@@ -4369,7 +4746,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15) {
                 DebugName = "<Female Border Patrol Class B>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -4389,7 +4768,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 4),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             //Jacket
             new DispatchablePerson("mp_m_freemode_01", 15, 15) {
@@ -4410,7 +4791,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 8),
                         new PedComponent(5, 56, 6),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15) {
                 DebugName = "<Female Border Patrol Jacket>", RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -4430,7 +4813,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 8),
                         new PedComponent(5, 61, 6),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
 
@@ -4496,7 +4881,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 42, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30) {
                 DebugName = "<Female USMS Marshal>", MaxWantedLevelSpawn = 2, RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -4516,7 +4903,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 44, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             //Response - Has Armor
             new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
@@ -4537,7 +4926,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 42, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "<Female USMS Response>",MinWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List < string > () {
@@ -4557,7 +4948,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 44, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             //Windbreaker has armor under
             new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
@@ -4578,7 +4971,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 17, 7),
                         new PedComponent(5, 62, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
             //Field Agent - Has Armor
             new DispatchablePerson("mp_m_freemode_01", 30, 30, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
@@ -4600,7 +4995,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 77, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)
             },
         };
         List<DispatchablePerson> FIBPeds_FEJ = new List<DispatchablePerson>() {
@@ -4618,7 +5015,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,38,8),
               new PedComponent(9,22,0),
               new PedComponent(5,28,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(8,16,0),
+            EmptyHolster = new PedComponent(8,18,0)  },
             new DispatchablePerson("mp_f_freemode_01",20,20) {MaxWantedLevelSpawn = 2, DebugName = "<Female FIB Agent>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4631,7 +5030,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,0,0),
               new PedComponent(9,24,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(8,9,0),
+            EmptyHolster = new PedComponent(8,10,0)  },
 
             //Suits (with armor)
             new DispatchablePerson("mp_m_freemode_01",0,40) { ArmorMin = 50,ArmorMax = 50, MaxWantedLevelSpawn = 3, DebugName = "<Male FIB Response>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -4646,7 +5047,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,22,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_f_freemode_01",0,40) { ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Female FIB Response>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4659,7 +5062,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,24,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
 
             //Vanilla Like (male only)
             new DispatchablePerson("mp_m_freemode_01",20,20) { MaxWantedLevelSpawn = 3, DebugName = "<Male FIB Field Agent>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -4674,7 +5079,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,22,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_m_freemode_01",20,20) { MaxWantedLevelSpawn = 3, DebugName = "<Male FIB Field Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4687,7 +5094,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,22,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
 
             //SWAT
             new DispatchablePerson("mp_m_freemode_01",0,50) {
@@ -4721,7 +5130,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,110,0),
               new PedComponent(9,25,3),
               new PedComponent(5,48,0),
-               }) },
+               }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0) },
             new DispatchablePerson("mp_f_freemode_01",0,50) {
                 AccuracyMin = 30
                 ,AccuracyMax = 40
@@ -4753,7 +5164,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,81,0),
               new PedComponent(9,27,3),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0) },
 
             new DispatchablePerson("mp_m_freemode_01",0,0) {
                 ArmorMin = 50,
@@ -4776,7 +5189,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,110,0),
               new PedComponent(9,25,3),
               new PedComponent(5,48,0),
-               })
+               }),
+                FullHolster = new PedComponent(7,110,0),
+                EmptyHolster = new PedComponent(7,109,0)
                 ,GroupName = "Sniper"
                 ,OverrideAgencyLongGuns = true
                 ,OverrideLongGunsID = "GoodSniperLongGuns"
@@ -4809,7 +5224,9 @@ public class DispatchablePeople_EUP
           new PedComponent(7,8,0),
           new PedComponent(9,0,0),
           new PedComponent(5,36,0),
-           }) },
+           }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male SASP Ranger Class B>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,4,0),
               }, new List<PedComponent>() {
@@ -4823,7 +5240,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,13,0),
               new PedComponent(5,36,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male SASP Ranger Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4836,7 +5255,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,13,0),
               new PedComponent(5,36,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male SASP Ranger Polo>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,135,18),
               }, new List<PedComponent>() {
@@ -4850,7 +5271,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",10,10) { DebugName = "<Male SASP Ranger Jacket>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
              new PedPropComponent(0,135,18),
               }, new List<PedComponent>() {
@@ -4864,7 +5287,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,28,4),
               new PedComponent(5,48,0),
-             }) },
+             }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female SASP Ranger Class A>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,4,0),
               }, new List<PedComponent>() {
@@ -4878,7 +5303,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,36,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female SASP Ranger Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4891,7 +5318,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,36,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female SASP Ranger Class C>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4904,7 +5333,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,14,0),
               new PedComponent(5,36,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female SASP Ranger Polo>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,134,18),
               }, new List<PedComponent>() {
@@ -4918,7 +5349,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",10,10) {DebugName = "<Female SASP Ranger Jacket>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,134,18),
               }, new List<PedComponent>() {
@@ -4932,7 +5365,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,30,4),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
         };
         List<DispatchablePerson> DOAPeds_FEJ = new List<DispatchablePerson>() {
@@ -4949,7 +5384,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,45,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_f_freemode_01",15,5) {DebugName = "<Female DOA Agent>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4962,7 +5399,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,50,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_m_freemode_01",0,50) { ArmorMin = 50,ArmorMax = 50,DebugName = "<Male DOA Response>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(6,37,2), }, new List<PedComponent>() {
               new PedComponent(1,121,0),
@@ -4975,7 +5414,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,45,0),
               new PedComponent(5,48,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_m_freemode_01",25,0) { DebugName = "<Male DOA Windbreaker>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -4988,7 +5429,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,45,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
             new DispatchablePerson("mp_f_freemode_01",50,50) {DebugName = "<Female DOA Windbreaker>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
@@ -5001,7 +5444,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,6,0),
               new PedComponent(9,50,0),
               new PedComponent(5,0,0),
-               }) },
+               }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0) },
         };
         List<DispatchablePerson> SAHPPeds_FEJ = new List<DispatchablePerson>() {
 
@@ -5029,7 +5474,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",15,15) { MaxWantedLevelSpawn = 3,RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
                 OptionalProps = FemaleCopOptionalProps,
                 RequiredVariation = new PedVariation(
@@ -5053,7 +5500,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Class B
             new DispatchablePerson("mp_m_freemode_01",25,25) { MaxWantedLevelSpawn = 3,RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
@@ -5079,7 +5528,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                } ,
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01",25,25) { MaxWantedLevelSpawn = 3,RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
                 OptionalProps = FemaleCopOptionalProps,
                 RequiredVariation = new PedVariation(
@@ -5103,7 +5554,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Class C
             new DispatchablePerson("mp_m_freemode_01",55,55) { MaxWantedLevelSpawn = 3,RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
@@ -5129,7 +5582,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",55,55) { MaxWantedLevelSpawn = 3,RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
                 OptionalProps = FemaleCopShortSleeveOptionalProps,
                 RequiredVariation = new PedVariation(
@@ -5153,7 +5608,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Motorcycle Class A
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
@@ -5178,7 +5635,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -5201,7 +5660,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Motorcycle Class B
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
@@ -5226,7 +5687,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -5249,7 +5712,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Motorcycle Class C
             new DispatchablePerson("mp_m_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
@@ -5274,7 +5739,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,0) { MaxWantedLevelSpawn = 2, RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, GroupName = "MotorcycleCop",UnitCode = "Mary",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -5297,7 +5764,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(5, 55, 1, 0),//watches
                     new PedComponent(5, 55, 2, 0),//watches
 
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP Jacket
             new DispatchablePerson("mp_m_freemode_01",15,15) { MaxWantedLevelSpawn = 2,RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
@@ -5317,7 +5786,9 @@ public class DispatchablePeople_EUP
             OptionalComponents =
                 new List<PedComponent>() {
                     new PedComponent(9, 28, 2, 0),
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",15,15) { MaxWantedLevelSpawn = 2,RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
@@ -5335,7 +5806,9 @@ public class DispatchablePeople_EUP
             OptionalComponents =
                 new List<PedComponent>() {
                     new PedComponent(9, 30, 2, 0), //Ranks
-                } },
+                },
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
             //SAHP SWAT
             new DispatchablePerson("mp_m_freemode_01",0,20) {
@@ -5354,6 +5827,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 220, 7, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,39,1)  }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 4, OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },GroupName = "StandardSAHP",
                 RequiredVariation = new PedVariation(
@@ -5369,6 +5844,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 230, 7, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,38,1),new PedPropComponent(1,25,0)  }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)
              },
 
             //Dirt Bike
@@ -5397,7 +5874,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7,1,0),
                         new PedComponent(9,21,2),
                         new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01",0,0)
             {
@@ -5423,7 +5902,9 @@ public class DispatchablePeople_EUP
                       new PedComponent(7,1,0),
                       new PedComponent(9,19,2),
                       new PedComponent(5,48,0),
-                    })
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
 
             new DispatchablePerson("mp_m_freemode_01",0,0)
@@ -5452,7 +5933,9 @@ public class DispatchablePeople_EUP
               new PedComponent(7,8,0),
               new PedComponent(9,0,0),
               new PedComponent(5,48,0),
-               })
+               }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             new DispatchablePerson("mp_f_freemode_01",0,0)
@@ -5481,7 +5964,9 @@ public class DispatchablePeople_EUP
   new PedComponent(7,8,0),
   new PedComponent(9,0,0),
   new PedComponent(5,48,0),
-   })
+   }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> PrisonPeds_FEJ = new List<DispatchablePerson>() {
@@ -5607,7 +6092,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,20,8),
             new PedComponent(5,48,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_m_freemode_01",0,25) { MinWantedLevelSpawn = 3,DebugName = "<Male SASPA Armed Class C>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,0,0),
@@ -5620,7 +6107,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,20,8),
             new PedComponent(5,48,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",0,25) { MinWantedLevelSpawn = 3, DebugName = "<Female SASPA Armed Class B>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             }, new List<PedComponent>() {
             new PedComponent(1,0,0),
@@ -5646,7 +6135,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,23,8),
             new PedComponent(5,33,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
 
         };
         List<DispatchablePerson> LSPPPeds_FEJ = new List<DispatchablePerson>()
@@ -5669,7 +6160,9 @@ public class DispatchablePeople_EUP
                     new PedComponent(7, 8, 0),
                     new PedComponent(9, 0, 0),
                     new PedComponent(5, 32, 0),
-                })},
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 20, 20){
                 DebugName = "<Male LSPP Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5688,7 +6181,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 55, 55){
                 DebugName = "<Male LSPP Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5707,7 +6202,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 10, 10){
                 DebugName = "<Male LSPP Polo>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5728,7 +6225,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 10, 10){
                 DebugName = "<Male LSPP Utility Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5747,7 +6246,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 65, 8),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 5, 15){
                 DebugName = "<Male LSPP Utility Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5766,7 +6267,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 65, 8),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 5, 5){
                 DebugName = "<Female LSPP Class A>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5785,7 +6288,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 20, 20){
                 DebugName = "<Female LSPP Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5804,7 +6309,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 55, 55){
                 DebugName = "<Female LSPP Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5823,7 +6330,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 15){
                 DebugName = "<Female LSPP Utility Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5842,7 +6351,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 65, 8),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 20){
                 DebugName = "<Female LSPP Utility Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5861,7 +6372,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 65, 8),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 10){
                 DebugName = "<Female LSPP Polo>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5880,7 +6393,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 DebugName = "<Male LSPP Motorcycle Class A>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5901,7 +6416,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 DebugName = "<Male LSPP Motorcycle Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5922,7 +6439,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 DebugName = "<Male LSPP Motorcycle Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -5943,7 +6462,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 DebugName = "<Female LSPP Motorcycle Class A>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5964,7 +6485,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 DebugName = "<Female LSPP Motorcycle Class B>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -5985,7 +6508,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 DebugName = "<Female LSPP Motorcycle Class C>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -6006,7 +6531,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 10, 10){
                 DebugName = "<Male LSPP Harbor Patrol>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -6027,7 +6554,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 8, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 10){
                 DebugName = "<Female LSPP Harbor Patrol>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -6048,7 +6577,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 9, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)},
             new DispatchablePerson("mp_m_freemode_01", 10, 10){
                 DebugName = "<Male LSPP Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -6067,7 +6598,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 1, 1){
                 DebugName = "<Male LSPP Raincoat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -6086,7 +6619,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 0),
                         new PedComponent(5, 32, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 10, 10){
                 DebugName = "<Female LSPP Jacket>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -6105,7 +6640,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_f_freemode_01", 1, 1){
                 DebugName = "<Female LSPP Raincoat>", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -6124,7 +6661,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 30, 0),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)},
             new DispatchablePerson("mp_m_freemode_01", 0, 0){
                 DebugName = "<Male LSPP Plain Clothes>", GroupName = "Detective", RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
@@ -6143,7 +6682,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 41, 0),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             new DispatchablePerson("mp_f_freemode_01", 0, 0){
                 DebugName = "<Female LSPP Plain clothes>",GroupName = "Detective",  RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
@@ -6162,7 +6703,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 6, 0),
                         new PedComponent(9, 43, 0),
                         new PedComponent(5, 0, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,6,0),
+            EmptyHolster = new PedComponent(7,5,0)},
             //motorcycle
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
     {
@@ -6181,7 +6724,9 @@ public class DispatchablePeople_EUP
                 new PedComponent(7, 8, 0),
                 new PedComponent(9, 0, 0),
                 new PedComponent(5, 32, 0),
-        })
+        }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
     },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -6200,7 +6745,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -6219,7 +6766,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -6238,7 +6787,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -6257,7 +6808,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -6276,7 +6829,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 32, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> LSPDASDPeds_FEJ = new List<DispatchablePerson>()
@@ -6295,7 +6850,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,48,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5) { GroupName = "Pilot", DebugName = "<Female LSPD Pilot Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
             new PedPropComponent(0,78,1),
             new PedPropComponent(1,13,0),
@@ -6310,7 +6867,9 @@ public class DispatchablePeople_EUP
             new PedComponent(7,8,0),
             new PedComponent(9,0,0),
             new PedComponent(5,48,0),
-            }) },
+            }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             //LSPD SWAT
             new DispatchablePerson("mp_m_freemode_01",40,40) {
                 ArmorMin = 50,
@@ -6330,6 +6889,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 220, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,21,0)  }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)
             },
             new DispatchablePerson("mp_f_freemode_01",40,40) {
                 ArmorMin = 50,
@@ -6350,6 +6911,8 @@ public class DispatchablePeople_EUP
                         new PedComponent(10, 0, 0, 0),
                         new PedComponent(11, 230, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,149,0),new PedPropComponent(1,22,0)  }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)
              },
         };
         List<DispatchablePerson> LSSDASDPeds_FEJ = new List<DispatchablePerson>()
@@ -6368,7 +6931,9 @@ public class DispatchablePeople_EUP
           new PedComponent(7,8,0),
           new PedComponent(9,0,0),
           new PedComponent(5,48,0),
-           }) },
+           }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             new DispatchablePerson("mp_f_freemode_01",5,5)  { GroupName = "Pilot",DebugName = "<Female LSSD Pilot Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
           new PedPropComponent(0,78,0),
           new PedPropComponent(1,13,0),
@@ -6383,7 +6948,9 @@ public class DispatchablePeople_EUP
           new PedComponent(7,8,0),
           new PedComponent(9,0,0),
           new PedComponent(5,48,0),
-           }) },
+           }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0) },
             // Swat
             new DispatchablePerson("mp_m_freemode_01", 40, 40){
                 ArmorMin = 50,
@@ -6407,7 +6974,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 110, 0),
                         new PedComponent(9, 25, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+FullHolster = new PedComponent(7,110,0),
+EmptyHolster = new PedComponent(7,109,0)},
             new DispatchablePerson("mp_f_freemode_01", 40, 40){
                 ArmorMin = 50,
                 ArmorMax = 50,
@@ -6430,7 +6999,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 27, 1),
                         new PedComponent(5, 48, 0),
-                    })},
+                    }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)},
         };
         List<DispatchablePerson> NYSP_FEJ = new List<DispatchablePerson>()
         {
@@ -6461,7 +7032,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 30, 30)
             {
@@ -6487,7 +7060,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -6513,7 +7088,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 30, 30)
             {
@@ -6541,7 +7118,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 64, 12),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 30, 30)
             {
@@ -6569,7 +7148,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 26, 5),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30)
             {
@@ -6597,7 +7178,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30)
             {
@@ -6623,7 +7206,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -6649,7 +7234,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 76, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30)
             {
@@ -6677,7 +7264,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 64, 12),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 30, 30)
             {
@@ -6737,7 +7326,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -6763,7 +7354,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -6790,7 +7383,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -6816,7 +7411,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 64, 16),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -6842,7 +7439,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -6868,7 +7467,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -6895,7 +7496,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 70, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 1, 0)
             {
@@ -6921,7 +7524,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 64, 16),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };//only this is filled out in the base one
         List<DispatchablePerson> GameWarden_FEJ = new List<DispatchablePerson>()
@@ -6950,7 +7555,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -6976,7 +7583,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7002,7 +7611,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7028,7 +7639,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7057,7 +7670,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 65, 13),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -7085,7 +7700,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 64, 15),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -7113,7 +7730,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 4),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7139,7 +7758,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7165,7 +7786,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7191,7 +7814,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 80, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 1, 0)
             {
@@ -7217,7 +7842,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 64, 15),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7244,7 +7871,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 65, 13),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7270,7 +7899,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> USNPSParkRangers_FEJ = new List<DispatchablePerson>()
@@ -7301,7 +7932,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 13, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7329,7 +7962,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7357,7 +7992,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -7386,7 +8023,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 37, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -7414,7 +8053,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 65, 12),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -7442,7 +8083,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 78, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 1, 0)
             {
@@ -7468,7 +8111,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 28, 4),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7496,7 +8141,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7524,7 +8171,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7552,7 +8201,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 79, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -7579,7 +8230,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 1, 0)
             {
@@ -7605,7 +8258,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 15, 0),
                         new PedComponent(5, 65, 12),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 1, 0)
             {
@@ -7633,7 +8288,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 78, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //NON LE BELOW
@@ -10719,7 +11376,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 46, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 50, 50)
             {
@@ -10747,7 +11406,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 48, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -10775,7 +11436,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 1, 0),
                         new PedComponent(9, 16, 1),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,1,0),
+            EmptyHolster = new PedComponent(7,3,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -10804,7 +11467,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 81, 0),
                         new PedComponent(9, 18, 1),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,81,0),
+            EmptyHolster = new PedComponent(7,80,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -11068,7 +11733,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 48, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 50, 50)
             {
@@ -11097,7 +11764,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 0, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> GruppeSechSecurity_FEJ = new List<DispatchablePerson>()
@@ -11129,7 +11798,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -11156,7 +11827,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 0, 0)
             {
@@ -11185,7 +11858,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -11214,7 +11889,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -11241,7 +11918,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 0, 0)
             {
@@ -11270,7 +11949,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
             //Armored
@@ -11303,7 +11984,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -11334,7 +12017,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -11365,7 +12050,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -11396,7 +12083,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 66, 2),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -11427,7 +12116,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -11455,7 +12146,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 0),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
 
         };
@@ -11486,7 +12179,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 15, 15)
             {
@@ -11515,7 +12210,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 15, 15)
             {
@@ -11544,7 +12241,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -11573,7 +12272,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 2),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -11602,7 +12303,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 2),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -11629,7 +12332,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -11656,7 +12361,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 16, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -11683,7 +12390,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 14, 0),
                         new PedComponent(5, 65, 23),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -11714,7 +12423,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 2),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -11745,7 +12456,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 2),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> SecuroServ_FEJ = new List<DispatchablePerson>()
@@ -11964,7 +12677,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 15, 15)
             {
@@ -11991,7 +12706,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -12020,7 +12737,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 4),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -12049,7 +12768,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 4),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -12076,7 +12797,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -12103,7 +12826,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 22),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -12132,7 +12857,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 4),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -12161,7 +12888,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 4),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
         List<DispatchablePerson> ChuffSecurity_FEJ = new List<DispatchablePerson>()
@@ -12191,7 +12920,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 24),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 15, 15)
             {
@@ -12218,7 +12949,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 24),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -12247,7 +12980,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 3),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_m_freemode_01", 5, 5)
             {
@@ -12276,7 +13011,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 3),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -12303,7 +13040,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 24),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 15, 15)
             {
@@ -12330,7 +13069,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 0, 0),
                         new PedComponent(5, 65, 24),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -12359,7 +13100,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 3),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
             new DispatchablePerson("mp_f_freemode_01", 5, 5)
             {
@@ -12388,7 +13131,9 @@ public class DispatchablePeople_EUP
                         new PedComponent(7, 8, 0),
                         new PedComponent(9, 2, 3),
                         new PedComponent(5, 20, 0),
-                })
+                }),
+            FullHolster = new PedComponent(7,8,0),
+            EmptyHolster = new PedComponent(7,2,0)
             },
         };
 
