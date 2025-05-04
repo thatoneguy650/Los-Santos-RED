@@ -476,6 +476,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 };
                 OfferSubMenu.AddItem(RentResidenceMenuItem);
             }
+            RentResidenceMenuItem.Description += "~n~~n~" + GetInquireDescription();
+            PurchaseResidenceMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
     private void AddRentOutMenu()
@@ -848,4 +850,17 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         possibleLocations.Residences.Add(this);
         base.AddLocation(possibleLocations);
     }
+    public override string GetInquireDescription()
+    {
+        List<InteriorInteract> craftingInteracts = ResidenceInterior.InteractPoints.Where(x => x.GetType() == typeof(CraftInteriortInteract)).ToList();
+        if(craftingInteracts.Count > 0)
+        {
+            return "Can craft using: ~n~" +string.Join(", ", craftingInteracts.Select(x => x.Name));
+        }
+        else
+        {
+            return "";
+        }
+    }
 }
+

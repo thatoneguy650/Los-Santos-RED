@@ -392,7 +392,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         {
             if(PossibleModItemPayouts != null && PossibleModItemPayouts.Any())
             {
-                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(",", PossibleModItemPayouts); 
+                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(", ", PossibleModItemPayouts); 
             }
             return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
         }

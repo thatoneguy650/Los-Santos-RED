@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class SavedResidence
+public class SavedResidence : SavedGameLocation
 {
     public SavedResidence()
     {
@@ -18,8 +18,6 @@ public class SavedResidence
         IsRentedByPlayer = isRentedByPlayer;
     }
 
-    public string Name { get; set; }
-    public bool IsOwnedByPlayer { get; set; } = false;
     public bool IsRentedByPlayer { get; set; } = false;
     public DateTime RentalPaymentDate { get; set; }
     public DateTime DateOfLastRentalPayment { get; set; }

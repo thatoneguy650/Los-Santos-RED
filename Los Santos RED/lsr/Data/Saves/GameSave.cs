@@ -83,6 +83,7 @@ namespace LosSantosRED.lsr.Data
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();
         public List<SavedPayoutProperty> SavedPayoutProperties { get; set; } = new List<SavedPayoutProperty>();
+        public List<SavedGameLocation> SavedCraftingLocations { get; set; } = new List<SavedGameLocation>();
         public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
 
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
@@ -114,6 +115,7 @@ namespace LosSantosRED.lsr.Data
             SaveCellPhone(player); 
             SaveBusinesses(player);
             SavePayoutProperties(player);
+            SaveCraftingLocations(player);
         }
 
         private void SaveDemographics(ISaveable player)
@@ -331,6 +333,20 @@ namespace LosSantosRED.lsr.Data
                 }
             }
         }
+        private void SaveCraftingLocations(ISaveable player)
+        {
+            SavedCraftingLocations.Clear();
+            foreach (GameLocation property in player.Properties.CraftingLocations)
+            {
+                if (property.IsOwned)
+                {
+                    SavedGameLocation myLoc = new SavedGameLocation(property.Name, property.IsOwned);
+                    myLoc.EntrancePosition = property.EntrancePosition;
+                    myLoc.CurrentSalesPrice = property.CurrentSalesPrice;
+                    SavedCraftingLocations.Add(myLoc);
+                }
+            }
+        }
         private void SaveResidences(ISaveable player)
         {
             SavedResidences.Clear();
@@ -408,6 +424,7 @@ namespace LosSantosRED.lsr.Data
                 LoadHealth(player);
                 LoadBusinesses(player,placesOfInterest,modItems,settings);
                 LoadPayoutProperties(player, placesOfInterest);
+                LoadCraftingLocations(player,placesOfInterest);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -774,6 +791,22 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.DatePayoutDue = savedProperty.PayoutDate;
                         savedPlace.DatePayoutPaid = savedProperty.DateOfLastPayout;
                         savedPlace.CurrentSalesPrice = savedProperty.CurrentSalesPrice;
+                    }
+                }
+            }
+        }
+        private void LoadCraftingLocations(IInventoryable player, IPlacesOfInterest placesOfInterest)
+        {
+            foreach (SavedGameLocation savedLocation in SavedCraftingLocations)
+            {
+                if (savedLocation.IsOwnedByPlayer)
+                {
+                    GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == savedLocation.Name && x.EntrancePosition == savedLocation.EntrancePosition).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddCraftingLocation(savedPlace);
+                        savedPlace.IsOwned = savedLocation.IsOwnedByPlayer;
+                        savedPlace.CurrentSalesPrice = savedLocation.CurrentSalesPrice;
                     }
                 }
             }

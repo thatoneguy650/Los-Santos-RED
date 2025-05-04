@@ -21,7 +21,7 @@ public class Properties
     public List<Residence> Residences { get; private set; } = new List<Residence>();
     public List<Business> Businesses { get; private set; } = new List<Business>();
     public List<GameLocation> PayoutProperties { get; private set; } = new List<GameLocation>();
-
+    public List<GameLocation> CraftingLocations { get; private set; } = new List<GameLocation>();
     public void Setup()
     {
 
@@ -117,6 +117,21 @@ public class Properties
         {
             toRemove.Reset();
             Businesses.Remove(toRemove);
+        }
+    }
+    public void AddCraftingLocation(GameLocation toAdd)
+    {
+        if (!CraftingLocations.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
+        {
+            CraftingLocations.Add(toAdd);
+        }
+    }
+    public void RemoveCraftingLocation(GameLocation toRemove)
+    {
+        if (CraftingLocations.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
+        {
+            toRemove.Reset();
+            CraftingLocations.Remove(toRemove);
         }
     }
 }

@@ -419,10 +419,12 @@ public class PlacesOfInterest : IPlacesOfInterest
         ExteriorCraftingLocations = new List<ExteriorCraftingLocation>()
         {
             //why does this exist? just a random free meth lab i guess.
-           //new ExteriorCraftingLocation(new Vector3(1389.315f, 3604.739f,38.94193f),302.1837f,"Craft Meth","")
-           //{
-           //   CraftingFlag = "DrugLab" ,
-           //},
+           new ExteriorCraftingLocation(new Vector3(1389.315f, 3604.739f,38.94193f),302.1837f,"Meth Lab","")
+           {
+              CraftingFlag = "DrugLab"
+              ,IsOwnable = true
+              ,PurchasePrice = 50000
+           },
         };
     }
     private void DefaultConfig_Businesses()

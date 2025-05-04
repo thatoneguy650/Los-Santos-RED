@@ -165,6 +165,7 @@
     <Compile Include="lsr\Data\Peds\Dispatchable People\Service\DispatchablePeople_Service.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
     <Compile Include="lsr\Data\Saves\SavedBusiness.cs" />
+	<Compile Include="lsr\Data\Saves\SavedGameLocation.cs" />
     <Compile Include="lsr\Data\Saves\SavedPayoutProperty.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\GroupSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RadarDetectorSettings.cs" />
