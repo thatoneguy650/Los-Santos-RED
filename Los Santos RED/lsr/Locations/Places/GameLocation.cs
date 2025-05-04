@@ -595,7 +595,7 @@ public class GameLocation : ILocationDispatchable
         if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
         {
             UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
             businessManagementButton.Activated += (s, i) =>
             {
                 if (Purchase())
@@ -616,7 +616,7 @@ public class GameLocation : ILocationDispatchable
             subMenu.AddItem(businessManagementButton);
         }
     }
-    public virtual bool Purchase()
+    protected virtual bool Purchase()
     {
         if (Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
@@ -627,7 +627,7 @@ public class GameLocation : ILocationDispatchable
         DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
         return false;
     }
-    public virtual void OnPurchased()
+    protected virtual void OnPurchased()
     {
         Player.Properties.AddPayoutProperty(this);
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
@@ -636,7 +636,7 @@ public class GameLocation : ILocationDispatchable
         DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
         CurrentSalesPrice = SalesPrice;
     }
-    public virtual void OnSold()
+    protected virtual void OnSold()
     {
         Player.Properties.RemovePayoutProperty(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
@@ -1401,7 +1401,7 @@ public class GameLocation : ILocationDispatchable
     {
         if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
         {
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
             businessManagementButton.Activated += (s, i) =>
             {
                 Purchase();
@@ -1423,6 +1423,14 @@ public class GameLocation : ILocationDispatchable
             headerMenu.AddItem(businessManagementButton);
         }
     }
+
+
+
+    public virtual string GetInquireDescription()
+    {
+        return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
+    }
+
     //public virtual void UpdatePrompts()
     //{
 

@@ -10,7 +10,7 @@ public class BusinessInterior : Interior
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
     public List<InventoryInteract> InventoryInteracts { get; set; } = new List<InventoryInteract>();
     public List<OutfitInteract> OutfitInteracts { get; set; } = new List<OutfitInteract>();
-    public bool IsMPInterior { get; set; }
+
     [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {

@@ -152,16 +152,71 @@ public class IssueableWeapons : IIssuableWeapons
         };
         List<IssuableWeapon> MilitaryLongGuns_Modern = new List<IssuableWeapon>()
         {
-            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(),5),
-            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
-            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
-            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
-            new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip")}),45),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"),}),75),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),35),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"),}),35),
+            new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), }),35),
         };
 
 
 
 
+        //NEW
+        List<IssuableWeapon> LSSDSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+        };
+        List<IssuableWeapon> LSPDSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(), 95),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 95),
+        };
+        List<IssuableWeapon> LSPDLongGuns_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),10),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),5),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),10),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+        };
+
+
+
+
+        List<IssuableWeapon> TacticalSidearms_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 65),
+            new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 65),
+
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )}), 65),
+            new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}), 65),
+
+            new IssuableWeapon("weapon_appistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip") }), 35),
+            new IssuableWeapon("weapon_appistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), }), 15),
+        };
+        List<IssuableWeapon> TacticalLongGuns_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_smg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Flashlight")}), 10),
+            new IssuableWeapon("weapon_smg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), }), 10),
+            new IssuableWeapon("weapon_smg", new WeaponVariation(new List<WeaponComponent> { }), 10),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),10),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),5),
+            new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),10),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
+            new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), }),25),
+        };
 
 
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_FEW = new List<IssuableWeaponsGroup>
@@ -173,9 +228,69 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("MilitarySidearms", MilitarySidearms_Modern),
             new IssuableWeaponsGroup("MilitaryLongGuns", MilitaryLongGuns_Modern),
 
+
+
+
+            new IssuableWeaponsGroup("LSPDSidearms", LSPDSidearms_Modern),
+            new IssuableWeaponsGroup("LSSDSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("BCSOSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("SAHPSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("DPPDSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("RHPDSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("LSPPSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("LSIAPDSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("FIBSidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("DOASidearms", LSSDSidearms_Modern),
+            new IssuableWeaponsGroup("NOOSESidearms", LSSDSidearms_Modern),
+
+
+            new IssuableWeaponsGroup("LSPDLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("LSSDLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("BCSOLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("SAHPLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("DPPDLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("RHPDLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("LSPPLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("LSIAPDLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("FIBLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("DOALongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("NOOSELongGuns", LSPDLongGuns_Modern),
+
+
+            new IssuableWeaponsGroup("TacticalSidearms", TacticalSidearms_Modern),
+            new IssuableWeaponsGroup("TacticalLongGuns", TacticalLongGuns_Modern),
+
             //MilitarySidearms
             //MilitaryLongGuns
         };
+
+
+        /*	LSPDSidearms = AllSidearms
+	LSSDSidearms
+	BCSOSidearms
+	SAHPSidearms
+	DPPDSidearms
+	RHPDSidearms
+	LSPPSidearms
+	LSIAPDSidearms
+	FIBSidearms
+	DOASidearms
+	NOOSESidearms
+	
+	LSPDLongGuns = AllLongGuns
+	LSSDLongGuns
+	BCSOLongGuns
+	SAHPLongGuns
+	DPPDLongGuns
+	RHPDLongGuns
+	LSPPLongGuns
+	LSIAPDLongGuns
+	FIBLongGuns
+	DOALongGuns
+	NOOSELongGuns*/
+
+
+
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_FEW, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\IssuableWeapons+_{StaticStrings.FEWConfigSuffix}.xml");
 
     }
@@ -665,6 +780,39 @@ public class IssueableWeapons : IIssuableWeapons
         {
             new IssuableWeaponsGroup("Tasers", Tasers),
             new IssuableWeaponsGroup("Nightsticks", Nightsticks),
+
+
+
+            //New
+            new IssuableWeaponsGroup("LSPDSidearms", AllSidearms),
+            new IssuableWeaponsGroup("LSSDSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("BCSOSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("SAHPSidearms", AllSidearms),
+            new IssuableWeaponsGroup("DPPDSidearms", AllSidearms),
+            new IssuableWeaponsGroup("RHPDSidearms", BestSidearms),
+            new IssuableWeaponsGroup("LSPPSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("LSIAPDSidearms", LimitedSidearms),
+            new IssuableWeaponsGroup("FIBSidearms", BestSidearms),
+            new IssuableWeaponsGroup("DOASidearms", BestSidearms),
+            new IssuableWeaponsGroup("NOOSESidearms", BestSidearms),
+
+
+            new IssuableWeaponsGroup("LSPDLongGuns", AllLongGuns),
+            new IssuableWeaponsGroup("LSSDLongGuns", LimitedLongGuns),
+            new IssuableWeaponsGroup("BCSOLongGuns", LimitedLongGuns),
+            new IssuableWeaponsGroup("SAHPLongGuns", AllLongGuns),
+            new IssuableWeaponsGroup("DPPDLongGuns", AllLongGuns),
+            new IssuableWeaponsGroup("RHPDLongGuns", BestLongGuns),
+            new IssuableWeaponsGroup("LSPPLongGuns", LimitedLongGuns),
+            new IssuableWeaponsGroup("LSIAPDLongGuns", LimitedLongGuns),
+            new IssuableWeaponsGroup("FIBLongGuns", BestLongGuns),
+            new IssuableWeaponsGroup("DOALongGuns", BestLongGuns),
+            new IssuableWeaponsGroup("NOOSELongGuns", BestLongGuns),
+
+            new IssuableWeaponsGroup("TacticalSidearms", BestSidearms),
+            new IssuableWeaponsGroup("TacticalLongGuns", BestLongGuns),
+
+
             new IssuableWeaponsGroup("AllSidearms", AllSidearms),
             new IssuableWeaponsGroup("AllLongGuns", AllLongGuns),
             new IssuableWeaponsGroup("BestSidearms", BestSidearms),
@@ -1179,6 +1327,39 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns_2008),
             new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms_2008),
             new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns_2008),
+
+
+
+            //New
+            new IssuableWeaponsGroup("LSPDSidearms", AllSidearms_2008),
+            new IssuableWeaponsGroup("LSSDSidearms", LimitedSidearms_2008),
+            new IssuableWeaponsGroup("BCSOSidearms", LimitedSidearms_2008),
+            new IssuableWeaponsGroup("SAHPSidearms", AllSidearms_2008),
+            new IssuableWeaponsGroup("DPPDSidearms", AllSidearms_2008),
+            new IssuableWeaponsGroup("RHPDSidearms", BestSidearms_2008),
+            new IssuableWeaponsGroup("LSPPSidearms", LimitedSidearms_2008),
+            new IssuableWeaponsGroup("LSIAPDSidearms", LimitedSidearms_2008),
+            new IssuableWeaponsGroup("FIBSidearms", BestSidearms_2008),
+            new IssuableWeaponsGroup("DOASidearms", BestSidearms_2008),
+            new IssuableWeaponsGroup("NOOSESidearms", BestSidearms_2008),
+
+            new IssuableWeaponsGroup("LSPDLongGuns", AllLongGuns_2008),
+            new IssuableWeaponsGroup("LSSDLongGuns", LimitedLongGuns_2008),
+            new IssuableWeaponsGroup("BCSOLongGuns", LimitedLongGuns_2008),
+            new IssuableWeaponsGroup("SAHPLongGuns", AllLongGuns_2008),
+            new IssuableWeaponsGroup("DPPDLongGuns", AllLongGuns_2008),
+            new IssuableWeaponsGroup("RHPDLongGuns", BestLongGuns_2008),
+            new IssuableWeaponsGroup("LSPPLongGuns", LimitedLongGuns_2008),
+            new IssuableWeaponsGroup("LSIAPDLongGuns", LimitedLongGuns_2008),
+            new IssuableWeaponsGroup("FIBLongGuns", BestLongGuns_2008),
+            new IssuableWeaponsGroup("DOALongGuns", BestLongGuns_2008),
+            new IssuableWeaponsGroup("NOOSELongGuns", BestLongGuns_2008),
+
+            new IssuableWeaponsGroup("TacticalSidearms", BestSidearms_2008),
+            new IssuableWeaponsGroup("TacticalLongGuns", BestLongGuns_2008),
+
+
+
             new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms_2008),
             new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns_2008),
             new IssuableWeaponsGroup("VendorMeleeWeapons", VendorMeleeWeapons_2008),
@@ -1321,7 +1502,6 @@ public class IssueableWeapons : IIssuableWeapons
 
         };
 
-
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_Modern = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("Tasers", Tasers),
@@ -1336,6 +1516,44 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns_Modern),
             new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms_Modern),
             new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns_Modern),
+
+
+
+
+
+
+            //New
+            new IssuableWeaponsGroup("LSPDSidearms", AllSidearms_Modern),
+            new IssuableWeaponsGroup("LSSDSidearms", LimitedSidearms_Modern),
+            new IssuableWeaponsGroup("BCSOSidearms", LimitedSidearms_Modern),
+            new IssuableWeaponsGroup("SAHPSidearms", AllSidearms_Modern),
+            new IssuableWeaponsGroup("DPPDSidearms", AllSidearms_Modern),
+            new IssuableWeaponsGroup("RHPDSidearms", BestSidearms_Modern),
+            new IssuableWeaponsGroup("LSPPSidearms", LimitedSidearms_Modern),
+            new IssuableWeaponsGroup("LSIAPDSidearms", LimitedSidearms_Modern),
+            new IssuableWeaponsGroup("FIBSidearms", BestSidearms_Modern),
+            new IssuableWeaponsGroup("DOASidearms", BestSidearms_Modern),
+            new IssuableWeaponsGroup("NOOSESidearms", BestSidearms_Modern),
+
+            new IssuableWeaponsGroup("LSPDLongGuns", AllLongGuns_Modern),
+            new IssuableWeaponsGroup("LSSDLongGuns", LimitedLongGuns_Modern),
+            new IssuableWeaponsGroup("BCSOLongGuns", LimitedLongGuns_Modern),
+            new IssuableWeaponsGroup("SAHPLongGuns", AllLongGuns_Modern),
+            new IssuableWeaponsGroup("DPPDLongGuns", AllLongGuns_Modern),
+            new IssuableWeaponsGroup("RHPDLongGuns", BestLongGuns_Modern),
+            new IssuableWeaponsGroup("LSPPLongGuns", LimitedLongGuns_Modern),
+            new IssuableWeaponsGroup("LSIAPDLongGuns", LimitedLongGuns_Modern),
+            new IssuableWeaponsGroup("FIBLongGuns", BestLongGuns_Modern),
+            new IssuableWeaponsGroup("DOALongGuns", BestLongGuns_Modern),
+            new IssuableWeaponsGroup("NOOSELongGuns", BestLongGuns_Modern),
+
+            new IssuableWeaponsGroup("TacticalSidearms", BestSidearms_Modern),
+            new IssuableWeaponsGroup("TacticalLongGuns", BestLongGuns_Modern),
+
+
+
+
+
 
             new IssuableWeaponsGroup("Minigun", Minigun),
             new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher),
@@ -1380,7 +1598,7 @@ public class IssueableWeapons : IIssuableWeapons
             return null;
         }
         IssuableWeaponsGroup weaponsGroup = IssuableWeaponsGroupLookup.FirstOrDefault(x => x.IssuableWeaponsID == issuableWeaponsID);
-        if(weaponsGroup == null)
+        if (weaponsGroup == null)
         {
             return null;
         }

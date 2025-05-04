@@ -39,10 +39,10 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public override string TypeName { get; set; } = "Business";
     public override int MapIcon { get; set; } = (int)BlipSprite.BusinessForSale;
     public override string ButtonPromptText { get; set; }
-    public bool IsPayoutInModItems { get; set; } = false;
+    public bool IsPayoutInModItems => PossibleModItemPayouts != null && PossibleModItemPayouts.Any();
     public List<string> PossibleModItemPayouts { get; set; }
     public int ModItemPayoutAmount { get; set; } = 1;
-    public bool IsPayoutDepositedToBank { get; set; } = false;
+   // public bool IsPayoutDepositedToBank { get; set; } = false;
     [XmlIgnore]
     public string ModItemToPayout { get; set; }
     [XmlIgnore]
@@ -80,11 +80,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     {
         if (BusinessInterior != null && BusinessInterior.IsTeleportEntry && IsOwned)
         {
-            if(BusinessInterior.IsMPInterior && !World.IsMPMapLoaded)
-            {
-                StandardInteract(null, false);
-                return;
-            }
             DoEntranceCamera(false);
             BusinessInterior.SetBusiness(this);
             BusinessInterior.Teleport(Player, this, StoreCamera);
@@ -107,6 +102,12 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             {
                 BusinessInterior.SetBusiness(this);
             }
+        }
+
+
+        if(IsPayoutInModItems && PossibleModItemPayouts != null)
+        {
+            ModItemToPayout = PossibleModItemPayouts.OrderBy(x => x).FirstOrDefault();
         }
     }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
@@ -184,6 +185,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 };
                 OfferSubMenu.AddItem(PurchaseBusinessMenuItem);
             }
+            PurchaseBusinessMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
     public override void Payout(IPropertyOwnable player, ITimeReportable time)
@@ -206,14 +208,14 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             else
             {
                 int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-                if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
-                {
-                    player.BankAccounts.GiveMoney(payoutAmount, true);
-                }
-                else
-                {
+                //if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
+                //{
+                //    player.BankAccounts.GiveMoney(payoutAmount, true);
+                //}
+                //else
+                //{
                     CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
-                }
+                //}
             }
             int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
             CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
@@ -231,7 +233,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-        IsPayoutInModItems = false;
+        //IsPayoutInModItems = false;
         ModItemToPayout = String.Empty;
     }
     private void AddInteractionItems(bool isInside)
@@ -262,50 +264,33 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellBusinessItem);
-            UIMenuItem payoutDescription = new UIMenuItem(IsPayoutInModItems ? ModItemToPayout : "Cash");
-            UIMenuCheckboxItem payoutToBankMenuItem = new UIMenuCheckboxItem("Deposit to Bank?", IsPayoutDepositedToBank);
-            payoutToBankMenuItem.CheckboxEvent += (s, c) =>
+            if (IsPayoutInModItems)
             {
-                IsPayoutDepositedToBank = c;
-            };
-            if (PossibleModItemPayouts != null && PossibleModItemPayouts.Count > 0)
-            {
-                UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Produce", "Your payout option.");
-                foreach (string modItem in PossibleModItemPayouts)
+                UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Producing", $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)");
+                foreach (string modItem in PossibleModItemPayouts.OrderBy(x=> x))
                 {
                     payoutItemScrollerItem.Items.Add(modItem);
                 }
                 payoutItemScrollerItem.Activated += (sender, selectedItem) =>
                 {
                     ModItemToPayout = payoutItemScrollerItem.SelectedItem;
-                    UpdatePayoutDescription(payoutDescription);
                 };
-                UIMenuCheckboxItem payOutInModItems = new UIMenuCheckboxItem("Produce Items", IsPayoutInModItems);
-                payOutInModItems.CheckboxEvent += (s, c) =>
+                InteractionMenu.AddItem(payoutItemScrollerItem);
+
+                if(PossibleModItemPayouts.Count() <= 1)
                 {
-                    IsPayoutInModItems = c;
-                    ModItemToPayout = payoutItemScrollerItem.SelectedItem;
-                    UpdatePayoutDescription(payoutDescription);
-                };
-                InteractionMenu.AddItems(payoutDescription, payoutToBankMenuItem, payOutInModItems, payoutItemScrollerItem);
+                    payoutItemScrollerItem.Enabled = false;
+                }
+            }
+            else
+            {
+                UIMenuItem payoutCashItem = new UIMenuItem("Producing", $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)");
+                payoutCashItem.RightLabel = $"~g~{PayoutMin:C0}-{PayoutMax:C0}~s~";
+                InteractionMenu.AddItem(payoutCashItem);
             }
         }
     }
-    private void UpdatePayoutDescription(UIMenuItem payoutDescription)
-    {
-        if (IsPayoutInModItems)
-        {
-            payoutDescription.Text = ModItemToPayout;
-            payoutDescription.Description = $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
-        }
-        else
-        {
-            payoutDescription.Text = "Cash";
-            payoutDescription.Description = $"Around ${PayoutMin} to ${PayoutMax} every {PayoutFrequency} day(s)";
-
-        }
-    }
-    public override void OnSold()
+    protected override void OnSold()
     {
         Reset();
         Player.Properties.RemoveBusiness(this);
@@ -313,7 +298,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
     }
-    public override bool Purchase()
+    protected override bool Purchase()
     {
         if (CanBuy && Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
@@ -324,7 +309,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
         return false;
     }
-    public override void OnPurchased()
+    protected override void OnPurchased()
     {
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
@@ -400,4 +385,21 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             Interior.IsMenuInteracting = false;
         }
     }
+
+    public override string GetInquireDescription()
+    {
+        if(IsPayoutInModItems)
+        {
+            if(PossibleModItemPayouts != null && PossibleModItemPayouts.Any())
+            {
+                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(",", PossibleModItemPayouts); 
+            }
+            return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
+        }
+        else
+        {
+            return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
+        }
+    }
+
 }

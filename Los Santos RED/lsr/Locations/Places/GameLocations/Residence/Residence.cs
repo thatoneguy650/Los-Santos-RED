@@ -546,7 +546,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 {
                     OnRentOutProperty();
                 };
-                InteractionMenu.AddItem(RentOutPropertyItem);
+                //InteractionMenu.AddItem(RentOutPropertyItem);
             }
             InteractionMenu.AddItem(SellHouseItem);
         }
@@ -612,7 +612,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         DisplayMessage("~r~Rental Failed", "We are sorry, we are unable to complete this rental. Please make sure you have the funds.");
         return false;
     }
-    private bool Purchase()
+    protected override bool Purchase()
     {
         if (CanBuy && Player.BankAccounts.GetMoney(true) >= PurchasePrice)
         {
@@ -684,7 +684,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         PlaySuccessSound();
         DisplayMessage("~g~Rented", $"Thank you for renting {Name}");
     }
-    private void OnPurchased()
+    protected override void OnPurchased()
     {
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
@@ -706,7 +706,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         PlaySuccessSound();
         DisplayMessage("~y~Rental", $"You have stopped renting {Name}");
     }
-    private void OnSold()
+    protected override void OnSold()
     {
         Reset();
         Player.Properties.RemoveResidence(this);

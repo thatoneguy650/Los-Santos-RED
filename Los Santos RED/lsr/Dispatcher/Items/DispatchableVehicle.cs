@@ -96,7 +96,7 @@ public class DispatchableVehicle
         isPlane = NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
         isMotorcycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
 #if DEBUG
-        if(isMotorcycle)
+        if (isMotorcycle)
         {
             EntryPoint.WriteToConsole($"{DebugName} {ModelName} is motorcycle");
         }
@@ -141,12 +141,12 @@ public class DispatchableVehicle
         int adjustmentAmount = 0;
         if (SpawnAdjustmentAmounts != null && SpawnAdjustmentAmounts.Any())
         {
-            foreach(SpawnAdjustmentAmount spawnAdjustmentAmount in SpawnAdjustmentAmounts)
+            foreach (SpawnAdjustmentAmount spawnAdjustmentAmount in SpawnAdjustmentAmounts)
             {
-                if(eSpawnAdjustment.HasFlag(spawnAdjustmentAmount.eSpawnAdjustment))
+                if (eSpawnAdjustment.HasFlag(spawnAdjustmentAmount.eSpawnAdjustment))
                 {
                     adjustmentAmount += spawnAdjustmentAmount.PercentAmount;
-                   // EntryPoint.WriteToConsole($"CurrentAdjustedSpawnChance eSpawnAdjustment {eSpawnAdjustment}, spawnAdjustmentAmount enum:{spawnAdjustmentAmount.eSpawnAdjustment} value:{spawnAdjustmentAmount.PercentAmount}");
+                    // EntryPoint.WriteToConsole($"CurrentAdjustedSpawnChance eSpawnAdjustment {eSpawnAdjustment}, spawnAdjustmentAmount enum:{spawnAdjustmentAmount.eSpawnAdjustment} value:{spawnAdjustmentAmount.PercentAmount}");
                 }
             }
         }
@@ -158,7 +158,7 @@ public class DispatchableVehicle
             }
             else
             {
-                return 0 + adjustmentAmount;
+                return 0;
             }
         }
         else
@@ -173,7 +173,7 @@ public class DispatchableVehicle
     public bool CanCurrentlySpawn(int WantedLevel, bool allowDLC) => CurrentSpawnChance(WantedLevel, allowDLC) > 0;
     public int CurrentSpawnChance(int WantedLevel, bool allowDLC)
     {
-        if(RequiresDLC && !allowDLC)
+        if (RequiresDLC && !allowDLC)
         {
             return 0;
         }
@@ -257,27 +257,27 @@ public class DispatchableVehicle
             return;
         }
 
-        if(WheelType != -1)
+        if (WheelType != -1)
         {
             NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(vehicleExt.Vehicle, WheelType);
         }
 
         if (VehicleMods != null && VehicleMods.Any())
-        { 
+        {
             //EntryPoint.WriteToConsole("SETTING VEHICLE MODS");
             NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
             foreach (DispatchableVehicleMod dispatchableVehicleMod in VehicleMods)
             {
-               // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID}");
+                // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID}");
                 if (RandomItems.RandomPercent(dispatchableVehicleMod.Percentage) && dispatchableVehicleMod.DispatchableVehicleModValues != null)
                 {
                     DispatchableVehicleModValue value = dispatchableVehicleMod.PickValue();//.DispatchableVehicleModValues.PickValue();
                     if (value != null)
                     {
-                       // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID} VALUE: {value.Value}");
+                        // EntryPoint.WriteToConsole($"VEHICLE MODS: ID: {dispatchableVehicleMod.ModID} VALUE: {value.Value}");
                         NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, dispatchableVehicleMod.ModID, value.Value, false);
                         //GameFiber.Yield();
-                        if(!vehicleExt.Vehicle.Exists())
+                        if (!vehicleExt.Vehicle.Exists())
                         {
                             break;
                         }
@@ -297,7 +297,7 @@ public class DispatchableVehicle
             NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicleExt.Vehicle, ForcedPlateType);
         }
 
-        if(FinalPlateType != null)
+        if (FinalPlateType != null)
         {
             string plateNumber = FinalPlateType.GenerateNewLicensePlateNumber();
             vehicleExt.Vehicle.LicensePlate = plateNumber;
@@ -339,7 +339,7 @@ public class DispatchableVehicle
         {
             return;
         }
-        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, MaxRandomDirtLevel.Clamp(0.0f,15.0f)));
+        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, MaxRandomDirtLevel.Clamp(0.0f, 15.0f)));
         RequiredVariation?.Apply(vehicleExt);
         GameFiber.Yield();
     }

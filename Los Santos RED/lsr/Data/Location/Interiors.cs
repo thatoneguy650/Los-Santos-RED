@@ -1715,10 +1715,10 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-22.23354f, -1.567997E-05f, 19.01349f),
                         UseNavmesh = false,
                     },
-                    new CraftInteriortInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
-                    {
-                        CraftingFlag = "Stove"
-                    }
+                    //new CraftInteriortInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
+                    //{
+                    //    CraftingFlag = "Stove"
+                    //}
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
@@ -8711,7 +8711,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1138.115f, -3199.196f, -39.66568f),
                 InteriorEgressHeading =  5.70763f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "counterfeit_upgrade_equip_no_prod", "counterfeit_upgrade_equip", "counterfeit_security", "dryera_on", "dryerb_open", "dryerc_on", "dryerd_off", "counterfeit_cashpile10a", "counterfeit_cashpile20c", "counterfeit_cashpile100d", "special_chairs", "money_cutter", "counterfeit_setup"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_5_biker_dlc_int_ware04_milo"},
                 InteractPoints = new List<InteriorInteract>()
@@ -8725,7 +8724,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1088.617f, -3187.503f, -38.99346f),
                 InteriorEgressHeading = 181.0876f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "set_up", "equipment_upgrade", "coke_press_upgrade", "production_upgrade", "table_equipment_upgrade", "coke_cut_04", "coke_cut_05", "coke_cut_01", "coke_cut_02", "coke_cut_03", "security_high"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_4_biker_dlc_int_ware03_milo"},
                 InteractPoints = new List<InteriorInteract>()
@@ -8743,7 +8741,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1173.786f, -3196.667f, -39.00798f),
                 InteriorEgressHeading = 91.33833f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "interior_upgrade", "equipment_upgrade", "security_high", "table_equipment_upgrade", "chair01", "chair02", "chair03", "chair04", "chair05", "chair06", "chair07", "production", "set_up", "clutter"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_6_biker_dlc_int_ware05_milo"},
                 InteractPoints = new List<InteriorInteract>()
@@ -8757,7 +8754,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(996.9052f, -3200.659f, -36.39368f),
                 InteriorEgressHeading = 272.8723f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "meth_lab_upgrade", "meth_lab_setup", "meth_lab_security_high", "meth_lab_production"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_2_biker_dlc_int_ware01_milo"},
                 InteractPoints = new List<InteriorInteract>()
@@ -8775,7 +8771,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1066.354f, -3183.521f, -39.16362f),
                 InteriorEgressHeading = 89.46977f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "weed_upgrade_equip", "weed_security_upgrade", "weed_growtha_stage3", "light_growtha_stage23_upgrade", "weed_hosea", "weed_growtha_stage3", "light_growthb_stage23_upgrade", "weed_hoseb", "weed_growthc_stage3", "light_growthc_stage23_upgrade", "weed_hosec", "weed_growthd_stage3", "light_growthd_stage23_upgrade", "weed_hosed", "weed_growthe_stage3", "light_growthe_stage23_upgrade", "weed_hosee", "weed_growthf_stage3", "light_growthf_stage23_upgrade", "weed_hosef", "weed_growthg_stage3", "light_growthg_stage23_upgrade", "weed_hoseg", "weed_growthh_stage3", "light_growthh_stage23_upgrade", "weed_hoseh", "weed_growthi_stage3", "light_growthi_stage23_upgrade", "weed_hosei", "weed_production", "weed_set_up", "weed_drying", "weed_chairs"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_3_biker_dlc_int_ware02_milo"},
                 InteractPoints = new List<InteriorInteract>()
@@ -8793,7 +8788,6 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(970.872f, -2987.221f, -39.64696f),
                 InteriorEgressHeading = 180.365f,
-                IsMPInterior = true,
                 InteriorSets = new List<string>() { "basic_style_set", "door_blocker"},
                 RequestIPLs = new List<string>() { "imp_impexp_interior_placement_interior_1_impexp_intwaremedmilo"},
                 InteractPoints = new List<InteriorInteract>()

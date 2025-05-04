@@ -98,6 +98,8 @@ public class DispatchablePerson
 
     public PedPropComponent OverrideHelmet { get; set; }
     public float NoHelmetPercentage { get; set; } = 0f;
+
+    public bool ShrinkHeadForMask { get; set; } = false;
     public string GetDescription()
     {
         string description = "";

@@ -286,10 +286,10 @@ namespace LosSantosRED.lsr.Data
                     SavedBusiness myBiz = new SavedBusiness(biz.Name, biz.IsOwned);
                     myBiz.DateOfLastPayout = biz.DatePayoutPaid;
                     myBiz.PayoutDate = biz.DatePayoutDue;
-                    myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
+                    //myBiz.IsPayoutInModItems = biz.IsPayoutInModItems;
                     myBiz.ModItemToPayout = biz.ModItemToPayout;
                     myBiz.EntrancePosition = biz.EntrancePosition;
-                    myBiz.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+                   // myBiz.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
                     myBiz.CurrentSalesPrice = biz.CurrentSalesPrice;
                     if (biz.WeaponStorage != null)
                     {
@@ -734,9 +734,9 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.IsOwned = biz.IsOwnedByPlayer;
                         savedPlace.DatePayoutDue = biz.PayoutDate;
                         savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
-                        savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
+                        //savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
                         savedPlace.ModItemToPayout = biz.ModItemToPayout;
-                        savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+                        //savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
                         savedPlace.CurrentSalesPrice = biz.CurrentSalesPrice;
                         if (savedPlace.WeaponStorage == null)
                         {
