@@ -283,6 +283,7 @@ public class ShopMenus : IShopMenus
             "Hawk & Little Thunder",
             "Shrewsbury Defender",
             "Vom Feuer 1922",
+            "Vom Feuer DP1 Carbine",
         };
 
 
@@ -318,6 +319,12 @@ public class ShopMenus : IShopMenus
                 if (menuItem.ModItemName == "Hawk & Little MP6" || menuItem.ModItemName == "Vom Feuer MP6")
                 {
                     menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                }
+                if (menuItem.ModItemName == "Vom Feuer DP1 Carbine")
+                {
+                    menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                    menuItem.Extras.Add(new MenuItemExtra("Small Scope", 760));
+                    menuItem.Extras.Add(new MenuItemExtra("Medium Scope", 900));
                 }
             }
         }

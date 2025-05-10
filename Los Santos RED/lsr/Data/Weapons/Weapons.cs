@@ -85,6 +85,21 @@ public class Weapons : IWeapons
             new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring)
         };
         fewList.Add(new WeaponInformation("weapon_smg", 90, WeaponCategory.SMG, 2, 736523883, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
+        
+        List<WeaponComponent> TacticalRifleComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x3749B8BB,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x8594554F,ComponentSlot.Magazine),
+            new WeaponComponent("Flashlight", 0x9DB1E023,ComponentSlot.Light),
+            new WeaponComponent("Suppressor", 0xA73D4664,ComponentSlot.Muzzle),
+            new WeaponComponent("Grip", 0xC164F53, ComponentSlot.ForwardGrip),
+            new WeaponComponent("Holographic Sight", 0x420FD713, ComponentSlot.Optic),
+            new WeaponComponent("Small Scope", 0xC7ADD105, ComponentSlot.Optic),
+            new WeaponComponent("Medium Scope", 0x3F3C8181, ComponentSlot.Optic),
+        };
+        fewList.Add(new WeaponInformation("weapon_tacticalrifle", 120, WeaponCategory.AR, 3, 0xD1D5F52B, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f,
+            SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto)
+        { PossibleComponents = TacticalRifleComponents });
 
 
 

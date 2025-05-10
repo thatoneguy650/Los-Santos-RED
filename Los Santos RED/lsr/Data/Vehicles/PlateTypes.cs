@@ -264,7 +264,7 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(53, "Quapaw", "Quapaw", 2, "ABC  12D"));
 
-        FullPlateTypeList.Add(new PlateType(54, "Altamaha", "Altamaha", 2, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(54, "Gloriana", "Gloriana", 2, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(55, "Tippecanoe", "Tippecanoe", 2, " 123ABC "));
         FullPlateTypeList.Add(new PlateType(56, "Humboldt", "Humboldt", 2, "1234ABCD"));
 
@@ -296,6 +296,9 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(71, "San Andreas Motorcycle", StaticStrings.SanAndreasStateID, 1, "1A234567") { IsMotorcyclePlate = true, });
         FullPlateTypeList.Add(new PlateType(72, "San Andreas Motorcycle Alt", StaticStrings.SanAndreasStateID, 1, "1A234567"){ IsMotorcyclePlate = true, });
 
+
+        FullPlateTypeList.Add(new PlateType(73, "Gloriana Legacy", "Gloriana", 1, "ABC   D1"));
+        FullPlateTypeList.Add(new PlateType(74, "Gloriana Legacy Motorcycle", "Gloriana", 1, "ABC   D1") { IsMotorcyclePlate = true });
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");

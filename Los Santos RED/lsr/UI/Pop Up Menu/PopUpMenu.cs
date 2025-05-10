@@ -1308,6 +1308,9 @@ public class PopUpMenu
             new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2, false, true)),"Sit in the right rear seat"),
             new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3, false, true)),"Sit in the first extra seat"),
             new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4, false, true)),"Sit in the second extra seat"),
+
+            new PopUpBox(6,"Seat Extra 3", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,5, false, true)),"Sit in the first extra seat"),
+            new PopUpBox(7,"Seat Extra 4", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,6, false, true)),"Sit in the second extra seat"),
         };
 
 

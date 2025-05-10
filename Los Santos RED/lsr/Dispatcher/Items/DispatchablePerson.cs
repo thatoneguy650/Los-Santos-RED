@@ -360,7 +360,7 @@ public class DispatchablePerson
                 if (rhd != null)
                 {
                     RandomHeadData rhd2 = PossibleHeads.Where(x => x.IsMale == isMale && x.Name != rhd.Name).PickRandom();
-                    SetRandomizeHead(ped, rhd, rhd2, variationToSet, true);
+                    SetRandomizeHead(ped, rhd, rhd2, variationToSet, true, ShrinkHeadForMask);
                 }
             }
             if (OptionalProps != null)
@@ -441,7 +441,7 @@ public class DispatchablePerson
         
 
     }
-    public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation, bool allowMorph)
+    public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation, bool allowMorph, bool shrinkHead)
     {
         GameFiber.Yield();
         if(!ped.Exists())
@@ -563,6 +563,13 @@ public class DispatchablePerson
             if(RandomItems.RandomPercent(FaceFeatureRandomizePercentage))
             {
                 float newScale = RandomItems.GetRandomNumber(faceFeature.RangeLow/2.0f, faceFeature.RangeHigh/2.0f);
+
+                if(ShrinkHeadForMask)
+                {
+                    newScale = faceFeature.RangeLow;
+                }
+
+
                 NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, newScale);
                 pedVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = newScale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
                 GameFiber.Yield();
