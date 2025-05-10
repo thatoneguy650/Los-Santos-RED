@@ -372,7 +372,7 @@ public class DispatchableVehicles_FEJ
 
     public DispatchableVehicle Create_PoliceScout(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
     {
-        DispatchableVehicle intermediate = Create_PoliceRaiden(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        DispatchableVehicle intermediate = Create_PoliceScout(ambientPercent, wantedPercent, liveryID, useOptionalColors, policeVehicleType, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         intermediate.RequiredDashColorID = requiredDashboardColor;
         return intermediate;
     }

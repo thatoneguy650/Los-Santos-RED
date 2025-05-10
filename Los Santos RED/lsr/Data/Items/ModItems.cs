@@ -168,7 +168,7 @@ public class ModItems : IModItems
 
 
         //Police
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Scout Interloper Utility", false, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polscoutgresk" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Bravador Gauntlet Stalker", true, ItemType.Vehicles) { ModelName = "polgauntlet" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Coil Raiden Regulator", true, ItemType.Vehicles) { ModelName = "polraiden" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini Interdictor", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "polgemini" });
@@ -226,6 +226,9 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });
+
+        //SUV
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Scout", false, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "civscoutgresk" });
 
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
