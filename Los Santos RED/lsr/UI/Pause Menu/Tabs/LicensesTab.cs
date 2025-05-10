@@ -112,8 +112,8 @@ public class LicensesTab
             {
                 pilotdesc += " ~y~Lighter Than Air~s~";
             }
-            pilotdesc += $"~n~Status: " + (Player.Licenses.CCWLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
-            pilotdesc += Player.Licenses.CCWLicense.ExpirationDescription(Time);
+            pilotdesc += $"~n~Status: " + (Player.Licenses.PilotsLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
+            pilotdesc += Player.Licenses.PilotsLicense.ExpirationDescription(Time);
         }
         else
         {
