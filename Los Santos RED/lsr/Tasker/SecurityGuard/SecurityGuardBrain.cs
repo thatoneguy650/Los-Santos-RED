@@ -56,7 +56,7 @@ public class SecurityGuardBrain : PedBrain
     }
     protected override void UpdateCurrentTask()
     {
-        if (PedExt.DistanceToPlayer <= 150f)//50f
+        if (PedExt.DistanceToPlayer <= 250f)//50f
         {
             PedExt.PedReactions.Update(Player);
             if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)

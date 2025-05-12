@@ -208,7 +208,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         {
             primarySecurityGuard.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
         }
-        //World.Pedestrians.AddEntity(primarySecurityGuard);
+        World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip, ShopMenus);
         if (ped.Exists())
         {

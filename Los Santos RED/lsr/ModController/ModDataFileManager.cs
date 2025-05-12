@@ -273,7 +273,8 @@ public class ModDataFileManager
             "Reference/Knowledge" + Environment.NewLine +
             "HeySlickThatsMe, AllenKennedy" + Environment.NewLine + Environment.NewLine +
             "Models" + Environment.NewLine +
-            "IVA, romunql, rwroclav" + Environment.NewLine + Environment.NewLine;
+            "EUP Holster Glock - Alex_Ashford and the EUP Team" + Environment.NewLine + 
+            "Other 3d Models - IVA, romunql, rwroclav" + Environment.NewLine + Environment.NewLine;
         File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\readme.txt", Description);
     }
     private void SetupFullModernTraffic()

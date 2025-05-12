@@ -24,4 +24,8 @@ public class WeaponComponent
     {
         Name = _Name;
     }
+    public override string ToString()
+    {
+        return Name;
+    }
 }

@@ -7,6 +7,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.AxHost;
@@ -22,6 +23,8 @@ public class DebugWeaponsSubMenu : DebugSubMenu
     private ITimeControllable Time;
     private IRadioStations RadioStations;
     private INameProvideable Names;
+    private UIMenu wepaonsItemSubMenu;
+
     public DebugWeaponsSubMenu(UIMenu debug, MenuPool menuPool, IActionable player, ISettingsProvideable settings, ICrimes crimes, ITaskerable tasker, IEntityProvideable world, IWeapons weapons, IModItems modItems, ITimeControllable time, IRadioStations radioStations, INameProvideable names) : base(debug, menuPool, player)
     {
         Settings = settings;
@@ -34,13 +37,17 @@ public class DebugWeaponsSubMenu : DebugSubMenu
         RadioStations = radioStations;
         Names = names;
     }
-    public override void AddItems()
-    {
-        UIMenu wepaonsItemSubMenu = MenuPool.AddSubMenu(Debug, "Weapons Menu");
-        wepaonsItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various weapon items.";
 
-      
+    public override void Update()
+    {
+
+
+            wepaonsItemSubMenu.Clear();
+            CreateMenu();
+        
+    }
+    private void CreateMenu()
+    {
         UIMenuListScrollerItem<WeaponCategory> GetRandomWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
         GetRandomWeapon.Activated += (menu, item) =>
         {
@@ -97,6 +104,50 @@ public class DebugWeaponsSubMenu : DebugSubMenu
             NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, SetTint.Value);
         };
         wepaonsItemSubMenu.AddItem(SetTint);
+        AddAttachments();
+    }
+    private void AddAttachments()
+    {
+        if (Player.WeaponEquipment.CurrentWeapon == null)
+        {
+            return;
+        }
+        UIMenuListScrollerItem<WeaponComponent> weaponComponentsMenu = new UIMenuListScrollerItem<WeaponComponent>("Component", "Select component", Player.WeaponEquipment.CurrentWeapon.PossibleComponents);
+        weaponComponentsMenu.Activated += (menu, item) =>
+        {
+            if(Player.WeaponEquipment.CurrentWeapon == null || weaponComponentsMenu.SelectedItem == null)
+            {
+                return;
+            }
+            NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED(Player.Character, Player.WeaponEquipment.CurrentWeapon.Hash, weaponComponentsMenu.SelectedItem.Hash);
+        };
+        wepaonsItemSubMenu.AddItem(weaponComponentsMenu);
+        UIMenuItem removeAttachments = new UIMenuItem("Remove All", "Remove all attachments");
+        removeAttachments.Activated += (menu, item) => 
+        {
+
+            if (Player.WeaponEquipment.CurrentWeapon == null)
+            {
+                return;
+            }
+            foreach (WeaponComponent ToRemove in Player.WeaponEquipment.CurrentWeapon.PossibleComponents)
+            {
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(Player.Character, Player.WeaponEquipment.CurrentWeapon.Hash, ToRemove.Hash);
+            }
+        };
+        wepaonsItemSubMenu.AddItem(removeAttachments);
+    }
+    public override void AddItems()
+    {
+        wepaonsItemSubMenu = MenuPool.AddSubMenu(Debug, "Weapons Menu");
+        wepaonsItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various weapon items.";
+
+        Update();
+
+
+
+        
 
 
     }

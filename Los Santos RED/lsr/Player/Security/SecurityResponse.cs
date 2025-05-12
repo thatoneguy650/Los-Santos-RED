@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr
         }
         public void Reset()
         {
+            EntryPoint.WriteToConsole("SecurityResponse RESET RAN");
             CrimesObserved.Clear();
             foreach (SecurityGuard sg in World.Pedestrians.SecurityGuardList)
             {

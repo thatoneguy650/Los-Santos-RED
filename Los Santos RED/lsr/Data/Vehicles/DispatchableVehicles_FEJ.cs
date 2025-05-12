@@ -42,6 +42,7 @@ public class DispatchableVehicles_FEJ
     public string PolicePurge = "polpurge";
     public string PoliceRaiden = "polraiden";
     public string PoliceScout = "polscoutgresk";
+    public string PoliceBeaverRam = "polbeaverram";
 
     //Bike/Atv
     public string PoliceSanchez = "polsanchezliv";
@@ -304,6 +305,15 @@ public class DispatchableVehicles_FEJ
             new DispatchableVehicle(FireTruck, 100, 100) { VehicleMods = new List<DispatchableVehicleMod>() { new DispatchableVehicleMod(48, 100) { DispatchableVehicleModValues = new List<DispatchableVehicleModValue>() { new DispatchableVehicleModValue(3, 100) } } },MinOccupants = 2, MaxOccupants = 4 }
         };
     }
+
+
+    public DispatchableVehicle Create_PoliceBeaverRam(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBeaverRam, ambientPercent, wantedPercent);
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        return toReturn;
+    }
+
     public DispatchableVehicle Create_PoliceFrogger(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor, int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceFrogger, ambientPercent, wantedPercent);
