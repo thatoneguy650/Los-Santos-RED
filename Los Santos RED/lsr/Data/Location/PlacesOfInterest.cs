@@ -56,6 +56,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Forger> Forgers;
     private List<GamblingDen> GamblingDens;
     private List<RepairGarage> RepairGarages;
+    private List<VehicleModShop> VehicleModShops;
     private List<IllicitMarketplace> illicitMarketplaces;
     private List<Dealership> Dealerships;
     private List<VehicleExporter> VehicleExporters;
@@ -272,6 +273,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.Forgers.AddRange(Forgers);
         PossibleLocations.GamblingDens.AddRange(GamblingDens);
         PossibleLocations.RepairGarages.AddRange(RepairGarages);
+        PossibleLocations.VehicleModShops.AddRange(VehicleModShops);
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
@@ -1718,6 +1720,19 @@ public class PlacesOfInterest : IPlacesOfInterest
             },
 
         };
+
+        VehicleModShops = new List<VehicleModShop>()
+        {
+            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"Test Shop1","Test Shop 1 Desc") { 
+                OpenTime = 0,
+                CloseTime = 24,
+                HasNoGarageDoors = true,
+                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f), 
+                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f), 
+                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)},
+            
+        };
+
     }
     private void DefaultConfig_IllicitMarketplaces()
     {
@@ -2874,6 +2889,22 @@ public class PlacesOfInterest : IPlacesOfInterest
                     },
                 },
             },
+
+            new Landmark(new Vector3(-598.7453f, -929.5293f, 23.86341f), 89.7443f,"Wezel News","Reporting the RIGHT news")
+            {
+                IgnoreEntranceInteract = true,
+                AssignedAssociationID = "weazel",
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-616.7661f, -911.4943f, 24.0695f), 287.9363f, 35f),
+                    new CivilianConditionalLocation(new Vector3(-616.433f, -915.928f, 23.77773f), 286.6034f, 35f),
+                    new CivilianConditionalLocation(new Vector3(-616.4991f, -920.4413f, 23.42489f), 280.5116f, 35f),
+                    new CivilianConditionalLocation(new Vector3(-616.5649f, -929.2608f, 22.62387f), 285.5233f, 35f),
+                    new CivilianConditionalLocation(new Vector3(-586.5493f, -964.1245f, 22.59566f), 268.9775f, 35f),
+                    new CivilianConditionalLocation(new Vector3(-583.7816f, -930.6788f, 36.83355f), 90.65334f, 45f) { AllowAirVehicle = true, ForceVehicleGroup = true, RequiredVehicleGroup = "Helicopter" },//HEli
+                },
+            },
+
         };
     }
     private void DefaultConfig_PawnShops()
@@ -6252,6 +6283,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.GamblingDens.AddRange(GamblingDens);
         OldPossibleLocations.Forgers.AddRange(Forgers);
         OldPossibleLocations.RepairGarages.AddRange(RepairGarages);
+        OldPossibleLocations.VehicleModShops.AddRange(VehicleModShops);
         OldPossibleLocations.DriveThrus.AddRange(DriveThrus);
         OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
         OldPossibleLocations.BusStops.AddRange(BusStops);

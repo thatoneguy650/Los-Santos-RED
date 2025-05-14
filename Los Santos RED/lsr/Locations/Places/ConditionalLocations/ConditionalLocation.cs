@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(EMSConditionalLocation))]
 [XmlInclude(typeof(FireConditionalLocation))]
 [XmlInclude(typeof(MerchantConditionalLocation))]
+[XmlInclude(typeof(CivilianConditionalLocation))]
 public class ConditionalLocation
 {
     protected IAgencies Agencies;

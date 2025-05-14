@@ -202,102 +202,100 @@ public class Kill : ComplexTask
     }
     public override void Update()
     {
-        if (Ped.Pedestrian.Exists())
+        if(!Ped.Pedestrian.Exists())
         {
-            if(Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
+            return;
+        }
+
+        if(Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
+        {
+            Ped.ControlLandingGear();
+            //if(Ped.IsDriver)
+            //{
+            //    if (Ped.DistanceToPlayer <= 100f && Player.Character.Speed < 32f)//70 mph
+            //    {
+            //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+            //    }
+            //    else
+            //    {
+            //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);
+            //    }
+            //}
+        }
+        if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInPlane)
+        {
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+            if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
             {
-                Ped.ControlLandingGear();
-
-                //if(Ped.IsDriver)
-                //{
-                //    if (Ped.DistanceToPlayer <= 100f && Player.Character.Speed < 32f)//70 mph
-                //    {
-                //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-                //    }
-                //    else
-                //    {
-                //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);
-                //    }
-                //}
-
-
-            }
-            if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInPlane)
-            {
-                //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
-                //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
-
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
-                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
-                if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
-                {
-                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
-                }
-
-
-                if ((Ped.RecentlySeenPlayer && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance) && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
-                {
-                    if (!isSetCode3Close)
-                    {
-                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-                        isSetCode3Close = true;
-                        isSetRegularCode3 = false;
-                    }
-                }
-                else
-                {
-                    if (isSetRegularCode3)
-                    {
-                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-                        isSetRegularCode3 = true;
-                        isSetCode3Close = false;
-                    }
-                }
-
-
-            }
-            if(!Ped.IsDriver && Ped.DistanceToPlayer <= 100f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && Game.GameTime - GametimeLastRetasked >= 1000)
-            {
-                NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
-                //NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-
-                if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringKill)
-                {
-                    Ped.Pedestrian.BlockPermanentEvents = true;
-                }
-                else
-                {
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                }
-                Ped.Pedestrian.KeepTasks = true;
-
-                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
-                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
-
-                //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
-                AssignCombat();
-                //EntryPoint.WriteToConsole($"KillTask: {Ped.Pedestrian.Handle} Reset Combat", 5);
-                GametimeLastRetasked = Game.GameTime;
-            }
-            if(!Ped.IsInVehicle)
-            {
-                if(ShouldGoToBeforeAttack != IsGoingToBeforeAttacking)
-                {
-                    UpdateCombat();
-                    //EntryPoint.WriteToConsoleTestLong($"KILL Task Target Changed to {Player.CurrentLocation.IsInside}");
-                }
-            }
-            if(Ped.IsAnimal)
-            {
-                NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.K9RunSpeed);
-            }
-
-            if (Ped.IsInHelicopter)
-            {
-                HeliEngage.UpdateTask();
+                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
             }
 
 
+            if ((Ped.RecentlySeenPlayer && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance) && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
+            {
+                if (!isSetCode3Close)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                    isSetCode3Close = true;
+                    isSetRegularCode3 = false;
+                }
+            }
+            else
+            {
+                if (isSetRegularCode3)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                    isSetRegularCode3 = true;
+                    isSetCode3Close = false;
+                }
+            }
+
+
+        }
+        if(!Ped.IsDriver && Ped.DistanceToPlayer <= 100f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && Game.GameTime - GametimeLastRetasked >= 1000)
+        {
+            NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
+            //NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringKill)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
+            Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
+            //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
+            AssignCombat();
+            //EntryPoint.WriteToConsole($"KillTask: {Ped.Pedestrian.Handle} Reset Combat", 5);
+            GametimeLastRetasked = Game.GameTime;
+        }
+        if(!Ped.IsInVehicle)
+        {
+            if(ShouldGoToBeforeAttack != IsGoingToBeforeAttacking)
+            {
+                UpdateCombat();
+                //EntryPoint.WriteToConsoleTestLong($"KILL Task Target Changed to {Player.CurrentLocation.IsInside}");
+            }
+        }
+        if(Ped.IsAnimal)
+        {
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.K9RunSpeed);
+        }
+        if (Ped.IsInHelicopter)
+        {
+            HeliEngage.UpdateTask();
+        }
+        if (IsGoingToBeforeAttacking && Ped.PlayerPerception.CanSeeTarget)
+        {
+            EntryPoint.WriteToConsole("YOU HAVE BEEN SEEN TRANSITIONING TO REGULAR COMBAT");
+            IsGoingToBeforeAttacking = false;
+            AssignCombat();
         }
     }
     public override void ReTask()
@@ -350,6 +348,7 @@ public class Kill : ComplexTask
                 }
                 else
                 {
+                    //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 0.01f, 500f, 1073741824, 1); //Original and works ok
                     NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceTaskSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceTaskSettings.SiegeAimDistance);
                 }
                 //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);

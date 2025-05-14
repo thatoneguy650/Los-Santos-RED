@@ -1011,11 +1011,11 @@ public class LEDispatcher
             //EntryPoint.WriteToConsole("Assault Spawn failed too many spawns already");
             return;
         }
-        if (!ClosestStation.AssignedAgency.CanSpawn(World.TotalWantedLevel))
-        {
-            //EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
-            return;
-        }
+        //if (!ClosestStation.AssignedAgency.CanSpawn(World.TotalWantedLevel))
+        //{
+        //    //EntryPoint.WriteToConsole("Assault Spawn failed cantspawn");
+        //    return;
+        //}
         if (!GetAssaultSpawnTypes(ClosestStation.AssignedAgency))
         {
             //EntryPoint.WriteToConsole("Assault Spawn failed type");
@@ -1093,7 +1093,7 @@ public class LEDispatcher
         {
             return false;
         }
-        PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+        PersonType = Agency.GetRandomAssaultPed(World.TotalWantedLevel, "",false);
         return PersonType != null;
     }
     public void Dispose()

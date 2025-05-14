@@ -204,6 +204,7 @@ public class DispatchablePeople_EUP
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", DispatchablePeople.BarPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", DispatchablePeople.HaircutPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", DispatchablePeople.BobMuletPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("WeazelPeds", DispatchablePeople.WeazelPeds));
 
         //NEW
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSFDPeds", LSFD_Fire_FEJ));

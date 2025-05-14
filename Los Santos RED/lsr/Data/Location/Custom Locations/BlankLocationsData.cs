@@ -38,6 +38,9 @@ public class BlankLocationsData
         RedneckGang();
         VarriosGang();
     }
+
+
+
     private void RooftopSnipers()
     {
         float sniperSpawnPercentage = 65f;

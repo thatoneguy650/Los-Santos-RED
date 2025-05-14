@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 [Serializable]
 public class IssuableWeapon
 {
-    private uint ModelHash;
+
     private bool isTaser = false;
     public IssuableWeapon()
     {
@@ -31,7 +31,8 @@ public class IssuableWeapon
     public string ModelName { get; set; }
     public WeaponVariation Variation { get; set; }
     public int SpawnChance { get; set; } = 100;
-
+    [XmlIgnore]
+    public uint ModelHash { get; private set; }
     [XmlIgnore]
     private List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public bool IsTaser => isTaser;

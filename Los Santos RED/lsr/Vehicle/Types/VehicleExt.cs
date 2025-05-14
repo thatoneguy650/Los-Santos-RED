@@ -1551,7 +1551,7 @@ namespace LSR.Vehicles
                         //noWindowsMoved = false;
                         bool isIntact = NativeFunction.Natives.IS_VEHICLE_WINDOW_INTACT<bool>(Vehicle, window.ID);
 
-                        EntryPoint.WriteToConsole($"VIOLATIONS WINDOW ID {window.ID} isIntact: {isIntact} IsRolledUp{window.IsRolledUp}");
+                       // EntryPoint.WriteToConsole($"VIOLATIONS WINDOW ID {window.ID} isIntact: {isIntact} IsRolledUp{window.IsRolledUp}");
 
 
                         if (!isIntact && window.IsRolledUp)

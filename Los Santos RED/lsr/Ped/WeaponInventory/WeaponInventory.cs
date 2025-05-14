@@ -290,8 +290,48 @@ public class WeaponInventory
             {
                 UpdateSettings();
             }
-        }   
+        }
+        MatchHolster();
     }
+
+    private void MatchHolster()
+    {
+        if(WeaponOwner == null || !WeaponOwner.Pedestrian.Exists())
+        { 
+            return;  
+        }
+        WeaponDescriptor currentWeapon = WeaponOwner.Pedestrian.Inventory.EquippedWeapon;
+        if(currentWeapon == null)
+        {
+            if(!IsHolsterFull)
+            {
+                HolsterPistol();
+                EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET UPDATE HOLSTER PISTOL 1");
+            }
+            return;
+        }
+        if(Sidearm == null || currentWeapon == null)
+        {
+            return;
+        }
+        if ((uint)currentWeapon.Hash == Sidearm.ModelHash)
+        {
+            if (IsHolsterFull)
+            {
+                UnHolsterPistol();
+                EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET UPDATE UNHOLSTER PISTOL");
+            }
+        }
+        else
+        {
+            if (!IsHolsterFull)
+            {
+                HolsterPistol();
+                EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET UPDATE HOLSTER PISTOL 2");
+            }
+        }
+    }
+
     private void AutoSetWeapons_AI(IEntityProvideable world)
     {
         

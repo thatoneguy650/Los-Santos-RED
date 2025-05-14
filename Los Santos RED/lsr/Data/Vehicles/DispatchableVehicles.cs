@@ -104,7 +104,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> LCPDVehicles;
     private List<DispatchableVehicle> TaxiVehicles;
     private List<DispatchableVehicle> RideshareVehicles;
-
+    private List<DispatchableVehicle> WeazelVehicles;
     public DispatchableVehicle TaxiBroadWay;
     public DispatchableVehicle TaxiEudora;
     public DispatchableVehicle GauntletUndercoverSAHP;
@@ -150,6 +150,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             SetupDefaults();
             DefaultConfig_Simple();
             DefaultConfig_FullExpandedJurisdiction();
+            DefaultConfig_FullModernTraffic();
             DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();
@@ -170,6 +171,42 @@ public class DispatchableVehicles : IDispatchableVehicles
         //        }
         //#endif
     }
+
+    private void DefaultConfig_FullModernTraffic()
+    {
+        List<DispatchableVehicleGroup> FMTVehicleGroupLookup = new List<DispatchableVehicleGroup>();
+        List<DispatchableVehicle>  WeazelVehicles_FMT = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("rumpo", 100, 100) { RequiredLiveries = new List<int>() { 0 } },
+
+            new DispatchableVehicle("civmaverick2", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(1,100),
+                        },
+                    },
+                }
+            },
+
+            new DispatchableVehicle("conada", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(4,100),
+                        },
+                    },
+                }
+            },
+        };
+
+        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("WeazelVehicles", WeazelVehicles_FMT));
+        Serialization.SerializeParam(FMTVehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\DispatchableVehicles+_FullModernTraffic.xml");
+    }
+
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         DispatchableVehicles_FEJ = new DispatchableVehicles_FEJ(this);
@@ -585,7 +622,20 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("radi", 100, 100),
             new DispatchableVehicle("gresley", 100, 100),
         };
-
+        WeazelVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("rumpo", 100, 100) { RequiredLiveries = new List<int>() { 0 } },
+            new DispatchableVehicle("conada", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(4,100),
+                        },
+                    },
+                }
+            },
+        };
     }
     private void SharedCopCars()
     {
@@ -1533,7 +1583,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
 
-
+            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
 
 
 
@@ -1703,6 +1753,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
         };
         SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
@@ -1777,6 +1828,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
         };
         SunshineDreamVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
@@ -2109,6 +2161,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
             new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DowntownTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.HellTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.PurpleTaxiVehicles_FEJ_Modern),
@@ -2222,6 +2275,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
             new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.DowntownTaxiVehicles),
             new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.HellTaxiVehicles),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Stanier.PurpleTaxiVehicles),

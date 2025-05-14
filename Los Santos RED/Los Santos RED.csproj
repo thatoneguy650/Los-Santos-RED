@@ -215,11 +215,14 @@
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
     <Compile Include="lsr\Locations\Other\GangTerritory.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\CivilianConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\ModShopMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModShop.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangArsonTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangRacketeeringTask.cs" />
@@ -379,7 +382,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\City Hall\LicenseTest.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Forger\Forger.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Machines\MachineOffsetResult.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\PayNSpray\RepairGarage.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\RepairGarage.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\ExportedVehicle.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\MenuVehicleMap.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleExporter\VehicleExporter.cs" />
@@ -782,6 +785,7 @@
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleMod.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleModValue.cs" />
     <Compile Include="lsr\Vehicle\Variation\DispatchableVehicleToggle.cs" />
+    <Compile Include="lsr\Vehicle\Variation\ModKitDescription.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleNeon.cs" />
     <Compile Include="lsr\Weapon\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />

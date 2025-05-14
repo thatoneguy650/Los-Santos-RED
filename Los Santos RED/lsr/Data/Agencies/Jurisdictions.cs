@@ -478,6 +478,12 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
 
+            //Backup
+            new CountyJurisdiction("LSPD",StaticStrings.CityOfLosSantosCountyID, 1, 0, 5),
+            new CountyJurisdiction("LSSD",StaticStrings.BlaineCountyID, 1, 0, 5),
+            new CountyJurisdiction("LSSD-MJ",StaticStrings.MajesticCountyID, 1, 0, 5),
+            new CountyJurisdiction("LSSD",StaticStrings.LosSantosCountyID, 1, 0, 5),
+
             //EMS
             new CountyJurisdiction("LSFD-EMS",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("LSFD-EMS",StaticStrings.BlaineCountyID, 0, 100, 100),
@@ -497,6 +503,7 @@ public class Jurisdictions : IJurisdictions
         List<ZoneJurisdiction> SimpleZoneJurisdictionsList = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("LSPD","AIRP", 1, 0, 5) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
             new ZoneJurisdiction("LSMC","AIRP", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD-MJ","ALAMO", 0, 100, 100),
@@ -569,6 +576,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("BCSO","ELGORL", 0, 100, 100),
 
             new ZoneJurisdiction("LSPP","ELYSIAN", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","ELYSIAN", 1, 0, 5),
             new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
 
             new ZoneJurisdiction("BCSO","GALFISH", 0, 100, 100),
