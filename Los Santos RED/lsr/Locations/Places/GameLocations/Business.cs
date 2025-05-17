@@ -293,7 +293,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     protected override void OnSold()
     {
         Reset();
-        Player.Properties.RemoveBusiness(this);
+        Player.Properties.RemoveOwnedLocation(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -314,7 +314,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         UpdateStoredData();
-        Player.Properties.AddBusiness(this);
+        Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
@@ -400,6 +400,43 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         {
             return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
         }
+    }
+    public override void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        Payout(player, time);
+    }
+    public override SavedGameLocation GetSaveData()
+    {
+        SavedBusiness myBiz = new SavedBusiness(Name, IsOwned);
+        if (IsOwned)
+        {
+            myBiz.DateOfLastPayout = DatePayoutPaid;
+            myBiz.PayoutDate = DatePayoutDue;
+            myBiz.ModItemToPayout = ModItemToPayout;
+            myBiz.EntrancePosition = EntrancePosition;
+            myBiz.CurrentSalesPrice = CurrentSalesPrice;
+            if (WeaponStorage != null)
+            {
+                myBiz.WeaponInventory = new List<StoredWeapon>();
+                foreach (StoredWeapon storedWeapon in WeaponStorage.StoredWeapons)
+                {
+                    myBiz.WeaponInventory.Add(storedWeapon.Copy());
+                }
+            }
+            if (SimpleInventory != null)
+            {
+                myBiz.InventoryItems = new List<InventorySave>();
+                foreach (InventoryItem ii in SimpleInventory.ItemsList)
+                {
+                    myBiz.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                }
+            }
+            if (CashStorage != null)
+            {
+                myBiz.StoredCash = CashStorage.StoredCash;
+            }
+        }
+        return myBiz;
     }
 
 }

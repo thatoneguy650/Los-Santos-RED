@@ -101,22 +101,6 @@ public class ExteriorCraftingLocation : GameLocation
             PurchaseCraftingLocationMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
-    protected override void OnPurchased()
-    {
-        Player.Properties.AddCraftingLocation(this);
-        Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
-        IsOwned = true;
-        CurrentSalesPrice = PurchasePrice / 2;
-    }
-    protected override void OnSold()
-    {
-        Player.Properties.RemoveCraftingLocation(this);
-        Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
-        MenuPool.CloseAllMenus();
-        Interior?.ForceExitPlayer(Player, this);
-        IsOwned = false;
-        DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
-    }
     private void AddInteractionItems(bool isInside)
     {
         if (!IsOwned)

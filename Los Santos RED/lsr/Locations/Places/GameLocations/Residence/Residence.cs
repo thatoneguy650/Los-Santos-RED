@@ -680,7 +680,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         IsRented = true;
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
         UpdateStoredData();
-        Player.Properties.AddResidence(this);
+        Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);
         OfferSubMenu.Close(true);
         PlaySuccessSound();
@@ -692,7 +692,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         IsOwned = true;
         IsRented = false;
         UpdateStoredData();
-        Player.Properties.AddResidence(this);
+        Player.Properties.AddOwnedLocation(this);
         if (!IsRented)
         {
             AddInteractionItems(false);
@@ -704,14 +704,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private void OnStopRenting()
     {
         Reset();
-        Player.Properties.RemoveResidence(this);
+        Player.Properties.RemoveOwnedLocation(this);
         PlaySuccessSound();
         DisplayMessage("~y~Rental", $"You have stopped renting {Name}");
     }
     protected override void OnSold()
     {
         Reset();
-        Player.Properties.RemoveResidence(this);
+        Player.Properties.RemoveOwnedLocation(this);
         Player.BankAccounts.GiveMoney(SalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
@@ -861,6 +861,54 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         {
             return "";
         }
+    }
+    public override void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        if (!IsOwned && IsRented && DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, DateRentalPaymentDue) >= 0)
+        {
+            ReRent(player, Time);
+        }
+        else if (IsOwned && IsRentedOut && DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, DateRentalPaymentDue) >= 0)
+        {
+            Payout(player, Time);
+        }
+    }
+    public override SavedGameLocation GetSaveData()
+    {
+        SavedResidence myRes = new SavedResidence(Name, IsOwned, IsRented);
+        if (IsOwned || IsRented)
+        {
+            if (IsRented || IsRentedOut)
+            {
+                myRes.DateOfLastRentalPayment = DateRentalPaymentPaid;
+                myRes.RentalPaymentDate = DateRentalPaymentDue;
+            }
+            if (WeaponStorage != null)
+            {
+                myRes.WeaponInventory = new List<StoredWeapon>();
+                foreach (StoredWeapon storedWeapon in WeaponStorage.StoredWeapons)
+                {
+                    myRes.WeaponInventory.Add(storedWeapon.Copy());
+                }
+            }
+            if (SimpleInventory != null)
+            {
+                myRes.InventoryItems = new List<InventorySave>();
+                foreach (InventoryItem ii in SimpleInventory.ItemsList)
+                {
+                    myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                }
+            }
+            if (CashStorage != null)
+            {
+                myRes.StoredCash = CashStorage.StoredCash;
+            }
+            if (IsRentedOut)
+            {
+                myRes.IsRentedOut = IsRentedOut;
+            }
+        }
+        return myRes;
     }
 }
 

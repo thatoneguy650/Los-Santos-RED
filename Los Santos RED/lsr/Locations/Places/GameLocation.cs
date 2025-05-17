@@ -629,7 +629,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnPurchased()
     {
-        Player.Properties.AddPayoutProperty(this);
+        //Player.Properties.AddPayoutProperty(this);
+        AddOwnership();
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         DatePayoutPaid = Time.CurrentDateTime;
@@ -638,7 +639,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnSold()
     {
-        Player.Properties.RemovePayoutProperty(this);
+        //Player.Properties.RemovePayoutProperty(this);
+        RemoveOwnership();
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         MenuPool.CloseAllMenus();
         Interior?.ForceExitPlayer(Player, this);
@@ -1414,7 +1416,7 @@ public class GameLocation : ILocationDispatchable
             UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
             businessManagementButton.Activated += (s, i) =>
             {
-                Player.Properties.RemovePayoutProperty(this);
+                Player.Properties.RemoveOwnedLocation(this);
                 Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
                 IsOwned = false;
                 DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -1431,6 +1433,31 @@ public class GameLocation : ILocationDispatchable
         return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
     }
 
+    public virtual void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        Payout(player, time);
+    }
+    public virtual void AddOwnership()
+    {
+        Player.Properties.AddOwnedLocation(this);
+    }
+    public virtual void RemoveOwnership()
+    {
+        Player.Properties.RemoveOwnedLocation(this);
+    }
+
+    public virtual SavedGameLocation GetSaveData()
+    {
+        SavedPayoutProperty saveLocation = new SavedPayoutProperty(Name, IsOwned);
+        if (IsOwned)
+        {
+            saveLocation.DateOfLastPayout = DatePayoutPaid;
+            saveLocation.PayoutDate = DatePayoutDue;
+            saveLocation.EntrancePosition = EntrancePosition;
+            saveLocation.CurrentSalesPrice = CurrentSalesPrice;
+        }
+        return saveLocation;
+    }
     //public virtual void UpdatePrompts()
     //{
 
