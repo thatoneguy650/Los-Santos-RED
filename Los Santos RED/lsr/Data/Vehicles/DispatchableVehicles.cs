@@ -2137,31 +2137,31 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("LNLVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LNLVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("ChuffVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.CHUFFVehicles_FEJ_Modern),
 
-            //Gang stuff
-            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
-            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
-            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
-            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
-            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
-            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
-            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
-            new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
-            new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
-            new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
-            new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
-            new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
-            new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
-            new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
-            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
-            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
-            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
-            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
-            new DispatchableVehicleGroup("AngelsOfDeathVehicles", AngelsOfDeathVehicles),
+            ////Gang stuff
+            //new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+            //new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+            //new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+            //new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+            //new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+            //new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+            //new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+            //new DispatchableVehicleGroup("YardieVehicles", YardieVehicles),
+            //new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles),
+            //new DispatchableVehicleGroup("GambettiVehicles", GambettiVehicles),
+            //new DispatchableVehicleGroup("PavanoVehicles", PavanoVehicles),
+            //new DispatchableVehicleGroup("LupisellaVehicles", LupisellaVehicles),
+            //new DispatchableVehicleGroup("MessinaVehicles", MessinaVehicles),
+            //new DispatchableVehicleGroup("AncelottiVehicles", AncelottiVehicles),
+            //new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+            //new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+            //new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+            //new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+            //new DispatchableVehicleGroup("AngelsOfDeathVehicles", AngelsOfDeathVehicles),
 
             //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
-            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
-            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
+            //new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+            //new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            //new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
             new DispatchableVehicleGroup("DowntownTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DowntownTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("HellTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.HellTaxiVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("PurpleTaxiVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.PurpleTaxiVehicles_FEJ_Modern),
@@ -2175,8 +2175,8 @@ public class DispatchableVehicles : IDispatchableVehicles
         //    test.DispatchableVehicles.RemoveAll(x => x.ModelName != "polstanier2" && x.ModelName != "polgauntlet" && x.ModelName != "polgemini" && x.ModelName != "polbisonliv");
         //}
         VehicleGroupLookupFEJ.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction_Stanier()
     {

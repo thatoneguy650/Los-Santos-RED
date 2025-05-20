@@ -286,6 +286,7 @@ public class ShopMenus : IShopMenus
             "Vom Feuer DP1 Carbine",
             "Vom Feuer SCRAMP",
             "Vom Feuer VF76",
+            "Vom Feuer A5-1R",
         };
 
 
@@ -315,6 +316,11 @@ public class ShopMenus : IShopMenus
                 if(menuItem.ModItemName == "Vom Feuer SCRAMP")
                 {
                     menuItem.ModItemName = "Vom Feuer VF86";
+                }
+
+                if(menuItem.ModItemName == "Vom Feuer A5-1R")
+                {
+                    menuItem.ModItemName = "Duke VF86";
                 }
 
                 if (menuItem.ModItemName == "Hawk & Little 1919A1")

@@ -170,41 +170,41 @@ public class DispatchablePeople_EUP
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_FEJ));
 
-        //Gangs
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("LostMCPeds", DispatchablePeople.LostMCPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VagosPeds", DispatchablePeople.VagosPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("DiablosPeds", DispatchablePeople.DiablosPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("FamiliesPeds", DispatchablePeople.FamiliesPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BallasPeds", DispatchablePeople.BallasPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MarabuntaPeds", DispatchablePeople.MarabuntaPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("AltruistPeds", DispatchablePeople.AltruistPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VarriosPeds", DispatchablePeople.VarriosPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TriadsPeds", DispatchablePeople.TriadsPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("KoreanPeds", DispatchablePeople.KoreanPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("RedneckPeds", DispatchablePeople.RedneckPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("ArmenianPeds", DispatchablePeople.ArmenianPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("CartelPeds", DispatchablePeople.CartelPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", DispatchablePeople.MafiaPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", DispatchablePeople.YardiesPeds));
+        ////Gangs
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("LostMCPeds", DispatchablePeople.LostMCPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("VagosPeds", DispatchablePeople.VagosPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("DiablosPeds", DispatchablePeople.DiablosPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("FamiliesPeds", DispatchablePeople.FamiliesPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("BallasPeds", DispatchablePeople.BallasPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("MarabuntaPeds", DispatchablePeople.MarabuntaPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("AltruistPeds", DispatchablePeople.AltruistPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("VarriosPeds", DispatchablePeople.VarriosPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("TriadsPeds", DispatchablePeople.TriadsPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("KoreanPeds", DispatchablePeople.KoreanPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("RedneckPeds", DispatchablePeople.RedneckPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("ArmenianPeds", DispatchablePeople.ArmenianPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("CartelPeds", DispatchablePeople.CartelPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", DispatchablePeople.MafiaPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", DispatchablePeople.YardiesPeds));
 
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", DispatchablePeople.AngelsOfDeathPeds_LS));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", DispatchablePeople.AngelsOfDeathPeds_LS));
 
-        //Other
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", DispatchablePeople.OtherPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", DispatchablePeople.TaxiDrivers));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("RegularPeds", DispatchablePeople.RegularPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VehicleRacePeds", DispatchablePeople.VehicleRacePeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", DispatchablePeople.VendorPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", DispatchablePeople.IllicitMarketplacePeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", DispatchablePeople.TellerPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BurgerShotPeds", DispatchablePeople.BurgerShotPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("CluckinBellPeds", DispatchablePeople.CluckinBellPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TwatPeds", DispatchablePeople.TwatPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("GunshopPeds", DispatchablePeople.GunshopPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", DispatchablePeople.BarPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", DispatchablePeople.HaircutPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", DispatchablePeople.BobMuletPeds));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("WeazelPeds", DispatchablePeople.WeazelPeds));
+        ////Other
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", DispatchablePeople.OtherPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("TaxiDrivers", DispatchablePeople.TaxiDrivers));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("RegularPeds", DispatchablePeople.RegularPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("VehicleRacePeds", DispatchablePeople.VehicleRacePeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("VendorPeds", DispatchablePeople.VendorPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", DispatchablePeople.IllicitMarketplacePeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("TellerPeds", DispatchablePeople.TellerPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("BurgerShotPeds", DispatchablePeople.BurgerShotPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("CluckinBellPeds", DispatchablePeople.CluckinBellPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("TwatPeds", DispatchablePeople.TwatPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("GunshopPeds", DispatchablePeople.GunshopPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("BarPeds", DispatchablePeople.BarPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("HaircutPeds", DispatchablePeople.HaircutPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobMuletPeds", DispatchablePeople.BobMuletPeds));
+        //PeopleConfig_EUP.Add(new DispatchablePersonGroup("WeazelPeds", DispatchablePeople.WeazelPeds));
 
         //NEW
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSFDPeds", LSFD_Fire_FEJ));
@@ -233,8 +233,8 @@ public class DispatchablePeople_EUP
 
         DefaultConfigEXTRA(PeopleConfig_EUP);
 
-        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchablePeople_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople_EUP.xml");
+        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchablePeople+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople+_EUP.xml");
     }
     private void SetupUSCG()
     {

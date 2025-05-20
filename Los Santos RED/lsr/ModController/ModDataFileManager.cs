@@ -384,6 +384,7 @@ public class ModDataFileManager
     }
     private void SetupLosSantos2008()
     {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
         string Description =
             "See what San Andreas was like in 2008 when we were in Liberty City with Niko. Includes customized traffic, phones, police, and gangs."
             + Environment.NewLine + Environment.NewLine +

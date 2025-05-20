@@ -300,6 +300,10 @@ public class WeaponInventory
         { 
             return;  
         }
+        if(WeaponOwner.DistanceToPlayer >= 200f)
+        {
+            return;
+        }
         WeaponDescriptor currentWeapon = WeaponOwner.Pedestrian.Inventory.EquippedWeapon;
         if(currentWeapon == null)
         {

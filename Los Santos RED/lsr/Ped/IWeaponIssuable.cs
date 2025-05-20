@@ -34,6 +34,8 @@ namespace LosSantosRED.lsr.Interface
         bool CanSeePlayer { get; }
         bool RecentlySeenPlayer { get; }
         PedAlerts PedAlerts { get; }
+        PlayerPerception PlayerPerception { get; }
+        float DistanceToPlayer { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);

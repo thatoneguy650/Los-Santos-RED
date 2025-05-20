@@ -139,6 +139,12 @@ public class ModItems : IModItems
         { VanillaName = "Vintage Pistol", ModelName = "weapon_vintagepistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5 });
 
 
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Duke A5-1R",
+            "Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false, ItemType.Weapons)
+        { VanillaName = "Carbine Rifle", ModelName = "weapon_carbinerifle", PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5 });
+            
+
+
         Serialization.SerializeParam(newPossibleItems, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ModItems+_{StaticStrings.FEWConfigSuffix}.xml");
     }
 
