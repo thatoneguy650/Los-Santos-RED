@@ -126,7 +126,7 @@ public class VehicleModShop : GameLocation
         {
             return;
         }
-        ModShopMenu modShopMenu = new ModShopMenu(Player, MenuPool, InteractionMenu, this, MaxRepairCost, RepairHours, WashCost, WashHours);
+        ModShopMenu modShopMenu = new ModShopMenu(Player, MenuPool, InteractionMenu, this, MaxRepairCost, RepairHours, WashCost, WashHours, null);
         modShopMenu.CreateMenu();
     }
     public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)

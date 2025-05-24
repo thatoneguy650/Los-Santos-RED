@@ -159,7 +159,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceAleutian(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,6,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(0,10,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceScout(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
-            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,13,4,-1,6,8,"SWAT",""),
+            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,22,4,-1,6,8,"SWAT",""),//13 is ok
 
             DispatchableVehicles_FEJ.Create_PoliceVindicator(20,10,3,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,0,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",20),
@@ -206,7 +206,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceAleutian(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,6,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(0,10,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceScout(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
-            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,13,4,-1,6,8,"SWAT",""),
+            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,22,4,-1,6,8,"SWAT",""),
 
             DispatchableVehicles_FEJ.Create_PoliceVindicator(20,10,3,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceThrust(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,0),
@@ -249,7 +249,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceAleutian(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,6,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceLandstalkerXL(0,10,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
             DispatchableVehicles_FEJ.Create_PoliceScout(0,50,-1,true,PoliceVehicleType.Detective,-1,4,-1,3,4,"SWAT",""),
-            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,13,4,-1,6,8,"SWAT",""),
+            DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,0,false,PoliceVehicleType.Marked,22,4,-1,6,8,"SWAT",""),
 
             DispatchableVehicles_FEJ.Create_PoliceVindicator(20,10,3,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40),
             DispatchableVehicles_FEJ.Create_PoliceThrust(20,10,2,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",40,134,134,0),

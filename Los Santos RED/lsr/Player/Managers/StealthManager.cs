@@ -18,6 +18,7 @@ public class StealthManager
     private bool IsPoorWeather;
     private bool IsHidingInUnknownOffVehicle;
     private bool IsDoingActivityWithoutCrime;
+    private bool IsVisibilyArmed;
     private bool IsHidingInUnknownVehicle;
     public StealthManager(Player player, IEntityProvideable world, ISettingsProvideable settings, ITimeControllable timeControllable)
     {
@@ -50,6 +51,7 @@ public class StealthManager
         IsConsideredNight = TimeControllable.IsNight;
         IsPoorWeather = Player.Weather != null && Player.Weather.IsPoorWeather;
         IsDoingActivityWithoutCrime = Player.ActivityManager.IsPerformingActivity && !Player.Violations.IsViolatingAnyCrimes;
+        IsVisibilyArmed = Player.IsVisiblyArmed;
         //if (TimeControllable.CurrentHour >= 18 || TimeControllable.CurrentHour <= 5)
         //{
         //    IsConsideredNight = true;
@@ -75,6 +77,10 @@ public class StealthManager
         if (IsConsideredNight)
         {
             RecognizeTime += Settings.SettingsManager.CivilianSettings.NightTimeRecognizeIncreaseTime;// 500;
+        }
+        if(IsVisibilyArmed)
+        {
+            RecognizeTime -= Settings.SettingsManager.CivilianSettings.VisiblyArmedRecognizeDecreaseTime;
         }
         if(IsHidingInUnknownOffVehicle)
         {

@@ -1302,28 +1302,43 @@ public class LEDispatcher
         //EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
         bool getspawnLocation = GetSpawnLocation();
         GameFiber.Yield();
+
+
+        if(!getspawnLocation)
+        {
+            EntryPoint.WriteToConsole("LE DISPATCHER CAN NOT GET SPAWN LOCATION");
+            return;
+        }
+
         bool getSpawnTypes = GetSpawnTypes();
+
+
+        if (!getSpawnTypes)
+        {
+            EntryPoint.WriteToConsole("LE DISPATCHER CAN NOT GET SPAWN TYPES");
+            return;
+        }
+
         //EntryPoint.WriteToConsole($"Attempt {Agency?.ShortName}  {VehicleType?.ModelName} {VehicleType?.DebugName} HasNeedToSpawnBoat {HasNeedToSpawnBoat} {getspawnLocation} {getSpawnTypes}");
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
-        if (getspawnLocation && getSpawnTypes)
+
+        GameFiber.Yield();
+        GameTimeAttemptedDispatch = Game.GameTime;
+        //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
+
+        bool allowAny = false;
+        if(IsTunnelSpawn)
         {
-            GameFiber.Yield();
-            GameTimeAttemptedDispatch = Game.GameTime;
-            //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
-
-            bool allowAny = false;
-            if(IsTunnelSpawn)
-            {
-                allowAny = true;
-            }
-
-            if (CallSpawnTask(allowAny, true, false, false, TaskRequirements.None, false, IsOffDutySpawn, false))
-            {
-                //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
-                ShouldRunAmbientDispatch = false;
-                //GameTimeAttemptedDispatch = Game.GameTime;
-            }
+            allowAny = true;
         }
+
+        if (CallSpawnTask(allowAny, true, false, false, TaskRequirements.None, false, IsOffDutySpawn, false))
+        {
+            //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
+            ShouldRunAmbientDispatch = false;
+            //GameTimeAttemptedDispatch = Game.GameTime;
+        }
+        
     }
     private void HandleRoadblockSpawns()
     {
@@ -1711,7 +1726,7 @@ public class LEDispatcher
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
             ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.LawEnforcement));
-            //EntryPoint.WriteToConsole("ATTEMPING TO ADD ANY AGENCY!");
+            EntryPoint.WriteToConsole("FALLBACK ATTEMPING TO ADD ANY AGENCY!");
         }
         return ToReturn;
     }

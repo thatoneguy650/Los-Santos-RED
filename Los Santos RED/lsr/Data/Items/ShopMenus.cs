@@ -320,7 +320,7 @@ public class ShopMenus : IShopMenus
 
                 if(menuItem.ModItemName == "Vom Feuer A5-1R")
                 {
-                    menuItem.ModItemName = "Duke VF86";
+                    menuItem.ModItemName = "Duke A5-1R";
                 }
 
                 if (menuItem.ModItemName == "Hawk & Little 1919A1")
