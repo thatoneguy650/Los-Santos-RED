@@ -402,8 +402,8 @@ public class CivilianSettings : ISettingsDefaultable
 
         HidingInVehicleRecognizeIncreaseTime = 750;
 
-        NightTimeRecognizeIncreaseTime = 500;
-        PoorWeatherRecognizeIncreaseTime = 500;
+        NightTimeRecognizeIncreaseTime = 300;
+        PoorWeatherRecognizeIncreaseTime = 300;
 
         ActivityWithoutViolationRecognizeIncreaseTime = 500;
 
