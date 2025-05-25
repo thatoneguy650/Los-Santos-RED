@@ -186,7 +186,13 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),5),
         };
 
-
+        List<IssuableWeapon> BCSOLongGuns_Modern = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(),25),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), }),25),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Small Scope"), }),25),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Medium Scope"), }),25),
+        };
 
 
         List<IssuableWeapon> TacticalSidearms_Modern = new List<IssuableWeapon>()
@@ -246,7 +252,7 @@ public class IssueableWeapons : IIssuableWeapons
 
             new IssuableWeaponsGroup("LSPDLongGuns", LSPDLongGuns_Modern),
             new IssuableWeaponsGroup("LSSDLongGuns", LSPDLongGuns_Modern),
-            new IssuableWeaponsGroup("BCSOLongGuns", LSPDLongGuns_Modern),
+            new IssuableWeaponsGroup("BCSOLongGuns", BCSOLongGuns_Modern),
             new IssuableWeaponsGroup("SAHPLongGuns", LSPDLongGuns_Modern),
             new IssuableWeaponsGroup("DPPDLongGuns", LSPDLongGuns_Modern),
             new IssuableWeaponsGroup("RHPDLongGuns", LSPDLongGuns_Modern),

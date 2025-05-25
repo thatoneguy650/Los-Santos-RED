@@ -255,7 +255,22 @@ public class DebugVehicleSubMenu : DebugSubMenu
         CreateBetterColorMenu();
         CreateInfoMenuItem();
         CreateModificationItem();
+        CreateOtherItem();
     }
+
+    private void CreateOtherItem()
+    {
+        UIMenuNumericScrollerItem<int> SetDoorOpenMenuItem = new UIMenuNumericScrollerItem<int>("Set Door Open", "Set the vehicle door", 0, 5, 1) { Value = 0 };
+        SetDoorOpenMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(Player.InterestedVehicle.Vehicle,SetDoorOpenMenuItem.Value,true,true);
+            }
+        };
+        vehicleItemsMenu.AddItem(SetDoorOpenMenuItem);
+    }
+
     private void CreateModificationItem()
     {
 
@@ -803,7 +818,27 @@ public class DebugVehicleSubMenu : DebugSubMenu
         vehicleItemsMenu.AddItem(plateIndex);
 
 
-        
+
+
+        UIMenuItem setPlateNumber = new UIMenuItem("Set Plate Number", "Set playe number from input");
+        setPlateNumber.Activated += (menu, item) =>
+        {
+
+            string newplateText = NativeHelper.GetKeyboardInput("");
+            if (string.IsNullOrEmpty(newplateText))
+            {
+                return;
+            }
+
+
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                Player.InterestedVehicle.Vehicle.LicensePlate = newplateText;
+            }
+        };
+        vehicleItemsMenu.AddItem(setPlateNumber);
+
+
     }
     private void CreateInfoMenuItem()
     {
@@ -822,25 +857,7 @@ public class DebugVehicleSubMenu : DebugSubMenu
     }
 
 
-    private class ModKitDescription
-    {
-        public ModKitDescription()
-        {
-        }
 
-        public ModKitDescription(string name, int iD)
-        {
-            Name = name;
-            ID = iD;
-        }
-
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
 }
 
 

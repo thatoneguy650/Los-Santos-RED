@@ -232,6 +232,43 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     }
 
 
+    public DispatchablePerson GetRandomAssaultPed(int wantedLevel, string RequiredPedGroup, bool forceAnimal)// List<string> RequiredModels)
+    {
+        if (Personnel == null || !Personnel.Any())
+            return null;
+
+        List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn && x.IsAnimal == forceAnimal).ToList();
+        if (RequiredPedGroup != "" && !string.IsNullOrEmpty(RequiredPedGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
+        }
+
+        if(!ToPickFrom.Any())
+        {
+            int personaellMaxSpawn = Personnel.Max(x => x.MaxWantedLevelSpawn);
+            ToPickFrom = Personnel.Where(x => personaellMaxSpawn >= x.MinWantedLevelSpawn && personaellMaxSpawn <= x.MaxWantedLevelSpawn && x.IsAnimal == forceAnimal).ToList();
+        }
+
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchablePerson Cop in ToPickFrom)
+        {
+            int SpawnChance = Cop.CurrentSpawnChance(wantedLevel);
+            if (RandomPick < SpawnChance)
+            {
+                return Cop;
+            }
+            RandomPick -= SpawnChance;
+        }
+        if (ToPickFrom.Any())
+        {
+            //EntryPoint.WriteToConsole($"RequiredPedGroup: {RequiredPedGroup} TOPICKFROM {string.Join(",",ToPickFrom.ToList())}");
+            return ToPickFrom.PickRandom();
+        }
+        return null;
+    }
+
+
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup) => GetRandomPed(wantedLevel, RequiredPedGroup, false);
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup, bool forceAnimal)// List<string> RequiredModels)
     {

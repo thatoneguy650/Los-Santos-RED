@@ -67,7 +67,7 @@ public class TaxiSettings : ISettingsDefaultable
 
         TimeBetweenSpawn = 10000;// 20000;//10000;
 
-        TimeBetweenSpawn_DowntownAdditional = 20000;
+        TimeBetweenSpawn_DowntownAdditional = 10000;
         TimeBetweenSpawn_WildernessAdditional = 90000;
         TimeBetweenSpawn_RuralAdditional = 60000;
         TimeBetweenSpawn_SuburbAdditional = 30000;
@@ -79,10 +79,10 @@ public class TaxiSettings : ISettingsDefaultable
         MinDistanceToSpawnInVehicle = 150f;//300f// 50f;
         MaxDistanceToSpawnInVehicle = 300f;//500f// 150f;
 
-        TotalSpawnedMembersLimit = 3;// 2;//5
+        TotalSpawnedMembersLimit = 4;// 2;//5
         TotalSpawnedAmbientMembersLimit = 2;// 1;// 8;
 
-        TotalSpawnedAmbientMembersLimit_Downtown = 2;
+        TotalSpawnedAmbientMembersLimit_Downtown = 4;
         TotalSpawnedAmbientMembersLimit_Wilderness = 1;
         TotalSpawnedAmbientMembersLimit_Rural = 1;
         TotalSpawnedAmbientMembersLimit_Suburb = 2;
@@ -93,7 +93,7 @@ public class TaxiSettings : ISettingsDefaultable
         AmbientSpawnPercentage_Rural = 1;
         AmbientSpawnPercentage_Suburb = 5;
         AmbientSpawnPercentage_Industrial = 7;
-        AmbientSpawnPercentage_Downtown = 12;
+        AmbientSpawnPercentage_Downtown = 20;
 
 
 

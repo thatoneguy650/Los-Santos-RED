@@ -64,7 +64,7 @@ public class PedReactions
     {       
         foreach (WitnessedCrime witnessedCrime in Civilian.CrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians && !x.HasBeenReactedTo))
         {
-            if(witnessedCrime.IsPlayerWitnessedCrime && (!Player.IsAliveAndFree || Player.WantedLevel >= 3))
+            if(witnessedCrime.IsPlayerWitnessedCrime && (!Player.IsAliveAndFree))// || Player.WantedLevel >= 3))
             {
                 continue;
             }

@@ -77,6 +77,8 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> TwatPeds { get; private set; }
     public List<DispatchablePerson> GunshopPeds { get; private set; }
 
+    public List<DispatchablePerson> WeazelPeds { get; private set; }
+
     public List<DispatchablePerson> RegularPeds { get; private set; }
     public List<DispatchablePerson> VehicleRacePeds { get; private set; }
     private List<DispatchablePerson> StandardCops_Old;
@@ -1953,6 +1955,12 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("ig_req_officer",100,100),
         };
 
+        WeazelPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("a_m_m_paparazzi_01 ",100,100) {  AllowRandomizeBeforeVariationApplied    = true,},
+        };
+
+
     }
     private void DefaultConfig()
     {
@@ -2026,6 +2034,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("WeazelPeds", WeazelPeds));
 
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));
@@ -2773,6 +2782,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("WeazelPeds", WeazelPeds));
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_Simple()
@@ -3114,6 +3124,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BarPeds", BarPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("HaircutPeds", HaircutPeds));
         PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("BobMuletPeds", BobMuletPeds));
+        PeopleGroupLookup_SunshineDream.Add(new DispatchablePersonGroup("WeazelPeds", WeazelPeds));
         Serialization.SerializeParams(PeopleGroupLookup_SunshineDream, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchablePeople_SunshineDream.xml");
     }
    public OptionalAppliedOverlayLogic GenericGangTattoos(bool isMale, float headPercent, float torsoPercent, float armsPercent, float legsPercent)

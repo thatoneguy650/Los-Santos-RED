@@ -45,7 +45,7 @@ public class DispatchableVehicle
 
     public int RequiredInteriorColorID { get; set; } = -1;
     public int RequiredDashColorID { get; set; } = -1;
-
+    public int RequiredWheelColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
     public List<DispatchableVehicleMod> VehicleMods { get; set; } = new List<DispatchableVehicleMod>();
@@ -333,6 +333,19 @@ public class DispatchableVehicle
         if (RequiredDashColorID != -1)
         {
             NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, RequiredDashColorID);
+        }
+        if (RequiredWheelColorID != -1)
+        {
+            //NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, RequiredDashColorID);
+            int pearlescentColor;
+            int wheelColor;
+            unsafe
+            {
+                NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", vehicleExt.Vehicle, &pearlescentColor, &wheelColor);
+            }
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(vehicleExt.Vehicle, pearlescentColor, RequiredWheelColorID);
+
+
         }
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())

@@ -307,6 +307,9 @@ public class GameLocation : ILocationDispatchable
     public bool VendorAbandoned { get; set; } = false;
     [XmlIgnore]
     public Agency AssignedAgency { get; set; }
+
+    [XmlIgnore]
+    public Organization AssignedOrganization { get; set; }
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
     [XmlIgnore]
@@ -530,6 +533,10 @@ public class GameLocation : ILocationDispatchable
         if (AssignedAssociationID != null)
         {
             AssignedAgency = agencies.GetAgency(AssignedAssociationID);
+            if(AssignedAgency == null)
+            {
+                AssignedOrganization = Associations.GetOrganization(AssignedAssociationID);
+            }
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
         if (HasInterior)

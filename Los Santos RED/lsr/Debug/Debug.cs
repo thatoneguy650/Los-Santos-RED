@@ -531,26 +531,48 @@ public class Debug
     private void DebugNumpad4()
     {
 
-
-
-        foreach(VehicleExt vehicle in World.Vehicles.NonServiceVehicles)
+        if(!Game.LocalPlayer.Character.CurrentVehicle.Exists())
         {
-            EntryPoint.WriteToConsole($"NonServiceVehicles: {vehicle.Handle} {vehicle.IsMotorcycle}");
+            return;
         }
-
-
-
-        foreach(PedExt pedext in World.Pedestrians.LivingPeople)
+        Ped randomPed = new Ped("a_m_m_paparazzi_01", Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
+        GameFiber.Yield();
+        if (!randomPed.Exists())
         {
-            if(!pedext.Pedestrian.Exists())
-            {
-                continue;
-            }
-            bool takesDamageInvehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 250, true);
-            bool flyThroughwindscreen = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 32, true);
-
-            EntryPoint.WriteToConsole($"{pedext.Handle} {pedext.GroupName} {pedext.Pedestrian.Health} takesDamageInvehicle{takesDamageInvehicle} flyThroughwindscreen{flyThroughwindscreen}");
+            return;
         }
+        randomPed.RandomizeVariation();
+        if (!Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        {
+            return;
+        }
+        randomPed.WarpIntoVehicle(Game.LocalPlayer.Character.CurrentVehicle, -1);
+        Vector3 PlaceToDriveTo = new Vector3(0f,0f,300f);
+        NativeFunction.Natives.TASK_HELI_MISSION(randomPed, randomPed.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
+        randomPed.BlockPermanentEvents = true;
+        randomPed.IsPersistent = true;
+
+
+        Game.LocalPlayer.Character.CurrentVehicle.Position = Game.LocalPlayer.Character.CurrentVehicle.Position + new Vector3(0f, 0f, 250f);
+
+        //foreach(VehicleExt vehicle in World.Vehicles.NonServiceVehicles)
+        //{
+        //    EntryPoint.WriteToConsole($"NonServiceVehicles: {vehicle.Handle} {vehicle.IsMotorcycle}");
+        //}
+
+
+
+        //foreach(PedExt pedext in World.Pedestrians.LivingPeople)
+        //{
+        //    if(!pedext.Pedestrian.Exists())
+        //    {
+        //        continue;
+        //    }
+        //    bool takesDamageInvehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 250, true);
+        //    bool flyThroughwindscreen = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(pedext.Pedestrian, 32, true);
+
+        //    EntryPoint.WriteToConsole($"{pedext.Handle} {pedext.GroupName} {pedext.Pedestrian.Health} takesDamageInvehicle{takesDamageInvehicle} flyThroughwindscreen{flyThroughwindscreen}");
+        //}
 
 
         //int trackID = NativeFunction.Natives.GET_AUDIBLE_MUSIC_TRACK_TEXT_ID<int>();
@@ -5353,7 +5375,7 @@ private void contacttest()
                 weaponinventorystring += " Has Long Gun";
             }
             string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} ${ped.Money} CanSeePlayer{ped.CanSeePlayer} {ped.AssignedAgency?.ID} IsUnconscious:{ped.IsUnconscious} " +
-                $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
+                $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} {string.Join(",",ped.PlayerCrimesWitnessed.ToList())} " +
                 $"IsInVehicle {ped.IsInVehicle} ReactionTier: {ped.PedReactions.ReactionTier} WeaponSet {weaponinventorystring} DebugWeaponState {ped.WeaponInventory.DebugWeaponState}" +
                 $"Weapon {currentWeapon} Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
                 $"Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} HasTaser {ped.HasTaser} SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements}";
@@ -5771,6 +5793,7 @@ private void contacttest()
                 {
                     Car.LicensePlate = NewPlateNumber;
                 }
+
                 NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car, NewType.Index);
                 Game.DisplaySubtitle($" PlateIndex: {PlateIndex}, Index: {NewType.Index}, State: {NewType.StateID}, Description: {NewType.Description}");
             }

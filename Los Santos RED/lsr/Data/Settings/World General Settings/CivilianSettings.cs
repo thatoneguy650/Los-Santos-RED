@@ -266,7 +266,7 @@ public class CivilianSettings : ISettingsDefaultable
     public uint NeverSeenPlayerRecognizeIncreaseTime { get; set; }
     public uint SeenPlayerRecognizeDecreaseTime { get; set; }
 
-
+    public uint VisiblyArmedRecognizeDecreaseTime { get; set; }
 
 
 
@@ -402,15 +402,15 @@ public class CivilianSettings : ISettingsDefaultable
 
         HidingInVehicleRecognizeIncreaseTime = 750;
 
-        NightTimeRecognizeIncreaseTime = 500;
-        PoorWeatherRecognizeIncreaseTime = 500;
+        NightTimeRecognizeIncreaseTime = 300;
+        PoorWeatherRecognizeIncreaseTime = 300;
 
         ActivityWithoutViolationRecognizeIncreaseTime = 500;
 
         HidingInUnknownVehicleRecognizeIncreaseTime = 500;
         NeverSeenPlayerRecognizeIncreaseTime = 500;
         SeenPlayerRecognizeDecreaseTime = 1000;
-
+        VisiblyArmedRecognizeDecreaseTime = 500;
 
         InjureOnVehicleCrash = true;
 

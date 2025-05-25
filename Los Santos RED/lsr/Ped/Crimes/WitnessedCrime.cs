@@ -48,5 +48,13 @@ public class WitnessedCrime
         GameTimeLastWitnessed = Game.GameTime;
         HasBeenReactedTo = false;
     }
+    public override string ToString()
+    {
+        if(Crime != null)
+        {
+            return Crime.Name + "-" + Crime.ReactionTier;
+        }
+        return base.ToString();
+    }
 }
 

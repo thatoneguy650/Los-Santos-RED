@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         string DebugString { get; set; }
         bool IsWanted { get; }
+        bool IsVisiblyArmed { get; }
     }
 }

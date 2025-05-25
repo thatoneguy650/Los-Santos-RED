@@ -21,6 +21,7 @@ public class Organizations : IOrganizations
     private Organization LSRGuns;
     private TaxiFirm RydeMe;
     private TaxiFirm Schlecht;
+    private Organization WezelNews;
 
     public PossibleOrganizations PossibleOrganizations { get; private set; }
 
@@ -105,6 +106,14 @@ public class Organizations : IOrganizations
         }
         return PossibleOrganizations.AllOrganizations().Where(x => x.ID.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
     }
+    public Organization GetOrganization(string orgID)
+    {
+        if (string.IsNullOrEmpty(orgID))
+        {
+            return null;
+        }
+        return PossibleOrganizations.AllOrganizations().Where(x => x.ID.ToLower() == orgID.ToLower()).FirstOrDefault();
+    }
     public Organization GetOrganizationByContact(string contactName)
     {
         if (string.IsNullOrEmpty(contactName))
@@ -185,6 +194,12 @@ public class Organizations : IOrganizations
             CrazySpeedFee = 300,
             IsRideShare = true,
         };
+
+        WezelNews = new Organization("~r~","weazel","Weazel","Weazel News","Red","NewsPeds","WeazelVehicles","WN ","","","","Weazel Reporter")
+        {
+            Description = "Reporting the Right News",
+            HeadDataGroupID = "AllHeads",
+        };
     }
     private void DefaultConfig()
     {
@@ -194,6 +209,7 @@ public class Organizations : IOrganizations
         {     
             VehicleExports,
             UndergroundGuns,
+            WezelNews,
         };
         PossibleOrganizations.TaxiFirms = new List<TaxiFirm>
         {
@@ -250,6 +266,7 @@ public class Organizations : IOrganizations
         {
             VehicleExports,
             UndergroundGuns,
+            WezelNews,
         };
         PossibleOrganizations_FullExpanded.TaxiFirms = new List<TaxiFirm>
         {
@@ -285,6 +302,7 @@ public class Organizations : IOrganizations
         {
             VehicleExports,
             UndergroundGuns,
+            WezelNews,
         };
         PossibleOrganizations_LibertyCity.TaxiFirms = new List<TaxiFirm>
         {
@@ -300,6 +318,7 @@ public class Organizations : IOrganizations
         {
             VehicleExports,
             UndergroundGuns,
+            WezelNews,
         };
         PossibleOrganizations_LibertyCityPP.TaxiFirms = new List<TaxiFirm>
         {

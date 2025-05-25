@@ -68,5 +68,6 @@ namespace LosSantosRED.lsr.Interface
         Mod.Crafting Crafting { get; set; }
 
         bool IsInWantedActiveMode { get; }
+        bool IsSetDisabledControls { get; set; }
     }
 }

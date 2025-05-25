@@ -283,6 +283,10 @@ public class ShopMenus : IShopMenus
             "Hawk & Little Thunder",
             "Shrewsbury Defender",
             "Vom Feuer 1922",
+            "Vom Feuer DP1 Carbine",
+            "Vom Feuer SCRAMP",
+            "Vom Feuer VF76",
+            "Vom Feuer A5-1R",
         };
 
 
@@ -293,7 +297,7 @@ public class ShopMenus : IShopMenus
             {
                 if(menuItem.ModItemName == "Hawk & Little Combat Pistol")
                 {
-                    menuItem.ModItemName = "Vom Feuer VF86";
+                    menuItem.ModItemName = "Vom Feuer VF76";
                 }
                 if (menuItem.ModItemName == "Hawk & Little Thunder")
                 {
@@ -303,10 +307,22 @@ public class ShopMenus : IShopMenus
                 {
                     menuItem.ModItemName = "Vom Feuer MP6";
                 }
-                if (menuItem.ModItemName == "Hawk & Little MP6")
+                if (menuItem.ModItemName == "Vom Feuer 1922")
                 {
-                    menuItem.ModItemName = "Vom Feuer 1922";
+                    menuItem.ModItemName = "Hawk & Little 1919A1";
                 }
+
+
+                if(menuItem.ModItemName == "Vom Feuer SCRAMP")
+                {
+                    menuItem.ModItemName = "Vom Feuer VF86";
+                }
+
+                if(menuItem.ModItemName == "Vom Feuer A5-1R")
+                {
+                    menuItem.ModItemName = "Duke A5-1R";
+                }
+
                 if (menuItem.ModItemName == "Hawk & Little 1919A1")
                 {
                     menuItem.Extras.Add(new MenuItemExtra("Suppressor", 600));
@@ -318,6 +334,12 @@ public class ShopMenus : IShopMenus
                 if (menuItem.ModItemName == "Hawk & Little MP6" || menuItem.ModItemName == "Vom Feuer MP6")
                 {
                     menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                }
+                if (menuItem.ModItemName == "Vom Feuer DP1 Carbine")
+                {
+                    menuItem.Extras.Add(new MenuItemExtra("Holographic Sight", 870));
+                    menuItem.Extras.Add(new MenuItemExtra("Small Scope", 760));
+                    menuItem.Extras.Add(new MenuItemExtra("Medium Scope", 900));
                 }
             }
         }
@@ -335,6 +357,7 @@ public class ShopMenus : IShopMenus
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {
+            vapidMenu.Items.Add(new MenuItem("Vapid Scout", 55000, 25000));
             vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara Service", 32000, 15000));
