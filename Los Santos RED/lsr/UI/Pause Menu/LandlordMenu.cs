@@ -32,8 +32,8 @@ public class LandlordMenu
             Game.IsPaused = false;
         };
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
-        //BusinessesTab = new BusinessesTab(Player, tabView);
-        //ResidencesTab = new ResidencesTab(Player, tabView);
+        BusinessesTab = new BusinessesTab(Player, tabView);
+        ResidencesTab = new ResidencesTab(Player, tabView);
 
         Tabs.Add(BusinessesTab);
         Tabs.Add(ResidencesTab);

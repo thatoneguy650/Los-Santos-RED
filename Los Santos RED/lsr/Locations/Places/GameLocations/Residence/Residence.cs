@@ -852,8 +852,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     }
     public override string GetInquireDescription()
     {
-        List<InteriorInteract> craftingInteracts = ResidenceInterior.InteractPoints.Where(x => x.GetType() == typeof(CraftInteriortInteract)).ToList();
-        if(craftingInteracts.Count > 0)
+        List<CraftInteriortInteract> craftingInteracts = ResidenceInterior.InteractPoints.OfType<CraftInteriortInteract>().ToList();
+        if (craftingInteracts.Count > 0)
         {
             return "Can craft using: ~n~" +string.Join(", ", craftingInteracts.Select(x => x.Name));
         }

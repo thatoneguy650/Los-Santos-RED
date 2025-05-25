@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,40 @@ public class SavedResidence : SavedGameLocation
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
     public int StoredCash { get; set; }
+    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    {
+        if (IsOwnedByPlayer || IsRentedByPlayer)
+        {
+            Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == Name).FirstOrDefault();
+            if (savedPlace != null)
+            {
+                player.Properties.AddOwnedLocation(savedPlace);
+                savedPlace.IsOwned = IsOwnedByPlayer;
+                savedPlace.IsRented = IsRentedByPlayer;
+                savedPlace.DateRentalPaymentDue = RentalPaymentDate;
+                savedPlace.DateRentalPaymentPaid = DateOfLastRentalPayment;
+                if (savedPlace.WeaponStorage == null)
+                {
+                    savedPlace.WeaponStorage = new WeaponStorage(settings);
+                }
+                if (savedPlace.SimpleInventory == null)
+                {
+                    savedPlace.SimpleInventory = new SimpleInventory(settings);
+                }
+                foreach (StoredWeapon storedWeap in WeaponInventory)
+                {
+                    savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                }
+                foreach (InventorySave stest in InventoryItems)
+                {
+                    savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                }
+                savedPlace.IsRentedOut = IsRentedOut;
+                savedPlace.CashStorage.StoredCash = StoredCash;
+                savedPlace.RefreshUI();
+            }
+        }
+    }
 
 
 }

@@ -3,6 +3,7 @@ using Rage;
 using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public class ResidencesTab : ITabbableMenu
@@ -18,30 +19,35 @@ public class ResidencesTab : ITabbableMenu
     }
     public void AddItems()
     {
-        //List<TabItem> items = new List<TabItem>();
-        //bool canFocusTabItem = false;
-        //if (Player.Properties.Residences.Count == 0)
-        //{
-        //    TabTextItem ttx = new TabTextItem("No Residences", "", "You do not own any residences.");
-        //    ttx.CanBeFocused = false;
-        //    items.Add(ttx);
-        //}
-        //else
-        //{
-        //    foreach (Residence residence in Player.Properties.Residences)
-        //    {
-        //        TabTextItem ttx = new TabTextItem(residence.Name, "",GetResidenceInformation(residence));
-        //        ttx.Activated += (s, e) =>
-        //        {
-        //            Player.GPSManager.AddGPSRoute(residence.Name, residence.EntrancePosition, true);
-        //        };
-        //        items.Add(ttx);
-        //    }
-        //    canFocusTabItem=true;
-        //}
-        //TabItem = new TabSubmenuItem("Residences", items);
-        //TabItem.CanBeFocused = canFocusTabItem;
-        //TabView.AddTab(TabItem);
+        List<TabItem> items = new List<TabItem>();
+        bool canFocusTabItem = false;
+        List<Residence> ResidenceList = new List<Residence>();
+        if(Player.Properties.PropertyList.OfType<Residence>().ToList()!=null)
+        {
+            ResidenceList.AddRange(Player.Properties.PropertyList.OfType<Residence>().ToList());
+        }
+        if (ResidenceList.Count == 0)
+        {
+            TabTextItem ttx = new TabTextItem("No Residences", "", "You do not own any residences.");
+            ttx.CanBeFocused = false;
+            items.Add(ttx);
+        }
+        else
+        {
+            foreach (Residence residence in ResidenceList)
+            {
+                TabTextItem ttx = new TabTextItem(residence.Name, "", GetResidenceInformation(residence));
+                ttx.Activated += (s, e) =>
+                {
+                    Player.GPSManager.AddGPSRoute(residence.Name, residence.EntrancePosition, true);
+                };
+                items.Add(ttx);
+            }
+            canFocusTabItem = true;
+        }
+        TabItem = new TabSubmenuItem("Residences", items);
+        TabItem.CanBeFocused = canFocusTabItem;
+        TabView.AddTab(TabItem);
     }
     private string GetResidenceInformation(Residence residence)
     {

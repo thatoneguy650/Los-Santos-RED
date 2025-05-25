@@ -9,6 +9,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1457,6 +1458,37 @@ public class GameLocation : ILocationDispatchable
             saveLocation.CurrentSalesPrice = CurrentSalesPrice;
         }
         return saveLocation;
+    }
+    public virtual TabMissionSelectItem GetUIInformation()
+    {
+        MissionLogo missionLogo = null;
+        if (HasBannerImage)
+        {
+            missionLogo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}"));
+        }
+        List<MissionInformation> propertyInfos = new List<MissionInformation>();
+        List<Tuple<string, string>> financialTuples = AddFinancials();
+        MissionInformation financialInformation = new MissionInformation("Financials", "", financialTuples);
+        financialInformation.Logo = missionLogo;
+        propertyInfos.Add(financialInformation);
+        List<Tuple<string, string>> gpsTuple = AddGPS();
+        MissionInformation gpsInformation = new MissionInformation("GPS", "", gpsTuple);
+        gpsInformation.Logo = missionLogo;
+        propertyInfos.Add(gpsInformation);
+        return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
+    }
+    public virtual List<Tuple<string, string>> AddFinancials()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("Sell Price", $"${CurrentSalesPrice}"));
+        toAdd.Add(Tuple.Create<string, string>("Payment Due", DatePayoutDue.ToString("dd-MMM-yyyy")));
+        return toAdd;
+    }
+    public virtual List<Tuple<string, string>> AddGPS()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("GPS", StreetAddress));
+        return toAdd;
     }
     //public virtual void UpdatePrompts()
     //{

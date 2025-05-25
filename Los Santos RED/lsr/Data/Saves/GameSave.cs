@@ -432,9 +432,10 @@ namespace LosSantosRED.lsr.Data
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
-                LoadBusinesses(player,placesOfInterest,modItems,settings);
-                LoadPayoutProperties(player, placesOfInterest);
-                LoadCraftingLocations(player,placesOfInterest);
+                //LoadBusinesses(player,placesOfInterest,modItems,settings);
+                //LoadPayoutProperties(player, placesOfInterest);
+                //LoadCraftingLocations(player,placesOfInterest);
+                LoadOwnedProperties(player, placesOfInterest, modItems, settings);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -820,6 +821,13 @@ namespace LosSantosRED.lsr.Data
             //        }
             //    }
             //}
+        }
+        private void LoadOwnedProperties(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        {
+            foreach (SavedGameLocation savedLocation in SavedGameLocations)
+            {
+                savedLocation.LoadSavedData(player, placesOfInterest, modItems, settings);
+            }
         }
         private void LoadDebt (IInventoryable player)
         {
