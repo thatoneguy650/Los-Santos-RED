@@ -42,8 +42,8 @@ public class DebugSettings : ISettingsDefaultable
     public bool RagdollCollision { get; set; }
     public bool RagdollTeleport { get; set; }
     public int RagdollRotationOrder { get; set; }
-
-
+    public float AngleZ { get; set; }
+    public float AngleY { get; set; }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -113,7 +113,7 @@ public class DebugSettings : ISettingsDefaultable
         RagdollRotationOrder = 1;
 
 
-
-
+        AngleZ = 1900f;
+        AngleY = 100.0f;
     }
 }

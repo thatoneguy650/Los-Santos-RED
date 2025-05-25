@@ -18,6 +18,8 @@ public class VehicleModShop : GameLocation
 {
     private UIMenu RepairGarageSubMenu;
     private int FinalRepairCost;
+    private OrbitCamera OrbitCamera;
+
     public VehicleModShop() : base()
     {
 
@@ -63,24 +65,23 @@ public class VehicleModShop : GameLocation
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
+        Player.IsSetDisabledControls = true;
         GameFiber.StartNew(delegate
         {
             try
             {
                 CreateInteractionMenu();
-
-                StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
-                StoreCamera.StaysInVehicle = true;
-                StoreCamera.Setup();
+                SetupOrbitCamera();
                 HandleDoor();
                 GenerateModMenu();
-                ProcessInteractionMenu();
+                ProcessMenu();
                 DisposeInteractionMenu();
                 DisposeDoor();
-                StoreCamera.Dispose();
+                OrbitCamera.Dispose();
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 Player.IsTransacting = false;
+                Player.IsSetDisabledControls = false;
             }
             catch (Exception ex)
             {
@@ -89,6 +90,20 @@ public class VehicleModShop : GameLocation
             }
         }, "ModShopInteract");
 
+    }
+
+    private void SetupOrbitCamera()
+    {
+        OrbitCamera = new OrbitCamera(Player.CurrentVehicle.Vehicle, null, Settings, MenuPool);
+        OrbitCamera.Setup();
+    }
+
+    private void ProcessMenu()
+    {
+        while (IsAnyMenuVisible)
+        {
+            GameFiber.Yield();
+        }
     }
     private void HandleDoor()
     {
@@ -126,6 +141,7 @@ public class VehicleModShop : GameLocation
         {
             return;
         }
+        EntryPoint.WriteToConsole("ORBIT CAMERA START");
         ModShopMenu modShopMenu = new ModShopMenu(Player, MenuPool, InteractionMenu, this, MaxRepairCost, RepairHours, WashCost, WashHours, null);
         modShopMenu.CreateMenu();
     }

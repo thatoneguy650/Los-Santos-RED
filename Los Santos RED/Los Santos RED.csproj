@@ -220,6 +220,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\ModShopMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleColorMenu.cs" />

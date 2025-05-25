@@ -431,6 +431,18 @@ namespace LosSantosRED.lsr.Helper
             Game.DisableControlAction(0, GameControl.MoveLeftRight, true);
             Game.DisableControlAction(0, GameControl.VehicleAccelerate, true);
             Game.DisableControlAction(0, GameControl.VehicleBrake, true);
+
+
+            Game.DisableControlAction(0, GameControl.VehicleAccelerate, true);
+            Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, true);
+            Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
+
+            Game.DisableControlAction(0, GameControl.WeaponWheelNext, true);
+
+            Game.DisableControlAction(0, GameControl.VehicleSelectNextWeapon, true);
+
+            Game.DisableControlAction(0, GameControl.WeaponWheelPrev, true);
+            Game.DisableControlAction(0, GameControl.WeaponWheelUpDown, true);
             Game.DisableControlAction(0, GameControl.Jump, true);
 
 

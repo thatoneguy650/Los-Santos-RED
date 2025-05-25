@@ -1723,14 +1723,25 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         VehicleModShops = new List<VehicleModShop>()
         {
-            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"Test Shop1","Test Shop 1 Desc") { 
+            //new VehicleModShop(new Vector3(135.8826f, -1049.596f, 29.15182f), 338.5946f,"RED Customs","Serving Pillbox Hill")
+            //{
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    GarageDoors = new List<InteriorDoor>() {
+            //        new InteriorDoor(3312435724,new Vector3(134.1454f,-1054.235f,31.3015f)),
+            //    },
+            //   CanInteractWhenWanted = true,
+            //},
+            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"RED Customs","Serving Pillbox Hill")
+            {
                 OpenTime = 0,
                 CloseTime = 24,
                 HasNoGarageDoors = true,
-                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f), 
-                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f), 
-                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)},
-            
+                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
+                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
+                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
+            },
+
         };
 
     }
