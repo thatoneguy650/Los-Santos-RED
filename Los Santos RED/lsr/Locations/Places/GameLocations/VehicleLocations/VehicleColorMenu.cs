@@ -314,7 +314,7 @@ public class VehicleColorMenu
                     }
                     SetInteriorColor(cl.ColorID, true);
                 };
-                interiorcolorGroupMenu.AddItem(actualColorDashboard);
+                dashboardcolorGroupMenu.AddItem(actualColorDashboard);
 
             }
         }

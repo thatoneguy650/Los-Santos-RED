@@ -90,6 +90,7 @@ public class ButtonPrompts
             RemovePrompts("VehicleInteract");
             return;
         }
+       // EntryPoint.WriteToConsole($"BP ADDDING VEHICLE MAYBE Player.ActivityManager.IsInteractingWithLocation {Player.ActivityManager.IsInteractingWithLocation}");
         toConsider.UpdateInteractPrompts(Player);
     }
     public void Dispose()

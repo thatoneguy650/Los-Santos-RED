@@ -224,6 +224,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\ModShopMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleColorMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModKitType.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModShop.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangArsonTask.cs" />

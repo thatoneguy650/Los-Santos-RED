@@ -26,8 +26,8 @@ public class ModShopMenu
     private int WashCost;
     private int WashHours;
     private List<int> RestrictedModTypes;
-    private VehicleVariation CurrentVariation;
-    private VehicleExt ModdingVehicle;
+    public VehicleVariation CurrentVariation { get; private set; }
+    public VehicleExt ModdingVehicle { get; private set; }
 
     public ModShopMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, VehicleModShop vehicleModShop, int maxRepairCost, int repairHours, int washCost, int washHours, List<int> restrictedModTypes)
     {
@@ -140,77 +140,107 @@ public class ModShopMenu
 
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
 
-        if(RestrictedModTypes != null && RestrictedModTypes.Any())
+        List<VehicleModKitType> VehicleModKitTypes = new List<VehicleModKitType>()
+        { 
+            new VehicleModKitType("Spoilers",0, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Front Bumper",1, this, InteractionMenu,MenuPool,Player),
+        };
+
+        foreach(VehicleModKitType vmkt in VehicleModKitTypes)
         {
-            ModKitDescriptions.RemoveAll(x => RestrictedModTypes.Contains(x.ID));
-            EntryPoint.WriteToConsole("Mod Kit Menu Removing Some Mod Kit Items");
+            vmkt.AddToMenu();
         }
 
 
-        foreach (ModKitDescription modKitDescription in ModKitDescriptions.OrderBy(x=> x.Name))
-        {
-            int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(ModdingVehicle.Vehicle, modKitDescription.ID);
-            EntryPoint.WriteToConsole($"{modKitDescription.Name}ID:{modKitDescription.ID}TotalMods {TotalMods}");
-            if (TotalMods > 0)
-            {
-                UIMenu modKitTypeSubMenu = MenuPool.AddSubMenu(InteractionMenu, modKitDescription.Name);
+
+        //if(RestrictedModTypes != null && RestrictedModTypes.Any())
+        //{
+        //    ModKitDescriptions.RemoveAll(x => RestrictedModTypes.Contains(x.ID));
+        //    EntryPoint.WriteToConsole("Mod Kit Menu Removing Some Mod Kit Items");
+        //}
+
+
+        //foreach (ModKitDescription modKitDescription in ModKitDescriptions.OrderBy(x=> x.Name))
+        //{
+        //    int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(ModdingVehicle.Vehicle, modKitDescription.ID);
+        //    EntryPoint.WriteToConsole($"{modKitDescription.Name}ID:{modKitDescription.ID}TotalMods {TotalMods}");
+        //    if (TotalMods > 0)
+        //    {
+        //        UIMenu modKitTypeSubMenu = MenuPool.AddSubMenu(InteractionMenu, modKitDescription.Name);
 
 
 
-                modKitTypeSubMenu.OnMenuOpen += (sender) =>
-                {
-                    ResetModType(modKitDescription.ID);
-                    SetVehicleMod(modKitDescription.ID, modKitTypeSubMenu.CurrentSelection, false);
-                };
-                modKitTypeSubMenu.OnMenuClose += (sender) =>
-                {
-                    ResetModType(modKitDescription.ID);
-                };
+        //        modKitTypeSubMenu.OnMenuOpen += (sender) =>
+        //        {
+        //            ResetModType(modKitDescription.ID);
+        //            SetVehicleMod(modKitDescription.ID, modKitTypeSubMenu.CurrentSelection, false);
+        //        };
+        //        modKitTypeSubMenu.OnMenuClose += (sender) =>
+        //        {
+        //            ResetModType(modKitDescription.ID);
+        //        };
 
-                modKitTypeSubMenu.OnIndexChange += (sender, newIndex) =>
-                {
-                    SetVehicleMod(modKitDescription.ID, newIndex, false);
-                };
+        //        modKitTypeSubMenu.OnIndexChange += (sender, newIndex) =>
+        //        {
+        //            SetVehicleMod(modKitDescription.ID, newIndex, false);
+        //        };
 
-                for (int i = 0; i < TotalMods; i++)
-                {
-                    string modItemName = GetModItemName(modKitDescription.ID, i);
+        //        for (int i = 0; i < TotalMods; i++)
+        //        {
+        //            string modItemName = GetModItemName(modKitDescription.ID, i);
                     
-                    UIMenuItem modkitItem = new UIMenuItem($"{modItemName}", "Description");
+        //            UIMenuItem modkitItem = new UIMenuItem($"{modItemName}", "Description");
 
-                    int modKitPrice = GetModKitPrice(modKitDescription.ID, i);
-                    modkitItem.RightLabel = $"~r~${modKitPrice}~s~";
-                    int myId = i;
-                    modkitItem.Activated += (sender, e) =>
-                    {
+        //            bool hasModInstalled = false;
+        //            VehicleMod existingMod = CurrentVariation.VehicleMods?.Where(x => x.ID == modKitDescription.ID).FirstOrDefault();
+        //            if(existingMod != null && existingMod.Output == i)
+        //            {
+        //                hasModInstalled = true;
+        //            }
+
+        //            int modKitPrice = GetModKitPrice(modKitDescription.ID, i);
+        //            modkitItem.RightLabel = $"~r~${modKitPrice}~s~";
+
+        //            if(hasModInstalled)//need to update all these kajangos
+        //            {
+        //                modkitItem.RightLabel = "";
+        //                modkitItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+        //            }
+
+
+        //            int myId = i;
+        //            modkitItem.Activated += (sender, e) =>
+        //            {
                        
-                        if(Player.BankAccounts.GetMoney(true) < modKitPrice)
-                        {
-                            DisplayInsufficientFundsMessage(modKitPrice);
-                            return;
-                        }
-                        DisplayPurchasedMessage(modKitPrice);
-                        Player.BankAccounts.GiveMoney(-1 * modKitPrice, true);
+        //                if(Player.BankAccounts.GetMoney(true) < modKitPrice)
+        //                {
+        //                    DisplayInsufficientFundsMessage(modKitPrice);
+        //                    return;
+        //                }
+        //                DisplayPurchasedMessage(modKitPrice);
+        //                Player.BankAccounts.GiveMoney(-1 * modKitPrice, true);
 
-                        //apply the modkit permanently
-                        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-                        {
-                            return;
-                        }
-                        SetVehicleMod(modKitDescription.ID, myId, true);
-                        EntryPoint.WriteToConsole($"APPLY MODKIT modKitDescription.ID:{modKitDescription.ID} i:{myId}");
-                        //NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitDescription.ID, myId, false);
-                    };
+        //                //apply the modkit permanently
+        //                if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        //                {
+        //                    return;
+        //                }
+        //                SetVehicleMod(modKitDescription.ID, myId, true);
+        //                modkitItem.RightLabel = "";
+        //                modkitItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+        //                EntryPoint.WriteToConsole($"APPLY MODKIT modKitDescription.ID:{modKitDescription.ID} i:{myId}");
+        //                //NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitDescription.ID, myId, false);
+        //            };
 
-                    modKitTypeSubMenu.AddItem(modkitItem);
-                }
-            }
-        }
+        //            modKitTypeSubMenu.AddItem(modkitItem);
+        //        }
+        //    }
+        //}
     }
 
 
 
-    private void DisplayInsufficientFundsMessage(int price)
+    public void DisplayInsufficientFundsMessage(int price)
     {
         if (GameLocation == null)
         {
@@ -219,7 +249,7 @@ public class ModShopMenu
         GameLocation.PlayErrorSound();
         GameLocation.DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
     }
-    private void DisplayPurchasedMessage(int price)
+    public void DisplayPurchasedMessage(int price)
     {
         if (GameLocation == null)
         {
@@ -230,75 +260,79 @@ public class ModShopMenu
     }
 
 
-    private int GetModKitPrice(int modKitTypeID, int modKitValueID)
+    public int GetModKitPrice(int modKitTypeID, int modKitValueID)
     {
+        if(modKitValueID == -1)
+        {
+            return 0;
+        }
         return 500;
     }
 
-    private void ResetModType(int modKitTypeID)
-    {
-        if(CurrentVariation.VehicleMods == null || !CurrentVariation.VehicleMods.Any(x=> x.ID == modKitTypeID))
-        {
-            SetVehicleMod(modKitTypeID, -1, false);
-            return;
-        }
-        VehicleMod currentMod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == modKitTypeID);
-        if(currentMod == null)
-        {
-            SetVehicleMod(modKitTypeID, -1, false);
-            return;
-        }
-        SetVehicleMod(modKitTypeID, currentMod.Output, false);
-    }
+    //private void ResetModType(int modKitTypeID)
+    //{
+    //    if(CurrentVariation.VehicleMods == null || !CurrentVariation.VehicleMods.Any(x=> x.ID == modKitTypeID))
+    //    {
+    //        SetVehicleMod(modKitTypeID, -1, false);
+    //        return;
+    //    }
+    //    VehicleMod currentMod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == modKitTypeID);
+    //    if(currentMod == null)
+    //    {
+    //        SetVehicleMod(modKitTypeID, -1, false);
+    //        return;
+    //    }
+    //    SetVehicleMod(modKitTypeID, currentMod.Output, false);
+    //}
 
 
 
-    private string GetModItemName(int modKitTypeID, int modKitValueID)
-    {
-        string modItemName;
-        unsafe
-        {
-            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x8935624F8C5592CC, ModdingVehicle.Vehicle, modKitTypeID, modKitValueID);
-            modItemName = Marshal.PtrToStringAnsi(ptr2);
-        }
-        if (NativeFunction.CallByHash<bool>(0xAC09CA973C564252, modItemName)) // DOES_TEXT_LABEL_EXIST
-        {
-            // Retrieve the filename for the audio conversation
-            IntPtr filenamePtr = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, modItemName); // GET_FILENAME_FOR_AUDIO_CONVERSATION
-                                                                                                     // Convert the filenamePtr to a string and check if it's valid
-            string filename = filenamePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(filenamePtr) : string.Empty;
-            modItemName = filename;
-        }
-        if (string.IsNullOrEmpty(modItemName))
-        {
-            modItemName = $"Item {modKitValueID}";
-        }
-        return modItemName;
-    }
-    private void SetVehicleMod(int modKitTypeID, int modKitValueID, bool updateVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }   
-        if (updateVariation)
-        {
-            if (CurrentVariation == null)
-            {
-                return;
-            }
-            VehicleMod currentMod = CurrentVariation.VehicleMods.Where(x => x.ID == modKitTypeID).FirstOrDefault();
-            if (currentMod != null)
-            {
-                currentMod.Output = modKitValueID;
-            }
-            else
-            {
-                CurrentVariation.VehicleMods.Add(new VehicleMod(modKitTypeID, modKitValueID));
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitTypeID, modKitValueID, false);
-    }
+    //private string GetModItemName(int modKitTypeID, int modKitValueID)
+    //{
+    //    string modItemName;
+    //    unsafe
+    //    {
+    //        IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x8935624F8C5592CC, ModdingVehicle.Vehicle, modKitTypeID, modKitValueID);
+    //        modItemName = Marshal.PtrToStringAnsi(ptr2);
+    //    }
+    //    if (NativeFunction.CallByHash<bool>(0xAC09CA973C564252, modItemName)) // DOES_TEXT_LABEL_EXIST
+    //    {
+    //        // Retrieve the filename for the audio conversation
+    //        IntPtr filenamePtr = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, modItemName); // GET_FILENAME_FOR_AUDIO_CONVERSATION
+    //                                                                                                 // Convert the filenamePtr to a string and check if it's valid
+    //        string filename = filenamePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(filenamePtr) : string.Empty;
+    //        modItemName = filename;
+    //    }
+    //    if (string.IsNullOrEmpty(modItemName))
+    //    {
+    //        modItemName = $"Item {modKitValueID}";
+    //    }
+    //    return modItemName;
+    //}
+    //private void SetVehicleMod(int modKitTypeID, int modKitValueID, bool updateVariation)
+    //{
+    //    if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+    //    {
+    //        return;
+    //    }   
+    //    if (updateVariation)
+    //    {
+    //        if (CurrentVariation == null)
+    //        {
+    //            return;
+    //        }
+    //        VehicleMod currentMod = CurrentVariation.VehicleMods.Where(x => x.ID == modKitTypeID).FirstOrDefault();
+    //        if (currentMod != null)
+    //        {
+    //            currentMod.Output = modKitValueID;
+    //        }
+    //        else
+    //        {
+    //            CurrentVariation.VehicleMods.Add(new VehicleMod(modKitTypeID, modKitValueID));
+    //        }
+    //    }
+    //    NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitTypeID, modKitValueID, false);
+    //}
 
     private void AddRepairItem()
     {
