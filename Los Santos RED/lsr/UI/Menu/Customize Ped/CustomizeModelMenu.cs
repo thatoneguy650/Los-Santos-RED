@@ -50,11 +50,11 @@ public class CustomizeModelMenu
 
         ModelSubMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
         ModelSubMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
 
 

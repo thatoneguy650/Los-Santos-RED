@@ -155,6 +155,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
     [Description("If enabled, certian clothing that will cause the CTD is disabled when inside the ped creator.")]
     public bool UseClothingBlacklist { get; set; }
     public float OrbitCameraSensitivity { get; set; }
+    public float OrbitCameraInitialVerticalOffset { get; set; }
+    public float OrbitCameraInitialHorizontalOffset { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -281,6 +283,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         PersonTransactionNeverPreviewItems = false;
         UseClothingBlacklist = true;
         OrbitCameraSensitivity = 1.0f;
+        OrbitCameraInitialVerticalOffset = 100f;
+        OrbitCameraInitialHorizontalOffset = 65f;
     }
 
 }

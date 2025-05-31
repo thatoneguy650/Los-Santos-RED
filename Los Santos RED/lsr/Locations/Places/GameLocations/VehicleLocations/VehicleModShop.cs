@@ -19,6 +19,7 @@ public class VehicleModShop : GameLocation
     private UIMenu RepairGarageSubMenu;
     private int FinalRepairCost;
     private OrbitCamera OrbitCamera;
+    private bool hasteleported;
 
     public VehicleModShop() : base()
     {
@@ -70,14 +71,50 @@ public class VehicleModShop : GameLocation
         {
             try
             {
+                if(VehiclePreviewLocation != null)
+                {
+                    Game.FadeScreenOut(500, true);
+                    Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false,true,0);
+                    hasteleported = true;
+                    GameFiber.Sleep(500);
+                    
+                }
+                Player.CurrentVehicle?.Radio.SetOff();
+
                 CreateInteractionMenu();
                 SetupOrbitCamera();
+
+                if(hasteleported)
+                {
+                    Game.FadeScreenIn(500, true);
+                }
+
                 HandleDoor();
                 GenerateModMenu();
                 ProcessMenu();
                 DisposeInteractionMenu();
                 DisposeDoor();
-                OrbitCamera.Dispose();
+
+
+                if (VehiclePreviewLocation != null && hasteleported)
+                {
+                    Game.FadeScreenOut(500, true);
+                    Player.GPSManager.TeleportToCoords(EntrancePosition, EntranceHeading, false, true, 0);
+                    OrbitCamera.Dispose();
+                    GameFiber.Sleep(500);         
+                    Game.FadeScreenIn(500, true);
+                }
+                else
+                {
+                    OrbitCamera.Dispose();
+                }
+
+                
+
+
+
+
+
                 Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 Player.IsTransacting = false;
@@ -94,7 +131,7 @@ public class VehicleModShop : GameLocation
 
     private void SetupOrbitCamera()
     {
-        OrbitCamera = new OrbitCamera(Player.CurrentVehicle.Vehicle, null, Settings, MenuPool);
+        OrbitCamera = new OrbitCamera(Player,Player.CurrentVehicle.Vehicle, null, Settings, MenuPool);
         OrbitCamera.Setup();
     }
 
@@ -153,11 +190,14 @@ public class VehicleModShop : GameLocation
         }
         if (IsOpen(time.CurrentHour))
         {
-            foreach (InteriorDoor id in GarageDoors)
+            if (GarageDoors != null)
             {
-                if (id.Position != Vector3.Zero)
+                foreach (InteriorDoor id in GarageDoors)
                 {
-                    id.Activate();
+                    if (id.Position != Vector3.Zero)
+                    {
+                        id.Activate();
+                    }
                 }
             }
         }

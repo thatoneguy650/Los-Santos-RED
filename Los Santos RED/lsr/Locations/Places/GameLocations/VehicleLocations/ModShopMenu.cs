@@ -26,8 +26,8 @@ public class ModShopMenu
     private int WashCost;
     private int WashHours;
     private List<int> RestrictedModTypes;
-    private VehicleVariation CurrentVariation;
-    private VehicleExt ModdingVehicle;
+    public VehicleVariation CurrentVariation { get; private set; }
+    public VehicleExt ModdingVehicle { get; private set; }
 
     public ModShopMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, VehicleModShop vehicleModShop, int maxRepairCost, int repairHours, int washCost, int washHours, List<int> restrictedModTypes)
     {
@@ -66,9 +66,10 @@ public class ModShopMenu
 
     private void AddModItems()
     {
+        AddColorCategories();
         AddModCategories();
         AddExtraCategories();
-        AddColorCategories();
+        
     }
 
     private void AddColorCategories()
@@ -84,133 +85,71 @@ public class ModShopMenu
 
     private void AddModCategories()
     {
-        List<ModKitDescription> ModKitDescriptions = new List<ModKitDescription>()
-        {
-            new ModKitDescription("Spoilers",0),
-            new ModKitDescription("Front Bumper",1),
-            new ModKitDescription("Rear Bumper",2),
-            new ModKitDescription("Side Skirt",3),
-            new ModKitDescription("Exhaust",4),
-            new ModKitDescription("Frame",5),
-            new ModKitDescription("Grille",6),
-            new ModKitDescription("Hood",7),
-            new ModKitDescription("Fender",8),
-            new ModKitDescription("Right Fender",9),
-            new ModKitDescription("Roof",10),
-            new ModKitDescription("Engine",11),
-            new ModKitDescription("Brakes",12),
-            new ModKitDescription("Transmission",13),
-            new ModKitDescription("Horns",14),
-            new ModKitDescription("Suspension",15),
-            new ModKitDescription("Armor",16),
-            new ModKitDescription("Nitrous",17),
-            new ModKitDescription("Turbo",18),
-            new ModKitDescription("Subwoofer",19),
-            new ModKitDescription("Tire Smoke",20),
-            new ModKitDescription("Hydraulics",21),
-            new ModKitDescription("Xenon",22),
-            new ModKitDescription("Front Wheels",23),
-            new ModKitDescription("Back Wheels (Motorcycle)",24),
-            new ModKitDescription("Plate holders", 25),
-            new ModKitDescription("Vanity Plate", 26),
-            new ModKitDescription("Trim Design", 27),
-            new ModKitDescription("Ornaments", 28),
-            new ModKitDescription("Interior3", 29),
-            new ModKitDescription("Dial Design", 30),
-            new ModKitDescription("Interior5", 31),
-            new ModKitDescription("Seats", 32),
-            new ModKitDescription("Steering Wheel", 33),
-            new ModKitDescription("Shift Lever", 34),
-            new ModKitDescription("Plaques", 35),
-            new ModKitDescription("Ice", 36),
-            new ModKitDescription("Trunk", 37),
-            new ModKitDescription("Hydro", 38),
-            new ModKitDescription("Engine1", 39),
-            new ModKitDescription("Boost", 40),
-            new ModKitDescription("Engine3", 41),
-            new ModKitDescription("Pushbar", 42),
-            new ModKitDescription("Aerials", 43),
-            new ModKitDescription("Chassis4", 44),
-            new ModKitDescription("Chassis5", 45),
-            new ModKitDescription("Door-L", 46),
-            new ModKitDescription("Door-R", 47),
-            new ModKitDescription("Livery", 48),
-            new ModKitDescription("Lightbar", 49),
-        };
-
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
-
-        if(RestrictedModTypes != null && RestrictedModTypes.Any())
+        List<VehicleModKitType> VehicleModKitTypes = new List<VehicleModKitType>()
         {
-            ModKitDescriptions.RemoveAll(x => RestrictedModTypes.Contains(x.ID));
-            EntryPoint.WriteToConsole("Mod Kit Menu Removing Some Mod Kit Items");
-        }
+            new PerformanceVehicleModKitType("Engine",11, this, InteractionMenu,MenuPool,Player),
+            new PerformanceVehicleModKitType("Brakes",12, this, InteractionMenu,MenuPool,Player),
+            new PerformanceVehicleModKitType("Transmission",13, this, InteractionMenu,MenuPool,Player),
+            new PerformanceVehicleModKitType("Suspension",15, this, InteractionMenu,MenuPool,Player),
 
 
-        foreach (ModKitDescription modKitDescription in ModKitDescriptions.OrderBy(x=> x.Name))
+            new VehicleModKitType("Horns",14,"", this, InteractionMenu,MenuPool,Player),   
+            new VehicleModKitType("Armor",16, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Nitrous",17, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Turbo",18, this, InteractionMenu,MenuPool,Player),
+
+
+            new VehicleModKitType("Spoilers",0,"Add a spoiler", this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Front Bumper",1, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Rear Bumper",2, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Side Skirt",3, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Exhaust",4, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Frame",5, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Grille",6, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Hood",7, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Fender",8, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Right Fender",9, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Roof",10, this, InteractionMenu,MenuPool,Player),
+
+            new VehicleModKitType("Subwoofer",19, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Tire Smoke",20, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Hydraulics",21, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Xenon",22, this, InteractionMenu,MenuPool,Player),
+            new WheelVehicleModKitType("Front Wheels",23, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Back Wheels",24, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Plate holders", 25, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Vanity Plate", 26, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Trim Design", 27, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Ornaments", 28, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Interior (3)", 29, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Dial Design", 30, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Interior5", 31, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Seats", 32, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Steering Wheel", 33, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Shift Lever", 34, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Plaques", 35, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Ice", 36, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Trunk", 37, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Hydro", 38, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Engine (1)", 39, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Boost", 40, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Engine (3)", 41, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Pushbar", 42, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Aerials", 43, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Chassis (4)", 44, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Chassis (5)", 45, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Door-L", 46, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Door-R", 47, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Livery", 48, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Lightbar", 49, this, InteractionMenu,MenuPool,Player),
+        };
+        foreach(VehicleModKitType vmkt in VehicleModKitTypes)
         {
-            int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(ModdingVehicle.Vehicle, modKitDescription.ID);
-            EntryPoint.WriteToConsole($"{modKitDescription.Name}ID:{modKitDescription.ID}TotalMods {TotalMods}");
-            if (TotalMods > 0)
-            {
-                UIMenu modKitTypeSubMenu = MenuPool.AddSubMenu(InteractionMenu, modKitDescription.Name);
-
-
-
-                modKitTypeSubMenu.OnMenuOpen += (sender) =>
-                {
-                    ResetModType(modKitDescription.ID);
-                    SetVehicleMod(modKitDescription.ID, modKitTypeSubMenu.CurrentSelection, false);
-                };
-                modKitTypeSubMenu.OnMenuClose += (sender) =>
-                {
-                    ResetModType(modKitDescription.ID);
-                };
-
-                modKitTypeSubMenu.OnIndexChange += (sender, newIndex) =>
-                {
-                    SetVehicleMod(modKitDescription.ID, newIndex, false);
-                };
-
-                for (int i = 0; i < TotalMods; i++)
-                {
-                    string modItemName = GetModItemName(modKitDescription.ID, i);
-                    
-                    UIMenuItem modkitItem = new UIMenuItem($"{modItemName}", "Description");
-
-                    int modKitPrice = GetModKitPrice(modKitDescription.ID, i);
-                    modkitItem.RightLabel = $"~r~${modKitPrice}~s~";
-                    int myId = i;
-                    modkitItem.Activated += (sender, e) =>
-                    {
-                       
-                        if(Player.BankAccounts.GetMoney(true) < modKitPrice)
-                        {
-                            DisplayInsufficientFundsMessage(modKitPrice);
-                            return;
-                        }
-                        DisplayPurchasedMessage(modKitPrice);
-                        Player.BankAccounts.GiveMoney(-1 * modKitPrice, true);
-
-                        //apply the modkit permanently
-                        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-                        {
-                            return;
-                        }
-                        SetVehicleMod(modKitDescription.ID, myId, true);
-                        EntryPoint.WriteToConsole($"APPLY MODKIT modKitDescription.ID:{modKitDescription.ID} i:{myId}");
-                        //NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitDescription.ID, myId, false);
-                    };
-
-                    modKitTypeSubMenu.AddItem(modkitItem);
-                }
-            }
+            vmkt.AddToMenu();
         }
     }
-
-
-
-    private void DisplayInsufficientFundsMessage(int price)
+    public void DisplayInsufficientFundsMessage(int price)
     {
         if (GameLocation == null)
         {
@@ -219,7 +158,7 @@ public class ModShopMenu
         GameLocation.PlayErrorSound();
         GameLocation.DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
     }
-    private void DisplayPurchasedMessage(int price)
+    public void DisplayPurchasedMessage(int price)
     {
         if (GameLocation == null)
         {
@@ -228,78 +167,14 @@ public class ModShopMenu
         GameLocation.PlaySuccessSound();
         GameLocation.DisplayMessage("~g~Purchased", $"Thank you for your purchase");
     }
-
-
-    private int GetModKitPrice(int modKitTypeID, int modKitValueID)
+    public int GetModKitPrice(int modKitTypeID, int modKitValueID)
     {
+        if(modKitValueID == -1)
+        {
+            return 0;
+        }
         return 500;
     }
-
-    private void ResetModType(int modKitTypeID)
-    {
-        if(CurrentVariation.VehicleMods == null || !CurrentVariation.VehicleMods.Any(x=> x.ID == modKitTypeID))
-        {
-            SetVehicleMod(modKitTypeID, -1, false);
-            return;
-        }
-        VehicleMod currentMod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == modKitTypeID);
-        if(currentMod == null)
-        {
-            SetVehicleMod(modKitTypeID, -1, false);
-            return;
-        }
-        SetVehicleMod(modKitTypeID, currentMod.Output, false);
-    }
-
-
-
-    private string GetModItemName(int modKitTypeID, int modKitValueID)
-    {
-        string modItemName;
-        unsafe
-        {
-            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x8935624F8C5592CC, ModdingVehicle.Vehicle, modKitTypeID, modKitValueID);
-            modItemName = Marshal.PtrToStringAnsi(ptr2);
-        }
-        if (NativeFunction.CallByHash<bool>(0xAC09CA973C564252, modItemName)) // DOES_TEXT_LABEL_EXIST
-        {
-            // Retrieve the filename for the audio conversation
-            IntPtr filenamePtr = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, modItemName); // GET_FILENAME_FOR_AUDIO_CONVERSATION
-                                                                                                     // Convert the filenamePtr to a string and check if it's valid
-            string filename = filenamePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(filenamePtr) : string.Empty;
-            modItemName = filename;
-        }
-        if (string.IsNullOrEmpty(modItemName))
-        {
-            modItemName = $"Item {modKitValueID}";
-        }
-        return modItemName;
-    }
-    private void SetVehicleMod(int modKitTypeID, int modKitValueID, bool updateVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }   
-        if (updateVariation)
-        {
-            if (CurrentVariation == null)
-            {
-                return;
-            }
-            VehicleMod currentMod = CurrentVariation.VehicleMods.Where(x => x.ID == modKitTypeID).FirstOrDefault();
-            if (currentMod != null)
-            {
-                currentMod.Output = modKitValueID;
-            }
-            else
-            {
-                CurrentVariation.VehicleMods.Add(new VehicleMod(modKitTypeID, modKitValueID));
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, modKitTypeID, modKitValueID, false);
-    }
-
     private void AddRepairItem()
     {
         FinalRepairCost = MaxRepairCost;
@@ -346,5 +221,17 @@ public class ModShopMenu
         ModdingVehicle.Vehicle.Repair();
         ModdingVehicle.Vehicle.Wash();
     }
+
+    public void DisplayMessage(string v)
+    {
+        if (GameLocation == null)
+        {
+            return;
+        }
+        GameLocation.PlaySuccessSound();
+        GameLocation.DisplayMessage("Information", v);
+    }
+
+
 }
 

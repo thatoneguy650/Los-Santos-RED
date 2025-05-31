@@ -731,6 +731,11 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
 
+
+            new CountyJurisdiction("LSPD",StaticStrings.CityOfLosSantosCountyID, 0, 0, 50),
+            new CountyJurisdiction("LSSD",StaticStrings.MajesticCountyID, 0, 0, 50),
+            new CountyJurisdiction("LSSD",StaticStrings.LosSantosCountyID, 0, 0, 50),
+
             //EMS
             new CountyJurisdiction("LSCoFD-EMS",StaticStrings.LosSantosCountyID,0,100,100),
             new CountyJurisdiction("LSCoFD-EMS",StaticStrings.MajesticCountyID, 0, 100, 100),
@@ -1096,7 +1101,6 @@ public class Jurisdictions : IJurisdictions
         Serialization.SerializeParams(CountyJurisdictionList2008, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\CountyJurisdictions_{StaticStrings.LibertyConfigSuffix}.xml");
     }
 
-
     private void DefaultZoneConfig_LibertyPP()
     {
         List<ZoneJurisdiction> ZoneJurisdictionsListLibertyCity = new List<ZoneJurisdiction>()
@@ -1404,9 +1408,6 @@ public class Jurisdictions : IJurisdictions
         };
         Serialization.SerializeParams(ZoneJurisdictionsListLibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\ZoneJurisdictions_{StaticStrings.LPPConfigSuffix}.xml");
     }
-
-
-
     private void DefaultCountyConfig_LibertyPP()
     {
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()

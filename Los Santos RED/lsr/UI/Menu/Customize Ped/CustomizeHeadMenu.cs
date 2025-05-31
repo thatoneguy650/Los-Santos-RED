@@ -54,11 +54,11 @@ public class CustomizeHeadMenu
         HeadSubMenu.InstructionalButtonsEnabled = false;
         HeadSubMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.Set("Face");
+            //PedCustomizer.CameraCycler.Set("Face");
         };
         HeadSubMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
 
 

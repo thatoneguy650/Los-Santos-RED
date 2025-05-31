@@ -53,11 +53,11 @@ public class CustomizeOverlaysMenu
         PickComponentMenu.InstructionalButtonsEnabled = false;
         PickComponentMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
         PickComponentMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
     }
     public void OnModelChanged()

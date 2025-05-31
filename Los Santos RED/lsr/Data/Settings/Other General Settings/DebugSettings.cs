@@ -44,6 +44,10 @@ public class DebugSettings : ISettingsDefaultable
     public int RagdollRotationOrder { get; set; }
     public float AngleZ { get; set; }
     public float AngleY { get; set; }
+
+
+    public float AngleZ2 { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -115,5 +119,6 @@ public class DebugSettings : ISettingsDefaultable
 
         AngleZ = 1900f;
         AngleY = 100.0f;
+        AngleZ2 = 0.0f;
     }
 }

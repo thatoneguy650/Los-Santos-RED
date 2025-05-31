@@ -171,8 +171,8 @@ public class BankAccounts
                 EntryPoint.WriteToConsole($"GiveMoneyAccount BEGIN {ba.BankContactName} {ba.Money}");
                 if (AccountMoneyTakenAlready + ba.Money < 0)
                 {
-                    ba.Money = 0;
                     AccountMoneyTakenAlready += ba.Money;
+                    ba.Money = 0;
                 }
                 else
                 {

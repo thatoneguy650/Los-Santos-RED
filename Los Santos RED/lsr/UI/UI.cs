@@ -236,7 +236,7 @@ public class UI : IMenuProvideable
             {
                 foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.Prompts.OrderByDescending(x => x.Order))
                 {
-                    if(buttonPrompt.HasGameControl && buttonPrompt.GameControl != GameControl.NextCamera)
+                    if (buttonPrompt.HasGameControl && buttonPrompt.GameControl != GameControl.NextCamera)
                     {
                         InstructionalButton mybutt = new InstructionalButton(buttonPrompt.GameControl, buttonPrompt.Text);
                         instructional.Buttons.Add(mybutt);

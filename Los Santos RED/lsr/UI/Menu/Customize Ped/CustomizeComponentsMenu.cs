@@ -61,11 +61,11 @@ public class CustomizeComponentsMenu
 
         PickComponentMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
         PickComponentMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
 
 

@@ -1734,7 +1734,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    },
             //   CanInteractWhenWanted = true,
             //},
-            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"RED Customs","Serving Pillbox Hill")
+            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"RED Customs","Test")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -1743,6 +1743,21 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
                 CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             },
+
+
+
+            new VehicleModShop(new Vector3(865.2888f, -1715.959f, 29.20321f), 196.2501f,"RED Customs 2","Test2")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
+                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
+                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
+                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
+            },
+
+
 
         };
 

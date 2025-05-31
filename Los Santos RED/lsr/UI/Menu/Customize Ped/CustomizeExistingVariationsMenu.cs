@@ -62,11 +62,11 @@ public class CustomizeExistingVariationsMenu
         savedVariationsMenu.InstructionalButtonsEnabled = false;
         savedVariationsMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
         savedVariationsMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };  
         AddOutfits();
         AddSaveGames();
