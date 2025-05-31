@@ -1,22 +1,23 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
-using System;
 using System.Linq;
 
-public class SavedPayoutProperty : SavedGameLocation
+public class SavedGameLocation
 {
-    public SavedPayoutProperty()
+    public SavedGameLocation()
     {
     }
 
-    public SavedPayoutProperty(string name, bool isOwnedByPlayer)
+    public SavedGameLocation(string name, bool isOwnedByPlayer)
     {
         Name = name;
         IsOwnedByPlayer = isOwnedByPlayer;
     }
-    public DateTime PayoutDate { get; set; }
-    public DateTime DateOfLastPayout { get; set; }
-    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    public virtual string Name { get; set; }
+    public virtual bool IsOwnedByPlayer { get; set; } = false;
+    public virtual int CurrentSalesPrice { get; set; }
+    public virtual Vector3 EntrancePosition { get; set; }
+    public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
     {
         if (IsOwnedByPlayer)
         {
@@ -25,11 +26,8 @@ public class SavedPayoutProperty : SavedGameLocation
             {
                 player.Properties.AddOwnedLocation(savedPlace);
                 savedPlace.IsOwned = IsOwnedByPlayer;
-                savedPlace.DatePayoutDue = PayoutDate;
-                savedPlace.DatePayoutPaid = DateOfLastPayout;
                 savedPlace.CurrentSalesPrice = CurrentSalesPrice;
             }
         }
     }
 }
-

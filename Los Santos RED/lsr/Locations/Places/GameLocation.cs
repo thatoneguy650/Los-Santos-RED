@@ -9,6 +9,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -636,7 +637,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnPurchased()
     {
-        Player.Properties.AddPayoutProperty(this);
+        //Player.Properties.AddPayoutProperty(this);
+        AddOwnership();
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         DatePayoutPaid = Time.CurrentDateTime;
@@ -645,7 +647,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnSold()
     {
-        Player.Properties.RemovePayoutProperty(this);
+        //Player.Properties.RemovePayoutProperty(this);
+        RemoveOwnership();
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         MenuPool.CloseAllMenus();
         Interior?.ForceExitPlayer(Player, this);
@@ -1421,7 +1424,7 @@ public class GameLocation : ILocationDispatchable
             UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
             businessManagementButton.Activated += (s, i) =>
             {
-                Player.Properties.RemovePayoutProperty(this);
+                Player.Properties.RemoveOwnedLocation(this);
                 Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
                 IsOwned = false;
                 DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -1438,6 +1441,62 @@ public class GameLocation : ILocationDispatchable
         return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
     }
 
+    public virtual void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        Payout(player, time);
+    }
+    public virtual void AddOwnership()
+    {
+        Player.Properties.AddOwnedLocation(this);
+    }
+    public virtual void RemoveOwnership()
+    {
+        Player.Properties.RemoveOwnedLocation(this);
+    }
+
+    public virtual SavedGameLocation GetSaveData()
+    {
+        SavedPayoutProperty saveLocation = new SavedPayoutProperty(Name, IsOwned);
+        if (IsOwned)
+        {
+            saveLocation.DateOfLastPayout = DatePayoutPaid;
+            saveLocation.PayoutDate = DatePayoutDue;
+            saveLocation.EntrancePosition = EntrancePosition;
+            saveLocation.CurrentSalesPrice = CurrentSalesPrice;
+        }
+        return saveLocation;
+    }
+    public virtual TabMissionSelectItem GetUIInformation()
+    {
+        MissionLogo missionLogo = null;
+        if (HasBannerImage)
+        {
+            missionLogo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}"));
+        }
+        List<MissionInformation> propertyInfos = new List<MissionInformation>();
+        List<Tuple<string, string>> financialTuples = AddFinancials();
+        MissionInformation financialInformation = new MissionInformation("Financials", "", financialTuples);
+        financialInformation.Logo = missionLogo;
+        propertyInfos.Add(financialInformation);
+        List<Tuple<string, string>> gpsTuple = AddGPS();
+        MissionInformation gpsInformation = new MissionInformation("GPS", "", gpsTuple);
+        gpsInformation.Logo = missionLogo;
+        propertyInfos.Add(gpsInformation);
+        return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
+    }
+    public virtual List<Tuple<string, string>> AddFinancials()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("Sell Price", $"${CurrentSalesPrice}"));
+        toAdd.Add(Tuple.Create<string, string>("Payment Due", DatePayoutDue.ToString("dd-MMM-yyyy")));
+        return toAdd;
+    }
+    public virtual List<Tuple<string, string>> AddGPS()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("GPS", StreetAddress));
+        return toAdd;
+    }
     //public virtual void UpdatePrompts()
     //{
 

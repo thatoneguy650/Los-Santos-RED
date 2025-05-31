@@ -2,6 +2,7 @@
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -293,7 +294,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     protected override void OnSold()
     {
         Reset();
-        Player.Properties.RemoveBusiness(this);
+        Player.Properties.RemoveOwnedLocation(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -314,7 +315,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         UpdateStoredData();
-        Player.Properties.AddBusiness(this);
+        Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
@@ -392,7 +393,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         {
             if(PossibleModItemPayouts != null && PossibleModItemPayouts.Any())
             {
-                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(",", PossibleModItemPayouts); 
+                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(", ", PossibleModItemPayouts); 
             }
             return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
         }
@@ -400,6 +401,71 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         {
             return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
         }
+    }
+    public override void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        Payout(player, time);
+    }
+    public override SavedGameLocation GetSaveData()
+    {
+        SavedBusiness myBiz = new SavedBusiness(Name, IsOwned);
+        if (IsOwned)
+        {
+            myBiz.DateOfLastPayout = DatePayoutPaid;
+            myBiz.PayoutDate = DatePayoutDue;
+            myBiz.ModItemToPayout = ModItemToPayout;
+            myBiz.EntrancePosition = EntrancePosition;
+            myBiz.CurrentSalesPrice = CurrentSalesPrice;
+            if (WeaponStorage != null)
+            {
+                myBiz.WeaponInventory = new List<StoredWeapon>();
+                foreach (StoredWeapon storedWeapon in WeaponStorage.StoredWeapons)
+                {
+                    myBiz.WeaponInventory.Add(storedWeapon.Copy());
+                }
+            }
+            if (SimpleInventory != null)
+            {
+                myBiz.InventoryItems = new List<InventorySave>();
+                foreach (InventoryItem ii in SimpleInventory.ItemsList)
+                {
+                    myBiz.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                }
+            }
+            if (CashStorage != null)
+            {
+                myBiz.StoredCash = CashStorage.StoredCash;
+            }
+        }
+        return myBiz;
+    }
+    public override TabMissionSelectItem GetUIInformation()
+    {
+        MissionLogo missionLogo = null;
+        if (HasBannerImage)
+        {
+            missionLogo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}"));
+        }
+        List<MissionInformation> propertyInfos = new List<MissionInformation>();
+        List<Tuple<string, string>> financialTuples = AddFinancials();
+        financialTuples.Add(Tuple.Create<string, string>("Mode of Payment", IsPayoutInModItems ? ModItemToPayout : "Cash"));
+        MissionInformation financialInformation = new MissionInformation("Financials", "", financialTuples);
+        financialInformation.Logo = missionLogo;
+        propertyInfos.Add(financialInformation);
+        List<Tuple<string, string>> storageTuples = new List<Tuple<string, string>>();
+        foreach (InventoryItem item in SimpleInventory.ItemsList)
+        {
+            storageTuples.Add(Tuple.Create<string, string>(item.ModItem.Name, item.Amount.ToString()));
+        }
+        storageTuples.Add(Tuple.Create<string, string>("Cash Storage", $"${CashStorage.StoredCash}"));
+        MissionInformation storageInformation = new MissionInformation("Storage", "", storageTuples);
+        storageInformation.Logo = missionLogo;
+        propertyInfos.Add(storageInformation);
+        List<Tuple<string, string>> gpsTuple = AddGPS();
+        MissionInformation gpsInformation = new MissionInformation("GPS", "", gpsTuple);
+        gpsInformation.Logo = missionLogo;
+        propertyInfos.Add(gpsInformation);
+        return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
     }
 
 }
