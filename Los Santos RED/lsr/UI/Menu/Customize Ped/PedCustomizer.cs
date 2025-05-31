@@ -34,6 +34,7 @@ public class PedCustomizer
     private bool ShowDisplayName = true;
     private GameLocation TeleportedFromLocation;
     private IInteractionable Interactionable;
+    private ILocationInteractable LocationInteractable;
 
     private List<BlacklistedPedComponent> BlacklistedPedComponents = new List<BlacklistedPedComponent>();
 
@@ -57,9 +58,9 @@ public class PedCustomizer
 
 
     public PedCustomizerLocation PedCustomizerLocation;
+    private OrbitCamera OrbitCamera;
 
-
-    public CameraCycler CameraCycler { get; private set; }
+    //public CameraCycler CameraCycler { get; private set; }
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
 
 
@@ -72,8 +73,9 @@ public class PedCustomizer
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
     public IClothesNames ClothesNames { get; private set; }
     public ITattooNames TattooNames { get; private set; }
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, 
-        IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits, IInteractionable interactionable)
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, 
+        IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, 
+        ISavedOutfits savedOutfits, IInteractionable interactionable, ILocationInteractable locationInteractable)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -91,6 +93,7 @@ public class PedCustomizer
         GameSaves = gameSaves;
         SavedOutfits = savedOutfits;
         Interactionable = interactionable;
+        LocationInteractable = locationInteractable;
     }   
     public bool SetupAsNewPlayer { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
@@ -141,7 +144,11 @@ public class PedCustomizer
             CharCam.Active = false;
 
 
-            if(TeleportedFromLocation != null && TeleportedFromLocation.Interior != null)
+            OrbitCamera.Dispose();
+            Player.IsSetDisabledControls = false;
+
+
+            if (TeleportedFromLocation != null && TeleportedFromLocation.Interior != null)
             {
                 TeleportedFromLocation.Interior.Teleport(Interactionable, TeleportedFromLocation, null);
             }
@@ -164,8 +171,13 @@ public class PedCustomizer
         PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies, GameSaves, SavedOutfits, PedCustomizerLocation);
         PedCustomizerMenu.Setup();
 
-        CameraCycler = new CameraCycler(CharCam, Player, this, PedCustomizerLocation.CameraCyclerPositions);
-        CameraCycler.Setup();
+        //CameraCycler = new CameraCycler(CharCam, Player, this, PedCustomizerLocation.CameraCyclerPositions);
+        //CameraCycler.Setup();
+
+
+
+
+
 
         BlacklistedPedComponents = new List<BlacklistedPedComponent>() {
         
@@ -231,21 +243,32 @@ public class PedCustomizer
         WorkingModelName = Player.ModelName;
         WorkingName = Player.PlayerName;
         WorkingMoney = Player.BankAccounts.GetMoney(false);
+        Player.IsSetDisabledControls = true;
         CreateModelPed();
         SetModelAsCharacter();
-        CameraCycler.SetDefault();
+        OrbitCamera = new OrbitCamera(LocationInteractable, ModelPed, CharCam, Settings, MenuPool);
+        OrbitCamera.Radius = 2.0f;
+        OrbitCamera.MinRadius = 0.25f;
+        OrbitCamera.MaxRadius = 3.0f;
+        OrbitCamera.InitialVerticalOffset = 100f;
+        OrbitCamera.InitialHorizonatlOffset = 0f;
+        OrbitCamera.Setup();
         Game.FadeScreenIn(1500, true);
         PedCustomizerMenu.Start();
-
-
-
         GameFiber.StartNew(delegate
         {
             try
             {
                 while(!IsDisposed)
                 {
-                    MenuPool.ProcessMenus();
+                    if (OrbitCamera.IsInputPressed)
+                    {
+                        MenuPool.Draw();
+                    }
+                    else
+                    {
+                        MenuPool.ProcessMenus();
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -255,7 +278,6 @@ public class PedCustomizer
                 EntryPoint.ModController.CrashUnload();
             }
         }, "MENUPROCESSOR");
-
     }
     public void Finish()
     {
@@ -275,20 +297,29 @@ public class PedCustomizer
     }
     private void ProcessButtonPrompts()
     {
-        if (!Player.ButtonPrompts.HasPrompt($"RotateModelLeft"))
+
+        if(OrbitCamera.IsInputPressed)
+        {
+            Player.ButtonPrompts.RemovePrompts("ChangeCamera");
+        }
+
+
+
+
+        if (!Player.ButtonPrompts.HasPrompt($"RotateModelLeft") && !OrbitCamera.IsInputPressed)
         {
             Player.ButtonPrompts.RemovePrompts("ChangeCamera");
             Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Turn Left", $"RotateModelLeft", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.J, 1);
             Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Turn Right", $"RotateModelRight", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.K, 2);
-            Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Camera Cycle", $"CameraCycle", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.O, 4);
-            Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Reset", $"ResetCamera", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.L, 6);
+            //Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Camera Cycle", $"CameraCycle", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.O, 4);
+           // Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Reset", $"ResetCamera", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.L, 6);
         }
     
         if (Player.ButtonPrompts.IsPressed("ResetCamera") || Player.ButtonPrompts.IsHeld("ResetCamera"))
         {
             //EntryPoint.WriteToConsoleTestLong("ResetCamera");
             ModelPed.Tasks.AchieveHeading(PedCustomizerLocation.DefaultModelPedHeading, 5000);
-            CameraCycler.SetDefault();
+            //CameraCycler.SetDefault();
         }
         if (Player.ButtonPrompts.IsPressed("RotateModelLeft") || Player.ButtonPrompts.IsHeld("RotateModelLeft"))
         {
@@ -306,11 +337,11 @@ public class PedCustomizer
                 ModelPed.Tasks.AchieveHeading(ModelPed.Heading - 45, 5000);
             }
         }
-        if (Player.ButtonPrompts.IsPressed("CameraCycle") || Player.ButtonPrompts.IsHeld("CameraCycle"))
-        {
-            //EntryPoint.WriteToConsoleTestLong("CameraCycle");
-            CameraCycler.Cycle();
-        }
+        //if (Player.ButtonPrompts.IsPressed("CameraCycle") || Player.ButtonPrompts.IsHeld("CameraCycle"))
+        //{
+        //    //EntryPoint.WriteToConsoleTestLong("CameraCycle");
+        //    CameraCycler.Cycle();
+        //}
     }
     private void MovePlayerToBookingRoom()
     {
@@ -374,9 +405,6 @@ public class PedCustomizer
         }
         WorkingMoney = 5000;
         SetupAsNewPlayer = true;
-
-
-
     }
     public void SetAsNewPlayer()
     {

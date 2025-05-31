@@ -23,18 +23,23 @@ public class OrbitCamera
     private ILocationInteractable Player;
 
     private Vector3 entityLocation;
-    private bool isInputPressed;
+    //private bool isInputPressed;
     private float XNormalValue;
     private float YNormalValue;
     private float angleZ = 0f;
     private float angleY = 0f;//170f;
-    private float Radius = 7f;
+    //private float Radius = 7f;
     private float RadiusIncrementLow = 0.25f;
     private float RadiusIncrement = 1.0f;
     private float RadiusIncrementHigh = 5.0f;
     private float initialHeading = 0f;
     private bool _isInputPressed;
-
+    private float CamOffsetX;
+    private float CamOffsetY;
+    private float CamOffsetZ;
+    private float OffsetIncrementX = 0.25f;
+    private float OffsetIncrementY = 0.25f;
+    private float OffsetIncrementZ = 0.25f;
     public OrbitCamera(ILocationInteractable player, Entity orbitingEntity, Camera existingCamera, ISettingsProvideable settings, MenuPool menuPool)
     {
         Player = player;
@@ -44,29 +49,37 @@ public class OrbitCamera
         MenuPool = menuPool;
     }
     public bool IsRunning { get; private set; } = false;
+    public float Radius { get; set; } = 7.0f;
+    public float MinRadius { get; set; } = 1.0f;
+    public float MaxRadius { get; set; } = 50.0f;
+    public bool IsInputPressed { get; private set; }
+
+
+
+    public float InitialHorizonatlOffset { get; set; } = 65f;
+    public float InitialVerticalOffset { get; set; } = 100f;
     public void Setup()
     {
         if (!OrbitingEntity.Exists())
         {
+            EntryPoint.WriteToConsole("ORBIT CAMERA ENTITY IS MISSING");
             return;
         }
         IsRunning = true;
         initialHeading = OrbitingEntity.Heading;
-        angleZ = (initialHeading + Settings.SettingsManager.PlayerOtherSettings.OrbitCameraInitialHorizontalOffset) * 10.0f;
-        angleY = Settings.SettingsManager.PlayerOtherSettings.OrbitCameraInitialVerticalOffset;
+        angleZ = (initialHeading + InitialHorizonatlOffset) * 10.0f;
+        angleY = InitialVerticalOffset;
         if (!MainCamera.Exists())
         {
             MainCamera = new Camera(true);
             MainCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            EntryPoint.WriteToConsole("MAIN CAMERA DID NOT EXISTS SETTING ACTIVE");
+            //MainCamera.Active = true;
         }
+        MainCamera.Active = true;
         Player.ButtonPrompts.AttemptAddPrompt("orbitCamera", "Select", "orbitCameraselect", GameControl.FrontendAccept, 4);
         Player.ButtonPrompts.AttemptAddPrompt("orbitCamera", "Back", "orbitCameraback", GameControl.FrontendCancel, 3);
-
-
-
         Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Orbit Camera", "orbitCameramovecameraStart", GameControl.Attack, 2);
-
-
         //EntryPoint.WriteToConsole($"ORBIT CAMERA SETUP RAN angleZ {angleZ} initialHeading {initialHeading}");
         GameFiber.StartNew(delegate
         {
@@ -114,9 +127,9 @@ public class OrbitCamera
             return;//no menu pool do not handle any controls
         }
         MenuPool.DisableInstructionalButtons = true;
-        if (isInputPressed != _isInputPressed)
+        if (IsInputPressed != _isInputPressed)
         {
-            if(isInputPressed)
+            if(IsInputPressed)
             {
                 OnPressedMouseDown();
             }
@@ -124,9 +137,9 @@ public class OrbitCamera
             {
                 OnReleasedMouseDown();
             }
-            _isInputPressed = isInputPressed;
+            _isInputPressed = IsInputPressed;
         }
-        if (isInputPressed)
+        if (IsInputPressed)
         {
             MenuPool.Draw();
         }
@@ -151,8 +164,14 @@ public class OrbitCamera
         NativeFunction.Natives.SET_MOUSE_CURSOR_STYLE(4);
         Player.ButtonPrompts.RemovePrompts("orbitCamera");
         Player.ButtonPrompts.RemovePrompts("orbitCameraExtra");
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Move Camera", "orbitCameramovecamera", GameControl.LookLeftRight, 2);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Zoom", "orbitCamerazoom", GameControl.WeaponWheelNext, 1);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Move Camera", "orbitCameramovecamera", GameControl.LookLeftRight, 10);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Zoom", "orbitCamerazoom", GameControl.WeaponWheelNext, 9);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Up", "orbitCameramoveup", GameControl.MoveUpOnly, 8);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Down", "orbitCameramovedown", GameControl.MoveDownOnly, 7);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Left", "orbitCameramoveleft", GameControl.MoveLeftOnly, 6);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Right", "orbitCameramoveright", GameControl.MoveRightOnly, 5);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Back", "orbitCameramoveback", GameControl.SelectWeaponHandgun, 4);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Forth", "orbitCameramoveforth", GameControl.SelectWeaponShotgun, 3);
     }
 
     private void CalculateFinalPosition()
@@ -171,14 +190,14 @@ public class OrbitCamera
             ((sinAngleY)) * Radius
         );
         // EntryPoint.WriteToConsole($"XNormalValue:{XNormalValue} YNormalValue:{YNormalValue} angleZ{angleZ} angleY{angleY} InitalHeading {initialHeading} ModANgle{angleZ % 360f} AngleZRadians{Extensions.ToRadians(angleZ)}");
-        Vector3 camPos = new Vector3(entityLocation.X + offset.X, entityLocation.Y + offset.Y, entityLocation.Z + offset.Z);
+        Vector3 camPos = new Vector3(entityLocation.X + offset.X + CamOffsetX, entityLocation.Y + offset.Y + CamOffsetY, entityLocation.Z + offset.Z + CamOffsetZ);
         MainCamera.Position = camPos;
-        MainCamera.PointAtEntity(OrbitingEntity, Vector3.Zero, false);
+        MainCamera.PointAtEntity(OrbitingEntity, new Vector3(CamOffsetX,CamOffsetY,CamOffsetZ), false);
     }
     private void GetControlValues()
     {
-        isInputPressed = NativeFunction.Natives.IS_CONTROL_PRESSED<bool>(0, 24) || NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, 24);
-        if (isInputPressed)
+        IsInputPressed = NativeFunction.Natives.IS_CONTROL_PRESSED<bool>(0, 24) || NativeFunction.Natives.IS_DISABLED_CONTROL_PRESSED<bool>(0, 24);
+        if (IsInputPressed)
         {
             XNormalValue = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, 1) * 40.0f * Settings.SettingsManager.PlayerOtherSettings.OrbitCameraSensitivity;
             YNormalValue = NativeFunction.Natives.GET_DISABLED_CONTROL_NORMAL<float>(0, 2) * 40.0f * Settings.SettingsManager.PlayerOtherSettings.OrbitCameraSensitivity;
@@ -188,7 +207,7 @@ public class OrbitCamera
             XNormalValue = 0f;
             YNormalValue = 0f;
         }
-        if (isInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 14) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 14)))
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 14) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 14)))
         {
             if (Radius <= 3.0f)
             {
@@ -203,7 +222,7 @@ public class OrbitCamera
                 Radius += RadiusIncrement;
             }
         }
-        else if (isInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 15) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 15)))
+        else if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 15) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 15)))
         {
             if (Radius <= 3.0f)
             {
@@ -218,7 +237,31 @@ public class OrbitCamera
                 Radius -= RadiusIncrement;
             }
         }
-        Radius = Extensions.Clamp(Radius, 1.0f, 100f);
+        Radius = Extensions.Clamp(Radius, MinRadius, MaxRadius);
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 34) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 34)))
+        {
+            CamOffsetX += OffsetIncrementX;
+        }
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 35) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 35)))
+        {
+            CamOffsetX -= OffsetIncrementX;
+        }
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 32) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 32)))
+        {
+            CamOffsetZ += OffsetIncrementZ;
+        }
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 33) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 33)))
+        {
+            CamOffsetZ -= OffsetIncrementZ;
+        }
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 159) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 159)))
+        {
+            CamOffsetY += OffsetIncrementY;
+        }
+        if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 160) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 160)))
+        {
+            CamOffsetY -= OffsetIncrementY;
+        }
     }
 }
 

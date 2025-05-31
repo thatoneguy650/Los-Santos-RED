@@ -54,4 +54,12 @@ public class Radio
             }
         }
     }
+    public void SetOff()
+    {
+        if(VehicleToMonitor == null || !VehicleToMonitor.Vehicle.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.SET_VEH_RADIO_STATION(VehicleToMonitor.Vehicle, "OFF");
+    }
 }

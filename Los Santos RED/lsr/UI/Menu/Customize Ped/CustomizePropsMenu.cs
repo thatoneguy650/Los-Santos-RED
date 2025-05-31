@@ -54,11 +54,11 @@ public class CustomizePropsMenu
         PickPropMenu.InstructionalButtonsEnabled = false;
         PickPropMenu.OnMenuOpen += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
         PickPropMenu.OnMenuClose += (sender) =>
         {
-            PedCustomizer.CameraCycler.SetDefault();
+            //PedCustomizer.CameraCycler.SetDefault();
         };
 
     }

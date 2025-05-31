@@ -3,8 +3,11 @@ using LSR.Vehicles;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
 
 
 public class VehicleColorMenu
@@ -31,8 +34,12 @@ public class VehicleColorMenu
     private UIMenu dashboardcolorGroupMenu;
     private UIMenu colorFullMenu;
 
-
-
+    private List<ColorMenuItem> PrimaryColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem> SecondaryColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem> PearlColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem> WheelColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem> InteriorColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem> DashboardColorMenuItems = new List<ColorMenuItem>();
     public VehicleColorMenu(MenuPool menuPool, UIMenu vehicleHeaderMenu, ILocationInteractable player, VehicleExt moddingVehicle, VehicleVariation currentVariation, GameLocation gameLocation)
     {
         MenuPool = menuPool;
@@ -218,15 +225,15 @@ public class VehicleColorMenu
             //,new ColorLookup(147,"MODSHOP BLACK1","Unknown","MODSHOP BLACK1",209)
 
         };
+        PrimaryColorMenuItems = new List<ColorMenuItem>();
         CreateBetterColorMenu();
     }
-
-
     private void CreateBetterColorMenu()
     {
         CreateTypeSubMenus();
 
         //Add Color Sub Menu Here
+        int counter = 0;
         foreach (string colorGroupString in VehicleColors.GroupBy(x => x.ColorGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
             SetupPrimaryColors(colorGroupString);
@@ -239,9 +246,25 @@ public class VehicleColorMenu
             {
                 int colorPrice = GetColorPrice(cl);
                 UIMenuItem actualColorPrimary = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorPrimary.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                PrimaryColorMenuItems.Add(new ColorMenuItem(actualColorPrimary, cl.ColorID, counter));
+                bool isSelectedPrimary = CurrentVariation.PrimaryColor == cl.ColorID;
+                if(isSelectedPrimary)
+                {
+                    actualColorPrimary.RightLabel = "";
+                    actualColorPrimary.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorPrimary.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorPrimary.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorPrimary.Activated += (sender, selectedItem) =>
                 {
+                    if(CurrentVariation != null && CurrentVariation.PrimaryColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Primary");
+                        return;
+                    }
                     if(!ChargeClient(colorPrice))
                     {
                         return;
@@ -251,10 +274,29 @@ public class VehicleColorMenu
                 primarycolorGroupMenu.AddItem(actualColorPrimary);
 
 
+
+
+
                 UIMenuItem actualColorSecondary = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorSecondary.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                SecondaryColorMenuItems.Add(new ColorMenuItem(actualColorSecondary, cl.ColorID, counter));
+                bool isSelectedSecondary = CurrentVariation.SecondaryColor == cl.ColorID;
+                if (isSelectedSecondary)
+                {
+                    actualColorSecondary.RightLabel = "";
+                    actualColorSecondary.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorSecondary.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorSecondary.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorSecondary.Activated += (sender, selectedItem) =>
                 {
+                    if (CurrentVariation != null && CurrentVariation.SecondaryColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Secondary");
+                        return;
+                    }
                     if (!ChargeClient(colorPrice))
                     {
                         return;
@@ -265,10 +307,28 @@ public class VehicleColorMenu
 
 
 
+
+
                 UIMenuItem actualColorPearl = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorPearl.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                PearlColorMenuItems.Add(new ColorMenuItem(actualColorPearl, cl.ColorID, counter));
+                bool isSelectedPearl = CurrentVariation.PearlescentColor == cl.ColorID;
+                if (isSelectedPearl)
+                {
+                    actualColorPearl.RightLabel = "";
+                    actualColorPearl.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorPearl.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorPearl.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorPearl.Activated += (sender, selectedItem) =>
                 {
+                    if (CurrentVariation != null && CurrentVariation.PearlescentColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Pearlescent");
+                        return;
+                    }
                     if (!ChargeClient(colorPrice))
                     {
                         return;
@@ -279,10 +339,28 @@ public class VehicleColorMenu
 
 
 
+
+
                 UIMenuItem actualColorWheel = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorWheel.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                WheelColorMenuItems.Add(new ColorMenuItem(actualColorWheel, cl.ColorID, counter));
+                bool isSelectedWheel = CurrentVariation.WheelColor == cl.ColorID;
+                if (isSelectedWheel)
+                {
+                    actualColorWheel.RightLabel = "";
+                    actualColorWheel.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorWheel.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorWheel.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorWheel.Activated += (sender, selectedItem) =>
                 {
+                    if (CurrentVariation != null && CurrentVariation.WheelColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Wheel");
+                        return;
+                    }
                     if (!ChargeClient(colorPrice))
                     {
                         return;
@@ -292,10 +370,28 @@ public class VehicleColorMenu
                 wheelcolorGroupMenu.AddItem(actualColorWheel);
 
 
+
+
                 UIMenuItem actualColorInterior = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorInterior.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                InteriorColorMenuItems.Add(new ColorMenuItem(actualColorInterior, cl.ColorID, counter));
+                bool isSelectedInterior = CurrentVariation.InteriorColor == cl.ColorID;
+                if (isSelectedInterior)
+                {
+                    actualColorInterior.RightLabel = "";
+                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorInterior.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorInterior.Activated += (sender, selectedItem) =>
                 {
+                    if (CurrentVariation != null && CurrentVariation.InteriorColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Interior");
+                        return;
+                    }
                     if (!ChargeClient(colorPrice))
                     {
                         return;
@@ -304,10 +400,30 @@ public class VehicleColorMenu
                 };
                 interiorcolorGroupMenu.AddItem(actualColorInterior);
 
+
+
+
+
                 UIMenuItem actualColorDashboard = new UIMenuItem(cl.ColorName, cl.FullColorName);
-                actualColorDashboard.RightLabel = $"~r~${GetColorPrice(cl)}~s~";
+                DashboardColorMenuItems.Add(new ColorMenuItem(actualColorDashboard, cl.ColorID, counter));
+                bool isSelectedDashboard = CurrentVariation.DashboardColor == cl.ColorID;
+                if (isSelectedDashboard)
+                {
+                    actualColorInterior.RightLabel = "";
+                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                }
+                else
+                {
+                    actualColorInterior.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.None;
+                }
                 actualColorDashboard.Activated += (sender, selectedItem) =>
                 {
+                    if (CurrentVariation != null && CurrentVariation.DashboardColor == cl.ColorID)
+                    {
+                        DisplayMessage("Already Set as Dashboard");
+                        return;
+                    }
                     if (!ChargeClient(colorPrice))
                     {
                         return;
@@ -316,8 +432,27 @@ public class VehicleColorMenu
                 };
                 dashboardcolorGroupMenu.AddItem(actualColorDashboard);
 
+
+
+
+
+
+
+
+                counter++;
+
             }
         }
+    }
+
+    private void DisplayMessage(string v)
+    {
+        if (GameLocation == null)
+        {
+            return;
+        }
+        GameLocation.PlaySuccessSound();
+        GameLocation.DisplayMessage("Information", v);
     }
 
     private bool ChargeClient(int price)
@@ -331,7 +466,6 @@ public class VehicleColorMenu
         Player.BankAccounts.GiveMoney(-1 * price, true);
         return true;
     }
-
     private void DisplayNotEnoughFunds(int price)
     {
         if(GameLocation == null)
@@ -381,6 +515,9 @@ public class VehicleColorMenu
         dashboardColorMenu.SubtitleText = "DASHBOARD COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Dashboard Colors";
     }
+
+
+
     private void SetupPrimaryColors(string colorGroupString)
     {
         primarycolorGroupMenu = MenuPool.AddSubMenu(primaryColorMenu, colorGroupString);
@@ -398,12 +535,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = PrimaryColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if(lookupResult == null)
             {
                 return;
             }
-            SetPrimaryColor(vcl.ColorID, false);
+            SetPrimaryColor(lookupResult.ColorID, false);
         };
         primarycolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -420,16 +557,60 @@ public class VehicleColorMenu
             {
                 return;
             }
-            //EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = PrimaryColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            //EntryPoint.WriteToConsole($"FINAL COLOR: {vcl.ColorID} {vcl.ColorName} {vcl.FullColorName}");
-            SetPrimaryColor(vcl.ColorID, false);
+            SetPrimaryColor(lookupResult.ColorID, false);
         };
     }
+    private void SetPrimaryColor(int colorID, bool setVariation)
+    {
+        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        int secondaryColor = 0;
+        if (CurrentVariation != null)
+        {
+            secondaryColor = CurrentVariation.SecondaryColor;
+            if (setVariation)
+            {
+                CurrentVariation.PrimaryColor = colorID;
+                SyncPrimaryColors(colorID);
+            }
+        }
+        NativeFunction.Natives.SET_VEHICLE_COLOURS(ModdingVehicle.Vehicle, colorID, secondaryColor);
+    }
+    private void SyncPrimaryColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in PrimaryColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     private void SetupSecondaryColors(string colorGroupString)
     {
         secondarycolorGroupMenu = MenuPool.AddSubMenu(secondaryColorMenu, colorGroupString);
@@ -447,12 +628,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = SecondaryColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetSecondaryColor(vcl.ColorID, false);
+            SetSecondaryColor(lookupResult.ColorID, false);
         };
         secondarycolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -469,15 +650,51 @@ public class VehicleColorMenu
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = SecondaryColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetSecondaryColor(vcl.ColorID, false);
+            SetSecondaryColor(lookupResult.ColorID, false);
         };
     }
+    private void SetSecondaryColor(int colorID, bool setVariation)
+    {
+        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        int primaryColor = 0;
+        if (CurrentVariation != null)
+        {
+            primaryColor = CurrentVariation.PrimaryColor;
+            if (setVariation)
+            {
+                CurrentVariation.SecondaryColor = colorID;
+                SyncSecondaryColors(colorID);
+            }
+        }
+        NativeFunction.Natives.SET_VEHICLE_COLOURS(ModdingVehicle.Vehicle, primaryColor, colorID);
+    }
+    private void SyncSecondaryColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in SecondaryColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
+
     private void SetupPearlColors(string colorGroupString)
     {
         pearlescentcolorGroupMenu = MenuPool.AddSubMenu(pearlescentColorMenu, colorGroupString);
@@ -496,12 +713,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = PearlColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetPearlColor(vcl.ColorID, false);
+            SetPearlColor(lookupResult.ColorID, false);
         };
         pearlescentcolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -518,16 +735,51 @@ public class VehicleColorMenu
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = PearlColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetPearlColor(vcl.ColorID, false);
+            SetPearlColor(lookupResult.ColorID, false);
         };
 
     }
+    private void SetPearlColor(int colorID, bool setVariation)
+    {
+        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        int wheelColor = 0;
+        if (CurrentVariation != null)
+        {
+            wheelColor = CurrentVariation.WheelColor;
+            if (setVariation)
+            {
+                CurrentVariation.PearlescentColor = colorID;
+                SyncPearlColors(colorID);
+            }
+        }
+        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(ModdingVehicle.Vehicle, colorID, wheelColor);
+    }
+    private void SyncPearlColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in PearlColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
     private void SetupWheelColors(string colorGroupString)
     {
         wheelcolorGroupMenu = MenuPool.AddSubMenu(wheelColorMenu, colorGroupString);
@@ -545,12 +797,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = WheelColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetWheelColor(vcl.ColorID, false);
+            SetWheelColor(lookupResult.ColorID, false);
         };
         wheelcolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -567,15 +819,52 @@ public class VehicleColorMenu
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = WheelColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetWheelColor(vcl.ColorID, false);
+            SetWheelColor(lookupResult.ColorID, false);
         };
     }
+    private void SetWheelColor(int colorID, bool setVariation)
+    {
+        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        int pearlColor = 0;
+        if (CurrentVariation != null)
+        {
+            pearlColor = CurrentVariation.PearlescentColor;
+            if (setVariation)
+            {
+                CurrentVariation.WheelColor = colorID;
+                SyncWheelColors(colorID);
+            }
+        }
+        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(ModdingVehicle.Vehicle, pearlColor, colorID);
+    }
+    private void SyncWheelColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in WheelColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
+
+
     private void SetupInteriorColors(string colorGroupString)
     {
         interiorcolorGroupMenu = MenuPool.AddSubMenu(interiorColorMenu, colorGroupString);
@@ -593,12 +882,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = InteriorColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetInteriorColor(vcl.ColorID, false);
+            SetInteriorColor(lookupResult.ColorID, false);
         };
         interiorcolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -615,15 +904,46 @@ public class VehicleColorMenu
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = InteriorColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetInteriorColor(vcl.ColorID, false);
+            SetInteriorColor(lookupResult.ColorID, false);
         };
     }
+    private void SetInteriorColor(int colorID, bool setVariation)
+    {
+        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if (CurrentVariation != null && setVariation)
+        {
+            CurrentVariation.InteriorColor = colorID;
+            SyncInteriorColors(colorID);
+        }
+        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(ModdingVehicle.Vehicle, colorID);
+    }
+    private void SyncInteriorColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in InteriorColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
+
     private void SetupDashboardColors(string colorGroupString)
     {
         dashboardcolorGroupMenu = MenuPool.AddSubMenu(dashboardColorMenu, colorGroupString);
@@ -641,12 +961,12 @@ public class VehicleColorMenu
             {
                 return;
             }
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = DashboardColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetDashboardColor(vcl.ColorID, false);
+            SetDashboardColor(lookupResult.ColorID, false);
         };
         dashboardcolorGroupMenu.OnMenuClose += (sender) =>
         {
@@ -663,94 +983,13 @@ public class VehicleColorMenu
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"newIndex: {newIndex} selectItem:{selectedItem.Description}");
-            VehicleColorLookup vcl = VehicleColors.Where(x => x.FullColorName == selectedItem.Description).FirstOrDefault();
-            if (vcl == null)
+            ColorMenuItem lookupResult = DashboardColorMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
+            if (lookupResult == null)
             {
                 return;
             }
-            SetDashboardColor(vcl.ColorID, false);
+            SetDashboardColor(lookupResult.ColorID, false);
         };
-    }
-    private void SetPrimaryColor(int colorID, bool setVariation)
-    {
-        if(ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        int secondaryColor = 0;
-        if(CurrentVariation != null)
-        {
-            secondaryColor = CurrentVariation.SecondaryColor;
-            if(setVariation)
-            {
-                CurrentVariation.PrimaryColor = colorID;
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_COLOURS(ModdingVehicle.Vehicle, colorID, secondaryColor);
-    }
-    private void SetSecondaryColor(int colorID, bool setVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        int primaryColor = 0;
-        if (CurrentVariation != null)
-        {
-            primaryColor = CurrentVariation.PrimaryColor;
-            if (setVariation)
-            {
-                CurrentVariation.SecondaryColor = colorID;
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_COLOURS(ModdingVehicle.Vehicle, primaryColor, colorID);
-    }
-    private void SetPearlColor(int colorID, bool setVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        int wheelColor = 0;
-        if (CurrentVariation != null)
-        {
-            wheelColor = CurrentVariation.WheelColor;
-            if (setVariation)
-            {
-                CurrentVariation.PearlescentColor = colorID;
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(ModdingVehicle.Vehicle, colorID, wheelColor);
-    }
-    private void SetWheelColor(int colorID, bool setVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        int pearlColor = 0;
-        if (CurrentVariation != null)
-        {
-            pearlColor = CurrentVariation.PearlescentColor;
-            if (setVariation)
-            {
-                CurrentVariation.WheelColor = colorID;
-            }
-        }
-        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(ModdingVehicle.Vehicle, pearlColor, colorID);
-    }
-    private void SetInteriorColor(int colorID, bool setVariation)
-    {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
-            return;
-        }
-        if (CurrentVariation != null && setVariation)
-        {
-            CurrentVariation.InteriorColor = colorID;  
-        }
-        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(ModdingVehicle.Vehicle, colorID);
     }
     private void SetDashboardColor(int colorID, bool setVariation)
     {
@@ -760,10 +999,33 @@ public class VehicleColorMenu
         }
         if (CurrentVariation != null && setVariation)
         {
-            CurrentVariation.DashboardColor = colorID;    
+            CurrentVariation.DashboardColor = colorID;
+            SyncDashboardColors(colorID);
         }
         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(ModdingVehicle.Vehicle, colorID);
     }
+    private void SyncDashboardColors(int colorID)
+    {
+        foreach (ColorMenuItem colorMenuItem in DashboardColorMenuItems)
+        {
+            if (colorMenuItem.ColorID == colorID)
+            {
+                colorMenuItem.UIMenuItem.RightLabel = "";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
+            }
+            else
+            {
+                colorMenuItem.UIMenuItem.RightLabel = $"~r~${GetColorPrice(colorMenuItem.ColorID)}~s~";
+                colorMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
+            }
+
+        }
+    }
+
+
+
+
+
     private void ResetColors()
     {
         if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists() || CurrentVariation == null)
@@ -778,5 +1040,23 @@ public class VehicleColorMenu
     private int GetColorPrice(VehicleColorLookup cl)
     {
         return 500;
+    }
+    private int GetColorPrice(int colorID)
+    {
+        return 500;
+    }
+
+    private class ColorMenuItem
+    {
+        public ColorMenuItem(UIMenuItem uIMenuItem, int iD, int index)
+        {
+            UIMenuItem = uIMenuItem;
+            ColorID = iD;
+            Index = index;
+        }
+
+        public UIMenuItem UIMenuItem { get; set; }
+        public int ColorID { get; set; }
+        public int Index { get; set; }
     }
 }

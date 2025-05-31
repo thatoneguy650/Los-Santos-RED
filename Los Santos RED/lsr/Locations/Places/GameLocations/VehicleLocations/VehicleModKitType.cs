@@ -14,13 +14,13 @@ using System.Windows.Forms;
 
 public class VehicleModKitType
 {
-    private VehicleVariation CurrentVariation => ModShopMenu.CurrentVariation;
-    private VehicleExt ModdingVehicle => ModShopMenu.ModdingVehicle;
-    private UIMenu InteractionMenu;
-    private MenuPool MenuPool;
-    private ModShopMenu ModShopMenu;
-    private ILocationInteractable Player;
-    private List<ModKitMenuItem> MenuItems = new List<ModKitMenuItem>();
+    protected VehicleVariation CurrentVariation => ModShopMenu.CurrentVariation;
+    protected VehicleExt ModdingVehicle => ModShopMenu.ModdingVehicle;
+    protected UIMenu InteractionMenu;
+    protected MenuPool MenuPool;
+    protected ModShopMenu ModShopMenu;
+    protected ILocationInteractable Player;
+    protected List<ModKitMenuItem> MenuItems = new List<ModKitMenuItem>();
     public VehicleModKitType(string name, int id, ModShopMenu modShopMenu, UIMenu interactionMenu, MenuPool menuPool, ILocationInteractable player)
     {
         TypeName = name;
@@ -30,10 +30,20 @@ public class VehicleModKitType
         InteractionMenu = interactionMenu;
         Player = player;
     }
-
+    public VehicleModKitType(string name, int id, string description, ModShopMenu modShopMenu, UIMenu interactionMenu, MenuPool menuPool, ILocationInteractable player)
+    {
+        TypeName = name;
+        TypeID = id;
+        ModShopMenu = modShopMenu;
+        MenuPool = menuPool;
+        InteractionMenu = interactionMenu;
+        Player = player;
+        Description = description;
+    }
     public string TypeName { get; }
     public int TypeID { get; }
-    public void AddToMenu()
+    public string Description { get; }
+    public virtual void AddToMenu()
     {
         if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
         {
@@ -44,6 +54,14 @@ public class VehicleModKitType
         if (TotalMods > 0)
         {
             UIMenu modKitTypeSubMenu = MenuPool.AddSubMenu(InteractionMenu, TypeName);
+            UIMenuItem modKitTypeSubMenuItem = InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1];
+
+            if (!string.IsNullOrEmpty(Description))
+            {
+                modKitTypeSubMenuItem.Description = Description;
+            }
+
+
             modKitTypeSubMenu.OnMenuOpen += (sender) =>
             {
                 ModKitMenuItem modKitMenuItem = MenuItems.Where(x => x.Index == modKitTypeSubMenu.CurrentSelection).FirstOrDefault();
@@ -103,6 +121,12 @@ public class VehicleModKitType
                 
                 modkitItem.Activated += (sender, e) =>
                 {
+                    VehicleMod existingMod2 = CurrentVariation.VehicleMods?.Where(x => x.ID == TypeID).FirstOrDefault();
+                    if (existingMod2 != null && existingMod2.Output == myId)
+                    {
+                        ModShopMenu.DisplayMessage("You already have this mod installed");
+                        return;
+                    }
                     if (Player.BankAccounts.GetMoney(true) < modKitPrice)
                     {
                         ModShopMenu.DisplayInsufficientFundsMessage(modKitPrice);
@@ -126,9 +150,7 @@ public class VehicleModKitType
             }
         }
     }
-
-
-    private void ResetModType()
+    protected virtual void ResetModType()
     {
         //SyncMenuItems();
         if (CurrentVariation.VehicleMods == null || !CurrentVariation.VehicleMods.Any(x => x.ID == TypeID))
@@ -145,7 +167,7 @@ public class VehicleModKitType
         SetVehicleMod(currentMod.Output, false);
 
     }
-    private void SetVehicleMod(int modKitValueID, bool updateVariation)
+    protected virtual void SetVehicleMod(int modKitValueID, bool updateVariation)
     {
         if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
         {
@@ -171,7 +193,7 @@ public class VehicleModKitType
         NativeFunction.Natives.SET_VEHICLE_MOD(ModdingVehicle.Vehicle, TypeID, modKitValueID, false);
         EntryPoint.WriteToConsole($"SetVehicleMod RAN {TypeID} {modKitValueID}");
     }
-    private void SyncMenuItems()
+    protected void SyncMenuItems()
     {
         VehicleMod currentMod = CurrentVariation.VehicleMods.Where(x => x.ID == TypeID).FirstOrDefault();
         foreach (ModKitMenuItem item in MenuItems)
@@ -192,7 +214,7 @@ public class VehicleModKitType
     }
 
 
-    private string GetModItemName( int modKitValueID)
+    protected virtual string GetModItemName( int modKitValueID)
     {
         EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID}");
         if(modKitValueID == -1)
@@ -223,7 +245,7 @@ public class VehicleModKitType
 
 
 
-    private class ModKitMenuItem
+    protected class ModKitMenuItem
     {
         public ModKitMenuItem(UIMenuItem uIMenuItem, int iD, int index)
         {
