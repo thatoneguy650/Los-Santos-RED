@@ -260,6 +260,8 @@ public class CivilianSettings : ISettingsDefaultable
     public int TotalSpawnedServiceMembersLimit { get; set; }
 
 
+    [Description("Total limit of spawned regular peds.")]
+    public int TotalSpawnedCiviliansLimit { get; set; }
     public int PossibleSurrenderPercentage { get; set; } = 40;
     public int WantedPossibleSurrenderPercentage { get; set; } = 10;
     public float NeverSeenPlayerSightDecreasePercentage { get; set; }
@@ -381,6 +383,7 @@ public class CivilianSettings : ISettingsDefaultable
         DisableWritheShooting = true;
 
         TotalSpawnedServiceMembersLimit = 9;
+        TotalSpawnedCiviliansLimit = 10;
 
         PossibleSurrenderPercentage = 40;
         WantedPossibleSurrenderPercentage = 10;
@@ -410,7 +413,7 @@ public class CivilianSettings : ISettingsDefaultable
         HidingInUnknownVehicleRecognizeIncreaseTime = 500;
         NeverSeenPlayerRecognizeIncreaseTime = 500;
         SeenPlayerRecognizeDecreaseTime = 1000;
-        VisiblyArmedRecognizeDecreaseTime = 500;
+        VisiblyArmedRecognizeDecreaseTime = 2500;
 
         InjureOnVehicleCrash = true;
 

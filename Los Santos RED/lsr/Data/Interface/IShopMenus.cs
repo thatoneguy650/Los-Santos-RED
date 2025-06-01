@@ -20,5 +20,6 @@ namespace LosSantosRED.lsr.Interface
         ShopMenuGroup GetSpecificMenuGroup(string shopMenuGroupID);
         List<MedicalTreatment> GetMedicalTreatments(string treatmentOptionsID);
         PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID);
+        VehicleVariationShopMenu GetVehicleVariationMenu(string vehicleVariationShopMenuID);
     }
 }

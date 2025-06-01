@@ -60,6 +60,7 @@ public class CustomizeAffiliationMenu
         AffiliationSubMenu.OnMenuOpen += (sender) =>
         {
             //PedCustomizer.CameraCycler.SetDefault();
+
         };
         AffiliationSubMenu.OnMenuClose += (sender) =>
         {

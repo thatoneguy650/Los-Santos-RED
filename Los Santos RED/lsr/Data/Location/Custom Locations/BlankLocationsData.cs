@@ -37,9 +37,26 @@ public class BlankLocationsData
         YardiesGang();
         RedneckGang();
         VarriosGang();
+        RandomPeds();
     }
 
-
+    private void RandomPeds()
+    {
+        BlankLocation TestZone = new BlankLocation(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f, "civspawntest", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(870.0688f, -1653.104f, 30.33731f), 158.8431f, 35f) { OverrideDispatchablePersonGroupID = "RegularPeds", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario  },
+                },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(876.3956f, -1656.16f, 30.24174f), 87.00474f, 35f){ OverrideDispatchableVehicleGroupID = "OffDutyCopVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(TestZone);
+    }
 
     private void RooftopSnipers()
     {

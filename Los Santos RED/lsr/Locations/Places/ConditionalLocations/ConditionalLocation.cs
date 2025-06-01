@@ -40,6 +40,9 @@ public class ConditionalLocation
     protected string MasterAssociationID;
     protected bool IsPerson;
     protected GameLocation GameLocation;
+    protected IDispatchablePeople DispatchablePeople;
+    protected IDispatchableVehicles DispatchableVehicles;
+
     public ConditionalLocation()
     {
     }
@@ -108,7 +111,7 @@ public class ConditionalLocation
     //}
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, 
         IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time,
-        IModItems modItems, GameLocation gameLocation)
+        IModItems modItems, GameLocation gameLocation, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles)
     {
         Player = player;
         IsPerson = isPerson;
@@ -129,6 +132,8 @@ public class ConditionalLocation
         Time = time;
         ModItems = modItems;
         GameLocation = gameLocation;
+        DispatchablePeople = dispatchablePeople;
+        DispatchableVehicles = dispatchableVehicles;
         AttemptedSpawn = DetermineRun(force);
         if (!AttemptedSpawn)
         {

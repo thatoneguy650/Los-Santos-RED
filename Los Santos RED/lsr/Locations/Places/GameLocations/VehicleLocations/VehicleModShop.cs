@@ -39,6 +39,14 @@ public class VehicleModShop : GameLocation
 
     public bool HasNoGarageDoors { get; set; } = false;
 
+
+    public int DefaultPrice { get; set; } = 500;
+    public int DefaultPriceScalar { get; set; } = 100;
+
+    public string VehicleVariationShopMenuID { get; set; } = "GenericModShop";
+    [XmlIgnore]
+    public VehicleVariationShopMenu VehicleVariationShopMenu { get; set; }
+
     public VehicleModShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -172,6 +180,12 @@ public class VehicleModShop : GameLocation
         }
         GameFiber.Sleep(1000);
     }
+
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
+    {
+        VehicleVariationShopMenu = shopMenus.GetVehicleVariationMenu(VehicleVariationShopMenuID);
+        base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
+    }
     private void GenerateModMenu()
     {
         if (!Player.IsInVehicle || Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
@@ -179,7 +193,8 @@ public class VehicleModShop : GameLocation
             return;
         }
         EntryPoint.WriteToConsole("ORBIT CAMERA START");
-        ModShopMenu modShopMenu = new ModShopMenu(Player, MenuPool, InteractionMenu, this, MaxRepairCost, RepairHours, WashCost, WashHours, null);
+        
+        ModShopMenu modShopMenu = new ModShopMenu(Player, MenuPool, InteractionMenu, this, VehicleVariationShopMenu, MaxRepairCost, RepairHours, WashCost, WashHours, null, DefaultPrice, DefaultPriceScalar, PlateTypes);
         modShopMenu.CreateMenu();
     }
     public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)

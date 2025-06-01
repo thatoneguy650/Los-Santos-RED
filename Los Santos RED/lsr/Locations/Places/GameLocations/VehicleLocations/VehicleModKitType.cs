@@ -60,6 +60,10 @@ public class VehicleModKitType
             {
                 modKitTypeSubMenuItem.Description = Description;
             }
+            else
+            {
+                modKitTypeSubMenuItem.Description = TypeName;
+            }
 
 
             modKitTypeSubMenu.OnMenuOpen += (sender) =>
@@ -109,7 +113,7 @@ public class VehicleModKitType
 
 
 
-                int modKitPrice = ModShopMenu.GetModKitPrice(TypeID, myId);
+                int modKitPrice = GetPrice(TypeID, myId);
                 modkitItem.RightLabel = $"~r~${modKitPrice}~s~";
                 modkitItem.RightBadge = UIMenuItem.BadgeStyle.None;
 
@@ -207,13 +211,11 @@ public class VehicleModKitType
             }
             else
             {
-                item.UIMenuItem.RightLabel = $"~r~${ModShopMenu.GetModKitPrice(TypeID, item.ID)}~s~";
+                item.UIMenuItem.RightLabel = $"~r~${GetPrice(TypeID, item.ID)}~s~";
                 item.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
             }
         }
     }
-
-
     protected virtual string GetModItemName( int modKitValueID)
     {
         EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID}");
@@ -244,7 +246,23 @@ public class VehicleModKitType
     }
 
 
-
+    protected virtual int GetPrice(int ModKitTypeID, int ModKitTypeValueID)
+    {
+        if(ModShopMenu == null)
+        {
+            return 500;
+        }
+        if(ModShopMenu.VehicleVariationShopMenu == null)
+        {
+            return ModShopMenu.DefaultPrice + (ModShopMenu.DefaultPriceScalar * ModKitTypeValueID);
+        }
+        VehicleModKitShopMenuItem vmksmi = ModShopMenu.VehicleVariationShopMenu.VehicleModKitShopMenuItems.Where(x=> x.ModTypeID == ModKitTypeID).FirstOrDefault();
+        if(vmksmi == null)
+        {
+            return ModShopMenu.DefaultPrice + (ModShopMenu.DefaultPriceScalar * ModKitTypeValueID);
+        }
+        return vmksmi.BasePrice + (vmksmi.PriceScale * ModKitTypeValueID);
+    }
     protected class ModKitMenuItem
     {
         public ModKitMenuItem(UIMenuItem uIMenuItem, int iD, int index)

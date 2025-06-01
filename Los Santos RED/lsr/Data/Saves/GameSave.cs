@@ -113,7 +113,7 @@ namespace LosSantosRED.lsr.Data
             SaveAgencies(player);
             SaveCellPhone(player); 
             SaveBusinesses(player);
-            SavePayoutProperties(player);
+            //SavePayoutProperties(player);
         }
 
         private void SaveDemographics(ISaveable player)
@@ -407,7 +407,7 @@ namespace LosSantosRED.lsr.Data
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
                 LoadBusinesses(player,placesOfInterest,modItems,settings);
-                LoadPayoutProperties(player, placesOfInterest);
+                //LoadPayoutProperties(player, placesOfInterest);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();

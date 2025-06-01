@@ -41,14 +41,14 @@ public class Properties
                 businessesPayingOut++;
             }
         }
-        foreach(GameLocation location in PayoutProperties)
-        {
-            if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
-            {
-                location.Payout(Player, Time);
-                businessesPayingOut++;
-            }
-        }
+        //foreach(GameLocation location in PayoutProperties)
+        //{
+        //    if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
+        //    {
+        //        location.Payout(Player, Time);
+        //        businessesPayingOut++;
+        //    }
+        //}
         foreach(Business business in Businesses)
         {
             if (business.DatePayoutDue != null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >= 0)

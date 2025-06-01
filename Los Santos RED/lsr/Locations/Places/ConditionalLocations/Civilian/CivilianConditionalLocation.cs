@@ -12,6 +12,9 @@ using System.Xml.Linq;
 public class CivilianConditionalLocation : ConditionalLocation
 {
     //protected GameLocation GameLocation;
+
+    public string OverrideDispatchableVehicleGroupID { get; set; }
+    public string OverrideDispatchablePersonGroupID { get; set; }
     public CivilianConditionalLocation(Vector3 location, float heading, float percentage) : base(location, heading, percentage)
     {
 
@@ -45,14 +48,14 @@ public class CivilianConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        //if (World.Pedestrians.TotalSpawnedServiceWorkers >= Settings.SettingsManager.CivilianSettings.TotalSpawnedServiceMembersLimit)
-        //{
-        //    return false;
-        //}
-        //if (GameLocation == null)
-        //{
-        //    return false;
-        //}
+        if (World.Pedestrians.TotalSpawnedCivilians >= Settings.SettingsManager.CivilianSettings.TotalSpawnedCiviliansLimit)
+        {
+            return false;
+        }
+        if (GameLocation == null)
+        {
+            return false;
+        }
         return base.DetermineRun(force);
     }
     public override void GenerateSpawnTypes()
@@ -61,21 +64,44 @@ public class CivilianConditionalLocation : ConditionalLocation
         {
             return;
         }
-        if(GameLocation.AssignedOrganization == null)
+        if (GameLocation.AssignedOrganization == null && string.IsNullOrEmpty(OverrideDispatchableVehicleGroupID) && string.IsNullOrEmpty(OverrideDispatchablePersonGroupID))
         {
             return;
         }
         if (IsPerson || !IsEmpty)
         {
-            DispatchablePerson = GameLocation.AssignedOrganization.GetRandomPed(World.TotalWantedLevel, RequiredPedGroup);
+            GetPersonType();
         }
         if (!IsPerson)
         {
-            DispatchableVehicle = GameLocation.AssignedOrganization.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings);
+            GetVehicleType();
             if (!IsEmpty && DispatchableVehicle != null)
             {
-                DispatchablePerson = GameLocation.AssignedOrganization.GetRandomPed(World.TotalWantedLevel, DispatchableVehicle.RequiredPedGroup);
+                GetPersonType();
             }
+        }
+
+    }
+    private void GetPersonType()
+    {
+        if (GameLocation.AssignedOrganization != null)
+        {
+            DispatchablePerson = GameLocation.AssignedOrganization.GetRandomPed(World.TotalWantedLevel, RequiredPedGroup);
+        }
+        else if (!string.IsNullOrEmpty(OverrideDispatchablePersonGroupID))
+        {
+            DispatchablePerson = DispatchablePeople.GetPersonData(OverrideDispatchablePersonGroupID)?.RandomElementByWeight(x => x.CurrentSpawnChance(World.TotalWantedLevel));
+        }
+    }
+    private void GetVehicleType()
+    {
+        if (GameLocation.AssignedOrganization != null)
+        {
+            DispatchableVehicle = GameLocation.AssignedOrganization.GetRandomVehicle(World.TotalWantedLevel, AllowAirVehicle, AllowBoat, true, RequiredVehicleGroup, Settings);
+        }
+        else if (!string.IsNullOrEmpty(OverrideDispatchableVehicleGroupID))
+        {
+            DispatchableVehicle = DispatchableVehicles.GetVehicleData(OverrideDispatchableVehicleGroupID)?.RandomElementByWeight(x => x.CurrentSpawnChance(World.TotalWantedLevel, Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles));
         }
     }
 }

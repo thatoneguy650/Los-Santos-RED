@@ -40,6 +40,7 @@ public class OrbitCamera
     private float OffsetIncrementX = 0.25f;
     private float OffsetIncrementY = 0.25f;
     private float OffsetIncrementZ = 0.25f;
+    private float initialRadius;
     public OrbitCamera(ILocationInteractable player, Entity orbitingEntity, Camera existingCamera, ISettingsProvideable settings, MenuPool menuPool)
     {
         Player = player;
@@ -60,6 +61,7 @@ public class OrbitCamera
     public float InitialVerticalOffset { get; set; } = 100f;
     public void Setup()
     {
+        initialRadius = Radius;
         if (!OrbitingEntity.Exists())
         {
             EntryPoint.WriteToConsole("ORBIT CAMERA ENTITY IS MISSING");
@@ -139,14 +141,14 @@ public class OrbitCamera
             }
             _isInputPressed = IsInputPressed;
         }
-        if (IsInputPressed)
-        {
-            MenuPool.Draw();
-        }
-        else
-        {
-            MenuPool.ProcessMenus();
-        }
+        //if (IsInputPressed)
+        //{
+        //    MenuPool.Draw();
+        //}
+        //else
+        //{
+        //    MenuPool.ProcessMenus();
+        //}
     }
 
     private void OnReleasedMouseDown()
@@ -166,12 +168,12 @@ public class OrbitCamera
         Player.ButtonPrompts.RemovePrompts("orbitCameraExtra");
         Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Move Camera", "orbitCameramovecamera", GameControl.LookLeftRight, 10);
         Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Zoom", "orbitCamerazoom", GameControl.WeaponWheelNext, 9);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Up", "orbitCameramoveup", GameControl.MoveUpOnly, 8);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Down", "orbitCameramovedown", GameControl.MoveDownOnly, 7);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Left", "orbitCameramoveleft", GameControl.MoveLeftOnly, 6);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Right", "orbitCameramoveright", GameControl.MoveRightOnly, 5);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Back", "orbitCameramoveback", GameControl.SelectWeaponHandgun, 4);
-        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Forth", "orbitCameramoveforth", GameControl.SelectWeaponShotgun, 3);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Height", "orbitCameramoveup", GameControl.MoveUpDown, 8);
+        //Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Down", "orbitCameramovedown", GameControl.MoveDownOnly, 7);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Side", "orbitCameramoveleft", GameControl.MoveLeftRight, 6);
+        //Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Right", "orbitCameramoveright", GameControl.MoveRightOnly, 5);
+        Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Front", "orbitCameramoveback", GameControl.SelectWeaponHandgun, 4);
+        //Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Position Forth", "orbitCameramoveforth", GameControl.SelectWeaponShotgun, 3);
     }
 
     private void CalculateFinalPosition()
@@ -179,7 +181,7 @@ public class OrbitCamera
         //All vector magic from https://github.com/Jorn08/dragcam/blob/master/client.lua
         angleZ = angleZ - XNormalValue;// left / right
         angleY = angleY + YNormalValue;// up / down
-        angleY = Extensions.Clamp(angleY, 0.0f, 330f);// 89.0f);
+        angleY = Extensions.Clamp(angleY, -40.0f, 360f);// 89.0f);
         float cosAngleZ = (float)Math.Cos(Extensions.ToRadians(angleZ));
         float cosAngleY = (float)Math.Cos(Extensions.ToRadians(angleY));
         float sinAngleZ = (float)Math.Sin(Extensions.ToRadians(angleZ));
@@ -262,6 +264,27 @@ public class OrbitCamera
         {
             CamOffsetY -= OffsetIncrementY;
         }
+    }
+
+    public void SetOffset(Vector3 vector3, float radius)
+    {
+        CamOffsetX = vector3.X;
+        CamOffsetY = vector3.Y;
+        CamOffsetZ = vector3.Z;
+        Radius = radius;
+    }
+
+    public void Reset()
+    {
+        CamOffsetX = 0f;
+        CamOffsetY = 0f;
+        CamOffsetZ = 0f;
+        Radius = initialRadius;
+    }
+
+    public void SetEntity(Ped modelPed)
+    {
+        OrbitingEntity = modelPed;
     }
 }
 

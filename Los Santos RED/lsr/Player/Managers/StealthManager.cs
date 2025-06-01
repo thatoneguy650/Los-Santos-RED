@@ -105,6 +105,10 @@ public class StealthManager
                 RecognizeTime += Settings.SettingsManager.CivilianSettings.NeverSeenPlayerRecognizeIncreaseTime;
             }
         }
+        if(RecognizeTime <= 0)
+        {
+            RecognizeTime = 0;
+        }
         return RecognizeTime;
     }
     public float GetSightDistanceScalar(PedExt pedExt)

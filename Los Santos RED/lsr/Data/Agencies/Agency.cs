@@ -100,18 +100,12 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public Color Color => Color.FromName(ColorString);
     public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : Classification == Classification.Security ? ResponseType.Security : ResponseType.LawEnforcement;
 
-    public float CorruptMemberPercentage { get; set; } = 10f;
-
-    public string CorruptMenuGroup { get; set; } = StaticStrings.CorruptDealerMenuGroupID;
-
-
 
 
 
     public int MoneyMin { get; set; } = 20;
     public int MoneyMax { get; set; } = 900;
-    public int CorruptMoneyMin { get; set; } = 400;
-    public int CorruptMoneyMax { get; set; } = 8000;
+
 
 
     public bool CanCurrentlySpawnAnywhere(int wantedLevel)
@@ -621,7 +615,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     {
         PercentageWithLongGuns = 100f;
         PercentageUsingLongGunsWheneverPossible = 40f;
-        CorruptMemberPercentage = 30f;
-        EntryPoint.WriteToConsole("Agency SetValuesOnDeserialized");
+        //CorruptMemberPercentage = 30f;
+        //EntryPoint.WriteToConsole("Agency SetValuesOnDeserialized");
     }
 }

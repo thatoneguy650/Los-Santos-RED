@@ -13,6 +13,7 @@ public class CivilianSpawnTask : SpawnTask
     protected ICrimes Crimes;
     protected IShopMenus ShopMenus;
     public bool SetPersistent { get; set; } = false;
+
     public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
         : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world, modItems)
     {
@@ -205,7 +206,11 @@ public class CivilianSpawnTask : SpawnTask
         EntryPoint.PersistentPedsCreated++;//TR
         bool isMale = PersonType.IsMale(ped);
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
-        PedExt CreatedPedExt = new PedExt(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), "", World);
+        string groupName = isMale ? "Man" : "Woman";
+        string newName = Names.GetRandomName(isMale);
+        PedExt CreatedPedExt = new PedExt(ped, Settings, Crimes, Weapons, newName, groupName, World);
+
+        EntryPoint.WriteToConsole($"CIV SPAWN TASK CREATED PED {groupName} SetPersistent{SetPersistent} newName{newName}");
         CreatedPedExt.WasModSpawned = true;
         World.Pedestrians.AddEntity(CreatedPedExt);
         CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);

@@ -79,10 +79,7 @@ public class WheelVehicleClassModKitType : VehicleModKitType
         {
             return;
         }
-
-
         NativeFunction.Natives.SET_VEHICLE_WHEEL_TYPE(ModdingVehicle.Vehicle, WheelTypeID);
-
         int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(ModdingVehicle.Vehicle, TypeID);
         if (TotalMods == 0)
         {
@@ -127,7 +124,7 @@ public class WheelVehicleClassModKitType : VehicleModKitType
                 hasModInstalled = true;
                 EntryPoint.WriteToConsole($"YOU HAVE INSTALLED typeID:{TypeID} valueID:{myId}");
             }
-            int modKitPrice = ModShopMenu.GetModKitPrice(TypeID, myId);
+            int modKitPrice = GetPrice(TypeID, myId);
             modkitItem.RightLabel = $"~r~${modKitPrice}~s~";
             modkitItem.RightBadge = UIMenuItem.BadgeStyle.None;
 
@@ -165,7 +162,20 @@ public class WheelVehicleClassModKitType : VehicleModKitType
             WheelClassSubMenu.AddItem(modkitItem);
         }
     }
-    
+
+    protected override int GetPrice(int ModKitTypeID, int ModKitTypeValueID)
+    {
+        int additional = 0;
+        if(ModShopMenu != null && ModShopMenu.VehicleVariationShopMenu != null)
+        {
+           VehicleModKitWheelTypeShopMenuItem vmkwtsmi = ModShopMenu.VehicleVariationShopMenu.VehicleModKitWheelTypeShopMenuItems.Where(x=> x.WheelTypeID == WheelTypeID).FirstOrDefault();
+            if(vmkwtsmi != null)
+            {
+                additional += vmkwtsmi.ExtraAmount;
+            }
+        }
+        return base.GetPrice(ModKitTypeID, ModKitTypeValueID) + additional;
+    }
 
 
 }

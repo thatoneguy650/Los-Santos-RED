@@ -301,7 +301,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultPedCustomizerLocation = new PedCustomizerLocation();
         DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
         DefaultPedCustomizerLocation.DefaultModelPedHeading = 182.7549f;
-        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(398.0133f, -1004.411f, -99.00411f); //new Vector3(402.5164f, -1002.847f, -99.2587f);
         List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
         CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(402.9301f, -998.267f, -98.51537f), new Vector3(0.004358141f, 0.9860916f, -0.1661458f), new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(402.8708f, -997.5441f, -98.30454f), new Vector3(-0.005195593f, 0.9991391f, -0.04116036f), new Rotator(-2.358982f, 2.136245E-06f, 0.2979394f), 1));
@@ -1732,30 +1732,28 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    },
             //   CanInteractWhenWanted = true,
             //},
-            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"RED Customs","Test")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                HasNoGarageDoors = true,
-                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
-                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
-                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
-            },
 
 
 
-            new VehicleModShop(new Vector3(865.2888f, -1715.959f, 29.20321f), 196.2501f,"RED Customs 2","Test2")
+
+            //new VehicleModShop(new Vector3(865.2888f, -1715.959f, 29.20321f), 196.2501f,"RED Customs","Pimp The Auto")
+            //{
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    HasNoGarageDoors = true,
+            //    VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
+            //    CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
+            //    CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
+            //    CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
+            //},
+
+            new VehicleModShop(new Vector3(854.3461f, -2094.082f, 29.83458f), 173.3708f,"Olson's Autos","Serving Imperial Blvd.")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 HasNoGarageDoors = true,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
-                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
-                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
-                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             },
-
-
 
         };
 

@@ -31,9 +31,12 @@ public class LocationDispatcher
     private ITimeControllable Time;
     private IModItems ModItems;
     private IInteriors Interiors;
+    private IDispatchablePeople DispatchablePeople;
+    private IDispatchableVehicles DispatchableVehicles;
 
     public LocationDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, 
-        IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, IInteriors interiors)
+        IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions, IWeatherReportable weatherReporter, 
+        ITimeControllable time, IModItems modItems, IInteriors interiors, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles)
     {
         Player = player;
         World = world;
@@ -54,6 +57,8 @@ public class LocationDispatcher
         Time = time;
         ModItems = modItems;
         Interiors = interiors;
+        DispatchablePeople = dispatchablePeople;
+        DispatchableVehicles = dispatchableVehicles;
     }
 
     public void Dispatch()
@@ -65,7 +70,8 @@ public class LocationDispatcher
                 foreach (ConditionalGroup cg in ps.PossibleGroupSpawns)
                 {
                     EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
-                    cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
+                    cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, 
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
                     GameFiber.Yield();
                 }
             }
@@ -78,7 +84,8 @@ public class LocationDispatcher
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                 {
                     EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {ps.Name}");
-                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems, ps);
+                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus,
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
                     GameFiber.Yield();
                 }
             }
@@ -93,7 +100,8 @@ public class LocationDispatcher
                     EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {ps.Name} {ps.AssociationID}");
 
 
-                    cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
+                    cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, 
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
                     GameFiber.Yield();
                 }
             }
@@ -184,8 +192,8 @@ public class LocationDispatcher
         {
             return;
         }
-        List<DispatchableVehicle> priorityList = agency.Vehicles.Where(x => x.ModelName == "dune5" || x.ModelName == "marshall" || x.ModelName == "jester2" || x.ModelName == "blazer5" || x.ModelName == "tampa3").OrderByDescending(x => x.AmbientSpawnChance).ToList();
-        //List<DispatchableVehicle> priorityList = agency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        //List<DispatchableVehicle> priorityList = agency.Vehicles.Where(x => x.ModelName == "dune5" || x.ModelName == "marshall" || x.ModelName == "jester2" || x.ModelName == "blazer5" || x.ModelName == "tampa3").OrderByDescending(x => x.AmbientSpawnChance).ToList();
+        List<DispatchableVehicle> priorityList = agency.Vehicles.OrderByDescending(x => x.AmbientSpawnChance).ToList();
         if (!priorityList.Any())
         {
             return;

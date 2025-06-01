@@ -18,6 +18,7 @@ public class VehicleColorMenu
     private VehicleExt ModdingVehicle;
     private VehicleVariation CurrentVariation;
     private GameLocation GameLocation;
+    private ModShopMenu ModShopMenu;
 
     private List<VehicleColorLookup> VehicleColors;
     private UIMenu primaryColorMenu;
@@ -40,7 +41,7 @@ public class VehicleColorMenu
     private List<ColorMenuItem> WheelColorMenuItems = new List<ColorMenuItem>();
     private List<ColorMenuItem> InteriorColorMenuItems = new List<ColorMenuItem>();
     private List<ColorMenuItem> DashboardColorMenuItems = new List<ColorMenuItem>();
-    public VehicleColorMenu(MenuPool menuPool, UIMenu vehicleHeaderMenu, ILocationInteractable player, VehicleExt moddingVehicle, VehicleVariation currentVariation, GameLocation gameLocation)
+    public VehicleColorMenu(MenuPool menuPool, UIMenu vehicleHeaderMenu, ILocationInteractable player, VehicleExt moddingVehicle, ModShopMenu modShopMenu, VehicleVariation currentVariation, GameLocation gameLocation)
     {
         MenuPool = menuPool;
         VehicleHeaderMenu = vehicleHeaderMenu;
@@ -48,6 +49,7 @@ public class VehicleColorMenu
         ModdingVehicle = moddingVehicle;
         CurrentVariation = currentVariation;
         GameLocation = gameLocation;
+        ModShopMenu = modShopMenu;
     }
     public void Setup()
     {
@@ -244,7 +246,7 @@ public class VehicleColorMenu
             SetupDashboardColors(colorGroupString);
             foreach (VehicleColorLookup cl in VehicleColors.Where(x => x.ColorGroup == colorGroupString))
             {
-                int colorPrice = GetColorPrice(cl);
+                int colorPrice = GetColorPrice(cl.ColorID);
                 UIMenuItem actualColorPrimary = new UIMenuItem(cl.ColorName, cl.FullColorName);
                 PrimaryColorMenuItems.Add(new ColorMenuItem(actualColorPrimary, cl.ColorID, counter));
                 bool isSelectedPrimary = CurrentVariation.PrimaryColor == cl.ColorID;
@@ -409,13 +411,13 @@ public class VehicleColorMenu
                 bool isSelectedDashboard = CurrentVariation.DashboardColor == cl.ColorID;
                 if (isSelectedDashboard)
                 {
-                    actualColorInterior.RightLabel = "";
-                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.Tick;
+                    actualColorDashboard.RightLabel = "";
+                    actualColorDashboard.RightBadge = UIMenuItem.BadgeStyle.Tick;
                 }
                 else
                 {
-                    actualColorInterior.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
-                    actualColorInterior.RightBadge = UIMenuItem.BadgeStyle.None;
+                    actualColorDashboard.RightLabel = $"~r~${GetColorPrice(cl.ColorID)}~s~";
+                    actualColorDashboard.RightBadge = UIMenuItem.BadgeStyle.None;
                 }
                 actualColorDashboard.Activated += (sender, selectedItem) =>
                 {
@@ -1022,10 +1024,6 @@ public class VehicleColorMenu
         }
     }
 
-
-
-
-
     private void ResetColors()
     {
         if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists() || CurrentVariation == null)
@@ -1037,13 +1035,26 @@ public class VehicleColorMenu
         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(ModdingVehicle.Vehicle, CurrentVariation.InteriorColor);
         NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(ModdingVehicle.Vehicle, CurrentVariation.DashboardColor);
     }
-    private int GetColorPrice(VehicleColorLookup cl)
-    {
-        return 500;
-    }
+    //private int GetColorPrice(VehicleColorLookup cl)
+    //{
+    //    return 500;
+    //}
     private int GetColorPrice(int colorID)
     {
-        return 500;
+        if(ModShopMenu == null)
+        {
+            return 500;
+        }
+        if(ModShopMenu.VehicleVariationShopMenu == null || ModShopMenu.VehicleVariationShopMenu.VehicleColorShopMenuItems == null)
+        {
+            return ModShopMenu.DefaultPrice;
+        }
+        VehicleColorShopMenuItem vsmci = ModShopMenu.VehicleVariationShopMenu.VehicleColorShopMenuItems.Where(x => x.ColorID == colorID).FirstOrDefault();
+        if(vsmci != null)
+        {
+            return vsmci.Price;
+        }
+        return ModShopMenu.DefaultPrice;
     }
 
     private class ColorMenuItem
