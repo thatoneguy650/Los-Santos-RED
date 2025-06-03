@@ -71,6 +71,9 @@ public class ModShopMenu
             AddModItems();
         }
         InteractionMenu.Visible = true;
+
+
+        EntryPoint.WriteToConsole($"InteractionMenu.Visible {InteractionMenu.Visible}");
     }
 
     private void AddModItems()
@@ -78,32 +81,34 @@ public class ModShopMenu
         AddColorCategories();
         AddExtraCategories();
         AddLicensePlateCategories();
-        AddModCategories();
-        
-        
+        AddModCategories();      
     }
 
     private void AddLicensePlateCategories()
     {
 
+        EntryPoint.WriteToConsole("AddLicensePlateCategories");
         VehicleLicensePlateMenu vehicleLicensePlateMenu = new VehicleLicensePlateMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation, PlateTypes);
         vehicleLicensePlateMenu.Setup();
     }
 
     private void AddColorCategories()
     {
+        EntryPoint.WriteToConsole("AddColorCategories");
         VehicleColorMenu vehicleColorMenu = new VehicleColorMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
         vehicleColorMenu.Setup();
     }
 
     private void AddExtraCategories()
     {
+        EntryPoint.WriteToConsole("AddExtraCategories");
         VehicleExtrasMenu vehicleExtrasMenu = new VehicleExtrasMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
         vehicleExtrasMenu.Setup();
     }
 
     private void AddModCategories()
     {
+        EntryPoint.WriteToConsole("AddModCategories");
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
         List<VehicleModKitType> VehicleModKitTypes = new List<VehicleModKitType>()
         {

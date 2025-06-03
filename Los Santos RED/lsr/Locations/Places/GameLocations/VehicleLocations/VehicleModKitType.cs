@@ -218,7 +218,7 @@ public class VehicleModKitType
     }
     protected virtual string GetModItemName( int modKitValueID)
     {
-        EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID}");
+        //EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID}");
         if(modKitValueID == -1)
         {
             EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID} IS NONE");

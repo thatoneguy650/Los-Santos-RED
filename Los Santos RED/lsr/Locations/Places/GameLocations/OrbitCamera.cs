@@ -56,7 +56,7 @@ public class OrbitCamera
     public bool IsInputPressed { get; private set; }
 
 
-
+    public bool HandleUpdates { get; set; } = false;
     public float InitialHorizonatlOffset { get; set; } = 65f;
     public float InitialVerticalOffset { get; set; } = 100f;
     public void Setup()
@@ -141,14 +141,20 @@ public class OrbitCamera
             }
             _isInputPressed = IsInputPressed;
         }
-        //if (IsInputPressed)
-        //{
-        //    MenuPool.Draw();
-        //}
-        //else
-        //{
-        //    MenuPool.ProcessMenus();
-        //}
+
+        if(!HandleUpdates)
+        {
+            return;
+        }
+
+        if (IsInputPressed)
+        {
+            MenuPool.Draw();
+        }
+        else
+        {
+            MenuPool.ProcessMenus();
+        }
     }
 
     private void OnReleasedMouseDown()

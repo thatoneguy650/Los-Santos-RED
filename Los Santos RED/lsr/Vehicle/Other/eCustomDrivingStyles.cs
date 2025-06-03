@@ -72,7 +72,7 @@ public enum eCustomDrivingStyles : int
 
     Vanilla_Alerted = (int)786469,
 
-
+	RacingNew2 = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int) VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
 
     DrunkDriving = VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_UseWanderFallbackInsteadOfStraightLine | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | VanillaDrivingStyles.DF_SwerveAroundAllCars,
     RecklessDriving = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,

@@ -140,6 +140,7 @@ public class VehicleModShop : GameLocation
     private void SetupOrbitCamera()
     {
         OrbitCamera = new OrbitCamera(Player,Player.CurrentVehicle.Vehicle, null, Settings, MenuPool);
+        OrbitCamera.HandleUpdates = true;
         OrbitCamera.Setup();
     }
 
@@ -147,8 +148,24 @@ public class VehicleModShop : GameLocation
     {
         while (IsAnyMenuVisible)
         {
+
+            if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.LShiftKey) && Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Z))
+            {
+
+                EntryPoint.WriteToConsole("Z KEY HIT EXITING DEBUG");
+                break;
+            }
+
+            //if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.T))
+            //{
+
+            //    EntryPoint.WriteToConsole($"{InteractionMenu.Visible}");
+            //    InteractionMenu.Visible = true;
+            //}
+
             GameFiber.Yield();
         }
+        EntryPoint.WriteToConsole("BREAK HAPPENED");
     }
     private void HandleDoor()
     {
