@@ -531,29 +531,51 @@ public class Debug
     private void DebugNumpad4()
     {
 
-        if(!Game.LocalPlayer.Character.CurrentVehicle.Exists())
-        {
-            return;
-        }
-        Ped randomPed = new Ped("a_m_m_paparazzi_01", Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
-        GameFiber.Yield();
-        if (!randomPed.Exists())
-        {
-            return;
-        }
-        randomPed.RandomizeVariation();
-        if (!Game.LocalPlayer.Character.CurrentVehicle.Exists())
-        {
-            return;
-        }
-        randomPed.WarpIntoVehicle(Game.LocalPlayer.Character.CurrentVehicle, -1);
-        Vector3 PlaceToDriveTo = new Vector3(0f,0f,300f);
-        NativeFunction.Natives.TASK_HELI_MISSION(randomPed, randomPed.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
-        randomPed.BlockPermanentEvents = true;
-        randomPed.IsPersistent = true;
+        
+       GameFiber.StartNew(delegate
+       {
+           Vector3 BasePosition = new Vector3(1171.136f, -2563.416f, 34.28861f);
+           float BaseHeading = 286.6383f;
+           Vector3 NewPosition = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading, -10f);
+           Vector3 NewPosition1 = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading-90f, 10f);
+           uint GameTimeStarted = Game.GameTime;
+           while (Game.GameTime - GameTimeStarted <= 20000)
+           {
+   
+                   Rage.Debug.DrawArrowDebug(BasePosition, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+                   Rage.Debug.DrawArrowDebug(NewPosition, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+               Rage.Debug.DrawArrowDebug(NewPosition1, Vector3.Zero, Rotator.Zero, 1f, Color.Green);
+               GameFiber.Yield();
+           }
+
+       }, "Run Debug Logic");
+        GameFiber.Sleep(500);
+        
 
 
-        Game.LocalPlayer.Character.CurrentVehicle.Position = Game.LocalPlayer.Character.CurrentVehicle.Position + new Vector3(0f, 0f, 250f);
+        //if(!Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        //{
+        //    return;
+        //}
+        //Ped randomPed = new Ped("a_m_m_paparazzi_01", Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
+        //GameFiber.Yield();
+        //if (!randomPed.Exists())
+        //{
+        //    return;
+        //}
+        //randomPed.RandomizeVariation();
+        //if (!Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        //{
+        //    return;
+        //}
+        //randomPed.WarpIntoVehicle(Game.LocalPlayer.Character.CurrentVehicle, -1);
+        //Vector3 PlaceToDriveTo = new Vector3(0f,0f,300f);
+        //NativeFunction.Natives.TASK_HELI_MISSION(randomPed, randomPed.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
+        //randomPed.BlockPermanentEvents = true;
+        //randomPed.IsPersistent = true;
+
+
+        //Game.LocalPlayer.Character.CurrentVehicle.Position = Game.LocalPlayer.Character.CurrentVehicle.Position + new Vector3(0f, 0f, 250f);
 
         //foreach(VehicleExt vehicle in World.Vehicles.NonServiceVehicles)
         //{
@@ -845,7 +867,6 @@ public class Debug
         //SpawnLocation spawnLocation = new SpawnLocation(location.EntrancePosition);
         //spawnLocation.GetClosestStreet(false);
         //spawnLocation.GetClosestSideOfRoad();
-
         //GameFiber.StartNew(delegate
         //{
         //    uint GameTimeStarted = Game.GameTime;

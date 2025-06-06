@@ -1061,36 +1061,232 @@ public class DispatchableVehicles_FEJ_Modern
     }
     private void Security()
     {
+        DispatchableVehicle AleutianSecurityBobCat = new DispatchableVehicle("aleutian", 5, 0) //Undercover Gauntlet
+        {
+            DebugName = "AleutianSecurity_BC_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelColor = 156,
+                WheelType = 4,
+                WindowTint = 0,
+                PearlescentColor = 73,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,5),
+                        new VehicleMod(2,1),
+                        new VehicleMod(3,1),
+                        new VehicleMod(15,3),
+                        new VehicleMod(23,9),
+                        new VehicleMod(48,4),//5,6,9 BC, G6, MW, SECURO
+                    },
+            }
+        };
+        DispatchableVehicle AleutianSecurityG6 = new DispatchableVehicle("aleutian", 20, 20)
+        {
+            DebugName = "AleutianSecurity_G6_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelColor = 156,
+                WheelType = 4,
+                WindowTint = 0,
+                PearlescentColor = 73,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,5),
+                        new VehicleMod(2,1),
+                        new VehicleMod(3,1),
+                        new VehicleMod(15,3),
+                        new VehicleMod(23,9),
+                        new VehicleMod(48,5),//5,6,9 BC, G6, MW, SECURO
+                    },
+            }
+        };
+        DispatchableVehicle AleutianSecurityMW = new DispatchableVehicle("aleutian", 20, 20)
+        {
+            DebugName = "AleutianSecurity_MW_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelColor = 156,
+                WheelType = 4,
+                WindowTint = 0,
+                PearlescentColor = 73,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,5),
+                        new VehicleMod(2,1),
+                        new VehicleMod(3,1),
+                        new VehicleMod(15,3),
+                        new VehicleMod(23,9),
+                        new VehicleMod(48,6),//5,6,9 BC, G6, MW, SECURO
+                    },
+            }
+        };
+        DispatchableVehicle AleutianSecuritySECURO = new DispatchableVehicle("aleutian", 20, 20)
+        {
+            DebugName = "AleutianSecurity_SECURO_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                Mod1PaintType = 7,
+                Mod2PaintType = 7,
+                WheelColor = 156,
+                WheelType = 4,
+                WindowTint = 0,
+                PearlescentColor = 73,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(1,5),
+                        new VehicleMod(2,1),
+                        new VehicleMod(3,1),
+                        new VehicleMod(15,3),
+                        new VehicleMod(23,9),
+                        new VehicleMod(48,9),//5,6,9 BC, G6, MW, SECURO
+                    },
+            }
+        };
+        DispatchableVehicle AsteropeSecuritySECURO = new DispatchableVehicle("asterope2", 20, 20)
+        {
+            DebugName = "AsteropeSecurity_SECURO_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                WheelColor = 156,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(23,10),
+                        new VehicleMod(48,6),
+                    },
+            }
+        };
+        DispatchableVehicle AsteropeSecurityMW = new DispatchableVehicle("asterope2", 20, 20)
+        {
+            DebugName = "AsteropeSecurity_MW_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                WheelColor = 156,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(23,10),
+                        new VehicleMod(48,7),
+                    },
+            }
+        };
+        DispatchableVehicle AsteropeSecurityBobCat = new DispatchableVehicle("asterope2", 20, 20)
+        {
+            DebugName = "AsteropeSecurity_BobCat_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                WheelColor = 156,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(23,10),
+                        new VehicleMod(48,8),
+                    },
+            }
+        };
+        DispatchableVehicle AsteropeSecurityG6 = new DispatchableVehicle("asterope2", 20, 20)
+        {
+            DebugName = "AsteropeSecurity_G6_DLC",
+            RequiresDLC = true,
+            RequiredPrimaryColorID = 111,
+            RequiredSecondaryColorID = 111,
+            RequiredVariation = new VehicleVariation()
+            {
+                PrimaryColor = 111,
+                SecondaryColor = 111,
+                WheelColor = 156,
+                WheelType = 1,
+                WindowTint = 0,
+                PearlescentColor = 0,
+                VehicleMods = new List<VehicleMod>()
+                    {
+                        new VehicleMod(23,10),
+                        new VehicleMod(48,9),
+                    },
+            }
+        };
+
+
+
+
         MerryweatherPatrolVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_ServiceDilettante(35,35,5,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceInterceptor(35,35,6,false,ServiceVehicleType.Security,-1,-1,-1),
-            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityMW,
-            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityMW,
+            AleutianSecurityMW,
+            AsteropeSecurityMW,
             DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,0,false,ServiceVehicleType.Security,-1,-1,-1),
         };
         BobcatSecurityVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,8,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,9,false,ServiceVehicleType.Security,-1,-1,-1),
-            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityBobCat,
-            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityBobCat,
+            AleutianSecurityBobCat,
+            AsteropeSecurityBobCat,
             DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,3,false,ServiceVehicleType.Security,-1,-1,-1),
         };
         GroupSechsVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,7,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,8,false,ServiceVehicleType.Security,-1,-1,-1),
-            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecurityG6,
-            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecurityG6,
+            AleutianSecurityG6,
+            AsteropeSecurityG6,
             DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,2,false,ServiceVehicleType.Security,-1,-1,-1),
         };
         SecuroservVehicles_FEJ_Modern = new List<DispatchableVehicle>()
         {
             DispatchableVehicles_FEJ.Create_ServiceDilettante(20,20,6,false,ServiceVehicleType.Security,-1,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_ServiceInterceptor(20,20,7,false,ServiceVehicleType.Security,-1,-1,-1),
-            DispatchableVehicles_FEJ.DispatchableVehicles.AleutianSecuritySECURO,
-            DispatchableVehicles_FEJ.DispatchableVehicles.AsteropeSecuritySECURO,
+            AleutianSecuritySECURO,
+            AsteropeSecuritySECURO,
             DispatchableVehicles_FEJ.Create_SecurityStanier(20,20,1,false,ServiceVehicleType.Security,-1,-1,-1),
         };
 

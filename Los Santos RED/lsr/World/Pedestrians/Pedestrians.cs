@@ -711,17 +711,20 @@ public class Pedestrians : ITaskerReportable
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 1");
             }
             else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 2");
             }
 
             if(Civilian.DistanceToPlayer >= 200f && Civilian.WasModSpawned && !Civilian.IsManuallyDeleted && (!Civilian.DistanceChecker.IsMovingTowards || Civilian.DistanceToPlayer >= 350f))
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 3");
             }
         }
         foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))

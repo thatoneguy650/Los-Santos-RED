@@ -275,7 +275,6 @@ public class ShopMenus : IShopMenus
         final.ShopMenuList.AddRange(oldPossibleShopMenus.ShopMenuList);
         Serialization.SerializeParam(final, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ShopMenus+_LosSantos2008.xml");
     }
-
     private void DefaultConfig_FullExpandedWeapons()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
@@ -354,8 +353,6 @@ public class ShopMenus : IShopMenus
 
         Serialization.SerializeParam(final, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ShopMenus+_{StaticStrings.FEWConfigSuffix}.xml");
     }
-
-
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();

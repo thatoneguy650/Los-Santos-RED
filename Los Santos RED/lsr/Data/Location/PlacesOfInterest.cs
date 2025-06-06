@@ -1717,6 +1717,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
                 BannerImagePath = "stores\\paynspray.png",
+                PossibleVehicleSpawns = new List<ConditionalLocation> () { new CivilianConditionalLocation(new Vector3(151.3446f, -1081.765f, 28.77507f), 181.199f, 5f) {  OverrideDispatchableVehicleGroupID = "HighEndVehicles" }, } ,
             },
 
         };
@@ -4665,7 +4666,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Hotel(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, "Alesandro", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, FullName = "The Alesandro Hotel" },
             new Hotel(new Vector3(-702.4747f, -2274.476f, 13.45538f), 225.7683f, "Opium Nights", "Don't your head","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },
             new Hotel(new Vector3(379.4438f, -1781.435f, 29.46008f), 47.01642f, "Motel & Beauty", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
-            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
+            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, PossibleVehicleSpawns = new List<ConditionalLocation> () { new CivilianConditionalLocation(new Vector3(549.778f, -1796.519f, 28.77426f), 167.0992f, 5f) {  OverrideDispatchableVehicleGroupID = "HighEndVehicles" }, } },
             new Hotel(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, "Dream View Motel", "Mostly Bug Free!","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
             new Hotel(new Vector3(317.7083f, 2623.256f, 44.46722f), 306.9629f, "Eastern Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, ScannerFilePath = "01_specific_location\\0x0B4EB13E.mp3" },
             new Hotel(new Vector3(1142.035f, 2664.177f, 38.16088f), 86.68575f, "The Motor Motel", "Motor on in","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },

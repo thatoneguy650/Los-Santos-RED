@@ -84,7 +84,11 @@ public class VehicleRaceManager
         Player.IsSetDisabledControls = true;
 
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
-        foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
+
+        List<VehicleRaceStartingPosition> FinalStartingPositions = GetFinalStartingPosition(race.VehicleRaceTrack.VehicleRaceStartingPositions, 8);
+
+
+        foreach (VehicleRaceStartingPosition rsp in FinalStartingPositions.Where(x => x.Order >= 1))
         {
             vehicleRacers.Add(SpawnRacer(rsp, race.AreRacerBlipsEnabled, null, null));
         }
@@ -166,10 +170,10 @@ public class VehicleRaceManager
 
         race.ClearStartingArea();
 
+        List<VehicleRaceStartingPosition> FinalStartingPositions = GetFinalStartingPosition(race.VehicleRaceTrack.VehicleRaceStartingPositions, numberofOpponents); 
 
 
-
-        foreach (VehicleRaceStartingPosition rsp in race.VehicleRaceTrack.VehicleRaceStartingPositions.Where(x => x.Order >= 1))
+        foreach (VehicleRaceStartingPosition rsp in FinalStartingPositions.Where(x => x.Order >= 1))
         {
             AIVehicleRacer aIVehicleRacer = SpawnRacer(rsp, race.AreRacerBlipsEnabled, selectedOpponentVehicles, selectedOpponentPeds);
             if (aIVehicleRacer == null || aIVehicleRacer.PedExt == null || !aIVehicleRacer.PedExt.Pedestrian.Exists())
@@ -211,7 +215,42 @@ public class VehicleRaceManager
         return true;
     }
 
-   
+    private List<VehicleRaceStartingPosition> GetFinalStartingPosition(List<VehicleRaceStartingPosition> vehicleRaceStartingPositions, int numberofOpponents) 
+    {
+        List<VehicleRaceStartingPosition> FinalStartingPositions = new List<VehicleRaceStartingPosition>();
+        if (vehicleRaceStartingPositions.Count < numberofOpponents)
+        {
+            VehicleRaceStartingPosition LaststartingPosition = null;
+            for (int i = 0; i < numberofOpponents; i++)
+            {
+                VehicleRaceStartingPosition existing = vehicleRaceStartingPositions.FirstOrDefault(x => x.Order == i);
+                if (existing != null)
+                {
+                    FinalStartingPositions.Add(existing);
+                    LaststartingPosition = existing;
+                    EntryPoint.WriteToConsole($"GetFinalStartingPosition VehicleRaceStartingPosition existing found {i}");
+                }
+                else//create new starting position
+                {
+                    if (LaststartingPosition != null)
+                    {
+                        VehicleRaceStartingPosition newPostiion = new VehicleRaceStartingPosition(i, 
+                            NativeHelper.GetOffsetPosition(LaststartingPosition.Position, LaststartingPosition.Heading-90f, 9f), 
+                            LaststartingPosition.Heading);
+                        FinalStartingPositions.Add(newPostiion);
+                        LaststartingPosition = newPostiion;
+                        EntryPoint.WriteToConsole($"GetFinalStartingPosition VehicleRaceStartingPosition MAKE NEW {i} {newPostiion.Position} {newPostiion.Heading}");
+                    }
+                }
+            }
+        }
+        else
+        {
+            FinalStartingPositions = vehicleRaceStartingPositions;
+        }
+        return FinalStartingPositions;
+    }
+
     public void SetRaceTimer(TextTimerBar raceTimer)
     {
         RaceTimer = raceTimer;
@@ -290,6 +329,8 @@ public class VehicleRaceManager
         if(createdPed != null)
         {
             createdPed.CanTakeVehicleCrashDamage = false;
+            createdPed.CanBeIdleTasked = false;
+            createdPed.IsManuallyDeleted = true;
         }
         return new AIVehicleRacer(cst.CreatedPeople.FirstOrDefault(), createdvehicle) { WasSpawnedForRace = true };
 
