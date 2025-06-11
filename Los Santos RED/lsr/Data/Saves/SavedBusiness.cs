@@ -1,19 +1,22 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SavedBusiness : SavedPayoutProperty
+public class SavedBusiness : SavedGameLocation
 {
     public SavedBusiness()
     {
     }
 
-    public SavedBusiness(string name, bool isOwnedByPlayer) : base(name, isOwnedByPlayer)
+    public SavedBusiness(string name, bool isOwnedByPlayer)
     {
+        Name = name;
+        IsOwnedByPlayer = isOwnedByPlayer;
     }
-    //public bool IsPayoutInModItems { get; set; } = false;
-    //public bool IsPayoutDepositedToBank { get; set; }
+    public DateTime PayoutDate { get; set; }
+    public DateTime DateOfLastPayout { get; set; }
     public string ModItemToPayout { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
@@ -54,6 +57,5 @@ public class SavedBusiness : SavedPayoutProperty
             }
         }
     }
-
 }
 

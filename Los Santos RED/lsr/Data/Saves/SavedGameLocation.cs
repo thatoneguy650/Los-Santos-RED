@@ -1,7 +1,10 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using System.Linq;
+using System.Xml.Serialization;
 
+[XmlInclude(typeof(SavedResidence))]
+[XmlInclude(typeof(SavedBusiness))]
 public class SavedGameLocation
 {
     public SavedGameLocation()

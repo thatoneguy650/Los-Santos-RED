@@ -112,11 +112,6 @@ public class Merchant : PedExt, IWeaponIssuable
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
     }
-    public override void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
-    {
-        base.AddSpecificInteraction(player, menuPool, headerMenu, advancedConversation);
-        AssociatedStore.AddInteractionToMerchant(headerMenu, advancedConversation);
-    }
     public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
         AssociatedStore?.OnVendorKilledByPlayer(this, Player, Zones, GangTerritories);

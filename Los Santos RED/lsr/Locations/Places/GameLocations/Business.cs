@@ -55,7 +55,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     [XmlIgnore]
     public BusinessInterior BusinessInterior { get; set; }
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
-
+    public string CraftingFlag { get; set; }
     public GameLocation GameLocation => throw new NotImplementedException();
 
     public Business(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -265,6 +265,8 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellBusinessItem);
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+            Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
             if (IsPayoutInModItems)
             {
                 UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Producing", $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)");

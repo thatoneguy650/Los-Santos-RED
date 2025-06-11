@@ -22,7 +22,6 @@ public class SavedResidence : SavedGameLocation
     public bool IsRentedByPlayer { get; set; } = false;
     public DateTime RentalPaymentDate { get; set; }
     public DateTime DateOfLastRentalPayment { get; set; }
-    public bool IsRentedOut { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
@@ -55,7 +54,6 @@ public class SavedResidence : SavedGameLocation
                 {
                     savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                 }
-                savedPlace.IsRentedOut = IsRentedOut;
                 savedPlace.CashStorage.StoredCash = StoredCash;
                 savedPlace.RefreshUI();
             }

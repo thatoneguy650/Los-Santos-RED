@@ -85,12 +85,48 @@ public class CraftingMenu : ModUIMenu
     }
     private void CreateCraftableItems(string craftingFlag = null)
     {
-        Dictionary<string, UIMenu> categoryMenus = new Dictionary<string, UIMenu>();
-        if (craftingFlag == null && LocationInteractablePlayer.IsInVehicle)
+        AddToMenu(Menu, craftingFlag, MenuPool);
+    }
+    private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus, UIMenu menuToUse = null, MenuPool menuPool = null)
+    {
+        if (menuToUse == null)
         {
-            craftingFlag = LocationInteractablePlayer.CurrentVehicle.VehicleModelName;
+            menuToUse = Menu;
         }
-        foreach(CraftableItem craftableItem in CraftableItems.Items)
+        if(menuPool == null)
+        {
+            menuPool = MenuPool;
+        }
+        if(string.IsNullOrEmpty(category))
+        {
+            if(categoryMenus.ContainsKey(UNCATEGORIZED))
+            {
+                return categoryMenus[UNCATEGORIZED];
+            }
+            else
+            {
+                UIMenu subMenu = menuPool.AddSubMenu(menuToUse, UNCATEGORIZED);
+                subMenu.SetBannerType(EntryPoint.LSRedColor);
+                categoryMenus.Add(UNCATEGORIZED, subMenu);
+                return subMenu;
+            }
+        }
+        if(categoryMenus.ContainsKey(category))
+        {
+            return categoryMenus[category];
+        }
+        else
+        {
+            UIMenu subMenu = menuPool.AddSubMenu(menuToUse, category);
+            subMenu.SetBannerType(EntryPoint.LSRedColor);
+            categoryMenus.Add(category, subMenu);
+            return subMenu;
+        }
+    }
+    public void AddToMenu(UIMenu menu, string craftingFlag, MenuPool menuPool)
+    {
+        Dictionary<string, UIMenu> categoryMenus = new Dictionary<string, UIMenu>();
+        foreach (CraftableItem craftableItem in CraftableItems.Items)
         {
             if (!string.IsNullOrEmpty(craftingFlag) && craftableItem.CraftingFlags != null && !craftableItem.CraftingFlags.Contains(craftingFlag))
             {
@@ -103,10 +139,10 @@ public class CraftingMenu : ModUIMenu
             int quantity = 0;
             int ingredientsSatisfied = 0;
             int ingredientsToSatisfy = craftableItem.Ingredients.Count;
-            foreach(Ingredient ingredient in craftableItem.Ingredients)
+            foreach (Ingredient ingredient in craftableItem.Ingredients)
             {
                 InventoryItem ingredientInInventory = LocationInteractablePlayer.Inventory.ItemsList.Find(x => x.ModItem.Name == ingredient.IngredientName);
-                if(ingredientInInventory == null)
+                if (ingredientInInventory == null)
                 {
                     break;
                 }
@@ -125,29 +161,30 @@ public class CraftingMenu : ModUIMenu
                     ingredientsSatisfied++;
                 }
             }
-            if (ingredientsSatisfied != ingredientsToSatisfy || quantity==0)
+            if (ingredientsSatisfied != ingredientsToSatisfy || quantity == 0)
             {
-                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
-                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems));
+                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus, menu, menuPool);
+                UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1, ModItems));
                 itemMenu.Enabled = false;
                 uIMenu.AddItem(itemMenu);
                 continue;
             }
             if (quantity > 0)
             {
-                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus);
+                UIMenu uIMenu = GetSubMenuForCraftableItem(craftableItem.Category, categoryMenus, menu, menuPool);
                 if (craftableItem.SingleUnit)
                 {
-                    UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems));
+                    UIMenuItem itemMenu = new UIMenuItem(craftableItem.Name, craftableItem.GetIngredientDescription(1, ModItems));
                     itemMenu.Activated += (s, e) =>
                     {
                         Crafting.CraftItem(itemMenu.Text, craftingFlag: craftingFlag);
+                        RedrawCraftingMenu(craftingFlag, menuPool, menu);
                     };
                     uIMenu.AddItem(itemMenu);
                 }
                 else
                 {
-                    UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.GetIngredientDescription(1,ModItems), 1, quantity, 1);
+                    UIMenuNumericScrollerItem<int> itemMenu = new UIMenuNumericScrollerItem<int>(craftableItem.Name, craftableItem.GetIngredientDescription(1, ModItems), 1, quantity, 1);
                     itemMenu.Value = 1;
                     itemMenu.IndexChanged += (s, oldIndex, newIndex) =>
                     {
@@ -156,47 +193,21 @@ public class CraftingMenu : ModUIMenu
                     itemMenu.Activated += (s, e) =>
                     {
                         Crafting.CraftItem(itemMenu.Text, itemMenu.Value, craftingFlag: craftingFlag);
+                        RedrawCraftingMenu(craftingFlag, menuPool, menu);
                     };
                     uIMenu.AddItem(itemMenu);
                 }
             }
         }
     }
-    private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus)
+    internal void RedrawCraftingMenu(string craftingFlag, MenuPool menuPool, UIMenu menu)
     {
-        if(string.IsNullOrEmpty(category))
+        foreach (var m in menu.Children)
         {
-            if(categoryMenus.ContainsKey(UNCATEGORIZED))
-            {
-                return categoryMenus[UNCATEGORIZED];
-            }
-            else
-            {
-                UIMenu subMenu = MenuPool.AddSubMenu(Menu, UNCATEGORIZED);
-                subMenu.SetBannerType(EntryPoint.LSRedColor);
-                categoryMenus.Add(UNCATEGORIZED, subMenu);
-                return subMenu;
-            }
+            m.Value.Close();
+            menuPool.Remove(m.Value);
         }
-        if(categoryMenus.ContainsKey(category))
-        {
-            return categoryMenus[category];
-        }
-        else
-        {
-            UIMenu subMenu = MenuPool.AddSubMenu(Menu, category);
-            subMenu.SetBannerType(EntryPoint.LSRedColor);
-            categoryMenus.Add(category, subMenu);
-            return subMenu;
-        }
-    }
-    internal void RedrawCraftingMenu(string craftingFlag)
-    {
-        foreach(UIMenu m in Menu.Children.Values)
-        {
-            m.Clear();
-            MenuPool.Remove(m);
-        }
-        Show(craftingFlag);
+        menu.Clear();
+        AddToMenu(menu,craftingFlag,menuPool);
     }
 }

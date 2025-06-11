@@ -60,14 +60,6 @@ public class ResidencesTab : ITabbableMenu
         {
             residenceInformation.AppendLine("~w~Status: ~o~Rented");
         }
-        if(residence.IsRentedOut)
-        {
-            residenceInformation.AppendLine($"~w~Rented Out: Earning ~g~${residence.RentalFee} ~w~every ~g~{residence.RentalDays}~w~ day(s).");
-            if(residence.CashStorage !=null && residence.CashStorage.StoredCash > 0)
-            {
-                residenceInformation.AppendLine($"~w~Accumulated: ~g~${residence.CashStorage.StoredCash}");
-            }
-        }
         return residenceInformation.ToString();
     }
 }

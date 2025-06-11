@@ -350,7 +350,6 @@ public class GameLocation : ILocationDispatchable
     public virtual int PayoutMax { get; set; }
     public virtual int SalesPrice { get; set; }
     public virtual int MaxSalesPrice { get; set; }
-    public virtual bool IsOwnable { get; set; }
     public int GrowthPercentage { get; set; } = 20;
     [XmlIgnore]
     public int CurrentSalesPrice { get; set; }
@@ -580,7 +579,6 @@ public class GameLocation : ILocationDispatchable
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
-                AddPropertyManagement();
                 InteractionMenu.Visible = true;
                 Transaction.ProcessTransactionMenu();
                 Transaction.DisposeTransactionMenu();
@@ -597,32 +595,6 @@ public class GameLocation : ILocationDispatchable
                 EntryPoint.ModController.CrashUnload();
             }
         }, "StandardInteract");
-    }
-    public virtual void AddPropertyManagement()
-    {
-        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                if (Purchase())
-                {
-                    MenuPool.CloseAllMenus();
-                }
-            };
-            subMenu.AddItem(businessManagementButton);
-        }
-        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Manage {Name}");
-            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                OnSold();
-            };
-            subMenu.AddItem(businessManagementButton);
-        }
     }
     protected virtual bool Purchase()
     {
@@ -1407,35 +1379,6 @@ public class GameLocation : ILocationDispatchable
         int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
         return payoutAmount;
     }
-    public void AddInteractionToMerchant(UIMenu headerMenu, AdvancedConversation conversation)
-    {
-        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                Purchase();
-                conversation.Dispose();
-            };
-            headerMenu.AddItem(businessManagementButton);
-        }
-        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                Player.Properties.RemoveOwnedLocation(this);
-                Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
-                IsOwned = false;
-                DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
-                conversation.Dispose();
-            };
-            headerMenu.AddItem(businessManagementButton);
-        }
-    }
-
-
-
     public virtual string GetInquireDescription()
     {
         return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
@@ -1456,7 +1399,7 @@ public class GameLocation : ILocationDispatchable
 
     public virtual SavedGameLocation GetSaveData()
     {
-        SavedPayoutProperty saveLocation = new SavedPayoutProperty(Name, IsOwned);
+        SavedBusiness saveLocation = new SavedBusiness(Name, IsOwned);
         if (IsOwned)
         {
             saveLocation.DateOfLastPayout = DatePayoutPaid;

@@ -197,7 +197,6 @@ namespace Mod
             }
             Player.IsSetDisabledControlsWithCamera = false;
             Game.DisplaySubtitle($"Crafted {productName} - {finalQuantity} {itemToGive.MeasurementName}(s)");
-            CraftingMenu.RedrawCraftingMenu(craftingFlag);
         }
     }
 }

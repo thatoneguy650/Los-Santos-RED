@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -43,7 +43,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -96,16 +96,16 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHook">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
+      <HintPath>E:\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -164,9 +164,8 @@
     <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlayLogic.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Service\DispatchablePeople_Service.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
+    <Compile Include="lsr\Data\Saves\SavedGameLocation.cs" />
     <Compile Include="lsr\Data\Saves\SavedBusiness.cs" />
-	<Compile Include="lsr\Data\Saves\SavedGameLocation.cs" />
-    <Compile Include="lsr\Data\Saves\SavedPayoutProperty.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\GroupSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RadarDetectorSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles_FEJ.cs" />
@@ -219,7 +218,6 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\CivilianConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\ExteriorCraftingLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
