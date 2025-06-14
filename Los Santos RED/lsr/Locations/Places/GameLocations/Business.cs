@@ -188,10 +188,10 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             PurchaseBusinessMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
-    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
+    public virtual int CalculatePayoutAmount(int daysSinceLastPayment)
     {
         int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
-        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
+        int payoutAmount = payout * daysSinceLastPayment / PayoutFrequency;
         return payoutAmount;
     }
     public void Payout(IPropertyOwnable player, ITimeReportable time)
@@ -202,18 +202,18 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             {
                 return;
             }
-            int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+            int daysSinceLastPayment = (time.CurrentDateTime - DatePayoutPaid).Days;
             DatePayoutPaid = time.CurrentDateTime;
             DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
 
             if (IsPayoutInModItems)
             {
                 ModItem itemToAdd = ModItems.Get(ModItemToPayout);
-                SimpleInventory.Add(itemToAdd, numberOfPaymentsToProcess * ModItemPayoutAmount);
+                SimpleInventory.Add(itemToAdd, (daysSinceLastPayment/PayoutFrequency) * ModItemPayoutAmount);
             }
             else
             {
-                int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
+                int payoutAmount = CalculatePayoutAmount(daysSinceLastPayment);
                 CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
             }
             int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
