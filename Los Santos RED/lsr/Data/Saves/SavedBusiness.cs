@@ -13,7 +13,6 @@ public class SavedBusiness : SavedGameLocation
     public SavedBusiness(string name, bool isOwnedByPlayer)
     {
         Name = name;
-        IsOwnedByPlayer = isOwnedByPlayer;
     }
     public DateTime PayoutDate { get; set; }
     public DateTime DateOfLastPayout { get; set; }
@@ -23,38 +22,36 @@ public class SavedBusiness : SavedGameLocation
     public int StoredCash { get; set; }
     public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
     {
-        if (IsOwnedByPlayer)
+
+        Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition).FirstOrDefault();
+        if (savedPlace != null)
         {
-            Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition).FirstOrDefault();
-            if (savedPlace != null)
+            player.Properties.AddOwnedLocation(savedPlace);
+            savedPlace.IsOwned = true;
+            savedPlace.DatePayoutDue = PayoutDate;
+            savedPlace.DatePayoutPaid = DateOfLastPayout;
+            //savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
+            savedPlace.ModItemToPayout = ModItemToPayout;
+            //savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+            savedPlace.CurrentSalesPrice = CurrentSalesPrice;
+            if (savedPlace.WeaponStorage == null)
             {
-                player.Properties.AddOwnedLocation(savedPlace);
-                savedPlace.IsOwned = IsOwnedByPlayer;
-                savedPlace.DatePayoutDue = PayoutDate;
-                savedPlace.DatePayoutPaid = DateOfLastPayout;
-                //savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
-                savedPlace.ModItemToPayout = ModItemToPayout;
-                //savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
-                savedPlace.CurrentSalesPrice = CurrentSalesPrice;
-                if (savedPlace.WeaponStorage == null)
-                {
-                    savedPlace.WeaponStorage = new WeaponStorage(settings);
-                }
-                if (savedPlace.SimpleInventory == null)
-                {
-                    savedPlace.SimpleInventory = new SimpleInventory(settings);
-                }
-                foreach (StoredWeapon storedWeap in WeaponInventory)
-                {
-                    savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
-                }
-                foreach (InventorySave stest in InventoryItems)
-                {
-                    savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
-                }
-                savedPlace.CashStorage.StoredCash = StoredCash;
-                savedPlace.RefreshUI();
+                savedPlace.WeaponStorage = new WeaponStorage(settings);
             }
+            if (savedPlace.SimpleInventory == null)
+            {
+                savedPlace.SimpleInventory = new SimpleInventory(settings);
+            }
+            foreach (StoredWeapon storedWeap in WeaponInventory)
+            {
+                savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+            }
+            foreach (InventorySave stest in InventoryItems)
+            {
+                savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+            }
+            savedPlace.CashStorage.StoredCash = StoredCash;
+            savedPlace.RefreshUI();
         }
     }
 }

@@ -135,6 +135,7 @@
     <Compile Include="lsr\Data\Gangs\LoanParameters.cs" />
     <Compile Include="lsr\Data\Interface\ICellphones.cs" />
     <Compile Include="lsr\Data\Interface\IContacts.cs" />
+    <Compile Include="lsr\Data\Interface\ICraftable.cs" />
     <Compile Include="lsr\Data\Interface\IGameConfigs.cs" />
     <Compile Include="lsr\Data\Interface\ICraftableItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpawnBlocks.cs" />

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Data.Interface;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable
+public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable, ICraftable
 {
     private UIMenu OfferSubMenu;
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
@@ -43,7 +44,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public bool IsPayoutInModItems => PossibleModItemPayouts != null && PossibleModItemPayouts.Any();
     public List<string> PossibleModItemPayouts { get; set; }
     public int ModItemPayoutAmount { get; set; } = 1;
-   // public bool IsPayoutDepositedToBank { get; set; } = false;
     [XmlIgnore]
     public string ModItemToPayout { get; set; }
     [XmlIgnore]
@@ -55,9 +55,8 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     [XmlIgnore]
     public BusinessInterior BusinessInterior { get; set; }
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
-    public string CraftingFlag { get; set; }
     public GameLocation GameLocation => throw new NotImplementedException();
-
+    public string CraftingFlag { get; set; } = null;
     public Business(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
@@ -209,14 +208,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             else
             {
                 int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-                //if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
-                //{
-                //    player.BankAccounts.GiveMoney(payoutAmount, true);
-                //}
-                //else
-                //{
-                    CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
-                //}
+                CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
             }
             int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
             CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
@@ -234,7 +226,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-        //IsPayoutInModItems = false;
         ModItemToPayout = String.Empty;
     }
     private void AddInteractionItems(bool isInside)
@@ -265,8 +256,11 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellBusinessItem);
-            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
-            Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+            if(!string.IsNullOrEmpty(CraftingFlag))
+            {
+                UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+                Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+            }
             if (IsPayoutInModItems)
             {
                 UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Producing", $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)");

@@ -20,6 +20,7 @@ public class SavedResidence : SavedGameLocation
     }
 
     public bool IsRentedByPlayer { get; set; } = false;
+    public bool IsOwnedByPlayer { get; set; }
     public DateTime RentalPaymentDate { get; set; }
     public DateTime DateOfLastRentalPayment { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();

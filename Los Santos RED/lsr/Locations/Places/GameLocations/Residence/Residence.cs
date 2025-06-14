@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Data.Interface;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
@@ -19,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, IPayoutDisbursable
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, IPayoutDisbursable, ICraftable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -73,6 +74,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public GameLocation GameLocation => this;
 
+    public string CraftingFlag { get; set; } = null;
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -159,6 +161,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
+                if (!string.IsNullOrEmpty(CraftingFlag))
+                {
+                    UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+                    Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+                }
                 InteractionMenu.Visible = true;
                 if (!HasBannerImage)
                 {
