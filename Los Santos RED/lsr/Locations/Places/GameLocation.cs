@@ -1365,20 +1365,7 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
-    public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
-    {
-        int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
-        DatePayoutPaid = time.CurrentDateTime;
-        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
-        int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-        player.BankAccounts.GiveMoney(payoutAmount, true);
-    }
-    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
-    {
-        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
-        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
-        return payoutAmount;
-    }
+    
     public virtual string GetInquireDescription()
     {
         return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
@@ -1386,7 +1373,7 @@ public class GameLocation : ILocationDispatchable
 
     public virtual void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
     {
-        Payout(player, time);
+
     }
     public virtual void AddOwnership()
     {

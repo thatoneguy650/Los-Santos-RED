@@ -188,7 +188,13 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             PurchaseBusinessMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
-    public override void Payout(IPropertyOwnable player, ITimeReportable time)
+    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
+    {
+        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
+        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
+        return payoutAmount;
+    }
+    public void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {

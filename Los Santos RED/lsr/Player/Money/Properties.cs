@@ -34,38 +34,6 @@ public class Properties
         {
             property.HandleOwnedLocation(Player, Time);
         }
-        //foreach (Residence residence in Residences)
-        //{
-        //    if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
-        //    {
-        //        residence.ReRent(Player, Time);
-        //    }
-        //    else if(residence.IsOwned && residence.IsRentedOut && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
-        //    {
-        //        residence.Payout(Player, Time);
-        //        businessesPayingOut++;
-        //    }
-        //}
-        //foreach(GameLocation location in PayoutProperties)
-        //{
-        //    if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
-        //    {
-        //        location.Payout(Player, Time);
-        //        businessesPayingOut++;
-        //    }
-        //}
-        //foreach(Business business in Businesses)
-        //{
-        //    if (business.DatePayoutDue != null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >= 0)
-        //    {
-        //        business.Payout(Player, Time);
-        //        businessesPayingOut++;
-        //    }
-        //}
-        //if(businessesPayingOut > 0)
-        //{
-        //    Game.DisplayNotification($"{businessesPayingOut} of your investment(s) have paid out.");
-        //}
     }
     public void Dispose()
     {
@@ -78,11 +46,6 @@ public class Properties
             property.Reset();
         }
         PropertyList.Clear();
-        //foreach (Residence residence in Residences)
-        //{
-        //    residence.Reset();
-        //}
-        //Residences.Clear();
     }
     public void AddOwnedLocation(GameLocation toAdd)
     {
