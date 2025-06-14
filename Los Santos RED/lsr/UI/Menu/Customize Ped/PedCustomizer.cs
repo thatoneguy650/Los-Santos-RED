@@ -58,7 +58,7 @@ public class PedCustomizer
 
 
     public PedCustomizerLocation PedCustomizerLocation;
-    private OrbitCamera OrbitCamera;
+    public OrbitCamera OrbitCamera { get; private set; }
 
     //public CameraCycler CameraCycler { get; private set; }
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
@@ -247,11 +247,13 @@ public class PedCustomizer
         CreateModelPed();
         SetModelAsCharacter();
         OrbitCamera = new OrbitCamera(LocationInteractable, ModelPed, CharCam, Settings, MenuPool);
-        OrbitCamera.Radius = 2.0f;
+        OrbitCamera.Radius = 1.0f;
         OrbitCamera.MinRadius = 0.25f;
-        OrbitCamera.MaxRadius = 3.0f;
-        OrbitCamera.InitialVerticalOffset = 100f;
-        OrbitCamera.InitialHorizonatlOffset = 0f;
+        OrbitCamera.MaxRadius = 1.5f;
+        OrbitCamera.InitialVerticalOffset = 90f;
+        OrbitCamera.InitialHorizonatlOffset = 90f;
+        OrbitCamera.IsSensitive = true;
+        OrbitCamera.InitialVerticalOffset = 0.5f;
         OrbitCamera.Setup();
         Game.FadeScreenIn(1500, true);
         PedCustomizerMenu.Start();
@@ -439,6 +441,8 @@ public class PedCustomizer
         CreateModelPed();
         ResetPedModel(resetVariation);
         PedCustomizerMenu.OnModelChanged();
+
+        OrbitCamera.SetEntity(ModelPed);
         OnVariationChanged();
     }
     public void OnSetVariation()

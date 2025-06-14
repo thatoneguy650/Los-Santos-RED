@@ -16,5 +16,6 @@ public class ShopMenuTypes
     public List<PropShopMenu> PropShopMenus { get; private set; } = new List<PropShopMenu>();
     public List<TreatmentOptions> TreatmentOptionsList { get; private set; } = new List<TreatmentOptions>();
     public List<PedVariationShopMenu> PedVariationShopMenus { get; private set; } = new List<PedVariationShopMenu>();
+    public List<VehicleVariationShopMenu> VehicleVariationShopMenus { get; private set; } = new List<VehicleVariationShopMenu>();
 }
 

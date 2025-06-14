@@ -508,7 +508,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     }
                     if (ShouldCheckCrimes)
                     {
-                        PedViolations.Update(policeRespondable, false);//possible yield in here!, REMOVED FOR NOW
+                        PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
                     }
                     PedPerception.Update();
                     if (policeRespondable.CanBustPeds)

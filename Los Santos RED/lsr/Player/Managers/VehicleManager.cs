@@ -37,6 +37,10 @@ public class VehicleManager
     }
     public void Update()
     {
+        if(!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         foreach(StoredVehicle sv in PersistantVehicles)
         {
             if(sv.VehicleExt == null || !sv.VehicleExt.Vehicle.Exists())
@@ -126,7 +130,7 @@ public class VehicleManager
                 storedVehicle.VehicleExt.Vehicle.IsPersistent = false;
             }
         }
-        EntryPoint.WriteToConsole($"UNPERSISTED ALL VEHICLES");
+        //EntryPoint.WriteToConsole($"UNPERSISTED ALL VEHICLES");
     }
 
     public void OnTookOwnership(VehicleExt toOwn)

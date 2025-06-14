@@ -67,7 +67,7 @@ namespace LosSantosRED.lsr
                     IsInActiveMode = true;
                     IsInSearchMode = false;
                 }
-                else if (IsInSearchMode && (Player.AnyPoliceCanRecognizePlayer || (Player.AnyPoliceCanSeePlayer && Player.Violations.IsViolatingAnyCrimes)))
+                else if (IsInSearchMode && (Player.AnyPoliceCanRecognizePlayer || (Player.AnyPoliceCanSeePlayer && Player.Violations.IsViolatingAnyCrimes) || (Player.AnyPoliceCanSeePlayer && TimeInSearchMode <= 5000)))
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;

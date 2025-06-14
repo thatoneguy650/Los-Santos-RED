@@ -195,7 +195,7 @@ public class Pedestrians : ITaskerReportable
     public int TotalSpawnedTellers => Tellers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
 
 
-
+    public int TotalSpawnedCivilians => Civilians.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedServiceWorkers => ServiceWorkers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
 
     public void Setup()
@@ -538,6 +538,13 @@ public class Pedestrians : ITaskerReportable
                 deadPed.Pedestrian.Delete();
             }
         }
+        foreach (PedExt civies in Civilians)
+        {
+            if (civies.Pedestrian.Exists() && civies.Pedestrian.Handle != Game.LocalPlayer.Character.Handle && civies.WasModSpawned)
+            {
+                civies.Pedestrian.IsPersistent = false;
+            }
+        }
         DeadPeds.Clear();
     }
     public void ClearGangMembers()
@@ -704,11 +711,20 @@ public class Pedestrians : ITaskerReportable
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 1");
             }
             else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 2");
+            }
+
+            if(Civilian.DistanceToPlayer >= 200f && Civilian.WasModSpawned && !Civilian.IsManuallyDeleted && (!Civilian.DistanceChecker.IsMovingTowards || Civilian.DistanceToPlayer >= 350f))
+            {
+                Civilian.Pedestrian.IsPersistent = false;
+                EntryPoint.PersistentPedsNonPersistent++;
+                EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 3");
             }
         }
         foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))

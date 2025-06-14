@@ -1784,7 +1784,7 @@ public class LEDispatcher
     }
     private bool AreSpawnsValidSpawn(SpawnLocation spawnLocation)
     {
-        if (spawnLocation.FinalPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.FinalPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
+        if (spawnLocation.FinalPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed)// || World.Pedestrians.AnyCopsNearPosition(spawnLocation.FinalPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
             return false;
         }
@@ -1796,7 +1796,7 @@ public class LEDispatcher
     }
     private bool IsValidSpawn(Vector3 location)
     {
-        if (location.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(location, ClosestPoliceSpawnToOtherPoliceAllowed))
+        if (location.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed)// || World.Pedestrians.AnyCopsNearPosition(location, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
             return false;
         }

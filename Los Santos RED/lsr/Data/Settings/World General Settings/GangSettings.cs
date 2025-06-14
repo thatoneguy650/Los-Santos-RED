@@ -215,16 +215,16 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-        TotalSpawnedMembersLimit = 14;// 10;// 8;// 10;////12;// 16;//5
-        TotalSpawnedAmbientMembersLimit = 10;// 8;// 4;// 5;// 8;
+        TotalSpawnedMembersLimit = 16;// 14;// 10;// 8;// 10;////12;// 16;//5
+        TotalSpawnedAmbientMembersLimit = 12;// 10;// 8;// 4;// 5;// 8;
 
-        TotalSpawnedAmbientMembersLimit_Downtown = 8;// 6;// 4;// 5;
-        TotalSpawnedAmbientMembersLimit_Wilderness = 2;
-        TotalSpawnedAmbientMembersLimit_Rural = 3;
-        TotalSpawnedAmbientMembersLimit_Suburb = 5;// 4;
-        TotalSpawnedAmbientMembersLimit_Industrial = 4;// 3;// 4;
+        TotalSpawnedAmbientMembersLimit_Downtown = 12;// 8;// 6;// 4;// 5;
+        TotalSpawnedAmbientMembersLimit_Wilderness = 3;// 2;
+        TotalSpawnedAmbientMembersLimit_Rural = 5;// 3;
+        TotalSpawnedAmbientMembersLimit_Suburb = 7;// 5;// 4;
+        TotalSpawnedAmbientMembersLimit_Industrial = 5;// 4;// 3;// 4;
 
-        AmbientSpawnPercentage = 70;// 60;
+        AmbientSpawnPercentage = 80;// 60;
         AmbientSpawnPercentage_Wilderness = 35;
         AmbientSpawnPercentage_Rural = 45;
         AmbientSpawnPercentage_Suburb = 60;// 55;

@@ -270,13 +270,6 @@ public class BustedMenu : ModUIMenu
     }
     private void AddBribeOptions()
     {
-        if (Settings.SettingsManager.PoliceSettings.BribeCorruptCopsOnly)
-        {
-            Cop cop = World.Pedestrians.PoliceList.Where(x => x.DistanceToPlayer <= 20f && x.HeightToPlayer <= 5f && !x.IsInVehicle && !x.IsUnconscious && !x.IsInWrithe && !x.IsDead && !x.Pedestrian.IsRagdoll).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-
-            if (!cop?.IsCorrupt == true) return;
-        }
-
         string bribeText = "Bribe Police";
         if (IsDetained)
         {

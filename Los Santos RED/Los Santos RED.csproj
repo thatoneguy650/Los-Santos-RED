@@ -225,8 +225,14 @@
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\ModShopMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\PerformanceVehicleModKitType.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleColorMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleColorShopMenuItem.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleExtrasMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleLicensePlateMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModKitShopMenuItem.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModKitType.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModKitWheelTypeShopMenuItem.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleVariationShopMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\WheelVehicleClassModKitType.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\WheelVehicleModKitType.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />

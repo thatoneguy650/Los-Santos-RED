@@ -298,7 +298,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultPedCustomizerLocation = new PedCustomizerLocation();
         DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
         DefaultPedCustomizerLocation.DefaultModelPedHeading = 182.7549f;
-        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(398.0133f, -1004.411f, -99.00411f); //new Vector3(402.5164f, -1002.847f, -99.2587f);
         List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
         CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(402.9301f, -998.267f, -98.51537f), new Vector3(0.004358141f, 0.9860916f, -0.1661458f), new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(402.8708f, -997.5441f, -98.30454f), new Vector3(-0.005195593f, 0.9991391f, -0.04116036f), new Rotator(-2.358982f, 2.136245E-06f, 0.2979394f), 1));
@@ -1704,6 +1704,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 CanInteractWhenWanted = true,
                 BannerImagePath = "stores\\paynspray.png",
+                PossibleVehicleSpawns = new List<ConditionalLocation> () { new CivilianConditionalLocation(new Vector3(151.3446f, -1081.765f, 28.77507f), 181.199f, 5f) {  OverrideDispatchableVehicleGroupID = "HighEndVehicles" }, } ,
             },
 
         };
@@ -1719,30 +1720,28 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    },
             //   CanInteractWhenWanted = true,
             //},
-            new VehicleModShop(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f,"RED Customs","Test")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                HasNoGarageDoors = true,
-                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
-                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
-                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
-            },
 
 
 
-            new VehicleModShop(new Vector3(865.2888f, -1715.959f, 29.20321f), 196.2501f,"RED Customs 2","Test2")
+
+            //new VehicleModShop(new Vector3(865.2888f, -1715.959f, 29.20321f), 196.2501f,"RED Customs","Pimp The Auto")
+            //{
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    HasNoGarageDoors = true,
+            //    VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
+            //    CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
+            //    CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
+            //    CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
+            //},
+
+            new VehicleModShop(new Vector3(854.3461f, -2094.082f, 29.83458f), 173.3708f,"Olson's Autos","Serving Imperial Blvd.")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 HasNoGarageDoors = true,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
-                CameraPosition = new Vector3(867.4737f, -1659.601f, 31.49755f),
-                CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
-                CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             },
-
-
 
         };
 
@@ -4654,7 +4653,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Hotel(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, "Alesandro", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, FullName = "The Alesandro Hotel" },
             new Hotel(new Vector3(-702.4747f, -2274.476f, 13.45538f), 225.7683f, "Opium Nights", "Don't your head","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },
             new Hotel(new Vector3(379.4438f, -1781.435f, 29.46008f), 47.01642f, "Motel & Beauty", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
-            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
+            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, PossibleVehicleSpawns = new List<ConditionalLocation> () { new CivilianConditionalLocation(new Vector3(549.778f, -1796.519f, 28.77426f), 167.0992f, 5f) {  OverrideDispatchableVehicleGroupID = "HighEndVehicles" }, } },
             new Hotel(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, "Dream View Motel", "Mostly Bug Free!","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
             new Hotel(new Vector3(317.7083f, 2623.256f, 44.46722f), 306.9629f, "Eastern Motel", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, ScannerFilePath = "01_specific_location\\0x0B4EB13E.mp3" },
             new Hotel(new Vector3(1142.035f, 2664.177f, 38.16088f), 86.68575f, "The Motor Motel", "Motor on in","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },

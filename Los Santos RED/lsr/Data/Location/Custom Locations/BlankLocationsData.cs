@@ -37,9 +37,72 @@ public class BlankLocationsData
         YardiesGang();
         RedneckGang();
         VarriosGang();
+        RandomPeds();
     }
 
+    private void RandomPeds()
+    {
+        BlankLocation civSpawn1 = new BlankLocation(new Vector3(872.4106f, -1662.971f, 30.41852f), 86.49644f, "civspawntest1", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(876.3956f, -1656.16f, 30.24174f), 87.00474f, 5f){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(civSpawn1);
 
+        BlankLocation civSpawn2 = new BlankLocation(new Vector3(374.5302f, -1684.06f, 32.10686f), 49.03024f, "civspawntest2", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(374.5302f, -1684.06f, 32.10686f), 49.03024f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(civSpawn2);
+
+        BlankLocation civSpawn3 = new BlankLocation(new Vector3(45.54034f, -599.029f, 31.20548f), 339.7761f, "civspawntest3", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(45.54034f, -599.029f, 31.20548f), 339.7761f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(49.34833f, -651.6259f, 31.14247f), 249.8727f, 5f){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(civSpawn3);
+
+        BlankLocation civSpawn4 = new BlankLocation(new Vector3(-164.0425f, -616.879f, 31.93717f), 66.90916f, "civspawntest4", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-164.0425f, -616.879f, 31.93717f), 66.90916f, 5f){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-175.1993f, -604.7968f, 31.93656f), 65.09174f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-168.7697f, -588.9867f, 31.93661f), 249.6325f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(civSpawn4);
+
+
+        BlankLocation civSpawn5 = new BlankLocation(new Vector3(-490.6508f, -608.6321f, 30.68605f), 178.2197f, "civspawntest5", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-490.6508f, -608.6321f, 30.68605f), 178.2197f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-467.157f, -624.3224f, 30.68664f), 183.026f, 5f){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-460.5147f, -613.7951f, 30.68679f), 177.9763f, 5f){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(civSpawn5);
+    }
 
     private void RooftopSnipers()
     {

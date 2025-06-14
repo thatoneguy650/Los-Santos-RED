@@ -56,6 +56,7 @@ public class AIVehicleRacer : VehicleRacer
         {
             return;
         }
+        PedExt.Pedestrian.BlockPermanentEvents = true;
         PedExt.CurrentTask = new GeneralRace(PedExt, PedExt, Targetable, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, null, Settings, vehicleRace, this);
         PedExt.CurrentTask.Start();
 
@@ -80,6 +81,7 @@ public class AIVehicleRacer : VehicleRacer
                     PedExt.Pedestrian.IsPersistent = false;
                 }
                 PedExt.CanBeIdleTasked = true;
+                PedExt.IsManuallyDeleted = false;
             }
             PedExt.CanBeAmbientTasked = true;
             PedExt.CanBeTasked = true;       

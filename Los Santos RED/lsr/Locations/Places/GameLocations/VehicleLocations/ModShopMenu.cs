@@ -20,16 +20,21 @@ public class ModShopMenu
     private UIMenu InteractionMenu;
     private GameLocation GameLocation;
     private MenuPool MenuPool;
+    private IPlateTypes PlateTypes;
     private int FinalRepairCost;
     private int MaxRepairCost;
     private int RepairHours;
     private int WashCost;
     private int WashHours;
     private List<int> RestrictedModTypes;
+    public int DefaultPrice { get; private set; }
+    public int DefaultPriceScalar { get; private set; }
     public VehicleVariation CurrentVariation { get; private set; }
     public VehicleExt ModdingVehicle { get; private set; }
+    public VehicleVariationShopMenu VehicleVariationShopMenu { get; private set; }
 
-    public ModShopMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, VehicleModShop vehicleModShop, int maxRepairCost, int repairHours, int washCost, int washHours, List<int> restrictedModTypes)
+    public ModShopMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, VehicleModShop vehicleModShop, VehicleVariationShopMenu vehicleVariationShopMenu, 
+        int maxRepairCost, int repairHours, int washCost, int washHours, List<int> restrictedModTypes, int defaultPrice, int defaultPriceScalar, IPlateTypes plateTypes)
     {
         Player = player;
         MenuPool = menuPool;
@@ -40,6 +45,10 @@ public class ModShopMenu
         WashCost = washCost;
         WashHours = washHours;
         RestrictedModTypes = restrictedModTypes;
+        VehicleVariationShopMenu = vehicleVariationShopMenu;
+        DefaultPrice = defaultPrice;
+        DefaultPriceScalar = defaultPriceScalar;
+        PlateTypes = plateTypes;
     }
 
 
@@ -62,29 +71,44 @@ public class ModShopMenu
             AddModItems();
         }
         InteractionMenu.Visible = true;
+
+
+        EntryPoint.WriteToConsole($"InteractionMenu.Visible {InteractionMenu.Visible}");
     }
 
     private void AddModItems()
     {
         AddColorCategories();
-        AddModCategories();
         AddExtraCategories();
-        
+        AddLicensePlateCategories();
+        AddModCategories();      
+    }
+
+    private void AddLicensePlateCategories()
+    {
+
+        EntryPoint.WriteToConsole("AddLicensePlateCategories");
+        VehicleLicensePlateMenu vehicleLicensePlateMenu = new VehicleLicensePlateMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation, PlateTypes);
+        vehicleLicensePlateMenu.Setup();
     }
 
     private void AddColorCategories()
     {
-        VehicleColorMenu vehicleColorMenu = new VehicleColorMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, CurrentVariation, GameLocation);
+        EntryPoint.WriteToConsole("AddColorCategories");
+        VehicleColorMenu vehicleColorMenu = new VehicleColorMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
         vehicleColorMenu.Setup();
     }
 
     private void AddExtraCategories()
     {
-        
+        EntryPoint.WriteToConsole("AddExtraCategories");
+        VehicleExtrasMenu vehicleExtrasMenu = new VehicleExtrasMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
+        vehicleExtrasMenu.Setup();
     }
 
     private void AddModCategories()
     {
+        EntryPoint.WriteToConsole("AddModCategories");
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
         List<VehicleModKitType> VehicleModKitTypes = new List<VehicleModKitType>()
         {
@@ -101,7 +125,7 @@ public class ModShopMenu
 
 
             new VehicleModKitType("Spoilers",0,"Add a spoiler", this, InteractionMenu,MenuPool,Player),
-            new VehicleModKitType("Front Bumper",1, this, InteractionMenu,MenuPool,Player),
+            new VehicleModKitType("Front Bumper",1,"Front Bumper", this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Rear Bumper",2, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Side Skirt",3, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Exhaust",4, this, InteractionMenu,MenuPool,Player),
@@ -167,14 +191,20 @@ public class ModShopMenu
         GameLocation.PlaySuccessSound();
         GameLocation.DisplayMessage("~g~Purchased", $"Thank you for your purchase");
     }
-    public int GetModKitPrice(int modKitTypeID, int modKitValueID)
-    {
-        if(modKitValueID == -1)
-        {
-            return 0;
-        }
-        return 500;
-    }
+    //public int GetModKitPrice(int modKitTypeID, int modKitValueID)
+    //{
+    //    if(modKitValueID == -1)
+    //    {
+    //        return 0;
+    //    }
+    //    if(VehicleVariationShopMenu == null)
+    //    {
+    //        return DefaultPrice + (DefaultPriceScalar * modKitValueID);
+    //    }
+    //    VehicleVariationShopMenu.
+
+    //    return 500;
+    //}
     private void AddRepairItem()
     {
         FinalRepairCost = MaxRepairCost;
@@ -222,14 +252,14 @@ public class ModShopMenu
         ModdingVehicle.Vehicle.Wash();
     }
 
-    public void DisplayMessage(string v)
+    public void DisplayMessage(string messageBody)
     {
         if (GameLocation == null)
         {
             return;
         }
-        GameLocation.PlaySuccessSound();
-        GameLocation.DisplayMessage("Information", v);
+        GameLocation.PlayErrorSound();
+        GameLocation.DisplayMessage("~y~Information", messageBody);
     }
 
 
