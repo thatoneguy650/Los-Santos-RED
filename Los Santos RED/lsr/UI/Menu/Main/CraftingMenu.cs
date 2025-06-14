@@ -126,6 +126,7 @@ public class CraftingMenu : ModUIMenu
     public void AddToMenu(UIMenu menu, string craftingFlag, MenuPool menuPool)
     {
         Dictionary<string, UIMenu> categoryMenus = new Dictionary<string, UIMenu>();
+        menu.SetBannerType(EntryPoint.LSRedColor);
         foreach (CraftableItem craftableItem in CraftableItems.Items)
         {
             if (!string.IsNullOrEmpty(craftingFlag) && craftableItem.CraftingFlags != null && !craftableItem.CraftingFlags.Contains(craftingFlag))

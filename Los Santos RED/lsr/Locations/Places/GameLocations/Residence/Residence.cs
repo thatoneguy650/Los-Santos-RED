@@ -161,11 +161,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
-                if (!string.IsNullOrEmpty(CraftingFlag))
-                {
-                    UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
-                    Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
-                }
+                
                 InteractionMenu.Visible = true;
                 if (!HasBannerImage)
                 {
@@ -451,7 +447,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             CreateRestInteractionMenu();
         }
         CreateOutfitInteractionMenu(isInside, isInside);
-
+        if (!string.IsNullOrEmpty(CraftingFlag))
+        {
+            EntryPoint.WriteToConsole($"Writing to console trying to add crafting menu. {MenuPool},{InteractionMenu},{CraftingFlag}");
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+            Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+        }
 
         bool withAnimations = Interior?.IsTeleportEntry == true;
 
