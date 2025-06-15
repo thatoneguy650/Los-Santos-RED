@@ -295,8 +295,8 @@ public class CivilianSettings : ISettingsDefaultable
         ManageCivilianTasking = true;
         SecurityFightPercentage = 30f;//70f
         OverrideHealth = true;
-        MinHealth = 70;
-        MaxHealth = 100;
+        MinHealth = 100;// 70;
+        MaxHealth = 150;// 100;
         OverrideAccuracy = true;
         GeneralAccuracy = 5;//10
         SightDistance = 60f;//70f;//90f

@@ -207,8 +207,9 @@ public class ModItems : IModItems
     {
         PossibleItems newPossibleItems = new PossibleItems();//PossibleItems.Copy();
 
+        //Muscle
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gauntlet R/T", ItemType.Vehicles) { ModelName = "civgauntletstock" });
 
-        
         //Sedans
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
@@ -223,9 +224,12 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
 
         //Trucks
-        newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "caracara");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Service", ItemType.Vehicles) { ModelName = "caracara" });
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 4x2", ItemType.Vehicles) { ModelName = "civcaracarawork" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Utility", ItemType.Vehicles) { ModelName = "civcaracarautil" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 2WD", ItemType.Vehicles) { ModelName = "civcaracarawork" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara SX3 4WD", ItemType.Vehicles) { ModelName = "civcaracarastock" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Bison XL", ItemType.Vehicles) { ModelName = "civbisonxl", OverrideLoadBodiesInBed = true, BedLoadOffsetOverride = new Vector3(0f, -1.5f, 1.25f) });
+            
+
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat 4x4", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatoffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat Regular Bed", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatwork" });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");

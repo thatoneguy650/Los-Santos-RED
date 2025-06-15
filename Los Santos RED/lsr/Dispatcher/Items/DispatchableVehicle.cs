@@ -95,28 +95,28 @@ public class DispatchableVehicle
         isHelicopter = NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
         isPlane = NativeFunction.Natives.IS_THIS_MODEL_A_PLANE<bool>(Game.GetHashKey(ModelName));
         isMotorcycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
-#if DEBUG
-        if (isMotorcycle)
-        {
-            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is motorcycle");
-        }
-        if (isHelicopter)
-        {
-            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is heli");
-        }
-        if (isPlane)
-        {
-            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is plane");
-        }
-        if (isBoat)
-        {
-            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is boat");
-        }
-        //if (isCar)
-        //{
-        //    EntryPoint.WriteToConsole($"{DebugName} {ModelName} is car");
-        //}
-#endif
+//#if DEBUG
+//        if (isMotorcycle)
+//        {
+//            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is motorcycle");
+//        }
+//        if (isHelicopter)
+//        {
+//            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is heli");
+//        }
+//        if (isPlane)
+//        {
+//            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is plane");
+//        }
+//        if (isBoat)
+//        {
+//            EntryPoint.WriteToConsole($"{DebugName} {ModelName} is boat");
+//        }
+//        //if (isCar)
+//        //{
+//        //    EntryPoint.WriteToConsole($"{DebugName} {ModelName} is car");
+//        //}
+//#endif
         if (RequestedPlateTypes != null)
         {
             foreach (string plateTypeName in RequestedPlateTypes)

@@ -284,14 +284,14 @@ public class GangInteraction : IContactMenuInteraction
     {
         DrugMeetSubMenu = MenuPool.AddSubMenu(JobsSubMenu, "Drug Meet");
         JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].Description = $"Export a large quantity of drugs for a gang.";
-        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.DrugMeetPaymentMin:C0}-{ActiveGang.DrugMeetPaymentMax:C0}~s~";
+        JobsSubMenu.MenuItems[JobsSubMenu.MenuItems.Count() - 1].RightLabel = $"~HUD_COLOUR_GREENDARK~?-?~s~";
         DrugMeetSubMenu.RemoveBanner();
         UIMenuListScrollerItem<IllicitMarketplace> LocationMenu = new UIMenuListScrollerItem<IllicitMarketplace>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.IllicitMarketplaces.Where(x=> x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
 
         UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", 500, 5000, 100) { Value = 500 };
         UIMenuListScrollerItem<ModItem> PossibleItemsMenu = new UIMenuListScrollerItem<ModItem>("Item","",ModItems.AllItems().Where(x=> x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic));
         UIMenuListScrollerItem<GangDisplay> DealingGangMenu = new UIMenuListScrollerItem<GangDisplay>("Dealing Gang", GangDescription, GetNonHostilGangDisplay());
-        UIMenuItem DrugMeetupStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{ActiveGang.DrugMeetPaymentMin:C0}-{ActiveGang.DrugMeetPaymentMax:C0}~s~" };
+        UIMenuItem DrugMeetupStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~?-?~s~" };
         DrugMeetupStart.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value,DealingGangMenu.SelectedItem?.Gang);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);

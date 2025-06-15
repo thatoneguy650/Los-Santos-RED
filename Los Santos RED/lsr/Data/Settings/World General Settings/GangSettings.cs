@@ -267,7 +267,7 @@ public class GangSettings : ISettingsDefaultable
         AllowHitSquads = true;
 
         MinTimeBetweenHitSquads = 900000;
-        MaxTimeBetweenHitSquads = 1500000;
+        MaxTimeBetweenHitSquads = 1500000*3;
         AllowHitSquadsOnlyEnemy = false;
 
        // BoatSpawnLimit_Default = 1;

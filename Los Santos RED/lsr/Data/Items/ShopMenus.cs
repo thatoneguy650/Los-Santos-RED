@@ -363,8 +363,9 @@ public class ShopMenus : IShopMenus
             vapidMenu.Items.Add(new MenuItem("Vapid Scout", 55000, 25000));
             vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
-            vapidMenu.Items.Add(new MenuItem("Vapid Caracara Service", 32000, 15000));
-            vapidMenu.Items.Add(new MenuItem("Vapid Caracara 4x2", 30000, 14000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Caracara Utility", 32000, 15000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Caracara 2WD", 30000, 14000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Caracara SX3 4WD", 45000, 14000));
             vapidMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 22000, 5000));
             vapidMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 12000, 4000));
         }
@@ -384,11 +385,11 @@ public class ShopMenus : IShopMenus
         {
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
-
             premiumDeluxMenu.Items.Add(new MenuItem("Albany Presidente", 26000, 12000));
             premiumDeluxMenu.Items.Add(new MenuItem("Schyster PMP 600", 36000, 17000));
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
-
+            premiumDeluxMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 76000, 24500));
+            premiumDeluxMenu.Items.Add(new MenuItem("Bravado Bison XL", 31000, 14000));
         }
         ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
         if (elitasMenu != null)
@@ -527,6 +528,32 @@ public class ShopMenus : IShopMenus
     {
         return PossibleShopMenus.VehicleVariationShopMenus.FirstOrDefault(x => x.ID == vehicleVariationShopMenuID);
         //public PedVariationShopMenu PedVariationShopMenu
+    }
+
+    public int GetAverageStreetPrice(ModItem modItem)
+    {
+        if(modItem == null)
+        {
+            EntryPoint.WriteToConsole($"GetAverageStreetPrice NO MOD ITEM");
+            return 0;
+        }
+        List<MenuItem> MatchingMenuItems = new List<MenuItem>();
+        List<ShopMenuGroup> drugCustomerMenus = PossibleShopMenus.ShopMenuGroupList.Where(x => x.CategoryID == StaticStrings.DrugCustomerMenuID).ToList();
+        foreach(ShopMenuGroup group in drugCustomerMenus)
+        {
+            foreach(PercentageSelectShopMenu pssm in group.PossibleShopMenus)
+            {
+                MatchingMenuItems.AddRange(pssm.ShopMenu.Items.Where(x => x.ModItemName == modItem.Name));
+            }
+        }
+        if(!MatchingMenuItems.Any())
+        {
+            EntryPoint.WriteToConsole($"GetAverageStreetPrice {modItem.Name} NO MATCHING MENUS");
+            return 0;
+        }
+        double averagePrice = MatchingMenuItems.Average(x => x.SalesPrice);
+        EntryPoint.WriteToConsole($"GetAverageStreetPrice {modItem.Name} averagePrice:{averagePrice}");
+        return (int)Math.Round(averagePrice);
     }
 
     private void DefaultConfig()
@@ -2119,7 +2146,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Bison 3",31000),
                 new MenuItem("Bravado Gauntlet",32000),
                 new MenuItem("Bravado Buffalo",35000),
-                new MenuItem("Bravado Buffalo S",65000),
+                new MenuItem("Bravado Buffalo S",45000),
+                new MenuItem("Bravado Buffalo STX",55000),
                 new MenuItem("Bravado Banshee",105000),
                 new MenuItem("Bravado Banshee 900R",150000),
                 new MenuItem("Bravado Gauntlet Hellfire",120000,56000),
@@ -2152,7 +2180,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bravado Bison 3",31000, 25000),
                 new MenuItem("Bravado Gauntlet",32000,28000),
                 new MenuItem("Bravado Buffalo",35000,27000),
-                new MenuItem("Bravado Buffalo S",65000,55000),
+                new MenuItem("Bravado Buffalo S",45000,25000),
+                new MenuItem("Bravado Buffalo STX",55000,35000),
                 new MenuItem("Bravado Banshee",105000,78000),
                 new MenuItem("Bravado Banshee 900R",150000,89000),
                 new MenuItem("Bravado Gauntlet Hellfire",120000,56000),

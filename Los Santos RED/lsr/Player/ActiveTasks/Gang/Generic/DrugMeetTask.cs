@@ -20,6 +20,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private IllicitMarketplace DealingLocation;
         private bool HasArrivedNearMeetup;
         private bool HasCompletedTransaction;
+        private List<GangMember> SpawnedMembers = new List<GangMember>();
+        private GangMember PrimaryGangMember;
+        private bool IsAmbush = false;
+        private bool HasSetViolent = false;
 
         public GangDrugMeetTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
             ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PlayerTasks playerTasks, GangTasks gangTasks, 
@@ -36,8 +40,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public override void Dispose()
         {
-            DeleteCar();
-            DeleteBody();
+            CleanupPeds();
             if (DealingLocation != null)
             {
                 DealingLocation.IsPlayerInterestedInLocation = false;
@@ -46,16 +49,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected override void GetPayment()
         {
-            PaymentAmount = RandomItems.GetRandomNumberInt(HiringGang.BodyDisposalPaymentMin, HiringGang.BodyDisposalPaymentMax).Round(500);
-            if (PaymentAmount <= 0)
-            {
-                PaymentAmount = 500;
-            }
+            PaymentAmount = 0;
         }
         protected override void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"TBA ${PaymentAmount}"
+                $"Get to {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}."
                 };
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
@@ -83,10 +82,23 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-            //if (!SpawnCar() || !SpawnAndLoadBody())
-            //{
-            //    return false;
-            //}
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(DealingGang);
+            if(gr.IsEnemy || gr.GangRelationship == GangRespect.Hostile)
+            {
+                IsAmbush = true;
+            }
+            else if (gr.IsMember)
+            {
+                return false;
+            }
+            else if (gr.GangRelationship == GangRespect.Neutral)
+            {
+                IsAmbush = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.DrugMeetAmbushPercentageNeutral);
+            }
+            else if(gr.GangRelationship == GangRespect.Friendly)
+            {
+                IsAmbush = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.DrugMeetAmbushPercentageFriendly);
+            }
             return true;
         }
         protected override void AddTask()
@@ -107,8 +119,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     break;
                 }
-
-
                 if(!HasArrivedNearMeetup && DealingLocation.DistanceToPlayer<= 200f)
                 {
                     OnArrivedNearMeetup();
@@ -117,50 +127,80 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     OnWentAwayFromMeetup();
                 }
-
-
-                //if (DeadBody == null || DeadBodyVehicle == null)
-                //{
-                //    break;
-                //}
-                //if (DeadBody.WasCrushed && DeadBodyVehicle.WasCrushed)
-                //{
-                //    CurrentTask.OnReadyForPayment(true);
-                //    break;
-                //}
-                //if (!DeadBodyVehicle.Vehicle.Exists())
-                //{
-                //    EntryPoint.WriteToConsole("Body Disposal Task: Vehicle Does Not Exist and wasnt crushed.");
-                //    break;
-                //}
-                //if (!DeadBody.Pedestrian.Exists())
-                //{
-                //    EntryPoint.WriteToConsole("Body Disposal Task: Ped Does Not Exist and wasnt crushed.");
-                //    break;
-                //}
-                //if (!HasEnteredVehicle && DeadBodyVehicle != null && DeadBodyVehicle.Vehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Handle == DeadBodyVehicle.Handle)
-                //{
-                //    OnEnteredImpoundedVehicle();
-                //}
+                if(HasCompletedSale())
+                {
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
+                }
+                if(IsAmbush && HasArrivedNearMeetup && SpawnedMembers.All(x => x.IsDead))
+                {
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
+                }
+                if(IsAmbush && !HasSetViolent && PrimaryGangMember != null && PrimaryGangMember.PlayerPerception.CanRecognizeTarget)
+                {
+                    HasSetViolent = true;
+                    OnSetGangMembersViolent();
+                }
                 GameFiber.Sleep(1000);
             }
         }
 
+        private void OnSetGangMembersViolent()
+        {
+            foreach (GangMember gm in SpawnedMembers)
+            {
+                gm.IsHitSquad = true;
+                gm.WillFight = true;
+                gm.WillAlwaysFightPolice = true;
+                gm.WillFightPolice = true;
+            }
+            EntryPoint.WriteToConsole("DRUG MEETUP SET GANG MEMBERS VIOLENT! THEY RECOGNIZE YOU");
+        }
+
+        protected override void FinishTask()
+        {
+            if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
+            {
+                PlayerTasks.CompleteTask(HiringContact, true);
+                OnTaskCompletedOrFailed();
+            }
+            else if (CurrentTask != null && CurrentTask.IsActive)
+            {
+                SetFailed();
+            }
+            else
+            {
+                Dispose();
+            }
+        }
+        private bool HasCompletedSale()
+        {
+            if(PrimaryGangMember == null)
+            {
+                return false;
+            }
+            if(!PrimaryGangMember.Pedestrian.Exists())
+            {
+                return false;
+            }
+            DesiredItem di = PrimaryGangMember.ItemDesires?.Get(ModItem);
+            if (di != null && Quantity == di.ItemsPurchasedFromPlayer)
+            {
+                EntryPoint.WriteToConsole($"YOU HAVE COMPLETED THE SALE Quantity{Quantity} ItemsPurchasedFromPlayer{di.ItemsPurchasedFromPlayer}");
+                return true;
+            }
+            return false;
+        }
         private void OnWentAwayFromMeetup()
         {
             EntryPoint.WriteToConsole("DRUG MEETUP PLAYER IS WENT AWAY FROM LOCATION");
             HasArrivedNearMeetup = false;
-            CleanupDealer();
+            CleanupPeds();
         }
-
-        private void CleanupDealer()
-        {
-
-        }
-
         private void OnArrivedNearMeetup()
         {
-            EntryPoint.WriteToConsole("DRUG MEETUP PLAYER IS NEARBY LOCATION");
+            EntryPoint.WriteToConsole($"DRUG MEETUP PLAYER IS NEARBY LOCATION {IsAmbush}");
             HasArrivedNearMeetup = true;
             if(HasCompletedTransaction)
             {
@@ -168,7 +208,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             SpawnDealers();
         }
-
         private void SpawnDealers()
         {
             EntryPoint.WriteToConsole("DRUG MEETUP START SPAWN DEALERS");
@@ -179,76 +218,44 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             gangSpawnTask.PlacePedOnGround = true;
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = true;
+            gangSpawnTask.IsHitSquad = IsAmbush;
             gangSpawnTask.SpawnRequirement = TaskRequirements.Guard;
             gangSpawnTask.AttemptSpawn();
-
-
-            GangMember gangMember = (GangMember)gangSpawnTask.CreatedPeople.FirstOrDefault();
-            if(gangMember == null)
+            PrimaryGangMember = (GangMember)gangSpawnTask.CreatedPeople.FirstOrDefault();
+            if(PrimaryGangMember == null)
             {
                 return;
             }
-
-            EntryPoint.WriteToConsole($"DRUG MEETUP SPAWNED DEALERS {gangMember.Handle}");
-
-            //gangMember.ItemDesires.DesiredItems.Clear();
-            //gangMember.ItemDesires.DesiredItems.Add(new DesiredItem(ModItem, -1, Quantity));
-
-            gangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, -1, 500) { ModItem = ModItem, NumberOfItemsToPurchaseFromPlayer = Quantity, NumberOfItemsToSellToPlayer = 0 } }),true);
-
-
-            //foreach(DesiredItem di in gangMember.ItemDesires.DesiredItems)
-            //{
-            //    EntryPoint.WriteToConsole($" {di.ModItem?.Name} NumberOfItemsToPurchaseFromPlayer{di.NumberOfItemsToPurchaseFromPlayer} NumberOfItemsToSellToPlayer{di.NumberOfItemsToSellToPlayer}");
-            //}
-
+            int BuyingUnitPrice = ShopMenus.GetAverageStreetPrice(ModItem);
+            EntryPoint.WriteToConsole($"DRUG MEETUP SPAWNED DEALERS {PrimaryGangMember.Handle} {ModItem.Name} BuyingUnitPrice:{BuyingUnitPrice}");
+            PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, -1, BuyingUnitPrice) { 
+                ModItem = ModItem, 
+                NumberOfItemsToPurchaseFromPlayer = Quantity, 
+                NumberOfItemsToSellToPlayer = 0 } }),true);
+            SpawnedMembers = new List<GangMember>();
+            foreach (GangMember gm in gangSpawnTask.CreatedPeople)
+            {
+                gm.IsHitSquad = false;
+                SpawnedMembers.Add(gm);
+            }
         }
-
-        private void DeleteCar()
+        private void CleanupPeds()
         {
-            //if (DeadBodyVehicle != null && DeadBodyVehicle.Vehicle.Exists())
-            //{
-            //    DeadBodyVehicle.FullyDelete();
-            //}
-        }
-        private void DeleteBody()
-        {
-            //if (DeadBody != null && DeadBody.Pedestrian.Exists())
-            //{
-            //    DeadBody.IsManuallyDeleted = false;
-            //    DeadBody.DeleteBlip();
-            //    DeadBody.Pedestrian.Delete();
-            //}
-        }
-        private void CleanupPed()
-        {
-            //if (DeadBody == null || !DeadBody.Pedestrian.Exists())
-            //{
-            //    return;
-            //}
-            //DeadBody.Pedestrian.IsPersistent = false;
-            //DeadBody.IsManuallyDeleted = false;//this seems to delete it, w/e
-        }
-        private void CleanupCar()
-        {
-            //if (DeadBodyVehicle == null || !DeadBodyVehicle.Vehicle.Exists())
-            //{
-            //    return;
-            //}
-            //DeadBodyVehicle.WasSpawnedEmpty = false;
-            //DeadBodyVehicle.IsManualCleanup = false;
-            //DeadBodyVehicle.Vehicle.IsPersistent = false;
-            //DeadBodyVehicle.Vehicle.LockStatus = (VehicleLockStatus)10;
+            foreach(GangMember gm in SpawnedMembers)
+            {
+                if(gm.Pedestrian.Exists())
+                {
+                    gm.Pedestrian.IsPersistent = false;
+                }
+            }
         }
         protected override void OnTaskCompletedOrFailed()//called on failed and disposed?
         {
-            CleanupPed();
-            CleanupCar();
+            CleanupPeds();
             if (DealingLocation != null)
             {
                 DealingLocation.IsPlayerInterestedInLocation = false;
             }
         }
-
     }
 }
