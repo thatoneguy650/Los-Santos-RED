@@ -1680,6 +1680,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(-0.3959475f, -0.8638847f, -0.3113339f),
                         CameraRotation = new Rotator(-18.13964f, 8.535035E-06f, 155.3764f)
                     },
+                    new CraftInteriorInteract("Stove", new Vector3(-1153.271f,-1521.104f,10.63272f), 273f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {

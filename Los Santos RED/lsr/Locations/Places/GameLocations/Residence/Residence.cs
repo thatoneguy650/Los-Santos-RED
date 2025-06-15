@@ -9,6 +9,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -151,6 +152,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
+        if(!isInside)
+        {
+            CraftingFlag = "Stove";
+        }
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -775,8 +780,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     }
     public override string GetInquireDescription()
     {
-        List<CraftInteriorInteract> craftingInteracts = ResidenceInterior.InteractPoints.OfType<CraftInteriorInteract>().ToList();
-        if (craftingInteracts.Count > 0)
+        List<CraftInteriorInteract> craftingInteracts = ResidenceInterior?.InteractPoints.OfType<CraftInteriorInteract>().ToList();
+        if (craftingInteracts !=null && craftingInteracts.Count > 0)
         {
             return "Can craft using: ~n~" +string.Join(", ", craftingInteracts.Select(x => x.Name));
         }
@@ -824,6 +829,32 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             }
         }
         return myRes;
+    }
+    public override void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+        if (landlordMenu.ResidencesTab.items == null)
+        {
+            landlordMenu.ResidencesTab.items = new List<TabItem>();
+        }
+        TabTextItem ttx = new TabTextItem(Name, "", GetResidenceInformation());
+        ttx.Activated += (s, e) =>
+        {
+            Player.GPSManager.AddGPSRoute(Name, EntrancePosition, true);
+        };
+        landlordMenu.ResidencesTab.items.Add(ttx);
+    }
+    private string GetResidenceInformation()
+    {
+        StringBuilder residenceInformation = new StringBuilder();
+        if (IsOwned)
+        {
+            residenceInformation.AppendLine("~w~Status: ~g~Owned");
+        }
+        else
+        {
+            residenceInformation.AppendLine("~w~Status: ~o~Rented");
+        }
+        return residenceInformation.ToString();
     }
 }
 

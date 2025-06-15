@@ -1427,6 +1427,10 @@ public class GameLocation : ILocationDispatchable
         toAdd.Add(Tuple.Create<string, string>("GPS", StreetAddress));
         return toAdd;
     }
+    public virtual void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+
+    }
     //public virtual void UpdatePrompts()
     //{
 

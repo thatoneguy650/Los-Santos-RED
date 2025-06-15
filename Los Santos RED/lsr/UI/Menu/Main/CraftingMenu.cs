@@ -85,6 +85,10 @@ public class CraftingMenu : ModUIMenu
     }
     private void CreateCraftableItems(string craftingFlag = null)
     {
+        if (craftingFlag == null && LocationInteractablePlayer.IsInVehicle)
+        {
+            craftingFlag = LocationInteractablePlayer.CurrentVehicle.VehicleModelName;
+        }
         AddToMenu(Menu, craftingFlag, MenuPool);
     }
     private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus, UIMenu menuToUse = null, MenuPool menuPool = null)

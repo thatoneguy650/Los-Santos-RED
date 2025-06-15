@@ -469,5 +469,20 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         propertyInfos.Add(gpsInformation);
         return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
     }
-
+    public override void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+        if (landlordMenu.BusinessesTab.items == null)
+        {
+            landlordMenu.BusinessesTab.items = new List<TabItem>();
+        }
+        TabMissionSelectItem BusinessItem = GetUIInformation();
+        BusinessItem.OnItemSelect += (selectedItem) =>
+        {
+            if (selectedItem != null && selectedItem.Name == "GPS")
+            {
+                Player.GPSManager.AddGPSRoute(Name, EntrancePosition, true);
+            }
+        };
+        landlordMenu.BusinessesTab.items.Add(BusinessItem);
+    }
 }
