@@ -30,6 +30,7 @@ namespace Mod
         }
         public void Setup()
         {
+            return;//REMOVE CRAFTING 20250615
             SetupCraftableLookup();
             Player.Crafting = this;
         }

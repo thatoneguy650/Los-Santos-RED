@@ -27,6 +27,7 @@ public class CraftingMenu : ModUIMenu
     }
     public void Setup()
     {
+        return;//REMOVE CRAFTING 20250615
         Menu = new UIMenu("Crafting", "Select crafting category");
         Crafting.CraftingMenu = this;
         Menu.SetBannerType( EntryPoint.LSRedColor);

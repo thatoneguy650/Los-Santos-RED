@@ -98,7 +98,7 @@ public class UI : IMenuProvideable
         CraftableItems = modDataFileManager.CraftableItems;
         Crafting = crafting;
         CraftingMenu = new CraftingMenu(MenuPool, CraftableItems, Crafting, locationInteractableplayer, modItems);
-        MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu, CraftingMenu };
+        MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu }; ;//REMOVE CRAFTING 20250615 MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu, CraftingMenu };
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, LocationTypes);
         SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, gameSaves, pedSwap,playerinventory, saveablePlayer, agencies, modDataFileManager.Contacts, interactionable);
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings, modDataFileManager.Contacts);

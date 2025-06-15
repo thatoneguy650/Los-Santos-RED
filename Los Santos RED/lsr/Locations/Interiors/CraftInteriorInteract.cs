@@ -10,8 +10,15 @@ public class CraftInteriorInteract : InteriorInteract
     public CraftInteriorInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
     }
+    public override void DisplayMarker(int markerType, float zOffset, float markerScale)
+    {
+        return;//REMOVE CRAFTING 20250615
+    }
     public override void OnInteract()
     {
+        return;//REMOVE CRAFTING 20250615
+
+
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
@@ -33,6 +40,9 @@ public class CraftInteriorInteract : InteriorInteract
     }
     public override void AddPrompt()
     {
+        return;//REMOVE CRAFTING 20250615
+
+
         if (Player == null)
         {
             return;

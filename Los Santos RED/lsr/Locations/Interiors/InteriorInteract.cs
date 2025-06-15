@@ -78,7 +78,7 @@ public class InteriorInteract
     {
 
     }
-    public void DisplayMarker(int markerType, float zOffset, float markerScale)
+    public virtual void DisplayMarker(int markerType, float zOffset, float markerScale)
     {
         if(DistanceTo >= 30)
         {
