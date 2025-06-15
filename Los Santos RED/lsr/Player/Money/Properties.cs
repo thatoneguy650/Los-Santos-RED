@@ -18,48 +18,21 @@ public class Properties
         PlacesOfInterest = placesOfInterest;
         Time = time;
     }
-    public List<Residence> Residences { get; private set; } = new List<Residence>();
-    public List<Business> Businesses { get; private set; } = new List<Business>();
-    public List<GameLocation> PayoutProperties { get; private set; } = new List<GameLocation>();
-
+    public List<GameLocation> PropertyList { get; private set; } = new List<GameLocation>();
+    //public List<Residence> Residences { get; private set; } = new List<Residence>();
+    //public List<Business> Businesses { get; private set; } = new List<Business>();
+    //public List<GameLocation> PayoutProperties { get; private set; } = new List<GameLocation>();
+    //public List<GameLocation> CraftingLocations { get; private set; } = new List<GameLocation>();
     public void Setup()
     {
 
     }
     public void Update()
     {
-        int businessesPayingOut = 0;
-        foreach (Residence residence in Residences)
+        //int businessesPayingOut = 0;
+        foreach (GameLocation property in PropertyList)
         {
-            if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
-            {
-                residence.ReRent(Player, Time);
-            }
-            else if(residence.IsOwned && residence.IsRentedOut && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
-            {
-                residence.Payout(Player, Time);
-                businessesPayingOut++;
-            }
-        }
-        //foreach(GameLocation location in PayoutProperties)
-        //{
-        //    if(location.DatePayoutDue !=null && location.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, location.DatePayoutDue) >=0)
-        //    {
-        //        location.Payout(Player, Time);
-        //        businessesPayingOut++;
-        //    }
-        //}
-        foreach(Business business in Businesses)
-        {
-            if (business.DatePayoutDue != null && business.DatePayoutPaid != null && DateTime.Compare(Time.CurrentDateTime, business.DatePayoutDue) >= 0)
-            {
-                business.Payout(Player, Time);
-                businessesPayingOut++;
-            }
-        }
-        if(businessesPayingOut > 0)
-        {
-            Game.DisplayNotification($"{businessesPayingOut} of your investment(s) have paid out.");
+            property.HandleOwnedLocation(Player, Time);
         }
     }
     public void Dispose()
@@ -68,55 +41,24 @@ public class Properties
     }
     public void Reset()
     {
-        foreach (Residence residence in Residences)
+        foreach(GameLocation property in PropertyList)
         {
-            residence.Reset();
+            property.Reset();
         }
-        Residences.Clear();
+        PropertyList.Clear();
     }
-    public void AddResidence(Residence toAdd)
+    public void AddOwnedLocation(GameLocation toAdd)
     {
-        if(!Residences.Any(x=> x.Name == toAdd.Name))
+        if (!PropertyList.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
         {
-            Residences.Add(toAdd);
-        }
-    }
-    public void RemoveResidence(Residence toAdd)
-    {
-        if (Residences.Any(x => x.Name == toAdd.Name))
-        {
-            toAdd.Reset();
-            Residences.Remove(toAdd);
+            PropertyList.Add(toAdd);
         }
     }
-    public void AddPayoutProperty(GameLocation toAdd)
+    public void RemoveOwnedLocation(GameLocation toRemove)
     {
-        if (!PayoutProperties.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
+        if (!PropertyList.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
         {
-            PayoutProperties.Add(toAdd);
-        }
-    }
-    public void RemovePayoutProperty(GameLocation toRemove)
-    {
-        if (PayoutProperties.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
-        {
-            toRemove.Reset();
-            PayoutProperties.Remove(toRemove);
-        }
-    }
-    public void AddBusiness(Business toAdd)
-    {
-        if (!Businesses.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition))
-        {
-            Businesses.Add(toAdd);
-        }
-    }
-    public void RemoveBusiness(Business toRemove)
-    {
-        if (Businesses.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition))
-        {
-            toRemove.Reset();
-            Businesses.Remove(toRemove);
+            PropertyList.Remove(toRemove);
         }
     }
 }

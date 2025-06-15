@@ -999,6 +999,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.7697585f, 0.3008637f, -0.5629858f),
                         CameraRotation = new Rotator(-34.26254f, 4.442075E-05f, -68.65173f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(265.6488f, -995.8674f, -99.00866f), 268f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 RestInteracts = new List<RestInteract>(){
                     new RestInteract("lowEndRest1",new Vector3(262.5934f,-1002.507f,-99.0086f),182.0201f,"Sleep") {
@@ -1111,6 +1115,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.7354667f, -0.6025593f, -0.3098564f),
                         CameraRotation = new Rotator(-18.05057f, 1.795937E-06f, -129.3274f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(265.6488f, -995.8674f, -99.00866f), 279.6992f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 RestInteracts = new List<RestInteract>()
                 {
@@ -1169,6 +1177,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.9862954f, -0.03383142f, -0.1614832f),
                         CameraRotation = new Rotator(-9.292995f, -2.838701E-06f, -91.96456f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-31.13661f, -589.1672f, 88.71226f), 249.2539f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1227,6 +1239,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.3879803f, 0.9071884f, -0.1627286f),
                         CameraRotation = new Rotator(-9.365308f, 6.489807E-06f, -23.15511f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-1459.083f, -534.9687f, 68.15404f), 311f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1285,6 +1301,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.5533304f, 0.7600167f, -0.3408814f),
                         CameraRotation = new Rotator(-19.93059f, 1.0898E-05f, -36.0565f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-1459.077f,-535.0001f,55.52639f), 312f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1415,6 +1435,10 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Toilet",
                         UseNavmesh = false,
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-786.8973f,328.7855f,206.2184f), 273f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
             },
             new ResidenceInterior(-674, "Eclipse Towers, Apt 3")//MP from PB
@@ -1527,6 +1551,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.7231579f, 0.6743343f, -0.1493844f),
                         CameraRotation = new Rotator(-8.591255f, -6.475967E-06f, -47.0009f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-917.2928f,-380.4835f,108.0377f), 302f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1585,6 +1613,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(0.932392f, 0.282665f, -0.2252679f),
                         CameraRotation = new Rotator(-13.01863f, 0f, -73.13474f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-609.1013f, 53.81107f, 106.6245f), 264f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1648,6 +1680,10 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(-0.3959475f, -0.8638847f, -0.3113339f),
                         CameraRotation = new Rotator(-18.13964f, 8.535035E-06f, 155.3764f)
                     },
+                    new CraftInteriorInteract("Stove", new Vector3(-1153.271f,-1521.104f,10.63272f), 273f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -1715,10 +1751,10 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-22.23354f, -1.567997E-05f, 19.01349f),
                         UseNavmesh = false,
                     },
-                    //new CraftInteriortInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
-                    //{
-                    //    CraftingFlag = "Stove"
-                    //}
+                    new CraftInteriorInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
@@ -1927,6 +1963,10 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(339.9724f,430.7738f,149.3807f), 139.3014f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
             },
             new ResidenceInterior(206337, "2045 North Conker Avenue")
@@ -2050,6 +2090,10 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(376.3965f, 417.4155f, 145.9001f), 185f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
             },
             new ResidenceInterior(207105, "3655 Wild Oats Drive")
@@ -2174,6 +2218,10 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-168.1958f,493.834f,137.6536f), 205f, "Stove")
+                    {
+                        CraftingFlag = "Stove"
+                    }
                 },
             },
 
@@ -4535,6 +4583,10 @@ public class Interiors : IInteriors
                 InteriorEgressPosition = new Vector3(-776.9362f,323.6867f,211.9975f),
                 InteriorEgressHeading = 268.3861f,
                 InteractPoints = new List<InteriorInteract>() {
+                new CraftInteriorInteract("Stove",new Vector3(-770.1588f,338.2808f,211.3971f), 96f, "Stove")
+                {
+                    CraftingFlag = "Stove"
+                },
                 new ExitInteriorInteract() {
                 Name = "EclTowApt3Exit1",
                 Position = new Vector3(-776.9362f,323.6867f,211.9975f),
@@ -4733,6 +4785,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-778.1878f,340.2737f,160.0016f),
             InteriorEgressHeading = 84.02899f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-787.3166f,329.005f,158.599f), 272f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "EclTowApt31Exit1",
             Position = new Vector3(-778.1878f,340.2737f,160.0016f),
@@ -4931,6 +4987,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-778.4022f,317.3115f,223.2576f),
             InteriorEgressHeading = 264.827f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-769.2664f,328.6883f,221.8551f), 100f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "EclTowApt40Exit1",
             Position = new Vector3(-778.4022f,317.3115f,223.2576f),
@@ -5129,6 +5189,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-778.1547f,339.9178f,207.6209f),
             InteriorEgressHeading = 96.86304f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-786.9453f,328.6381f,206.2184f), 273f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "EclTowApt5Exit1",
             Position = new Vector3(-778.1547f,339.9178f,207.6209f),
@@ -5327,6 +5391,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-778.2145f,317.3462f,176.8037f),
             InteriorEgressHeading = 259.2614f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-769.1633f,329.0352f,175.4012f), 88f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "EclTowApt9Exit1",
             Position = new Vector3(-778.2145f,317.3462f,176.8037f),
@@ -6509,6 +6577,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-263.5225f,-966.6315f,77.23132f),
             InteriorEgressHeading = 336.3881f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-271.2143f,-954.5176f,75.82876f), 166f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "AltaStApt10Exit1",
             Position = new Vector3(-263.5225f,-966.6315f,77.23132f),
@@ -6706,6 +6778,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-279.4127f,-941.5223f,92.51087f),
             InteriorEgressHeading = 160.1609f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-272.0527f,-953.8077f,91.10833f), 347f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "AltaStApt57Exit1",
             Position = new Vector3(-279.4127f,-941.5223f,92.51087f),
@@ -6904,6 +6980,10 @@ public class Interiors : IInteriors
             InteriorEgressPosition = new Vector3(-15.9621f,-607.2884f,100.2328f),
             InteriorEgressHeading = 339.7805f,
             InteractPoints = new List<InteriorInteract>() {
+            new CraftInteriorInteract("Stove",new Vector3(-23.4612f,-594.6737f,98.83028f), 168f, "Stove")
+            {
+                CraftingFlag = "Stove"
+            },
             new ExitInteriorInteract() {
             Name = "IntWayApt35Exit1",
             Position = new Vector3(-15.9621f,-607.2884f,100.2328f),
@@ -7144,6 +7224,10 @@ public class Interiors : IInteriors
             CameraRotation = new Rotator(-20.07011f,4.544862E-06f,97.43388f),
             ButtonPromptText = "Use Sink",
             UseNavmesh = false,
+            },
+            new CraftInteriorInteract("Stove",new Vector3(-12.37665f,-586.4662f,79.43072f),80f, "Stove")
+            {
+                CraftingFlag = "Stove"
             },
             },
             ClearPositions = new List<Vector3>() {
@@ -8730,7 +8814,7 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 {
                     new ExitInteriorInteract("CocaineExit",new Vector3(1088.67f, -3187.556f, -38.99346f), 1.538507f,"Exit"),
                     new StandardInteriorInteract("CocaineStandard",new Vector3(1087.243f, -3194.291f, -38.99346f), 87.61932f,"Manage"),
-                    new CraftInteriortInteract ("DrugLab",new Vector3(1092.968f, -3194.928f, -38.99347f), 184.9297f, "DrugLab")
+                    new CraftInteriorInteract ("DrugLab",new Vector3(1092.968f, -3194.928f, -38.99347f), 279.6992f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
                     }
@@ -8760,7 +8844,7 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 {
                     new ExitInteriorInteract("MethLabExit",new Vector3(996.9594f, -3200.593f, -36.39368f), 94.21133f,"Exit"),
                     new StandardInteriorInteract("MethLabStandard",new Vector3(1005.692f, -3200.322f, -38.51932f), 190.0661f,"Manage"),
-                    new CraftInteriortInteract ("DrugLab",new Vector3(1014.268f, -3195.008f, -38.99316f), 359.6527f, "DrugLab")
+                    new CraftInteriorInteract ("DrugLab",new Vector3(1014.268f, -3195.008f, -38.99316f), 359.6527f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
                     }
@@ -8777,7 +8861,7 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 {
                     new ExitInteriorInteract("WeedFarmExit",new Vector3(1066.195f, -3183.523f, -39.16362f), 268.3729f,"Exit"),
                     new StandardInteriorInteract("WeedFarmStandard",new Vector3(1044.535f, -3194.867f, -38.15801f), 265.4463f,"Manage"),
-                    new CraftInteriortInteract ("DrugLab",new Vector3(1036.391f, -3203.718f, -38.17331f), 356.0549f, "DrugLab")
+                    new CraftInteriorInteract ("DrugLab",new Vector3(1036.391f, -3203.718f, -38.17331f), 356.0549f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
                     }

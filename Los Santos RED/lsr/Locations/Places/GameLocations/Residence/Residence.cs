@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Data.Interface;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
@@ -8,6 +9,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,7 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, IPayoutDisbursable
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, ICraftable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -32,7 +34,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
-    private UIMenuItem RentOutPropertyItem;
     private bool HasTeleported = false;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
@@ -57,8 +58,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public CashStorage CashStorage { get; set; }
     [XmlIgnore]
     public ResidenceInterior ResidenceInterior { get; set; }
-    [XmlIgnore]
-    public bool IsRentedOut { get; set; } = false;
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -76,6 +75,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public GameLocation GameLocation => this;
 
+    public string CraftingFlag { get; set; } = null;
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -139,11 +139,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         {
             return;
         }
-        if(IsRentedOut)
-        {
-            StandardInteract(null, false);
-            return;
-        }
         if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry && IsOwnedOrRented)
         {
             DoEntranceCamera(false);
@@ -157,6 +152,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
+        if(!isInside)
+        {
+            CraftingFlag = "Stove";
+        }
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -167,19 +166,13 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 SetupLocationCamera(locationCamera, isInside, false);
                 CreateInteractionMenu();
+                
                 InteractionMenu.Visible = true;
                 if (!HasBannerImage)
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
                 }
-                if(IsRentedOut)
-                {
-                    GenerateRentOutMenu();
-                }
-                else
-                {
-                    GenerateResidenceMenu(isInside);
-                }
+                GenerateResidenceMenu(isInside);
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();
@@ -324,33 +317,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-        IsRentedOut = false;
-    }
-    public override void Payout(IPropertyOwnable player, ITimeReportable time)
-    {
-        try
-        {
-            if (player == null)
-            {
-                return;
-            }
-            if (player.BankAccounts.BankAccountList.Any())
-            {
-                player.BankAccounts.GiveMoney(RentalFee, true);
-            }
-            else
-            {
-                CashStorage.StoredCash = CashStorage.StoredCash + RentalFee;
-            }
-            UpdateStoredData();
-            DateRentalPaymentPaid = time.CurrentDateTime;
-            DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
-        }
-        catch (Exception ex)
-        {
-            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
-            Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
-        }
     }
     public void ReRent(IPropertyOwnable player, ITimeReportable time)
     {
@@ -402,12 +368,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         InteractionMenu.Clear();
         AddInquireItems();
         AddInteractionItems(isInside);
-    }
-    private void GenerateRentOutMenu()
-    {
-        InteractionMenu.Clear();
-        AddRentOutMenu();
-        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, false, false);
     }
     //private void GenerateSpecificInteractMenu(bool createOwnershipInteraction, bool createRestInteraction, bool createOutfitInteraction, bool createInventoryInteraction, bool createWeaponInteraction, bool createCashInteractionMenu)//needs toa lready be bought, some sort of restrict parameter to determine which it is?
     //{
@@ -476,22 +436,9 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 };
                 OfferSubMenu.AddItem(RentResidenceMenuItem);
             }
+            RentResidenceMenuItem.Description += "~n~~n~" + GetInquireDescription();
+            PurchaseResidenceMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
-    }
-    private void AddRentOutMenu()
-    {
-        RentOutPropertyItem = new UIMenuItem("Stop renting out the property","");
-        RentOutPropertyItem.Activated += (sender, e) =>
-        {
-            OnStopRentingOut();
-        };
-        InteractionMenu.AddItem(RentOutPropertyItem);
-    }
-    private void OnStopRentingOut()
-    {
-        MenuPool.CloseAllMenus();
-        Interior?.ForceExitPlayer(Player, this);
-        IsRentedOut = false;
     }
     private void AddInteractionItems(bool isInside)
     {
@@ -505,7 +452,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             CreateRestInteractionMenu();
         }
         CreateOutfitInteractionMenu(isInside, isInside);
-
+        if (!string.IsNullOrEmpty(CraftingFlag))
+        {
+            EntryPoint.WriteToConsole($"Writing to console trying to add crafting menu. {MenuPool},{InteractionMenu},{CraftingFlag}");
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+            Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+        }
 
         bool withAnimations = Interior?.IsTeleportEntry == true;
 
@@ -538,26 +490,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 MenuPool.CloseAllMenus();
                 Interior?.ForceExitPlayer(Player, this);
             };
-            //If you own the property and it is rentable.
-            if(RentalFee > 0)
-            {
-                RentOutPropertyItem = new UIMenuItem("Rent out the Property", $"Rent out the property to earn ${RentalFee} every {RentalDays} day(s).");
-                RentOutPropertyItem.Activated += (sender, e) =>
-                {
-                    OnRentOutProperty();
-                };
-                //InteractionMenu.AddItem(RentOutPropertyItem);
-            }
             InteractionMenu.AddItem(SellHouseItem);
         }
-    }
-    private void OnRentOutProperty()
-    {
-        MenuPool.CloseAllMenus();
-        Interior?.ForceExitPlayer(Player, this);
-        IsRentedOut = true;
-        DateRentalPaymentPaid = Time.CurrentDateTime;
-        DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
     }
     private void CreateRestInteractionMenu()
     {
@@ -678,7 +612,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         IsRented = true;
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
         UpdateStoredData();
-        Player.Properties.AddResidence(this);
+        Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);
         OfferSubMenu.Close(true);
         PlaySuccessSound();
@@ -690,7 +624,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         IsOwned = true;
         IsRented = false;
         UpdateStoredData();
-        Player.Properties.AddResidence(this);
+        Player.Properties.AddOwnedLocation(this);
         if (!IsRented)
         {
             AddInteractionItems(false);
@@ -702,14 +636,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private void OnStopRenting()
     {
         Reset();
-        Player.Properties.RemoveResidence(this);
+        Player.Properties.RemoveOwnedLocation(this);
         PlaySuccessSound();
         DisplayMessage("~y~Rental", $"You have stopped renting {Name}");
     }
     protected override void OnSold()
     {
         Reset();
-        Player.Properties.RemoveResidence(this);
+        Player.Properties.RemoveOwnedLocation(this);
         Player.BankAccounts.GiveMoney(SalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {SalesPrice.ToString("C0")}");
@@ -788,10 +722,6 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     {
         if (IsOwnedOrRented)
         {
-            if(IsRentedOut)
-            {
-                return $"Manage {Name}";
-            }
             return $"Enter {Name}";
         }
         else
@@ -848,4 +778,83 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         possibleLocations.Residences.Add(this);
         base.AddLocation(possibleLocations);
     }
+    public override string GetInquireDescription()
+    {
+        List<CraftInteriorInteract> craftingInteracts = ResidenceInterior?.InteractPoints.OfType<CraftInteriorInteract>().ToList();
+        if (craftingInteracts !=null && craftingInteracts.Count > 0)
+        {
+            return "Can craft using: ~n~" +string.Join(", ", craftingInteracts.Select(x => x.Name));
+        }
+        else
+        {
+            return "";
+        }
+    }
+    public override void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        if (!IsOwned && IsRented && DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, DateRentalPaymentDue) >= 0)
+        {
+            ReRent(player, Time);
+        }
+    }
+    public override SavedGameLocation GetSaveData()
+    {
+        SavedResidence myRes = new SavedResidence(Name, IsOwned, IsRented);
+        if (IsOwned || IsRented)
+        {
+            if (IsRented)
+            {
+                myRes.DateOfLastRentalPayment = DateRentalPaymentPaid;
+                myRes.RentalPaymentDate = DateRentalPaymentDue;
+            }
+            if (WeaponStorage != null)
+            {
+                myRes.WeaponInventory = new List<StoredWeapon>();
+                foreach (StoredWeapon storedWeapon in WeaponStorage.StoredWeapons)
+                {
+                    myRes.WeaponInventory.Add(storedWeapon.Copy());
+                }
+            }
+            if (SimpleInventory != null)
+            {
+                myRes.InventoryItems = new List<InventorySave>();
+                foreach (InventoryItem ii in SimpleInventory.ItemsList)
+                {
+                    myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                }
+            }
+            if (CashStorage != null)
+            {
+                myRes.StoredCash = CashStorage.StoredCash;
+            }
+        }
+        return myRes;
+    }
+    public override void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+        if (landlordMenu.ResidencesTab.items == null)
+        {
+            landlordMenu.ResidencesTab.items = new List<TabItem>();
+        }
+        TabTextItem ttx = new TabTextItem(Name, "", GetResidenceInformation());
+        ttx.Activated += (s, e) =>
+        {
+            Player.GPSManager.AddGPSRoute(Name, EntrancePosition, true);
+        };
+        landlordMenu.ResidencesTab.items.Add(ttx);
+    }
+    private string GetResidenceInformation()
+    {
+        StringBuilder residenceInformation = new StringBuilder();
+        if (IsOwned)
+        {
+            residenceInformation.AppendLine("~w~Status: ~g~Owned");
+        }
+        else
+        {
+            residenceInformation.AppendLine("~w~Status: ~o~Rented");
+        }
+        return residenceInformation.ToString();
+    }
 }
+

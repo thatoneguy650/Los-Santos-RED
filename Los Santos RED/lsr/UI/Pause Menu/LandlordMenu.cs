@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
@@ -13,8 +14,8 @@ public class LandlordMenu
 {
     private ILocationInteractable Player;
     private TabView tabView;
-    private ResidencesTab ResidencesTab;
-    private BusinessesTab BusinessesTab;
+    public ResidencesTab ResidencesTab;
+    public BusinessesTab BusinessesTab;
     private List<ITabbableMenu> Tabs = new List<ITabbableMenu>();
     private ITimeReportable Time;
     public LandlordMenu(ILocationInteractable player, ITimeReportable time)
@@ -67,14 +68,25 @@ public class LandlordMenu
         tabView.MoneySubtitle = Player.BankAccounts.TotalMoney.ToString("C0");
         tabView.Name = Player.PlayerName;
         tabView.Money = Time.CurrentTime;
+        ClearTabs();
         tabView.Tabs.Clear();
-
-
+        PopulateMenus();
         foreach (ITabbableMenu tabbableMenu in Tabs)
         {
             tabbableMenu.AddItems();
         }
-
         tabView.RefreshIndex();
+    }
+    private void ClearTabs()
+    {
+        BusinessesTab.items = null;
+        ResidencesTab.items = null;
+    }
+    private void PopulateMenus()
+    {
+        foreach (GameLocation location in Player.Properties.PropertyList)
+        {
+            location.AddToLandLordMenu(this);
+        }
     }
 }

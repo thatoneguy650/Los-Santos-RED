@@ -72,7 +72,6 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<TattooShop> TattooShopPlaces;
     private List<PlasticSurgeryClinic> PlasticSurgeryClinics;
     private List<BarberShop> BarberShopPlaces;
-    private List<ExteriorCraftingLocation> ExteriorCraftingLocations;
     private List<Business> Businesses;
     private PedCustomizerLocation DefaultPedCustomizerLocation;
 
@@ -237,7 +236,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_BarberShops();
         DefaultConfig_PlasticSurgeryClinics();
         DefaultConfig_TattooShops();
-        DefaultConfig_ExteriorCraftingLocations();
         DefaultConfig_Businesses();
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
@@ -289,7 +287,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.BarberShops.AddRange(BarberShopPlaces);
         PossibleLocations.PlasticSurgeryClinics.AddRange(PlasticSurgeryClinics);
         PossibleLocations.TattooShops.AddRange(TattooShopPlaces);
-        PossibleLocations.ExteriorCraftingLocations.AddRange(ExteriorCraftingLocations);
         PossibleLocations.Businesses.AddRange(Businesses);
         PossibleLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
@@ -416,17 +413,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         };
     }
-    private void DefaultConfig_ExteriorCraftingLocations()
-    {
-        ExteriorCraftingLocations = new List<ExteriorCraftingLocation>()
-        {
-            //why does this exist? just a random free meth lab i guess.
-           //new ExteriorCraftingLocation(new Vector3(1389.315f, 3604.739f,38.94193f),302.1837f,"Craft Meth","")
-           //{
-           //   CraftingFlag = "DrugLab" ,
-           //},
-        };
-    }
     private void DefaultConfig_Businesses()
     {
         Businesses = new List<Business>()
@@ -442,7 +428,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ModItemPayoutAmount = 100,
                 CameraPosition = new Vector3(0f, 0f, 0f),
                 CameraDirection = new Vector3(0f, 0f, 0f),
-                CameraRotation = new Rotator(0f, 0f, 0f)
+                CameraRotation = new Rotator(0f, 0f, 0f),
+                CraftingFlag = "DrugLab"
             },
             new Business(new Vector3(2221.945f,5614.832f,54.90165f),108.9486f,"Weed Farm", "")
             {

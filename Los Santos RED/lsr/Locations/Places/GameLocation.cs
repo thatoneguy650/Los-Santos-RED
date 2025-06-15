@@ -9,6 +9,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -349,7 +350,6 @@ public class GameLocation : ILocationDispatchable
     public virtual int PayoutMax { get; set; }
     public virtual int SalesPrice { get; set; }
     public virtual int MaxSalesPrice { get; set; }
-    public virtual bool IsOwnable { get; set; }
     public int GrowthPercentage { get; set; } = 20;
     [XmlIgnore]
     public int CurrentSalesPrice { get; set; }
@@ -579,7 +579,6 @@ public class GameLocation : ILocationDispatchable
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
-                AddPropertyManagement();
                 InteractionMenu.Visible = true;
                 Transaction.ProcessTransactionMenu();
                 Transaction.DisposeTransactionMenu();
@@ -597,32 +596,6 @@ public class GameLocation : ILocationDispatchable
             }
         }, "StandardInteract");
     }
-    public virtual void AddPropertyManagement()
-    {
-        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                if (Purchase())
-                {
-                    MenuPool.CloseAllMenus();
-                }
-            };
-            subMenu.AddItem(businessManagementButton);
-        }
-        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Manage {Name}");
-            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                OnSold();
-            };
-            subMenu.AddItem(businessManagementButton);
-        }
-    }
     protected virtual bool Purchase()
     {
         if (Player.BankAccounts.GetMoney(true) >= PurchasePrice)
@@ -636,7 +609,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnPurchased()
     {
-        Player.Properties.AddPayoutProperty(this);
+        //Player.Properties.AddPayoutProperty(this);
+        AddOwnership();
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         DatePayoutPaid = Time.CurrentDateTime;
@@ -645,7 +619,8 @@ public class GameLocation : ILocationDispatchable
     }
     protected virtual void OnSold()
     {
-        Player.Properties.RemovePayoutProperty(this);
+        //Player.Properties.RemovePayoutProperty(this);
+        RemoveOwnership();
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         MenuPool.CloseAllMenus();
         Interior?.ForceExitPlayer(Player, this);
@@ -1390,54 +1365,72 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
-    public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
-    {
-        int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
-        DatePayoutPaid = time.CurrentDateTime;
-        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
-        int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-        player.BankAccounts.GiveMoney(payoutAmount, true);
-    }
-    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
-    {
-        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
-        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
-        return payoutAmount;
-    }
-    public void AddInteractionToMerchant(UIMenu headerMenu, AdvancedConversation conversation)
-    {
-        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = GetInquireDescription() };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                Purchase();
-                conversation.Dispose();
-            };
-            headerMenu.AddItem(businessManagementButton);
-        }
-        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
-        {
-            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
-            businessManagementButton.Activated += (s, i) =>
-            {
-                Player.Properties.RemovePayoutProperty(this);
-                Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
-                IsOwned = false;
-                DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
-                conversation.Dispose();
-            };
-            headerMenu.AddItem(businessManagementButton);
-        }
-    }
-
-
-
+    
     public virtual string GetInquireDescription()
     {
         return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
     }
 
+    public virtual void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+
+    }
+    public virtual void AddOwnership()
+    {
+        Player.Properties.AddOwnedLocation(this);
+    }
+    public virtual void RemoveOwnership()
+    {
+        Player.Properties.RemoveOwnedLocation(this);
+    }
+
+    public virtual SavedGameLocation GetSaveData()
+    {
+        SavedBusiness saveLocation = new SavedBusiness(Name, IsOwned);
+        if (IsOwned)
+        {
+            saveLocation.DateOfLastPayout = DatePayoutPaid;
+            saveLocation.PayoutDate = DatePayoutDue;
+            saveLocation.EntrancePosition = EntrancePosition;
+            saveLocation.CurrentSalesPrice = CurrentSalesPrice;
+        }
+        return saveLocation;
+    }
+    public virtual TabMissionSelectItem GetUIInformation()
+    {
+        MissionLogo missionLogo = null;
+        if (HasBannerImage)
+        {
+            missionLogo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}"));
+        }
+        List<MissionInformation> propertyInfos = new List<MissionInformation>();
+        List<Tuple<string, string>> financialTuples = AddFinancials();
+        MissionInformation financialInformation = new MissionInformation("Financials", "", financialTuples);
+        financialInformation.Logo = missionLogo;
+        propertyInfos.Add(financialInformation);
+        List<Tuple<string, string>> gpsTuple = AddGPS();
+        MissionInformation gpsInformation = new MissionInformation("GPS", "", gpsTuple);
+        gpsInformation.Logo = missionLogo;
+        propertyInfos.Add(gpsInformation);
+        return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
+    }
+    public virtual List<Tuple<string, string>> AddFinancials()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("Sell Price", $"${CurrentSalesPrice}"));
+        toAdd.Add(Tuple.Create<string, string>("Payment Due", DatePayoutDue.ToString("dd-MMM-yyyy")));
+        return toAdd;
+    }
+    public virtual List<Tuple<string, string>> AddGPS()
+    {
+        List<Tuple<string, string>> toAdd = new List<Tuple<string, string>>();
+        toAdd.Add(Tuple.Create<string, string>("GPS", StreetAddress));
+        return toAdd;
+    }
+    public virtual void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+
+    }
     //public virtual void UpdatePrompts()
     //{
 

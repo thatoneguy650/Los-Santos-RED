@@ -1,7 +1,9 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Data.Interface;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable
+public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable, ICraftable
 {
     private UIMenu OfferSubMenu;
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
@@ -42,7 +44,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     public bool IsPayoutInModItems => PossibleModItemPayouts != null && PossibleModItemPayouts.Any();
     public List<string> PossibleModItemPayouts { get; set; }
     public int ModItemPayoutAmount { get; set; } = 1;
-   // public bool IsPayoutDepositedToBank { get; set; } = false;
     [XmlIgnore]
     public string ModItemToPayout { get; set; }
     [XmlIgnore]
@@ -54,9 +55,8 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     [XmlIgnore]
     public BusinessInterior BusinessInterior { get; set; }
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
-
     public GameLocation GameLocation => throw new NotImplementedException();
-
+    public string CraftingFlag { get; set; } = null;
     public Business(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         ButtonPromptText = GetButtonPromptText();
@@ -188,7 +188,13 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             PurchaseBusinessMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
-    public override void Payout(IPropertyOwnable player, ITimeReportable time)
+    public virtual int CalculatePayoutAmount(int daysSinceLastPayment)
+    {
+        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
+        int payoutAmount = payout * daysSinceLastPayment / PayoutFrequency;
+        return payoutAmount;
+    }
+    public void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {
@@ -196,26 +202,19 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             {
                 return;
             }
-            int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+            int daysSinceLastPayment = (time.CurrentDateTime - DatePayoutPaid).Days;
             DatePayoutPaid = time.CurrentDateTime;
             DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
 
             if (IsPayoutInModItems)
             {
                 ModItem itemToAdd = ModItems.Get(ModItemToPayout);
-                SimpleInventory.Add(itemToAdd, numberOfPaymentsToProcess * ModItemPayoutAmount);
+                SimpleInventory.Add(itemToAdd, (daysSinceLastPayment/PayoutFrequency) * ModItemPayoutAmount);
             }
             else
             {
-                int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-                //if (IsPayoutDepositedToBank && player.BankAccounts.BankAccountList.Any())
-                //{
-                //    player.BankAccounts.GiveMoney(payoutAmount, true);
-                //}
-                //else
-                //{
-                    CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
-                //}
+                int payoutAmount = CalculatePayoutAmount(daysSinceLastPayment);
+                CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
             }
             int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
             CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
@@ -233,7 +232,6 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-        //IsPayoutInModItems = false;
         ModItemToPayout = String.Empty;
     }
     private void AddInteractionItems(bool isInside)
@@ -264,6 +262,11 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
                 Interior?.ForceExitPlayer(Player, this);
             };
             InteractionMenu.AddItem(SellBusinessItem);
+            if(!string.IsNullOrEmpty(CraftingFlag))
+            {
+                UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, "Crafting");
+                Player.Crafting.CraftingMenu.AddToMenu(subMenu, CraftingFlag, MenuPool);
+            }
             if (IsPayoutInModItems)
             {
                 UIMenuListScrollerItem<string> payoutItemScrollerItem = new UIMenuListScrollerItem<string>("Producing", $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)");
@@ -293,7 +296,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     protected override void OnSold()
     {
         Reset();
-        Player.Properties.RemoveBusiness(this);
+        Player.Properties.RemoveOwnedLocation(this);
         Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
         PlaySuccessSound();
         DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
@@ -314,7 +317,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
         UpdateStoredData();
-        Player.Properties.AddBusiness(this);
+        Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);
         PlaySuccessSound();
         DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
@@ -392,7 +395,7 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
         {
             if(PossibleModItemPayouts != null && PossibleModItemPayouts.Any())
             {
-                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(",", PossibleModItemPayouts); 
+                return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)" + "~n~Producible Items:~n~" + string.Join(", ", PossibleModItemPayouts); 
             }
             return $"{ModItemPayoutAmount} every {PayoutFrequency} day(s)";
         }
@@ -401,5 +404,85 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             return $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)";
         }
     }
-
+    public override void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
+    {
+        Payout(player, time);
+    }
+    public override SavedGameLocation GetSaveData()
+    {
+        SavedBusiness myBiz = new SavedBusiness(Name, IsOwned);
+        if (IsOwned)
+        {
+            myBiz.DateOfLastPayout = DatePayoutPaid;
+            myBiz.PayoutDate = DatePayoutDue;
+            myBiz.ModItemToPayout = ModItemToPayout;
+            myBiz.EntrancePosition = EntrancePosition;
+            myBiz.CurrentSalesPrice = CurrentSalesPrice;
+            if (WeaponStorage != null)
+            {
+                myBiz.WeaponInventory = new List<StoredWeapon>();
+                foreach (StoredWeapon storedWeapon in WeaponStorage.StoredWeapons)
+                {
+                    myBiz.WeaponInventory.Add(storedWeapon.Copy());
+                }
+            }
+            if (SimpleInventory != null)
+            {
+                myBiz.InventoryItems = new List<InventorySave>();
+                foreach (InventoryItem ii in SimpleInventory.ItemsList)
+                {
+                    myBiz.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                }
+            }
+            if (CashStorage != null)
+            {
+                myBiz.StoredCash = CashStorage.StoredCash;
+            }
+        }
+        return myBiz;
+    }
+    public override TabMissionSelectItem GetUIInformation()
+    {
+        MissionLogo missionLogo = null;
+        if (HasBannerImage)
+        {
+            missionLogo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}"));
+        }
+        List<MissionInformation> propertyInfos = new List<MissionInformation>();
+        List<Tuple<string, string>> financialTuples = AddFinancials();
+        financialTuples.Add(Tuple.Create<string, string>("Mode of Payment", IsPayoutInModItems ? ModItemToPayout : "Cash"));
+        MissionInformation financialInformation = new MissionInformation("Financials", "", financialTuples);
+        financialInformation.Logo = missionLogo;
+        propertyInfos.Add(financialInformation);
+        List<Tuple<string, string>> storageTuples = new List<Tuple<string, string>>();
+        foreach (InventoryItem item in SimpleInventory.ItemsList)
+        {
+            storageTuples.Add(Tuple.Create<string, string>(item.ModItem.Name, item.Amount.ToString()));
+        }
+        storageTuples.Add(Tuple.Create<string, string>("Cash Storage", $"${CashStorage.StoredCash}"));
+        MissionInformation storageInformation = new MissionInformation("Storage", "", storageTuples);
+        storageInformation.Logo = missionLogo;
+        propertyInfos.Add(storageInformation);
+        List<Tuple<string, string>> gpsTuple = AddGPS();
+        MissionInformation gpsInformation = new MissionInformation("GPS", "", gpsTuple);
+        gpsInformation.Logo = missionLogo;
+        propertyInfos.Add(gpsInformation);
+        return new TabMissionSelectItem($"{Name} - {ZoneName}", propertyInfos);
+    }
+    public override void AddToLandLordMenu(LandlordMenu landlordMenu)
+    {
+        if (landlordMenu.BusinessesTab.items == null)
+        {
+            landlordMenu.BusinessesTab.items = new List<TabItem>();
+        }
+        TabMissionSelectItem BusinessItem = GetUIInformation();
+        BusinessItem.OnItemSelect += (selectedItem) =>
+        {
+            if (selectedItem != null && selectedItem.Name == "GPS")
+            {
+                Player.GPSManager.AddGPSRoute(Name, EntrancePosition, true);
+            }
+        };
+        landlordMenu.BusinessesTab.items.Add(BusinessItem);
+    }
 }

@@ -85,18 +85,18 @@ public class GameSaves : IGameSaves
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();
-        AddAlexis();
+        //AddAlexis();
         AddClaude();
-        AddLamar();
-        AddBrad();
+        //AddLamar();
+        //AddBrad();
         //AddNiko();
-//#if DEBUG
-//        AddNicholasClark();
-//        AddDaveNorton();
-//        AddKarenDaniels();
-//        AddMaleMPCop();
-//        AddFemaleMPCop();
-//#endif
+        //#if DEBUG
+        //        AddNicholasClark();
+        //        AddDaveNorton();
+        //        AddKarenDaniels();
+        //        AddMaleMPCop();
+        //        AddFemaleMPCop();
+        //#endif
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     private void AddAlexis()
@@ -196,7 +196,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.PilotsLicense = new PilotsLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12),IsFixedWingEndorsed = true,IsLighterThanAirEndorsed = true,IsRotaryEndorsed = true };
-        AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime, 
+        AlexisGameSave.SavedGameLocations.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime, 
             InventoryItems = new List<InventorySave>() { new InventorySave("Marijuana",5.0f) }, 
             WeaponInventory = new List<StoredWeapon>() { new StoredWeapon(3219281620, Vector3.Zero, new WeaponVariation(), 50), }
         });
@@ -349,8 +349,8 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.PlayerPosition = new Vector3(860.6456f, -1591.222f, 31.7381f);
         ClaudeGameSave.PlayerHeading = 107.1845f;
         ClaudeGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
-        //ClaudeGameSave.Contacts.Add(new GunDealerContact(StaticStrings.UndergroundGunsContactName));
-        ClaudeGameSave.SavedResidences.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = ClaudeGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ClaudeGameSave.CurrentDateTime });
+        ClaudeGameSave.Contacts.Add(new GunDealerContact(StaticStrings.UndergroundGunsContactName));
+        ClaudeGameSave.SavedGameLocations.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = ClaudeGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ClaudeGameSave.CurrentDateTime });
         ClaudeGameSave.GangReputationsSave = new List<GangRepSave>() { 
             
             
@@ -419,7 +419,7 @@ public class GameSaves : IGameSaves
         ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         //Residences
-        ExampleGameSave.SavedResidences.Add(new SavedResidence("280S Forum Dr No 1", true, false) { });
+        ExampleGameSave.SavedGameLocations.Add(new SavedResidence("280S Forum Dr No 1", true, false) { });
         //Gang Items
         ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { 
             new GangRepSave("AMBIENT_GANG_FAMILY", 5000, 0, 0, 0, 0, 0, 0, 0, false, false,0), 
@@ -578,7 +578,7 @@ public class GameSaves : IGameSaves
         GameSave.PlayerHeading = 107.1845f;
         GameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
         //GameSave.Contacts.Add(new GunDealerContact(StaticStrings.UndergroundGunsContactName));
-        GameSave.SavedResidences.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = GameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = GameSave.CurrentDateTime });
+        GameSave.SavedGameLocations.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = GameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = GameSave.CurrentDateTime });
         GameSave.GangReputationsSave = new List<GangRepSave>() {
 
 
@@ -823,8 +823,8 @@ public class GameSaves : IGameSaves
         // TestGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         TestGameSave.DriversLicense = new DriversLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
         TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
-        TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
-        TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        TestGameSave.SavedGameLocations.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
+        TestGameSave.SavedGameLocations.Add(new SavedResidence("805 Ineseno Road", true, false) { });
         TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false, 0) };
         TestGameSave.HungerValue = 75.0f;
         TestGameSave.ThirstValue = 75.0f;
@@ -868,8 +868,8 @@ public class GameSaves : IGameSaves
         ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         //Residences
-        ExampleGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
-        ExampleGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        ExampleGameSave.SavedGameLocations.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
+        ExampleGameSave.SavedGameLocations.Add(new SavedResidence("805 Ineseno Road", true, false) { });
         //Gang Items
         ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false, 0) };
         //Needs

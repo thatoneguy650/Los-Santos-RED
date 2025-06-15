@@ -1,13 +1,13 @@
 ﻿using Rage;
 using Rage.Native;
 
-public class CraftInteriortInteract : InteriorInteract
+public class CraftInteriorInteract : InteriorInteract
 {
     public string CraftingFlag { get; set; }
-    public CraftInteriortInteract()
+    public CraftInteriorInteract()
     {
     }
-    public CraftInteriortInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public CraftInteriorInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
     }
     public override void OnInteract()
