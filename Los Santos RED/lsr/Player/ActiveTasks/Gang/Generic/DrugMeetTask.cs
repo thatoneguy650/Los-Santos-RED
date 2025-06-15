@@ -24,15 +24,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private GangMember PrimaryGangMember;
         private bool IsAmbush = false;
         private bool HasSetViolent = false;
+        private int UnitPrice;
+
+        public bool IsPlayerSellingDrugs { get; set; } = true;
 
         public GangDrugMeetTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world,
             ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems, PlayerTasks playerTasks, GangTasks gangTasks, 
             PhoneContact hiringContact, Gang hiringGang, ModItem modItem, int quantity, Gang dealingGang) : base(player, time, gangs, placesOfInterest, settings, world, crimes, weapons, names, pedGroups, shopMenus, modItems, playerTasks, gangTasks, hiringContact, hiringGang)
         {
             DebugName = "Drug Meet";
-            RepOnCompletion = 2000;
+            RepOnCompletion = 200;
             DebtOnFail = 0;
-            RepOnFail = -500;
+            RepOnFail = -100;
             DaysToComplete = 2;
             ModItem = modItem;
             Quantity = quantity;
@@ -53,9 +56,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         protected override void SendInitialInstructionsMessage()
         {
-            List<string> Replies = new List<string>() {
-                $"Get to {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}."
-                };
+            List<string> Replies = new List<string>() { };
+
+            if(IsPlayerSellingDrugs)
+            {
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~.Get to {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}. Should be ${UnitPrice * Quantity} to you.");
+            }
+            else
+            {
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~.Get to {DealingLocation.FullStreetAddress} with ${UnitPrice * Quantity} to buy {Quantity} {ModItem.MeasurementName} of {ModItem.Name}.");
+            }
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
         protected override bool GetTaskData()
@@ -98,6 +108,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             else if(gr.GangRelationship == GangRespect.Friendly)
             {
                 IsAmbush = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.DrugMeetAmbushPercentageFriendly);
+            }
+            if (IsPlayerSellingDrugs)
+            {
+                UnitPrice = (int)Math.Round(ShopMenus.GetAverageStreetSalesPrice(ModItem) * RandomItems.GetRandomNumber(Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMin, Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMax));
+            }
+            else
+            {
+                UnitPrice = (int)Math.Round(ShopMenus.GetAverageStreetPurchasePrice(ModItem) * RandomItems.GetRandomNumber(Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMin, Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMax));
             }
             return true;
         }
@@ -155,6 +173,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 gm.WillAlwaysFightPolice = true;
                 gm.WillFightPolice = true;
             }
+            Game.DisplaySubtitle("Ambush, take them out and get the drugs.");
             EntryPoint.WriteToConsole("DRUG MEETUP SET GANG MEMBERS VIOLENT! THEY RECOGNIZE YOU");
         }
 
@@ -184,11 +203,25 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-            DesiredItem di = PrimaryGangMember.ItemDesires?.Get(ModItem);
-            if (di != null && Quantity == di.ItemsPurchasedFromPlayer)
+
+
+            if (IsPlayerSellingDrugs)
             {
-                EntryPoint.WriteToConsole($"YOU HAVE COMPLETED THE SALE Quantity{Quantity} ItemsPurchasedFromPlayer{di.ItemsPurchasedFromPlayer}");
-                return true;
+                DesiredItem di = PrimaryGangMember.ItemDesires?.Get(ModItem);
+                if (di != null && Quantity == di.ItemsPurchasedFromPlayer)
+                {
+                    EntryPoint.WriteToConsole($"YOU HAVE COMPLETED THE SALE Quantity{Quantity} ItemsPurchasedFromPlayer{di.ItemsPurchasedFromPlayer}");
+                    return true;
+                }
+            }
+            else
+            {
+                DesiredItem di = PrimaryGangMember.ItemDesires?.Get(ModItem);
+                if (di != null && Quantity == di.ItemsSoldToPlayer)
+                {
+                    EntryPoint.WriteToConsole($"YOU HAVE COMPLETED THE SALE Quantity{Quantity} ItemsSoldToPlayer{di.ItemsSoldToPlayer}");
+                    return true;
+                }
             }
             return false;
         }
@@ -226,12 +259,22 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return;
             }
-            int BuyingUnitPrice = ShopMenus.GetAverageStreetPrice(ModItem);
-            EntryPoint.WriteToConsole($"DRUG MEETUP SPAWNED DEALERS {PrimaryGangMember.Handle} {ModItem.Name} BuyingUnitPrice:{BuyingUnitPrice}");
-            PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, -1, BuyingUnitPrice) { 
-                ModItem = ModItem, 
-                NumberOfItemsToPurchaseFromPlayer = Quantity, 
-                NumberOfItemsToSellToPlayer = 0 } }),true);
+            EntryPoint.WriteToConsole($"DRUG MEETUP SPAWNED DEALERS {PrimaryGangMember.Handle} {ModItem.Name} BuyingUnitPrice:{UnitPrice}");
+            if (IsPlayerSellingDrugs)
+            {
+                PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, -1, UnitPrice) {
+                ModItem = ModItem,
+                NumberOfItemsToPurchaseFromPlayer = Quantity,
+                NumberOfItemsToSellToPlayer = 0 } }), true);
+                PrimaryGangMember.Money = UnitPrice * Quantity;//make sure he has enough on him to buy it
+            }
+            else
+            {
+                PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, UnitPrice, -1) {
+                ModItem = ModItem,
+                NumberOfItemsToPurchaseFromPlayer = 0,
+                NumberOfItemsToSellToPlayer = Quantity } }), true);
+            }
             SpawnedMembers = new List<GangMember>();
             foreach (GangMember gm in gangSpawnTask.CreatedPeople)
             {

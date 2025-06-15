@@ -85,10 +85,10 @@ public class GameSaves : IGameSaves
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();
-        //AddAlexis();
+        AddAlexis();
         AddClaude();
-        //AddLamar();
-        //AddBrad();
+        AddLamar();
+        AddBrad();
         //AddNiko();
         //#if DEBUG
         //        AddNicholasClark();

@@ -15,19 +15,19 @@ public class CraftInteriorInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        Interior.IsMenuInteracting = false;
+        //Interior.IsMenuInteracting = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         LocationInteractable.Crafting.CraftingMenu.Show(CraftingFlag);
         bool IsCancelled = false;
         while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
-            Player.WeaponEquipment.SetUnarmed();
-            if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
-            {
-                IsCancelled = true;
-                LocationInteractable.Crafting.CraftingMenu.Hide();
-                break;
-            }
+            //Player.WeaponEquipment.SetUnarmed();
+            //if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
+            //{
+            //    IsCancelled = true;
+            //    LocationInteractable.Crafting.CraftingMenu.Hide();
+            //    break;
+            //}
             GameFiber.Yield();
         }
     }

@@ -21,6 +21,7 @@ namespace LosSantosRED.lsr.Interface
         List<MedicalTreatment> GetMedicalTreatments(string treatmentOptionsID);
         PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID);
         VehicleVariationShopMenu GetVehicleVariationMenu(string vehicleVariationShopMenuID);
-        int GetAverageStreetPrice(ModItem modItem);
+        int GetAverageStreetSalesPrice(ModItem modItem);
+        int GetAverageStreetPurchasePrice(ModItem modItem);
     }
 }

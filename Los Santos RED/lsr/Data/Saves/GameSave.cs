@@ -85,6 +85,13 @@ namespace LosSantosRED.lsr.Data
 
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
 
+
+        //LEGACY TO BE REMOVED
+        public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();//LEGACY TO BE REMOVED
+        public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();//LEGACY TO BE REMOVED
+
+
+
         [OnDeserialized()]
         private void SetValuesOnDeserialized(StreamingContext context)
         {
@@ -307,12 +314,20 @@ namespace LosSantosRED.lsr.Data
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
                 LoadPosition(player, placesOfInterest, world, interactionable);
                 LoadRelationships(player, gangs, contacts, time);
-                LoadContacts(player, gangs);    
+                LoadContacts(player, gangs);
+
+
+
                 LoadDebt(player);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
+
+                //LEGACY TO BE REMOVED
+                LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+                LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+
                 LoadOwnedProperties(player, placesOfInterest, modItems, settings);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
@@ -642,6 +657,88 @@ namespace LosSantosRED.lsr.Data
                 player.Character.Heading = PlayerHeading;   
             }
         }
+
+
+
+
+        //LEGACY TO BE REMOVED
+        private void LoadResidences(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        {
+            foreach (SavedResidence res in SavedResidences)
+            {
+                if (res.IsOwnedByPlayer || res.IsRentedByPlayer)
+                {
+                    Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == res.Name).FirstOrDefault();
+                    if (savedPlace != null)
+                    {
+                        player.Properties.AddOwnedLocation(savedPlace);
+                        savedPlace.IsOwned = res.IsOwnedByPlayer;
+                        savedPlace.IsRented = res.IsRentedByPlayer;
+                        savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
+                        savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
+                        if (savedPlace.WeaponStorage == null)
+                        {
+                            savedPlace.WeaponStorage = new WeaponStorage(settings);
+                        }
+                        if (savedPlace.SimpleInventory == null)
+                        {
+                            savedPlace.SimpleInventory = new SimpleInventory(settings);
+                        }
+                        foreach (StoredWeapon storedWeap in res.WeaponInventory)
+                        {
+                            savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                        }
+                        foreach (InventorySave stest in res.InventoryItems)
+                        {
+                            savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                        }
+                        savedPlace.IsRented = res.IsRentedByPlayer;
+                        savedPlace.CashStorage.StoredCash = res.StoredCash;
+                        savedPlace.RefreshUI();
+                    }
+                }
+            }
+        }
+        //LEGACY TO BE REMOVED
+        private void LoadBusinesses(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        {
+            foreach (SavedBusiness biz in SavedBusinesses)
+            {
+                Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == biz.Name && x.EntrancePosition == biz.EntrancePosition).FirstOrDefault();
+                if (savedPlace != null)
+                {
+                    player.Properties.AddOwnedLocation(savedPlace);
+                    savedPlace.DatePayoutDue = biz.PayoutDate;
+                    savedPlace.DatePayoutPaid = biz.DateOfLastPayout;
+                    //savedPlace.IsPayoutInModItems = biz.IsPayoutInModItems;
+                    savedPlace.ModItemToPayout = biz.ModItemToPayout;
+                    //savedPlace.IsPayoutDepositedToBank = biz.IsPayoutDepositedToBank;
+                    savedPlace.CurrentSalesPrice = biz.CurrentSalesPrice;
+                    if (savedPlace.WeaponStorage == null)
+                    {
+                        savedPlace.WeaponStorage = new WeaponStorage(settings);
+                    }
+                    if (savedPlace.SimpleInventory == null)
+                    {
+                        savedPlace.SimpleInventory = new SimpleInventory(settings);
+                    }
+                    foreach (StoredWeapon storedWeap in biz.WeaponInventory)
+                    {
+                        savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                    }
+                    foreach (InventorySave stest in biz.InventoryItems)
+                    {
+                        savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                    }
+                    savedPlace.CashStorage.StoredCash = biz.StoredCash;
+                    savedPlace.RefreshUI();
+                }
+            }
+        }
+
+
+
+
         ////Info
         //public TabMissionSelectItem SaveTabInfo(ITimeReportable time, IGangs gangs, IWeapons weapons, IModItems modItems)
         //{

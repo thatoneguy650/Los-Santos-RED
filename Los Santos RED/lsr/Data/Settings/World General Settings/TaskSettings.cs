@@ -76,6 +76,9 @@ public class TaskSettings : ISettingsDefaultable
 
     public float DrugMeetAmbushPercentageNeutral { get; set; }
     public float DrugMeetAmbushPercentageFriendly { get; set; }
+    public float DrugMeetPriceScalarMin { get; set; }
+    public float DrugMeetPriceScalarMax { get; set; }
+
     public TaskSettings()
     {
         SetDefault();
@@ -114,6 +117,10 @@ public class TaskSettings : ISettingsDefaultable
 
         DrugMeetAmbushPercentageNeutral = 15f;
         DrugMeetAmbushPercentageFriendly = 1f;
+
+
+        DrugMeetPriceScalarMin = 0.8f;
+        DrugMeetPriceScalarMax = 1.2f;
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)

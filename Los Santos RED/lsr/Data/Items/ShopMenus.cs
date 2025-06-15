@@ -530,11 +530,11 @@ public class ShopMenus : IShopMenus
         //public PedVariationShopMenu PedVariationShopMenu
     }
 
-    public int GetAverageStreetPrice(ModItem modItem)
+    public int GetAverageStreetSalesPrice(ModItem modItem)
     {
         if(modItem == null)
         {
-            EntryPoint.WriteToConsole($"GetAverageStreetPrice NO MOD ITEM");
+            EntryPoint.WriteToConsole($"GetAverageStreetSalesPrice NO MOD ITEM");
             return 0;
         }
         List<MenuItem> MatchingMenuItems = new List<MenuItem>();
@@ -548,14 +548,38 @@ public class ShopMenus : IShopMenus
         }
         if(!MatchingMenuItems.Any())
         {
-            EntryPoint.WriteToConsole($"GetAverageStreetPrice {modItem.Name} NO MATCHING MENUS");
+            EntryPoint.WriteToConsole($"GetAverageStreetSalesPrice {modItem.Name} NO MATCHING MENUS");
             return 0;
         }
         double averagePrice = MatchingMenuItems.Average(x => x.SalesPrice);
-        EntryPoint.WriteToConsole($"GetAverageStreetPrice {modItem.Name} averagePrice:{averagePrice}");
+        EntryPoint.WriteToConsole($"GetAverageStreetSalesPrice {modItem.Name} averagePrice:{averagePrice}");
         return (int)Math.Round(averagePrice);
     }
-
+    public int GetAverageStreetPurchasePrice(ModItem modItem)
+    {
+        if (modItem == null)
+        {
+            EntryPoint.WriteToConsole($"GetAverageStreetPurchasePrice NO MOD ITEM");
+            return 0;
+        }
+        List<MenuItem> MatchingMenuItems = new List<MenuItem>();
+        List<ShopMenuGroup> drugDealersMenu = PossibleShopMenus.ShopMenuGroupList.Where(x => x.CategoryID == StaticStrings.DrugDealerMenuID).ToList();
+        foreach (ShopMenuGroup group in drugDealersMenu)
+        {
+            foreach (PercentageSelectShopMenu pssm in group.PossibleShopMenus)
+            {
+                MatchingMenuItems.AddRange(pssm.ShopMenu.Items.Where(x => x.ModItemName == modItem.Name));
+            }
+        }
+        if (!MatchingMenuItems.Any())
+        {
+            EntryPoint.WriteToConsole($"GetAverageStreetPurchasePrice {modItem.Name} NO MATCHING MENUS");
+            return 0;
+        }
+        double averagePrice = MatchingMenuItems.Average(x => x.PurchasePrice);
+        EntryPoint.WriteToConsole($"GetAverageStreetPurchasePrice {modItem.Name} averagePrice:{averagePrice}");
+        return (int)Math.Round(averagePrice);
+    }
     private void DefaultConfig()
     {
         SetupPropMenus();

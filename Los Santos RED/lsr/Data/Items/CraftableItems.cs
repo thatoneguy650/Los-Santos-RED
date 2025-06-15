@@ -50,16 +50,7 @@ public class CraftableItems : ICraftableItems
             CraftableList.RemoveAll(x => additivePossibleItems.Any(y => y.Name.ToLower() == x.Name.ToLower()));
             CraftableList.AddRange(additivePossibleItems);
         }
-
-
-
         CraftableList.RemoveAll(x => ModItems.Get(x.Resultant) == null || (x.SingleUnit == false && x.ResultantAmount < 1) || x.Ingredients.Any(y => y.Quantity < 1));
-
-
-
-
-
-
     }
 
     private void DefaultConfig()
