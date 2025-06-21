@@ -67,7 +67,7 @@ public class CraftableItems : ICraftableItems
             {
                 CrimeId = StaticStrings.DealingDrugsCrimeID,
                 ResultantAmount = 7,
-                Cooldown = 8000,
+                Cooldown = 3000,
                 CraftingFlags = new HashSet<string>{ "DrugLab","JOURNEY" },
                 Category = "Narcotics",
                 AnimationDictionary = "anim@amb@business@meth@meth_monitoring_cooking@cooking@",
@@ -83,7 +83,7 @@ public class CraftableItems : ICraftableItems
             })
             { CrimeId = StaticStrings.DealingDrugsCrimeID,
                 ResultantAmount = 6,
-                Cooldown = 8000,
+                Cooldown = 2000,
                 CraftingFlags = new HashSet<string>{ "DrugLab", "Stove" },
                 Category = "Narcotics",
                 AnimationDictionary = "anim@amb@business@meth@meth_smash_weight_check@",
@@ -110,7 +110,7 @@ public class CraftableItems : ICraftableItems
                 new Ingredient() { IngredientName = "Chesty", Quantity = 1}
             })
             { ResultantAmount = 1 ,
-                Cooldown = 4000,
+                Cooldown = 2000,
                 AnimationDictionary= "anim@amb@nightclub@mini@drinking@drinking_shots@ped_d@normal",
                 AnimationName = "pour_one"
             },

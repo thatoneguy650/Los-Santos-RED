@@ -426,7 +426,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PurchasePrice = 135000,
                 SalesPrice = 25000,
                 FullName = "El Burro Heights, Trap House",
-                PossibleModItemPayouts = new List<string>() { "Marijana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
+                PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
                 ModItemPayoutAmount = 100,
                 CameraPosition = new Vector3(0f, 0f, 0f),
                 CameraDirection = new Vector3(0f, 0f, 0f),
