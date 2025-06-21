@@ -105,8 +105,10 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> TaxiVehicles;
     private List<DispatchableVehicle> RideshareVehicles;
     private List<DispatchableVehicle> WeazelVehicles;
+    private List<DispatchableVehicle> HigginsVehicles;
     private List<DispatchableVehicle> ImportExportVehicles;
     private List<DispatchableVehicle> HighEndVehicles;
+    private List<DispatchableVehicle> OneOffVehicles;
     public DispatchableVehicle TaxiBroadWay;
     public DispatchableVehicle TaxiEudora;
     public DispatchableVehicle GauntletUndercoverSAHP;
@@ -575,59 +577,77 @@ public class DispatchableVehicles : IDispatchableVehicles
                 }
             },
         };
-
-
+        HigginsVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("maverick2", 100, 100) { },
+        };
+        float ImportExportSpawnPercentage = 65f;
         ImportExportVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("banshee2",10,0),
-            new DispatchableVehicle("neon",10,0),
-            new DispatchableVehicle("osiris",10,0),
-            new DispatchableVehicle("fcr",10,0),
-            new DispatchableVehicle("reaper",10,0),
-            new DispatchableVehicle("tempesta",10,0),
-            new DispatchableVehicle("tezeract",10,0),
-            new DispatchableVehicle("sultanrs",10,0),
-            new DispatchableVehicle("dominator7",10,0),
-            new DispatchableVehicle("flashgt",10,0),
-            new DispatchableVehicle("fmj",10,0),
-            new DispatchableVehicle("schlagen",10,0),
-            new DispatchableVehicle("krieger",10,0),
-            new DispatchableVehicle("zentorno",10,0),
-            new DispatchableVehicle("zorrusso",10,0),
-            new DispatchableVehicle("elegy2",10,0),
-            new DispatchableVehicle("z190",10,0),
-            new DispatchableVehicle("rt3000",10,0),
-            new DispatchableVehicle("previon",10,0),
-            new DispatchableVehicle("sheava",10,0),
+            new DispatchableVehicle("banshee2",10,0) { SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("neon",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("osiris",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("fcr",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("reaper",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("tempesta",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("tezeract",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("sultanrs",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("dominator7",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("flashgt",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("fmj",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("schlagen",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("krieger",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("zentorno",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("zorrusso",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("elegy2",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("z190",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("rt3000",10,0) { SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("previon",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
+            new DispatchableVehicle("sheava",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
         };
-
+        float HighEndSpawnPercentage = 35f;
         HighEndVehicles = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("rhinehart",10,0),
-            new DispatchableVehicle("tailgater2",10,0),
-            new DispatchableVehicle("buffalo5",10,0),
-            new DispatchableVehicle("coquette3",10,0),
-            new DispatchableVehicle("dominator8",10,0),
-            new DispatchableVehicle("ellie",10,0),
-            new DispatchableVehicle("cheetah2",10,0),
-            new DispatchableVehicle("feltzer3",10,0),
-            new DispatchableVehicle("infernus2",10,0),
-            new DispatchableVehicle("rapidgt3",10,0),
-            new DispatchableVehicle("corsita",10,0),
-            new DispatchableVehicle("italirsx",10,0),
-            new DispatchableVehicle("italigto",10,0),
-            new DispatchableVehicle("khamelion",10,0),
-            new DispatchableVehicle("komoda",10,0),
-            new DispatchableVehicle("omnisegt",10,0),
-            new DispatchableVehicle("ignus",10,0),
-            new DispatchableVehicle("emerus",10,0),
-            new DispatchableVehicle("osiris",10,0),
-            new DispatchableVehicle("turismo3",10,0),
-            new DispatchableVehicle("vacca",10,0),
-            new DispatchableVehicle("visione",10,0),
-            new DispatchableVehicle("xa21",10,0),
-            new DispatchableVehicle("zeno",10,0),
-            new DispatchableVehicle("zorrusso",10,0),
+            new DispatchableVehicle("rhinehart",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("tailgater2",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("buffalo5",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("coquette3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("dominator8",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("ellie",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("cheetah2",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("feltzer3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("infernus2",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("rapidgt3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("corsita",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("italirsx",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("italigto",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("khamelion",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("komoda",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("omnisegt",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("ignus",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("emerus",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("osiris",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("turismo3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("vacca",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("visione",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("xa21",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("zeno",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("zorrusso",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("everon3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("rapidgt4",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("sentinel5",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("suzume",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("tampa4",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("cheetah3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+            new DispatchableVehicle("coquette6",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
+        };
+
+        float OneOffVehiclesSpawnPercentage = 35f;
+        OneOffVehicles = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("woodlander",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = OneOffVehiclesSpawnPercentage },
+            new DispatchableVehicle("tampa4",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = OneOffVehiclesSpawnPercentage },
+            new DispatchableVehicle("hardy",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = OneOffVehiclesSpawnPercentage },
+            new DispatchableVehicle("firebolt",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = OneOffVehiclesSpawnPercentage },
         };
     }
     private void BaseSharedPoliceVehicles()
@@ -1377,8 +1397,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
             new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
+            new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
             new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
             new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
+            new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
         };
         VehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
 
@@ -1414,6 +1436,23 @@ public class DispatchableVehicles : IDispatchableVehicles
             },
         };
         FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("WeazelVehicles", WeazelVehicles_FMT));
+
+        List<DispatchableVehicle> HigginsVehicles_FMT = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("maverick2", 100, 100) { GroupName = "Helicopter", },
+            new DispatchableVehicle("civmaverick2", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
+                        },
+                    },
+                }
+            },
+        };
+        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("WeazelVehicles", WeazelVehicles_FMT));
+        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("HigginsVehicles", HigginsVehicles_FMT));
         Serialization.SerializeParam(FMTVehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\DispatchableVehicles+_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
@@ -1653,8 +1692,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
             new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
+            new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
             new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
             new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
+            new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
         };
         SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
@@ -1730,8 +1771,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
             new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
+            new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
             new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
             new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
+            new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
         };
         SunshineDreamVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");

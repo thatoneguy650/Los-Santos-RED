@@ -4,10 +4,13 @@ using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 [Serializable]
 public class DispatchableVehicle
@@ -75,6 +78,10 @@ public class DispatchableVehicle
 
     public int WheelType { get; set; } = -1;
 
+
+
+    public bool SetRandomCustomization { get; set; } = false;
+    public float RandomCustomizationPercentage { get; set; } = 0f;
     public string GetDescription()
     {
         string description = "";
@@ -344,8 +351,6 @@ public class DispatchableVehicle
                 NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", vehicleExt.Vehicle, &pearlescentColor, &wheelColor);
             }
             NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(vehicleExt.Vehicle, pearlescentColor, RequiredWheelColorID);
-
-
         }
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())
@@ -355,6 +360,57 @@ public class DispatchableVehicle
         NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, MaxRandomDirtLevel.Clamp(0.0f, 15.0f)));
         RequiredVariation?.Apply(vehicleExt);
         GameFiber.Yield();
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if(SetRandomCustomization && RandomItems.RandomPercent(RandomCustomizationPercentage))
+        {
+            SetVehicleRandomCustomization(vehicleExt);
+        }
+    }
+
+    private void SetVehicleRandomCustomization(VehicleExt vehicleExt)
+    {
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        List<int> ModTypesToRandomize = new List<int>()
+        {
+          0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,25,26,32,33,35,37,39,41,43,44,45,46,47,48
+        };
+        float ModKitTypePercentage = 45f;
+        NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
+        foreach (int modKitIdType in ModTypesToRandomize)
+        {
+            int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(vehicleExt.Vehicle, modKitIdType);
+            if (TotalMods <= 0)
+            {
+                continue;
+            }
+            if(!RandomItems.RandomPercent(ModKitTypePercentage))
+            {
+                continue;
+            }
+            int toSet = RandomItems.GetRandomNumberInt(0, TotalMods - 1);
+            NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, modKitIdType, toSet, false);
+            EntryPoint.WriteToConsole($"modKitIdType:{modKitIdType} toSet{toSet}");
+        }
+        float ExtraPercentage = 35f;
+        for (int i = 0; i < 12; i++)
+        {
+            int myId = i;
+            if (!RandomItems.RandomPercent(ExtraPercentage))
+            {
+                continue;
+            }
+            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(vehicleExt.Vehicle, i))
+            {
+                NativeFunction.Natives.SET_VEHICLE_EXTRA(vehicleExt.Vehicle, i, false);
+                EntryPoint.WriteToConsole($"EXTRA: i{i}");
+            }
+        }
     }
 
 

@@ -1945,6 +1945,31 @@ public class ShopMenus : IShopMenus
     }
     private void SpecificDealerships()
     {
+
+
+
+        /*            new VehicleItem("Karin Everon RS", true, ItemType.Vehicles) { ModelName = "everon3" },
+            new VehicleItem("Annis Hardy", true, ItemType.Vehicles) { ModelName = "hardy" },
+            new VehicleItem("Buckingham Higgins Helitours Maverick", true, ItemType.Vehicles) { ModelName = "maverick2" },
+            new VehicleItem("Western Police Bike Redux", true, ItemType.Vehicles) { ModelName = "policeb2" },
+            new VehicleItem("Dewbauchee Rapid GT X", true, ItemType.Vehicles) { ModelName = "rapidgt4" },
+            new VehicleItem("Ubermacht Sentinel GTS", true, ItemType.Vehicles) { ModelName = "sentinel5" },
+            new VehicleItem("Karin Woodlander", true, ItemType.Vehicles) { ModelName = "woodlander" },
+            new VehicleItem("Overflod Suzume", true, ItemType.Vehicles) { ModelName = "suzume" },
+            new VehicleItem("Declasse Walton L35 2", true, ItemType.Vehicles) { ModelName = "l352" },
+            new VehicleItem("Annis Minimus", true, ItemType.Vehicles) { ModelName = "minimus" },
+            new VehicleItem("Declasse Tampa GT", true, ItemType.Vehicles) { ModelName = "tampa4" },
+            new VehicleItem("Grotti LSCM Cheetah Classic", true, ItemType.Vehicles) { ModelName = "cheetah3" },
+            new VehicleItem("Brute Bobcat Security Stockade", true, ItemType.Vehicles) { ModelName = "stockade4" },
+            new VehicleItem("MTL Flatbed Custom 2", true, ItemType.Vehicles) { ModelName = "flatbed2" },
+
+            //Drift
+            new VehicleItem("Dinka Drift Chavos V6", ItemType.Vehicles) { ModelName = "driftchanvosv6", RequiresDLC = true, },
+            new VehicleItem("Vapid Drift Dominator 10", ItemType.Vehicles) { ModelName = "drfitdominator10", RequiresDLC = true, },
+            new VehicleItem("Bravado Drift Gauntlet Hellfire", ItemType.Vehicles) { ModelName = "driftgauntlet4", RequiresDLC = true, },
+            new VehicleItem("Annis Drift Hardy", ItemType.Vehicles) { ModelName = "drifthardy", RequiresDLC = true, },
+            new VehicleItem("Declasse Dift Walton L35 2", ItemType.Vehicles) { ModelName = "driftl352", RequiresDLC = true, },*/
+
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
             new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() {
                 new MenuItem("Gallivanter Baller",67000,45000),
@@ -2048,6 +2073,10 @@ public class ShopMenus : IShopMenus
 
             }),
             new ShopMenu("LuxuryAutosMenu","Luxury Autos",new List<MenuItem>() {//pegassi/grotti/enus/buckingham/pfiuster
+                
+                
+                new MenuItem("Dewbauchee Rapid GT X",159000,75000),
+
                 new MenuItem("Enus Huntley S",119000,65000),
                 new MenuItem("Enus Cognoscenti Cabrio",185000,120000),
                 new MenuItem("Enus Super Diamond",235000,189000),
@@ -2130,7 +2159,7 @@ public class ShopMenus : IShopMenus
 
                 //Overflod
                 new MenuItem("Overflod Pipistrello",1500000,324000),
-
+                new MenuItem("Overflod Suzume",1600000,334000),
                 //Coil
                 new MenuItem("Coil Voltic",90000,45000),
                 new MenuItem("Coil Cyclone",120000,56000),
@@ -2150,6 +2179,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Ubermacht Revolter",150000,67000),
                 new MenuItem("Ubermacht SC1",178000,100000),
                 new MenuItem("Ubermacht Sentinel XS",37000,21000),
+                new MenuItem("Ubermacht Sentinel GTS",77000,41000),
                 new MenuItem("Ubermacht Sentinel 2",35000,19000),//regular
                 new MenuItem("Ubermacht Sentinel 3",25000,12000),//classic
                 new MenuItem("Ubermacht Zion",35000,17000),
@@ -2226,10 +2256,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Karin Intruder",38000,32000),
                 new MenuItem("Karin Previon",39000,34500),
                 new MenuItem("Karin Everon",44000,35000),
+                new MenuItem("Karin Everon RS",64000,45000),
                 new MenuItem("Karin Kuruma",45000,36000),
                 new MenuItem("Karin Vivanite",37000,12000),
                 new MenuItem("Karin Asterope GZ",38000,23500),
-
+                new MenuItem("Karin Woodlander",22000,8900),
                 //Annis
                 new MenuItem("Annis Euros X32",25000,14000),
                 new MenuItem("Annis 300R",36000,16000),
@@ -2237,6 +2268,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Annis Euros",38000,19000),
                 new MenuItem("Annis Hellion",23000,8000),
                 new MenuItem("Annis ZR350",29000,9500),
+                new MenuItem("Annis Minimus",35000,13500),
+                new MenuItem("Annis Hardy",12000,5000),
 
                 //Bollokan
                 new MenuItem("Bollokan Prairie",15000,6000),
@@ -2282,10 +2315,12 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Declasse Moonbeam",19000,3000),
                 new MenuItem("Declasse Vigero ZX",96000,56000),
                 new MenuItem("Declasse Walton L35",24000,12000),
+                new MenuItem("Declasse Walton L35 2",24000,12000),
                 new MenuItem("Declasse Vigero ZX Convertible",75000,35000),
                 new MenuItem("Declasse Impaler SZ",34000,15000),
                 new MenuItem("Declasse Impaler LX",35000,16000),
                 new MenuItem("Declasse Yosemite 1500",17000,8000),
+                new MenuItem("Declasse Tampa GT",42000,21000),
 
                 //Fathom
                 new MenuItem("Fathom FR36",45000,23000),

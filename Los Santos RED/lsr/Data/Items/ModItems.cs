@@ -235,6 +235,12 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
 
+
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveron3" });
+        
+
+
+
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });
 
         //SUV
@@ -3290,6 +3296,22 @@ public class ModItems : IModItems
             //new VehicleItem("Western Company Duster 300-H", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },       
             //new VehicleItem("Eberhard Titan 250 D", ItemType.Vehicles) { ModelName = "driftcypher", RequiresDLC = true, },
 
+            //Money Fronts
+            new VehicleItem("Karin Everon RS", true, ItemType.Vehicles) { ModelName = "everon3" },
+            new VehicleItem("Annis Hardy", true, ItemType.Vehicles) { ModelName = "hardy" },
+            new VehicleItem("Buckingham Higgins Helitours Maverick", true, ItemType.Vehicles) { ModelName = "maverick2" },
+            new VehicleItem("Western Police Bike Redux", true, ItemType.Vehicles) { ModelName = "policeb2" },
+            new VehicleItem("Dewbauchee Rapid GT X", true, ItemType.Vehicles) { ModelName = "rapidgt4" },
+            new VehicleItem("Ubermacht Sentinel GTS", true, ItemType.Vehicles) { ModelName = "sentinel5" },
+            new VehicleItem("Karin Woodlander", true, ItemType.Vehicles) { ModelName = "woodlander" },
+            new VehicleItem("Overflod Suzume", true, ItemType.Vehicles) { ModelName = "suzume" },
+            new VehicleItem("Declasse Walton L35 2", true, ItemType.Vehicles) { ModelName = "l352" },
+            new VehicleItem("Annis Minimus", true, ItemType.Vehicles) { ModelName = "minimus" },
+            new VehicleItem("Declasse Tampa GT", true, ItemType.Vehicles) { ModelName = "tampa4" },
+            new VehicleItem("Grotti LSCM Cheetah Classic", true, ItemType.Vehicles) { ModelName = "cheetah3" },
+            new VehicleItem("Brute Bobcat Security Stockade", true, ItemType.Vehicles) { ModelName = "stockade4" },
+            new VehicleItem("MTL Flatbed Custom 2", true, ItemType.Vehicles) { ModelName = "flatbed2" },
+
             //Drift
             new VehicleItem("Declasse Drift Tampa", ItemType.Vehicles) { ModelName = "drifttampa", RequiresDLC = true, },
             new VehicleItem("Declasse Drift Yosemite", ItemType.Vehicles) { ModelName = "driftyosemite", RequiresDLC = true, },       
@@ -3299,6 +3321,13 @@ public class ModItems : IModItems
             new VehicleItem("Dinka Drift Jester", ItemType.Vehicles) { ModelName = "driftjester", RequiresDLC = true, },
             new VehicleItem("Annis Drift Remus", ItemType.Vehicles) { ModelName = "driftremus", RequiresDLC = true, },
             new VehicleItem("Annis Drift ZR350", ItemType.Vehicles) { ModelName = "driftzr350", RequiresDLC = true, },
+
+            new VehicleItem("Dinka Drift Chavos V6", ItemType.Vehicles) { ModelName = "driftchanvosv6", RequiresDLC = true, },
+            new VehicleItem("Vapid Drift Dominator 10", ItemType.Vehicles) { ModelName = "drfitdominator10", RequiresDLC = true, },
+            new VehicleItem("Bravado Drift Gauntlet Hellfire", ItemType.Vehicles) { ModelName = "driftgauntlet4", RequiresDLC = true, },
+            new VehicleItem("Annis Drift Hardy", ItemType.Vehicles) { ModelName = "drifthardy", RequiresDLC = true, },
+            new VehicleItem("Declasse Dift Walton L35 2", ItemType.Vehicles) { ModelName = "driftl352", RequiresDLC = true, },
+
 
             //Bikes
             new VehicleItem("BMX", ItemType.Vehicles) { Description = "The classic bike for tooling the neighborhood or doing a double peg grind. Reinforced steel, super comfortable seat that wont cut off the circulation to your scrotum too bad. (i.e. for wimps!) A great deal for the cash-strapped.", ModelName = "bmx" },

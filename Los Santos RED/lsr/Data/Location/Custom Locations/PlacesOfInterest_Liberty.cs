@@ -14,7 +14,7 @@ public class PlacesOfInterest_Liberty
     private PedCustomizerLocation DefaultPedCustomizerLocation;
     private PedCustomizerLocation AboveDefaultPedCustomizerLocation;
     private PlacesOfInterest PlacesOfInterest;
-
+    private List<RaceMeetup> RaceMeetups;
     public PlacesOfInterest_Liberty(PlacesOfInterest placesOfInterest)
     {
         PlacesOfInterest = placesOfInterest;
@@ -59,6 +59,7 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_HeadShops();
         DefaultConfig_DeadDrops();
         DefaultConfig_GunStores();
+        DefaultConfig_RaceMeetups();
         DefaultConfig_BlankLocations();
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
@@ -2134,7 +2135,64 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.IllicitMarketplaces.AddRange(IllicitMarketplaceList_25);
     }
 
+    private void DefaultConfig_RaceMeetups()
+    {
+        RaceMeetups = new List<RaceMeetup>()
+        {
+            new RaceMeetup(new Vector3(-1121.41f, 508.4347f, 7.15082f), 148.5788f, "Tudor Meetup", "Meetup with other racers from the city","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
+                SupportedTracks = new List<string>() { "prison1" , "hardtack1"},
 
+            },
+            new RaceMeetup(new Vector3(-1295.682f, 1606.596f, 26.69315f), 236.8607f, "Alderney Meetup", "Meetup with other racers from the city","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
+                SupportedTracks = new List<string>() { "westdyke1" , "plumsky1"},
+
+            },
+            new RaceMeetup(new Vector3(176.2437f, 1505.121f, 14.71584f), 94.26187f, "MiddlePark Meetup", "Meetup with other racers from the city","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
+                CameraPosition = new Vector3(194.3181f, 1527.892f, 28.204f),
+                CameraDirection = new Vector3(-0.3943517f, -0.8814499f, -0.2598707f),
+                CameraRotation = new Rotator(-15.06239f, 3.978675E-06f, 155.8967f),
+                SupportedTracks = new List<string>() { "middlepark1" , "starjdrag1" , "Lancaster1" },
+
+            },
+
+            new RaceMeetup(new Vector3(1591.378f, 1401.466f, 13.83524f), 139.7913f, "Dukes Race Meetup", "Meetup with other racers from the city","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
+                CameraPosition = new Vector3(1582.437f, 1397.816f, 17.70033f),
+                CameraDirection = new Vector3(0.9771305f, 0.05766683f, -0.2046716f),
+                CameraRotation = new Rotator(-11.81028f, 3.816043E-07f, -86.62252f),
+                SupportedTracks = new List<string>() { "dukeshighway1" , "dukesboule1" },
+
+            },
+
+            new RaceMeetup(new Vector3(2527.424f, 845.6534f, 6.096637f), 275.2851f, "FIA Race Meetup", "Meetup with other racers from the city","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                StateID = StaticStrings.LibertyStateID,
+                CameraPosition = new Vector3(2525.615f, 846.3375f, 7.529303f),
+                CameraDirection = new Vector3(-0.8883031f, -0.3656745f, -0.2778486f),
+                CameraRotation = new Rotator(-16.13184f, 1.821976E-05f, 112.3748f),
+                SupportedTracks = new List<string>() { "fiahotring1" , "fiastarjunction" },
+
+            },
+        };
+        LibertyCityLocations.RaceMeetups.AddRange(RaceMeetups);
+    }
     private void DefaultConfig_DeadDrops()
     {
         List<DeadDrop> DeadDropList_4 = new List<DeadDrop>() {
