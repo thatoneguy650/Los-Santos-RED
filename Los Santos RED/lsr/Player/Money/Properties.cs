@@ -32,7 +32,6 @@ public class Properties
         //int businessesPayingOut = 0;
         foreach (GameLocation property in PropertyList)
         {
-            EntryPoint.WriteToConsole($"Handling property: {property.FullName}");
             property.HandleOwnedLocation(Player, Time);
         }
     }
