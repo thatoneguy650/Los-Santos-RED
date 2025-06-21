@@ -15,7 +15,7 @@ namespace Mod
         private IModItems ModItems;
         private ISettingsProvideable Settings;
         private IWeapons Weapons;
-        private bool IsCrafting = false;
+        public bool IsCrafting { get; private set; } = false;
         public CraftingMenu CraftingMenu { get; set; }
         public ICraftableItems CraftableItems;
 
@@ -30,7 +30,6 @@ namespace Mod
         }
         public void Setup()
         {
-            return;//REMOVE CRAFTING 20250615
             SetupCraftableLookup();
             Player.Crafting = this;
         }
@@ -39,7 +38,7 @@ namespace Mod
             CraftableItems.CraftablesLookup = new System.Collections.Generic.Dictionary<string, CraftableItemLookupModel>();
 
             //Just holding reference to the craftable item in case any of the other details are required anywhere else.
-            foreach (var craftableItem in CraftableItems.Items)
+            foreach (CraftableItem craftableItem in CraftableItems.Items)
             {
                 CraftableItems.CraftablesLookup.Add(
                     craftableItem.Name,
@@ -72,12 +71,15 @@ namespace Mod
         }
         private void PerformAnimation(CraftableItem craftItem)
         {
+            if(Player.ActivityManager.IsInteractingWithLocation && !Player.InteriorManager.IsInsideTeleportInterior)
+            {
+                return;
+            }
             string dictionary = "missmechanic";
             string animation = "work2_base";
 
             //anim@scripted@ulp_missions@paperwork@male@
             //action
-
             if (craftItem != null && craftItem.HasCustomAnimations)
             {
                 dictionary = craftItem.AnimationDictionary;
@@ -87,7 +89,6 @@ namespace Mod
             {
                 return;
             }
-
 
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, 1, 0, false, false, false);
         }
@@ -131,16 +132,7 @@ namespace Mod
             Player.IsSetDisabledControlsWithCamera = true;
             IsCrafting = true;
 
-
-
-
-
-            //if ((!string.IsNullOrEmpty(finalCraftableItem.AnimationDictionary)) && (!string.IsNullOrEmpty(finalCraftableItem.AnimationName)))
-            //{
             PerformAnimation(finalCraftableItem);
-            //}
-
-
 
             if (!string.IsNullOrEmpty(finalCraftableItem.CrimeId))
             {
@@ -165,6 +157,7 @@ namespace Mod
 
                     if(Player.ButtonPrompts.IsPressed("stopcraftingprompt1"))
                     {
+                        Player.ButtonPrompts.RemovePrompts("craftingStop");
                         Game.DisplayHelp("Crafting cancelled.");
                     }
                     else

@@ -416,8 +416,6 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_Businesses()
     {
         Businesses = new List<Business>();
-        return; //REMOVE BUSINESSES 20250615
-
 
         Businesses = new List<Business>()
         {

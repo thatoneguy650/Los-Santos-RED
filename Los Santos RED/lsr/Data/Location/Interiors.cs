@@ -1001,7 +1001,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(265.6488f, -995.8674f, -99.00866f), 268f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 RestInteracts = new List<RestInteract>(){
@@ -1117,7 +1119,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(265.6488f, -995.8674f, -99.00866f), 279.6992f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 RestInteracts = new List<RestInteract>()
@@ -1179,7 +1183,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-31.13661f, -589.1672f, 88.71226f), 249.2539f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1241,7 +1247,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-1459.083f, -534.9687f, 68.15404f), 311f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1303,7 +1311,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-1459.077f,-535.0001f,55.52639f), 312f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1437,7 +1447,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-786.8973f,328.7855f,206.2184f), 273f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
             },
@@ -1553,7 +1565,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-917.2928f,-380.4835f,108.0377f), 302f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1615,7 +1629,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-609.1013f, 53.81107f, 106.6245f), 264f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1682,7 +1698,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove", new Vector3(-1153.271f,-1521.104f,10.63272f), 273f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1753,7 +1771,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(344.096f, -1002.884f, -99.19621f), 268f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -1965,7 +1985,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(339.9724f,430.7738f,149.3807f), 139.3014f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
             },
@@ -2092,7 +2114,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(376.3965f, 417.4155f, 145.9001f), 185f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
             },
@@ -2220,7 +2244,9 @@ public class Interiors : IInteriors
                     },
                     new CraftInteriorInteract("Stove",new Vector3(-168.1958f,493.834f,137.6536f), 205f, "Stove")
                     {
-                        CraftingFlag = "Stove"
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                     }
                 },
             },
@@ -4585,7 +4611,9 @@ public class Interiors : IInteriors
                 InteractPoints = new List<InteriorInteract>() {
                 new CraftInteriorInteract("Stove",new Vector3(-770.1588f,338.2808f,211.3971f), 96f, "Stove")
                 {
-                    CraftingFlag = "Stove"
+                    CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
                 },
                 new ExitInteriorInteract() {
                 Name = "EclTowApt3Exit1",
@@ -4787,7 +4815,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-787.3166f,329.005f,158.599f), 272f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "EclTowApt31Exit1",
@@ -4989,7 +5019,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-769.2664f,328.6883f,221.8551f), 100f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "EclTowApt40Exit1",
@@ -5191,7 +5223,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-786.9453f,328.6381f,206.2184f), 273f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "EclTowApt5Exit1",
@@ -5393,7 +5427,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-769.1633f,329.0352f,175.4012f), 88f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "EclTowApt9Exit1",
@@ -6579,7 +6615,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-271.2143f,-954.5176f,75.82876f), 166f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "AltaStApt10Exit1",
@@ -6780,7 +6818,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-272.0527f,-953.8077f,91.10833f), 347f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "AltaStApt57Exit1",
@@ -6982,7 +7022,9 @@ public class Interiors : IInteriors
             InteractPoints = new List<InteriorInteract>() {
             new CraftInteriorInteract("Stove",new Vector3(-23.4612f,-594.6737f,98.83028f), 168f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             new ExitInteriorInteract() {
             Name = "IntWayApt35Exit1",
@@ -7227,7 +7269,9 @@ public class Interiors : IInteriors
             },
             new CraftInteriorInteract("Stove",new Vector3(-12.37665f,-586.4662f,79.43072f),80f, "Stove")
             {
-                CraftingFlag = "Stove"
+                CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
             },
             },
             ClearPositions = new List<Vector3>() {

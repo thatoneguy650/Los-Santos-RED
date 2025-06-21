@@ -209,7 +209,11 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             if (IsPayoutInModItems)
             {
                 ModItem itemToAdd = ModItems.Get(ModItemToPayout);
-                SimpleInventory.Add(itemToAdd, (daysSinceLastPayment/PayoutFrequency) * ModItemPayoutAmount);
+                int payoutAmount = (daysSinceLastPayment / PayoutFrequency) * ModItemPayoutAmount;
+                if(payoutAmount>0)
+                {
+                    SimpleInventory.Add(itemToAdd, payoutAmount);
+                }
             }
             else
             {
@@ -316,6 +320,10 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
     {
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
         IsOwned = true;
+        if(IsPayoutInModItems)
+        {
+            ModItemToPayout = PossibleModItemPayouts.FirstOrDefault();
+        }
         UpdateStoredData();
         Player.Properties.AddOwnedLocation(this);
         AddInteractionItems(false);

@@ -27,10 +27,9 @@ public class CraftingMenu : ModUIMenu
     }
     public void Setup()
     {
-        return;//REMOVE CRAFTING 20250615
         Menu = new UIMenu("Crafting", "Select crafting category");
         Crafting.CraftingMenu = this;
-        Menu.SetBannerType( EntryPoint.LSRedColor);
+        Menu.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(Menu);
     }
     public override void Hide()
@@ -92,19 +91,19 @@ public class CraftingMenu : ModUIMenu
         }
         AddToMenu(Menu, craftingFlag, MenuPool);
     }
-    private UIMenu GetSubMenuForCraftableItem(string category,Dictionary<string, UIMenu> categoryMenus, UIMenu menuToUse = null, MenuPool menuPool = null)
+    private UIMenu GetSubMenuForCraftableItem(string category, Dictionary<string, UIMenu> categoryMenus, UIMenu menuToUse = null, MenuPool menuPool = null)
     {
         if (menuToUse == null)
         {
             menuToUse = Menu;
         }
-        if(menuPool == null)
+        if (menuPool == null)
         {
             menuPool = MenuPool;
         }
-        if(string.IsNullOrEmpty(category))
+        if (string.IsNullOrEmpty(category))
         {
-            if(categoryMenus.ContainsKey(UNCATEGORIZED))
+            if (categoryMenus.ContainsKey(UNCATEGORIZED))
             {
                 return categoryMenus[UNCATEGORIZED];
             }
@@ -116,7 +115,7 @@ public class CraftingMenu : ModUIMenu
                 return subMenu;
             }
         }
-        if(categoryMenus.ContainsKey(category))
+        if (categoryMenus.ContainsKey(category))
         {
             return categoryMenus[category];
         }
@@ -214,6 +213,11 @@ public class CraftingMenu : ModUIMenu
             menuPool.Remove(m.Value);
         }
         menu.Clear();
-        AddToMenu(menu,craftingFlag,menuPool);
+        AddToMenu(menu, craftingFlag, menuPool);
+    }
+    public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
+    public void ProcessPool()
+    {
+        MenuPool.ProcessMenus();
     }
 }
