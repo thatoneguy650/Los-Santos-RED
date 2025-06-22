@@ -71,7 +71,7 @@ public class CraftableItem
             extendeddescription = resultantItem.Description + "~n~~n~";
         }
 
-        ingredientStringBuilder.Append("~g~Result:~s~ " + (SingleUnit ? 1 : ResultantAmount) + $" {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}");
+        ingredientStringBuilder.Append("~g~Result:~s~ " + (SingleUnit ? 1 : ResultantAmount * quantity) + $" {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}");
         return extendeddescription + "~r~Ingredients Required:~s~ ~n~" + ingredientStringBuilder.ToString().Trim();
     }
 
