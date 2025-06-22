@@ -56,6 +56,7 @@ public class CraftInteriorInteract : InteriorInteract
         }
         menu.Hide();
         Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
         if (Interior != null)
         {
             Interior.IsMenuInteracting = false;
