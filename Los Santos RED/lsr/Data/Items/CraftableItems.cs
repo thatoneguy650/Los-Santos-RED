@@ -87,7 +87,7 @@ public class CraftableItems : ICraftableItems
                 CraftingFlags = new HashSet<string>{ "DrugLab", "Stove" },
                 Category = "Narcotics",
                 AnimationDictionary = "anim@amb@business@meth@meth_smash_weight_check@",
-                AnimationName = "break_weight_char02"
+                AnimationName = "break_weigh_char02"
             },
 
             new CraftableItem("Molotov Cocktail", "Improvised Incendiary", new List<Ingredient>()

@@ -57,7 +57,7 @@ public class InteriorInteract
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public virtual string ButtonPromptText { get; set; } = "Interact";
-    public bool AutoCamera { get; set; } = true;
+    public virtual bool AutoCamera { get; set; } = true;
     public float DistanceTo => distanceTo;
     public bool CanAddPrompt => canAddPrompt;
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;

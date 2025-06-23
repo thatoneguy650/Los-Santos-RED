@@ -1252,7 +1252,7 @@ public class PopUpMenu
             new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
             new PopUpBox(9,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
             new PopUpBox(10,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
-            //new PopUpBox(11, "Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },//REMOVE CRAFTING 20250615
+            new PopUpBox(11, "Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },
         };
 
         List<PopUpBox> TaxiOptionsSubMenu = new List<PopUpBox>()
