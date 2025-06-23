@@ -374,6 +374,7 @@ public class ShopMenus : IShopMenus
         if (karinMenu != null)
         {
             karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
+            karinMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
         }
         ShopMenu albanyMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "AlbanyMenu").FirstOrDefault();
         if (albanyMenu != null)
@@ -385,6 +386,7 @@ public class ShopMenus : IShopMenus
         {
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
+            premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
             premiumDeluxMenu.Items.Add(new MenuItem("Albany Presidente", 26000, 12000));
             premiumDeluxMenu.Items.Add(new MenuItem("Schyster PMP 600", 36000, 17000));
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));

@@ -88,10 +88,20 @@ public class FashionComponent
         SetDrawableValue(false);
         DrawableMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
-            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
+            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID,false);
         };
+
+        DrawableMenuScroller.Activated += (sender,selectedItem) =>
+        {
+            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID, true);
+        };
+
+
         componentMenu.AddItem(DrawableMenuScroller);
     }
+
+
+
     private void AddTextureItem(UIMenu componentMenu)
     {
         PedComponent pedComponent = PedCustomizer.WorkingVariation.Components.FirstOrDefault(x => x.ComponentID == ComponentID);
@@ -202,7 +212,7 @@ public class FashionComponent
         }
         //EntryPoint.WriteToConsoleTestLong($"SetDrawableValue End {ComponentID} canGo {canGo}");
     }
-    private void OnComponentChanged(int newDrawableID)
+    private void OnComponentChanged(int newDrawableID, bool force)
     {
         if (PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues)
         {
@@ -211,9 +221,9 @@ public class FashionComponent
         }
 
 
-        if(PedCustomizer.IsDrawableBlacklisted(ComponentID,newDrawableID,PedCustomizer.PedModelIsFreeMode && !PedCustomizer.PedModelIsFreeModeFemale))
+        if(!force && PedCustomizer.IsDrawableBlacklisted(ComponentID,newDrawableID,PedCustomizer.PedModelIsFreeMode && !PedCustomizer.PedModelIsFreeModeFemale))
         {
-            Game.DisplaySubtitle($"{ComponentID}-{newDrawableID} cannot be set");
+            Game.DisplaySubtitle($"{ComponentID}-{newDrawableID} may cause crashes. Press ENTER to force set");
             return;
         }
 
@@ -370,7 +380,7 @@ public class FashionComponent
         else
         {
             SetDrawableValue(true);
-            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
+            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID, false);
         }
         //EntryPoint.WriteToConsoleTestLong($"SetFiltering End {ComponentID}");
     }

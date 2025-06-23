@@ -247,13 +247,13 @@ public class PedCustomizer
         CreateModelPed();
         SetModelAsCharacter();
         OrbitCamera = new OrbitCamera(LocationInteractable, ModelPed, CharCam, Settings, MenuPool);
-        OrbitCamera.Radius = 1.0f;
+        OrbitCamera.Radius = 1.25f;
         OrbitCamera.MinRadius = 0.25f;
-        OrbitCamera.MaxRadius = 1.5f;
+        OrbitCamera.MaxRadius = 1.75f;
         OrbitCamera.InitialVerticalOffset = 90f;
         OrbitCamera.InitialHorizonatlOffset = 90f;
         OrbitCamera.IsSensitive = true;
-        OrbitCamera.InitialVerticalOffset = 0.5f;
+        OrbitCamera.InitialVerticalPositionOffset = 0.5f;
         OrbitCamera.Setup();
         Game.FadeScreenIn(1500, true);
         PedCustomizerMenu.Start();

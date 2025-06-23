@@ -57,6 +57,7 @@ public class OrbitCamera
     public float InitialVerticalOffset { get; set; } = 100f;
     public bool AllowYOffset { get; set; } = false;
     public bool IsSensitive { get; set; } = false;
+    public float InitialVerticalPositionOffset { get; set; }
 
     public void Setup()
     {
@@ -78,6 +79,7 @@ public class OrbitCamera
             //MainCamera.Active = true;
         }
         MainCamera.Active = true;
+        CamOffsetZ = InitialVerticalPositionOffset;
         Player.ButtonPrompts.AttemptAddPrompt("orbitCamera", "Select", "orbitCameraselect", GameControl.FrontendAccept, 4);
         Player.ButtonPrompts.AttemptAddPrompt("orbitCamera", "Back", "orbitCameraback", GameControl.FrontendCancel, 3);
         Player.ButtonPrompts.AttemptAddPrompt("orbitCameraExtra", "Orbit Camera", "orbitCameramovecameraStart", GameControl.Attack, 2);
@@ -297,6 +299,7 @@ public class OrbitCamera
         CamOffsetX = 0f;
         CamOffsetY = 0f;
         CamOffsetZ = 0f;
+        CamOffsetZ = InitialVerticalPositionOffset;
         Radius = initialRadius;
     }
     public void SetEntity(Ped modelPed)
