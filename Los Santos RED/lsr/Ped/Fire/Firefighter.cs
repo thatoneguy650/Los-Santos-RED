@@ -50,7 +50,7 @@ public class Firefighter : PedExt, IWeaponIssuable
                 UpdateVehicleState();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
                     {
                         GameFiber.Yield();
                     }

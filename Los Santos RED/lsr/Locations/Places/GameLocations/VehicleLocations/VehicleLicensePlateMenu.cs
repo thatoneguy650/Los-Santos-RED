@@ -212,6 +212,11 @@ public class VehicleLicensePlateMenu
             return;
         }
         string newPlateText = plateType.GenerateNewLicensePlateNumber();
+        if (CurrentVariation.LicensePlate.PlateType == plateType.Index && !updateVariation)
+        {
+            newPlateText = CurrentVariation.LicensePlate.PlateNumber;
+        }
+        
         if (updateVariation)
         {
             CurrentVariation.LicensePlate.PlateType = plateType.Index;

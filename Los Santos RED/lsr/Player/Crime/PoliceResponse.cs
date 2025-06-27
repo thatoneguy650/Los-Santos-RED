@@ -275,7 +275,7 @@ namespace LosSantosRED.lsr
             }
             TrainStopper.Dispose();
         }
-        public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer)
+        public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer, bool alwaysAddInstance)
         {
             //this is a fucking mess of references and isnt working properly at all
             //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
@@ -285,6 +285,10 @@ namespace LosSantosRED.lsr
             PlaceLastReportedCrimeInterior = crimeSceneDescription.InteriorSeen;
             if (Player.IsAlive)//Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
+
+                //EntryPoint.WriteToConsole($"AddCrime CrimeInstance {CrimeInstance.Name}");
+
+
                 if (crimeSceneDescription.HaveDescription && isForPlayer)
                 {
                     PoliceHaveDescription = crimeSceneDescription.HaveDescription;
@@ -301,12 +305,29 @@ namespace LosSantosRED.lsr
                 }
                 if (PreviousViolation != null)
                 {
-                    PreviousViolation.AddInstance();
+                    if (alwaysAddInstance)
+                    {
+                        PreviousViolation.ForceAddInstance();
+                    }
+                    else
+                    {
+                        PreviousViolation.AddInstance();
+                    }
                     crimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
                     PreviousViolation.CurrentInformation = crimeSceneDescription;
+
+
+                    if (CrimeInstance.ID == StaticStrings.KillingPoliceCrimeID)
+                    {
+                        EntryPoint.WriteToConsole($"AddCrime CrimeInstance {CrimeInstance.Name} alwaysAddInstance{alwaysAddInstance} HAS PREVIOUS VIOLATION PreviousViolation.Instances{PreviousViolation.Instances} crimeSceneDescription.InstancesObserved{crimeSceneDescription.InstancesObserved}");
+                    }
+
                 }
                 else
                 {
+
+
+
                     //EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} Instances {crimeSceneDescription.InstancesObserved}", 3);
                     if (crimeSceneDescription.SeenByOfficers)
                     {
@@ -316,7 +337,11 @@ namespace LosSantosRED.lsr
                     {
                         CrimesReported.Add(new CrimeEvent(CrimeInstance, crimeSceneDescription));
                     }
-                }
+                    if (CrimeInstance.ID == StaticStrings.KillingPoliceCrimeID)
+                    {
+                        EntryPoint.WriteToConsole($"AddCrime CrimeInstance {CrimeInstance.Name} IS NEW VIOLATION  alwaysAddInstance{alwaysAddInstance} crimeSceneDescription.InstancesObserved{crimeSceneDescription.InstancesObserved}");
+                    }
+                    }
                 if (crimeSceneDescription.SeenByOfficers && Player.WantedLevel != CrimeInstance.ResultingWantedLevel && isForPlayer)
                 {
                     Player.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);

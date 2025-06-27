@@ -6,6 +6,9 @@ using LosSantosRED.lsr.Helper.Crafting;
 using System.Collections.Generic;
 using Rage.Native;
 using LosSantosRED.lsr.Helper;
+using RAGENativeUI;
+using System.Drawing;
+using RAGENativeUI.Elements;
 
 namespace Mod
 {
@@ -15,10 +18,14 @@ namespace Mod
         private IModItems ModItems;
         private ISettingsProvideable Settings;
         private IWeapons Weapons;
+
+        private TimerBarPool TimerBarPool;
+
+
         public bool IsCrafting { get; private set; } = false;
         public CraftingMenu CraftingMenu { get; set; }
         public ICraftableItems CraftableItems;
-
+        private BarTimerBar ProgressBar;
 
         public Crafting(Player player, ICraftableItems craftableItems, IModItems modItems, ISettingsProvideable settings, IWeapons weapons)
         {
@@ -32,6 +39,12 @@ namespace Mod
         {
             SetupCraftableLookup();
             Player.Crafting = this;
+
+            TimerBarPool= new TimerBarPool();
+            ProgressBar = new BarTimerBar("Progress");
+            ProgressBar.BackgroundColor = Color.FromArgb(100, 142, 50, 50);
+            ProgressBar.ForegroundColor = Color.FromArgb(255, 181, 48, 48);//Red
+
         }
         private void SetupCraftableLookup()
         {
@@ -139,6 +152,8 @@ namespace Mod
                 Player.Violations.SetContinuouslyViolating(finalCraftableItem.CrimeId);
             }
 
+            TimerBarPool.Add(ProgressBar);
+
 
             uint GameTimeStartedCrafting = Game.GameTime;
             Player.ButtonPrompts.AttemptAddPrompt("craftingStop", "Stop Crafting", "stopcraftingprompt1", Settings.SettingsManager.KeySettings.InteractCancel, 999);
@@ -168,7 +183,10 @@ namespace Mod
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     return;
                 }
-                if(Game.GameTime - GameTimeStartedCrafting >= finalCraftableItem.Cooldown)
+
+                float currentPercentage = (float)(Game.GameTime - GameTimeStartedCrafting) / (float)finalCraftableItem.Cooldown;
+                ProgressBar.Percentage = currentPercentage;
+                if (Game.GameTime - GameTimeStartedCrafting >= finalCraftableItem.Cooldown)
                 {
                     GameTimeStartedCrafting = Game.GameTime;
                     itemToGive.AddToPlayerInventory(Player, 1);
@@ -180,8 +198,14 @@ namespace Mod
                     }
                     EntryPoint.WriteToConsole($"CRAFTED ONE craftedQuantity{craftedQuantity} finalQuantity{finalQuantity}");
                 }
+
+                TimerBarPool.Draw();
+
                 GameFiber.Yield();
             }
+
+            TimerBarPool.Remove(ProgressBar);
+
             Player.ButtonPrompts.RemovePrompts("craftingStop");   
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             IsCrafting = false; 

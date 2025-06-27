@@ -162,10 +162,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 UpdateCombatFlags();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
-                    {
-                        GameFiber.Yield();
-                    }
+                    //if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+                    //{
+                    //    GameFiber.Yield();
+                    //}
                     if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations && !IsShootingCheckerActive)//Need Frame Perfect checking on cops shooting for stealth
                     {
                         ShootingChecker();

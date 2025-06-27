@@ -82,7 +82,7 @@ namespace LosSantosRED.lsr.Interface
 
         //  bool IsLootingBody { get; }
 
-        void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
+        void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer, bool alwaysAddInstance);
         void OnVehicleCrashed();
         void OnKilledCop();
         void OnKilledCivilian();

@@ -47,6 +47,12 @@ public class CraftableItem
     //        return "Ingredients Required: ~n~" + _ingredientList;
     //    }
     //}
+
+
+    public Func<int,string> GetResultantFormatter(IModItems modItems)
+    {  
+        return v => v == 1 ? $"{ResultantAmount} {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}" : $"{v} Batches - " + (SingleUnit ? 1 : ResultantAmount * v) + $" {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}";
+    }
     public string GetIngredientDescription(int quantity, IModItems modItems)
     {
         ModItem resultantItem = modItems?.Get(Resultant);
@@ -71,7 +77,7 @@ public class CraftableItem
             extendeddescription = resultantItem.Description + "~n~~n~";
         }
 
-        ingredientStringBuilder.Append("~g~Result:~s~ " + (SingleUnit ? 1 : ResultantAmount * quantity) + $" {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}");
+        ingredientStringBuilder.Append("~n~~g~Result:~s~ " + (SingleUnit ? 1 : ResultantAmount * quantity) + $" {modItems.Get(Resultant).MeasurementName}(s) of {Resultant}");
         return extendeddescription + "~r~Ingredients Required:~s~ ~n~" + ingredientStringBuilder.ToString().Trim();
     }
 

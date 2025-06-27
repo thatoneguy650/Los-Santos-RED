@@ -115,12 +115,12 @@ namespace Mod
             CivilianTasker.Update();
             GameFiber.Yield();//TR 29
             GangTasker.Update();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();//TR 29
             }
             EMTTasker.Update();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();//TR 29
             }

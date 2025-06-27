@@ -60,11 +60,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             if(IsPlayerSellingDrugs)
             {
-                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~.Get to {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}. Should be ${UnitPrice * Quantity} to you.");
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}. Should be ${UnitPrice * Quantity} to you.");
             }
             else
             {
-                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~.Get to {DealingLocation.FullStreetAddress} with ${UnitPrice * Quantity} to buy {Quantity} {ModItem.MeasurementName} of {ModItem.Name}.");
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with ${UnitPrice * Quantity} to buy {Quantity} {ModItem.MeasurementName} of {ModItem.Name}.");
             }
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }
@@ -150,7 +150,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     CurrentTask.OnReadyForPayment(false);
                     break;
                 }
-                if(IsAmbush && HasArrivedNearMeetup && SpawnedMembers.All(x => x.IsDead))
+                if(IsAmbush && HasArrivedNearMeetup && SpawnedMembers.All(x => x.IsDead || !x.Pedestrian.Exists()))
                 {
                     CurrentTask.OnReadyForPayment(false);
                     break;
@@ -173,6 +173,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 gm.WillAlwaysFightPolice = true;
                 gm.WillFightPolice = true;
             }
+            Player.Dispatcher.GangDispatcher.DispatchHitSquad(DealingGang, true);
             Game.DisplaySubtitle("Ambush, take them out and get the drugs.");
             EntryPoint.WriteToConsole("DRUG MEETUP SET GANG MEMBERS VIOLENT! THEY RECOGNIZE YOU");
         }
@@ -203,8 +204,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 return false;
             }
-
-
             if (IsPlayerSellingDrugs)
             {
                 DesiredItem di = PrimaryGangMember.ItemDesires?.Get(ModItem);
@@ -235,7 +234,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             EntryPoint.WriteToConsole($"DRUG MEETUP PLAYER IS NEARBY LOCATION {IsAmbush}");
             HasArrivedNearMeetup = true;
-            if(HasCompletedTransaction)
+            if(HasCompletedTransaction || HasSetViolent)
             {
                 return;
             }

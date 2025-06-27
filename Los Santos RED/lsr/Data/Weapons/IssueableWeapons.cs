@@ -156,6 +156,14 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),35),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"),}),35),
             new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), }),35),
+
+
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(),100),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), }),100),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Small Scope"), }),100),
+            new IssuableWeapon("weapon_tacticalrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Medium Scope"), }),100),
+
+
         };
 
 

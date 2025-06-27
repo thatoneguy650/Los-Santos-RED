@@ -66,6 +66,10 @@ public class UIGeneralSettings : ISettingsDefaultable
     public string DefaultTextColor { get; set; }
     public string DefaultTextColorNight { get; set; }
 
+
+
+    public float CraftingMenuWidth { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -138,5 +142,7 @@ public class UIGeneralSettings : ISettingsDefaultable
 
         DefaultTextColorNight = "~c~";
         DefaultTextColor = "~s~";
+
+        CraftingMenuWidth = 0.25f;
     }
 }

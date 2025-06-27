@@ -238,7 +238,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 8000));
                 //SpawnedVehicleExt.CarPlate.IsWanted = true;
                 //SpawnedVehicleExt.OriginalLicensePlate.IsWanted = true;
-                Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "GrandTheftAuto"), false, Player.Character.Position, SpawnedVehicleExt, null, true, true, true);
+                Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "GrandTheftAuto"), false, Player.Character.Position, SpawnedVehicleExt, null, true, true, true, false);
                 //EntryPoint.WriteToConsoleTestLong("GUNS CONTACT, COMPLICATIONS ADDED!");
             }
             HasAddedComplications = true;

@@ -130,17 +130,17 @@ public class ModItems : IModItems
             );
 
         newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer 609",
-            "The LSPD standard issue. Extended capacity in a small package. Good for dumping round after round into the criminals general direction. Who cares if a Post-Op delivery man eats a few?",
+            "The LSPD standard issue pistol. Extended capacity in a small package. Good for dumping round after round into the criminals general direction. Who cares if a Post-Op delivery man eats a few?",
             false, ItemType.Weapons)
         { VanillaName = "Pistol Mk2", ModelName = "weapon_pistol_mk2", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
 
         newPossibleItems.WeaponItems.Add(new WeaponItem("Hawk & Little 1919A1", 
-            "Killing people before there was talking in movies. Accept no substitutes.", true, ItemType.Weapons) 
+            "Killing people before there was talking in movies. Accept no substitutes. Goes great with a pocket watch and bowler hat.", true, ItemType.Weapons) 
         { VanillaName = "Vintage Pistol", ModelName = "weapon_vintagepistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 5 });
 
 
         newPossibleItems.WeaponItems.Add(new WeaponItem("Duke A5-1R",
-            "Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false, ItemType.Weapons)
+            "How do you make the ultimate assault rifle better? Chop the barrel and bolt shit onto it apparently. Did somebody say polymer?", false, ItemType.Weapons)
         { VanillaName = "Carbine Rifle", ModelName = "weapon_carbinerifle", PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5 });
             
 

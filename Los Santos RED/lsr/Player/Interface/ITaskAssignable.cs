@@ -35,6 +35,6 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; }
         bool IsInWantedActiveMode { get; }
 
-        void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
+        void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer, bool alwaysAddInstance);
     }
 }

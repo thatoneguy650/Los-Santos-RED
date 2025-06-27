@@ -207,7 +207,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
                 UpdateVehicleState();
                 if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
                 {
-                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+                    if (!PlayerPerception.RanSightThisUpdate && Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
                     {
                         GameFiber.Yield();
                     }

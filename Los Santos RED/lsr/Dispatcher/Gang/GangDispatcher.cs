@@ -435,12 +435,12 @@ public class GangDispatcher
         {
             EnemyGang = Player.RelationshipManager.GangRelationships.HitSquadGangs?.PickRandom();
         }
-        DispatchHitSquad(EnemyGang);
+        DispatchHitSquad(EnemyGang, false);
         TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
         GameTimeLastDispatchedHitSquad = Game.GameTime;
         HasDispatchedThisTick = true;
     }
-    public void DispatchHitSquad(Gang enemyGang)
+    public void DispatchHitSquad(Gang enemyGang, bool forceNoText)
     {
         if(enemyGang == null)
         {
@@ -453,7 +453,7 @@ public class GangDispatcher
             EntryPoint.WriteToConsole($"DispatchHitSquad Disptaching HitSquad from {enemyGang.ShortName}");
             if(CallSpawnTask(false, true, false, false, TaskRequirements.None, true, false,99, false) > 0)
             {
-                Player.OnHitSquadDispatched(enemyGang);
+                Player.OnHitSquadDispatched(enemyGang, forceNoText);
             }
         }
     }

@@ -109,7 +109,7 @@ public class DamageViolations
         if (myPed.IsCop)
         {
             GameTimeLastHurtCop = Game.GameTime;
-            Player.AddCrime(Crimes.GetCrime(StaticStrings.HurtingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.AddCrime(Crimes.GetCrime(StaticStrings.HurtingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true, true);
         }
         else
         {
@@ -130,8 +130,9 @@ public class DamageViolations
             PlayerKilledCops.Add(myCop);
             GameTimeLastKilledCop = Game.GameTime;
             GameTimeLastHurtCop = Game.GameTime;
-            Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true, true);
             Player.OnKilledCop();
+            EntryPoint.WriteToConsole("PLAYER EVENT ADD KILLED RAN FOR COP");
         }
         else
         {

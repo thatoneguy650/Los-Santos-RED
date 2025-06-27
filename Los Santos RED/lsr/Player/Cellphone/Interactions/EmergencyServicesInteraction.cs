@@ -203,7 +203,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         }
         else
         {
-            Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
+            Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false, false);
         }
     }
 

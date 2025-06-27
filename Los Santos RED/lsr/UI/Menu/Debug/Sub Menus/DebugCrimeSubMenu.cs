@@ -66,7 +66,7 @@ public class DebugCrimeSubMenu : DebugSubMenu
 
             Crime crimeObserved = Crimes.GetCrime(StaticStrings.ArmedRobberyCrimeID);
             CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true) { InteriorSeen = Player.CurrentLocation.CurrentInterior };
-            Player.PoliceResponse.AddCrime(crimeObserved, description, false);
+            Player.PoliceResponse.AddCrime(crimeObserved, description, false, false);
             Player.Investigation.Start(Player.Character.Position, true, true, false, false, Player.CurrentLocation.CurrentInterior);
 
 

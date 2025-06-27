@@ -152,7 +152,7 @@ public class Dispatcher
         {
             GameFiber.Yield();
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
         {
             GameFiber.Yield();
         }
@@ -161,7 +161,7 @@ public class Dispatcher
             return;
         }
         LocationDispatcher.Dispatch();
-        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
         {
             GameFiber.Yield();
         }

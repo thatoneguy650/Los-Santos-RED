@@ -15,6 +15,7 @@ public class PlacesOfInterest_Liberty
     private PedCustomizerLocation AboveDefaultPedCustomizerLocation;
     private PlacesOfInterest PlacesOfInterest;
     private List<RaceMeetup> RaceMeetups;
+    private List<VehicleModShop> VehicleModShops;
     public PlacesOfInterest_Liberty(PlacesOfInterest placesOfInterest)
     {
         PlacesOfInterest = placesOfInterest;
@@ -2155,14 +2156,14 @@ public class PlacesOfInterest_Liberty
                 SupportedTracks = new List<string>() { "westdyke1" , "plumsky1"},
 
             },
-            new RaceMeetup(new Vector3(176.2437f, 1505.121f, 14.71584f), 94.26187f, "MiddlePark Meetup", "Meetup with other racers from the city","")
+            new RaceMeetup(new Vector3(26.84053f, 1683.401f, 14.61936f), 1.220425f, "MiddlePark Meetup", "Meetup with other racers from the city","")
             {
                 OpenTime = 0,
                 CloseTime = 24,
                 StateID = StaticStrings.LibertyStateID,
-                CameraPosition = new Vector3(194.3181f, 1527.892f, 28.204f),
-                CameraDirection = new Vector3(-0.3943517f, -0.8814499f, -0.2598707f),
-                CameraRotation = new Rotator(-15.06239f, 3.978675E-06f, 155.8967f),
+                CameraPosition = new Vector3(35.02692f, 1692.176f, 17.82271f),
+                CameraDirection = new Vector3(-0.7994139f, -0.5445122f, -0.2538583f),
+                CameraRotation = new Rotator(-14.70594f, 1.544706E-05f, 124.2603f),
                 SupportedTracks = new List<string>() { "middlepark1" , "starjdrag1" , "Lancaster1" },
 
             },
@@ -4109,42 +4110,42 @@ public class PlacesOfInterest_Liberty
     {
         List<RepairGarage> RepairGarageList_96 = new List<RepairGarage>()
         {
-            new RepairGarage(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f, "Native Engines", "The best repair shop in the whole Broker")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1206631488,new Vector3(1296.40918f, 203.141113f, 22.3199921f)) },
-                CanInteractWhenWanted = true,
-                StateID = StaticStrings.LibertyStateID,
-                HasNoGarageDoors = false,
-                CameraPosition = new Vector3(1300.65f, 219.47f, 26.62352f),
-                CameraDirection = new Vector3(0.006097865f, -0.9850205f, -0.1723295f),
-                CameraRotation = new Rotator(-9.923287f, -4.062847E-08f, -179.6453f),
-            },
-            new RepairGarage(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2948754995,new Vector3(-69.67624f, 2032.833f, 19.67877f)) },
-                CanInteractWhenWanted = true,
-                HasNoGarageDoors = false,
-                StateID = StaticStrings.LibertyStateID,
-                CameraPosition = new Vector3(-65.97436f, 2058.48f, 26.85182f),
-                CameraDirection = new Vector3(-0.9427496f, -0.3306259f, -0.04370079f),
-                CameraRotation = new Rotator(-2.504668f, -1.030849E-05f, 109.326f),
-            },
-            new RepairGarage(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3242725694,new Vector3(-275.457031f, 866.082031f, 7.151474f)) },
-                CanInteractWhenWanted = true,
-                HasNoGarageDoors = false,
-                StateID = StaticStrings.LibertyStateID,
-                CameraPosition = new Vector3(-271.3177f, 882.283f, 12.14385f),
-                CameraDirection = new Vector3(0.01771341f, -0.9904483f, -0.1367422f),
-                CameraRotation = new Rotator(-7.859374f, -1.387071E-06f, -178.9754f),
-            },
+        //    new RepairGarage(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f, "Native Engines", "The best repair shop in the whole Broker")
+        //   {
+        //        OpenTime = 0,
+        //        CloseTime = 24,
+        //        GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1206631488,new Vector3(1296.40918f, 203.141113f, 22.3199921f)) },
+        //        CanInteractWhenWanted = true,
+        //        StateID = StaticStrings.LibertyStateID,
+        //        HasNoGarageDoors = false,
+        //        CameraPosition = new Vector3(1300.65f, 219.47f, 26.62352f),
+        //        CameraDirection = new Vector3(0.006097865f, -0.9850205f, -0.1723295f),
+        //        CameraRotation = new Rotator(-9.923287f, -4.062847E-08f, -179.6453f),
+        //    },
+        //    new RepairGarage(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
+        //    {
+        //        OpenTime = 0,
+        //        CloseTime = 24,
+        //        GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2948754995,new Vector3(-69.67624f, 2032.833f, 19.67877f)) },
+        //        CanInteractWhenWanted = true,
+        //        HasNoGarageDoors = false,
+        //        StateID = StaticStrings.LibertyStateID,
+        //        CameraPosition = new Vector3(-65.97436f, 2058.48f, 26.85182f),
+        //        CameraDirection = new Vector3(-0.9427496f, -0.3306259f, -0.04370079f),
+        //        CameraRotation = new Rotator(-2.504668f, -1.030849E-05f, 109.326f),
+        //    },
+        //    new RepairGarage(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
+        //    {
+        //        OpenTime = 0,
+        //        CloseTime = 24,
+        //        GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3242725694,new Vector3(-275.457031f, 866.082031f, 7.151474f)) },
+        //        CanInteractWhenWanted = true,
+        //        HasNoGarageDoors = false,
+        //        StateID = StaticStrings.LibertyStateID,
+        //        CameraPosition = new Vector3(-271.3177f, 882.283f, 12.14385f),
+        //        CameraDirection = new Vector3(0.01771341f, -0.9904483f, -0.1367422f),
+        //        CameraRotation = new Rotator(-7.859374f, -1.387071E-06f, -178.9754f),
+        //    },
             new RepairGarage(new Vector3(948.62f,1998.77f,214.84f-200f), 0f, "Muscle Mary's", "We service imports too")
             {
                 CameraPosition = new Vector3(938.0557f, 1988.7f, 18.10542f),
@@ -4156,30 +4157,30 @@ public class PlacesOfInterest_Liberty
                 HasNoGarageDoors = true,
                 StateID = StaticStrings.LibertyStateID,
             },
-            new RepairGarage(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2790644556,new Vector3(-909.9641f, 1674.3f, 18.1551666f)) },
-                CanInteractWhenWanted = true,
-                HasNoGarageDoors = false,
-                StateID = StaticStrings.AlderneyStateID,
-                CameraPosition = new Vector3(-905.4495f, 1665.432f, 23.27626f),
-                CameraDirection = new Vector3(-0.04569707f, 0.9975165f, 0.05359801f),
-                CameraRotation = new Rotator(3.072412f, -8.550027E-07f, 2.622934f),
-            },
-            new RepairGarage(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3489144381,new Vector3(-1062.04907f, 771.9319f, 11.8873291f)) },
-                CanInteractWhenWanted = true,
-                HasNoGarageDoors = false,
-                StateID = StaticStrings.AlderneyStateID,
-                CameraPosition = new Vector3(-1064.565f, 755.9617f, 17.69368f),
-                CameraDirection = new Vector3(-0.04629746f, 0.99071f, -0.127868f),
-                CameraRotation = new Rotator(-7.346407f, 1.07605E-06f, 2.675577f),
-            },
+        //    new RepairGarage(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+        //    {
+        //        OpenTime = 0,
+        //        CloseTime = 24,
+        //        GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2790644556,new Vector3(-909.9641f, 1674.3f, 18.1551666f)) },
+        //        CanInteractWhenWanted = true,
+        //        HasNoGarageDoors = false,
+        //        StateID = StaticStrings.AlderneyStateID,
+        //        CameraPosition = new Vector3(-905.4495f, 1665.432f, 23.27626f),
+        //        CameraDirection = new Vector3(-0.04569707f, 0.9975165f, 0.05359801f),
+        //        CameraRotation = new Rotator(3.072412f, -8.550027E-07f, 2.622934f),
+        //    },
+        //    new RepairGarage(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+        //    {
+        //        OpenTime = 0,
+        //        CloseTime = 24,
+        //        GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3489144381,new Vector3(-1062.04907f, 771.9319f, 11.8873291f)) },
+        //        CanInteractWhenWanted = true,
+        //        HasNoGarageDoors = false,
+        //        StateID = StaticStrings.AlderneyStateID,
+        //        CameraPosition = new Vector3(-1064.565f, 755.9617f, 17.69368f),
+        //        CameraDirection = new Vector3(-0.04629746f, 0.99071f, -0.127868f),
+        //        CameraRotation = new Rotator(-7.346407f, 1.07605E-06f, 2.675577f),
+        //    },
 
 
             new RepairGarage(new Vector3(1992.384f, 858.2811f, 22.10884f), 179.815f, "The East Boys Auto Shop", "")
@@ -4217,9 +4218,64 @@ public class PlacesOfInterest_Liberty
                 HasNoGarageDoors = false,
                 StateID = StaticStrings.LibertyStateID,
             },
-
         };
         LibertyCityLocations.RepairGarages.AddRange(RepairGarageList_96);
+
+        VehicleModShops = new List<VehicleModShop>()
+        {
+            new VehicleModShop(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f,"Native Engines", "The best repair shop in the whole Broker")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(1206631488,new Vector3(1296.40918f, 203.141113f, 22.3199921f)) },
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = false,
+                StateID = StaticStrings.LibertyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f),
+            },
+            new VehicleModShop(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2948754995,new Vector3(-69.67624f, 2032.833f, 19.67877f)) },
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = false,
+                StateID = StaticStrings.LibertyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f),
+            },
+            new VehicleModShop(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3242725694,new Vector3(-275.457031f, 866.082031f, 7.151474f)) },
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = false,
+                StateID = StaticStrings.LibertyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f),
+            },
+
+            new VehicleModShop(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(2790644556,new Vector3(-909.9641f, 1674.3f, 18.1551666f)) },
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = false,
+                StateID = StaticStrings.AlderneyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f),
+            },
+            new VehicleModShop(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                GarageDoors = new List<InteriorDoor>() { new InteriorDoor(3489144381,new Vector3(-1062.04907f, 771.9319f, 11.8873291f)) },
+                CanInteractWhenWanted = true,
+                HasNoGarageDoors = false,
+                StateID = StaticStrings.AlderneyStateID,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f),
+            },
+        };
+        LibertyCityLocations.VehicleModShops.AddRange(VehicleModShops);
     }
 
     //private void DefaultConfig_Garages()
@@ -4325,6 +4381,8 @@ public class PlacesOfInterest_Liberty
 
 
     //}
+
+
     private void DefaultConfig_FireStations()
     {
         List<FireStation> FireStations = new List<FireStation>()

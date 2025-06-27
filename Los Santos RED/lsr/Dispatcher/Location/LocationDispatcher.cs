@@ -75,7 +75,7 @@ public class LocationDispatcher
                     GameFiber.Yield();
                 }
             }
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -89,7 +89,7 @@ public class LocationDispatcher
                     GameFiber.Yield();
                 }
             }
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -108,7 +108,7 @@ public class LocationDispatcher
             ps.IsDispatchFilled = true;
             GameFiber.Yield();
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
         {
             GameFiber.Yield();
         }
@@ -117,7 +117,7 @@ public class LocationDispatcher
             //EntryPoint.WriteToConsole($"Location Dispatcher, CLEARED AT {ps.Name}");
             ps.IsDispatchFilled = false;
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
         {
             GameFiber.Yield();
         }

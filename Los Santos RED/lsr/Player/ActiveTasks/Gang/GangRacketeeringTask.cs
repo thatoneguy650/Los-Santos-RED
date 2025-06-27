@@ -202,7 +202,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"Here’s your money. Don’t push your luck, {EnemyGang.ColorPrefix}{SelectedZone.DisplayName}~s~ isn’t yours.",
                                 $"You think you can take over {EnemyGang.ColorPrefix}{SelectedZone.DisplayName}~s~? Think again.",
                                 };
-                    Player.Dispatcher.GangDispatcher.DispatchHitSquad(SelectedZone.AssignedGang);
+                    Player.Dispatcher.GangDispatcher.DispatchHitSquad(SelectedZone.AssignedGang, false);
                     EntryPoint.WriteToConsole($"{location.Name}:{ExtortionComplications}");
                 }
             }
@@ -216,7 +216,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"I’ve given you the money. Just a moment more, if you please.",
                                 $"Take the cash. But before you go, I have some information about {HiringGang.EnemyGangs.PickRandom()} you'd like to hear.",
                                 };
-                if (Player.IsNotWanted) { Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "SuspiciousActivity"), false, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true); }
+                if (Player.IsNotWanted) { Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "SuspiciousActivity"), false, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true, false); }
             }
             location.DisplayMessage("~g~Reply", Replies.PickRandom());
         }

@@ -598,12 +598,12 @@ namespace Mod
         public void Update()
         {
             UpdateVehicleData();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
             UpdateWeaponData();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -615,12 +615,12 @@ namespace Mod
                 IntoxicationIsPrimary = true;
             }
             Intoxication.Update(IntoxicationIsPrimary);
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
             Injuries.Update(!IntoxicationIsPrimary);
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -628,13 +628,13 @@ namespace Mod
             BankAccounts.Update();
             HealthManager.Update();
             GroupManager.Update();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
             ButtonPrompts.Update();
             MeleeManager.Update();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -648,7 +648,7 @@ namespace Mod
             GangBackupManager.Update();
             InteriorManager.Update();
             CuffManager.Update();
-            if (Settings.SettingsManager.PerformanceSettings.EnablePerformanceUpdateMode)
+            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
                 GameFiber.Yield();
             }
@@ -1189,10 +1189,12 @@ namespace Mod
         public void OnKilledCop()
         {
             PlayerVoice.OnKilledCop();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Player Killed Cop");
         }
         public void OnKilledCivilian()
         {
             PlayerVoice.OnKilledCivilian();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Player killed civilian");
         }
         public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
         {
@@ -1312,14 +1314,14 @@ namespace Mod
             PlayerVoice.OnWantedSearchMode();
         }
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
-        public void OnHitSquadDispatched(Gang enemyGang)
+        public void OnHitSquadDispatched(Gang enemyGang, bool forceNoText)
         {
 
             if (enemyGang == null)
             {
                 return;
             }
-            if (Settings.SettingsManager.GangSettings.SendHitSquadText)
+            if (Settings.SettingsManager.GangSettings.SendHitSquadText && !forceNoText)
             {
                 PlayerTasks.GangTasks.SendHitSquadMessage(enemyGang.Contact);
                 EntryPoint.WriteToConsole($"OnHitSquadDispatched SendHitSquadMessage {enemyGang.ShortName}");
@@ -1814,8 +1816,11 @@ namespace Mod
         }
 
         //Crimes
-        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
+        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer, bool alwaysAddInstance)
         {
+
+            //EntryPoint.WriteToConsole("AddCrime START");
+
             if(crimeObserved == null)
             {
                 return;
@@ -1834,7 +1839,11 @@ namespace Mod
             }
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { InteriorSeen = isForPlayer ? CurrentLocation.CurrentInterior : null, VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
-            PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
+            PoliceResponse.AddCrime(crimeObserved, description, isForPlayer, alwaysAddInstance);
+
+
+
+
             if (!isObservedByPolice && IsNotWanted)
             {
                 Investigation.Start(Location, PoliceResponse.PoliceHaveDescription, true, false, false, isForPlayer ? CurrentLocation.CurrentInterior : null);
@@ -1843,6 +1852,8 @@ namespace Mod
             {
                 Scanner.AnnounceCrime(crimeObserved, description);
             }
+
+            //EntryPoint.WriteToConsole("AddCrime END");
         }
         public void AddMedicalEvent(Vector3 position)
         {
@@ -1857,7 +1868,7 @@ namespace Mod
         {
             Crime crimeObserved = Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID);
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, position, false);
-            PoliceResponse.AddCrime(crimeObserved, description, false);
+            PoliceResponse.AddCrime(crimeObserved, description, false, false);
             Investigation.Start(position, false, true, false, false);
             Scanner.OnOfficerMIA();
         }
@@ -1873,7 +1884,7 @@ namespace Mod
                 crimeObserved = Crimes.GetCrime(StaticStrings.CivilianTrespessingCrimeID);
             }
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, Position, true);
-            PoliceResponse.AddCrime(crimeObserved, description, false);
+            PoliceResponse.AddCrime(crimeObserved, description, false, false);
             Investigation.Start(Position, true, true, false, false, CurrentLocation.CurrentInterior);
             Scanner.AnnounceCrime(crimeObserved, description);
             EntryPoint.WriteToConsole("OnSeenInRestrictedAreaOnCamera");

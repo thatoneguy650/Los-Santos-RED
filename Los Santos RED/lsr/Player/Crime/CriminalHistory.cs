@@ -167,7 +167,7 @@ namespace LosSantosRED.lsr
             foreach(CrimeEvent crime in CurrentHistory.Crimes)
             {
                 //EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}");
-                Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true,false, true);
+                Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true,false, true, false);
                 CrimeEvent addedCrime = Player.PoliceResponse.CrimesObserved.Where(x => x.AssociatedCrime?.ID == crime.AssociatedCrime.ID).FirstOrDefault();
                 if(addedCrime != null)
                 {

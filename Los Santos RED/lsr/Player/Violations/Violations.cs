@@ -144,7 +144,7 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true, false);
         }
         private void AddObservedAndReported()
         {
@@ -152,7 +152,7 @@ namespace LosSantosRED.lsr
             {
                 if (Player.AnyPoliceCanSeePlayer)
                 {
-                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true, false);
                 }
             }
         }
