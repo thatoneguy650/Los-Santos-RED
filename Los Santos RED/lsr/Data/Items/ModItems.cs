@@ -76,7 +76,7 @@ public class ModItems : IModItems
         string fileName = string.IsNullOrEmpty(configName) ? "ModItems_*.xml" : $"ModItems_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}", 0);
@@ -207,6 +207,9 @@ public class ModItems : IModItems
     {
         PossibleItems newPossibleItems = new PossibleItems();//PossibleItems.Copy();
 
+        //Motorcycles
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Western Sovereign Cruiser", ItemType.Vehicles) { ModelName = "civsovereign2" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Western Gargoyle Cruiser", ItemType.Vehicles) { ModelName = "civgargoylestock" });
         //Muscle
         newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gauntlet R/T", ItemType.Vehicles) { ModelName = "civgauntletstock" });
 
@@ -224,6 +227,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
 
         //Trucks
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Sadler 4WD", ItemType.Vehicles) { ModelName = "civsadleroffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Utility", ItemType.Vehicles) { ModelName = "civcaracarautil" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 2WD", ItemType.Vehicles) { ModelName = "civcaracarawork" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara SX3 4WD", ItemType.Vehicles) { ModelName = "civcaracarastock" });

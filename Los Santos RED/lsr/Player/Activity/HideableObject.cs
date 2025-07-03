@@ -21,5 +21,6 @@ using System.Threading.Tasks;
     public uint ModelHash { get; set; }
     public string Name { get; set; }
     public string ButtonPrompt { get; set; }
-    }
+    public bool IsDoor { get; set; }
+}
 

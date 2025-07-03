@@ -177,7 +177,7 @@ public class PedViolations
                 {
                     AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));//lslife integration?
                 }
-                return;
+               // return;OOPSIE DAISEY
             
 
 

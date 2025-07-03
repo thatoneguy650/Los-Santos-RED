@@ -29,7 +29,7 @@ public class Contacts : IContacts
         string fileName = string.IsNullOrEmpty(configName) ? "Contacts*.xml" : $"Contacts_{configName}.xml";
 
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = taskDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = taskDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Contacts Config: {ConfigFile.FullName}", 0);

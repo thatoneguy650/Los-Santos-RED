@@ -19,7 +19,7 @@ public class Zones : IZones
         string fileName = string.IsNullOrEmpty(configName) ? "Zones*.xml" : $"Zones_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Zones config: {ConfigFile.FullName}", 0);

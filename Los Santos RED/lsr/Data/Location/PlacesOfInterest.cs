@@ -87,7 +87,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         string fileName = string.IsNullOrEmpty(configName) ? "Locations_*.xml" : $"Locations_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);
@@ -792,11 +792,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AirportFlight("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. ~n~~n~Taxi service to downtown Ludendorff included.", 1500, 5),
                     new AirportFlight("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 5 hour flight! What else could you ask for? ~n~~n~Taxi service to downtown Ludendorff included.", 550, 12),
 
-                    new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"When driving just isn't an option and your company is paying.", 350, 1),
-                    new AirportFlight("SFX",StaticStrings.LosSantosAirCarrierID,"Experience the luxury of a small regional carriers lowest end fare.", 325, 2),
+                    //new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"When driving just isn't an option and your company is paying.", 350, 1),
+                    //new AirportFlight("SFX",StaticStrings.LosSantosAirCarrierID,"Experience the luxury of a small regional carriers lowest end fare.", 325, 2),
 
-                    new AirportFlight("FIA",StaticStrings.FlyUSCarrierID,"Need to get FAR away? FlyUS and see the difference deregulation made!", 450, 6),
-                    new AirportFlight("VCIA",StaticStrings.FlyUSCarrierID,"Nonstop service to the sunniest state in the nation!", 425, 7),
+                    //new AirportFlight("FIA",StaticStrings.FlyUSCarrierID,"Need to get FAR away? FlyUS and see the difference deregulation made!", 450, 6),
+                    //new AirportFlight("VCIA",StaticStrings.FlyUSCarrierID,"Nonstop service to the sunniest state in the nation!", 425, 7),
                     new AirportFlight("CPA",StaticStrings.AdiosAirlinesCarrierID,"We won't be the only ones saying 'Adios' to you!", 500, 10),
 
                     new AirportFlight("SSA",StaticStrings.LosSantosAirCarrierID,"Just a hop skip and a jump away, LSIX is proud to provide service to our rural neighbors to the north.", 200, 1),
@@ -974,7 +974,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ,CommercialFlights = new List<AirportFlight>()
                 {
                     new AirportFlight("LSIX",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 650, 14),
-                    new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"Its the San Fierro Treat!", 680, 15),
+                    //new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"Its the San Fierro Treat!", 680, 15),
                 }
                 ,RoadToggels = new HashSet<RoadToggler>()
                 {

@@ -32,7 +32,7 @@ public class ShopMenus : IShopMenus
         string fileName = string.IsNullOrEmpty(configName) ? "ShopMenus_*.xml" : $"ShopMenus_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}", 0);
@@ -356,12 +356,13 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
+        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "SandersMenu" &&  x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if(vapidMenu != null)
         {
             vapidMenu.Items.Add(new MenuItem("Vapid Scout", 55000, 25000));
             vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
+            vapidMenu.Items.Add(new MenuItem("Vapid Sadler 4WD", 25000, 12000));
             vapidMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 25000, 12000));
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara Utility", 32000, 15000));
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara 2WD", 30000, 14000));
@@ -392,6 +393,13 @@ public class ShopMenus : IShopMenus
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 76000, 24500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Bison XL", 31000, 14000));
+        }
+        ShopMenu sandersMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "SandersMenu").FirstOrDefault();
+        if (sandersMenu != null)
+        {
+            sandersMenu.Items.Add(new MenuItem("Western Gargoyle Cruiser", 23000, 5800));
+            sandersMenu.Items.Add(new MenuItem("Western Sovereign Cruiser", 27000, 11000));
+            
         }
         ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
         if (elitasMenu != null)
@@ -2062,6 +2070,7 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("Nagasaki Carbon RS",40000,22500),
                 new MenuItem("Nagasaki BF400",12000,6200),
+                new MenuItem("Nagasaki Shinobi", 34000,12000),
 
                 //NEW
                 new MenuItem("LCC Hexer",37000,23000),
@@ -2072,6 +2081,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Western Daemon",26000,19000),
                 new MenuItem("Western Daemon LOST",29000,20000),
                 new MenuItem("Western Bagger",19000,9500),
+
+                new MenuItem("Pegassi FCR 1000",24000,12000),
+                
 
             }),
             new ShopMenu("LuxuryAutosMenu","Luxury Autos",new List<MenuItem>() {//pegassi/grotti/enus/buckingham/pfiuster

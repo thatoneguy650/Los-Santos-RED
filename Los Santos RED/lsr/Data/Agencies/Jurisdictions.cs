@@ -27,7 +27,7 @@ public class Jurisdictions : IJurisdictions
         string zoneFileName = string.IsNullOrEmpty(zoneConfigName) ? "ZoneJurisdictions_*.xml" : $"ZoneJurisdictions_{zoneConfigName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ZoneFile = LSRDirectory.GetFiles(zoneFileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ZoneFile = LSRDirectory.GetFiles(zoneFileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ZoneFile != null && !zoneConfigName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}", 0);
@@ -61,7 +61,7 @@ public class Jurisdictions : IJurisdictions
 
         string countyFileName = string.IsNullOrEmpty(countyConfigName) ? "CountyJurisdictions_*.xml" : $"CountyJurisdictions_{countyConfigName}.xml";
 
-        FileInfo CountyFile = LSRDirectory.GetFiles(countyFileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo CountyFile = LSRDirectory.GetFiles(countyFileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (CountyFile != null && !countyConfigName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}", 0);

@@ -34,7 +34,7 @@ public class Organizations : IOrganizations
         string fileName = string.IsNullOrEmpty(configName) ? "Organizations_*.xml" : $"Organizations_{configName}.xml";
 
         DirectoryInfo taskDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = taskDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = taskDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Organizations Config: {ConfigFile.FullName}", 0);

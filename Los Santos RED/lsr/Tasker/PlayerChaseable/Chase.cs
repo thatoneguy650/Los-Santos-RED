@@ -861,7 +861,7 @@ public class Chase : ComplexTask
 
                     EntryPoint.WriteToConsole($"{Ped.Handle} CHASE SET KINDA RECKLESS");
                 }
-                else if(!IsSetFollow) //if (shouldChasePassivly)// && !IsSetPassive)
+                else if(!IsSetFollow && !IsSetPassive) //if (shouldChasePassivly)// && !IsSetPassive)
                 {
 
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
@@ -888,6 +888,7 @@ public class Chase : ComplexTask
                     IsSetPassive = true;
                     IsSetNotReckless = false;
                     IsSetVeryReckless = false;
+                    //IsSetFollow = false;
 
                     EntryPoint.WriteToConsole($"{Ped.Handle} CHASE SET PASSIVE");
                 }

@@ -201,6 +201,13 @@ public class HidingActivity : DynamicActivity
     {
         PlayingDict = "move_climb";
         PlayingAnim = "standclimbup_80";
+
+
+        //if (HideableObject.IsDoor)
+        //{
+        //    PlayingDict = "doors@1handed";
+        //    PlayingAnim = "r_hand_sweep";
+        //}
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 512, 0, false, false, false);
     }
     private void DisableControls()

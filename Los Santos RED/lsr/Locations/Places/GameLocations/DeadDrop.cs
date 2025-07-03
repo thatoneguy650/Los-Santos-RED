@@ -219,6 +219,7 @@ public class DeadDrop : GameLocation
         IsDropOff = isDropOff;
         MoneyAmount = moneyToReceive;
         InteractionComplete = false;
+        CanInteract = true;
         if (IsDropOff)
         {
             ButtonPromptText = $"Drop ${Math.Abs(MoneyAmount)}";
@@ -233,6 +234,7 @@ public class DeadDrop : GameLocation
         InteractionComplete = false;
         IsEnabled = false;
         IsDropOff = false;
+        CanInteract = true;
         MoneyAmount = 0;
     }
     public override string ToString()

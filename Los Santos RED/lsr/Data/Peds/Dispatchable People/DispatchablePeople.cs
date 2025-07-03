@@ -153,7 +153,7 @@ public class DispatchablePeople : IDispatchablePeople
         string fileName = string.IsNullOrEmpty(configName) ? "DispatchablePeople_*.xml" : $"DispatchablePeople_{configName}.xml";
 
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles(fileName).Where(x => !x.Name.Contains("+")).OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null && !configName.Equals("Default"))
         {
             EntryPoint.WriteToConsole($"Loaded Dispatchable People config: {ConfigFile.FullName}", 0);

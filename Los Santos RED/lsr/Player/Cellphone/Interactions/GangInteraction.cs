@@ -56,10 +56,12 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu BackupSubMenu;
     private UIMenu DrugMeetSubMenu;
     private UIMenu ReferencesSubMenu;
+    private IShopMenus ShopMenus;
 
     private string TargetGangDescription => $"Choose a target gang~n~~n~~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     private string GangDescription => $"~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
-    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, IAgencies agencies, IModItems modItems)
+    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, 
+        IAgencies agencies, IModItems modItems, IShopMenus shopMenus)
     {
         Player = player;
         Gangs = gangs;
@@ -70,6 +72,7 @@ public class GangInteraction : IContactMenuInteraction
         Settings = settings;
         Agencies = agencies;
         ModItems = modItems;
+        ShopMenus = shopMenus;
     }
     public void Start(PhoneContact phoneContact)
     {
@@ -300,17 +303,26 @@ public class GangInteraction : IContactMenuInteraction
         DrugMeetSubMenu = MenuPool.AddSubMenu(ReferencesSubMenu, "Drug Sale");
         ReferencesSubMenu.MenuItems[ReferencesSubMenu.MenuItems.Count() - 1].Description = $"Sell a large quantity of drugs to a gang. Make sure you have the merchandise.";
         DrugMeetSubMenu.RemoveBanner();
-        UIMenuListScrollerItem<IllicitMarketplace> LocationMenu = new UIMenuListScrollerItem<IllicitMarketplace>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.IllicitMarketplaces.Where(x=> x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
-
-        UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", 500, 5000, 100) { Value = 500 };
+        UIMenuListScrollerItem<GameLocation> LocationMenu = new UIMenuListScrollerItem<GameLocation>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.DrugMeetLocations().Where(x=> x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
+        UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", Settings.SettingsManager.TaskSettings.DrugMeetMin, Settings.SettingsManager.TaskSettings.DrugMeetMax, 100) { Value = Settings.SettingsManager.TaskSettings.DrugMeetMin };
         UIMenuListScrollerItem<ModItem> PossibleItemsMenu = new UIMenuListScrollerItem<ModItem>("Item","",ModItems.AllItems().Where(x=> x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic));
         UIMenuListScrollerItem<GangDisplay> DealingGangMenu = new UIMenuListScrollerItem<GangDisplay>("Dealing Gang", GangDescription, GetNonHostilGangDisplay());
         UIMenuItem DrugMeetupStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~?-?~s~" };
+        UpdatedDrugMeetSaleRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
         DrugMeetupStart.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value,DealingGangMenu.SelectedItem?.Gang, true);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
+            Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value,DealingGangMenu.SelectedItem?.Gang, true, LocationMenu.SelectedItem);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
             sender.Visible = false;
         };
+        PossibleItemsMenu.IndexChanged += (sender,oldIndex,newIndex) =>
+        {
+            UpdatedDrugMeetSaleRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
+        };
+        quantityScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            UpdatedDrugMeetSaleRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
+        };
+
         DrugMeetSubMenu.AddItem(LocationMenu);
         DrugMeetSubMenu.AddItem(PossibleItemsMenu);
         DrugMeetSubMenu.AddItem(DealingGangMenu);
@@ -320,21 +332,44 @@ public class GangInteraction : IContactMenuInteraction
 
 
 
+    private void UpdatedDrugMeetSaleRightLabel(UIMenuItem uiMenuItem, ModItem selectedItem, int quantity)
+    {
+        int AveragePrice = (int)Math.Round(ShopMenus.GetAverageStreetSalesPrice(selectedItem) * RandomItems.GetRandomNumber(Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMin, Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMax));
+        uiMenuItem.RightLabel = $"Sales Price: ~g~${AveragePrice * quantity}~s~";
+    }
+    private void UpdatedDrugMeetBuyRightLabel(UIMenuItem uiMenuItem, ModItem selectedItem, int quantity)
+    {
+        int AveragePrice = (int)Math.Round(ShopMenus.GetAverageStreetPurchasePrice(selectedItem) * RandomItems.GetRandomNumber(Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMin, Settings.SettingsManager.TaskSettings.DrugMeetPriceScalarMax));
+        uiMenuItem.RightLabel = $"Purchase Price: ~r~${AveragePrice * quantity}~s~";
+    }
+
+
     private void AddDrugBuySubMenu()
     {
         DrugMeetSubMenu = MenuPool.AddSubMenu(ReferencesSubMenu, "Drug Buy");
         ReferencesSubMenu.MenuItems[ReferencesSubMenu.MenuItems.Count() - 1].Description = $"Buy a large quantity of drugs from a gang. Make sure you have the cash.";
         DrugMeetSubMenu.RemoveBanner();
-        UIMenuListScrollerItem<IllicitMarketplace> LocationMenu = new UIMenuListScrollerItem<IllicitMarketplace>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.IllicitMarketplaces.Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
+        UIMenuListScrollerItem<GameLocation> LocationMenu = new UIMenuListScrollerItem<GameLocation>("Location", "Select the location for the meet", PlacesOfInterest.PossibleLocations.DrugMeetLocations().Where(x => x.IsCorrectMap(World.IsMPMapLoaded) && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)));
 
-        UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", 500, 5000, 100) { Value = 500 };
+        UIMenuNumericScrollerItem<int> quantityScroller = new UIMenuNumericScrollerItem<int>("Quantity", $"Select the total amount to deal", Settings.SettingsManager.TaskSettings.DrugMeetMin, Settings.SettingsManager.TaskSettings.DrugMeetMax, 100) { Value = Settings.SettingsManager.TaskSettings.DrugMeetMin };
         UIMenuListScrollerItem<ModItem> PossibleItemsMenu = new UIMenuListScrollerItem<ModItem>("Item", "", ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic));
         UIMenuListScrollerItem<GangDisplay> DealingGangMenu = new UIMenuListScrollerItem<GangDisplay>("Dealing Gang", GangDescription, GetNonHostilGangDisplay());
         UIMenuItem DrugMeetupStart = new UIMenuItem("Start", $"Start the task.") { RightLabel = $"~HUD_COLOUR_GREENDARK~?-?~s~" };
+
+        UpdatedDrugMeetBuyRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
+
         DrugMeetupStart.Activated += (sender, selectedItem) =>
         {
-            Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value, DealingGangMenu.SelectedItem?.Gang, false);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
+            Player.PlayerTasks.GangTasks.StartDrugMeetTask(ActiveGang, GangContact, PossibleItemsMenu.SelectedItem, quantityScroller.Value, DealingGangMenu.SelectedItem?.Gang, false, LocationMenu.SelectedItem);//, WheelManAccomplices.Value, LocationType.SelectedItem, requireAllMembers.Checked);
             sender.Visible = false;
+        };
+        PossibleItemsMenu.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            UpdatedDrugMeetBuyRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
+        };
+        quantityScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            UpdatedDrugMeetBuyRightLabel(DrugMeetupStart, PossibleItemsMenu.SelectedItem, quantityScroller.Value);
         };
         DrugMeetSubMenu.AddItem(LocationMenu);
         DrugMeetSubMenu.AddItem(PossibleItemsMenu);

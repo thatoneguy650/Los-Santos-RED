@@ -79,6 +79,10 @@ public class TaskSettings : ISettingsDefaultable
     public float DrugMeetPriceScalarMin { get; set; }
     public float DrugMeetPriceScalarMax { get; set; }
 
+
+    public int DrugMeetMin { get; set; }
+    public int DrugMeetMax { get; set; }
+
     public TaskSettings()
     {
         SetDefault();
@@ -121,6 +125,9 @@ public class TaskSettings : ISettingsDefaultable
 
         DrugMeetPriceScalarMin = 0.8f;
         DrugMeetPriceScalarMax = 1.2f;
+
+        DrugMeetMin = 200;
+        DrugMeetMax = 2000;
     }
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
