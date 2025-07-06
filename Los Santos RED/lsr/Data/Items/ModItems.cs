@@ -207,6 +207,9 @@ public class ModItems : IModItems
     {
         PossibleItems newPossibleItems = new PossibleItems();//PossibleItems.Copy();
 
+        //
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Headmaster", ItemType.Vehicles) { ModelName = "civsbus" });
+
         //Motorcycles
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Sovereign Cruiser", ItemType.Vehicles) { ModelName = "civsovereign2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Gargoyle Cruiser", ItemType.Vehicles) { ModelName = "civgargoylestock" });

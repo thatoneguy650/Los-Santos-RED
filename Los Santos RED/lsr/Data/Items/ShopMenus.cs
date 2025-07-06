@@ -6190,6 +6190,7 @@ public class ShopMenus : IShopMenus
                     }),
         });
     }
+   
     private void DealerHangouts()
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
@@ -6236,7 +6237,139 @@ public class ShopMenus : IShopMenus
                 //OTHER
                 new MenuItem("Improvised Incendiary",30) { NumberOfItemsToSellToPlayer = 5, IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
                 new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
-                    }),
+               }),
+               new ShopMenu("DealerHangoutMenu2","DealerHangoutMenu2",new List<MenuItem>() {
+                    new VariablePriceMenuItem("Cocaine", 150, 180, 110, 140) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new VariablePriceMenuItem("SPANK",45, 55, 20, 30) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new MenuItem("Brass Knuckles",150) { IsIllicilt = true },
+                    new MenuItem("Combat Knife",120) { IsIllicilt = true },
+                    new MenuItem("Switchblade",55) { IsIllicilt = true },
+                //Pistola
+                new MenuItem("Hawk & Little PTF092F",445) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip",0),
+                    new MenuItemExtra("Extended Clip", 75),
+                    new MenuItemExtra("Suppressor", 343) },  },
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 50),
+                    new MenuItemExtra("Suppressor", 125), } },
+                new MenuItem("Vom Feuer P69",790) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Suppressor", 125), } },
+                //Shotgun
+                new MenuItem("Shrewsbury 420 Sawed-Off",200) { IsIllicilt = true },
+                new MenuItem("Toto 12 Guage Sawed-Off",250) { IsIllicilt = true },
+                //SMG
+                new MenuItem("Shrewsbury Luzi",455) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Suppressor", 145), } },
+                new MenuItem("Vom Feuer KEK-9",250) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 123),
+                    new MenuItemExtra("Suppressor", 356) } },
+                new MenuItem("Hawk & Little Millipede",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120), } },
+                //AR
+                new MenuItem("Shrewsbury Stinkov",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 200),} },
+                //OTHER
+                new MenuItem("Improvised Incendiary",30) { NumberOfItemsToSellToPlayer = 5, IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
+                new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
+               }),
+               new ShopMenu("DealerHangoutMenu3","DealerHangoutMenu3",new List<MenuItem>() {
+                    new VariablePriceMenuItem("Methamphetamine", 55, 65, 35, 45) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new VariablePriceMenuItem("Heroin",150, 160, 100, 110) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new MenuItem("Brass Knuckles",150) { IsIllicilt = true },
+                    new MenuItem("Combat Knife",120) { IsIllicilt = true },
+                    new MenuItem("Switchblade",55) { IsIllicilt = true },
+                //Pistola
+                new MenuItem("Hawk & Little PTF092F",445) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip",0),
+                    new MenuItemExtra("Extended Clip", 75),
+                    new MenuItemExtra("Suppressor", 343) },  },
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 50),
+                    new MenuItemExtra("Suppressor", 125), } },
+                new MenuItem("Vom Feuer P69",790) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Suppressor", 125), } },
+                //Shotgun
+                new MenuItem("Shrewsbury 420 Sawed-Off",200) { IsIllicilt = true },
+                new MenuItem("Toto 12 Guage Sawed-Off",250) { IsIllicilt = true },
+                //SMG
+                new MenuItem("Shrewsbury Luzi",455) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Suppressor", 145), } },
+                new MenuItem("Vom Feuer KEK-9",250) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 123),
+                    new MenuItemExtra("Suppressor", 356) } },
+                new MenuItem("Hawk & Little Millipede",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120), } },
+                //AR
+                new MenuItem("Shrewsbury Stinkov",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 200),} },
+                //OTHER
+                new MenuItem("Improvised Incendiary",30) { NumberOfItemsToSellToPlayer = 5, IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
+                new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
+               }),
+               new ShopMenu("DealerHangoutMenu4","DealerHangoutMenu4",new List<MenuItem>() {
+                    new VariablePriceMenuItem("Crack", 48, 58, 30, 40) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new VariablePriceMenuItem("Marijuana", 13, 15, 11, 12) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
+                    new MenuItem("Brass Knuckles",150) { IsIllicilt = true },
+                    new MenuItem("Combat Knife",120) { IsIllicilt = true },
+                    new MenuItem("Switchblade",55) { IsIllicilt = true },
+                //Pistola
+                new MenuItem("Hawk & Little PTF092F",445) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip",0),
+                    new MenuItemExtra("Extended Clip", 75),
+                    new MenuItemExtra("Suppressor", 343) },  },
+                new MenuItem("Hawk & Little 1919 Tactical",1134) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 50),
+                    new MenuItemExtra("Suppressor", 125), } },
+                new MenuItem("Vom Feuer P69",790) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Suppressor", 125), } },
+                //Shotgun
+                new MenuItem("Shrewsbury 420 Sawed-Off",200) { IsIllicilt = true },
+                new MenuItem("Toto 12 Guage Sawed-Off",250) { IsIllicilt = true },
+                //SMG
+                new MenuItem("Shrewsbury Luzi",455) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Suppressor", 145), } },
+                new MenuItem("Vom Feuer KEK-9",250) {IsIllicilt = true,  Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 123),
+                    new MenuItemExtra("Suppressor", 356) } },
+                new MenuItem("Hawk & Little Millipede",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120), } },
+                //AR
+                new MenuItem("Shrewsbury Stinkov",450) { IsIllicilt = true, Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 200),} },
+                //OTHER
+                new MenuItem("Improvised Incendiary",30) { NumberOfItemsToSellToPlayer = 5, IsIllicilt = true, SubAmount = 1,SubPrice = 30 },
+                new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
+               }),
         });
     }
     private void MenuGroupList()

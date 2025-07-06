@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Helper;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,18 @@ public class Interiors_Liberty
     public void DefaultConfig()
     {
         LibertyCityInteriors = new PossibleInteriors();
-        GeneralInteriors();
         Banks();
         Bars();
+        Bowling();
+        Businesses();
+        Cafes();
+        Clubs();
+        GeneralInteriors();
+        Hotels();
         Residence();
         Restaurants();
+        Stations();
+        Stores();
 
         Serialization.SerializeParam(LibertyCityInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Interiors_{StaticStrings.LibertyConfigSuffix}.xml");
 
@@ -57,10 +65,7 @@ public class Interiors_Liberty
         {
             intloc.AddLocation(lppInteriors);
         }
-
-
         Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
-
     }
 
     private void Banks()
@@ -293,48 +298,102 @@ public class Interiors_Liberty
             },
         });
     }
-
-
-
     private void Bars()
     {
-
-    }
-
-
-    private void GeneralInteriors()
-    {
         LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        //Bars
         {
-
-            //Bars
             new Interior(54018, "Lucky Winkles Bar")
-            {
-                            Doors = new List<InteriorDoor>()
+        {
+            InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-195.9349f, 944.4111f, 10.395f), 178.3547f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(4114682006,new Vector3(-202.3672f, 950.2361f, 10.64464f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
                 },
-            },
+        },
             new Interior(80386, "Steinway Beer Garden")
             {
-                            Doors = new List<InteriorDoor>()
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1381.547f, 1234.844f, 35.51511f), 1.057689f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+                Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(261592072,new Vector3(1387.857f, 1229.011f, 35.76453f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
                 },
             },
             new Interior(164866, "Comrades Bar")
-            {
-                            Doors = new List<InteriorDoor>()
+    {
+        Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(387699963,new Vector3(1166.586f, 4.418087f, 15.73469f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//front
                     new InteriorDoor(387699963,new Vector3(1185.835f, 2.27493f, 15.73483f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear
                     new InteriorDoor(387699963,new Vector3(1181.423f, 0.7771521f, 15.73488f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
                 },
             },
-
+        });
+    }
+    private void Bowling()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
             //Bowling
             new Interior(38146, "Memory Lanes")//27394
             {
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1440.757f, -180.6284f, 16.44489f), 137.5136f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1439.322f, -160.8783f, 16.84485f), 92.82558f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(1440.167f, -161.3389f, 16.84485f), 181.2957f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(3477273845, new Vector3(1435.569f, -184.5796f, 16.70291f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//Left
@@ -343,13 +402,237 @@ public class Interiors_Liberty
             }, //Firefly Island, Broker
             new Interior(92162, "Memory Lanes")
             {
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1440.757f, -180.6284f, 16.44489f), 137.5136f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1439.322f, -160.8783f, 16.84485f), 92.82558f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(-359.0181f, 574.8115f, 5.217078f), 268.8741f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(3477273845, new Vector3(-335.7781f, 570.1655f, 5.075134f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//Left
                     new InteriorDoor(2464449593, new Vector3(-335.7781f, 573.1655f, 5.075134f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//Right
                 },
             }, //Golden Pier, Westminster, Algonquin
+        });
+    }
+    private void Businesses()
+    {
+        LibertyCityInteriors.BusinessInteriors.AddRange(new List<BusinessInterior>()
+        {
+            //Laundromats
+            new BusinessInterior(37634, "Laundromat")
+            {
+                InteractPoints = new List<InteriorInteract>(){
+                    new StandardInteriorInteract("LaundromatStandard1",new Vector3(1321.24f, 1142.11f, 38.71411f), 176.3522f,"Interact")
+                    {
+                        UseNavmesh =false,
+                        CameraPosition = new Vector3(1319.568f, 1139.867f, 39.41896f),
+                        CameraDirection = new Vector3(0.642922f, 0.7352627f, -0.2145693f),
+                        CameraRotation = new Rotator(-12.39026f, 1.3112E-06f, -41.16682f)
+                    },
+                },
+            //    Doors = new List<InteriorDoor>()
+            //    {
+            //        new InteriorDoor(4062767778, new Vector3(1320.801f, 1129.155f, 38.95517f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
+            //        new InteriorDoor(1049657988, new Vector3(1317.837f, 1146.426f, 38.96228f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
+            //    },
 
+            }, // Harrison Street, East Island City, Dukes.
+            new BusinessInterior(150530, "Laundromat")
+            {
+                  InteractPoints = new List<InteriorInteract>(){
+                    new StandardInteriorInteract("LaundromatStandard2",new Vector3(-803.386f, 1632.055f, 13.72553f), 182.3193f ,"Interact")
+                    {
+                        UseNavmesh =false,
+                        CameraPosition = new Vector3(-805.1554f, 1629.573f, 14.68275f),
+                        CameraDirection = new Vector3(0.6740803f, 0.641684f, -0.3658653f),
+                        CameraRotation = new Rotator(-21.46084f, -2.568656E-05f, -46.41043f)
+                    },
+                  },
+            }, // Hubbard Avenue, Alderney City, Alderney.
+            new BusinessInterior(158466, "Laundromat")
+            {
+                  InteractPoints = new List<InteriorInteract>(){
+                    new StandardInteriorInteract("LaundromatStandard2",new Vector3(1264.497f, 171.3694f, 20.21689f), 101.8397f,"Interact")
+                    {
+                        UseNavmesh =false,
+                        CameraPosition = new Vector3(1261.999f, 172.488f, 20.79559f),
+                        CameraDirection = new Vector3(0.8620415f, -0.4877796f, -0.1376787f),
+                        CameraRotation = new Rotator(-7.913547f, 9.481805E-06f, -119.503f)
+                    },
+                  },
+            }, // Oneida Avenue, Hove Beach, Broker.
+        });
+    }
+    private void Cafes()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            //Diner - Cafe
+            new Interior(101634, "69th Street Diner")
+            {
+            InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1126.695f, 6.922501f, 15.88295f), 5.880472f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(1285262331, new Vector3(1123.339f, 11.90283f, 16.15447f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//front
+                    new InteriorDoor(3232592925,new Vector3(1129.916f, 0.764942f, 16.14832f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },//side
+                },
+            },
+            new Interior(121346,"Homebrew Cafe")
+            {
+                            Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(1542565804,new Vector3(14.60596f, -9.044677f, -2.845501f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            //Internet Cafe
+            new Interior(50178, "tw@ - Broker")
+            {
+            InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1205.931f, 325.9325f, 24.19375f), 230.3551f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(149395267,new Vector3(1213.555f, 323.2911f, 24.4437f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(166914, "tw@ - Bercham")
+            {
+            InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-1339.763f, 951.733f, 25.56133f), 358.9866f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(149395267,new Vector3(-1343.255f, 958.8583f, 25.6938f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(66562, "tw@ - North Holland")
+            {
+            InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-94.74496f, 1882.236f, 12.91321f), 20.30577f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(149395267,new Vector3(-101.2136f, 1887.003f, 13.16315f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            //Superstar Cafe
+            new Interior(71682, "Superstar Cafe - The Triangle")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(4.282829f, 546.7474f, 15.7081f), 358.1411f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(149395267, new Vector3(2.432138f, 534.061f, 14.95663f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(133890, "Superstar Cafe - Lancaster")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(252.6178f, 1475.116f, 15.64895f), 86.14265f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(149395267, new Vector3(265.2527f, 1473.275f, 14.89747f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+        });
+    }
+    private void Clubs()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
             //Clubs
             new Interior(130818, "Bahama Mamas")
             {
@@ -372,125 +655,32 @@ public class Interiors_Liberty
                     new InteriorDoor(4119540397, new Vector3(-229.8753f, 646.3377f, 10.14345f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
                 },
             },
-
-            //Diner - Cafe
-            new Interior(101634, "69th Street Diner")
+            //Strip Club
+            new Interior(113666, "The Triangle Club")
             {
-                Doors = new List<InteriorDoor>()
+            InteractPoints = new List < InteriorInteract > ()
                 {
-                    new InteriorDoor(1285262331, new Vector3(1123.339f, 11.90283f, 16.15447f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//front
-                    new InteriorDoor(3232592925,new Vector3(1129.916f, 0.764942f, 16.14832f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },//side
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1427.973f, 2197.751f, 17.72204f), 315.261f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1428.578f, 2197.142f, 17.72204f), 318.7672f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
                 },
-
-
-            },
-            new Interior(121346,"Homebrew Cafe")
-            {
-                            Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(1542565804,new Vector3(14.60596f, -9.044677f, -2.845501f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                },
-            },
-
-            //FastFood
-            //BS
-            new Interior(126722, "Burger Shot")
-            {
-
-                Doors = new List<InteriorDoor>()
-                { 
-                    //FRONT
-                    new InteriorDoor(3024662465, new Vector3(1890.526f, 718.3006f, 25.46795f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                    new InteriorDoor(1050821746,new Vector3(1890.525f, 721.31f, 25.46795f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
-
-                    //SIDE
-                    new InteriorDoor(3024662465,new Vector3(1880.79f, 727.7058f, 25.4694f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
-                    new InteriorDoor(1050821746,new Vector3(1877.78f, 727.7051f, 25.4694f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
-                },
-            },
-            new Interior(156674, "Burger Shot"),
-            new Interior(112642, "Burger Shot - Star Junction"),
-            new Interior(109570, "Burger Shot - North Holland"),
-            new Interior(134402, "Burger Shot - Bohan"),
-            new Interior(105986, "Burger Shot - The Meat Quarter"),
-            new Interior(59650, "Burger Shot - Alderney"),
-            //CB
-            new Interior(143874, "Cluckin' Bell - Dukes"),
-            new Interior(124162, "Cluckin' Bell - The Triangle"),
-
-            //Fire Stations
-            new Interior(160514,"Broker Fire Station"){  },
-            new Interior(176898, "Bohan Fire Station"){  },
-
-            //Gun Stores
-            new Interior(108290, "Underground Guns")
-            {
-                Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(807349477, new Vector3(1295.643f, 579.8269f, 34.49496f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                },
-            },// GunStore - Downtown Broker
-            new Interior(92674, "Underground Guns")
-            {
-                Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(807349477, new Vector3(311.2178f, 150.6089f, 11.41267f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                },
-            }, // GunStore - Chinatown, Algonquin
-            new Interior(101890, "Underground Guns")
-            {
-                Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(807349477, new Vector3(-1094.076f, 802.6436f, 14.86613f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                },
-            },// GunStore -  Port Tudor, Alderney
-
-            //Hotel
-            new Interior(3330, "The Majestic Hotel Lobby"),
-            new Interior(41218, "The Majestic Hotel Elevator Floor"),
-            new Interior(148994, "The Majestic Hotel Room"),
-
-
-
-            //Internet Cafe
-            new Interior(50178, "tw@ - Broker"){  },
-            new Interior(166914, "tw@ - Bercham"),
-            new Interior(66562, "tw@ - North Holland"),
-
-            //Laundromats
-            new Interior(138498, "Laundromat") { }, // Harrison Street, East Island City, Dukes.
-            new Interior(134146, "Laundromat") { }, // Hubbard Avenue, Alderney City, Alderney.
-            new Interior(141826, "Laundromat") { }, // Oneida Avenue, Hove Beach, Broker.
-
-            //Restaurants
-            new Interior(78338, "Perestroika")
-            {
-                             Doors = new List<InteriorDoor>()
-                {
-                   new InteriorDoor(2762578800,new Vector3(1194.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_l 
-                   new InteriorDoor(1985756882,new Vector3(1197.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_r 
-                   new InteriorDoor(3971243973,new Vector3(1194.117f, 209.6353f, 20.14878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
-                   new InteriorDoor(3971243973,new Vector3(1197.115f, 209.6353f, 20.14878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
-                   new InteriorDoor(3971243973,new Vector3(1200.812f, 203.7319f, 20.12878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
-                   new InteriorDoor(3971243973,new Vector3(1185.197f, 232.5177f, 18.51646f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
-                   new InteriorDoor(3971243973,new Vector3(1191.784f, 243.1203f, 16.10701f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
-                   new InteriorDoor(2881168431,new Vector3(1206.35f, 236.5193f, 22.01962f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
-                   new InteriorDoor(2881168431,new Vector3(1206.35f, 233.5154f, 22.01962f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
-                },
-
-
-
-            },
-            new Interior(85506, "Mr Fuk's - Alderney City") { },
-
-            //new Interior(76290,"Perestroika")
-
-
-
-
-            //Strip Clubs
-            new Interior(113666, "The Triangle Club ")
-            {
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(358597415, new Vector3(1436.133f, 2204.258f, 17.97499f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//main
@@ -499,13 +689,61 @@ public class Interiors_Liberty
             }, //Northern Gardens, Bohan
             new Interior(67586, "Honkers Gentlemen's Club")
             {
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-1337.681f, 505.0126f, 10.01021f), 86.16586f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(-1333.589f, 506.77f, 10.0102f), 357.3273f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(-1324.561f, 506.7537f, 10.0102f), 0.3706726f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister4",new Vector3(-1324.613f, 502.0798f, 10.0102f), 177.2487f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+            },
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(2881168431, new Vector3(-1341.933f, 519.5435f, 10.26201f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
                 },
             }, //Tudor, Alderney 
-
-
+        });
+    }
+    private void GeneralInteriors()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            //new Interior(76290,"Perestroika")
 
             // ???
             new Interior(151554,"Beechwood Apts 2"),
@@ -513,37 +751,32 @@ public class Interiors_Liberty
             new Interior(35330, "Beechwood Apts 3"),
             new Interior(37634, "Beechwood Apts 5"),
             //
-
-
             new Interior(88834, "Old House - Firefly Island"),
             new Interior(158978, "Drug Den - Schlotter Broker"),
             new Interior(54274, "Scummy Apartment"),
-
 
             new Interior(24578, "JJ China Limited"),
 
             new Interior(16642, "Goldberg Ligner & Shyster Offices"),
             new Interior(139266, "The Libertonian"),
 
-
-
             new Interior(172034, "Sprunk Factory - Bohan Industrial"),
             new Interior(88578, "Lompoc Avenue Warehouse"), // Industrial, Bohan
-
-
-
-            //burger shot beechwoodd city
-            //3024662465,new Vector3(1890.526f, 718.3006f, 25.46795f)
+        });
+    }
+    private void Hotels()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            //Hotel
+            new Interior(3330, "The Majestic Hotel Lobby"),
+            new Interior(41218, "The Majestic Hotel Elevator Floor"),
+            new Interior(148994, "The Majestic Hotel Room"),
 
         });
-
-
     }
-
     private void Residence()
     {
-
-
         LibertyCityInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
             new ResidenceInterior(152578,"Playboy X Penthouse") {
@@ -558,10 +791,16 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.7304603f, -0.637247f, -0.24565f),
                         CameraRotation = new Rotator(-14.22025f, 2.642284E-06f, 131.1012f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-180.0553f, 1962.973f, 38.96647f), 1.711152f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("playboyaptInventory1",new Vector3(-181.0498f, 1962.895f, 38.96647f), 0.9463751f ,"Access Items")
+                    new InventoryInteract("playboyaptInventory1",new Vector3(-178.3448f, 1962.657f, 38.96647f), 353.7243f ,"Access Items")
                     {
                         CanAccessCash = false,
                         CanAccessWeapons = false,
@@ -608,6 +847,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.8424098f, -0.4465208f, -0.301604f),
                         CameraRotation = new Rotator(-17.55397f, -4.477364E-06f, -117.9259f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(332.1798f, 1354.332f, 45.04601f), 93.00458f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
@@ -657,6 +902,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.04744998f, 0.9517307f, -0.3032443f),
                         CameraRotation = new Rotator(-17.65257f, 0f, 2.854204f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(847.0879f, 1899.799f, 17.47133f), 179.6671f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -710,6 +961,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.5709521f, 0.787036f, -0.2336407f),
                         CameraRotation = new Rotator(-13.51151f, 4.390381E-06f, -35.95886f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(1124.885f, -5.295167f, 19.41107f), 2.826868f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -763,6 +1020,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.3834104f, 0.8622515f, -0.3309363f),
                         CameraRotation = new Rotator(-19.32561f, -1.311893E-05f, -23.97289f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-723.6395f, 1385.114f, 19.00134f), 270.7166f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -770,11 +1033,18 @@ public class Interiors_Liberty
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("alderenyaptInventory1",new Vector3(-724.3544f, 1384.774f, 19.00132f), 177.3981f ,"Access Items")
+                    new InventoryInteract("alderenyaptInventory1",new Vector3(-724.9501f, 1384.598f, 19.00134f), 211.9569f ,"Access Items")
                     {
                         CameraPosition = new Vector3(-726.6008f, 1384.994f, 19.89845f),
                         CameraDirection = new Vector3(0.8892203f, -0.2438023f, -0.3871017f),
                         CameraRotation = new Rotator(-22.77428f, 0f, -105.3323f)
+                    },
+                    new InventoryInteract("alderenyaptInventory2",new Vector3(-727.6134f, 1381.419f, 19.00142f), 271.1751f ,"Access Weapons/Cash")
+                    {
+                        CanAccessItems = false,
+                        CameraPosition = new Vector3(-729.0151f, 1383.949f, 19.99418f),
+                        CameraDirection = new Vector3(0.4645696f, -0.8410434f, -0.2771662f),
+                        CameraRotation = new Rotator(-16.09114f, 1.777174E-06f, -151.0849f)
                     },
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -820,6 +1090,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.498876f, -0.802644f, -0.3269332f),
                         CameraRotation = new Rotator(-19.08274f, 5.420512E-06f, 148.1374f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-197.5363f, 1893.601f, 16.48327f), 2.4541f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -882,6 +1158,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.9422437f, -0.0005598353f, -0.3349276f),
                         CameraRotation = new Rotator(-19.56813f, -2.131829E-05f, 90.03404f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(222.1642f, 1275.011f, 62.52046f), 90.07284f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
@@ -953,17 +1235,23 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.0530019f, -0.951273f, -0.3037606f),
                         CameraRotation = new Rotator(-17.68361f, -1.702621E-05f, 176.811f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(1055.022f, 640.9662f, 29.40617f), 241.9506f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("studaptInventory1",new Vector3(1054.01f, 640.391f, 29.40617f), 199.4356f,"Access Items")
+                    new InventoryInteract("studaptInventory1",new Vector3(1053.384f, 640.3161f, 29.40617f), 150.1994f,"Access Items")
                     {
                         CanAccessCash = false,
                         CanAccessWeapons = false,
                         UseNavmesh =false,
-                        CameraPosition = new Vector3(1051.865f, 641.0962f, 30.56939f),
-                        CameraDirection = new Vector3(0.752804f, -0.5008591f, -0.4271138f),
-                        CameraRotation = new Rotator(-25.28453f, -1.605196E-05f, -123.6368f)
+                        CameraPosition = new Vector3(1051.741f, 641.9983f, 30.34987f),
+                        CameraDirection = new Vector3(0.5024242f, -0.790361f, -0.3505701f),
+                        CameraRotation = new Rotator(-20.52219f, -1.549769E-05f, -147.5563f)
     },
                     new InventoryInteract("studaptInventory2",new Vector3(1047.409f, 627.384f, 29.23772f), 244.1518f,"Access Weapons/Cash")
                     {
@@ -1091,17 +1379,23 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.8049945f, -0.3821636f, -0.4538005f),
                         CameraRotation = new Rotator(-26.98779f, 1.916217E-05f, 115.3956f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-312.0807f, 1726.025f, 97.5347f), 351.0685f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("westaptInventory2",new Vector3(-310.9941f, 1725.605f, 97.53469f), 347.688f,"Access Items")
+                    new InventoryInteract("westaptInventory2",new Vector3(-308.4011f, 1724.878f, 97.5347f), 351.6466f,"Access Items")
                     {
                         CanAccessCash = false,
                         CanAccessWeapons = false,
                         UseNavmesh =false,
-                        CameraPosition = new Vector3(-309.448f, 1724.043f, 98.69557f),
-                        CameraDirection = new Vector3(-0.4117949f, 0.7958871f, -0.4438342f),
-                        CameraRotation = new Rotator(-26.34878f, 2.477167E-05f, 27.35721f)
+                        CameraPosition = new Vector3(-306.9546f, 1723.334f, 98.84858f),
+                        CameraDirection = new Vector3(-0.4048215f, 0.8305874f, -0.3824187f),
+                        CameraRotation = new Rotator(-22.48358f, 1.848016E-05f, 25.98422f)
                     },
                     new InventoryInteract("westaptInventory2",new Vector3(-313.3752f, 1723.74f, 97.5347f), 113.1772f,"Access Weapons/Cash")
                     {
@@ -1151,6 +1445,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.9473535f, -0.3191137f, -0.02622674f),
                         CameraRotation = new Rotator(-1.502854f, 1.120963E-05f, 108.616f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(1602.581f, 1017.758f, 33.1134f), 179.8432f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1167,13 +1467,13 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.5750204f, -0.6332822f, -0.5179819f),
                         CameraRotation = new Rotator(-31.19698f, 4.990542E-06f, -137.7605f)
                 },
-                    new InventoryInteract("SavannahInventory2",new Vector3(1602.387f, 1017.987f, 33.11329f), 131.7048f,"Access Weapons/Cash")
+                    new InventoryInteract("SavannahInventory2",new Vector3(1610.448f, 1020.487f, 33.12461f), 5.4308f,"Access Weapons/Cash")
                     {
                         UseNavmesh =false,
                         CanAccessItems = false,
-                        CameraPosition = new Vector3(1602.124f, 1020.257f, 34.44051f),
-                        CameraDirection = new Vector3(-0.1358425f, -0.8715345f, -0.4711415f),
-                        CameraRotation = new Rotator(-28.10842f, -1.161521E-05f, 171.1408f)
+                        CameraPosition = new Vector3(1612.706f, 1019.457f, 34.20825f),
+                        CameraDirection = new Vector3(-0.755771f, 0.5409938f, -0.368966f),
+                        CameraRotation = new Rotator(-21.65186f, 1.194162E-05f, 54.40427f)
                     },
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1219,6 +1519,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.726667f, 0.6419539f, -0.2446429f),
                         CameraRotation = new Rotator(-14.16073f, 1.849113E-05f, 48.5419f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-1012.138f, 2052.097f, 26.06386f), 3.002773f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1294,6 +1600,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.04256547f, -0.9398201f, -0.339008f),
                         CameraRotation = new Rotator(-19.81645f, -2.212064E-06f, 177.4068f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(-1716.184f, 427.7662f, 7.206458f), 91.27723f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1301,14 +1613,14 @@ public class Interiors_Liberty
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("EmeryInventory1",new Vector3(-1715.959f, 428.5735f, 7.206457f), 88.65854f,"Access Items")
+                    new InventoryInteract("EmeryInventory1",new Vector3(-1716.191f, 430.673f, 7.206461f), 91.91442f,"Access Items")
                     {
                         UseNavmesh =false,
                         CanAccessCash = false,
                         CanAccessWeapons = false,
-                        CameraPosition = new Vector3(-1715.614f, 430.8f, 8.335403f),
-                        CameraDirection = new Vector3(-0.4809253f, -0.7953263f, -0.3690081f),
-                        CameraRotation = new Rotator(-21.65446f, 2.755809E-06f, 148.8391f)
+                        CameraPosition = new Vector3(-1714.858f, 429.0196f, 8.116009f),
+                        CameraDirection = new Vector3(-0.5772347f, 0.733659f, -0.3585311f),
+                        CameraRotation = new Rotator(-21.01002f, -2.194983E-05f, 38.19528f)
                 },
                     new InventoryInteract("EmeryInventory2",new Vector3(-1712.775f, 431.3138f, 11.37088f), 306.6408f,"Access Weapons/Cash")
                     {
@@ -1365,6 +1677,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.911991f, 0.2589934f, -0.3181114f),
                         CameraRotation = new Rotator(-18.54875f, 4.502772E-07f, 74.14616f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(107.8242f, 1985.173f, 22.77727f), 317.0496f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1372,14 +1690,14 @@ public class Interiors_Liberty
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("GGJP2Apt1aInventory1",new Vector3(107.6104f, 1984.648f, 22.77727f), 275.4927f,"Access Items")
+                    new InventoryInteract("GGJP2Apt1aInventory1",new Vector3(106.455f, 1983.284f, 22.77727f), 226.3212f,"Access Items")
                     {
                         UseNavmesh =false,
                         CanAccessCash = false,
                         CanAccessWeapons = false,
-                        CameraPosition = new Vector3(105.5166f, 1982.919f, 23.83658f),
-                        CameraDirection = new Vector3(0.8047788f, 0.4365766f, -0.4021593f),
-                        CameraRotation = new Rotator(-23.71323f, 1.119006E-05f, -61.52104f)
+                        CameraPosition = new Vector3(107.2505f, 1984.873f, 23.73978f),
+                        CameraDirection = new Vector3(-0.3236664f, -0.8267594f, -0.4601185f),
+                        CameraRotation = new Rotator(-27.39475f, -9.61611E-07f, 158.6203f)
                 },
                     new InventoryInteract("GGJP2Apt1aInventory2",new Vector3(112.0697f, 1989.907f, 22.77816f), 316.3353f,"Access Weapons/Cash")
                     {
@@ -1429,6 +1747,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.6932488f, -0.7203354f, -0.02286982f),
                         CameraRotation = new Rotator(-1.310459f, -1.601245E-07f, -136.0977f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(106.2924f, 2022.102f, 22.78197f), 135.6283f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1487,6 +1811,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.684735f, 0.7193161f, -0.1171429f),
                         CameraRotation = new Rotator(-6.727238f, -1.934308E-06f, 43.58912f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(137.8208f, 1966.549f, 22.76523f), 225.0439f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1494,12 +1824,12 @@ public class Interiors_Liberty
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("GGJP3Apt1aInventory1",new Vector3(137.6043f, 1966.823f, 22.76522f), 178.5916f,"Access Items")
+                    new InventoryInteract("GGJP3Apt1aInventory1",new Vector3(136.1734f, 1967.834f, 22.76523f), 131.7994f,"Access Items")
                     {
                         UseNavmesh =false,
-                        CameraPosition = new Vector3(135.8469f, 1968.431f, 23.56095f),
-                        CameraDirection = new Vector3(0.4838185f, -0.8510178f, -0.2041775f),
-                        CameraRotation = new Rotator(-11.78136f, -2.616439E-06f, -150.381f)
+                        CameraPosition = new Vector3(137.8758f, 1967.275f, 23.54625f),
+                        CameraDirection = new Vector3(-0.8908563f, 0.2511279f, -0.3785628f),
+                        CameraRotation = new Rotator(-22.24469f, -1.199152E-05f, 74.25713f)
                     },
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1545,6 +1875,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(-0.9412518f, -0.3331325f, -0.05538824f),
                         CameraRotation = new Rotator(-3.175137f, 1.175744E-06f, 109.4901f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(175.2508f, 1969.089f, 22.76708f), 316.8826f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1599,6 +1935,12 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.6831025f, -0.7196007f, -0.1246827f),
                         CameraRotation = new Rotator(-7.16243f, -6.453662E-07f, -136.4905f)
                     },
+                    new CraftInteriorInteract("Stove",new Vector3(169.0845f, 1945.833f, 22.76522f), 46.76653f, "Stove")
+                    {
+                        CraftingFlag = "Stove",
+                        AutoCamera = false,
+                        CameraPosition = Vector3.Zero,
+                    }
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1606,12 +1948,12 @@ public class Interiors_Liberty
                 },
                 InventoryInteracts = new List<InventoryInteract>()
                 {
-                    new InventoryInteract("GGJP3Apt1cInventory1",new Vector3(169.5598f, 1945.746f, 22.76522f), 7.653904f,"Access Items")
+                    new InventoryInteract("GGJP3Apt1cInventory1",new Vector3(170.8927f, 1944.44f, 22.76522f), 314.4303f,"Access Items")
                     {
                         UseNavmesh =false,
-                        CameraPosition = new Vector3(171.4033f, 1944.333f, 23.53524f),
-                        CameraDirection = new Vector3(-0.6420149f, 0.7355039f, -0.2164509f),
-                        CameraRotation = new Rotator(-12.50066f, 4.809778E-06f, 41.11742f)
+                        CameraPosition = new Vector3(169.1349f, 1945.298f, 23.65678f),
+                        CameraDirection = new Vector3(0.8260796f, -0.4026572f, -0.3942837f),
+                        CameraRotation = new Rotator(-23.22131f, -2.229686E-05f, -115.9861f)
                     },
                 },
                 OutfitInteracts = new List<OutfitInteract>()
@@ -1650,15 +1992,532 @@ public class Interiors_Liberty
             },
 
         });
-
-
     }
-
-
     private void Restaurants()
     {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            //BurgewrShot
+            new Interior(126722, "Burger Shot")
+        {
+            InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1876.209f, 720.8721f, 25.2119f), 271.0663f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1876.175f, 718.4955f, 25.2119f), 271.8308f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(1876.247f, 716.229f, 25.2119f), 269.1619f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+            Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(1890.526f, 718.3006f, 25.46795f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(1890.525f, 721.31f, 25.46795f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
 
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(1880.79f, 727.7058f, 25.4694f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(1877.78f, 727.7051f, 25.4694f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+        },
+            new Interior(156674, "Burger Shot")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(687.0824f, 1996.483f, 16.31561f), 29.81894f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(689.1612f, 1997.602f, 16.31561f), 29.7442f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(691.0966f, 1998.827f, 16.31561f), 30.83981f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(682.1537f, 2010.148f, 16.57166f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(679.548f, 2008.642f, 16.57166f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
 
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(678.8769f, 1997.013f, 16.57312f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(680.3821f, 1994.407f, 16.57312f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(112642, "Burger Shot - Star Junction")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(67.11765f, 780.1401f, 14.81999f), 90.48949f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(67.09483f, 782.5229f, 14.81999f), 92.1002f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(67.09438f, 784.7915f, 14.81999f), 91.47585f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(52.81819f, 782.7084f, 15.07604f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(52.81909f, 779.699f, 15.07604f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(62.55469f, 773.3032f, 15.0775f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(65.56396f, 773.304f, 15.0775f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(109570, "Burger Shot - North Holland")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-188.7257f, 1686.784f, 13.04694f), 89.64235f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(-188.6076f, 1689.196f, 13.04694f), 91.23288f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(-188.7178f, 1691.459f, 13.04694f), 91.5966f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(-203.0016f, 1689.371f, 13.30298f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-203.0007f, 1686.362f, 13.30298f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(-193.2651f, 1679.966f, 13.30444f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-190.2559f, 1679.967f, 13.30444f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(134402, "Burger Shot - Bohan")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1348.294f, 2077.663f, 16.90744f), 47.05009f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1349.981f, 2079.345f, 16.90744f), 45.13543f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(1351.548f, 2081.007f, 16.90744f), 46.74244f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(1339.871f, 2089.535f, 17.16349f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(1337.764f, 2087.387f, 17.16349f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(1340.234f, 2076.003f, 17.16495f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(1342.382f, 2073.896f, 17.16495f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(105986, "Burger Shot - The Meat Quarter")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-380.5211f, 626.3405f, 4.811083f), 359.398f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(-378.1169f, 626.3397f, 4.811083f), 1.591456f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(-375.8209f, 626.3371f, 4.811083f), 359.0582f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(-377.9356f, 640.6149f, 5.067126f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-380.945f, 640.614f, 5.067126f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(-387.3408f, 630.8784f, 5.068586f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-387.3401f, 627.8691f, 5.068586f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            new Interior(59650, "Burger Shot - Alderney")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(-766.773f, 2121.661f, 24.31392f), 180.0495f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(-769.1526f, 2121.699f, 24.31392f), 180.6992f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(-771.4105f, 2121.641f, 24.31392f), 179.4661f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(3024662465, new Vector3(-769.3442f, 2107.357f, 24.56997f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-766.3348f, 2107.358f, 24.56997f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                    //SIDE
+                    new InteriorDoor(3024662465,new Vector3(-759.939f, 2117.094f, 24.57142f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(1050821746,new Vector3(-759.9397f, 2120.103f, 24.57142f)){ NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },
+            //CluckingBell
+            new Interior(143874, "Cluckin' Bell - Dukes")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1420.932f, 854.1164f, 25.10332f), 359.7105f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1422.55f, 854.1014f, 25.10329f), 357.088f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(1424.238f, 854.1097f, 25.10331f), 358.9454f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister4",new Vector3(1425.833f, 854.1014f, 25.10332f), 0.2232018f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+             },
+
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(903328250, new Vector3(1430.997f, 868.5421f, 25.34809f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(2862357381,new Vector3(1427.997f, 868.5419f, 25.34809f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                },
+            },
+            new Interior(124162, "Cluckin' Bell - The Triangle")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(116.7934f, 561.868f, 14.80308f), 102.2144f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(116.3834f, 563.4836f, 14.80305f), 101.8535f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(115.9502f, 565.0359f, 14.80307f), 98.77691f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister4",new Vector3(115.5588f, 566.6287f, 14.8031f), 100.9244f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+            },
+
+                Doors = new List<InteriorDoor>()
+                { 
+                    //FRONT
+                    new InteriorDoor(903328250, new Vector3(100.2493f, 567.9032f, 15.04786f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                    new InteriorDoor(2862357381,new Vector3(101.026F, 565.0051F, 15.04786f)){ NeedsDefaultUnlock = true, LockWhenClosed = true },
+
+                },
+            },
+            //Restaurants
+            new Interior(78338, "Perestroika")
+            {
+            InteractPoints = new List < InteriorInteract > ()
+            {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(1185.601f, 220.155f, 18.27528f), 87.78072f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister2",new Vector3(1185.528f, 224.7297f, 18.27315f), 88.52401f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                   new MoneyTheftInteract("CashRegister3",new Vector3(1189.539f, 244.3741f, 15.85712f), 175.4397f,"Rob Drawer")
+                   {
+                        CashMinAmount = 500,
+                        CashMaxAmount = 3000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 500,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+            },
+            Doors = new List<InteriorDoor>()
+                {
+                   new InteriorDoor(2762578800,new Vector3(1194.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_l 
+                   new InteriorDoor(1985756882,new Vector3(1197.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_r 
+                   new InteriorDoor(3971243973,new Vector3(1194.117f, 209.6353f, 20.14878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
+                   new InteriorDoor(3971243973,new Vector3(1197.115f, 209.6353f, 20.14878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
+                   new InteriorDoor(3971243973,new Vector3(1200.812f, 203.7319f, 20.12878f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
+                   new InteriorDoor(3971243973,new Vector3(1185.197f, 232.5177f, 18.51646f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
+                   new InteriorDoor(3971243973,new Vector3(1191.784f, 243.1203f, 16.10701f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//inside
+                   new InteriorDoor(2881168431,new Vector3(1206.35f, 236.5193f, 22.01962f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
+                   new InteriorDoor(2881168431,new Vector3(1206.35f, 233.5154f, 22.01962f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
+                },
+            },
+            new Interior(85506, "Mr Fuk's - Alderney City") { },
+        });
+    }
+    private void Stations()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+        //Fire Stations
+        new Interior(160514, "Broker Fire Station") { },
+        new Interior(176898, "Bohan Fire Station") { },
+        });
+    }
+    private void Stores()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            //Gun Stores
+            new Interior(108290, "Underground Guns")
+            {
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(807349477, new Vector3(1295.643f, 579.8269f, 34.49496f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },// GunStore - Downtown Broker
+            new Interior(92674, "Underground Guns")
+            {
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(807349477, new Vector3(311.2178f, 150.6089f, 11.41267f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            }, // GunStore - Chinatown, Algonquin
+            new Interior(101890, "Underground Guns")
+            {
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(807349477, new Vector3(-1094.076f, 802.6436f, 14.86613f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
+                },
+            },// GunStore -  Port Tudor, Alderney
+        });
     }
 
 }

@@ -16,6 +16,9 @@ public class PlacesOfInterest_Liberty
     private PlacesOfInterest PlacesOfInterest;
     private List<RaceMeetup> RaceMeetups;
     private List<VehicleModShop> VehicleModShops;
+    private List<BodyExport> BodyExports;
+    private List<Business> Businesses;
+
     public PlacesOfInterest_Liberty(PlacesOfInterest placesOfInterest)
     {
         PlacesOfInterest = placesOfInterest;
@@ -61,6 +64,8 @@ public class PlacesOfInterest_Liberty
         DefaultConfig_DeadDrops();
         DefaultConfig_GunStores();
         DefaultConfig_RaceMeetups();
+        DefaultConfig_BodyExports();
+        DefaultConfig_Businesses();
         DefaultConfig_BlankLocations();
         LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
         Serialization.SerializeParam(LibertyCityLocations, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Locations_{StaticStrings.LibertyConfigSuffix}.xml");
@@ -102,17 +107,13 @@ public class PlacesOfInterest_Liberty
     {
         LibertyCityLocations.PawnShops.AddRange(new List<PawnShop>()
         {
-            new PawnShop(new Vector3(1166.26f, 221.4832f, 19.15601f), 94.3014f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-
-
-            new PawnShop(new Vector3(390.1691f, 237.2966f, 14.75332f), 91.00311f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-            new PawnShop(new Vector3(339.6178f, 317.5372f, 14.54821f), 356.0719f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-            new PawnShop(new Vector3(-60.1551f, 172.431f, 11.79101f), 205.4112f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-            new PawnShop(new Vector3(1525.151f, 427.7028f, 27.82906f), 356.2724f, "XXX Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-
-
-            new PawnShop(new Vector3(1312.964f, 538.3285f, 34.01828f), 269.4268f, "Pawn Shop", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
-            new PawnShop(new Vector3(2020.087f, 960.3093f, 28.17154f), 179.1037f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,},
+            new PawnShop(new Vector3(1166.26f, 221.4832f, 19.15601f), 94.3014f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(390.1691f, 237.2966f, 14.75332f), 91.00311f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(339.6178f, 317.5372f, 14.54821f), 356.0719f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(-60.1551f, 172.431f, 11.79101f), 205.4112f, "Pawn Star", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(1525.151f, 427.7028f, 27.82906f), 356.2724f, "XXX Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(1312.964f, 538.3285f, 34.01828f), 269.4268f, "Pawn Shop", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
+            new PawnShop(new Vector3(2020.087f, 960.3093f, 28.17154f), 179.1037f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
         });
     }
     private void DefaultConfig_Residences()
@@ -143,26 +144,26 @@ public class PlacesOfInterest_Liberty
 
 
             //interior residences
-            new Residence(new Vector3(-189.5379f, 1965.567f, 20.16242f), 266.3529f, "Playboy X Penthouse", "Xenotime Street") { StateID = StaticStrings.LibertyStateID, InteriorID = 152578,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 380000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(-189.5379f, 1965.567f, 20.16242f), 266.3529f, "Playboy X Penthouse", "Xenotime Street") { StateID = StaticStrings.LibertyStateID, InteriorID = 152578,OpenTime = 0,CloseTime = 24, PurchasePrice = 1275000,SalesPrice = 580000, RentalDays = 28, RentalFee = 1570,
 
                 CameraPosition = new Vector3(-188.5651f, 1968.313f, 21.96364f),
                 CameraDirection = new Vector3(0.8637326f, -0.4273203f, -0.2671391f),
                 CameraRotation = new Rotator(-15.4941f, -4.429858E-06f, -116.3233f)
                 },
-            new Residence(new Vector3(335.563f, 1334.307f, 15.79154f), 355.4688f, "Studio Apartment", "Albany Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 142850,OpenTime = 0,CloseTime = 24, PurchasePrice = 575000,SalesPrice = 280000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(335.563f, 1334.307f, 15.79154f), 355.4688f, "Studio Apartment", "Albany Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 142850,OpenTime = 0,CloseTime = 24, PurchasePrice = 1075000,SalesPrice = 480000, RentalDays = 28, RentalFee = 1570,
 
                 CameraPosition = new Vector3(357.1641f, 1338.852f, 18.29427f),
                 CameraDirection = new Vector3(-0.9752057f, 0.001642297f, -0.2212941f),
                 CameraRotation = new Rotator(-12.78506f, -1.709921E-09f, 89.90351f)
                 },
-            new Residence(new Vector3(1031.215f, 621.0678f, 6.038823f), 283.9471f, "Studio Apartment", "Mohanet Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 113154,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 380000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(1031.215f, 621.0678f, 6.038823f), 283.9471f, "Studio Apartment", "Mohanet Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 113154,OpenTime = 0,CloseTime = 24, PurchasePrice = 1100000,SalesPrice = 480000, RentalDays = 28, RentalFee = 1570,
 
                 CameraPosition = new Vector3(1013.756f, 622.3765f, 35.24212f),
                 CameraDirection = new Vector3(0.9076802f, 0.255534f, -0.332895f),
                 CameraRotation = new Rotator(-19.44458f, -4.979781E-06f, -74.2768f)
                 },
 
-            new Residence(new Vector3(208.9111f, 1286.341f, 14.95469f), 87.34348f, "Middle Park Penthouse", "Columbus Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 100610,OpenTime = 0,CloseTime = 24, PurchasePrice = 1275000,SalesPrice = 680000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(208.9111f, 1286.341f, 14.95469f), 87.34348f, "Middle Park Penthouse", "Columbus Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 100610,OpenTime = 0,CloseTime = 24, PurchasePrice = 2275000,SalesPrice = 1100000, RentalDays = 28, RentalFee = 1570,
 
                 CameraPosition = new Vector3(200.9242f, 1286.151f, 17.5133f),
                 CameraDirection = new Vector3(0.975778f, -0.0007697215f, -0.2187617f),
@@ -202,8 +203,6 @@ public class PlacesOfInterest_Liberty
                 CameraDirection = new Vector3(-0.6431019f, 0.7267894f, -0.2412408f),
                 CameraRotation = new Rotator(-13.95979f, 3.123137E-05f, 41.50411f)
                 },
-
-
 
             // ApartmentBuildings - Governor Greg Johnson Projects
 
@@ -284,10 +283,9 @@ public class PlacesOfInterest_Liberty
 
         });
 
-
         LibertyCityLocations.ApartmentBuildings.AddRange(new List<ApartmentBuilding>()
         {
-             new ApartmentBuilding(new Vector3(118.0789f, 1992.724f, 19.0153f), 226.0208f, "Gov G Johnson Projects Tower 2","")
+            new ApartmentBuilding(new Vector3(118.0789f, 1992.724f, 19.0153f), 226.0208f, "Gov G Johnson Projects Tower 2","")
                 {
                 ResidenceIDs = new List<int>() { 1, 2 },
                 OpenTime = 0,CloseTime = 24,
@@ -307,7 +305,6 @@ public class PlacesOfInterest_Liberty
                 CameraDirection = new Vector3(-0.005431275f, 0.9676797f, -0.252124f),
                 CameraRotation = new Rotator(-14.60324f, -2.970787E-06f, 0.3215794f)
                 },
-
 
         });
     }
@@ -716,7 +713,8 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 24,
                 RentalDays = 28,
                 RentalFee = 2000,
-                PurchasePrice = 400000,
+                PurchasePrice = 800000,
+                SalesPrice = 450000,
                 InteriorID = 1538,
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
@@ -731,6 +729,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1300,
                 PurchasePrice = 260000,
+                SalesPrice = 160000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -742,6 +741,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1200,
                 PurchasePrice = 240000,
+                SalesPrice = 160000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -753,6 +753,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 3750,
                 PurchasePrice = 750000,
+                SalesPrice = 500000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -764,6 +765,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1000,
                 PurchasePrice = 180000,
+                SalesPrice = 120000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -775,6 +777,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 3000,
                 PurchasePrice = 600000,
+                SalesPrice = 400000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -786,6 +789,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1200,
                 PurchasePrice = 240000,
+                SalesPrice = 160000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -797,6 +801,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1500,
                 PurchasePrice = 300000,
+                SalesPrice = 200000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -808,6 +813,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 2500,
                 PurchasePrice = 500000,
+                SalesPrice = 350000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -819,6 +825,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1750,
                 PurchasePrice = 350000,
+                SalesPrice = 250000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -830,6 +837,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1875,
                 PurchasePrice = 375000,
+                SalesPrice = 250000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -841,6 +849,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 5000,
                 PurchasePrice = 1000000,
+                SalesPrice = 750000,
                 StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
@@ -852,6 +861,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1000,
                 PurchasePrice = 190000,
+                SalesPrice = 120000,
                 StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
@@ -863,6 +873,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 2875,
                 PurchasePrice = 575000,
+                SalesPrice = 400000,
                 StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
@@ -874,6 +885,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1100,
                 PurchasePrice = 220000,
+                SalesPrice = 150000,
                 StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
@@ -885,6 +897,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1900,
                 PurchasePrice = 380000,
+                SalesPrice = 250000,
                 StateID = StaticStrings.AlderneyStateID,
             },
 
@@ -975,6 +988,8 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 6,
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
+                InteriorID = 71682,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4.121153f, 545.4282f, 215.7081f), 181.4438f) },
                 StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
@@ -986,6 +1001,8 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 6,
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
+                InteriorID= 133890,
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(253.9183f, 1474.992f, 215.64895f), 270.096f) },
                 StateID = StaticStrings.LibertyStateID,
             },
 
@@ -2041,7 +2058,6 @@ public class PlacesOfInterest_Liberty
             },
         };
         LibertyCityLocations.VehicleExporters.AddRange(ExporterList_94);
-
         List<Forger> ForgerList_95 = new List<Forger>()
         {
             new Forger(new Vector3(1163.51f,1076.8f,222.27f), 356.1f, "Dukes Forgeries", "More plates than the DMV")
@@ -2056,11 +2072,6 @@ public class PlacesOfInterest_Liberty
             },
         };
         LibertyCityLocations.Forgers.AddRange(ForgerList_95);
-
-
-
-
-
         List<SportingGoodsStore> SportingGoodsStoreList_22 = new List<SportingGoodsStore>() {
             new SportingGoodsStore() {
                 MenuID = "SportingGoodsMenu",
@@ -2094,48 +2105,607 @@ public class PlacesOfInterest_Liberty
             },
         };
         LibertyCityLocations.SportingGoodsStores.AddRange(SportingGoodsStoreList_22);
-
         List<IllicitMarketplace> IllicitMarketplaceList_25 = new List<IllicitMarketplace>() {
             new IllicitMarketplace() {
 
-                MenuID = "DealerHangoutMenu1",
-                Name = "Dealer Hangout",
-                Description = "Dealer Hangout",
+                MenuID = "DealerHangoutMenu3",
+                Name = "Charge Island Dealer",
+                Description = "Charge Island Dealer Hangout",
                 EntrancePosition = new Vector3(923.45f, 1265.04f, 202.79f),
                 EntranceHeading = 83.74f,
-                OpenTime = 11,
-                CloseTime = 19,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(923.45f, 1265.04f, 202.79f), 83.74f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
                 StateID = StaticStrings.LibertyStateID,
             },
             new IllicitMarketplace() {
 
-                MenuID = "DealerHangoutMenu1",
-                Name = "Dealer Hangout",
-                Description = "Dealer Hangout 2",
+                MenuID = "DealerHangoutMenu2",
+                Name = "Fish Market Dealer",
+                Description = "Fish Market Dealer Hangout",
                 EntrancePosition = new Vector3(498.8051f, 76.59637f, 205.009362f),
                 EntranceHeading = 181.692f,
-                OpenTime = 11,
-                CloseTime = 23,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(498.8051f, 76.59637f, 205.009362f), 181.692f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu2",
+                Name = "Middle Park W Dealer",
+                Description = "Middle Park West Dealer Hangout",
+                EntrancePosition = new Vector3(-376.9888f, 1180.735f, 204.746545f),
+                EntranceHeading = 181.9404f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-376.9888f, 1180.735f, 204.746545f), 181.9404f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu2",
+                Name = " Industrial Dealer",
+                Description = "Industrial Dealer Hangout",
+                EntrancePosition = new Vector3(1416.203f, 1933.45f, 216.76678f),
+                EntranceHeading = 96.39352f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1416.203f, 1933.45f, 216.76678f), 96.39352f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
                 StateID = StaticStrings.LibertyStateID,
             },
             new IllicitMarketplace() {
 
                 MenuID = "DealerHangoutMenu1",
-                Name = "Dealer Hangout",
-                Description = "Dealer Hangout 3",
-                EntrancePosition = new Vector3(-376.9888f, 1180.735f, 204.746545f),
-                EntranceHeading = 181.9404f,
-                OpenTime = 18,
-                CloseTime = 2,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-376.9888f, 1180.735f, 204.746545f), 181.9404f) },
+                Name = "Boabo Dealer",
+                Description = "Boabo Dealer Hangout",
+                EntrancePosition = new Vector3(934.7126f, 606.5425f, 206.003932f),
+                EntranceHeading = 106.6733f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(934.7126f, 606.5425f, 206.003932f), 106.6733f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu2",
+                Name = "Willis Dealer",
+                Description = "Willis Dealer Hangout 3",
+                EntrancePosition = new Vector3(2019.007f, 1172.729f, 227.21188f),
+                EntranceHeading = 93.94168f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(2019.007f, 1172.729f, 227.21188f), 93.94168f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu1",
+                Name = "FireFly Projects Dealer",
+                Description = "FireFly Projects Dealer Hangout",
+                EntrancePosition = new Vector3(1510.803f, 153.3873f, 219.11487f),
+                EntranceHeading = 358.7774f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1510.803f, 153.3873f, 219.11487f), 358.7774f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu2",
+                Name = " Westdyke Dealer",
+                Description = "Westdyke Dealer Hangout",
+                EntrancePosition = new Vector3(-1005.746f, 2369.764f, 206.569031f),
+                EntranceHeading = 256.8706f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1005.746f, 2369.764f, 206.569031f), 256.8706f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu4",
+                Name = "Tudor Dealer",
+                Description = "Tudor Dealer Hangout",
+                EntrancePosition = new Vector3(-1286.288f, 651.215f, 223.1192f),
+                EntranceHeading = 265.4563f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1286.288f, 651.215f, 223.1192f), 265.4563f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
+                StateID = StaticStrings.LibertyStateID,
+            },
+            new IllicitMarketplace() {
+
+                MenuID = "DealerHangoutMenu4",
+                Name = "Acter Ind Dealer",
+                Description = "Acter Industrial Dealer Hangout",
+                EntrancePosition = new Vector3(-1243.09f, 222.0975f, 202.818947f),
+                EntranceHeading = 182.4597f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1243.09f, 222.0975f, 202.818947f), 182.4597f) },
+                AppearPercentages = new List<AppearPercentage>()
+                {
+                    new AppearPercentage(0,85),
+                    new AppearPercentage(1,75),
+                    new AppearPercentage(2,75),
+                    new AppearPercentage(3,75),
+                    new AppearPercentage(4,50),
+                    new AppearPercentage(5,50),
+                    new AppearPercentage(6,25),
+                    new AppearPercentage(7,25),
+                    new AppearPercentage(8,25),
+                    new AppearPercentage(9,25),
+                    new AppearPercentage(10,25),
+                    new AppearPercentage(11,25),
+                    new AppearPercentage(12,25),
+                    new AppearPercentage(13,25),
+                    new AppearPercentage(14,25),
+                    new AppearPercentage(15,25),
+                    new AppearPercentage(16,50),
+                    new AppearPercentage(17,50),
+                    new AppearPercentage(18,50),
+                    new AppearPercentage(19,50),
+                    new AppearPercentage(20,75),
+                    new AppearPercentage(21,75),
+                    new AppearPercentage(22,75),
+                    new AppearPercentage(23,85),
+                },
                 StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.IllicitMarketplaces.AddRange(IllicitMarketplaceList_25);
     }
-
+    private void DefaultConfig_BodyExports()
+    {
+        BodyExports = new List<BodyExport>()
+        {
+            new BodyExport(new Vector3(298.9536f, 681.6757f, 14.75037f), 90.79182f, "Easton Medical Center", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
+            new BodyExport(new Vector3(1234.314f, 2322.323f, 20.1185f), 179.8946f, "Bohan Medical Research", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
+            new BodyExport(new Vector3(-1291.485f, 865.6411f, 21.63121f), 90.92122f, "North Tudor Medical Center", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
+        };
+        LibertyCityLocations.BodyExports.AddRange(BodyExports);
+    }
+    private void DefaultConfig_Businesses()
+    {
+        LibertyCityLocations.Businesses.AddRange(new List<Business>()
+        {
+        new Business(new Vector3(-1082.087f, 764.5539f, 11.27671f), 225.3273f, "Axels Chop Shop", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 386000,
+            SalesPrice = 150000,
+            PayoutMin = 1000,
+            PayoutMax = 8000,
+            PayoutFrequency = 5,
+            FullName = "Axels Port Tudor, Chop Shop",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1312.162f, 203.9445f, 21.34987f), 359.8495f, "Native Chop Shop", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 260000,
+            SalesPrice = 120000,
+            PayoutMin = 1000,
+            PayoutMax = 5000,
+            PayoutFrequency = 5,
+            FullName = "Native Engine, Chop Shop",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1321.561f, 1128.783f, 38.64175f), 180.5914f, "Money Laundering", "")
+        {
+            IgnoreEntranceInteract = true,
+            IsWalkup = true,
+            InteriorID = 37634,
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 180000,
+            SalesPrice = 75000,
+            PayoutMin = 500,
+            PayoutMax = 3000,
+            PayoutFrequency = 5,
+            FullName = "East Island Laundromat, Money Laundering",
+            StateID = StaticStrings.LibertyStateID,
+        },// Laundromat interior
+        new Business(new Vector3(-803.0143f, 1618.61f, 13.60088f), 181.5922f, "Money Laundering", "")
+        {
+            IgnoreEntranceInteract = true,
+            IsWalkup = true,
+            InteriorID = 150530,
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 180000,
+            SalesPrice = 75000,
+            PayoutMin = 500,
+            PayoutMax = 3000,
+            PayoutFrequency = 5,
+            FullName = "Alderney City Laundromat, Money Laundering",
+            StateID = StaticStrings.LibertyStateID,
+        },// Laundromat interior
+        new Business(new Vector3(1251.113f, 168.6087f, 20.2428f), 96.40791f, "Money Laundering", "")
+        {
+            IgnoreEntranceInteract = true,
+            IsWalkup = true,
+            InteriorID = 158466,
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 180000,
+            SalesPrice = 75000,
+            PayoutMin = 500,
+            PayoutMax = 3000,
+            PayoutFrequency = 5,
+            FullName = "Hove Beach Laundromat, Money Laundering",
+            StateID = StaticStrings.LibertyStateID,
+        },// Laundromat interior
+        new Business(new Vector3(488.0608f, 235.9321f, 5.550375f), 267.6571f,"Document Forgery", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 196500,
+            SalesPrice = 73000,
+            FullName = "Fishmarket North, Document Forgery",
+            PossibleModItemPayouts = new List<string>() { "Drivers License" },
+            ModItemPayoutAmount = 10,
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(-1033.568f, 1331.849f, 20.56717f), 358.3961f,"Document Forgery", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 196500,
+            SalesPrice = 73000,
+            FullName = "Alderney City, Document Forgery",
+            PossibleModItemPayouts = new List<string>() { "Drivers License" },
+            ModItemPayoutAmount = 10,
+            CameraPosition = new Vector3(-1033.987f, 1347.446f, 26.1224f),
+            CameraDirection = new Vector3(-0.01123257f, -0.9759061f, -0.2179016f),
+            CameraRotation = new Rotator(-12.58581f, -1.366866E-08f, 179.3406f),
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(-744.2546f, 2361.639f, 22.96297f), 255.2065f,"Trap House", "Selling misery since the 80's")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 1100000,
+            SalesPrice = 465000,
+            FullName = "Westdyke, Trap House",
+            PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
+            ModItemPayoutAmount = 150,
+            CraftingFlag = "DrugLab",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(-1621.202f, 706.3636f, 16.9545f), 196.3285f,"Trap House", "Selling misery since the 80's")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 535000,
+            SalesPrice = 250000,
+            FullName = "Acter, Trap House",
+            PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
+            ModItemPayoutAmount = 100,
+            CraftingFlag = "DrugLab",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1591.568f, 312.2952f, 22.15256f), 86.45232f,"Trap House", "Selling misery since the 80's")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 1500000,
+            SalesPrice = 650000,
+            FullName = "South Slopes, Trap House",
+            PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
+            ModItemPayoutAmount = 200,
+            CraftingFlag = "DrugLab",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1455.362f, 2140.054f, 18.16645f), 313.2378f,"Trap House", "Selling misery since the 80's")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 240000,
+            SalesPrice = 80000,
+            FullName = "Industrial, Trap House",
+            PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
+            ModItemPayoutAmount = 70,
+            CraftingFlag = "DrugLab",
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1638.57f, 488.9234f, 25.77618f), 272.6096f,"Meth Factory", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 1200000,
+            SalesPrice = 550000,
+            FullName = "Schottler, Meth Factory",
+            PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+            ModItemPayoutAmount = 200,
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(-1562.274f, 226.1158f, 2.715893f), 270.0141f,"Meth Lab", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            PurchasePrice = 730000,
+            SalesPrice = 320000,
+            FullName = "Actor Industrial, Meth Lab",
+            PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+            ModItemPayoutAmount = 200,
+            StateID = StaticStrings.LibertyStateID,
+        },
+        new Business(new Vector3(1125.745f, 237.5523f, 18.92259f), 358.1287f,"Marijuana Grow House", "")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 150000,
+                SalesPrice = 85000,
+                FullName = "Hove Beach, Marijuana Grow House",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 100,
+                StateID = StaticStrings.LibertyStateID,
+            },
+        new Business(new Vector3(-1336.869f, 696.6378f, 13.06356f), 91.7334f,"Weed Farm", "")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 350000,
+                SalesPrice = 120000,
+                FullName = "Tudor, Marijuana Lockup",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 200,
+                StateID = StaticStrings.LibertyStateID,
+            },
+        new Business(new Vector3(-242.7036f, 374.9272f, 8.982243f), 88.7366f,"Cocaine Factory", "")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1800000,
+                SalesPrice = 780000,
+                FullName = "The Meat Quarter, Cocaine Factory",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 200,
+                CameraPosition = new Vector3(-257.0131f, 381.9182f, 13.42413f),
+                CameraDirection = new Vector3(0.8146876f, -0.5074354f, -0.2807016f),
+                CameraRotation = new Rotator(-16.30208f, -4.447686E-06f, -121.9171f),
+                StateID = StaticStrings.LibertyStateID,
+            },
+        new Business(new Vector3(1076.664f, 804.64f, 5.678864f), 90.10969f,"Cocaine Lockup", "")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1200000,
+                SalesPrice = 420000,
+                FullName = "Rotterdam, Cocaine Lockup",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 200,
+                StateID = StaticStrings.LibertyStateID,
+            },
+        });
+    }
     private void DefaultConfig_RaceMeetups()
     {
         RaceMeetups = new List<RaceMeetup>()
@@ -2167,7 +2737,6 @@ public class PlacesOfInterest_Liberty
                 SupportedTracks = new List<string>() { "middlepark1" , "starjdrag1" , "Lancaster1" },
 
             },
-
             new RaceMeetup(new Vector3(1591.378f, 1401.466f, 13.83524f), 139.7913f, "Dukes Race Meetup", "Meetup with other racers from the city","")
             {
                 OpenTime = 0,
@@ -2179,7 +2748,6 @@ public class PlacesOfInterest_Liberty
                 SupportedTracks = new List<string>() { "dukeshighway1" , "dukesboule1" },
 
             },
-
             new RaceMeetup(new Vector3(2527.424f, 845.6534f, 6.096637f), 275.2851f, "FIA Race Meetup", "Meetup with other racers from the city","")
             {
                 OpenTime = 0,
@@ -3086,7 +3654,6 @@ public class PlacesOfInterest_Liberty
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
                 StateID = StaticStrings.LibertyStateID,
-
                 InteriorID = 134402,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1350.033f, 2078.295f, 16.90743f), 45.12792f) }
             },
@@ -3102,7 +3669,6 @@ public class PlacesOfInterest_Liberty
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
                 StateID = StaticStrings.LibertyStateID,
-
                 InteriorID = 105986,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-379.1163f, 625.4515f, 4.811082f), 357.4249f) }
             },
@@ -3118,7 +3684,6 @@ public class PlacesOfInterest_Liberty
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
                 StateID = StaticStrings.AlderneyStateID,
-
                 InteriorID = 59650,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-768.1967f, 2122.303f, 24.31391f), 179.2184f) },
 
@@ -3318,7 +3883,7 @@ public class PlacesOfInterest_Liberty
             new Landmark(new Vector3(-1274.281f, 1896.341f, 13.38669f), 357.4145f, "Schlongberg Sachs", "") { StateID = StaticStrings.AlderneyStateID },
             new Landmark(new Vector3(-1429.036f, 770.1529f, 20.177f), 176.9206f, "Satriale's Pork Store", "") { StateID = StaticStrings.AlderneyStateID },
             new Landmark(new Vector3(1195.817f, 203.6283f, 19.80799f), 182.1452f, "Perestroika", "") { BannerImagePath = "stores//perestroika.png", StateID = StaticStrings.LibertyStateID, InteriorID = 78338,IgnoreEntranceInteract = true, },// previously 76290
-            new Landmark(new Vector3(1251.176f, 168.7538f, 20.23567f), 99.71825f, "Laundromat", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 138498, IgnoreEntranceInteract = true, },
+            //new Landmark(new Vector3(1251.176f, 168.7538f, 20.23567f), 99.71825f, "Laundromat", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 138498, IgnoreEntranceInteract = true, },
             new Landmark(new Vector3(1061.563f, 219.1207f, 15.34185f), 269.6217f, "Express Car Services", "") { BannerImagePath = "stores//expresscarservice.png",StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(-105.2177f, 393.1169f, 14.70457f), 90.96992f, "Rotterdam Tower", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(260.9259f, 454.8217f, 14.81293f), 182.7993f, "Grand Easton Terminal", "") { StateID = StaticStrings.LibertyStateID },
@@ -3363,7 +3928,7 @@ public class PlacesOfInterest_Liberty
             new Landmark(new Vector3(2082.871f, 847.7047f, 22.5523f), 88.11333f, "Willis Wash N Lube", "") { StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(2018.704f, 937.2704f, 27.94974f), 0.9942721f, "After Dark Sex Shop", "") { OpenTime = 0,CloseTime =24, StateID = StaticStrings.LibertyStateID },
             new Landmark(new Vector3(2058.563f, 1060.605f, 29.0824f), 91.75621f, "Canyon Megaplex", "") { StateID = StaticStrings.LibertyStateID },
-            new Landmark(new Vector3(1522.52f, 892.3311f, 22.40118f), 179.9744f, "JJ China Limited", "") { InteriorID = 24578, StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+            //new Landmark(new Vector3(1522.52f, 892.3311f, 22.40118f), 179.9744f, "JJ China Limited", "") { InteriorID = 24578, StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
         });
     }
     private void DefaultConfig_SubwayStations()
@@ -4105,7 +4670,6 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.PoliceStations.AddRange(PoliceStations);
     }
-
     private void DefaultConfig_Garages()
     {
         List<RepairGarage> RepairGarageList_96 = new List<RepairGarage>()
@@ -4381,7 +4945,6 @@ public class PlacesOfInterest_Liberty
 
 
     //}
-
 
     private void DefaultConfig_FireStations()
     {
@@ -4725,7 +5288,6 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.HeadShops.AddRange(HeadShops);
     }
-
     private void DefaultConfig_GunStores()
     {
         List<GunStore> GunStores = new List<GunStore>()
