@@ -44,7 +44,7 @@ public class CashRegister : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Steal from {Name}";
-        return EntrancePosition != Vector3.Zero || (RegisterProp.Exists() && player.CurrentLookedAtObject.Exists() && RegisterProp.Handle == player.CurrentLookedAtObject.Handle);
+        return !player.ActivityManager.IsPerformingActivity && EntrancePosition != Vector3.Zero || (RegisterProp.Exists() && player.CurrentLookedAtObject.Exists() && RegisterProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public CashRegister(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, int cash) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

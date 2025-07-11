@@ -32,6 +32,7 @@ public class ActivityManager
     private IPlacesOfInterest PlacesOfInterest;
     private IVehicleRaces VehicleRaces;
     private ITargetable Targetable;
+    private IBasicUseable BasicUseable;
 
     private ITimeControllable Time;
     private IRadioStations RadioStations;
@@ -52,6 +53,7 @@ public class ActivityManager
     private IDispatchablePeople DispatchablePeople;
     private IDispatchableVehicles DispatchableVehicles;
     private HideableObject HideableObject;
+    private InteriorDoor CurrentDoor;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -67,6 +69,7 @@ public class ActivityManager
     private bool IsDoingVehileAnim;
     private uint GameTimeLastStartedHotwiring;
     private uint GameTimeLastPressedHide;
+    private uint GameTimeLastPressedDoorInteract;
     private List<HideableObject> HideableObjects;
     public bool IsUsingToolAsWeapon { get; set; }
 
@@ -235,7 +238,7 @@ public class ActivityManager
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, 
         ILocationInteractable locationInteractable,ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, IDances dances, IEntityProvideable world, IIntoxicants intoxicants, 
         IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces, ITargetable targetable, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople)
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData, ICellphones cellphones, IVehicleRaces vehicleRaces, ITargetable targetable, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IBasicUseable basicUseable)
     {
         Player = player;
         Settings = settings;
@@ -266,6 +269,7 @@ public class ActivityManager
         Targetable = targetable;
         DispatchableVehicles = dispatchableVehicles;
         DispatchablePeople = dispatchablePeople;
+        BasicUseable = basicUseable;
     }
     public void Setup()
     {
@@ -2050,11 +2054,35 @@ public class ActivityManager
         if (currentLookedAtObject == null)
         {
             HideableObject = null;
+            CurrentDoor = null;
             return;
         }
         uint currentHash = currentLookedAtObject.Model.Hash;
         HideableObject = HideableObjects.Where(x=> x.ModelHash == currentHash).FirstOrDefault();
+        CheckLocalDoors(currentLookedAtObject);
     }
+
+    private void CheckLocalDoors(Rage.Object currentLookedAtObject)
+    {
+        List<Interior> ActiveInteriors = World.Places.ActiveLocations.Where(x => x.HasInterior && x.Interior != null && x.Interior.Doors != null && x.Interior.Doors.Any()).Select(x=> x.Interior).ToList();
+        foreach(Interior interior in ActiveInteriors)
+        {
+            foreach (InteriorDoor door in interior.Doors)//only locked doors that can be broken open or picked?
+            {
+                if(!door.IsLocked || !door.CanBeForcedOpenByPlayer)
+                {
+                    continue;
+                }
+                if(door.ModelHash == currentLookedAtObject.Model.Hash && door.Position.DistanceTo2D(currentLookedAtObject.Position) <= 0.1f)
+                {
+                    CurrentDoor = door;
+                    EntryPoint.WriteToConsole($"YOU ARE LOOKING AT LOCKED DOOR {door.Position} IN {interior.Name} IsLocked:{door.IsLocked}");
+                    return;
+                }
+            }
+        }
+    }
+
     public void CheckHidingButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
     {
         if(HideableObject == null || IsPerformingActivity)
@@ -2067,6 +2095,42 @@ public class ActivityManager
             buttonPrompts.AttemptAddPrompt("Hiding", $"{HideableObject.ButtonPrompt}", "HideInObject", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { Hide(currentLookedAtObject); });
         }
     }
+    public void CheckDoorButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
+    {
+        if (CurrentDoor == null || IsPerformingActivity)
+        {
+            buttonPrompts.RemovePrompts("DoorInteract");
+            return;
+        }
+        if (!buttonPrompts.HasPrompt("DoorInteract"))
+        {
+            buttonPrompts.AttemptAddPrompt("DoorInteract", $"{CurrentDoor.ButtonPrompt()}", "DoorInteract", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { DoorInteract(currentLookedAtObject); });
+        }
+    }
+
+
+    public void DoorInteract(Rage.Object doorObject)
+    {
+        if (Game.GameTime - GameTimeLastPressedDoorInteract <= 500)
+        {
+            return;
+        }
+        GameTimeLastPressedDoorInteract = Game.GameTime;
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        ForceDoorActivity forceDoorActivity = new ForceDoorActivity(Actionable, LocationInteractable, Settings, doorObject, CurrentDoor, BasicUseable);
+        if (forceDoorActivity.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = forceDoorActivity;
+            LowerBodyActivity.Start();
+        }
+    }
+
 
     public void SetFoundInObject()
     {

@@ -233,7 +233,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579,new Vector3(-29.86917f, -148.1571f, 57.22648f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579,new Vector3(-29.86917f, -148.1571f, 57.22648f)) { NeedsDefaultUnlock = true,LockWhenClosed = true,CanBeForcedOpenByPlayer = true }
                     }
                 },
             }

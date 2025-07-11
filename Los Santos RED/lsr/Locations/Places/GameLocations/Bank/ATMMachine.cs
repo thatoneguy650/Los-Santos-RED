@@ -42,7 +42,7 @@ public class ATMMachine : GameLocation// i know m stand for machine, makes it ne
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Access {Name} ATM";
-        return EntrancePosition != Vector3.Zero || ( ATMObject.Exists() && player.CurrentLookedAtObject.Exists() && ATMObject.Handle == player.CurrentLookedAtObject.Handle);
+        return !player.ActivityManager.IsPerformingActivity && EntrancePosition != Vector3.Zero || ( ATMObject.Exists() && player.CurrentLookedAtObject.Exists() && ATMObject.Handle == player.CurrentLookedAtObject.Handle);
     }
 
 

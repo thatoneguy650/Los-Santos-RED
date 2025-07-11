@@ -51,7 +51,7 @@ public class GasPump : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Get Gas at {Name}";
-        return EntrancePosition != Vector3.Zero || (PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle);
+        return !player.ActivityManager.IsPerformingActivity && EntrancePosition != Vector3.Zero || (PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public GasPump(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, IGasPumpable gasStation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

@@ -33,6 +33,13 @@ public class InteriorDoor
     public bool NeedsDefaultUnlock { get; set; } = false;
     public bool LockWhenClosed { get; set; } = false;
 
+
+    public bool CanBeForcedOpenByPlayer { get; set; } = false;
+
+
+
+
+
     [XmlIgnore]
     public bool HasBeenForceRotatedOpen { get; set; }
     public void LockDoor()
@@ -118,6 +125,14 @@ public class InteriorDoor
         doorEntity.IsPersistent = false;
 
         //EntryPoint.WriteToConsole($"ForceRotateCloseDoor {originalHeading}");
+    }
+    public string ButtonPrompt()
+    {
+        if(IsLocked && CanBeForcedOpenByPlayer)
+        {
+            return "Force Door";
+        }
+        return "";
     }
 }
 

@@ -40,7 +40,7 @@ public class VendingMachine : GameLocation
     public override bool CanCurrentlyInteract(ILocationInteractable player) 
     {
         ButtonPromptText = $"Shop at {Name}";
-        return EntrancePosition != Vector3.Zero || (MachineProp.Exists() && player.CurrentLookedAtObject.Exists() && MachineProp.Handle == player.CurrentLookedAtObject.Handle);
+        return !player.ActivityManager.IsPerformingActivity && EntrancePosition != Vector3.Zero || (MachineProp.Exists() && player.CurrentLookedAtObject.Exists() && MachineProp.Handle == player.CurrentLookedAtObject.Handle);
     }
     public VendingMachine(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

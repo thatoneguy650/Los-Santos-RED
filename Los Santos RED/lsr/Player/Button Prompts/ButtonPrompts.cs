@@ -469,6 +469,7 @@ public class ButtonPrompts
 
         //do more like this?
         Player.ActivityManager.CheckHidingButtonPrompts(this, Player.CurrentLookedAtObject);
+        Player.ActivityManager.CheckDoorButtonPrompts(this, Player.CurrentLookedAtObject);
     }
     private void SittingPrompts()
     {

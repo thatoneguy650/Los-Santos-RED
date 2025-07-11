@@ -242,6 +242,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\DrugMeetTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Generic Contact\PayoffContactTask.cs" />
+    <Compile Include="lsr\Player\Activity\ForceDoorActivity.cs" />
     <Compile Include="lsr\Player\Activity\HideableObject.cs" />
     <Compile Include="lsr\Player\Activity\HidingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Items\IngestActivityNew.cs" />
