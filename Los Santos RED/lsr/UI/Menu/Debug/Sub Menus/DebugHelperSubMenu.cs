@@ -384,9 +384,17 @@ public class DebugHelperSubMenu : DebugSubMenu
         HelperMenuItem.AddItem(playAudio);
 
 
+        UIMenuItem AimGun = new UIMenuItem("Aim Gun", "");
+        AimGun.Activated += (menu, item) =>
+        {
 
 
+                NativeFunction.Natives.TASK_AIM_GUN_AT_COORD(Game.LocalPlayer.Character,Game.LocalPlayer.Character.GetOffsetPositionFront(10f),-1,false,false);
+            
+        };
+        HelperMenuItem.AddItem(AimGun);
 
+        //TASK_AIM_GUN_AT_COORD
 
 
     }

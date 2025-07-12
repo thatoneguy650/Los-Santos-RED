@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 
 public class ForceDoorActivity : DynamicActivity
@@ -134,9 +135,6 @@ public class ForceDoorActivity : DynamicActivity
         };
         ForceOpenMenu.AddItem(drillLockMenuItem);
         drillLockMenuItem.Enabled = Player.Inventory.Has(typeof(DrillItem));
-
-
-
         UIMenuItem bashDoorMenuItem = new UIMenuItem("Bash Door", "Run Into the door like a brute.");
         bashDoorMenuItem.Activated += (menu, item) =>
         {
@@ -144,82 +142,77 @@ public class ForceDoorActivity : DynamicActivity
             BashDoor();
         };
         ForceOpenMenu.AddItem(bashDoorMenuItem);
-
         ForceOpenMenu.Visible = true;
         while (MenuPool.IsAnyMenuOpen())
         {
             MenuPool.ProcessMenus();
             GameFiber.Yield();
         }
-
     }
 
     private void DrillLock()
     {
-        Game.DisplayHelp("No Action");
+        DrillItem drillItem = Player.ActivityManager.CurrentDrill;// 
+        if (drillItem == null)
+        {
+            List<ModItem> drillItems = Player.Inventory.GetAll(typeof(DrillItem)).Select(x => x.ModItem).ToList();
+            uint lowest = 999999999;
+            foreach (ModItem item in drillItems)
+            {
+                DrillItem mydrill = (DrillItem)item;
+                if (mydrill.MinDoorDrillTime <= lowest)
+                {
+                    lowest = mydrill.MinDoorDrillTime;
+                    drillItem = mydrill;
+                }
+            }
+        }
+        if (drillItem == null)
+        {
+            return;
+        }
+        Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
+        drillItem.PerformDrillingAnimation(LocationInteractable, InteriorDoor.UnLockDoor, false);
+        Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
     }
-
     private void BashDoor()
     {
-        Game.DisplayHelp("No Action");
-    }
-
-    private void PickLock()
-    {
-        //add the screwdriver item?, doesnt seem to attach ok with these offsets and anim
-        CanCancel = true;
-        PlayingDict = "missheistfbisetup1";
-        PlayingAnim = "hassle_intro_loop_f";
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 1, 0, false, false, false);
+        PlayingDict = "melee@unarmed@streamed_core";
+        PlayingAnim = "running_shove";// "kick_close_a";
+        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, 1, 0, false, false, false);
         GameTimeStartedForcingDoor = Game.GameTime;
-        Rage.Object ScrewDriverObject = null;
-        uint TimeToPick = RandomItems.GetRandomNumber(7000, 12000);
-
-        ScrewdriverItem screwdriverItem = (ScrewdriverItem)Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
-        if(screwdriverItem != null)
-        {
-            ScrewDriverObject = screwdriverItem.SpawnAndAttachItem(BasicUseable, true, true);
-        }
+        Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
         while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
         {
-            Player.Violations.SetContinuouslyViolating(StaticStrings.CivilianTrespessingCrimeID);
-            if (Game.GameTime - GameTimeStartedForcingDoor >= TimeToPick)
+            Player.WeaponEquipment.SetUnarmed();
+            if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
+            {
+                break;
+            }
+            if (RandomItems.RandomLargePercent(Settings.SettingsManager.ActivitySettings.BashDoorUnlockPercentage))
             {
                 InteriorDoor.UnLockDoor();
                 Game.DisplayHelp("Door Opened");
                 break;
             }
-
             DisableControls();
             GameFiber.Yield();
         }
-        if(screwdriverItem != null && ScrewDriverObject.Exists())
-        {
-            ScrewDriverObject.Delete();
-        }
-        Player.Violations.StopContinuouslyViolating(StaticStrings.CivilianTrespessingCrimeID);
+        Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
     }
 
-    //private void Idle()
-    //{
-    //    CanCancel = true;
-
-    //    StartAnimation();
-    //    GameTimeStartedForcingDoor = Game.GameTime;
-
-    //    while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
-    //    {
-    //        if(Game.GameTime - GameTimeStartedForcingDoor >= 7000)
-    //        {
-    //            InteriorDoor.UnLockDoor();
-    //            Game.DisplayHelp("Door Opened");
-    //            break;
-    //        }
-
-    //        DisableControls();
-    //        GameFiber.Yield();
-    //    }
-    //}
+    private void PickLock()
+    {
+        ScrewdriverItem screwdriverItem = (ScrewdriverItem)Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+        if (screwdriverItem == null)
+        {
+            return;
+        }
+        Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
+        screwdriverItem.PickDoorLock(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor);
+        Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
+    }
     private void Exit()
     {
         EntryPoint.WriteToConsole("Force Door EXIT RAN");
@@ -227,12 +220,6 @@ public class ForceDoorActivity : DynamicActivity
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsPerformingActivity = false;
     }
-    //private void StartAnimation()
-    //{
-    //    PlayingDict = "missheistfbisetup1";
-    //    PlayingAnim = "hassle_intro_loop_f";
-    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 1, 0, false, false, false);
-    //}
     private void DisableControls()
     {
         Game.DisableControlAction(0, GameControl.Attack, true);// false);
@@ -246,9 +233,47 @@ public class ForceDoorActivity : DynamicActivity
     private void Setup()
     {
         CanCancel = false;
-        AnimationDictionary.RequestAnimationDictionay("missheistfbisetup1");
+
         Player.ButtonPrompts.RemovePrompts("DoorInteract");
         CancelPrompt = $"Stop Forcing Door";
     }
+
+
+    //private void PickLock()
+    //{
+    //CanCancel = true;
+    //PlayingDict = "missheistfbisetup1";
+    //PlayingAnim = "hassle_intro_loop_f";
+    //AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 1, 0, false, false, false);
+    //GameTimeStartedForcingDoor = Game.GameTime;
+    //Rage.Object ScrewDriverObject = null;
+    //uint TimeToPick = RandomItems.GetRandomNumber(7000, 12000);
+    //ScrewdriverItem screwdriverItem = (ScrewdriverItem)Player.Inventory.Get(typeof(ScrewdriverItem))?.ModItem;
+    //if(screwdriverItem != null)
+    //{
+    //    ScrewDriverObject = screwdriverItem.SpawnAndAttachItem(BasicUseable, true, true);
+    //    TimeToPick = RandomItems.GetRandomNumber(screwdriverItem.MinDoorPickTime, screwdriverItem.MaxDoorPickTime);
+    //}
+    //Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
+    //while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
+    //{
+
+    //    if (Game.GameTime - GameTimeStartedForcingDoor >= TimeToPick)
+    //    {
+    //        InteriorDoor.UnLockDoor();
+    //        Game.DisplayHelp("Door Opened");
+    //        break;
+    //    }
+
+    //    DisableControls();
+    //    GameFiber.Yield();
+    //}
+    //if(screwdriverItem != null && ScrewDriverObject.Exists())
+    //{
+    //    ScrewDriverObject.Delete();
+    //}
+    //Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
+//}
 }
 

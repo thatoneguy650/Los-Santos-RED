@@ -2660,6 +2660,9 @@ namespace Mod
                     ActivityManager.OnLookedAtObject(CurrentLookedAtObject);
 
                     prevCurrentLookedAtObjectHandle = CurrentLookedAtObject.Handle;
+
+                    EntryPoint.WriteToConsole($"STARTED LOOKING AT OBJECT {CurrentLookedAtObject.Model.Hash} {CurrentLookedAtObject.Position}");
+
                 }
             }
             else

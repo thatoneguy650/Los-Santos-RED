@@ -1665,7 +1665,8 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.VehicleInvasionCrimeID,SDI.SuspiciousActivity),
 
             new CrimeDispatch(StaticStrings.SuspiciousVehicleCrimeID,SDI.SuspiciousActivity),
-
+            new CrimeDispatch(StaticStrings.BreakingEnteringAudibleCrimeID,SDI.BreakingAndEntering),
+            new CrimeDispatch(StaticStrings.BreakingEnteringCrimeID,SDI.BreakingAndEntering),
             new CrimeDispatch("DrivingStolenVehicle",SDI.DrivingAtStolenVehicle),
             new CrimeDispatch("TerroristActivity",SDI.TerroristActivity),
             new CrimeDispatch("BrandishingCloseCombatWeapon",SDI.CarryingWeapon),
@@ -1704,6 +1705,7 @@ namespace LosSantosRED.lsr
             ,SDI.TrespassingOnGovernmentProperty
             ,SDI.TrespassingOnMilitaryBase
             ,SDI.Trespassing
+            ,SDI.BreakingAndEntering
             ,SDI.StealingAirVehicle
             ,SDI.ShotsFired
             ,SDI.CarryingWeapon

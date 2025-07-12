@@ -34,7 +34,7 @@ public class InteriorDoor
     public bool LockWhenClosed { get; set; } = false;
 
 
-    public bool CanBeForcedOpenByPlayer { get; set; } = false;
+    public bool CanBeForcedOpenByPlayer { get; set; } = true;
 
 
 
@@ -50,6 +50,7 @@ public class InteriorDoor
             ForceRotateCloseDoor();
         }
         isLocked = true;
+        EntryPoint.WriteToConsole($"LOCKED DOOR {ModelHash} {Position}");
     }
     public void UnLockDoor()
     {
@@ -66,6 +67,7 @@ public class InteriorDoor
         {
             UnLockDoor();
         }
+        
     }
     public void Deactivate()
     {

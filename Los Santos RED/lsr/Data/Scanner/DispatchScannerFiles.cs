@@ -739,13 +739,13 @@
         public static ScannerFile Publicintoxication { get { return new ScannerFile("01_crime_3_90\\0x1632E73A.mp3", "Public intoxication.", "crime_3_90"); } }
         public static ScannerFile A390 { get { return new ScannerFile("01_crime_3_90\\0x19882DE5.mp3", "A 390.", "crime_3_90"); } }
     }
-    //public class crime_4_06
-    //{
-    //    public static ScannerFile Apossible406 { get { return new ScannerFile("01_crime_4_06\\0x061DEFD6.mp3", "A possible 406.", "crime_4_06"); } }
-    //    public static ScannerFile Breakingandentering { get { return new ScannerFile("01_crime_4_06\\0x0FDFC35A.mp3", "Breaking and entering.", "crime_4_06"); } }
-    //    public static ScannerFile A406 { get { return new ScannerFile("01_crime_4_06\\0x13790A8D.mp3", "A 406.", "crime_4_06"); } }
-    //    public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_06\\0x1E81A09D.mp3", "A BnE.", "crime_4_06"); } }
-    //}
+    public class crime_4_06
+    {
+        public static ScannerFile Apossible406 { get { return new ScannerFile("01_crime_4_06\\0x061DEFD6.mp3", "A possible 406.", "crime_4_06"); } }
+        public static ScannerFile Breakingandentering { get { return new ScannerFile("01_crime_4_06\\0x0FDFC35A.mp3", "Breaking and entering.", "crime_4_06"); } }
+        public static ScannerFile A406 { get { return new ScannerFile("01_crime_4_06\\0x13790A8D.mp3", "A 406.", "crime_4_06"); } }
+        public static ScannerFile ABnE { get { return new ScannerFile("01_crime_4_06\\0x1E81A09D.mp3", "A BnE.", "crime_4_06"); } }
+    }
     //public class crime_4_15 { public static ScannerFile A415 { get { return new ScannerFile("01_crime_4_15\\0x06E7893A.mp3", "A 415.", "crime_4_15"); } } }
     //public class crime_4_15_george
     //{

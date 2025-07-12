@@ -251,8 +251,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)),
-                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) }) { IsWeaponRestricted = true, },//doesntwork?
+                    new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) { CanBeForcedOpenByPlayer = true } }) { IsWeaponRestricted = true, },//doesntwork?
             new Interior(10754,"Sub Urban") { IsWeaponRestricted = true, },
             new Interior(1282,"Ponsonby") { IsWeaponRestricted = true, },
             new Interior(14338,"Ponsonby") { IsWeaponRestricted = true, },
@@ -460,8 +460,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)),
-                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}){
+                    new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)) { CanBeForcedOpenByPlayer = true },}){
                 IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -478,8 +478,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)),
-                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),})
+                    new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)) { CanBeForcedOpenByPlayer = true },})
             {
                 IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
@@ -495,8 +495,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(-53.96111f,-1755.717f,29.57094f)),
-                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}) {
+                    new InteriorDoor(3426294393, new Vector3(-53.96111f,-1755.717f,29.57094f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)) { CanBeForcedOpenByPlayer = true },}) {
 
 
                 IsWeaponRestricted = true,
@@ -516,8 +516,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)) { CanBeForcedOpenByPlayer = true },}) { IsWeaponRestricted = true,
 
                                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -534,8 +534,8 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3426294393, new Vector3(-1823.285f, 787.3687f, 138.3624f)),
-                    new InteriorDoor(2065277225, new Vector3(-1821.369f, 789.1273f, 138.3124f)),}) { IsWeaponRestricted = true, },//right door  
+                    new InteriorDoor(3426294393, new Vector3(-1823.285f, 787.3687f, 138.3624f)) { CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2065277225, new Vector3(-1821.369f, 789.1273f, 138.3124f)) { CanBeForcedOpenByPlayer = true },}) { IsWeaponRestricted = true, },//right door  
             new Interior(74874,"LtD Gas") { IsWeaponRestricted = true,
 
             InteractPoints = new List<InteriorInteract>()
@@ -883,7 +883,7 @@ public class Interiors : IInteriors
                 {
                     new InteriorDoor(190770132,new Vector3(981.1505f, -103.2552f, 74.99358f))
                     {
-                        LockWhenClosed = true
+                        LockWhenClosed = true, CanBeForcedOpenByPlayer = false,
                     },
                 },
                 RestInteracts = new List<RestInteract>()
@@ -1677,8 +1677,8 @@ public class Interiors : IInteriors
                 RemoveIPLs = new List<string>() { "vb_30_crimetape" },
                 Doors = new List<InteriorDoor>()
                 {
-                    new InteriorDoor(-607040053, new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true },
-                    new InteriorDoor(3687927243,new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(-607040053, new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true, CanBeForcedOpenByPlayer = false, },
+                    new InteriorDoor(3687927243,new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true, CanBeForcedOpenByPlayer = false, },
                 },
                 //DisabledInteriorCoords = new Vector3(-1388.0013427734375f, -618.419677734375f, 30.819599151611328f),
                 InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" },
@@ -7542,8 +7542,8 @@ public class Interiors : IInteriors
                 SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true }, //Front Door1
-                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true }, //Front Door2
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true , CanBeForcedOpenByPlayer = true, }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = true, }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
@@ -7705,12 +7705,12 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
 
-                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true },//?
-                    new InteriorDoor(1956494919,new Vector3(266.3624f, 217.5697f, 110.4328f)) { ForceRotateOpen = true },//?
-                    new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)) { ForceRotateOpen = true },//?
+                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
+                    new InteriorDoor(1956494919,new Vector3(266.3624f, 217.5697f, 110.4328f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
+                    new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
 
-                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT
-                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
+                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT RIGHT
+                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT LEFT//ONLY ONE THAT WORKS, FRONT LEFT
 
 
                     new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true },//BACK LEFT

@@ -420,16 +420,22 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.08f,0.01f),new Rotator(100f, 0f, 0f)),
+                new PropAttachment("RightHandPick", "BONETAG_R_PH_HAND", new Vector3(-0.7899995f, 0f, 0.3599999f),new Rotator(0f, -100f, 0f)),
+
+
+
             }) { AliasWeaponHash = 2578778090 },//generic screwdriver
             new PhysicalItem("gr_prop_gr_sdriver_01", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
+                new PropAttachment("RightHandPick", "BONETAG_R_PH_HAND", new Vector3(-0.7899995f, 0f, 0.3599999f),new Rotator(0f, -100f, 0f)),
             }){ AliasWeaponHash = 2578778090 },//flint flathead screwdriver
             new PhysicalItem("gr_prop_gr_sdriver_02", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
+                new PropAttachment("RightHandPick", "BONETAG_R_PH_HAND", new Vector3(-0.7899995f, 0f, 0.3599999f),new Rotator(0f, -100f, 0f)),
             }){ AliasWeaponHash = 2578778090 },//flint multi bit screwdriver
 
 

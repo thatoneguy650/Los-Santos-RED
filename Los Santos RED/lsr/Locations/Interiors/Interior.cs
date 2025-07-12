@@ -107,6 +107,14 @@ public class Interior
             interiorInteract.Setup(modItems, clothesNames);
         }
     }
+    public void DebugLockDoors()
+    {
+        foreach (InteriorDoor door in Doors)
+        {
+            door.LockDoor();
+            EntryPoint.WriteToConsole($"INTERIOR: {Name} {door.ModelHash} {door.Position} LOCKED");
+        }
+    }
     public void DebugOpenDoors()
     {
         foreach (InteriorDoor door in Doors)
@@ -183,7 +191,7 @@ public class Interior
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
                 }
-                LoadDoors(isOpen);
+                //LoadDoors(isOpen);
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
                     DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
@@ -200,9 +208,18 @@ public class Interior
                         ii.OnInteriorLoaded();
                     }
                 }
+
+                
+
                 IsActive = true;
                 GameFiber.Yield();
+
                 EntryPoint.WriteToConsole($"Load Interior {Name} isOpen{isOpen}");
+
+
+                GameFiber.Sleep(250);
+                LoadDoors(isOpen);
+
             }
             catch (Exception ex)
             {
@@ -212,6 +229,7 @@ public class Interior
     }
     protected virtual void LoadDoors(bool isOpen)
     {
+        EntryPoint.WriteToConsole($"LOAD DOORS RAN {isOpen}");
         if (isOpen)
         {
             foreach (InteriorDoor door in Doors)
@@ -221,6 +239,7 @@ public class Interior
         }
         else
         {
+            EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen}");
             foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
             {
                 door.LockDoor();
@@ -302,7 +321,7 @@ public class Interior
     }
     public void Update()
     {
-        foreach (InteriorDoor door in Doors.Where(x=>x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
+        foreach (InteriorDoor door in Doors.Where(x=> !x.IsLocked && x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
         {
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();

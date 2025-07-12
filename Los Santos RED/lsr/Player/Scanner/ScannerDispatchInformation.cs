@@ -99,7 +99,7 @@ public class ScannerDispatchInformation
     public Dispatch StoppingTrains { get; private set; }
     public Dispatch TheftDispatch { get; private set; }
     public Dispatch Shoplifting { get; private set; }
-
+    public Dispatch BreakingAndEntering { get; private set; }
 
     public Dispatch FicticiousPlates { get; private set; }
     public void Setup()
@@ -246,6 +246,18 @@ public class ScannerDispatchInformation
             MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_trespassing.Trespassing.FileName },"trespassing"),
+            },
+        };
+        BreakingAndEntering = new Dispatch()
+        {
+            Name = "Breaking and Entering",
+            ResultsInLethalForce = false,
+            CanBeReportedMultipleTimes = false,
+            LocationDescription = LocationSpecificity.Zone,
+            MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_4_06.ABnE.FileName },"a b&e"),
+                new AudioSet(new List<string>() { crime_4_06.Breakingandentering.FileName },"breaking and entering"),
             },
         };
         StealingAirVehicle = new Dispatch()

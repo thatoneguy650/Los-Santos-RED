@@ -322,9 +322,9 @@ public class CivilianSettings : ISettingsDefaultable
         DrugCustomerPercentageMiddleZones = 35f;// 7f;
         DrugCustomerPercentagePoorZones = 40f;// 10f;
 
-        CallPolicePercentageRichZones = 25f;// 50f;
-        CallPolicePercentageMiddleZones = 10f;// 30f;
-        CallPolicePercentagePoorZones = 5f;// 20f;
+        CallPolicePercentageRichZones = 30f;// 25f;// 50f;
+        CallPolicePercentageMiddleZones = 20f;// 10f;// 30f;
+        CallPolicePercentagePoorZones = 10f;// 5f;// 20f;
 
 
         CallPoliceForSeriousCrimesPercentageRichZones = 45f;// 80f;

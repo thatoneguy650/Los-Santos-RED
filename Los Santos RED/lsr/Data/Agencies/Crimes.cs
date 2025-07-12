@@ -64,6 +64,8 @@ public class Crimes : ICrimes
     private Crime StandingOnVehicle;
     private Crime BuringABody;
     private Crime Theft;
+    private Crime BreakingEntering;
+    private Crime BreakingEnteringAudible;
     private Crime Shoplifting;
     private Crime BankRobbery;
     public Crimes()
@@ -148,6 +150,10 @@ public class Crimes : ICrimes
         DrunkDriving = new Crime(StaticStrings.DrunkDrivingCrimeID, "Drunk Driving", 2, false, 20, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~driving under the influence~s~~n~Sober up or stop driving" };
         AssaultingWithDeadlyWeapon = new Crime(StaticStrings.AssaultingWithDeadlyWeaponCrimeID, "Assaulting With A Deadly Weapon", 2, false, 21, true, true, true);
         AssaultingCivilians = new Crime(StaticStrings.AssaultingCiviliansCrimeID, "Assaulting", 2, false, 22, true, true, true);
+
+
+        BreakingEntering = new Crime(StaticStrings.BreakingEnteringCrimeID, "Breaking and Entering", 2, false, 22, true, true, true);
+        BreakingEnteringAudible = new Crime(StaticStrings.BreakingEnteringAudibleCrimeID, "Breaking and Entering", 2, false, 22, true, true, true) { CanReportBySound = true,MaxHearingDistance = 40f };
 
         Theft = new Crime(StaticStrings.TheftCrimeID, "Theft", 2, false, 22, true, true, true);
         Shoplifting = new Crime(StaticStrings.ShopliftingCrimeID, "Shoplifting", 2, false, 22, true, true, true);
@@ -252,6 +258,8 @@ public class Crimes : ICrimes
              StandingOnVehicle,
              BuringABody,
              Theft,
+             BreakingEntering,
+             BreakingEnteringAudible,
              Shoplifting,
         };
         Serialization.SerializeParams(CrimeList, ConfigFileName);
@@ -324,6 +332,8 @@ public class Crimes : ICrimes
              StandingOnVehicle,
              BuringABody,
              Theft,
+             BreakingEntering,
+             BreakingEnteringAudible,
              Shoplifting,
             });
 

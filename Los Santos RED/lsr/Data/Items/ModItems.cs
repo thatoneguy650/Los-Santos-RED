@@ -2426,30 +2426,30 @@ public class ModItems : IModItems
         {
             //Generic Tools
             new ScrewdriverItem("Flint Phillips Screwdriver","Might get you into some locked things. No relation.") {
-                ModelItemID = "prop_tool_screwdvr01", FindPercentage = 10,ItemSubType = ItemSubType.Tool },
+                ModelItemID = "prop_tool_screwdvr01", FindPercentage = 10,ItemSubType = ItemSubType.Tool, MinDoorPickTime = 9000, MaxDoorPickTime = 20000 },
             new ScrewdriverItem("Flint Flathead Screwdriver","Might get you into some locked things. With a nice flat head.") {
-                ModelItemID = "gr_prop_gr_sdriver_01", FindPercentage = 10,ItemSubType = ItemSubType.Tool },
+                ModelItemID = "gr_prop_gr_sdriver_01", FindPercentage = 10,ItemSubType = ItemSubType.Tool, MinDoorPickTime = 9000, MaxDoorPickTime = 20000 },
             new ScrewdriverItem("Flint Multi-Bit Screwdriver","Might get you into some locked things. Now multi-bit!") {
-                ModelItemID = "gr_prop_gr_sdriver_02", FindPercentage = 10,ItemSubType = ItemSubType.Tool },
+                ModelItemID = "gr_prop_gr_sdriver_02", FindPercentage = 10,ItemSubType = ItemSubType.Tool, MinDoorPickTime = 9000, MaxDoorPickTime = 20000 },
         });
         PossibleItems.DrillItems.AddRange(new List<DrillItem>
         {
             new DrillItem("Power Metal Cordless Drill","Not recommended for dentistry.") {
-                ModelItemID = "gr_prop_gr_drill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 10000,MaxSafeDrillTime = 19000  },
+                ModelItemID = "gr_prop_gr_drill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 10000,MaxSafeDrillTime = 19000,  MinDoorDrillTime = 8000, MaxDoorDrillTime = 16000  },
             new DrillItem("Power Metal Cordless Impact Driver","DRIVE it right in!") {
-                ModelItemID = "gr_prop_gr_driver_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 15000,MaxSafeDrillTime = 20000  },
+                ModelItemID = "gr_prop_gr_driver_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 15000,MaxSafeDrillTime = 20000, MinDoorDrillTime = 8000, MaxDoorDrillTime = 15000  },
             new DrillItem("Flint Cordless Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
-                ModelItemID = "prop_tool_drill" ,ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 8000,MaxSafeDrillTime = 17000 },
+                ModelItemID = "prop_tool_drill" ,ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 8000,MaxSafeDrillTime = 17000, MinDoorDrillTime = 6000, MaxDoorDrillTime = 13000 },
 
 
             new DrillItem("Power Metal Side Drill","Make quick work of a safe deposit box!"){ 
-                ModelItemID = "hei_prop_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000 },
+                ModelItemID = "hei_prop_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000, MinDoorDrillTime = 4500, MaxDoorDrillTime = 7000 },
 
             new DrillItem("Power Metal Custom Side Drill","Make quick work of a safe deposit box! Now with more bells and whistles!"){
-                ModelItemID = "ch_prop_ch_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000 },
+                ModelItemID = "ch_prop_ch_heist_drill",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 6000,MaxSafeDrillTime = 9000, MinDoorDrillTime = 4000, MaxDoorDrillTime = 7000 },
 
             new DrillItem("Power Metal Laser Side Drill","Use space age tech to drill holes in things!"){
-                ModelItemID = "ch_prop_laserdrill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 4000,MaxSafeDrillTime = 6000 },
+                ModelItemID = "ch_prop_laserdrill_01a",ItemSubType = ItemSubType.Tool,MinSafeDrillTime = 4000,MaxSafeDrillTime = 6000, MinDoorDrillTime = 3000, MaxDoorDrillTime = 4000 },
 
         });
         PossibleItems.PliersItems.AddRange(new List<PliersItem>

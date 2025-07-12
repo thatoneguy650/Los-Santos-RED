@@ -43,6 +43,10 @@ namespace LosSantosRED.lsr.Player
         {
             return ItemsList.Where(x => x.ModItem.GetType() == type).OrderBy(x=> x.RemainingPercent).FirstOrDefault();
         }
+        public List<InventoryItem> GetAll(Type type)
+        {
+            return ItemsList.Where(x => x.ModItem.GetType() == type).ToList();
+        }
 
         public void Add(ModItem modItem, float remainingPercent)
         {

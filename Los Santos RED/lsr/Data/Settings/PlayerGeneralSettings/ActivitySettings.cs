@@ -101,6 +101,7 @@ public class ActivitySettings : ISettingsDefaultable
     public float PoopRotateRoll { get; set; }
     public float PoopRotateYaw { get; set; }
     public bool UseCameraForTheftInteracts { get; set; }
+    public float BashDoorUnlockPercentage { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -182,6 +183,8 @@ public class ActivitySettings : ISettingsDefaultable
         EatAnimBaseEndingPercentage = 0.4f;
 
         UseCameraForTheftInteracts = false;
+
+        BashDoorUnlockPercentage = 0.1f;
 
     }
 }

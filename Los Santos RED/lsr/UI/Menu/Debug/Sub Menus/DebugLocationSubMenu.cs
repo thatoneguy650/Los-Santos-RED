@@ -254,6 +254,23 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(OpenCloseDoors);
 
 
+
+        UIMenuItem LockDoors = new UIMenuItem("Lock Doors", "Force locked all nearby doors");
+        LockDoors.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            foreach (GameLocation gameLocation in World.Places.ActiveLocations.ToList())
+            {
+                if (gameLocation.DistanceToPlayer <= 100f)
+                {
+                    gameLocation.Interior?.DebugLockDoors();
+                }
+            }
+        };
+        LocationItemsMenu.AddItem(LockDoors);
+
+
+
         UIMenuItem EnableScenarios = new UIMenuItem("Enable Scenarios", "Enable some scenarios groups");
         EnableScenarios.Activated += (menu, item) =>
         {

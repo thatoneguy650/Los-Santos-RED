@@ -83,7 +83,11 @@ public class DebugPropAttachSubMenu : DebugSubMenu
             new AnimationSelector("mp_common","givetake1_b"),
             new AnimationSelector("oddjobs@shop_robbery@rob_till", "loop"),
             new AnimationSelector("anim@scripted@heist@ig1_table_grab@cash@male@","grab"),
-            new AnimationSelector("anim@heists@fleeca_bank@drilling","drill_straight_start")
+            new AnimationSelector("anim@heists@fleeca_bank@drilling","drill_straight_start"),
+
+
+            new AnimationSelector("missheistfbisetup1","hassle_intro_loop_f"),
+
         };
         animationsScroller = new UIMenuListScrollerItem<AnimationSelector>("Select Animation", "", PossibleAnimations.ToList());
 
