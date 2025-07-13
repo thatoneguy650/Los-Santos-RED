@@ -100,6 +100,7 @@ namespace Mod
         private uint KillerHandle;
         private bool HasThrownInTunnel;
         private bool prevIsBreakingIntoCar;
+        private InteriorDoor ClosestDoor;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -174,7 +175,7 @@ namespace Mod
             ClipsetManager = new ClipsetManager(this, Settings);
             OutfitManager = new OutfitManager(this, savedOutfits);
             OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
-            RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings);
+            RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings, TimeControllable);
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
             GangBackupManager = new GangBackupManager(World, this);
             InteriorManager = new InteriorManager(World, PlacesOfInterest, Settings, this, this, this);
@@ -2639,6 +2640,17 @@ namespace Mod
                 }
                 //EntryPoint.WriteToConsole($"CLOSEST LOCATION UPDATE RAN! HasLocation:{ClosestInteractableLocation?.Name} {ClosestDistance}");
             }
+            GameLocation closeLocation = World.Places.ActiveLocations.Where(x => x.HasInterior && x.Interior != null && x.Interior.Doors != null && x.Interior.Doors.Any(y => y.IsLocked)).OrderBy(z=> z.DistanceToPlayer).FirstOrDefault();
+            if (closeLocation != null)
+            {
+                //EntryPoint.WriteToConsole("BY AN INTERIOR WITH DOORS THAT ARE LOCKED");
+                ClosestDoor = closeLocation.Interior.Doors.Where(x => x.IsLocked && x.Position.DistanceTo2D(Position) <= 1.5f).OrderBy(x=> x.Position.DistanceTo2D(Position)).FirstOrDefault();
+            }
+            else
+            {
+                ClosestDoor = null;
+            }
+            ActivityManager.SetCurrentDoor(ClosestDoor);
         }
         private void UpdateClosestLookedAtObject()
         {

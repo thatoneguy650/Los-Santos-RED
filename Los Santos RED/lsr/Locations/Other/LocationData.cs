@@ -60,6 +60,7 @@ namespace LosSantosRED.lsr.Locations
             Settings= settings;
         }
         public int ClosestNodeID { get; private set; }
+        public GameLocation CurrentInteriorGameLocation { get; private set; }
         public Interior CurrentInterior { get; private set; }
         public Entity EntityToLocate { get; set; }
         public Street CurrentStreet { get; private set; }
@@ -120,6 +121,7 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
                 CurrentInterior = null;
+                CurrentInteriorGameLocation = null;
                 InteriorID = 0;
                 PrevInteriorID = -1;
                 GameTimeGotOffFreeway = 0;
@@ -532,6 +534,7 @@ namespace LosSantosRED.lsr.Locations
             if (InteriorID == 0)
             {
                 CurrentInterior = new Interior(0, "");
+                CurrentInteriorGameLocation = null;
             }
             else
             {

@@ -100,6 +100,7 @@ public class DrillItem : ModItem
     private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe)
     {
         Player.ActivityManager.StopDynamicActivity();
+        Player.ActivityManager.IsPerformingActivity = true;
         uint GameTimeStarted = Game.GameTime;
         uint DrillingTime = RandomItems.GetRandomNumber(MinSafeDrillTime, MaxSafeDrillTime);
         if(!isSafe)
@@ -156,6 +157,7 @@ public class DrillItem : ModItem
         }
         NativeFunction.Natives.STOP_SOUND(soundID);
         NativeFunction.Natives.RELEASE_SOUND_ID(soundID);
+        Player.ActivityManager.IsPerformingActivity = false;
         Dispose();
     }
 

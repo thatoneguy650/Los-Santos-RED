@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
 using System.Windows.Forms;
+using System.Drawing;
 
 public class MoveInteraction
 {
@@ -53,6 +54,9 @@ public class MoveInteraction
             }
 
             //Game.DisplaySubtitle($"Distance: {Game.LocalPlayer.Character.DistanceTo2D(FinalPlayerPosition)} IsCloseEnough{IsCloseEnough}");
+
+            //Rage.Debug.DrawArrowDebug(FinalPlayerPosition, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
@@ -74,7 +78,8 @@ public class MoveInteraction
             {
                 IsFacingDirection = true;
             }
-           // Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {FinalPlayerHeading}");
+            //Rage.Debug.DrawArrowDebug(FinalPlayerPosition, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+            // Game.DisplaySubtitle($"Current Heading: {heading} PropEntryHeading: {FinalPlayerHeading}");
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);

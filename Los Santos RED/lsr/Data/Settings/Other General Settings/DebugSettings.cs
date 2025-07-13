@@ -47,6 +47,8 @@ public class DebugSettings : ISettingsDefaultable
 
 
     public float AngleZ2 { get; set; }
+    public float DoorEntryAngle { get; set; }
+    public float DoorEntryValue { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -120,5 +122,9 @@ public class DebugSettings : ISettingsDefaultable
         AngleZ = 1900f;
         AngleY = 100.0f;
         AngleZ2 = 0.0f;
+
+
+        DoorEntryAngle = 0f;
+        DoorEntryValue = 1.0f;
     }
 }

@@ -89,20 +89,48 @@ public class ForceDoorActivity : DynamicActivity
     }
     private void Enter()
     {
-        if (!DoorObject.Exists())
-        {
-            return;
-        }
+        //if (!DoorObject.Exists())
+        //{
+        //    return;
+        //}
         Player.ActivityManager.IsPerformingActivity = true;
-        MachineOffsetResult machineInteraction = new MachineOffsetResult(LocationInteractable, DoorObject);
-        machineInteraction.StandingOffsetPosition = 0.5f;
-        machineInteraction.GetPropEntry();
-        FinalPlayerPos = machineInteraction.PropEntryPosition;
-        FinalPlayerHeading = machineInteraction.PropEntryHeading;
-        MoveInteraction moveInteraction = new MoveInteraction(LocationInteractable, FinalPlayerPos, FinalPlayerHeading);
-        if (!moveInteraction.MoveToMachine(4.0f))
+        if(InteriorDoor != null)
         {
-            return;
+            InteriorDoor.GetObject();
+            if(InteriorDoor.DoorObject != null)
+            {
+                DoorObject = InteriorDoor.DoorObject;
+            }
+        }
+
+
+        if (DoorObject.Exists())
+        {
+
+
+            MachineOffsetResult machineInteraction = new MachineOffsetResult(LocationInteractable, DoorObject);
+            machineInteraction.StandingOffsetPosition = 0.5f;
+            machineInteraction.GetPropEntry();
+
+
+
+
+            FinalPlayerPos = machineInteraction.PropEntryPosition;//DOORS ARE TOO FUCKY FOR THIS SHIT NativeHelper.GetOffsetPosition(machineInteraction.PropEntryPosition, machineInteraction.PropEntryHeading + Settings.SettingsManager.DebugSettings.DoorEntryAngle, Settings.SettingsManager.DebugSettings.DoorEntryValue);
+            FinalPlayerHeading = machineInteraction.PropEntryHeading;
+            MoveInteraction moveInteraction = new MoveInteraction(LocationInteractable, FinalPlayerPos, FinalPlayerHeading);
+            if (!moveInteraction.MoveToMachine(4.0f))
+            {
+                return;
+            }
+        }
+        else
+        {
+            MoveInteraction moveInteraction = new MoveInteraction(LocationInteractable, InteriorDoor.Position, 0f);
+            moveInteraction.CloseDistance = 1.0f;
+            if (!moveInteraction.MoveToMachine(4.0f))
+            {
+                return;
+            }
         }
         ShowMenu();
         //Idle();

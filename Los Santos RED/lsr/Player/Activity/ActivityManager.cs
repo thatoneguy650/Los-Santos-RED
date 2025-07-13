@@ -53,7 +53,9 @@ public class ActivityManager
     private IDispatchablePeople DispatchablePeople;
     private IDispatchableVehicles DispatchableVehicles;
     private HideableObject HideableObject;
-    private InteriorDoor CurrentDoor;
+    private InteriorDoor CurrentLookedAtDoor;
+    private InteriorDoor CurrentClosestDoor;
+    private InteriorDoor ActiveDoor => CurrentLookedAtDoor != null ? CurrentLookedAtDoor : CurrentClosestDoor;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -2054,7 +2056,7 @@ public class ActivityManager
         if (currentLookedAtObject == null)
         {
             HideableObject = null;
-            CurrentDoor = null;
+            CurrentLookedAtDoor = null;
             return;
         }
         uint currentHash = currentLookedAtObject.Model.Hash;
@@ -2075,12 +2077,20 @@ public class ActivityManager
                 }
                 if(door.ModelHash == currentLookedAtObject.Model.Hash && door.Position.DistanceTo2D(currentLookedAtObject.Position) <= 0.1f)
                 {
-                    CurrentDoor = door;
+                    CurrentLookedAtDoor = door;
                     EntryPoint.WriteToConsole($"YOU ARE LOOKING AT LOCKED DOOR {door.Position} IN {interior.Name} IsLocked:{door.IsLocked}");
                     return;
                 }
             }
         }
+    }
+    public void SetCurrentDoor(InteriorDoor interiorDoor)
+    {
+        CurrentClosestDoor = interiorDoor;
+        //if (interiorDoor != null)
+        //{
+        //    EntryPoint.WriteToConsole($"SET CLOSEST DOOR ISNULL:{CurrentClosestDoor == null}");
+        //}
     }
 
     public void CheckHidingButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
@@ -2097,14 +2107,15 @@ public class ActivityManager
     }
     public void CheckDoorButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
     {
-        if (CurrentDoor == null || IsPerformingActivity)
+        //EntryPoint.WriteToConsole($"CheckDoorButtonPrompts ActiveDoor == null:{ActiveDoor == null}  IsPerformingActivity:{IsPerformingActivity}");
+        if (ActiveDoor == null || IsPerformingActivity)
         {
             buttonPrompts.RemovePrompts("DoorInteract");
             return;
         }
         if (!buttonPrompts.HasPrompt("DoorInteract"))
         {
-            buttonPrompts.AttemptAddPrompt("DoorInteract", $"{CurrentDoor.ButtonPrompt()}", "DoorInteract", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { DoorInteract(currentLookedAtObject); });
+            buttonPrompts.AttemptAddPrompt("DoorInteract", $"{ActiveDoor.ButtonPrompt()}", "DoorInteract", Settings.SettingsManager.KeySettings.InteractStart, 999, () => { DoorInteract(currentLookedAtObject); });
         }
     }
 
@@ -2121,7 +2132,12 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        ForceDoorActivity forceDoorActivity = new ForceDoorActivity(Actionable, LocationInteractable, Settings, doorObject, CurrentDoor, BasicUseable);
+        if(ActiveDoor == null)
+        {
+            Game.DisplayHelp("Cannot start interact");
+            return;
+        }
+        ForceDoorActivity forceDoorActivity = new ForceDoorActivity(Actionable, LocationInteractable, Settings, doorObject, ActiveDoor, BasicUseable);
         if (forceDoorActivity.CanPerform(Actionable))
         {
             ForceCancelAllActive();

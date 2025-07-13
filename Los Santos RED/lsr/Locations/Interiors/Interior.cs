@@ -93,6 +93,9 @@ public class Interior
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
+
+    public GameLocation GameLocation { get; set; }
+
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames)
     {
         Settings = settings;
@@ -191,7 +194,7 @@ public class Interior
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
                 }
-                //LoadDoors(isOpen);
+                LoadDoors(isOpen);
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
                     DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
@@ -217,8 +220,8 @@ public class Interior
                 EntryPoint.WriteToConsole($"Load Interior {Name} isOpen{isOpen}");
 
 
-                GameFiber.Sleep(250);
-                LoadDoors(isOpen);
+                //GameFiber.Sleep(250);
+               // LoadDoors(isOpen);
 
             }
             catch (Exception ex)
@@ -326,6 +329,14 @@ public class Interior
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
         }
+
+
+        foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && x.LockWhenClosed && !x.HasRanLockWithEntity))
+        {
+            EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
+            door.LockDoor();
+        }
+
         //if(IsTeleportEntry)
         //{
         //    return;

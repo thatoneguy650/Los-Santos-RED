@@ -12,6 +12,7 @@ public class RestrictedAreaManager
 {
     private IRestrictedAreaManagable Player;
     private ILocationInteractable LocationInteractable;
+    private ITimeControllable Time;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private uint GameTimeLastReportedCamera;
@@ -21,12 +22,13 @@ public class RestrictedAreaManager
     public bool IsTrespassing { get; private set; }
     public bool IsCivilianReactableTrespassing { get; private set; }
     public bool IsTrespassingOnMilitaryBase { get; private set; }
-    public RestrictedAreaManager(IRestrictedAreaManagable player, ILocationInteractable locationInteractable, IEntityProvideable world, ISettingsProvideable settings)
+    public RestrictedAreaManager(IRestrictedAreaManagable player, ILocationInteractable locationInteractable, IEntityProvideable world, ISettingsProvideable settings, ITimeControllable time)
     {
         Player = player;
         LocationInteractable = locationInteractable;
         World = world;
         Settings = settings;
+        Time = time;
     }
     public void Setup()
     {
@@ -63,14 +65,21 @@ public class RestrictedAreaManager
     }
     private void UpdateInteriorRestrictions()
     {
-        if (!Player.CurrentLocation.IsInside || !Player.CurrentLocation.CurrentInterior.IsRestricted)
+        if (!Player.CurrentLocation.IsInside)
         {
             return;
         }
-        IsTrespassing = true;
-        if (Player.CurrentLocation.CurrentInterior.IsCivilianReactableRestricted)
+        bool IsOpen = Player.CurrentLocation.CurrentInterior.GameLocation?.IsOpen(Time.CurrentHour) == true;
+
+        if (Player.CurrentLocation.CurrentInterior.IsRestricted || !IsOpen)
         {
-            IsCivilianReactableTrespassing = true;
+
+
+            IsTrespassing = true;
+            if (Player.CurrentLocation.CurrentInterior.IsCivilianReactableRestricted || !IsOpen)
+            {
+                IsCivilianReactableTrespassing = true;
+            }
         }
     }
     private void UpdateLocationRestrictions()
