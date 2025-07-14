@@ -1253,8 +1253,15 @@ public class PopUpMenu
             new PopUpBox(9,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
             new PopUpBox(10,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
             new PopUpBox(11, "Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },
-        };
 
+            new PopUpBox(12, "Outfit", "OutfitSubMenu", "Opens the outfit menu") { ClosesMenu = false },
+        };
+        List<PopUpBox> OutfitSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Toggle Glasses",new Action(() => Player.OutfitManager.ToggleGlasses()),"Take glasses on or off"),
+            new PopUpBox(1,"Toggle Hat",new Action(() => Player.OutfitManager.ToggleHat()),"Take hat on or off"),
+            new PopUpBox(2,"Toggle Mask",new Action(() => Player.OutfitManager.ToggleMask()),"Take mask on or off"),
+        };
         List<PopUpBox> TaxiOptionsSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Hail Taxi",new Action(() => Player.ActivityManager.HailTaxi()),"Hail a nearby taxi"),
@@ -1457,6 +1464,10 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("OpenDoorSubMenu", OpenDoorSubMenu) { IsChild = true });
 
         PopUpMenuGroups.Add(new PopUpBoxGroup("TaxiOptionsSubMenu", TaxiOptionsSubMenu) { IsChild = true });
+
+
+        PopUpMenuGroups.Add(new PopUpBoxGroup("OutfitSubMenu", OutfitSubMenu) { IsChild = true });
+
         PopUpMenuGroups.Add(new PopUpBoxGroup("BodilyFunctionsSubMenu", BodilyFunctionsSubMenu) { IsChild = true });
         //TaxiOptionsSubMenu
 
