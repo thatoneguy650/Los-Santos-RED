@@ -1261,6 +1261,18 @@ public class PopUpMenu
             new PopUpBox(0,"Toggle Glasses",new Action(() => Player.OutfitManager.ToggleGlasses()),"Take glasses on or off"),
             new PopUpBox(1,"Toggle Hat",new Action(() => Player.OutfitManager.ToggleHat()),"Take hat on or off"),
             new PopUpBox(2,"Toggle Mask",new Action(() => Player.OutfitManager.ToggleMask()),"Take mask on or off"),
+            new PopUpBox(3,"Toggle Bag",new Action(() => Player.OutfitManager.ToggleBag()),"Take bag on or off"),
+
+
+            new PopUpBox(4,"Toggle Accessories",new Action(() => Player.OutfitManager.ToggleAccessories()),"Take accessories on or off"),
+            new PopUpBox(5,"Toggle Armor",new Action(() => Player.OutfitManager.ToggleArmor()),"Take armor on or off"),
+            new PopUpBox(6,"Toggle Shoes",new Action(() => Player.OutfitManager.ToggleShoes()),"Take shoes on or off"),
+
+
+            new PopUpBox(7,"Toggle Earrings",new Action(() => Player.OutfitManager.ToggleEarrings()),"Take earrings on or off"),
+            new PopUpBox(8,"Toggle Watches",new Action(() => Player.OutfitManager.ToggleWatches()),"Take watches on or off"),
+            new PopUpBox(9,"Toggle Bracelets",new Action(() => Player.OutfitManager.ToggleBracelet()),"Take bracelets on or off"),
+
         };
         List<PopUpBox> TaxiOptionsSubMenu = new List<PopUpBox>()
         {

@@ -70,6 +70,19 @@ public class OutfitManager
     {
         ToggleProp(1);
     }
+
+    public void ToggleEarrings()
+    {
+        ToggleProp(2);
+    }
+    public void ToggleWatches()
+    {
+        ToggleProp(6);
+    }
+    public void ToggleBracelet()
+    {
+        ToggleProp(7);
+    }
     public void ToggleHat()
     {
         ToggleProp(0);
@@ -78,11 +91,44 @@ public class OutfitManager
     {
         ToggleComponent(1);
     }
+    public void ToggleBag()
+    {
+        ToggleComponent(5);
+    }
+    public void ToggleAccessories()
+    {
+        ToggleComponent(7);
+    }
+    public void ToggleShoes()
+    {
+        if(Player.ModelName.ToLower() == "mp_f_freemode_01")
+        {
+            ToggleComponent(6, 35);
+        }
+        else if(Player.ModelName.ToLower() == "mp_m_freemode_01")
+        {
+            ToggleComponent(6, 34);
+        }
+        else
+        {
+            ToggleComponent(6);
+        }
+
+    }
+    public void ToggleArmor()
+    {
+        ToggleComponent(9);
+    }
     public void ToggleComponent(int componenetID)
     {
+        ToggleComponent(componenetID, 0);
+    }
+    public void ToggleComponent(int componenetID, int DefaultID)
+    {
+
         bool IsOn = false;
         int currentVariation = NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(Player.Character, componenetID);
-        if(currentVariation > 0)
+        if (currentVariation > 0 || (DefaultID != 0 && currentVariation == DefaultID))
         {
             IsOn = true;
         }
@@ -92,7 +138,7 @@ public class OutfitManager
 
         if (IsOn)
         {
-            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Player.Character, componenetID, 0, 0, 0);
+            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Player.Character, componenetID, DefaultID, 0, 0);
         }
         else
         {
@@ -105,7 +151,36 @@ public class OutfitManager
             NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Player.Character, componenetID, componenet.DrawableID, componenet.TextureID, componenet.PaletteID);
             //EntryPoint.WriteToConsole($"ToggleComponent {componenetID} IsOn{IsOn} SET VALUE {componenet.DrawableID} {componenet.TextureID}");
         }
+        
     }
+    //public void ToggleComponent(int componenetID)
+    //{
+    //    bool IsOn = false;
+    //    int currentVariation = NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(Player.Character, componenetID);
+    //    if(currentVariation > 0)
+    //    {
+    //        IsOn = true;
+    //    }
+
+    //    PlayAnimation();
+    //    GameFiber.Sleep(500);
+
+    //    if (IsOn)
+    //    {
+    //        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Player.Character, componenetID, 0, 0, 0);
+    //    }
+    //    else
+    //    {
+    //        PedComponent componenet = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == componenetID).FirstOrDefault();
+    //        if (componenet == null)
+    //        {
+    //            //EntryPoint.WriteToConsole($"ToggleComponent {componenetID} IsOn{IsOn} componenet IS NULL");
+    //            return;
+    //        }
+    //        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Player.Character, componenetID, componenet.DrawableID, componenet.TextureID, componenet.PaletteID);
+    //        //EntryPoint.WriteToConsole($"ToggleComponent {componenetID} IsOn{IsOn} SET VALUE {componenet.DrawableID} {componenet.TextureID}");
+    //    }
+    //}
     public void ToggleProp(int selectedPropType)
     {
         bool isPropOn = false;
