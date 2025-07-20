@@ -49,6 +49,14 @@ public class DebugSettings : ISettingsDefaultable
     public float AngleZ2 { get; set; }
     public float DoorEntryAngle { get; set; }
     public float DoorEntryValue { get; set; }
+    public float LockpickAnimStopPercentage { get; set; }
+    public float LockpickAnimRestartPercentage { get; set; }
+
+
+    public float LockpickAnimIntroRate { get; set; }
+    public float LockpickAnimOutroRate { get; set; }
+    public int LockpickAnimFlags { get; set; }
+    public float LockpickAnimAnimRate { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -126,5 +134,12 @@ public class DebugSettings : ISettingsDefaultable
 
         DoorEntryAngle = 0f;
         DoorEntryValue = 1.0f;
+
+        LockpickAnimStopPercentage = 0.5f;
+        LockpickAnimRestartPercentage = 0.3f;
+        LockpickAnimIntroRate = 8.0f;
+        LockpickAnimOutroRate = -8.0f;
+        LockpickAnimFlags = 0;
+        LockpickAnimAnimRate = 1.0f;
     }
 }

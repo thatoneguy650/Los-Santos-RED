@@ -8,6 +8,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -238,7 +239,8 @@ public class ForceDoorActivity : DynamicActivity
             return;
         }
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
-        screwdriverItem.PickDoorLock(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor);
+       //screwdriverItem.PickDoorLock(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor);
+        screwdriverItem.DoLockpickAnimation(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor, Settings, true, false);
         Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
     }
     private void Exit()

@@ -102,6 +102,7 @@ public class ActivitySettings : ISettingsDefaultable
     public float PoopRotateYaw { get; set; }
     public bool UseCameraForTheftInteracts { get; set; }
     public float BashDoorUnlockPercentage { get; set; }
+    public bool UseOldLockPick { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)

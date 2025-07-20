@@ -530,27 +530,75 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        /*        float LockpickAnimStopPercentage = 0.5f;
+        float LockpickAnimRestartPercentage = 0.3f;
+        float LockpickAnimIntroRate = 8.0f;
+        float LockpickAnimOutroRate = -8.0f;
+        int LockpickAnimFlags = 0;
+        float LockpickAnimAnimRate = 1.0f;
+        GameFiber.StartNew(delegate
+        {
+            
+            string animDictionary = "veh@break_in@0h@p_m_one@";
+            string animName = "std_force_entry_ds";
+            AnimationDictionary.RequestAnimationDictionay(animDictionary);
+            NativeFunction.Natives.TASK_PLAY_ANIM(Game.LocalPlayer.Character, animDictionary, animName, Settings.SettingsManager.DebugSettings.LockpickAnimIntroRate, 
+                Settings.SettingsManager.DebugSettings.LockpickAnimOutroRate, -1, Settings.SettingsManager.DebugSettings.LockpickAnimFlags, 0, false, false, false);
 
-        
-       GameFiber.StartNew(delegate
-       {
-           Vector3 BasePosition = new Vector3(1171.136f, -2563.416f, 34.28861f);
-           float BaseHeading = 286.6383f;
-           Vector3 NewPosition = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading, -10f);
-           Vector3 NewPosition1 = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading-90f, 10f);
-           uint GameTimeStarted = Game.GameTime;
-           while (Game.GameTime - GameTimeStarted <= 20000)
-           {
-   
-                   Rage.Debug.DrawArrowDebug(BasePosition, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                   Rage.Debug.DrawArrowDebug(NewPosition, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-               Rage.Debug.DrawArrowDebug(NewPosition1, Vector3.Zero, Rotator.Zero, 1f, Color.Green);
-               GameFiber.Yield();
-           }
 
-       }, "Run Debug Logic");
+            bool isLooping = false;
+
+            while (!Player.IsMoveControlPressed)
+            {
+                float pedAnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, animDictionary, animName);
+                if(pedAnimTime >= Settings.SettingsManager.DebugSettings.LockpickAnimStopPercentage)
+                {
+                    isLooping = true;
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, -1.0f * Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 0, false);
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, -1.0f * Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 1, false);
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, -1.0f * Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 2, false);
+                    //NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Game.LocalPlayer.Character, animDictionary, animName, Settings.SettingsManager.DebugSettings.LockpickAnimRestartPercentage);
+                }
+                else if (isLooping && pedAnimTime <= Settings.SettingsManager.DebugSettings.LockpickAnimRestartPercentage)
+                {
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character,Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 0, false);
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 1, false);
+                    NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate, 2, false);
+                    //NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Game.LocalPlayer.Character, animDictionary, animName, Settings.SettingsManager.DebugSettings.LockpickAnimRestartPercentage);
+                }
+
+                GameFiber.Yield();
+            }
+            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Game.LocalPlayer.Character, animDictionary, animName, Settings.SettingsManager.DebugSettings.LockpickAnimStopPercentage);
+            NativeFunction.Natives.SET_ANIM_RATE(Game.LocalPlayer.Character, 1.0f, 2, false);
+
+        }, "Run Debug Logic");
         GameFiber.Sleep(500);
-        
+
+        */
+
+
+
+
+        //GameFiber.StartNew(delegate
+        //{
+        //    Vector3 BasePosition = new Vector3(1171.136f, -2563.416f, 34.28861f);
+        //    float BaseHeading = 286.6383f;
+        //    Vector3 NewPosition = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading, -10f);
+        //    Vector3 NewPosition1 = NativeHelper.GetOffsetPosition(BasePosition, BaseHeading-90f, 10f);
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStarted <= 20000)
+        //    {
+
+        //            Rage.Debug.DrawArrowDebug(BasePosition, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //            Rage.Debug.DrawArrowDebug(NewPosition, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+        //        Rage.Debug.DrawArrowDebug(NewPosition1, Vector3.Zero, Rotator.Zero, 1f, Color.Green);
+        //        GameFiber.Yield();
+        //    }
+
+        //}, "Run Debug Logic");
+        // GameFiber.Sleep(500);
+
 
 
         //if(!Game.LocalPlayer.Character.CurrentVehicle.Exists())
@@ -1227,7 +1275,7 @@ public class Debug
     }
 
 
-   
+
 
     private void DebugNumpad5()
 {
@@ -1803,9 +1851,9 @@ GameFiber.StartNew(delegate
 
 
         
-        World.Places.StaticPlaces.DebugDeactivateAllLocations();
-        Game.DisplaySubtitle("DeactivatedLocations");
-        GameFiber.Sleep(2000);
+        //World.Places.StaticPlaces.DebugDeactivateAllLocations();
+        //Game.DisplaySubtitle("DeactivatedLocations");
+        //GameFiber.Sleep(2000);
 
 
         ////X:124.8145 Y:-747.5364 Z:242.152

@@ -374,7 +374,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         LocationSpawnedVehicleLimit = 8;// 6;
 
 
-        PedSpawnLimit_Investigation = 7;
+        PedSpawnLimit_Investigation = 9;// 7;
         PedSpawnLimit_Wanted1 = 8;// 7;// 8;
         PedSpawnLimit_Wanted2 = 9;// 8;// 9;// 9;
         PedSpawnLimit_Wanted3 = 12;// 10;// 12;// 14;
@@ -396,7 +396,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         VehicleSpawnLimit_Default_Industrial = 4;
         VehicleSpawnLimit_Default_Downtown = 7;// 5;
 
-        VehicleSpawnLimit_Investigation = 6;
+        VehicleSpawnLimit_Investigation = 9;// 6;
         VehicleSpawnLimit_Wanted1 = 8;// 7;// 8;
         VehicleSpawnLimit_Wanted2 = 9;// 7;// 8;// 9;
         VehicleSpawnLimit_Wanted3 = 10;// 9;// 10;// 13;
@@ -489,7 +489,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         AmbientSpawnPercentage = 70;
         AmbientSpawnPercentage_Wanted = 95;
 
-        AmbientSpawnPercentage_Investigation = 75;
+        AmbientSpawnPercentage_Investigation = 90;// 75;
         AmbientSpawnPercentage_Wilderness = 55;// 25;
         AmbientSpawnPercentage_Rural = 65;// 45;
         AmbientSpawnPercentage_Suburb = 75;// 55;
