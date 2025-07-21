@@ -159,7 +159,7 @@ public class OtherViolations
     }
     private void SuspiciousUpdate()
     {
-        if (Player.Investigation.IsSuspicious || Player.IsDoingSuspiciousActivity)//when near investigation blip with description
+        if (Player.Investigation.IsSuspicious || Player.IsDoingSuspiciousActivity || Player.OutfitManager.HasMaskOn)//when near investigation blip with description
         {
             Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
         }

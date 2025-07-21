@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         Stance Stance { get; }
         IntimidationManager IntimidationManager { get; }
         StealthManager StealthManager { get; }
+        bool IsWearingMask { get; }
 
         //bool IsHidingInVehicle { get; }
         //bool IsConsideredNight { get; }

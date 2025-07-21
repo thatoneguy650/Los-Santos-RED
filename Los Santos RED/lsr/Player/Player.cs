@@ -284,6 +284,7 @@ namespace Mod
         public string DebugString { get; set; }
         public bool DiedInVehicle { get; private set; }
         public float FootSpeed { get; set; }
+        public bool IsWearingMask => OutfitManager.HasMaskOn;
         public string FreeModeVoice { get; set; }//IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
         public string Gender => IsMale ? "M" : "F";
         public int GroupID { get; set; }

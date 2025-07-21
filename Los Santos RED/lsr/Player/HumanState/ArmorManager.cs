@@ -46,32 +46,35 @@ public class ArmorManager
     private void AddArmorItem(BodyArmorItem equipmentItem)
     {
         SetArmor(equipmentItem.ArmorChangeAmount);
-        if (!Player.CharacterModelIsFreeMode)
-        {
-            return;
-        }
-        if (Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
-        {
-            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, Settings.SettingsManager.ActivitySettings.BodyArmorDefaultDrawableID, Settings.SettingsManager.ActivitySettings.BodyArmorDefaultTextureID, 0);
-        }
+        Player.OutfitManager.PutOnArmorVisually();
+        //if (!Player.CharacterModelIsFreeMode)
+        //{
+        //    return;
+        //}
+        //if (Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
+        //{
+        //    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, Settings.SettingsManager.ActivitySettings.BodyArmorDefaultDrawableID, Settings.SettingsManager.ActivitySettings.BodyArmorDefaultTextureID, 0);
+        //}
     }
     public void RemoveArmor()
     {
-        if(!HasOnBodyArmor)
+        Player.OutfitManager.TakeOffArmorVisually();
+        if (!HasOnBodyArmor)
         {
             return;
         }
         Player.Inventory.Add(EquippedArmorItem, 1.0f);
         SetArmor(0);
         Game.DisplaySubtitle($"Removed Armor {EquippedArmorItem.Name}");
-        if(!Player.CharacterModelIsFreeMode)
-        {
-            return;
-        }
-        if (Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
-        {
-            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, 0, 0, 0);
-        }
+        //if(!Player.CharacterModelIsFreeMode)
+        //{
+        //    return;
+        //}
+        //if (Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
+        //{
+        //    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, 0, 0, 0);
+        //}
+        
     }
     public void ChangeArmor(int ToAdd)
     {
@@ -91,12 +94,12 @@ public class ArmorManager
         }
         Player.Character.Armor = toset;
     }
-    public void ChangeArmorVisual(int drawableID, int textureID)
-    {
-        if(HasOnBodyArmor && Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
-        {
-            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, drawableID, textureID, 0);
-        }
-    }
+    //public void ChangeArmorVisual(int drawableID, int textureID)
+    //{
+    //    if(HasOnBodyArmor && Settings.SettingsManager.ActivitySettings.DisplayBodyArmor)
+    //    {
+    //        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Player.Character, 9, drawableID, textureID, 0);
+    //    }
+    //}
 }
 

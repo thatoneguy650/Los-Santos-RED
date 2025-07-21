@@ -17,10 +17,12 @@ public class PlayerPerception
     private uint GameTimeLastDistanceCheck;
     private uint GameTimeLastLOSCheck;
     private uint GameTimeLastSeenTarget;
+    private uint GameTimeLastSeenTargetWithoutMask;
     private PedExt Originator;
     private ISettingsProvideable Settings;
     private IPerceptable Target;
     private uint GameTimeLastSetFakeSeen;
+
     private bool IsFakeSeen => GameTimeLastSetFakeSeen != 0 && Game.GameTime - GameTimeLastSetFakeSeen <= 5000;
 
     private float DistanceToTargetInVehicle => Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceVehicle;
@@ -59,10 +61,19 @@ public class PlayerPerception
     }
     public bool CanSeeTarget { get; private set; } = false;
     public float ClosestDistanceToTarget { get; private set; } = 2000f;
+
+    public float ClosestDistanceToTargetWithoutMask { get; private set; } = 2000f;
+
     public float DistanceToTarget { get; private set; } = 999f;
     public float HeightToTarget { get; private set; } = 999f;
     public float DistanceToTargetLastSeen { get; private set; } = 999f;
     public bool EverSeenTarget => CanSeeTarget || GameTimeLastSeenTarget > 0;
+
+
+
+    public bool EverSeenTargetWithoutMask => CanSeeTargetWithoutMask || GameTimeLastSeenTargetWithoutMask > 0;
+
+
     //public bool EverRecognizedTarget => CanRecognizeTarget || GameTimeLastSeenTarget > 0;
     public bool HasSpokenWithTarget { get; set; }
     public bool IsFedUpWithTarget => TimesInsultedByTarget >= Originator.InsultLimit;
@@ -81,6 +92,15 @@ public class PlayerPerception
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
     public bool NeedsUpdate => Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive;
     public bool RanSightThisUpdate { get; private set; }
+
+
+
+    public bool CanSeeTargetWithoutMask { get; private set; }
+
+
+
+
+
     public bool SeenTargetWithin(int msSince) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= msSince;
     public void Update(IPerceptable target, Vector3 placeLastSeen)
     {
@@ -159,6 +179,14 @@ public class PlayerPerception
     {
         CanSeeTarget = true;
         GameTimeLastSeenTarget = Game.GameTime;
+
+        if(!Target.IsWearingMask)
+        {
+            CanSeeTargetWithoutMask = true;
+            GameTimeLastSeenTargetWithoutMask = Game.GameTime;
+        }
+
+
         if(Target == null || !Target.Character.Exists())
         {
             return;
@@ -176,6 +204,7 @@ public class PlayerPerception
     {
         GameTimeContinuoslySeenTargetSince = 0;
         CanSeeTarget = false;
+        CanSeeTargetWithoutMask = false;
     }
     private bool UpdateTargetDistance(Vector3 placeLastSeen, Vector3 posToCheck)
     {
@@ -204,6 +233,12 @@ public class PlayerPerception
         if (DistanceToTarget <= ClosestDistanceToTarget)
         {
             ClosestDistanceToTarget = DistanceToTarget;
+
+            if(!Target.IsWearingMask)
+            {
+                ClosestDistanceToTargetWithoutMask = DistanceToTarget;
+            }
+
         }
         if (DistanceToTarget <= (Originator.IsCop ? Settings.SettingsManager.PoliceSettings.GunshotHearingDistance : Settings.SettingsManager.CivilianSettings.GunshotHearingDistance))//45f
         {

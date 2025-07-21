@@ -64,7 +64,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Extended Clip", 0xA9F80269,ComponentSlot.Magazine),
             new WeaponComponent("Flashlight", 0x359B7AAE,ComponentSlot.Light),
             new WeaponComponent("Suppressor", 0x6203D5BF,ComponentSlot.Muzzle),
-            new WeaponComponent("Suppressor OLD", 0xC304849A,ComponentSlot.Muzzle),
+            //new WeaponComponent("Suppressor OLD", 0xC304849A,ComponentSlot.Muzzle),
         };
         fewList.Add(new WeaponInformation("weapon_nanopistol", 60, WeaponCategory.Pistol, 1, 1150143450, true, false, false, 1.0f, 1.2f, 0.7f, 0.9f, 0.75f, 1.0f, 0.75f, 1.0f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = NanoPistolComponents, CanPistolSuicide = true });
 

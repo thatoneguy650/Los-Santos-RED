@@ -79,6 +79,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyGotOutOfVehicle { get; }
         Violations Violations { get; }
         bool IsInWantedActiveMode { get; }
+        OutfitManager OutfitManager { get; }
 
         //  bool IsLootingBody { get; }
 

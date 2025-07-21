@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         PedVariation CurrentModelVariation { get; set; }
         Ped Character { get; }
         string PlayerName { get; }
+        ArmorManager ArmorManager { get; }
     }
 }

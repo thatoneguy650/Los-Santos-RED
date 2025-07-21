@@ -119,6 +119,14 @@ public class ModItems : IModItems
             false, ItemType.Weapons)
         { VanillaName = "Combat Pistol", ModelName = "weapon_combatpistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
 
+
+
+        newPossibleItems.WeaponItems.Add(new WeaponItem("WIN 95",
+    "Too big for a pistol, too small for a sub gun. Make up for it by pissing bullets in their direction.",
+    false, ItemType.Weapons)
+        { VanillaName = "Macro Pistol", ModelName = "weapon_nanopistol", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+
+
         newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF86",
             "When you need to dump an entire magazine at someone, but can't be bothered to carry something heavier than a few pounds.",
             false, ItemType.Weapons)

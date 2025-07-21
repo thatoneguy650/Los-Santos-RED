@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         bool CharacterModelIsFreeMode { get; }
         Inventory Inventory { get; }
+        OutfitManager OutfitManager { get; }
     }
 }
