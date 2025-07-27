@@ -417,7 +417,7 @@ public class PedCustomizer
         if (Player.CurrentModelVariation != null)
         {
             //Player.CurrentModelVariation.Copy().ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
-            Player.CurrentModelVariation.ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
+            Player.CurrentModelVariation.ApplyToPed(ModelPed, true);//this makes senese, but it isnt going to include headblend shit most of the time
             WorkingVariation = Player.CurrentModelVariation.Copy();
             InitialVariation = Player.CurrentModelVariation.Copy();
         }
@@ -454,7 +454,7 @@ public class PedCustomizer
     {
         if (ModelPed.Exists())
         {
-            WorkingVariation?.ApplyToPed(ModelPed, false, true);
+            WorkingVariation?.ApplyToPed(ModelPed, false, true, true);
         }
     }
     public bool IsDrawableBlacklisted(int componentID, int drawableID, bool isMale)

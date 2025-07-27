@@ -9,6 +9,9 @@ public class PedPropComponent
     public int PropID { get; set; }
     public int DrawableID { get; set; }
     public int TextureID { get; set; }
+
+    public bool IsDefaultNotApplied { get; set; }
+
     public PedPropComponent()
     {
 

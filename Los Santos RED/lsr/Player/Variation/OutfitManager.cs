@@ -57,7 +57,7 @@ public class OutfitManager
         NativeFunction.Natives.CLEAR_ALL_PED_PROPS(Player.Character);
         PedVariation newVariation = savedOutfit.PedVariation.Copy();
         Player.CurrentModelVariation = newVariation;
-        Player.CurrentModelVariation.ApplyToPed(Player.Character);
+        Player.CurrentModelVariation.ApplyToPed(Player.Character, false);
         if (doAnimation)
         {
             GameFiber.Sleep(500);

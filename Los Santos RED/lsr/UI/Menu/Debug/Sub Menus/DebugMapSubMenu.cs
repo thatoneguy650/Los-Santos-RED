@@ -52,7 +52,6 @@ public class DebugMapSubMenu : DebugSubMenu
         CreateLSItems();
         CreateLCItems();
         CreateCayoPericoItems();
-        CreateSunShineDreamItems();  
     }
     private void CreateGeneralItems()
     {
@@ -113,12 +112,7 @@ public class DebugMapSubMenu : DebugSubMenu
         LSSubMenu.SetBannerType(EntryPoint.LSRedColor);
         LSSubMenu.AddItem(CreateDisableLSItem());
     }
-    private void CreateSunShineDreamItems()
-    {
-        UIMenu SunShineDreamSubMenu = MenuPool.AddSubMenu(MapMenuItem, "Sunshine Dream Menu");
-        SunShineDreamSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        SunShineDreamSubMenu.AddItem(CreateDisableLSItem());
-    }
+
     private void CreateLCItems()
     {
         UIMenu LibertyCitySubMenu = MenuPool.AddSubMenu(MapMenuItem, "Liberty City Menu");

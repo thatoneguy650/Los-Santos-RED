@@ -149,7 +149,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_LosSantos_2008();
             DefaultConfig_FullModernTraffic();
-            DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();
             DefaultConfig_LPP();
@@ -1699,86 +1698,8 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
         Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
-        //SunshineDream
     }
-    private void DefaultConfig_SunshineDream()
-    {
-
-        List<DispatchableVehicle> ArmeniaVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fugitive", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("washington", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            //new DispatchableVehicle("pmp600", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-        };
-
-        //DispatchableVehicle vcpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 0, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
-        //vcpdpolice3.ModelName = "police3liv";
-        List<DispatchableVehicle> VCPDVehicles = new List<DispatchableVehicle>() 
-        {
-            new DispatchableVehicle("police3", 100, 100),
-            //new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            //new DispatchableVehicle("police2", 48, 35),
-            new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
-            new DispatchableVehicle("fbi2", 1,1),
-            //new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 } } 
-        };
-        //DispatchableVehicle vdpdpolice3 = DispatchableVehicles_FEJ.Create_PoliceInterceptor(100, 100, 1, false, PoliceVehicleType.MarkedFlatLightbar, 134, 0, 3, 1, 4, "", "");
-        //vdpdpolice3.ModelName = "police3liv";
-        List<DispatchableVehicle> VDPDVehicles = new List<DispatchableVehicle>() 
-        {
-            new DispatchableVehicle("police3", 100, 100),
-            new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
-            new DispatchableVehicle("fbi2", 1,1),
-
-        };
-
-        List<DispatchableVehicle> VCPDHeliVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buzzard2", 1,150) { MinWantedLevelSpawn = 0,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
-        };
-
-        List<DispatchableVehicleGroup> SunshineDreamVehicleLoopupGroup = new List<DispatchableVehicleGroup>
-        {
-            //Police
-            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
-            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
-            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
-            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
-            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
-            new DispatchableVehicleGroup("VCPDVehicles", VCPDVehicles),
-            new DispatchableVehicleGroup("VDPDVehicles", VDPDVehicles),
-
-
-            new DispatchableVehicleGroup("VCPDHeliVehicles", VCPDHeliVehicles),
-            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
-            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
-            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
-            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
-            new DispatchableVehicleGroup("Amublance1", Amublance1),
-            new DispatchableVehicleGroup("Amublance2", Amublance2),
-            new DispatchableVehicleGroup("Amublance3", Amublance3),
-            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
-            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
-            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
-            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
-            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
-            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
-            new DispatchableVehicleGroup("DOAVehicles",DOAVehicles),
-            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
-
-            //Gang
-            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles_Old),
-
-            //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
-            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
-            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
-            new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
-            new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
-            new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
-            new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
-        };
-        SunshineDreamVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(SunshineDreamVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\DispatchableVehicles_SunshineDream.xml");
-    }
+ 
     private void DefaultConfig_LosSantos_2008()
     {
         List<DispatchableVehicle> KoreanVehicles_old = new List<DispatchableVehicle>() {

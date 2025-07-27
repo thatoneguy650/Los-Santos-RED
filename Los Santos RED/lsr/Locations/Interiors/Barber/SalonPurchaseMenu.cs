@@ -156,7 +156,7 @@ public class SalonPurchaseMenu
         };
         HaircutsSubMenu.OnMenuClose += (sender) =>
         {
-            Player.CurrentModelVariation.ApplyToPed(Player.Character);
+            Player.CurrentModelVariation.ApplyToPed(Player.Character, false);
         };
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Choose style";
         if (BarberShop == null)
@@ -194,7 +194,7 @@ public class SalonPurchaseMenu
         };
         HairColorSubMenu.OnMenuClose += (sender) =>
         {
-            Player.CurrentModelVariation.ApplyToPed(Player.Character);
+            Player.CurrentModelVariation.ApplyToPed(Player.Character, false);
         };
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Choose style";
         if (BarberShop == null)
@@ -339,7 +339,7 @@ public class SalonPurchaseMenu
         };
         BeardsSubMenu.OnMenuClose += (sender) =>
         {
-            Player.CurrentModelVariation.ApplyToPed(Player.Character);
+            Player.CurrentModelVariation.ApplyToPed(Player.Character, false);
         };
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Choose style";
         if (BarberShop == null)
@@ -610,7 +610,7 @@ public class SalonPurchaseMenu
         };
         overLaySubMenu.OnMenuClose += (sender) =>
         {
-            Player.CurrentModelVariation.ApplyToPed(Player.Character);
+            Player.CurrentModelVariation.ApplyToPed(Player.Character, false);
         };
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Choose style";
         if (BarberShop == null)

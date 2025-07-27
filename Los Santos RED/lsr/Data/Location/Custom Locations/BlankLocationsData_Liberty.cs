@@ -36,7 +36,286 @@ public class BlankLocationsData_Liberty
         AodGang();
         LostGang();
         YardiesGang();
+        Racerstarts();
+        RandomPeds();
+    }
 
+    // vehicle types - ImportExportVehicles , HighEndVehicles, 
+
+    private void Racerstarts()
+    {
+        float defaultSpawnPercentage = 75f;
+        BlankLocation lcracersspawn1 = new BlankLocation(new Vector3(1590.535f, 1403.188f, 13.82599f), 139.1308f, "lcracersspawn1", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1588.196f, 1402.312f, 13.81336f), 293.9003f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
+                    new CivilianConditionalLocation(new Vector3(1589.097f, 1401.289f, 13.82189f), 317.723f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE" } },
+                    new CivilianConditionalLocation(new Vector3(1590.535f, 1403.188f, 13.82599f), 139.1308f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_LEANING_CASINO_TERRACE", "WORLD_HUMAN_MUSICIAN" } },
+                },
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1589.56f, 1406.269f, 13.19869f), 320.3771f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SportsCars_Racing", },
+                    new CivilianConditionalLocation(new Vector3(1582.892f, 1400.832f, 13.07434f), 358.1031f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing", },
+                },
+        };
+        BlankLocationPlaces.Add(lcracersspawn1);
+
+        BlankLocation lcracersspawn2 = new BlankLocation(new Vector3(28.63295f, 1683.457f, 14.61939f), 2.980924f, "lcracersspawn2", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(28.63295f, 1683.457f, 14.61939f), 2.980924f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE" } },
+                    new CivilianConditionalLocation(new Vector3(29.60939f, 1683.998f, 14.46971f), 41.70705f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
+                    new CivilianConditionalLocation(new Vector3(22.97536f, 1684.433f, 14.61939f), 271.1073f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_LEANING_CASINO_TERRACE", "WORLD_HUMAN_MUSICIAN" } },
+                    new CivilianConditionalLocation(new Vector3(23.28018f, 1685.57f, 14.6194f), 216.5524f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE", "WORLD_HUMAN_STAND_MOBILE_FACILITY" } },
+                },
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(26.43307f, 1688.719f, 13.76284f), 271.5317f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SportsCars_Racing", },
+                    new CivilianConditionalLocation(new Vector3(26.75488f, 1692.101f, 13.88513f), 91.17236f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing", },
+                },
+        };
+        BlankLocationPlaces.Add(lcracersspawn2);
+
+        BlankLocation lcracersspawn3 = new BlankLocation(new Vector3(2527.631f, 842.1624f, 6.095763f), 330.3031f, "lcracersspawn3", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(2527.631f, 842.1624f, 6.095763f), 330.3031f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
+                    new CivilianConditionalLocation(new Vector3(2528.787f, 844.3177f, 6.095029f), 142.0916f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE" } },
+                    new CivilianConditionalLocation(new Vector3(2527.622f, 844.7717f, 6.096177f), 172.0269f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE", "WORLD_HUMAN_STAND_MOBILE_FACILITY" } },
+                },
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(2526.927f, 838.8248f, 5.348821f), 91.80183f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SportsCars_Racing", },
+                    new CivilianConditionalLocation(new Vector3(2526.54f, 835.9313f, 5.347286f), 272.0292f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing", },
+                },
+        };
+        BlankLocationPlaces.Add(lcracersspawn3);
+
+        BlankLocation lcracersspawn4 = new BlankLocation(new Vector3(-1295.449f, 1606.236f, 26.69313f), 58.73107f, "lcracersspawn4", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1295.449f, 1606.236f, 26.69313f), 58.73107f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
+                    new CivilianConditionalLocation(new Vector3(-1297.393f, 1606.732f, 26.6924f), 253.594f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE", "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE" } },
+                    new CivilianConditionalLocation(new Vector3(-1296.583f, 1607.599f, 26.69313f), 230.4179f, defaultSpawnPercentage){ OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_LEANING_CASINO_TERRACE", "WORLD_HUMAN_MUSICIAN" } },
+                },
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1290.707f, 1605.831f, 25.93657f), 14.57801f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SportsCars_Racing", },
+                    new CivilianConditionalLocation(new Vector3(-1293.855f, 1601.167f, 26.10806f), 21.5986f, defaultSpawnPercentage){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing", },
+                },
+        };
+        BlankLocationPlaces.Add(lcracersspawn4);
+    }
+    private void RandomPeds()
+    {
+        float defaultCarSpawnPercentage = 25f;
+        BlankLocation lccivSpawn1 = new BlankLocation(new Vector3(1599.948f, -196.6128f, 7.796725f), 354.7676f, "lccivspawn1", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1600.594f, -191.5009f, 7.093661f), 280.9801f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn1);
+
+        BlankLocation lccivSpawn2 = new BlankLocation(new Vector3(1628.791f, 1071.019f, 32.65922f), 270.7252f, "lccivspawn2", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1627.084f, 1067.125f, 30.87173f), 92.10503f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn2);
+
+        BlankLocation lccivSpawn3 = new BlankLocation(new Vector3(1863.116f, 1185.089f, 28.97776f), 4.027365f, "lccivspawn3", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1863.591f, 1189.455f, 28.431f), 91.05238f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(1872.444f, 1189.62f, 27.93841f), 91.03718f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn3);
+
+        BlankLocation lccivSpawn4 = new BlankLocation(new Vector3(1216.59f, 1304.886f, 26.57545f), 88.24339f, "lccivspawn4", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1218.359f, 1308.849f, 24.8077f), 271.6276f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn4);
+
+        BlankLocation lccivSpawn5 = new BlankLocation(new Vector3(1462.148f, 2216.717f, 16.66937f), 178.3405f, "lccivspawn5", "")
+        {
+            OpenTime = 12,
+            CloseTime = 23,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1462.564f, 2211.49f, 16.00716f), 1.335895f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn5);
+
+        BlankLocation lccivSpawn6 = new BlankLocation(new Vector3(-926.0523f, 2142.805f, 35.46425f), 106.3721f, "lccivspawn6", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-932.3412f, 2150.055f, 34.92855f), 0.8309714f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-928.0471f, 2150.574f, 34.92269f), 0.1210937f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn6);
+
+        BlankLocation lccivSpawn7 = new BlankLocation(new Vector3(-1095.811f, 1839.553f, 21.63347f), 147.0407f, "lccivspawn7", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1095.906f, 1835.478f, 21.22811f), 91.87346f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-1083.58f, 1835.907f, 21.28119f), 91.92342f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-1071.779f, 1836.12f, 21.28103f), 91.81572f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn7);
+
+        BlankLocation lccivSpawn8 = new BlankLocation(new Vector3(-1350.101f, 772.3431f, 17.76602f), 73.85777f, "lccivspawn8", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1351.171f, 765.5463f, 16.29491f), 253.8885f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-1349.555f, 768.7265f, 16.43858f), 254.2497f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn8);
+
+        BlankLocation lccivSpawn9 = new BlankLocation(new Vector3(-711.7103f, 6.415293f, 2.839601f), 90.59621f, "lccivspawn9", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-715.6736f, 7.503227f, 2.334305f), 178.4972f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn9);
+
+        BlankLocation lccivSpawn10 = new BlankLocation(new Vector3(250.7807f, -121.4223f, 14.74667f), 55.07816f, "lccivspawn10", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(245.5206f, -116.7675f, 14.12165f), 334.4337f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn10);
+
+        BlankLocation lccivSpawn11 = new BlankLocation(new Vector3(252.7006f, 383.0337f, 14.77432f), 265.3253f, "lccivspawn11", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(256.1154f, 382.6819f, 14.15559f), 179.6348f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn11);
+
+        BlankLocation lccivSpawn12 = new BlankLocation(new Vector3(-266.825f, 135.9823f, 5.779591f), 317.5302f, "lccivspawn12", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-261.0188f, 141.0068f, 5.204176f), 136.8777f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-254.7487f, 133.8406f, 5.104361f), 130.5126f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-276.4068f, 153.0783f, 5.36197f), 152.2519f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn12);
+
+        BlankLocation lccivSpawn13 = new BlankLocation(new Vector3(-383.5523f, 644.8869f, 4.813265f), 358.0971f, "lccivspawn13", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-386.4319f, 655.8442f, 4.148156f), 89.41318f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                    new CivilianConditionalLocation(new Vector3(-367.4787f, 660.742f, 4.146415f), 359.2759f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn13);
+
+        BlankLocation lccivSpawn14 = new BlankLocation(new Vector3(350.2935f, 1390.053f, 14.71268f), 268.0731f, "lccivspawn14", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(356.825f, 1386.683f, 14.09456f), 178.8575f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "HighEndVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn14);
+
+        BlankLocation lccivSpawn15 = new BlankLocation(new Vector3(-42.16485f, 1679.924f, 14.76799f), 179.3935f, "lccivspawn15", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-47.16354f, 1672.214f, 14.14154f), 90.62903f, defaultCarSpawnPercentage){ OverrideDispatchableVehicleGroupID = "ImportExportVehicles", },
+                },
+        };
+        BlankLocationPlaces.Add(lccivSpawn15);
     }
     private void RooftopSnipers()
     {
@@ -3847,8 +4126,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(ColonyIslandCops2);
     }
-
-
     private void AncelottinGang()
     {
         BlankLocation AncelottiHonkers = new BlankLocation()
@@ -4738,7 +5015,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(AncelottiMail);
     }
-
     private void GambettiGang()
     {
         BlankLocation GambettiMarioBY = new BlankLocation()
@@ -5521,7 +5797,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(GambettiCityHall3);
     }
-
     private void LupisellaGang()
     {
         BlankLocation LupisellaBlock = new BlankLocation()
@@ -7954,7 +8229,7 @@ public class BlankLocationsData_Liberty
                             {
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-229.9644f, 924.7909f, 11.10709f),
+                                        Location = new Vector3(-229.9644f, 924.7909f, 11.00709f),
                                             Heading = 274.1806f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -7964,7 +8239,7 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-231.3217f, 923.7687f, 11.10709f),
+                                        Location = new Vector3(-231.3217f, 923.7687f, 11.00709f),
                                             Heading = 7.971545f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -7975,7 +8250,7 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-231.3796f, 925.6608f, 11.10709f),
+                                        Location = new Vector3(-231.3796f, 925.6608f, 11.00709f),
                                             Heading = 179.5679f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -8173,7 +8448,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(MessinaProsper);
     }
-
     private void PavanoGang()
     {
         BlankLocation PavanoTower1 = new BlankLocation()
@@ -9312,7 +9586,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(PavanoUGCP);
     }
-
     private void KhangpaeGang()
     {
         BlankLocation KkangpaeWaterFront = new BlankLocation()
@@ -10977,7 +11250,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(KkangpaeAlley2);
     }
-
     private void TriadGang()
     {
         BlankLocation TriadStreet = new BlankLocation()
@@ -11416,8 +11688,8 @@ public class BlankLocationsData_Liberty
                             {
                                 new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(299.0294f, 41.41854f, 13.99496f),
-                                            Heading = 178.3689f,
+                                        Location = new Vector3(299.2308f, 51.55918f, 14.07085f),
+                                            Heading = 358.6606f,
                                             Percentage = 0f,
                                             AssociationID = "",
                                             RequiredPedGroup = "",
@@ -13814,7 +14086,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(TriadMechMechanic);
     }
-
     private void PetrovicGang()
     {
         BlankLocation PetrovicCarServices = new BlankLocation()
@@ -15372,7 +15643,6 @@ public class BlankLocationsData_Liberty
         }; //interior
         BlankLocationPlaces.Add(PetrovicPerestroika2);
     }
-
     private void SpanishLordsGang()
     {
         BlankLocation SpanLordsMem = new BlankLocation()
@@ -18058,7 +18328,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(SpanishLordsStreet9);
     }
-
     private void HolHustGang()
     {
         BlankLocation HustlersSprunk = new BlankLocation()
@@ -19619,7 +19888,6 @@ public class BlankLocationsData_Liberty
         BlankLocationPlaces.Add(HustlersPark2);
 
     }
-
     private void AodGang()
     {
         BlankLocation AodDiner = new BlankLocation()
@@ -20479,7 +20747,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(AodVarsity);
     }
-
     private void LostGang()
     {
         BlankLocation LostHonkersCP = new BlankLocation()
@@ -21970,7 +22237,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(LostDiner2);
     }
-
     private void UptownGang()
     {
         BlankLocation UptownCowboy = new BlankLocation()
@@ -22235,7 +22501,6 @@ public class BlankLocationsData_Liberty
         };
         BlankLocationPlaces.Add(UptownBlock2);
     }
-
     private void YardiesGang()
     {
         BlankLocation YardiesBumbaclot = new BlankLocation()

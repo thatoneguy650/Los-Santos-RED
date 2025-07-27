@@ -462,7 +462,7 @@ namespace Mod
         public bool ReleasedFireWeapon { get; set; }
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
-        public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
+        public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying && !IsCustomizingPed;
         public int SpeechSkill { get; set; }
         public uint TargettingHandle
         {

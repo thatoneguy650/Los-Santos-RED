@@ -270,20 +270,8 @@ public class RepairGarage : GameLocation
             return;
         }
 
-        float OldFuel = Player.CurrentVehicle.Vehicle.FuelLevel;
 
-        Player.CurrentVehicle.Vehicle.Repair();
-        Player.CurrentVehicle.Vehicle.Wash();
-
-        if (Settings.SettingsManager.VehicleSettings.RefuelVehicleAfterPayNSprayRepair)
-        {
-            Player.CurrentVehicle.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
-        }
-        else
-        {
-            Player.CurrentVehicle.Vehicle.FuelLevel = OldFuel;
-        }
-
+        Player.CurrentVehicle.SetRepaired(true, Settings.SettingsManager.VehicleSettings.RefuelVehicleAfterPayNSprayRepair);
 
 
     }

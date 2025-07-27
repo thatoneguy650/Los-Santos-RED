@@ -1816,5 +1816,25 @@ namespace LSR.Vehicles
         {
             return GetCarName();
         }
+
+        public void SetRepaired(bool withWash, bool withRefuel)
+        {
+            float OldFuel = Vehicle.FuelLevel;
+            Vehicle.Repair();
+            if (withWash)
+            {
+                Vehicle.Wash();
+            }
+            if (withRefuel)
+            {
+                Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
+            }
+            else
+            {
+                Vehicle.FuelLevel = OldFuel;
+            }
+            Windows.SetWindows(true);
+
+        }
     }
 }

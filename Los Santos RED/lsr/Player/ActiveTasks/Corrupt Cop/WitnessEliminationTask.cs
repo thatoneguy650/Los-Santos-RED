@@ -367,7 +367,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     else
                     {
-                        WitnessVariation.ApplyToPed(Witness.Pedestrian);
+                        WitnessVariation.ApplyToPed(Witness.Pedestrian, true);
                     }
                     pedHeadshotHandle = NativeFunction.Natives.REGISTER_PEDHEADSHOT<int>(ped);
                     if (WitnessIsCustomer)

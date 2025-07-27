@@ -701,7 +701,7 @@ public class PedSwap : IPedSwap
             }
             if (variation != null)
             {
-                variation.ApplyToPed(Game.LocalPlayer.Character);
+                variation.ApplyToPed(Game.LocalPlayer.Character, false);
             }
             Player.SetVoice(voiceName);
             Player.DisplayPlayerNotification();
@@ -764,7 +764,7 @@ public class PedSwap : IPedSwap
 
         if (InitialPlayerVariation != null)
         {
-            InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
+            InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character, true);
         }
         //if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
         //{
@@ -1105,7 +1105,7 @@ public class PedSwap : IPedSwap
             NativeHelper.ChangeModel(ModelToChange);
             Game.LocalPlayer.Character.ResetVariation();
         }
-        variation.ApplyToPed(Game.LocalPlayer.Character);
+        variation.ApplyToPed(Game.LocalPlayer.Character, false);
 
 
         if (setRandomDemographics)
@@ -1167,7 +1167,7 @@ public class PedSwap : IPedSwap
         }
         if (!Game.LocalPlayer.Character.IsConsideredMainCharacter() && TargetPedVariation != null)
         {
-            TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
+            TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character, true);
         }
 
         VehicleExt NewVehicle = null;

@@ -44,7 +44,6 @@ public class Jurisdictions : IJurisdictions
             DefaultZoneConfig_FullExpandedJurisdiction();
             DefaultZoneConfig_LosSantos2008();
             DefaultZoneConfig_LibertyCity();
-            DefaultZoneConfig_SunshineDream();
             DefaultZoneConfig_Simple();
             DefaultZoneConfig();
             DefaultZoneConfig_LibertyPP();
@@ -78,7 +77,6 @@ public class Jurisdictions : IJurisdictions
             DefaultCountyConfig_FullExpandedJurisdiction();
             DefaultCountyConfig_LosSantos2008();
             DefaultCountyConfig_LibertyCity();
-            DefaultCountyConfig_SunshineDream();
             DefaultCountyConfig_Simple();
             DefaultCountyConfig();
             DefaultCountyConfig_LibertyPP();
@@ -1446,103 +1444,6 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\CountyJurisdictions_{StaticStrings.LPPConfigSuffix}.xml");
-    }
-
-    private void DefaultZoneConfig_SunshineDream()
-    {
-        List<ZoneJurisdiction> ZoneJurisdictionsListSunshineDream = new List<ZoneJurisdiction>()
-        {
-            new ZoneJurisdiction("VCPD","MFLATO", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLBSB", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLMIA", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLMIB", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSPB", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLADD", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLBKL", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLCCG", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLCRW", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLCRG", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLMB", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLCC", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLFMG", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLBSH", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSB", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLBI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLWI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLDI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFSMRI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLDLI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSMI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLFSI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLFMP", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSPP", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFDMIA", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFOMNI", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLPKW", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","MFOTWN", 1, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLUMP", 1, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLSPG", 1, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLHVA", 1, 100, 100),
-            new ZoneJurisdiction("VCPD","MFLFMI", 1, 100, 100),
-
-
-            new ZoneJurisdiction("VDPD","MFLATO",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLBSB",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLMIA",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLMIB",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSPB",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLADD",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLBKL",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLCCG",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLCRW",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLCRG",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLMB",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLCC",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLFMG",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLBSH",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSB",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLBI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLWI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLDI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFSMRI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLDLI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSMI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLFSI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLFMP",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSPP",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFDMIA",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFOMNI",1, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLPKW",0, 100, 100),
-            new ZoneJurisdiction("VDPD","MFOTWN",0, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLUMP",0, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLSPG",0, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLHVA",0, 100, 100),
-            new ZoneJurisdiction("VDPD","MFLFMI",0, 100, 100),
-
-            //Other
-            new ZoneJurisdiction("VCPD","OCEANA", 0, 100, 100),
-            new ZoneJurisdiction("VCPD","SANAND", 0, 100, 100),
-        };
-        Serialization.SerializeParams(ZoneJurisdictionsListSunshineDream, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\ZoneJurisdictions_SunshineDream.xml");
-    }
-    private void DefaultCountyConfig_SunshineDream()
-    {
-        List<CountyJurisdiction> CountyJurisdictionListSunshineDream = new List<CountyJurisdiction>()
-        {
-            new CountyJurisdiction("VCPD-ASD",StaticStrings.CityOfViceCountyID, 0, 100, 100),
-            new CountyJurisdiction("VCPD-ASD",StaticStrings.ViceCountyID, 0, 100, 100),
-
-
-            new CountyJurisdiction("FDVC",StaticStrings.CityOfViceCountyID, 0, 100, 100),
-            new CountyJurisdiction("FDVC",StaticStrings.ViceCountyID, 0, 100, 100),
-
-            new CountyJurisdiction("VCMC",StaticStrings.CityOfViceCountyID, 0, 100, 100),
-            new CountyJurisdiction("VCMC",StaticStrings.ViceCountyID, 0, 100, 100),
-
-        };
-        Serialization.SerializeParams(CountyJurisdictionListSunshineDream, "Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\CountyJurisdictions_SunshineDream.xml");
     }
 
     private void DefaultZoneConfig_Simple()

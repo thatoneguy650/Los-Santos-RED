@@ -40,11 +40,11 @@ public class CustomizePropsMenu
     public void Setup(UIMenu CustomizeMainMenu)
     {
         PropLookup = new List<FashionProp>() {
-            new FashionProp(0,"Hats"),
-            new FashionProp(1, "Glasses"),
-            new FashionProp(2, "Ear"),
-            new FashionProp(6, "Watches"),
-            new FashionProp(7, "Bracelets"),
+            new FashionProp(0,"Hats") { AllowDefaultNotApplied = true },
+            new FashionProp(1, "Glasses"){ AllowDefaultNotApplied = true },
+            new FashionProp(2, "Ear"){ AllowDefaultNotApplied = true },
+            new FashionProp(6, "Watches"){ AllowDefaultNotApplied = true },
+            new FashionProp(7, "Bracelets"){ AllowDefaultNotApplied = true },
         };
 
         PickPropMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Props");

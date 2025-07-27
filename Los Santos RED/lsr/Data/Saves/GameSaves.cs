@@ -104,7 +104,7 @@ public class GameSaves : IGameSaves
         PedVariation AlexisVariation = new PedVariation(new List<PedComponent>()
         {
             new PedComponent(0, 0, 0, 0),
-            new PedComponent(1, 0, 0, 0),
+            new PedComponent(1, 4, 0, 0) { IsDefaultNotApplied = true },
             new PedComponent(2, 42, 0, 0) ,
             new PedComponent(3, 14, 0, 0) ,
             new PedComponent(4, 11, 8, 0) ,
@@ -112,13 +112,14 @@ public class GameSaves : IGameSaves
             new PedComponent(6, 11, 2, 0) ,
             new PedComponent(7, 0, 0, 0) ,
             new PedComponent(8, 13, 0, 0) ,
-            new PedComponent(9, 0, 0, 0) ,
+            new PedComponent(9, 6, 3, 0) { IsDefaultNotApplied = true },
             new PedComponent(10, 0, 0, 0) ,
             new PedComponent(11, 49, 1, 0)
         },
         new List<PedPropComponent>()
         {
-
+            new PedPropComponent(1,11,0) { IsDefaultNotApplied = true },
+            new PedPropComponent(0,20,0) { IsDefaultNotApplied = true },
         },
         new List<HeadOverlayData>()
         {
@@ -149,12 +150,11 @@ public class GameSaves : IGameSaves
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
         GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() {
-            new VehicleSaveStatus("comet2", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ 
+            new VehicleSaveStatus("coquette6", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ 
                 InventoryItems = new List<InventorySave>() { new InventorySave("DIC Lighter",1.0f), }
             , WeaponInventory = new List<StoredWeapon>() {new StoredWeapon(1593441988, Vector3.Zero, new WeaponVariation(new List<WeaponComponent>() { new WeaponComponent("Extended Clip") } ), 120), },
-                VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate(" LS RED ", 0, false, Game.GetHashKey("comet2")) } },
-            new VehicleSaveStatus("velum", new Vector3(-1222.977f, -3338.955f, 14.87685f), 94.55769f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 27, LicensePlate = new LSR.Vehicles.LicensePlate("81VAU819", 0, false, Game.GetHashKey("velum")) } },
-        }
+                VehicleVariation = new VehicleVariation() { PrimaryColor =  89, SecondaryColor = 1,PearlescentColor = 2, LicensePlate = new LSR.Vehicles.LicensePlate(" LS RED ", 0, false, Game.GetHashKey("coquette6")) } },
+            }
         );
 
 

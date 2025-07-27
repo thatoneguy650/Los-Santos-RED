@@ -21,6 +21,8 @@ public class FashionProp
     private string filterString = "";
     private UIMenuItem filterItems;
     private UIMenuItem ResetMenu;
+    private UIMenuCheckboxItem NotAppliedMenu;
+    private bool IsDefaultApplied = false;
 
     public FashionProp()
     {
@@ -33,7 +35,7 @@ public class FashionProp
 
     public int PropID { get; set; }
     public string PropName { get; set; }
-
+    public bool AllowDefaultNotApplied { get; set; }
     public void CombineCustomizeMenu(MenuPool MenuPool, UIMenu topMenu, Ped ped, PedCustomizer pedCustomizer)
     {
         Ped = ped;
@@ -65,6 +67,28 @@ public class FashionProp
         AddTextureItem(componentMenu);
         AddGoToMenuItem(componentMenu);
         AddSearchMenuItem(componentMenu);
+
+        if (AllowDefaultNotApplied)
+        {
+            AddDefaultNotAppliedMenuItem(componentMenu);
+        }
+    }
+    private void AddDefaultNotAppliedMenuItem(UIMenu componentMenu)
+    {
+        NotAppliedMenu = new UIMenuCheckboxItem("Default Not Applied", IsDefaultApplied, "If enabled the prop will not be applied by default and will need to be toggled using the clothing/accessories/outfit menus.");
+        PedPropComponent initialComponentStart = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+        NotAppliedMenu.Checked = initialComponentStart?.IsDefaultNotApplied == true;
+        NotAppliedMenu.CheckboxEvent += (sender, Checked) =>
+        {
+            PedPropComponent foundComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+            if (foundComponent == null)
+            {
+                Game.DisplaySubtitle("No Prop found to set default");
+                return;
+            }
+            foundComponent.IsDefaultNotApplied = Checked;
+        };
+        componentMenu.AddItem(NotAppliedMenu);
     }
     private void AddResetMenuItem(UIMenu componentMenu)
     {

@@ -10,6 +10,7 @@ public class PedComponent
     public int DrawableID { get; set; }
     public int TextureID { get; set; }
     public int PaletteID { get; set; }
+    public bool IsDefaultNotApplied { get; set; }
     public PedComponent()
     {
 

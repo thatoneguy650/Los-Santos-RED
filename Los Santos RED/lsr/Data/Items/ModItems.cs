@@ -223,7 +223,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Gargoyle Cruiser", ItemType.Vehicles) { ModelName = "civgargoylestock" });
         //Muscle
         newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gauntlet R/T", ItemType.Vehicles) { ModelName = "civgauntletstock" });
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Dominator 4th Gen", ItemType.Vehicles) { ModelName = "civdominator7" });
         //Sedans
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Gemini", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Sedan", ModelName = "civinterceptor", Description = "The civilian version of the police classic. So what if they couldn't sell it to law enforcement? It still can get you to Burger Shot without breaking down. Often.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier 2nd Gen", ItemType.Vehicles) { OverrideMakeName = "Vapid",OverrideClassName = "Sedan", ModelName = "civstanier2", Description = "The remix of a classic. As heavy and slow as before, now with worse quality control. We'll make up for it in fleet sales.", });
@@ -238,6 +238,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
 
         //Trucks
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Firebolt Stock", ItemType.Vehicles) { ModelName = "civfireboltstock" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Sadler 4WD", ItemType.Vehicles) { ModelName = "civsadleroffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Utility", ItemType.Vehicles) { ModelName = "civcaracarautil" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 2WD", ItemType.Vehicles) { ModelName = "civcaracarawork" });

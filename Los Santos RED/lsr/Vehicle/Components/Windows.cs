@@ -19,6 +19,14 @@ namespace LSR.Vehicles
             VehicleToMonitor = vehicleToMonitor;
             Settings = settings;
         }
+        public void SetWindows(bool IsRolledUp)
+        {
+            CreateWindowList();
+            foreach(Window window in WindowList)
+            {
+                window.SetState(IsRolledUp);
+            }
+        }
         public void ToggleWindow(int windowID)
         {
             Window toSet = GetOrCreate(windowID);

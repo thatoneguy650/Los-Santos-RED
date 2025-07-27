@@ -321,7 +321,7 @@ public class CustomizeFaceMenu
             return;
         }
         PedCustomizer.WorkingVariation.EyeColor = eyeColorMenu.SelectedItem.ColorID;
-        PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+        PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed, true);
     }
 
     private void SetIndex(int OverlayID, UIMenuNumericScrollerItem<int> OverlayIndexMenu)
@@ -335,7 +335,7 @@ public class CustomizeFaceMenu
         if (toChange != null)
         {
             toChange.Index = OverlayIndexMenu.Value;
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed, true);
         }
     }
     private void SetPrimaryColor(int OverlayID, UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu)
@@ -349,7 +349,7 @@ public class CustomizeFaceMenu
         if (toChange != null)
         {
             toChange.PrimaryColor = PrimaryColorMenu.SelectedItem.ColorID;
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed, true);
         }
     }
     private void SetSecondaryColor(int OverlayID, UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu)
@@ -363,7 +363,7 @@ public class CustomizeFaceMenu
         if (toChange != null)
         {
             toChange.SecondaryColor = SecondaryColorMenu.SelectedItem.ColorID;
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed, true);
         }
     }
     private void SetOpacity(int OverlayID, UIMenuNumericScrollerItem<float> OpacityMenu)
@@ -378,7 +378,7 @@ public class CustomizeFaceMenu
         {
             //EntryPoint.WriteToConsoleTestLong("OpacityMenu FOUND OVERLAY TO CHANGE");
             toChange.Opacity = OpacityMenu.Value;
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed, true);
         }
     }
     private void AddOverlay(int id)

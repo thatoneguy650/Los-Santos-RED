@@ -53,9 +53,9 @@ public class PedVariation
 
     public List<AppliedOverlay> AppliedOverlays { get; set; } = new List<AppliedOverlay>();
 
-    public PedVariation ApplyToPed(Ped ped)
+    public PedVariation ApplyToPed(Ped ped, bool SetDefaultApplied)
     {
-        return ApplyToPed(ped, false, false);
+        return ApplyToPed(ped, false, false, SetDefaultApplied);
     }
     //public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst)
     //{
@@ -65,7 +65,7 @@ public class PedVariation
     //    }
     //    return ApplyToPed(ped);
     //}
-    public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst, bool checkComponentValid)
+    public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst, bool checkComponentValid, bool SetDefaultApplied)
     {
         try
         {
@@ -78,6 +78,10 @@ public class PedVariation
             PedVariation setVariation = new PedVariation();
             foreach (PedComponent Component in Components)
             {
+                if (Component.IsDefaultNotApplied && !SetDefaultApplied)
+                {
+                    continue;
+                }
                 if (!checkComponentValid || NativeFunction.Natives.IS_PED_COMPONENT_VARIATION_VALID<bool>(ped, Component.ComponentID, Component.DrawableID, Component.TextureID))
                 {
                     NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
@@ -87,6 +91,10 @@ public class PedVariation
             NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
             foreach (PedPropComponent Prop in Props)
             {
+                if(Prop.IsDefaultNotApplied && !SetDefaultApplied)
+                {
+                    continue;
+                }
                 NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
                 setVariation.Props.Add(new PedPropComponent(Prop.PropID, Prop.DrawableID, Prop.TextureID));
             }

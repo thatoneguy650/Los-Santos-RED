@@ -369,6 +369,11 @@ public class ShopMenus : IShopMenus
             vapidMenu.Items.Add(new MenuItem("Vapid Caracara SX3 4WD", 45000, 14000));
             vapidMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 22000, 5000));
             vapidMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 12000, 4000));
+
+
+
+            vapidMenu.Items.Add(new MenuItem("Vapid Dominator 4th Gen", 25000, 5600));
+            vapidMenu.Items.Add(new MenuItem("Vapid Firebolt Stock", 18000, 5000));
         }
         //KarinMenu
         ShopMenu karinMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "KarinMenu").FirstOrDefault();

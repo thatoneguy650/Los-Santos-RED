@@ -201,7 +201,7 @@ public class EMTSpawnTask : SpawnTask
         EntryPoint.PersistentPedsCreated++;//TR
         ped.RelationshipGroup = new RelationshipGroup("MEDIC");
         bool isMale = PersonType.IsMale(ped);
-        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), World);
+        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
         PrimaryEmt.SetStats(PersonType, Weapons, AddBlip, ShopMenus);
         if (ped.Exists())

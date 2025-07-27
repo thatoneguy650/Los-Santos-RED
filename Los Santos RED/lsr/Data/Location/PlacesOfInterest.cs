@@ -101,7 +101,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         else
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
-            DefaultConfig_SunshineDream();
             DefaultConfig();
             DefaultConfig_LibertyCity();
             DefaultConfig_2008();
@@ -6231,11 +6230,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty(this);
         placesOfInterest_Liberty.DefaultConfig();
     }
-    private void DefaultConfig_SunshineDream()
-    {
-        PlacesOfInterest_SunshineDream placesOfInterest_SunshineDream = new PlacesOfInterest_SunshineDream();
-        placesOfInterest_SunshineDream.DefaultConfig();
-    }
+
     public void Setup()
     {
         foreach (GameLocation bl in AllLocations())

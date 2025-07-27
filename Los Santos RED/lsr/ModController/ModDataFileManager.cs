@@ -228,7 +228,6 @@ public class ModDataFileManager
         SetupLosSantos2008();
         SetupLibertyCity();
         SetupLPP();
-        SetupSunshineDream();
         SetupSimple();
         SetupFullModernTraffic();
         SetupRemoveVanillaGangs();
@@ -456,12 +455,7 @@ public class ModDataFileManager
             "Peter Badoingy";
         File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\readme.txt", Description);
     }
-    private void SetupSunshineDream()
-    {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream");
-        string Description = "For use with Sunshine Dream (Miami) https://www.gta5-mods.com/maps/sunshine-dream. Not complete.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\SunshineDream\\readme.txt", Description);
-    }
+
     private void SetupSimple()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\Simple");

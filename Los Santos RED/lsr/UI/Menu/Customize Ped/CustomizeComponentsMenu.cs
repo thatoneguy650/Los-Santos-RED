@@ -41,15 +41,15 @@ public class CustomizeComponentsMenu
     {
         ComponentLookup = new List<FashionComponent>() {
             new FashionComponent(0,"Face"),
-            new FashionComponent(1, "Mask/Beard"),
+            new FashionComponent(1, "Mask/Beard") { AllowDefaultNotApplied = true },
             new FashionComponent(2, "Hair"),
             new FashionComponent(3, "Torso"),
             new FashionComponent(4, "Lower"),
-            new FashionComponent(5, "Bags"),
+            new FashionComponent(5, "Bags") { AllowDefaultNotApplied = true, },
             new FashionComponent(6, "Foot"),
-            new FashionComponent(7, "Accessories"),
+            new FashionComponent(7, "Accessories") { AllowDefaultNotApplied = true },
             new FashionComponent(8, "Undershirt"),
-            new FashionComponent(9, "Body Armor"),
+            new FashionComponent(9, "Body Armor") { AllowDefaultNotApplied = true },
             new FashionComponent(10, "Decals"),
             new FashionComponent(11, "Tops"), };
 
