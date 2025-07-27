@@ -346,7 +346,7 @@ public class DispatchablePerson
             }
             if (isSlow)
             {
-                variationToSet = RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
+                variationToSet = RequiredVariation.ApplyToDispatchablePedSlow(ped, setDefaultFirst);
             }
             else
             {
