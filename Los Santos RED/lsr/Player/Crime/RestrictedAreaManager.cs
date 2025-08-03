@@ -71,12 +71,12 @@ public class RestrictedAreaManager
         }
         bool IsOpen = Player.CurrentLocation.CurrentInterior.GameLocation?.IsOpen(Time.CurrentHour) == true;
 
-        if (Player.CurrentLocation.CurrentInterior.IsRestricted || !IsOpen)
+        if (Player.CurrentLocation.CurrentInterior.IsRestricted || (Player.CurrentLocation.CurrentInterior.IsTrespassingWhenClosed && !IsOpen))
         {
 
 
             IsTrespassing = true;
-            if (Player.CurrentLocation.CurrentInterior.IsCivilianReactableRestricted || !IsOpen)
+            if (Player.CurrentLocation.CurrentInterior.IsCivilianReactableRestricted || (Player.CurrentLocation.CurrentInterior.IsTrespassingWhenClosed && !IsOpen))
             {
                 IsCivilianReactableTrespassing = true;
             }

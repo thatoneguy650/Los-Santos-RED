@@ -84,6 +84,9 @@ public class Interior
     public bool IsWeaponRestricted { get; set; } = false;
     public bool IsTunnel { get; set; } = false;
     public float MaxUpdateDistance { get; set; } = 50f;
+
+
+    public bool IsTrespassingWhenClosed { get; set; } = false;
     public List<InteriorInteract> InteractPoints { get; set; } = new List<InteriorInteract>();
     public List<Vector3> ClearPositions { get; set; } = new List<Vector3>();
     public string ForceAutoInteractName { get; set; }

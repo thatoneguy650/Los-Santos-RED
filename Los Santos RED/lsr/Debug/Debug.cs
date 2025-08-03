@@ -530,6 +530,14 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        //NativeFunction.Natives.SET_RADIO_TO_STATION_NAME("RADIO_23_INTEGRITY");
+
+       // NativeFunction.Natives.x477D9DB48F889591("RADIO_01_CLASS_ROCK", true);
+
+        //NativeFunction.CallByHash<bool>(0x477D9DB48F889591, "RADIO_01_CLASS_ROCK", true);
+
+        //GameFiber.Sleep(500);
+
         /*        float LockpickAnimStopPercentage = 0.5f;
         float LockpickAnimRestartPercentage = 0.3f;
         float LockpickAnimIntroRate = 8.0f;

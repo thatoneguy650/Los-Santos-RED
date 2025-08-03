@@ -94,7 +94,7 @@ public class Interiors : IInteriors
                 new BarberShopInterior(-99099,"Barber Shop")
                 {
                     IsTeleportEntry = true,
-
+                    
                     ForceAutoInteractName = "genericheaircutinteract1",
                     InteriorEgressPosition = new Vector3(123.7631f, -745.737f, 242.152f),
                     InteriorEgressHeading = 216.5336f,
@@ -121,6 +121,7 @@ public class Interiors : IInteriors
 
                 new BarberShopInterior(13058,"Herr Kutz Paleto")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("herrkutzpaletointeract1",new Vector3(-276.8453f, 6225.595f, 31.69551f), 120.1309f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(-278.348f,6225.873f,30.93535f),
@@ -138,6 +139,7 @@ public class Interiors : IInteriors
 
                 new BarberShopInterior(113922,"Beach Combover Vespucci")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("beachcombvespucciinteract1",new Vector3(-1280.101f, -1117.949f, 6.50118f), 152.0002f,"Get Haircut")
                         {
@@ -155,6 +157,7 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(37378,"Bob Mulet Rockford Hills")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("bobmuletrockfordinteract1",new Vector3(-817.1225f, -185.375f, 37.56889f), 343.7052f,"Get Haircut")
                         {
@@ -173,6 +176,7 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(102146,"Herr Kutz Davis")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("herrkutzdavisinteract1",new Vector3(139.1199f, -1706.163f, 29.29162f), 212.893f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(139.2859f,-1708.033f,28.48875f),
@@ -189,6 +193,7 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(112642,"Herr Kutz Mirror Park")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("herrkutzmirrorinteract1",new Vector3(1215.068f, -474.1496f, 66.20802f), 135.4196f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(1213.349f,-474.8473f,65.45633f),
@@ -205,6 +210,7 @@ public class Interiors : IInteriors
                 },
                 new BarberShopInterior(10242,"O'Sheas Sandy Shores")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("osheassandyinteract1",new Vector3(1930.365f, 3732.802f, 32.84443f), 264.8277f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(1932.398f,3732.411f,32.08461f),
@@ -222,6 +228,7 @@ public class Interiors : IInteriors
 
                 new BarberShopInterior(34306,"Hair on Hawick")
                 {
+                    IsTrespassingWhenClosed = true,
                     HaircutInteracts = new List<SalonInteract>() {
                         new SalonInteract("haironhawickinteract1",new Vector3(-34.39177f, -154.897f, 57.07654f), 38.9985f,"Get Haircut") {
                             AnimEnterPosition = new Vector3(-35.08471f,-153.2957f,56.32422f),
@@ -246,20 +253,20 @@ public class Interiors : IInteriors
             //Barber
 
             //Clothes
-            new Interior(19458,"Sub Urban") { IsWeaponRestricted = true, },
+            new Interior(19458,"Sub Urban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },
             new Interior(22786, "BINCO Textile City",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)) { CanBeForcedOpenByPlayer = true },
-                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) { CanBeForcedOpenByPlayer = true } }) { IsWeaponRestricted = true, },//doesntwork?
-            new Interior(10754,"Sub Urban") { IsWeaponRestricted = true, },
-            new Interior(1282,"Ponsonby") { IsWeaponRestricted = true, },
-            new Interior(14338,"Ponsonby") { IsWeaponRestricted = true, },
-            new Interior(22786,"Binco") { IsWeaponRestricted = true, },
-            new Interior(96266,"Suburban") { IsWeaponRestricted = true, },//suburban harmony
-            new Interior(17154,"Binco") { IsWeaponRestricted = true, },
-            new Interior(88066,"Discount Store") { IsWeaponRestricted = true, },
+                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) { CanBeForcedOpenByPlayer = true } }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },//doesntwork?
+            new Interior(10754,"Sub Urban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },
+            new Interior(1282,"Ponsonby") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(14338,"Ponsonby") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(22786,"Binco") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(96266,"Suburban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },//suburban harmony
+            new Interior(17154,"Binco") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(88066,"Discount Store") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
 
             //Ammunations
             new Interior(-555,"Ammunation Vespucci Boulevard",
@@ -267,22 +274,22 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(842.7685f, -1024.539f, 28.34478f)),
-                    new InteriorDoor(97297972, new Vector3(845.3694f, -1024.539f, 28.34478f)),}) { IsWeaponRestricted = true, },
+                    new InteriorDoor(97297972, new Vector3(845.3694f, -1024.539f, 28.34478f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
             new Interior(-554,"Ammunation Lindsay Circus",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(-662.6415f, -944.3256f, 21.97915f)),
-                    new InteriorDoor(97297972, new Vector3(-665.2424f, -944.3256f, 21.97915f)) }) { IsWeaponRestricted = true, },
+                    new InteriorDoor(97297972, new Vector3(-665.2424f, -944.3256f, 21.97915f)) }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
             new Interior(29698,"Ammu Nation Vinewood Plaza",
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(-8873588, new Vector3(243.8379f, -46.52324f, 70.09098f)),
-                    new InteriorDoor(97297972, new Vector3(244.7275f, -44.07911f, 70.09098f)) }) { IsWeaponRestricted = true, },
-            new Interior(80386,"Ammunation Cypress Flats"),
-            new Interior(48130,"Ammunation Pillbox Hill") { IsWeaponRestricted = true, },
-            new Interior(35586,"Ammunation") { IsWeaponRestricted = true, },
+                    new InteriorDoor(97297972, new Vector3(244.7275f, -44.07911f, 70.09098f)) }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(80386,"Ammunation Cypress Flats") { IsTrespassingWhenClosed = true, IsWeaponRestricted = true },
+            new Interior(48130,"Ammunation Pillbox Hill") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(35586,"Ammunation") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
 
             //24/7
             new Interior(41474,"24/7 Route 68",
@@ -292,7 +299,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(1196685123, new Vector3(545.504f,2672.745f,42.30644f)),//left door
                     new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}) //right door
             {
-
+                IsTrespassingWhenClosed = true,
                 IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -334,6 +341,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(1196685123, new Vector3(-3240.128f,1003.157f,12.98064f)),//left door
                     new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))})//right door 
             {
+                IsTrespassingWhenClosed = true,
                 IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -349,7 +357,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2559.201f,384.0875f,108.7729f)),
-                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                             InteractPoints = new List<InteriorInteract>()
                 {
@@ -366,7 +374,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(27.81761f,-1349.169f,29.64696f)),
-                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     GenerateSafeDrillingInteract("247strawberrysafe1",new Vector3(28.21077f,-1339.231f,29.49702f),358.4373f),
@@ -381,7 +389,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(-3038.219f,588.2872f,8.058861f)),
-                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                     InteractPoints = new List<InteriorInteract>()
                 {
                     GenerateSafeDrillingInteract("247banhamsafe1",new Vector3(-3047.899f,585.6166f,7.908929f),107.6895f),
@@ -397,7 +405,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(375.3528f,323.8015f,103.7163f)),
-                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     GenerateSafeDrillingInteract("247vinewoodsafe1",new Vector3(378.2333f,333.4276f,103.5664f),348.8413f),
@@ -412,7 +420,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1437777724, new Vector3(1732.245f,6415.377f,34.76194f)),
-                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     GenerateSafeDrillingInteract("247Senorasafe1",new Vector3(2672.808f,3286.673f,55.24113f),59.95816f),
@@ -427,7 +435,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(2681.292f,3281.427f,55.39108f)),
-                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
 
@@ -443,7 +451,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(1196685123, new Vector3(1963.917f,3740.075f,32.49369f)),
-                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}) { IsWeaponRestricted = true,
+                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -462,7 +470,7 @@ public class Interiors : IInteriors
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)) { CanBeForcedOpenByPlayer = true },
                     new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)) { CanBeForcedOpenByPlayer = true },}){
-                IsWeaponRestricted = true,
+                IsWeaponRestricted = true,IsTrespassingWhenClosed = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     Generate247Interact1("ltdlittleseoulitemtheftint1",new Vector3(-707.8715f, -914.1517f, 19.21559f), 270.5069f),
@@ -481,7 +489,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)) { CanBeForcedOpenByPlayer = true },
                     new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)) { CanBeForcedOpenByPlayer = true },})
             {
-                IsWeaponRestricted = true,
+                IsWeaponRestricted = true,IsTrespassingWhenClosed = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     Generate247Interact1("ltdgrapeseeditemtheftint1",new Vector3(1698.303f, 4924.868f, 42.06368f), 147.1322f),
@@ -499,7 +507,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)) { CanBeForcedOpenByPlayer = true },}) {
 
 
-                IsWeaponRestricted = true,
+                IsWeaponRestricted = true,IsTrespassingWhenClosed = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     Generate247Interact1("ltdgrapeseeditemtheftint1",new Vector3(-48.92481f, -1757.641f, 29.42102f), 232.3135f),
@@ -517,7 +525,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)) { CanBeForcedOpenByPlayer = true },
-                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)) { CanBeForcedOpenByPlayer = true },}) { IsWeaponRestricted = true,
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)) { CanBeForcedOpenByPlayer = true },}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -535,7 +543,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3426294393, new Vector3(-1823.285f, 787.3687f, 138.3624f)) { CanBeForcedOpenByPlayer = true },
-                    new InteriorDoor(2065277225, new Vector3(-1821.369f, 789.1273f, 138.3124f)) { CanBeForcedOpenByPlayer = true },}) { IsWeaponRestricted = true, },//right door  
+                    new InteriorDoor(2065277225, new Vector3(-1821.369f, 789.1273f, 138.3124f)) { CanBeForcedOpenByPlayer = true },}) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },//right door  
             new Interior(74874,"LtD Gas") { IsWeaponRestricted = true,
 
             InteractPoints = new List<InteriorInteract>()
@@ -552,7 +560,7 @@ public class Interiors : IInteriors
             },
 
             //Liquor
-            new Interior(33026,"Scoops Liquor Barn") { IsWeaponRestricted = true,
+            new Interior(33026,"Scoops Liquor Barn") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
             InteractPoints = new List<InteriorInteract>()
                 {
@@ -562,7 +570,7 @@ public class Interiors : IInteriors
 
             },
             new Interior(104450,"Liquor Ace"){
-
+IsTrespassingWhenClosed = true,
             IsWeaponRestricted = true,
             InteractPoints = new List<InteriorInteract>()
                 {
@@ -576,7 +584,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
-                }) { IsWeaponRestricted = true,
+                }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -595,7 +603,7 @@ public class Interiors : IInteriors
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true },
                 }) {
-                IsWeaponRestricted = true,
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     GenerateSafeDrillingInteract("robschumashsafe1",new Vector3(-2959.66f,387.1028f,14.04329f),174.1468f),
@@ -609,7 +617,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true },
-                }) { IsWeaponRestricted = true,
+                }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -626,7 +634,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<InteriorDoor>() {
                     new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true },
-                }) { IsWeaponRestricted = true,
+                }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -649,7 +657,7 @@ public class Interiors : IInteriors
             new Interior(35074,"The Pit"),//tattoo
             //Car Dealer
             new Interior(37890,"Los Santos Customs"),
-            new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
+            new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
 
             //Banks
             
@@ -7342,7 +7350,7 @@ public class Interiors : IInteriors
             new BankInterior(71682,"Fleeca Bank") {
 
                 SearchLocations = new List<Vector3>() { new Vector3(-355.2124f, -47.33231f, 49.03636f) },
-
+                IsTrespassingWhenClosed = true,
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },//unknown door1
                    new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
@@ -7408,7 +7416,7 @@ public class Interiors : IInteriors
 
             },
             new BankInterior(76802,"Fleeca Bank"){
-               IsWeaponRestricted = true
+               IsTrespassingWhenClosed = true,IsWeaponRestricted = true
                ,SearchLocations = new List<Vector3>() { new Vector3(145.943f, -1037.929f, 29.36783f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
                , Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, },
@@ -7473,7 +7481,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(11266,"Fleeca Bank") {
-                IsWeaponRestricted = true,
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 SearchLocations = new List<Vector3>() { new Vector3(310.2834f, -276.4164f, 54.16457f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, },
@@ -7538,7 +7546,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(20226,"Fleeca Bank") {
-               IsWeaponRestricted = true,
+               IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
                 Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
@@ -7593,7 +7601,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(90626,"Fleeca Bank") {
-               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, Doors =  new List<InteriorDoor>() {
+               IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
@@ -7646,7 +7654,7 @@ public class Interiors : IInteriors
                 },
             },
             new BankInterior(87810,"Fleeca Bank") {
-               IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1217.313f, -331.7081f, 37.7808f) }, Doors =  new List<InteriorDoor>() {
+               IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1217.313f, -331.7081f, 37.7808f) }, Doors =  new List<InteriorDoor>() {
                    new InteriorDoor(2121050683,new Vector3( - 1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, },
                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
@@ -7702,7 +7710,7 @@ public class Interiors : IInteriors
 
             new BankInterior(103170,"Pacific Standard Bank") {
                 SearchLocations = new List<Vector3>(){new Vector3(257.4755f, 223.8576f, 106.2864f),new Vector3(252.2917f, 218.485f, 101.6834f),new Vector3(249.9998f, 209.9364f, 110.2829f)},
-                IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
 
                     
@@ -7882,7 +7890,7 @@ public class Interiors : IInteriors
             },
 
             new BankInterior(42754,"Blaine County Savings") {
-                IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) }, Doors =  new List<InteriorDoor>() {
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) }, Doors =  new List<InteriorDoor>() {
                     new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
                     new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
                     new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
@@ -7956,7 +7964,7 @@ public class Interiors : IInteriors
                             LockWhenClosed = true,
                         },
                     },
-                    IsWeaponRestricted = true,
+                    IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                     InteractPoints = new List<InteriorInteract>()
                     {
                         new ItemTheftInteract() {
@@ -8741,10 +8749,10 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
             new Interior(-999565,"Split Sides Comedy Club",new List<string>() { },new List<string>() { }),
 
 
-            new Interior(104450,"Liquor Ace") { SearchLocations = new List<Vector3>() { new Vector3(1391.579f, 3608.259f, 34.98093f), new Vector3(1390.555f, 3613.684f, 38.94193f), new Vector3(1392.507f, 3602.898f, 38.94189f) } },
+            new Interior(104450,"Liquor Ace") { IsTrespassingWhenClosed = true, IsWeaponRestricted = true, SearchLocations = new List<Vector3>() { new Vector3(1391.579f, 3608.259f, 34.98093f), new Vector3(1390.555f, 3613.684f, 38.94193f), new Vector3(1392.507f, 3602.898f, 38.94189f) } },
 
 
-            new Interior(89602,"Yellow Jacket Inn") { SearchLocations = new List<Vector3>() { new Vector3(1993.187f, 3045.516f, 47.21509f) } },
+            new Interior(89602,"Yellow Jacket Inn") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, SearchLocations = new List<Vector3>() { new Vector3(1993.187f, 3045.516f, 47.21509f) } },
             new Interior(118018,"Vanilla Unicorn"),
 
             //new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
