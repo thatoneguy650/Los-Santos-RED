@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr
         private bool ReportedLethalForceAuthorized;
         private bool ReportedRequestAirSupport;
         private bool ReportedWeaponsFree;
+        private bool ReportedIdentified;
         private bool canHearScanner;
         private bool ExecutingAmbientQueue;
 
@@ -122,6 +123,7 @@ namespace LosSantosRED.lsr
             DispatchQueue.Clear();
             ReportedLethalForceAuthorized = false;
             ReportedWeaponsFree = false;
+            ReportedIdentified = true;
             ReportedRequestAirSupport = false;
             HighestCivilianReportedPriority = 99;
             HighestOfficerReportedPriority = 99;
@@ -708,6 +710,16 @@ namespace LosSantosRED.lsr
             }
             //EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
             //MILITARY
+        }
+
+
+
+        public void OnPlayerIdentified()
+        {
+            if (!ReportedIdentified & !SDI.PlayerIdentified.HasBeenPlayedThisWanted)
+            {
+                AddToQueue(SDI.PlayerIdentified);
+            }
         }
 
         //Builder
@@ -1744,6 +1756,7 @@ namespace LosSantosRED.lsr
             ,SDI.RequestBackup
             ,SDI.RequestBackupSimple
             ,SDI.WeaponsFree
+            ,SDI.PlayerIdentified
             ,SDI.LethalForceAuthorized
             ,SDI.RunningARedLight
             ,SDI.DrunkDriving
@@ -2084,5 +2097,7 @@ namespace LosSantosRED.lsr
             SDI = new ScannerDispatchInformation();
             SDI.Setup();
         }
+
+
     }
 }

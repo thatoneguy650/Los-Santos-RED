@@ -45,7 +45,7 @@ namespace LosSantosRED.lsr
         }
         public void OnSuspectEluded(List<CrimeEvent> CrimesAssociated,Vector3 PlaceLastSeen)
         {
-            if (CrimesAssociated != null && PlaceLastSeen != Vector3.Zero)
+            if (CrimesAssociated != null && PlaceLastSeen != Vector3.Zero && Player.PoliceResponse.HasPlayerBeenIdentified )
             {
                 CurrentHistory = new BOLO(PlaceLastSeen,  CrimesAssociated, Player.WantedLevel);
             }

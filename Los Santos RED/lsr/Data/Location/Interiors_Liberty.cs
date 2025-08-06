@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 
 public class Interiors_Liberty
@@ -128,6 +125,7 @@ public class Interiors_Liberty
         LibertyCityInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
             new BankInterior(25858,"Bank Of Liberty") {
+                IsTrespassingWhenClosed = true,
                 SearchLocations = new List<Vector3>(){new Vector3(217.8289f, 27.17734f, 15.40732f),new Vector3(236.4546f, 23.64848f, 15.40731f),new Vector3(232.7605f, 19.77981f, 8.907292f)},
                 IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
@@ -305,7 +303,9 @@ public class Interiors_Liberty
         {
             new Interior(54018, "Lucky Winkles Bar")
         {
-            InteractPoints = new List<InteriorInteract>()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-195.9349f, 944.4111f, 10.395f), 178.3547f,"Rob")
                    {
@@ -325,6 +325,8 @@ public class Interiors_Liberty
         },
             new Interior(80386, "Steinway Beer Garden")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1381.547f, 1234.844f, 35.51511f), 1.057689f,"Rob")
@@ -344,8 +346,10 @@ public class Interiors_Liberty
                 },
             },
             new Interior(164866, "Comrades Bar")
-    {
-        Doors = new List<InteriorDoor>()
+             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(387699963,new Vector3(1166.586f, 4.418087f, 15.73469f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//front
                     new InteriorDoor(387699963,new Vector3(1185.835f, 2.27493f, 15.73483f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear
@@ -361,6 +365,8 @@ public class Interiors_Liberty
             //Bowling
             new Interior(38146, "Memory Lanes")//27394
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1440.757f, -180.6284f, 16.44489f), 137.5136f,"Rob")
@@ -402,8 +408,11 @@ public class Interiors_Liberty
             }, //Firefly Island, Broker
             new Interior(92162, "Memory Lanes")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List < InteriorInteract > ()
                 {
+
                    new MoneyTheftInteract("CashRegister1",new Vector3(1440.757f, -180.6284f, 16.44489f), 137.5136f,"Rob")
                    {
                         CashMinAmount = 250,
@@ -468,7 +477,7 @@ public class Interiors_Liberty
             }, // Harrison Street, East Island City, Dukes.
             new BusinessInterior(150530, "Laundromat")
             {
-                  InteractPoints = new List<InteriorInteract>(){
+                InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("LaundromatStandard2",new Vector3(-803.386f, 1632.055f, 13.72553f), 182.3193f ,"Interact")
                     {
                         UseNavmesh =false,
@@ -476,11 +485,11 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.6740803f, 0.641684f, -0.3658653f),
                         CameraRotation = new Rotator(-21.46084f, -2.568656E-05f, -46.41043f)
                     },
-                  },
+                },
             }, // Hubbard Avenue, Alderney City, Alderney.
             new BusinessInterior(158466, "Laundromat")
             {
-                  InteractPoints = new List<InteriorInteract>(){
+                InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("LaundromatStandard2",new Vector3(1264.497f, 171.3694f, 20.21689f), 101.8397f,"Interact")
                     {
                         UseNavmesh =false,
@@ -488,7 +497,7 @@ public class Interiors_Liberty
                         CameraDirection = new Vector3(0.8620415f, -0.4877796f, -0.1376787f),
                         CameraRotation = new Rotator(-7.913547f, 9.481805E-06f, -119.503f)
                     },
-                  },
+                },
             }, // Oneida Avenue, Hove Beach, Broker.
         });
     }
@@ -499,7 +508,9 @@ public class Interiors_Liberty
             //Diner - Cafe
             new Interior(101634, "69th Street Diner")
             {
-            InteractPoints = new List < InteriorInteract > ()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1126.695f, 6.922501f, 15.88295f), 5.880472f,"Rob")
                    {
@@ -520,7 +531,9 @@ public class Interiors_Liberty
             },
             new Interior(121346,"Homebrew Cafe")
             {
-                            Doors = new List<InteriorDoor>()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(1542565804,new Vector3(14.60596f, -9.044677f, -2.845501f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
                 },
@@ -528,7 +541,9 @@ public class Interiors_Liberty
             //Internet Cafe
             new Interior(50178, "tw@ - Broker")
             {
-            InteractPoints = new List < InteriorInteract > ()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1205.931f, 325.9325f, 24.19375f), 230.3551f,"Rob")
                    {
@@ -548,7 +563,9 @@ public class Interiors_Liberty
             },
             new Interior(166914, "tw@ - Bercham")
             {
-            InteractPoints = new List < InteriorInteract > ()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-1339.763f, 951.733f, 25.56133f), 358.9866f,"Rob")
                    {
@@ -568,7 +585,9 @@ public class Interiors_Liberty
             },
             new Interior(66562, "tw@ - North Holland")
             {
-            InteractPoints = new List < InteriorInteract > ()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-94.74496f, 1882.236f, 12.91321f), 20.30577f,"Rob")
                    {
@@ -589,6 +608,8 @@ public class Interiors_Liberty
             //Superstar Cafe
             new Interior(71682, "Superstar Cafe - The Triangle")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(4.282829f, 546.7474f, 15.7081f), 358.1411f,"Rob")
@@ -609,6 +630,8 @@ public class Interiors_Liberty
             },
             new Interior(133890, "Superstar Cafe - Lancaster")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(252.6178f, 1475.116f, 15.64895f), 86.14265f,"Rob")
@@ -636,6 +659,8 @@ public class Interiors_Liberty
             //Clubs
             new Interior(130818, "Bahama Mamas")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(725112888, new Vector3(-160.1238f, 891.2871f, 14.65746f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
@@ -643,6 +668,8 @@ public class Interiors_Liberty
             },
             new Interior(12034, "Hercules")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(1316667213, new Vector3(-202.1077f, 851.3904f, 11.95598f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
@@ -650,6 +677,8 @@ public class Interiors_Liberty
             },
             new Interior(126210, "Maisonette 9")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(4119540397, new Vector3(-229.8753f, 646.3377f, 10.14345f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
@@ -658,7 +687,9 @@ public class Interiors_Liberty
             //Strip Club
             new Interior(113666, "The Triangle Club")
             {
-            InteractPoints = new List < InteriorInteract > ()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1427.973f, 2197.751f, 17.72204f), 315.261f,"Rob")
                    {
@@ -689,6 +720,8 @@ public class Interiors_Liberty
             }, //Northern Gardens, Bohan
             new Interior(67586, "Honkers Gentlemen's Club")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List < InteriorInteract > ()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-1337.681f, 505.0126f, 10.01021f), 86.16586f,"Rob")
@@ -2000,7 +2033,9 @@ public class Interiors_Liberty
             //BurgewrShot
             new Interior(126722, "Burger Shot")
         {
-            InteractPoints = new List<InteriorInteract>()
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1876.209f, 720.8721f, 25.2119f), 271.0663f,"Rob")
                    {
@@ -2046,6 +2081,8 @@ public class Interiors_Liberty
         },
             new Interior(156674, "Burger Shot")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(687.0824f, 1996.483f, 16.31561f), 29.81894f,"Rob")
@@ -2092,6 +2129,8 @@ public class Interiors_Liberty
             },
             new Interior(112642, "Burger Shot - Star Junction")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(67.11765f, 780.1401f, 14.81999f), 90.48949f,"Rob")
@@ -2138,6 +2177,8 @@ public class Interiors_Liberty
             },
             new Interior(109570, "Burger Shot - North Holland")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-188.7257f, 1686.784f, 13.04694f), 89.64235f,"Rob")
@@ -2184,6 +2225,8 @@ public class Interiors_Liberty
             },
             new Interior(134402, "Burger Shot - Bohan")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1348.294f, 2077.663f, 16.90744f), 47.05009f,"Rob")
@@ -2230,6 +2273,8 @@ public class Interiors_Liberty
             },
             new Interior(105986, "Burger Shot - The Meat Quarter")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-380.5211f, 626.3405f, 4.811083f), 359.398f,"Rob")
@@ -2276,6 +2321,8 @@ public class Interiors_Liberty
             },
             new Interior(59650, "Burger Shot - Alderney")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(-766.773f, 2121.661f, 24.31392f), 180.0495f,"Rob")
@@ -2324,6 +2371,8 @@ public class Interiors_Liberty
             //CluckingBell
             new Interior(143874, "Cluckin' Bell - Dukes")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1420.932f, 854.1164f, 25.10332f), 359.7105f,"Rob")
@@ -2378,6 +2427,8 @@ public class Interiors_Liberty
             },
             new Interior(124162, "Cluckin' Bell - The Triangle")
             {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
                 {
                    new MoneyTheftInteract("CashRegister1",new Vector3(116.7934f, 561.868f, 14.80308f), 102.2144f,"Rob")
@@ -2433,8 +2484,10 @@ public class Interiors_Liberty
             //Restaurants
             new Interior(78338, "Perestroika")
             {
-            InteractPoints = new List < InteriorInteract > ()
-            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                InteractPoints = new List < InteriorInteract > ()
+                {
                    new MoneyTheftInteract("CashRegister1",new Vector3(1185.601f, 220.155f, 18.27528f), 87.78072f,"Rob")
                    {
                         CashMinAmount = 250,
@@ -2465,8 +2518,8 @@ public class Interiors_Liberty
                         GameTimeBeforeInitialReward = 3500,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                    },
-            },
-            Doors = new List<InteriorDoor>()
+                   },
+                Doors = new List<InteriorDoor>()
                 {
                    new InteriorDoor(2762578800,new Vector3(1194.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_l 
                    new InteriorDoor(1985756882,new Vector3(1197.172f, 204.5459f, 20.12718f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//cabaret_door_r 
@@ -2479,8 +2532,11 @@ public class Interiors_Liberty
                    new InteriorDoor(2881168431,new Vector3(1206.35f, 233.5154f, 22.01962f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },//rear_door
                 },
             },
-            new Interior(85506, "Mr Fuk's - Alderney City") { },
-        });
+            new Interior(85506, "Mr Fuk's - Alderney City")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true, },
+             });
     }
     private void Stations()
     {

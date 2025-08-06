@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr
         private HashSet<Crime> GracePeriodCrimes = new HashSet<Crime>();
         private Vector3 CurrentWantedCenter;
         private float CurrentPlayerDistance;
+        private bool hasShownIdentifiedMessage;
 
         public TrainStopper TrainStopper { get; private set; }
         private enum PoliceState
@@ -64,7 +65,7 @@ namespace LosSantosRED.lsr
         public int CurrentRespondingPoliceCount { get; private set; }
 
 
-
+        public bool HasPlayerBeenIdentified { get; private set; }
 
 
         public bool HasShotAtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("FiringWeaponNearPolice") > 0;
@@ -224,6 +225,10 @@ namespace LosSantosRED.lsr
                 {
                     PlayerSeenInVehicleDuringWanted = true;
                 }
+                if(Player.AnyPoliceCanRecognizePlayer && Player.WantedLevel >= 2 && !Player.IsWearingMask && HasBeenWantedFor >= 10000 && WantedLevelHasBeenRadioedIn)
+                {
+                    HasPlayerBeenIdentified = true;
+                }
             }
             else
             {
@@ -245,7 +250,21 @@ namespace LosSantosRED.lsr
             }
             PoliceKilledUpdate();
             UpdateWantedSize();
+
+            if(HasPlayerBeenIdentified && !hasShownIdentifiedMessage)
+            {
+                ShowIdentifiedMessage();
+            }
+
         }
+
+        private void ShowIdentifiedMessage()
+        {
+            EntryPoint.WriteToConsole("YOU HAVE BEEN IDENTIFIED DURING THE WANTED");
+            Player.Scanner.OnPlayerIdentified();
+            hasShownIdentifiedMessage = true;
+        }
+
         private void UpdateWantedSize()
         {      
             if(!WantedLevelHasBeenRadioedIn)
@@ -399,6 +418,8 @@ namespace LosSantosRED.lsr
         }
         public void OnBecameWanted()
         {
+            HasPlayerBeenIdentified = false;
+            hasShownIdentifiedMessage = false;
             GameTimeWantedStarted = Game.GameTime;
             GameTimeWantedLevelStarted = Game.GameTime;
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
@@ -447,6 +468,8 @@ namespace LosSantosRED.lsr
         }
         public void Reset()
         {
+            HasPlayerBeenIdentified = false;
+            hasShownIdentifiedMessage = false;
             Player.SetWantedLevel(0, "Police Response Reset", true);
             IsWeaponsFree = false;
             PlayerSeenDuringWanted = false;
@@ -462,6 +485,7 @@ namespace LosSantosRED.lsr
             CrimesReported.Clear();
             TrainStopper.Reset();
             CountCloseVehicleChasingCops = 0;
+
         }
         private void AssignCops()
         {

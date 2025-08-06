@@ -248,8 +248,7 @@ namespace Mod
         public bool AnyPoliceKnowInteriorLocation { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public bool AnyPoliceSawPlayerViolating { get; set; }
-
-
+        
         public bool IsInWantedActiveMode => SearchMode.IsInActiveMode;
         public int AssignedSeat => -1;
         public VehicleExt AssignedVehicle => null;
