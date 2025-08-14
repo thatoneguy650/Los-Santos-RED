@@ -23,7 +23,7 @@ public class SavedBusiness : SavedGameLocation
     public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
     {
 
-        Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition).FirstOrDefault();
+        Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsOnSPMap == IsOnSPMap && x.IsOnMPMap == IsOnMPMap).FirstOrDefault();
         if (savedPlace != null)
         {
             player.Properties.AddOwnedLocation(savedPlace);

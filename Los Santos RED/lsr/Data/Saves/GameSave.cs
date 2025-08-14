@@ -124,6 +124,8 @@ namespace LosSantosRED.lsr.Data
             foreach(GameLocation gameLocation in player.Properties.PropertyList)
             {
                 SavedGameLocation myLocation = gameLocation.GetSaveData();
+                myLocation.IsOnMPMap = gameLocation.IsOnMPMap;
+                myLocation.IsOnSPMap = gameLocation.IsOnSPMap;
                 SavedGameLocations.Add(myLocation);
             }
         }

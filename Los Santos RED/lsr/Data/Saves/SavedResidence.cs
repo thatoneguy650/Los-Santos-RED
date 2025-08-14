@@ -31,7 +31,7 @@ public class SavedResidence : SavedGameLocation
     {
         if (IsOwnedByPlayer || IsRentedByPlayer)
         {
-            Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == Name).FirstOrDefault();
+            Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == Name && x.IsOnSPMap == IsOnSPMap && x.IsOnMPMap == IsOnMPMap).FirstOrDefault();
             if (savedPlace != null)
             {
                 player.Properties.AddOwnedLocation(savedPlace);
