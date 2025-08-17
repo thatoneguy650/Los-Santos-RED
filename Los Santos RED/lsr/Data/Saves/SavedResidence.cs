@@ -27,11 +27,11 @@ public class SavedResidence : SavedGameLocation
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
     public int StoredCash { get; set; }
-    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
         if (IsOwnedByPlayer || IsRentedByPlayer)
         {
-            Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == Name && x.IsOnSPMap == IsOnSPMap && x.IsOnMPMap == IsOnMPMap).FirstOrDefault();
+            Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == Name && x.IsCorrectMap(world.IsMPMapLoaded)).FirstOrDefault();
             if (savedPlace != null)
             {
                 player.Properties.AddOwnedLocation(savedPlace);

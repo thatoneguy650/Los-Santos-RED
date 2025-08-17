@@ -330,7 +330,7 @@ namespace LosSantosRED.lsr.Data
                 LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
                 LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
 
-                LoadOwnedProperties(player, placesOfInterest, modItems, settings);
+                LoadOwnedProperties(player, placesOfInterest, modItems, settings, world);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -607,11 +607,11 @@ namespace LosSantosRED.lsr.Data
                 player.Licenses.PilotsLicense = new PilotsLicense() { ExpirationDate = PilotsLicense.ExpirationDate, IssueDate = PilotsLicense.IssueDate, IssueStateID = DriversLicense.IssueStateID, IsFixedWingEndorsed = PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = PilotsLicense.IsLighterThanAirEndorsed };
             }
         }
-        private void LoadOwnedProperties(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+        private void LoadOwnedProperties(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
         {
             foreach (SavedGameLocation savedLocation in SavedGameLocations)
             {
-                savedLocation.LoadSavedData(player, placesOfInterest, modItems, settings);
+                savedLocation.LoadSavedData(player, placesOfInterest, modItems, settings, world);
             }
         }
         private void LoadDebt (IInventoryable player)

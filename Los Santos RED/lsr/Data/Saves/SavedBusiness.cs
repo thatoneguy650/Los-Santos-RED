@@ -20,10 +20,10 @@ public class SavedBusiness : SavedGameLocation
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
     public int StoredCash { get; set; }
-    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
 
-        Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsOnSPMap == IsOnSPMap && x.IsOnMPMap == IsOnMPMap).FirstOrDefault();
+        Business savedPlace = placesOfInterest.PossibleLocations.Businesses.Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsCorrectMap(world.IsMPMapLoaded)).FirstOrDefault();
         if (savedPlace != null)
         {
             player.Properties.AddOwnedLocation(savedPlace);

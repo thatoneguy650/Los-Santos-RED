@@ -12,11 +12,13 @@ public class Properties
     private IPropertyOwnable Player;
     private IPlacesOfInterest PlacesOfInterest;
     private ITimeReportable Time;
-    public Properties(IPropertyOwnable player, IPlacesOfInterest placesOfInterest, ITimeReportable time)
+    private IEntityProvideable World;
+    public Properties(IPropertyOwnable player, IPlacesOfInterest placesOfInterest, ITimeReportable time, IEntityProvideable world)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
         Time = time;
+        World = world;
     }
     public List<GameLocation> PropertyList { get; private set; } = new List<GameLocation>();
     //public List<Residence> Residences { get; private set; } = new List<Residence>();
@@ -49,14 +51,14 @@ public class Properties
     }
     public void AddOwnedLocation(GameLocation toAdd)
     {
-        if (!PropertyList.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition && x.IsOnSPMap == toAdd.IsOnSPMap && x.IsOnMPMap == toAdd.IsOnMPMap))
+        if (!PropertyList.Any(x => x.Name == toAdd.Name && x.EntrancePosition == toAdd.EntrancePosition && x.IsCorrectMap(World.IsMPMapLoaded)))
         {
             PropertyList.Add(toAdd);
         }
     }
     public void RemoveOwnedLocation(GameLocation toRemove)
     {
-        if (!PropertyList.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition && x.IsOnSPMap == toRemove.IsOnSPMap && x.IsOnMPMap == toRemove.IsOnMPMap))
+        if (!PropertyList.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition && x.IsCorrectMap(World.IsMPMapLoaded)))
         {
             PropertyList.Remove(toRemove);
         }

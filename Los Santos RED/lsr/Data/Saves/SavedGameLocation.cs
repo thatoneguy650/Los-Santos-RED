@@ -20,9 +20,9 @@ public class SavedGameLocation
     public virtual Vector3 EntrancePosition { get; set; }
     public bool IsOnSPMap { get; set; } = true;
     public bool IsOnMPMap { get; set; } = true;
-    public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
-        GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsOnMPMap == IsOnMPMap && x.IsOnSPMap == IsOnSPMap).FirstOrDefault();
+        GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsCorrectMap(world.IsMPMapLoaded)).FirstOrDefault();
         if (savedPlace != null)
         {
             player.Properties.AddOwnedLocation(savedPlace);
