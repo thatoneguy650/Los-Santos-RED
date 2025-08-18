@@ -21,12 +21,18 @@ public class OutfitManager
     private ISavedOutfits SavedOutfits;
     private List<int> AllPropIDs = new List<int>() { 0,1,6,7 };
     private List<int> AllComponentIDs = new List<int>() { 1,5,7,9 };
-    private int DefaulShoeComponentID => Player.ModelName.ToLower() == "mp_f_freemode_01" ? 35 : Player.ModelName.ToLower() == "mp_m_freemode_01" ? 34 : 0;
 
-    private int DefaultTorsoComponentID => Player.ModelName.ToLower() == "mp_f_freemode_01" ? 15 : Player.ModelName.ToLower() == "mp_m_freemode_01" ? 15 : 15;
-    private int DefaultUndershirtComponentID => Player.ModelName.ToLower() == "mp_f_freemode_01" ? 15 : Player.ModelName.ToLower() == "mp_m_freemode_01" ? 15 : 15;
-    private int DefaulTopComponentID => Player.ModelName.ToLower() == "mp_f_freemode_01" ? 15 : Player.ModelName.ToLower() == "mp_m_freemode_01" ? 15 : 15;
-    private int DefaultLowerComponentID => Player.ModelName.ToLower() == "mp_f_freemode_01" ? 15 : Player.ModelName.ToLower() == "mp_m_freemode_01" ? 29 : 15;
+    private List<TorsoLookup> FreeModeMaleTorsoLookup = new List<TorsoLookup>();
+    private List<TorsoLookup> FreeModeFemaleTorsoLookup = new List<TorsoLookup>();
+    private int DefaulShoeComponentID => IsFreeModeFemale ? 35 : IsFreeModeMale ? 34 : 0;
+    private int DefaultTorsoComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 15 : 15;
+    private int DefaultUndershirtComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 15 : 15;
+    private int DefaulTopComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 15 : 15;
+    private int DefaultLowerComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 29 : 15;
+    private bool IsFreeModeMale => Player.ModelName.ToLower() == "mp_m_freemode_01";
+    private bool IsFreeModeFemale => Player.ModelName.ToLower() == "mp_f_freemode_01";
+    private bool IsPlayerFreeMode => IsFreeModeMale || IsFreeModeFemale;
+    private int DefaultHelmetDrawableID => IsFreeModeFemale || IsFreeModeMale ? 18 : Player.ModelName.ToLower() == "player_two" ? 25 : Player.ModelName.ToLower() == "player_one" ? 6 : Player.ModelName.ToLower() == "player_zero" ? 11 : -1;
     public OutfitManager(IOutfitManageable player, ISavedOutfits savedOutfits)
     {
         Player = player;
@@ -37,6 +43,354 @@ public class OutfitManager
 
     public bool HasMaskOn { get; private set; }
 
+    public void Setup()
+    {
+        //lookup from https://github.com/andristum/dpclothing/blob/master/Client/Variations.lua
+        FreeModeMaleTorsoLookup = new List<TorsoLookup>()
+        {
+            new TorsoLookup(16,4)
+            ,new TorsoLookup(17,4)
+            ,new TorsoLookup(18,4)
+            ,new TorsoLookup(19,0)
+            ,new TorsoLookup(20,1)
+            ,new TorsoLookup(21,2)
+            ,new TorsoLookup(22,4)
+            ,new TorsoLookup(23,5)
+            ,new TorsoLookup(24,6)
+            ,new TorsoLookup(25,8)
+            ,new TorsoLookup(26,11)
+            ,new TorsoLookup(27,12)
+            ,new TorsoLookup(28,14)
+            ,new TorsoLookup(29,15)
+            ,new TorsoLookup(30,0)
+            ,new TorsoLookup(31,1)
+            ,new TorsoLookup(32,2)
+            ,new TorsoLookup(33,4)
+            ,new TorsoLookup(34,5)
+            ,new TorsoLookup(35,6)
+            ,new TorsoLookup(36,8)
+            ,new TorsoLookup(37,11)
+            ,new TorsoLookup(38,12)
+            ,new TorsoLookup(39,14)
+            ,new TorsoLookup(40,15)
+            ,new TorsoLookup(41,0)
+            ,new TorsoLookup(42,1)
+            ,new TorsoLookup(43,2)
+            ,new TorsoLookup(44,4)
+            ,new TorsoLookup(45,5)
+            ,new TorsoLookup(46,6)
+            ,new TorsoLookup(47,8)
+            ,new TorsoLookup(48,11)
+            ,new TorsoLookup(49,12)
+            ,new TorsoLookup(50,14)
+            ,new TorsoLookup(51,15)
+            ,new TorsoLookup(52,0)
+            ,new TorsoLookup(53,1)
+            ,new TorsoLookup(54,2)
+            ,new TorsoLookup(55,4)
+            ,new TorsoLookup(56,5)
+            ,new TorsoLookup(57,6)
+            ,new TorsoLookup(58,8)
+            ,new TorsoLookup(59,11)
+            ,new TorsoLookup(60,12)
+            ,new TorsoLookup(61,14)
+            ,new TorsoLookup(62,15)
+            ,new TorsoLookup(63,0)
+            ,new TorsoLookup(64,1)
+            ,new TorsoLookup(65,2)
+            ,new TorsoLookup(66,4)
+            ,new TorsoLookup(67,5)
+            ,new TorsoLookup(68,6)
+            ,new TorsoLookup(69,8)
+            ,new TorsoLookup(70,11)
+            ,new TorsoLookup(71,12)
+            ,new TorsoLookup(72,14)
+            ,new TorsoLookup(73,15)
+            ,new TorsoLookup(74,0)
+            ,new TorsoLookup(75,1)
+            ,new TorsoLookup(76,2)
+            ,new TorsoLookup(77,4)
+            ,new TorsoLookup(78,5)
+            ,new TorsoLookup(79,6)
+            ,new TorsoLookup(80,8)
+            ,new TorsoLookup(81,11)
+            ,new TorsoLookup(82,12)
+            ,new TorsoLookup(83,14)
+            ,new TorsoLookup(84,15)
+            ,new TorsoLookup(85,0)
+            ,new TorsoLookup(86,1)
+            ,new TorsoLookup(87,2)
+            ,new TorsoLookup(88,4)
+            ,new TorsoLookup(89,5)
+            ,new TorsoLookup(90,6)
+            ,new TorsoLookup(91,8)
+            ,new TorsoLookup(92,11)
+            ,new TorsoLookup(93,12)
+            ,new TorsoLookup(94,14)
+            ,new TorsoLookup(95,15)
+            ,new TorsoLookup(96,4)
+            ,new TorsoLookup(97,4)
+            ,new TorsoLookup(98,4)
+            ,new TorsoLookup(99,0)
+            ,new TorsoLookup(100,1)
+            ,new TorsoLookup(101,2)
+            ,new TorsoLookup(102,4)
+            ,new TorsoLookup(103,5)
+            ,new TorsoLookup(104,6)
+            ,new TorsoLookup(105,8)
+            ,new TorsoLookup(106,11)
+            ,new TorsoLookup(107,12)
+            ,new TorsoLookup(108,14)
+            ,new TorsoLookup(109,15)
+            ,new TorsoLookup(110,4)
+            ,new TorsoLookup(111,4)
+            ,new TorsoLookup(115,112)
+            ,new TorsoLookup(116,112)
+            ,new TorsoLookup(117,112)
+            ,new TorsoLookup(118,112)
+            ,new TorsoLookup(119,112)
+            ,new TorsoLookup(120,112)
+            ,new TorsoLookup(121,112)
+            ,new TorsoLookup(122,113)
+            ,new TorsoLookup(123,113)
+            ,new TorsoLookup(124,113)
+            ,new TorsoLookup(125,113)
+            ,new TorsoLookup(126,113)
+            ,new TorsoLookup(127,113)
+            ,new TorsoLookup(128,113)
+            ,new TorsoLookup(129,114)
+            ,new TorsoLookup(130,114)
+            ,new TorsoLookup(131,114)
+            ,new TorsoLookup(132,114)
+            ,new TorsoLookup(133,114)
+            ,new TorsoLookup(134,114)
+            ,new TorsoLookup(135,114)
+            ,new TorsoLookup(136,15)
+            ,new TorsoLookup(137,15)
+            ,new TorsoLookup(138,0)
+            ,new TorsoLookup(139,1)
+            ,new TorsoLookup(140,2)
+            ,new TorsoLookup(141,4)
+            ,new TorsoLookup(142,5)
+            ,new TorsoLookup(143,6)
+            ,new TorsoLookup(144,8)
+            ,new TorsoLookup(145,11)
+            ,new TorsoLookup(146,12)
+            ,new TorsoLookup(147,14)
+            ,new TorsoLookup(148,112)
+            ,new TorsoLookup(149,113)
+            ,new TorsoLookup(150,114)
+            ,new TorsoLookup(151,0)
+            ,new TorsoLookup(152,1)
+            ,new TorsoLookup(153,2)
+            ,new TorsoLookup(154,4)
+            ,new TorsoLookup(155,5)
+            ,new TorsoLookup(156,6)
+            ,new TorsoLookup(157,8)
+            ,new TorsoLookup(158,11)
+            ,new TorsoLookup(159,12)
+            ,new TorsoLookup(160,14)
+            ,new TorsoLookup(161,112)
+            ,new TorsoLookup(162,113)
+            ,new TorsoLookup(163,114)
+            ,new TorsoLookup(165,4)
+            ,new TorsoLookup(166,4)
+            ,new TorsoLookup(167,4)
+
+        };
+
+        FreeModeFemaleTorsoLookup = new List<TorsoLookup>()
+        {
+            new TorsoLookup(16,11)
+            ,new TorsoLookup(17,3)
+            ,new TorsoLookup(18,3)
+            ,new TorsoLookup(19,3)
+            ,new TorsoLookup(20,0)
+            ,new TorsoLookup(21,1)
+            ,new TorsoLookup(22,2)
+            ,new TorsoLookup(23,3)
+            ,new TorsoLookup(24,4)
+            ,new TorsoLookup(25,5)
+            ,new TorsoLookup(26,6)
+            ,new TorsoLookup(27,7)
+            ,new TorsoLookup(28,9)
+            ,new TorsoLookup(29,11)
+            ,new TorsoLookup(30,12)
+            ,new TorsoLookup(31,14)
+            ,new TorsoLookup(32,15)
+            ,new TorsoLookup(33,0)
+            ,new TorsoLookup(34,1)
+            ,new TorsoLookup(35,2)
+            ,new TorsoLookup(36,3)
+            ,new TorsoLookup(37,4)
+            ,new TorsoLookup(38,5)
+            ,new TorsoLookup(39,6)
+            ,new TorsoLookup(40,7)
+            ,new TorsoLookup(41,9)
+            ,new TorsoLookup(42,11)
+            ,new TorsoLookup(43,12)
+            ,new TorsoLookup(44,14)
+            ,new TorsoLookup(45,15)
+            ,new TorsoLookup(46,0)
+            ,new TorsoLookup(47,1)
+            ,new TorsoLookup(48,2)
+            ,new TorsoLookup(49,3)
+            ,new TorsoLookup(50,4)
+            ,new TorsoLookup(51,5)
+            ,new TorsoLookup(52,6)
+            ,new TorsoLookup(53,7)
+            ,new TorsoLookup(54,9)
+            ,new TorsoLookup(55,11)
+            ,new TorsoLookup(56,12)
+            ,new TorsoLookup(57,14)
+            ,new TorsoLookup(58,15)
+            ,new TorsoLookup(59,0)
+            ,new TorsoLookup(60,1)
+            ,new TorsoLookup(61,2)
+            ,new TorsoLookup(62,3)
+            ,new TorsoLookup(63,4)
+            ,new TorsoLookup(64,5)
+            ,new TorsoLookup(65,6)
+            ,new TorsoLookup(66,7)
+            ,new TorsoLookup(67,9)
+            ,new TorsoLookup(68,11)
+            ,new TorsoLookup(69,12)
+            ,new TorsoLookup(70,14)
+            ,new TorsoLookup(71,15)
+            ,new TorsoLookup(72,0)
+            ,new TorsoLookup(73,1)
+            ,new TorsoLookup(74,2)
+            ,new TorsoLookup(75,3)
+            ,new TorsoLookup(76,4)
+            ,new TorsoLookup(77,5)
+            ,new TorsoLookup(78,6)
+            ,new TorsoLookup(79,7)
+            ,new TorsoLookup(80,9)
+            ,new TorsoLookup(81,11)
+            ,new TorsoLookup(82,12)
+            ,new TorsoLookup(83,14)
+            ,new TorsoLookup(84,15)
+            ,new TorsoLookup(85,0)
+            ,new TorsoLookup(86,1)
+            ,new TorsoLookup(87,2)
+            ,new TorsoLookup(88,3)
+            ,new TorsoLookup(89,4)
+            ,new TorsoLookup(90,5)
+            ,new TorsoLookup(91,6)
+            ,new TorsoLookup(92,7)
+            ,new TorsoLookup(93,9)
+            ,new TorsoLookup(94,11)
+            ,new TorsoLookup(95,12)
+            ,new TorsoLookup(96,14)
+            ,new TorsoLookup(97,15)
+            ,new TorsoLookup(98,0)
+            ,new TorsoLookup(99,1)
+            ,new TorsoLookup(100,2)
+            ,new TorsoLookup(101,3)
+            ,new TorsoLookup(102,4)
+            ,new TorsoLookup(103,5)
+            ,new TorsoLookup(104,6)
+            ,new TorsoLookup(105,7)
+            ,new TorsoLookup(106,9)
+            ,new TorsoLookup(107,11)
+            ,new TorsoLookup(108,12)
+            ,new TorsoLookup(109,14)
+            ,new TorsoLookup(110,15)
+            ,new TorsoLookup(111,3)
+            ,new TorsoLookup(112,3)
+            ,new TorsoLookup(113,3)
+            ,new TorsoLookup(114,0)
+            ,new TorsoLookup(115,1)
+            ,new TorsoLookup(116,2)
+            ,new TorsoLookup(117,3)
+            ,new TorsoLookup(118,4)
+            ,new TorsoLookup(119,5)
+            ,new TorsoLookup(120,6)
+            ,new TorsoLookup(121,7)
+            ,new TorsoLookup(122,9)
+            ,new TorsoLookup(123,11)
+            ,new TorsoLookup(124,12)
+            ,new TorsoLookup(125,14)
+            ,new TorsoLookup(126,15)
+            ,new TorsoLookup(127,3)
+            ,new TorsoLookup(128,3)
+            ,new TorsoLookup(132,129)
+            ,new TorsoLookup(133,129)
+            ,new TorsoLookup(134,129)
+            ,new TorsoLookup(135,129)
+            ,new TorsoLookup(136,129)
+            ,new TorsoLookup(137,129)
+            ,new TorsoLookup(138,129)
+            ,new TorsoLookup(139,130)
+            ,new TorsoLookup(140,130)
+            ,new TorsoLookup(141,130)
+            ,new TorsoLookup(142,130)
+            ,new TorsoLookup(143,130)
+            ,new TorsoLookup(144,130)
+            ,new TorsoLookup(145,130)
+            ,new TorsoLookup(146,131)
+            ,new TorsoLookup(147,131)
+            ,new TorsoLookup(148,131)
+            ,new TorsoLookup(149,131)
+            ,new TorsoLookup(150,131)
+            ,new TorsoLookup(151,131)
+            ,new TorsoLookup(152,131)
+            ,new TorsoLookup(154,153)
+            ,new TorsoLookup(155,153)
+            ,new TorsoLookup(156,153)
+            ,new TorsoLookup(157,153)
+            ,new TorsoLookup(158,153)
+            ,new TorsoLookup(159,153)
+            ,new TorsoLookup(160,153)
+            ,new TorsoLookup(162,161)
+            ,new TorsoLookup(163,161)
+            ,new TorsoLookup(164,161)
+            ,new TorsoLookup(165,161)
+            ,new TorsoLookup(166,161)
+            ,new TorsoLookup(167,161)
+            ,new TorsoLookup(168,161)
+            ,new TorsoLookup(169,15)
+            ,new TorsoLookup(170,15)
+            ,new TorsoLookup(171,0)
+            ,new TorsoLookup(172,1)
+            ,new TorsoLookup(173,2)
+            ,new TorsoLookup(174,3)
+            ,new TorsoLookup(175,4)
+            ,new TorsoLookup(176,5)
+            ,new TorsoLookup(177,6)
+            ,new TorsoLookup(178,7)
+            ,new TorsoLookup(179,9)
+            ,new TorsoLookup(180,11)
+            ,new TorsoLookup(181,12)
+            ,new TorsoLookup(182,14)
+            ,new TorsoLookup(183,129)
+            ,new TorsoLookup(184,130)
+            ,new TorsoLookup(185,131)
+            ,new TorsoLookup(186,153)
+            ,new TorsoLookup(187,0)
+            ,new TorsoLookup(188,1)
+            ,new TorsoLookup(189,2)
+            ,new TorsoLookup(190,3)
+            ,new TorsoLookup(191,4)
+            ,new TorsoLookup(192,5)
+            ,new TorsoLookup(193,6)
+            ,new TorsoLookup(194,7)
+            ,new TorsoLookup(195,9)
+            ,new TorsoLookup(196,11)
+            ,new TorsoLookup(197,12)
+            ,new TorsoLookup(198,14)
+            ,new TorsoLookup(199,129)
+            ,new TorsoLookup(200,130)
+            ,new TorsoLookup(201,131)
+            ,new TorsoLookup(202,153)
+            ,new TorsoLookup(203,161)
+            ,new TorsoLookup(204,161)
+            ,new TorsoLookup(206,3)
+            ,new TorsoLookup(207,3)
+            ,new TorsoLookup(208,3)
+
+        };
+    }
     public void Dispose()
     {
 
@@ -141,9 +495,7 @@ public class OutfitManager
     }
     public void ToggleShirt()
     {
-
-        //mp_safehouseseated@female@generic@idle_b idle_d
-        ToggleComponent(3, DefaultTorsoComponentID,false,"","");
+        ToggleComponent(3, DefaultTorsoComponentID, false,"","");
         ToggleComponent(8, DefaultUndershirtComponentID,false, "", "");
         ToggleComponent(11, DefaulTopComponentID,false, "", "");
         PlayAnimation("mp_safehouseseated@female@generic@idle_b", "idle_d");
@@ -151,6 +503,92 @@ public class OutfitManager
     public void TogglePants()
     {
         ToggleComponent(4, DefaultLowerComponentID, true, "pickup_object", "pickup_low");
+    }
+    public void ToggleGloves()
+    {
+        //14
+        //31,44,57,70
+        PedComponent currentTorso = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 3).FirstOrDefault();
+        if(currentTorso == null)
+        {
+            return;
+        }
+        if(currentTorso.DrawableID <= 15)
+        {
+            return;//no gloves on
+        }
+        int noneGlovedTorsoID = GetTorsoFromGlove(currentTorso);//.DrawableID;
+
+
+
+
+
+
+        EntryPoint.WriteToConsole($"ToggleGloves {noneGlovedTorsoID}");
+
+        ToggleComponent(3, noneGlovedTorsoID, true, "mp_safehouseseated@female@generic@idle_b", "idle_d");
+    }
+    private int GetTorsoFromGlove(PedComponent currentTorso)
+    {
+        if(currentTorso == null)
+        {
+            return 0;
+        }
+        TorsoLookup TorsoLookup = null;
+        if (IsFreeModeMale)
+        {
+            TorsoLookup = FreeModeMaleTorsoLookup.Where(x=> x.AssignedComponenetID == currentTorso.DrawableID).FirstOrDefault();
+        }
+        else if (IsFreeModeFemale)
+        {
+            TorsoLookup = FreeModeFemaleTorsoLookup.Where(x => x.AssignedComponenetID == currentTorso.DrawableID).FirstOrDefault();
+        }
+        if(TorsoLookup == null)
+        {
+            return 0;
+        }
+        return TorsoLookup.MatchingTorsoComponenetID;
+    }
+
+    private bool GetIsHelmetOn()
+    {
+        if (Player.CurrentModelVariation.Helmet == null)
+        {
+            Player.CurrentModelVariation.Helmet = new PedPropComponent(0, DefaultHelmetDrawableID, 0);
+        }
+        bool isHelmetOn = false;
+        bool isPropOn = false;
+        int PropIndex = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, 0);
+        if (PropIndex != -1)
+        {
+            isPropOn = true;
+        }
+
+
+        if (isPropOn && PropIndex == Player.CurrentModelVariation.Helmet.DrawableID)
+        {
+            isHelmetOn = true;
+        }
+        return isHelmetOn;
+    }
+    public void ToggleHelmet()
+    {
+        if(Player.CurrentModelVariation.Helmet == null)
+        {
+            Player.CurrentModelVariation.Helmet = new PedPropComponent(0, DefaultHelmetDrawableID, 0);
+        }
+
+
+        if(GetIsHelmetOn())
+        {
+            ResetProps(0, "veh@bike@common@front@base", "take_off_helmet_stand");
+        }
+        else
+        {
+            PlayAnimation("veh@bike@sport@front@base", "put_on_helmet");
+            GameFiber.Sleep(750);
+            NativeFunction.Natives.SET_PED_PROP_INDEX(Player.Character, Player.CurrentModelVariation.Helmet.PropID, Player.CurrentModelVariation.Helmet.DrawableID, Player.CurrentModelVariation.Helmet.TextureID, false);
+        }
     }
     private void UpdateMaskCheck()
     {
@@ -253,8 +691,51 @@ public class OutfitManager
         }
         ToggleProp(selectedPropType);
     }
+    private void ResetProps(int selectedPropType, string dict, string anim)
+    {
+        bool isPropOn = false;
+        bool IsHelmetOn = GetIsHelmetOn();
+        List<int> CurrentProps = new List<int>();
+        foreach (PedPropComponent Prop in Player.CurrentModelVariation.Props)
+        {
+            int propDrawable = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, Prop.PropID);
+            //bool isLocalOn = propDrawable > -1 && propDrawable == Prop.DrawableID;
+
+            bool isLocalOn = propDrawable > -1 && Prop.PropID != selectedPropType;// propDrawable == prop.DrawableID;
+
+            if (propDrawable > -1 && Prop.PropID == selectedPropType && propDrawable == Prop.DrawableID)
+            {
+                isLocalOn = true;
+            }
+
+
+            if (isLocalOn)
+            {
+                CurrentProps.Add(Prop.PropID);
+            }
+        }
+        PlayAnimation(dict, anim);
+        GameFiber.Sleep(500);
+        NativeFunction.Natives.CLEAR_ALL_PED_PROPS(Player.Character);
+        foreach (PedPropComponent Prop in Player.CurrentModelVariation.Props)
+        {
+            if (Prop.PropID == selectedPropType)
+            {
+
+            }
+            else
+            {
+                if (CurrentProps.Contains(Prop.PropID))
+                {
+                    NativeFunction.Natives.SET_PED_PROP_INDEX(Player.Character, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+                    //EntryPoint.WriteToConsole($"SET_PED_PROP_INDEX {Prop.PropID} isPropOn{isPropOn} SET VALUE {Prop.DrawableID} {Prop.TextureID}");
+                }
+            }
+        }
+    }
     public void ToggleProp(int selectedPropType)
     {
+        EntryPoint.WriteToConsole($"TOGGLE PROP RAN selectedPropType {selectedPropType}");
         bool isPropOn = false;
         int PropIndex = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, selectedPropType);
         if(PropIndex != -1)
@@ -262,8 +743,8 @@ public class OutfitManager
             isPropOn = true;
         }
         //EntryPoint.WriteToConsole($"isPropOn{isPropOn} PropIndex{PropIndex}");
-        PedPropComponent prop = Player.CurrentModelVariation.Props.Where(x => x.PropID == selectedPropType).FirstOrDefault();
-        if(prop == null)
+        PedPropComponent currentVariationProp = Player.CurrentModelVariation.Props.Where(x => x.PropID == selectedPropType).FirstOrDefault();
+        if(currentVariationProp == null)
         {
             //EntryPoint.WriteToConsole($"ToggleProp {selectedPropType} isPropOn{isPropOn} componenet IS NULL");
             return;
@@ -271,7 +752,14 @@ public class OutfitManager
         List<int> CurrentProps = new List<int>();
         foreach (PedPropComponent Prop in Player.CurrentModelVariation.Props)
         {
-            bool isLocalOn = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, Prop.PropID) > -1;
+            int propDrawable = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, Prop.PropID);
+            bool isLocalOn = propDrawable > -1 && Prop.PropID != selectedPropType;// propDrawable == prop.DrawableID;
+
+            if(propDrawable > -1 && Prop.PropID == selectedPropType && propDrawable == PropIndex)
+            {
+                isLocalOn = true;
+            }
+
             if(isLocalOn)
             {
                 CurrentProps.Add(Prop.PropID);
@@ -337,6 +825,19 @@ public class OutfitManager
         }
         return true;
     }
+    private bool HasGloves()
+    {
+        PedComponent ppc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 3).FirstOrDefault();
+        if (ppc == null)
+        {
+            return false;
+        }
+        if(ppc.DrawableID > 15)
+        {
+            return true;
+        }
+        return false;
+    }
     private bool HasComponent(int componentID)
     {
         PedComponent ppc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == componentID).FirstOrDefault();
@@ -397,12 +898,25 @@ public class OutfitManager
         {
             HeadUIMenu.AddItem(HatMenuItem);
         }
+
+
+
+        UIMenuItem HelmetMenuItem = new UIMenuItem("Toggle Helmet", "Take helmet on or off");
+        HelmetMenuItem.Activated += (sender, selectedItem) =>
+        {
+            ToggleHelmet();
+        };
+
+            HeadUIMenu.AddItem(HelmetMenuItem);
+        
+
+
         UIMenuItem MaskMenuItem = new UIMenuItem("Toggle Mask", "Take mask on or off");
         MaskMenuItem.Activated += (sender, selectedItem) =>
         {
             ToggleMask();
         };
-        if (HasComponent(1))
+        if (IsPlayerFreeMode && HasComponent(1))
         {
             HeadUIMenu.AddItem(MaskMenuItem);
         }
@@ -435,6 +949,21 @@ public class OutfitManager
         {
             BodyUIMenu.AddItem(BagMenuItem);
         }
+
+
+
+        UIMenuItem GlovesMenuItem = new UIMenuItem("Toggle Gloves", "Take gloves on or off");
+        GlovesMenuItem.Activated += (sender, selectedItem) =>
+        {
+            ToggleGloves();
+        };
+        if (IsPlayerFreeMode && HasGloves())
+        {
+            BodyUIMenu.AddItem(GlovesMenuItem);
+        }
+
+
+
         UIMenuItem WatchesMenuItem = new UIMenuItem("Toggle Watches", "Take watches on or off");
         WatchesMenuItem.Activated += (sender, selectedItem) =>
         {
@@ -458,7 +987,7 @@ public class OutfitManager
         {
             ToggleAccessories();
         };
-        if (HasComponent(7))
+        if (IsPlayerFreeMode && HasComponent(7))
         {
             BodyUIMenu.AddItem(AccessoriesMenuItem);
         }
@@ -467,22 +996,30 @@ public class OutfitManager
         {
             ToggleShirt();
         };
-        BodyUIMenu.AddItem(ShirtMenuItem);
-
-
+        if (IsPlayerFreeMode)
+        {
+            BodyUIMenu.AddItem(ShirtMenuItem);
+        }
         UIMenu LegsUIMenu = menuPool.AddSubMenu(AccessoryUIMenu, "Legs");
         UIMenuItem ShoesMenuItem = new UIMenuItem("Toggle Shoes", "Take shoes on or off");
         ShoesMenuItem.Activated += (sender, selectedItem) =>
         {
             ToggleShoes();
         };
-        LegsUIMenu.AddItem(ShoesMenuItem);
+
+        if (IsPlayerFreeMode)
+        {
+            LegsUIMenu.AddItem(ShoesMenuItem);
+        }
         UIMenuItem PantsMenuItem = new UIMenuItem("Toggle Pants", "Take pants on or off");
         PantsMenuItem.Activated += (sender, selectedItem) =>
         {
             TogglePants();
         };
-        LegsUIMenu.AddItem(PantsMenuItem);
+        if (IsPlayerFreeMode)
+        {
+            LegsUIMenu.AddItem(PantsMenuItem);
+        }
 
         /*            new PopUpBox(0,"Take All Accessories Off",new Action(() => Player.OutfitManager.SetAllOff()),"Take all accessories and props off"),
             new PopUpBox(1,"Put All Accessories On",new Action(() => Player.OutfitManager.SetAllOn()),"Put all accessories and props on"),
@@ -562,4 +1099,18 @@ public class OutfitManager
     {
         SetComponent(9,true, true, "mp_safehouseseated@female@generic@idle_b", "idle_d");
     }
+
+
+    private class TorsoLookup
+    {
+        public TorsoLookup(int assignedComponenetID, int matchningTorsoComponenetID)
+        {
+            AssignedComponenetID = assignedComponenetID;
+            MatchingTorsoComponenetID = matchningTorsoComponenetID;
+        }
+
+        public int AssignedComponenetID { get; set; }
+        public int MatchingTorsoComponenetID { get; set; }
+    }
+
 }

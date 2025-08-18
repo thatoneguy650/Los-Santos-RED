@@ -33,6 +33,10 @@ public class WeatherForecasts : IWeatherForecasts
             DefaultConfig();
         }
     }
+    public void SetupDefaultOnly()
+    {
+        DefaultConfig();
+    }
     private void DefaultConfig()
     {
         WeatherForecastList = new List<WeatherForecast>()

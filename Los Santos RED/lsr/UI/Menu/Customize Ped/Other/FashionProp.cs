@@ -67,7 +67,7 @@ public class FashionProp
         AddTextureItem(componentMenu);
         AddGoToMenuItem(componentMenu);
         AddSearchMenuItem(componentMenu);
-
+        AddSetAsHelmetMenuItem(componentMenu);
         if (AllowDefaultNotApplied)
         {
             AddDefaultNotAppliedMenuItem(componentMenu);
@@ -166,7 +166,30 @@ public class FashionProp
         };
         componentMenu.AddItem(filterItems);
     }
+    private void AddSetAsHelmetMenuItem(UIMenu componentMenu)
+    {
+        UIMenuItem setAsHelmet = new UIMenuItem("Set as Helmet", "Press enter to set this as your current helmet");
+        setAsHelmet.Activated += (sender, e) =>
+        {
 
+            int TextureID = 0;
+            if (TextureMenuScroller.SelectedItem != null)
+            {
+                TextureID = TextureMenuScroller.SelectedItem.ID;
+            }
+            int DrawableID = DrawableMenuScroller.SelectedItem.ID;
+
+
+
+            PedCustomizer.WorkingVariation.Helmet = new PedPropComponent(PropID, DrawableID, TextureID);
+            Game.DisplaySubtitle("Updated Helmet Preference");
+
+        };
+        if (PropID == 0)
+        {
+            componentMenu.AddItem(setAsHelmet);
+        }
+    }
 
     private void GetPossibleDrawables()
     {

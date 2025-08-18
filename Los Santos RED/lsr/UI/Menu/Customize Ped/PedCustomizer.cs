@@ -518,6 +518,9 @@ public class PedCustomizer
         {
             Dispose(true);
         }
+
+
+        Player.OnBecamePedFromCustomzer();
         
     }
     public void Exit()

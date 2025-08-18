@@ -75,10 +75,10 @@ public class LocationDispatcher
                     GameFiber.Yield();
                 }
             }
-            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-            {
-                GameFiber.Yield();
-            }
+            //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            //{
+            //    GameFiber.Yield();
+            //}
             if (ps.PossiblePedSpawns != null)
             {
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
@@ -89,10 +89,10 @@ public class LocationDispatcher
                     GameFiber.Yield();
                 }
             }
-            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-            {
-                GameFiber.Yield();
-            }
+            //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            //{
+            //    GameFiber.Yield();
+            //}
             if (ps.PossibleVehicleSpawns != null)
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
@@ -108,19 +108,19 @@ public class LocationDispatcher
             ps.IsDispatchFilled = true;
             GameFiber.Yield();
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-        {
-            GameFiber.Yield();
-        }
+        //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+        //{
+        //    GameFiber.Yield();
+        //}
         foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled).ToList())
         {
             //EntryPoint.WriteToConsole($"Location Dispatcher, CLEARED AT {ps.Name}");
             ps.IsDispatchFilled = false;
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-        {
-            GameFiber.Yield();
-        }
+        //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+        //{
+        //    GameFiber.Yield();
+        //}
         HandleServiceWorkerSpawns();
     }
 

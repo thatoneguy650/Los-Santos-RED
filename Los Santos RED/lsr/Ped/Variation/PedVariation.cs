@@ -51,6 +51,10 @@ public class PedVariation
     public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
     public int EyeColor { get; set; } = -1;
 
+
+
+    public PedPropComponent Helmet { get; set; }// = new PedPropComponent(0, 18, 0);
+
     public List<AppliedOverlay> AppliedOverlays { get; set; } = new List<AppliedOverlay>();
 
     public PedVariation ApplyToPed(Ped ped, bool SetDefaultApplied)

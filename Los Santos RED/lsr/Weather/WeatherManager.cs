@@ -68,7 +68,10 @@ public class WeatherManager
     public void Update()
     {
 
-        return;
+        if (!Settings.SettingsManager.WeatherSettings.ChangeWeatherByForecast)
+        {
+            return;
+        }
 
         if(Settings.SettingsManager.WeatherSettings.ChangeWeatherByForecast && ShouldCheckWeather)
         {
@@ -76,8 +79,13 @@ public class WeatherManager
             closestForecast = WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x=> x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
             if (closestForecast != null)
             {
-                Game.DisplaySubtitle($"Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
+                EntryPoint.WriteToConsole($"Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
                 UpdateWeather();
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"Time is {Time.CurrentDateTime} and no current forecast was found");
+
             }
             GameTimeLastCheckedWeather = Game.GameTime;
         }

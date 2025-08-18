@@ -187,6 +187,8 @@ public class CarLockPick
     private bool LockPickAnimation_New()
     {
         Player.IsLockPicking = true;
+
+        NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
         bool Continue = true;
         EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation START NEW");
 

@@ -173,6 +173,10 @@ public class ModDataFileManager
         Seats.ReadConfig(); // no config file
         GameFiber.Yield();
         WeatherForecasts = new WeatherForecasts();
+
+        WeatherForecasts.SetupDefaultOnly();
+
+
         //WeatherForecasts.ReadConfig(configName);
 
         GameFiber.Yield();

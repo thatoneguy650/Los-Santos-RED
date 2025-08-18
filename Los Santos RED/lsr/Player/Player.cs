@@ -553,6 +553,7 @@ namespace Mod
             RacingManager.Setup();
             VehicleManager.Setup();
             StealthManager.Setup();
+            OutfitManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -561,6 +562,24 @@ namespace Mod
                 UpdateCurrentVehicle();
                 VehicleOwnership.TakeOwnershipOfVehicle(CurrentVehicle, false);
             }
+            SetPlayerFlags();
+
+
+
+            WeaponEquipment.Setup();
+            CellPhone.Start();
+            GangBackupManager.Setup();
+            IntimidationManager.Setup();
+            SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
+            Update();
+            foreach(GameLocation bl in PlacesOfInterest.PossibleLocations.InteractableLocations())
+            {
+                bl.SetupPlayer(this);
+            }
+        }
+
+        private void SetPlayerFlags()
+        {
             disableAutoEngineStart = Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart;
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
@@ -582,19 +601,7 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 427, true);
             }
-            WeaponEquipment.Setup();
-            CellPhone.Start();
-            GangBackupManager.Setup();
-            IntimidationManager.Setup();
-            SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
-            Update();
-            foreach(GameLocation bl in PlacesOfInterest.PossibleLocations.InteractableLocations())
-            {
-                bl.SetupPlayer(this);
-            }
         }
-
- 
 
         public void Update()
         {
@@ -616,10 +623,10 @@ namespace Mod
                 IntoxicationIsPrimary = true;
             }
             Intoxication.Update(IntoxicationIsPrimary);
-            if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-            {
-                GameFiber.Yield();
-            }
+            //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+            //{
+            //    GameFiber.Yield();
+            //}
             Injuries.Update(!IntoxicationIsPrimary);
             if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
             {
@@ -937,7 +944,10 @@ namespace Mod
 
 
              
-
+        public void OnBecamePedFromCustomzer()
+        {
+            SetPlayerFlags();
+        }
         public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill, string voiceName)
         {
             ModelName = modelName;

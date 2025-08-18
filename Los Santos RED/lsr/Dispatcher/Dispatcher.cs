@@ -152,19 +152,19 @@ public class Dispatcher
         {
             GameFiber.Yield();
         }
-        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-        {
-            GameFiber.Yield();
-        }
+        //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+        //{
+        //    GameFiber.Yield();
+        //}
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
         }
         LocationDispatcher.Dispatch();
-        if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
-        {
-            GameFiber.Yield();
-        }
+        //if (Settings.SettingsManager.PerformanceSettings.EnableHighPerformanceMode)
+        //{
+        //    GameFiber.Yield();
+        //}
         if (!EntryPoint.ModController.IsRunning)
         {
             return;
