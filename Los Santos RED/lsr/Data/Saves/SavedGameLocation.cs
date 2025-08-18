@@ -18,8 +18,6 @@ public class SavedGameLocation
     public virtual string Name { get; set; }
     public virtual int CurrentSalesPrice { get; set; }
     public virtual Vector3 EntrancePosition { get; set; }
-    public bool IsOnSPMap { get; set; } = true;
-    public bool IsOnMPMap { get; set; } = true;
     public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
         GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsCorrectMap(world.IsMPMapLoaded)).FirstOrDefault();
