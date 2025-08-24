@@ -18,9 +18,9 @@ public class SavedGameLocation
     public virtual string Name { get; set; }
     public virtual int CurrentSalesPrice { get; set; }
     public virtual Vector3 EntrancePosition { get; set; }
-    public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
+    public virtual void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
-        GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition).FirstOrDefault();
+        GameLocation savedPlace = placesOfInterest.AllLocations().Where(x => x.Name == Name && x.EntrancePosition == EntrancePosition && x.IsCorrectMap(world.IsMPMapLoaded)).FirstOrDefault();
         if (savedPlace != null)
         {
             player.Properties.AddOwnedLocation(savedPlace);
