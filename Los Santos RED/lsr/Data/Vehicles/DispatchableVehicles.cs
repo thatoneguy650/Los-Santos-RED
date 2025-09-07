@@ -1502,6 +1502,9 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("DOAVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.DOAVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
 
+            new DispatchableVehicleGroup("GoLocoVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.GoLocoVehicles_FEJ_Modern),
+
+
             //EMT
             new DispatchableVehicleGroup("LSFDEMTVehicles", DispatchableVehicles_FEJ.LSFDEMTVehicles_FEJ),
             new DispatchableVehicleGroup("LSCOFDEMSVehicles", DispatchableVehicles_FEJ.LSCOFDEMSVehicles_FEJ),

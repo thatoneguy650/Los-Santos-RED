@@ -18,6 +18,7 @@ public class BlankLocationsData
     public List<BlankLocation> BlankLocationPlaces { get; set; } = new List<BlankLocation>();
     public void DefaultConfig()
     {
+        RailroadPolice();
         SpeedTraps();
         Checkpoints();
         RooftopSnipers();
@@ -38,6 +39,62 @@ public class BlankLocationsData
         RedneckGang();
         VarriosGang();
         RandomPeds();
+    }
+
+    private void RailroadPolice()
+    {
+        BlankLocation railroad1 = new BlankLocation(new Vector3(1508.027f, 3373.598f, 35.9004f), 116.1617f, "railroad1", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            AssignedAssociationID = "GLRP",
+            
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1508.027f, 3373.598f, 35.9004f), 116.1617f, 35f){ IsEmpty = false, },
+                },
+        };
+        BlankLocationPlaces.Add(railroad1);
+        BlankLocation railroad2 = new BlankLocation(new Vector3(262.6646f, 3315.036f, 39.55537f), 231.6474f, "railroad2", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            AssignedAssociationID = "GLRP",
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(262.6646f, 3315.036f, 39.55537f), 231.6474f, 35f){ IsEmpty = false, },
+                },
+        };
+        BlankLocationPlaces.Add(railroad2);
+
+
+        BlankLocation railroad3 = new BlankLocation(new Vector3(1196.498f, 3266.45f, 38.64182f), 25.32101f, "railroad3", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            AssignedAssociationID = "GLRP",
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(1196.498f, 3266.45f, 38.64182f), 25.32101f, 35f){ IsEmpty = false, TaskRequirements = TaskRequirements.Guard },
+                },
+        };
+        BlankLocationPlaces.Add(railroad3);
+
+        BlankLocation railroad4 = new BlankLocation(new Vector3(562.358f, 3194.734f, 39.82635f), 330.7249f, "railroad4", "")
+        {
+            OpenTime = 0,
+            CloseTime = 24,
+            AssignedAssociationID = "GLRP",
+
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new LEConditionalLocation(new Vector3(562.358f, 3194.734f, 39.82635f), 330.7249f, 35f){ IsEmpty = false, TaskRequirements = TaskRequirements.Guard },
+                },
+        };
+        BlankLocationPlaces.Add(railroad4);
+
     }
 
     private void RandomPeds()

@@ -3676,8 +3676,8 @@ public class DispatchableVehicles_FEJ
             toReturn.RequiredVariation = new VehicleVariation();
             toReturn.RequiredVariation.VehicleMods.Add(new VehicleMod(48, modKitliveryID));
         }
-        toReturn.RequiredPrimaryColorID = 0;//base white
-        toReturn.RequiredSecondaryColorID = 111;//base black
+        //toReturn.RequiredPrimaryColorID = 0;//base white
+        //toReturn.RequiredSecondaryColorID = 111;//base black
         toReturn.ForcedPlateType = 4;
         if(requiredColor != -1)
         {
@@ -3688,16 +3688,10 @@ public class DispatchableVehicles_FEJ
         {
             if (toReturn.RequiredVariation != null)
             {
-                if (requiredColor == -1)
-                {
-                    toReturn.RequiredVariation.PrimaryColor = 0;
-                    toReturn.RequiredVariation.SecondaryColor = 111;
-                }
-                else
-                {
-                    toReturn.RequiredVariation.PrimaryColor = requiredColor;
-                    toReturn.RequiredVariation.SecondaryColor = requiredColor;
-                }
+          
+                    toReturn.RequiredVariation.PrimaryColor = -1;
+                    toReturn.RequiredVariation.SecondaryColor = -1;
+               
             }
             //Gauntlet XL - ?? sirens?
             if (policeVehicleType == PoliceVehicleType.Marked || policeVehicleType == PoliceVehicleType.MarkedFlatLightbar)
@@ -3772,17 +3766,24 @@ public class DispatchableVehicles_FEJ
         {
             if (toReturn.RequiredVariation != null)
             {
-                if (requiredColor == -1)
-                {
-                    toReturn.RequiredVariation.PrimaryColor = 0;
-                    toReturn.RequiredVariation.SecondaryColor = 111;
-                }
-                else
-                {
-                    toReturn.RequiredVariation.PrimaryColor = requiredColor;
-                    toReturn.RequiredVariation.SecondaryColor = requiredColor;
-                }
+
+                toReturn.RequiredVariation.PrimaryColor = -1;
+                toReturn.RequiredVariation.SecondaryColor = -1;
+
             }
+            //if (toReturn.RequiredVariation != null)
+            //{
+            //    if (requiredColor == -1)
+            //    {
+            //        toReturn.RequiredVariation.PrimaryColor = 0;
+            //        toReturn.RequiredVariation.SecondaryColor = 111;
+            //    }
+            //    else
+            //    {
+            //        toReturn.RequiredVariation.PrimaryColor = requiredColor;
+            //        toReturn.RequiredVariation.SecondaryColor = requiredColor;
+            //    }
+            //}
             //Gauntlet XL - ?? sirens?
             toReturn.VehicleExtras = new List<DispatchableVehicleExtra>()
                 {
@@ -3855,7 +3856,7 @@ public class DispatchableVehicles_FEJ
             toReturn.RequiredDashColorID = requiredColor;
         }
         toReturn.MatchDashColorToBaseColor = true;
-        SetDefault(toReturn,useOptionalColors,-1,minWantedLevel,maxWantedLevel,minOccupants,maxOccupants,requiredPedGroup,groupName);
+        SetDefault(toReturn,useOptionalColors, requiredColor, minWantedLevel,maxWantedLevel,minOccupants,maxOccupants,requiredPedGroup,groupName);
         return toReturn;
     }
     public DispatchableVehicle Create_ServiceDilettante(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, ServiceVehicleType ServiceVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, string requiredPedGroup, string groupName)
