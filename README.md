@@ -173,6 +173,11 @@ Enhanced Free Roam Mode
 [![GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Credits
+- [Peter Badoingy](https://github.com/PeterBadoingy)
+- [benzstar](https://github.com/aleur)
+- box
+- [huzzahsir](https://github.com/peeppeep-io)
+- [CPKS]((https://github.com/CPKS997))
 - [alexguirre](https://github.com/alexguirre)
 - [alloc8tor](https://github.com/alloc8or)
 - [pongo1231](https://github.com/pongo1231)
@@ -183,8 +188,6 @@ Enhanced Free Roam Mode
 - [Bob74](https://github.com/Bob74)
 - [DisapprovedByMe](https://github.com/DisapprovedByMe)
 - [Xinerki](https://github.com/Xinerki)
-- PeterBadoingy
-- box
 
 ## Compatibility
 - Incompatible with
@@ -194,7 +197,6 @@ Enhanced Free Roam Mode
 - Do not save and turn off autosave
   
 ## Complementary Mods
-[Add On Plates (AlternateConfigs\AddOnPlates_Wildbrick142)](https://www.gta5-mods.com/paintjobs/new-license-plates-add-on)  
 [True Realistic Driving V](https://www.gta5-mods.com/scripts/true-realistic-driving-v-realistic-mass-v0-1-beta)
 
 ## Issues
@@ -202,3 +204,27 @@ Enhanced Free Roam Mode
 - You will need to rebuy components if you remove them at the underground gunshops, gang dens, or drug dealers.
 - Vanilla taxi service is not available with LSR active (Downtown Cab Co on the vanilla cell will show Busy forever) use the burner cell to call the LSR taxi service.
 - Loading bodies in the trunk can fail or not attach properly.
+
+ ## Full Expanded Jurisdiction
+- Preview images of some of the new vehicles included in the FEJ pack. See LosSantosRED/AlternateConfigs/FullExpandedJurisdiction folder to install or learn more.
+![test](https://imgur.com/6e5BO2c.jpeg)
+
+ 
+## Full Modern Traffic
+- Preview images of some of the new vehicles included in the FMT pack. Updates traffic to use DLC vehicles along with other lore friendly vehicle edits. See LosSantosRED/AlternateConfigs/FullModernTraffic folder to install or learn more.
+![test2](https://i.imgur.com/zziAhEM.jpeg)
+ 
+
+## Full Expanded Weapons
+- Lore friendly weapon tweaks and additions. See LosSantosRED/AlternateConfigs/FullExpandedWeapons folder to install or learn more.
+![test3](https://s3-attachments.int-cdn.lcpdfrusercontent.com/monthly_2025_07/image.jpeg.9af99633d87e10d54bf34865f5afabef.jpeg)
+
+ 
+## Full Modern License Plates
+- Includes lore friendly modern license plates for EVERY state and lots of government/state/federal items. See LosSantosRED/AlternateConfigs/FullModernLicensePlates folder to install or learn more
+![test4](https://i.imgur.com/J4JYu0A.png)
+
+ 
+## Liberty City RED
+- Included in the LSR download is a full LSR config, peds/vehicles, and some LSR focused map fixes. Usable with Full Modern Traffic for that super modern feel. See LosSantosRED/AlternateConfigs/Liberty City folder to install or learn more. 
+![test5](https://i.imgur.com/yMtpzcE.jpeg)
