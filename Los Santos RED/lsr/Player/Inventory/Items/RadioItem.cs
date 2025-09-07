@@ -29,5 +29,10 @@ public class RadioItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.RadioItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.RadioItems.Add(this);
+    }
 }
 

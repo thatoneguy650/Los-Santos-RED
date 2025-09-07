@@ -46,7 +46,6 @@ public class ScrewdriverItem : ModItem
     {
         possibleItems?.ScrewdriverItems.RemoveAll(x => x.Name == Name);
         possibleItems?.ScrewdriverItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 

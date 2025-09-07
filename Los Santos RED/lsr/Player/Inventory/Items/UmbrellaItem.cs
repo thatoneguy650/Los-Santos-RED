@@ -32,7 +32,6 @@ public class UmbrellaItem : ModItem
     {
         possibleItems?.UmbrellaItems.RemoveAll(x => x.Name == Name);
         possibleItems?.UmbrellaItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

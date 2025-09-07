@@ -40,7 +40,6 @@ public class BinocularsItem : ModItem
     {
         possibleItems?.BinocularsItems.RemoveAll(x => x.Name == Name);
         possibleItems?.BinocularsItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

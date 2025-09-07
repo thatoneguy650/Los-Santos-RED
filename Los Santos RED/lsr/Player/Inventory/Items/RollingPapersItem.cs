@@ -58,7 +58,6 @@ public class RollingPapersItem : ModItem
     {
         possibleItems?.RollingPapersItems.RemoveAll(x => x.Name == Name);
         possibleItems?.RollingPapersItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

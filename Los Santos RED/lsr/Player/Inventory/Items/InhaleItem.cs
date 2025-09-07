@@ -36,7 +36,6 @@ public class InhaleItem : ConsumableItem
     {
         possibleItems?.InhaleItems.RemoveAll(x => x.Name == Name);
         possibleItems?.InhaleItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

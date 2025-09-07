@@ -54,7 +54,6 @@ public class FlashlightItem : ModItem
     {
         possibleItems?.FlashlightItems.RemoveAll(x => x.Name == Name);
         possibleItems?.FlashlightItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

@@ -32,7 +32,6 @@ public class ClothingItem : ModItem
     {
         possibleItems?.ModItems.RemoveAll(x => x.Name == Name);
         possibleItems?.ModItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

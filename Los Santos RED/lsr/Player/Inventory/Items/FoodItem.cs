@@ -52,7 +52,6 @@ public class FoodItem : ConsumableItem
     {
         possibleItems?.FoodItems.RemoveAll(x => x.Name == Name);
         possibleItems?.FoodItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

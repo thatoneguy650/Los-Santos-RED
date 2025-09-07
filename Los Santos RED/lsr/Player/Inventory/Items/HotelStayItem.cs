@@ -19,7 +19,6 @@ public class HotelStayItem : ModItem
     {
         possibleItems?.HotelStayItems.RemoveAll(x => x.Name == Name);
         possibleItems?.HotelStayItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

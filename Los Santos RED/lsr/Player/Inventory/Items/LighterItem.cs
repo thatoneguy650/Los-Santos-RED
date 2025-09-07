@@ -33,5 +33,10 @@ public class LighterItem : ModItem
     //{
     //    return base.ConsumeItem(actionable, applyNeeds);
     //}
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.LighterItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.LighterItems.Add(this);
+    }
 }
 

@@ -44,7 +44,6 @@ public class DrillItem : ModItem
     {
         possibleItems?.DrillItems.RemoveAll(x => x.Name == Name);
         possibleItems?.DrillItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
     public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe)

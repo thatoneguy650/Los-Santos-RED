@@ -53,7 +53,6 @@ public class DrinkItem : ConsumableItem
     {
         possibleItems?.DrinkItems.RemoveAll(x => x.Name == Name);
         possibleItems?.DrinkItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

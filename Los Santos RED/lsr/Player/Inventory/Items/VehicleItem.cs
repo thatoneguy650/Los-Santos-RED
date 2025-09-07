@@ -717,7 +717,6 @@ public class VehicleItem : ModItem
     {
         possibleItems?.VehicleItems.RemoveAll(x => x.ModelName == ModelName);
         possibleItems?.VehicleItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

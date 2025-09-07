@@ -824,7 +824,8 @@ public class ModItem
 
     public virtual void AddToList(PossibleItems possibleItems)
     {
-
+        possibleItems?.ModItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.ModItems.Add(this);
     }
 }
 
