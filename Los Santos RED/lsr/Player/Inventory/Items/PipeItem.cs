@@ -54,5 +54,10 @@ public class PipeItem : ModItem
         actionable.ActivityManager.StartUpperBodyActivity(activity);
         return true;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.PipeItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.PipeItems.Add(this);
+    }
 }
 

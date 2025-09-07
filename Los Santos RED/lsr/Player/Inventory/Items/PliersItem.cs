@@ -33,7 +33,6 @@ public class PliersItem : ModItem
     {
         possibleItems?.PliersItems.RemoveAll(x => x.Name == Name);
         possibleItems?.PliersItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

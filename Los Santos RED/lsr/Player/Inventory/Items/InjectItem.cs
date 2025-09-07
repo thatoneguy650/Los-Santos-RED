@@ -36,7 +36,6 @@ public class InjectItem : ConsumableItem
     {
         possibleItems?.InjectItems.RemoveAll(x => x.Name == Name);
         possibleItems?.InjectItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

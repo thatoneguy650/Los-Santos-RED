@@ -62,7 +62,6 @@ public class SmokeItem : ConsumableItem
     {
         possibleItems?.SmokeItems.RemoveAll(x => x.Name == Name);
         possibleItems?.SmokeItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

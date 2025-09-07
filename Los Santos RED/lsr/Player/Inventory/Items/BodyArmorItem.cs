@@ -45,7 +45,6 @@ public class BodyArmorItem : EquipmentItem
     {
         possibleItems?.BodyArmorItems.RemoveAll(x => x.Name == Name);
         possibleItems?.BodyArmorItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

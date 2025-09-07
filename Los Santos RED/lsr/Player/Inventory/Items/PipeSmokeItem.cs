@@ -51,7 +51,6 @@ public class PipeSmokeItem : ConsumableItem
     {
         possibleItems?.PipeSmokeItems.RemoveAll(x => x.Name == Name);
         possibleItems?.PipeSmokeItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

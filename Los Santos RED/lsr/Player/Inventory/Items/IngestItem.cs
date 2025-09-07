@@ -38,7 +38,6 @@ public class IngestItem : ConsumableItem
     {
         possibleItems?.IngestItems.RemoveAll(x => x.Name == Name);
         possibleItems?.IngestItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

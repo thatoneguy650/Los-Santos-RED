@@ -29,5 +29,10 @@ public class RadarDetectorItem : ModItem
         }
         return false;
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.RadarDetectorItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.RadarDetectorItems.Add(this);
+    }
 }
 

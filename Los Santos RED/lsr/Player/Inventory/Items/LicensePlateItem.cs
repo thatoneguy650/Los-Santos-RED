@@ -79,7 +79,6 @@ public class LicensePlateItem : ModItem
     {
         possibleItems?.LicensePlateItems.RemoveAll(x => x.Name == Name);
         possibleItems?.LicensePlateItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 }

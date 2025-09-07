@@ -18,6 +18,5 @@ public class ValuableItem : ModItem
     {
         possibleItems?.ValuableItems.RemoveAll(x => x.Name == Name);
         possibleItems?.ValuableItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }

@@ -33,7 +33,6 @@ public class ShovelItem : ModItem
     {
         possibleItems?.ShovelItems.RemoveAll(x => x.Name == Name);
         possibleItems?.ShovelItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

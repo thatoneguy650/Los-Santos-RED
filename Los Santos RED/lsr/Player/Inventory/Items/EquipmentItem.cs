@@ -38,7 +38,6 @@ public class EquipmentItem : ConsumableItem
     {
         possibleItems?.EquipmentItems.RemoveAll(x => x.Name == Name);
         possibleItems?.EquipmentItems.Add(this);
-        base.AddToList(possibleItems);
     }
 
 

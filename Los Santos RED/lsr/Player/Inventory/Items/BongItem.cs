@@ -58,7 +58,6 @@ public class BongItem : ModItem
     {
         possibleItems?.BongItems.RemoveAll(x => x.Name == Name);
         possibleItems?.BongItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

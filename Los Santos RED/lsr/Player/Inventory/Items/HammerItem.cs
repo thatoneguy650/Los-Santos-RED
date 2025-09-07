@@ -33,7 +33,6 @@ public class HammerItem : ModItem
     {
         possibleItems?.HammerItems.RemoveAll(x => x.Name == Name);
         possibleItems?.HammerItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

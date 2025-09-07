@@ -29,7 +29,6 @@ public class TapeItem : ModItem
     {
         possibleItems?.TapeItems.RemoveAll(x => x.Name == Name);
         possibleItems?.TapeItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

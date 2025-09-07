@@ -966,7 +966,6 @@ public class WeaponItem : ModItem
     {
         possibleItems?.WeaponItems.RemoveAll(x => x.ModelName == ModelName);
         possibleItems?.WeaponItems.Add(this);
-        base.AddToList(possibleItems);
     }
 }
 

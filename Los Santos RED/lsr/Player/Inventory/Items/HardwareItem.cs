@@ -21,5 +21,10 @@ public class HardwareItem : ModItem
     {
 
     }
+    public override void AddToList(PossibleItems possibleItems)
+    {
+        possibleItems?.HardwareItems.RemoveAll(x => x.Name == Name);
+        possibleItems?.HardwareItems.Add(this);
+    }
 }
 
