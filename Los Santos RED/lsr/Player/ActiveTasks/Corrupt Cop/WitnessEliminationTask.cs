@@ -59,7 +59,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private WeaponInformation WitnessWeapon;
         private CorruptCopContact Contact;
 
-        private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
+        private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && !NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 6) && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 6);
         public WitnessEliminationTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, 
             ICrimes crimes, INameProvideable names,IWeapons weapons, IShopMenus shopMenus, CorruptCopContact corruptCopContact)

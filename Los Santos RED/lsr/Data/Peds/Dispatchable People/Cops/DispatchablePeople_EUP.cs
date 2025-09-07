@@ -9688,6 +9688,20 @@ EmptyHolster = new PedComponent(7,109,0) },
     private void SetupBCSO()
     {
         BCSheriffPeds_FEJ = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("a_c_husky",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Husky",
+                UnitCode = "K9",
+                RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
+
             // BCSO Class A
             new DispatchablePerson("mp_m_freemode_01", 15, 15){
                 MaxWantedLevelSpawn = 3, RandomizeHead = true, OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -10202,6 +10216,20 @@ EmptyHolster = new PedComponent(7,109,0)},
 
             new DispatchablePerson("s_m_y_sheriff_01",0,0) {MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_f_y_sheriff_01",0,0) {MaxWantedLevelSpawn = 3 },
+
+            new DispatchablePerson("a_c_husky",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Husky",
+                UnitCode = "K9",
+                RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
+
 
             //LSSD Class A
             new DispatchablePerson("mp_m_freemode_01",5,5) { MaxWantedLevelSpawn = 3, RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SHERIFF_01_WHITE_FULL_01", "S_M_Y_SHERIFF_01_WHITE_FULL_02" },
@@ -12531,17 +12559,6 @@ EmptyHolster = new PedComponent(7,109,0)},
                 OverrideSideArmsID = null,
                 OverrideLongGunsID = null,
             },
-            new DispatchablePerson("a_c_retriever",50,50) {
-                IsAnimal = true,
-                DebugName = "K9_Retriever",
-                UnitCode = "K9",
-                OverrideAgencyLessLethalWeapons = true,
-                OverrideAgencySideArms = true,
-                OverrideAgencyLongGuns = true,
-                OverrideLessLethalWeaponsID = null,
-                OverrideSideArmsID = null,
-                OverrideLongGunsID = null,
-            },
             //Snipers
             new DispatchablePerson("mp_m_freemode_01",0,0) { DebugName = "<Male LSIA Utility Class B Sniper>",RandomizeHead = true,
                 OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
@@ -13437,7 +13454,7 @@ EmptyHolster = new PedComponent(7,109,0)},
             //Animals
             new DispatchablePerson("a_c_husky",50,50) {
                 IsAnimal = true,
-                DebugName = "K9_Shepherd",
+                DebugName = "K9_Husky",
                 UnitCode = "K9",
                 RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>()),
                 OverrideAgencyLessLethalWeapons = true,
