@@ -278,7 +278,13 @@ public class Agencies : IAgencies
         LSMCFEJ.VehiclesID = "LSMCVehicles";
         MRHFEJ.VehiclesID = "MRHVehicles";
 
-        List <Agency> FullAgenciesList = new List<Agency>
+
+
+        Agency GoLocoRRP = new Agency("~b~", "GLRP", "GLRP", "Go Loco Railroad Police", "Blue", Classification.Police, "StandardCops", "GoLocoVehicles", "GL ", "Tasers", "DPPDSidearms", "DPPDLongGuns", "GLRP Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads",  OffDutyDispatchPercent = 0, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
+
+
+
+        List<Agency> FullAgenciesList = new List<Agency>
         {
             LSPDFEJ,LSPDVWFEJ,LSPDELSFEJ,
             DPPD,RHPD,
@@ -287,7 +293,7 @@ public class Agencies : IAgencies
             LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
             SAHPFEJ,SASPA,SAPR,USCG,
-
+            GoLocoRRP,
 
             USNPS,LSDPR,SADFW,
 
