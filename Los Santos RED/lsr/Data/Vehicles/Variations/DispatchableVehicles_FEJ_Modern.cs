@@ -10,9 +10,6 @@ public class DispatchableVehicles_FEJ_Modern
 {
     private DispatchableVehicles_FEJ DispatchableVehicles_FEJ;
     public List<DispatchableVehicle> UnmarkedVehicles_FEJ_Modern { get; private set; }
-
-    public List<DispatchableVehicle> GoLocoVehicles_FEJ_Modern { get; private set; }
-
     public List<DispatchableVehicle> LSPDVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> EastLSPDVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> VWPDVehicles_FEJ_Modern { get; private set; }
@@ -63,19 +60,9 @@ public class DispatchableVehicles_FEJ_Modern
         LocalSheriff();
         ParkRangers();
         FederalPolice();
-        OtherPolice();
         Security();
         Taxis();
     }
-
-    private void OtherPolice()
-    {
-        GoLocoVehicles_FEJ_Modern = new List<DispatchableVehicle>()
-        {
-            DispatchableVehicles_FEJ.Create_PoliceScout(50,50,23,false,PoliceVehicleType.MarkedValorLightbar,134,-1,3,-1,-1,"",""),
-        };
-    }
-
     private void LocalPolice()
     {
         UnmarkedVehicles_FEJ_Modern = new List<DispatchableVehicle>()
@@ -461,7 +448,7 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceKuruma(1, 1, -1, true, PoliceVehicleType.Unmarked, -1, -1, 2, -1, -1, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceKuruma(1, 1, -1, true, PoliceVehicleType.Detective, -1, -1, 2, -1, -1, "", ""),
             DispatchableVehicles_FEJ.Create_PoliceFugitive(1,1,11,true,PoliceVehicleType.Detective,-1,-1,2,-1,-1,"",""),
-            DispatchableVehicles_FEJ.Create_PoliceGauntlet(10,10,-1,false,PoliceVehicleType.Detective,28,-1,2,-1,-1,"","",28),
+            DispatchableVehicles_FEJ.Create_PoliceGauntlet(10,10,3,false,PoliceVehicleType.Detective,28,-1,2,-1,-1,"","",28),
             DispatchableVehicles_FEJ.Create_PoliceCaracara(1,1,-1,true,PoliceVehicleType.Unmarked,-1,-1,2,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceCaracara(1,1,-1,true,PoliceVehicleType.Detective,-1,-1,2,-1,-1,"",""),
             DispatchableVehicles_FEJ.Create_PoliceScout(1,1,-1,true,PoliceVehicleType.Unmarked,-1,-1,2,-1,-1,"",""),
