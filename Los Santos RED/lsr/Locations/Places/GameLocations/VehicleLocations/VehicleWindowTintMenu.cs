@@ -8,19 +8,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+public enum WindowTints
+{
+    WINDOWTINT_NONE = 0,
+    WINDOWTINT_LIMO = 1,
+    WINDOWTINT_DARKSMOKE = 2,
+    WINDOWTINT_LIGHTSMOKE = 3,
+    WINDOWTINT_GREEN = 6
+}
+
 public class VehicleWindowTintMenu
 {
-    private ILocationInteractable Player;
-    private UIMenu InteractionMenu;
-    private MenuPool MenuPool;
-    private ModShopMenu ModShopMenu;
-    private VehicleExt ModdingVehicle;
-    private VehicleVariation CurrentVariation;
-    private GameLocation GameLocation;
-    private List<TintMenuItem> TintMenuItems = new List<TintMenuItem>();
-    private UIMenu tintFullMenu;
-    private UIMenu tintGroupMenu;
-    private List<VehicleTintLookup> VehicleTints;
+    private readonly ILocationInteractable Player;
+    private readonly UIMenu InteractionMenu;
+    private readonly MenuPool MenuPool;
+    private readonly ModShopMenu ModShopMenu;
+    private readonly VehicleExt ModdingVehicle;
+    private readonly VehicleVariation CurrentVariation;
+    private readonly GameLocation GameLocation;
+    private readonly List<TintMenuItem> TintMenuItems = new List<TintMenuItem>();
+    private UIMenu tintMenu;
+    private readonly List<VehicleTintLookup> VehicleTints = new List<VehicleTintLookup>
+    {
+        new VehicleTintLookup((int)WindowTints.WINDOWTINT_NONE, "None", 500),
+        new VehicleTintLookup((int)WindowTints.WINDOWTINT_LIGHTSMOKE, "Light Smoke", 900),
+        new VehicleTintLookup((int)WindowTints.WINDOWTINT_DARKSMOKE, "Dark Smoke", 1200),
+        new VehicleTintLookup((int)WindowTints.WINDOWTINT_LIMO, "Limo", 1500),
+        new VehicleTintLookup((int)WindowTints.WINDOWTINT_GREEN, "Green", 2000)
+    };
+    private int originalTint;
 
     public VehicleWindowTintMenu(MenuPool menuPool, UIMenu interactionMenu, ILocationInteractable player, VehicleExt moddingVehicle, ModShopMenu modShopMenu, VehicleVariation currentVariation, GameLocation gameLocation)
     {
@@ -35,197 +51,152 @@ public class VehicleWindowTintMenu
 
     public void Setup()
     {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
+        if (ModdingVehicle?.Vehicle.Exists() != true || MenuPool == null || InteractionMenu == null)
             return;
-        }
 
-        VehicleTints = new List<VehicleTintLookup>()
-        {
-            new VehicleTintLookup(0, "None", "Standard", 500),
-            new VehicleTintLookup(3, "Light Smoke", "Standard", 900),
-            new VehicleTintLookup(2, "Dark Smoke", "Standard", 1200),
-            new VehicleTintLookup(1, "Pure Black", "Standard", 1500),
-            new VehicleTintLookup(6, "Green", "Special", 2000),
-        };
-
+        int vehicleTint = NativeFunction.Natives.GET_VEHICLE_WINDOW_TINT<int>(ModdingVehicle.Vehicle);
+        if (vehicleTint == -1)
+            vehicleTint = (int)WindowTints.WINDOWTINT_NONE;
+        CurrentVariation.WindowTint = Enum.IsDefined(typeof(WindowTints), vehicleTint) ? vehicleTint : (int)WindowTints.WINDOWTINT_NONE;
+        originalTint = CurrentVariation.WindowTint;
         CreateTintMenu();
     }
 
     private void CreateTintMenu()
     {
-        tintFullMenu = MenuPool.AddSubMenu(InteractionMenu, "Window Tint");
-        tintFullMenu.SubtitleText = "WINDOW TINTS";
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count - 1].Description = "Pick Window Tints";
+        if (MenuPool == null || InteractionMenu == null)
+            return;
 
-        foreach (string tintGroup in VehicleTints.GroupBy(x => x.TintGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
-        {
-            SetupTintGroup(tintGroup);
-        }
-    }
+        tintMenu = MenuPool.AddSubMenu(InteractionMenu, "Window Tint");
+        if (tintMenu == null)
+            return;
 
-    private void SetupTintGroup(string tintGroup)
-    {
-        tintGroupMenu = MenuPool.AddSubMenu(tintFullMenu, tintGroup);
-        tintGroupMenu.SubtitleText = "WINDOW TINTS";
-        tintFullMenu.MenuItems[tintFullMenu.MenuItems.Count - 1].Description = "Choose a tint group";
+        tintMenu.SubtitleText = "WINDOW TINTS";
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count - 1].Description = "Select Window Tints";
 
-        tintGroupMenu.OnMenuOpen += (sender) =>
-        {
-            ResetTints();
-            if (sender.CurrentSelection == -1)
-            {
-                return;
-            }
-            UIMenuItem selectedItem = sender.MenuItems[sender.CurrentSelection];
-            if (selectedItem == null)
-            {
-                return;
-            }
-            TintMenuItem lookupResult = TintMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
-            if (lookupResult == null)
-            {
-                return;
-            }
-            SetWindowTint(lookupResult.TintID, false);
-        };
-
-        tintGroupMenu.OnMenuClose += (sender) =>
-        {
-            ResetTints();
-        };
-
-        tintGroupMenu.OnIndexChange += (sender, newIndex) =>
-        {
-            if (newIndex == -1)
-            {
-                return;
-            }
-            UIMenuItem selectedItem = sender.MenuItems[newIndex];
-            if (selectedItem == null)
-            {
-                return;
-            }
-            TintMenuItem lookupResult = TintMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
-            if (lookupResult == null)
-            {
-                return;
-            }
-            SetWindowTint(lookupResult.TintID, false);
-        };
-
+        TintMenuItems.Clear();
         int counter = 0;
-        foreach (VehicleTintLookup tint in VehicleTints.Where(x => x.TintGroup == tintGroup))
+        foreach (VehicleTintLookup tint in VehicleTints.OrderBy(x => x.Price))
         {
             UIMenuItem tintItem = new UIMenuItem(tint.TintName, $"Select {tint.TintName}");
-            TintMenuItems.Add(new TintMenuItem(tintItem, tint.TintID, counter));
-            bool isSelected = CurrentVariation.WindowTint == tint.TintID;
-            if (isSelected)
-            {
-                tintItem.RightLabel = "";
-                tintItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
-            }
-            else
-            {
-                tintItem.RightLabel = $"~r~${tint.Price}~s~";
-                tintItem.RightBadge = UIMenuItem.BadgeStyle.None;
-            }
-
-            tintItem.Activated += (sender, selectedItem) =>
-            {
-                TintMenuItem lookupResult = TintMenuItems.Where(x => x.UIMenuItem == selectedItem).FirstOrDefault();
-                if (lookupResult == null)
-                {
-                    return;
-                }
-
-                if (CurrentVariation.WindowTint == lookupResult.TintID)
-                {
-                    DisplayMessage("Already Set as Window Tint");
-                    return;
-                }
-                if (!ChargeClient(tint.Price))
-                {
-                    return; 
-                }
-                SetWindowTint(lookupResult.TintID, true);
-                SyncTints(lookupResult.TintID);
-            };
-
-            tintGroupMenu.AddItem(tintItem);
-            counter++;
+            tintMenu.AddItem(tintItem);
+            TintMenuItems.Add(new TintMenuItem(tintItem, tint.TintID, counter++));
         }
+
+        tintMenu.OnMenuOpen += OnMenuOpen;
+        tintMenu.OnIndexChange += OnIndexChange;
+        tintMenu.OnItemSelect += OnItemSelect;
+        tintMenu.OnMenuClose += OnMenuClose;
+        UpdateTintMenuItems();
+    }
+
+    private void OnMenuOpen(UIMenu sender)
+    {
+        if (TintMenuItems.Count == 0)
+            CreateTintMenu();
+
+        UpdateTintMenuItems();
+        if (sender.MenuItems.Count == 0)
+            return;
+
+        int currentTintIndex = TintMenuItems.FirstOrDefault(x => x.TintID == CurrentVariation.WindowTint)?.Index ?? 0;
+        sender.CurrentSelection = currentTintIndex;
+        sender.Visible = true;
+        SetWindowTint(TintMenuItems[currentTintIndex].TintID, false);
+    }
+
+    private void OnIndexChange(UIMenu sender, int newIndex)
+    {
+        if (newIndex < 0 || newIndex >= sender.MenuItems.Count)
+            return;
+
+        TintMenuItem lookupResult = TintMenuItems.FirstOrDefault(x => x.UIMenuItem == sender.MenuItems[newIndex]);
+        if (lookupResult != null)
+            SetWindowTint(lookupResult.TintID, false);
+    }
+
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        TintMenuItem lookupResult = TintMenuItems.FirstOrDefault(x => x.UIMenuItem == selectedItem);
+        if (lookupResult == null || CurrentVariation.WindowTint == lookupResult.TintID)
+        {
+            if (CurrentVariation.WindowTint == lookupResult?.TintID)
+                ModShopMenu.DisplayMessage("Already Set as Window Tint");
+            return;
+        }
+
+        VehicleTintLookup tint = VehicleTints.FirstOrDefault(x => x.TintID == lookupResult.TintID);
+        if (tint == null || !ChargeClient(tint.Price))
+            return;
+
+        SetWindowTint(lookupResult.TintID, true);
+        UpdateTintMenuItems();
+        EntryPoint.WriteToConsole($"VehicleWindowTintMenu.OnItemSelect: Applied TintID {lookupResult.TintID} for vehicle {ModdingVehicle.Vehicle.Model.Name}");
+    }
+
+    private void OnMenuClose(UIMenu sender)
+    {
+        ResetTints();
+        if (tintMenu != null)
+            tintMenu.Visible = false;
+    }
+
+    private void UpdateTintMenuItems()
+    {
+        if (TintMenuItems.Count == 0)
+            return;
+
+        foreach (TintMenuItem tintMenuItem in TintMenuItems)
+        {
+            VehicleTintLookup tint = VehicleTints.FirstOrDefault(x => x.TintID == tintMenuItem.TintID);
+            if (tint == null)
+                continue;
+
+            tintMenuItem.UIMenuItem.RightLabel = tintMenuItem.TintID == CurrentVariation.WindowTint ? "" : $"~r~${tint.Price}~s~";
+            tintMenuItem.UIMenuItem.RightBadge = tintMenuItem.TintID == CurrentVariation.WindowTint ? UIMenuItem.BadgeStyle.Tick : UIMenuItem.BadgeStyle.None;
+        }
+
+        if (tintMenu != null)
+            tintMenu.RefreshIndex();
     }
 
     private void SetWindowTint(int tintID, bool setVariation)
     {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
-        {
+        if (ModdingVehicle?.Vehicle.Exists() != true || !Enum.IsDefined(typeof(WindowTints), tintID))
             return;
-        }
+
         if (setVariation)
         {
             CurrentVariation.WindowTint = tintID;
             CurrentVariation.Apply(ModdingVehicle);
         }
+
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
         NativeFunction.Natives.SET_VEHICLE_WINDOW_TINT(ModdingVehicle.Vehicle, tintID);
     }
 
     private void ResetTints()
     {
-        if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists() || CurrentVariation == null)
-        {
+        if (ModdingVehicle?.Vehicle.Exists() != true || CurrentVariation == null)
             return;
-        }
+
+        int resetTint = Enum.IsDefined(typeof(WindowTints), CurrentVariation.WindowTint) ? CurrentVariation.WindowTint : originalTint;
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
-        NativeFunction.Natives.SET_VEHICLE_WINDOW_TINT(ModdingVehicle.Vehicle, CurrentVariation.WindowTint);
-    }
-
-    private void SyncTints(int tintID)
-    {
-        foreach (TintMenuItem tintMenuItem in TintMenuItems)
-        {
-            VehicleTintLookup tint = VehicleTints.FirstOrDefault(x => x.TintID == tintMenuItem.TintID);
-            if (tint == null)
-            {
-                continue;
-            }
-            if (tintMenuItem.TintID == tintID)
-            {
-                tintMenuItem.UIMenuItem.RightLabel = "";
-                tintMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
-            }
-            else
-            {
-                tintMenuItem.UIMenuItem.RightLabel = $"~r~${tint.Price}~s~";
-                tintMenuItem.UIMenuItem.RightBadge = UIMenuItem.BadgeStyle.None;
-            }
-        }
-    }
-
-    private void DisplayMessage(string message)
-    {
-        if (GameLocation == null)
-        {
-            return;
-        }
-        GameLocation.PlaySuccessSound();
-        GameLocation.DisplayMessage("Information", message);
+        NativeFunction.Natives.SET_VEHICLE_WINDOW_TINT(ModdingVehicle.Vehicle, resetTint);
     }
 
     private bool ChargeClient(int price)
     {
-        if (Player.BankAccounts.GetMoney(true) < price)
+        if (Player?.BankAccounts == null || Player.BankAccounts.GetMoney(true) < price)
         {
             ModShopMenu.DisplayInsufficientFundsMessage(price);
             return false;
         }
+
         ModShopMenu.DisplayPurchasedMessage(price);
         Player.BankAccounts.GiveMoney(-1 * price, true);
         return true;
     }
-
 
     private class TintMenuItem
     {
@@ -243,17 +214,15 @@ public class VehicleWindowTintMenu
 
     private class VehicleTintLookup
     {
-        public VehicleTintLookup(int tintID, string tintName, string tintGroup, int price)
+        public int TintID { get; }
+        public string TintName { get; }
+        public int Price { get; }
+
+        public VehicleTintLookup(int tintID, string tintName, int price)
         {
             TintID = tintID;
             TintName = tintName;
-            TintGroup = tintGroup;
             Price = price;
         }
-
-        public int TintID { get; set; }
-        public string TintName { get; set; }
-        public string TintGroup { get; set; }
-        public int Price { get; set; }
     }
 }
