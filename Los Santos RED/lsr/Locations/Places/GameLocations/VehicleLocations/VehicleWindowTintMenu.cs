@@ -43,12 +43,10 @@ public class VehicleWindowTintMenu
         VehicleTints = new List<VehicleTintLookup>()
         {
             new VehicleTintLookup(0, "None", "Standard", 500),
-            new VehicleTintLookup(4, "Stock", "Standard", 600),
             new VehicleTintLookup(3, "Light Smoke", "Standard", 900),
             new VehicleTintLookup(2, "Dark Smoke", "Standard", 1200),
             new VehicleTintLookup(1, "Pure Black", "Standard", 1500),
-            new VehicleTintLookup(5, "Limo", "Special", 1000),
-            new VehicleTintLookup(6, "Green", "Special", 1100)
+            new VehicleTintLookup(6, "Green", "Special", 2000),
         };
 
         CreateTintMenu();
@@ -140,6 +138,7 @@ public class VehicleWindowTintMenu
                 {
                     return;
                 }
+
                 if (CurrentVariation.WindowTint == lookupResult.TintID)
                 {
                     DisplayMessage("Already Set as Window Tint");
@@ -147,7 +146,7 @@ public class VehicleWindowTintMenu
                 }
                 if (!ChargeClient(tint.Price))
                 {
-                    return;
+                    return; 
                 }
                 SetWindowTint(lookupResult.TintID, true);
                 SyncTints(lookupResult.TintID);
@@ -219,33 +218,14 @@ public class VehicleWindowTintMenu
     {
         if (Player.BankAccounts.GetMoney(true) < price)
         {
-            DisplayNotEnoughFunds(price);
+            ModShopMenu.DisplayInsufficientFundsMessage(price);
             return false;
         }
-        DisplayPurchased(price);
+        ModShopMenu.DisplayPurchasedMessage(price);
         Player.BankAccounts.GiveMoney(-1 * price, true);
         return true;
     }
 
-    private void DisplayNotEnoughFunds(int price)
-    {
-        if (GameLocation == null)
-        {
-            return;
-        }
-        GameLocation.PlayErrorSound();
-        GameLocation.DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transaction, as you do not have the required funds");
-    }
-
-    private void DisplayPurchased(int price)
-    {
-        if (GameLocation == null)
-        {
-            return;
-        }
-        GameLocation.PlaySuccessSound();
-        GameLocation.DisplayMessage("~g~Purchased", "Thank you for your purchase");
-    }
 
     private class TintMenuItem
     {
