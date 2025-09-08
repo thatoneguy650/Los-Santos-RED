@@ -43,11 +43,11 @@ public class WheelVehicleModKitType : VehicleModKitType
             new WheelVehicleClassModKitType("Tuner",5,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
             new WheelVehicleClassModKitType("Bike",6,TypeID, ModShopMenu,WheelSubMenu,MenuPool,Player),
             new WheelVehicleClassModKitType("High End",7,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
-            new WheelVehicleClassModKitType("Super Mod 1",8,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
-            new WheelVehicleClassModKitType("Super Mod 2",9,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
-            new WheelVehicleClassModKitType("Super Mod 3",10,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
-            new WheelVehicleClassModKitType("Super Mod 4",11,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
-            new WheelVehicleClassModKitType("Super Mod 5",12,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
+            new WheelVehicleClassModKitType("Benny's Originals",8,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
+            new WheelVehicleClassModKitType("Benny's Bespoke",9,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
+            new WheelVehicleClassModKitType("Racing",10,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
+            new WheelVehicleClassModKitType("Street",11,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
+            new WheelVehicleClassModKitType("Track",12,TypeID,ModShopMenu,WheelSubMenu,MenuPool,Player),
 
         };
         foreach (WheelVehicleClassModKitType menu in list)
