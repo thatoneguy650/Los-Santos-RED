@@ -173,6 +173,12 @@ public class ModShopMenu
             vmkt.AddToMenu();
         }
     }
+    private void AddWindowTintCategories()
+    {
+        EntryPoint.WriteToConsole("AddWindowTintCategories");
+        VehicleWindowTintMenu windowTintMenu = new VehicleWindowTintMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
+        windowTintMenu.Setup();
+    }
     public void DisplayInsufficientFundsMessage(int price)
     {
         if (GameLocation == null)

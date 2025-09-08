@@ -232,6 +232,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModKitWheelTypeShopMenuItem.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleModShop.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleVariationShopMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\VehicleWindowTintMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\WheelVehicleClassModKitType.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\WheelVehicleModKitType.cs" />
     <Compile Include="lsr\Locations\Places\Interface\IPayoutDisbursable.cs" />
