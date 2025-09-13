@@ -11,12 +11,14 @@ public class FireFighterSpawnTask : SpawnTask
     private Agency Agency;
     private Vehicle SpawnedVehicle;
     private IShopMenus ShopMenus;
+    private ICrimes Crimes;
     public FireFighterSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, 
-        IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
+        IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, ICrimes crimes) 
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         ShopMenus = shopMenus;
+        Crimes = crimes;
     }
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
@@ -193,7 +195,7 @@ public class FireFighterSpawnTask : SpawnTask
         EntryPoint.PersistentPedsCreated++;//TR
         ped.RelationshipGroup = new RelationshipGroup("FIREMAN");
         bool isMale = PersonType.IsMale(ped);
-        Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
+        Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryFirefighter);
         if (SpawnRequirement != TaskRequirements.None)
         {

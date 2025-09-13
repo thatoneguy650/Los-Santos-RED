@@ -93,7 +93,7 @@ public static class StaticStrings
     public static readonly string BreakingEnteringCrimeID = "BreakingEnteringCrime";
 
     public static readonly string BreakingEnteringAudibleCrimeID = "BreakingEnteringAudibleCrime";
-
+    public static readonly string PickPocketingCrimeID = "PickPocketing";
     public static readonly string ShopliftingCrimeID = "Shoplifting";
     public static readonly string DrugPossessionCrimeID = "DrugPossession";
 

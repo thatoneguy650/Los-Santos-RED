@@ -36,7 +36,7 @@ public class Merchant : PedExt, IWeaponIssuable
     public WeaponInventory WeaponInventory { get; private set; }
     public bool HasTaser { get; set; } = false;
     public bool IsUsingMountedWeapon { get; set; } = false;
-
+    public override float PickpocketDetectionMultiplier { get; set; } = 1.2f;
     public bool SetupMenus { get; set; } = true;
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
     public override string InteractPrompt(IButtonPromptable player)

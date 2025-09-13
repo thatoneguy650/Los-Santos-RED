@@ -24,7 +24,7 @@ public class PlayerPerception
     private uint GameTimeLastSetFakeSeen;
 
     private bool IsFakeSeen => GameTimeLastSetFakeSeen != 0 && Game.GameTime - GameTimeLastSetFakeSeen <= 5000;
-
+    public bool IsSetFakeSeen => IsFakeSeen;
     private float DistanceToTargetInVehicle => Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceVehicle;
     private float DistanceToTargetOnFoot => Target.Stance.IsBeingStealthy ? Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceStealth : Settings.SettingsManager.PlayerOtherSettings.SeeBehindDistanceRegular; //0.25f : 4f;
     public PlayerPerception(PedExt originator, IPerceptable target, ISettingsProvideable settings)
@@ -42,10 +42,10 @@ public class PlayerPerception
 
 
 
+            //EntryPoint.WriteToConsole($"CanRecognizeTarget : Originator {Originator.Handle}RecognizeTime: {RecognizeTime}");
 
 
-
-            if (TimeContinuoslySeenTarget >= RecognizeTime) // 500)//1250
+            if (TimeContinuoslySeenTarget >= RecognizeTime && DistanceToTarget <= 20f) // 500)//1250
             {
                 return true;
             }
@@ -61,7 +61,7 @@ public class PlayerPerception
     }
     public bool CanSeeTarget { get; private set; } = false;
     public float ClosestDistanceToTarget { get; private set; } = 2000f;
-
+    public string PlayerPerceptionString => $"CanSeeTarget:{CanSeeTarget} CanRecognizeTarget:{CanRecognizeTarget} GameTimeContinuoslySeenTargetSince:{GameTimeContinuoslySeenTargetSince} GameTimeLastSetFakeSeen {GameTimeLastSetFakeSeen}";
     public float ClosestDistanceToTargetWithoutMask { get; private set; } = 2000f;
 
     public float DistanceToTarget { get; private set; } = 999f;
@@ -199,12 +199,17 @@ public class PlayerPerception
         VehicleLastSeenTargetIn = Target.CurrentSeenVehicle;
         WeaponLastSeenTargetWith = Target.WeaponEquipment.CurrentSeenWeapon;
 
+
+        //EntryPoint.WriteToConsole($"SET TARGET SEEN RAN FOR {Originator.Handle}");
+
     }
     private void SetTargetUnseen()
     {
         GameTimeContinuoslySeenTargetSince = 0;
         CanSeeTarget = false;
         CanSeeTargetWithoutMask = false;
+
+        //EntryPoint.WriteToConsole($"SET TARGET UNSEEN RAN FOR {Originator.Handle}");
     }
     private bool UpdateTargetDistance(Vector3 placeLastSeen, Vector3 posToCheck)
     {
@@ -333,7 +338,7 @@ public class PlayerPerception
             isWithinPossibleSightDistance = true;
         }
 
-        //EntryPoint.WriteToConsole($"expectedSightDistance: {expectedSightDistance} isWithinPossibleSightDistance{isWithinPossibleSightDistance}");
+       // EntryPoint.WriteToConsole($"{Originator.Handle} expectedSightDistance: {expectedSightDistance} isWithinPossibleSightDistance{isWithinPossibleSightDistance}");
 
         if (isWithinPossibleSightDistance)
         {
@@ -342,10 +347,12 @@ public class PlayerPerception
                 if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
                 {
                     SetTargetSeen();
+                    //EntryPoint.WriteToConsole($"SEEN 1 RAN {Originator.Handle}");
                 }
                 else
                 {
                     SetTargetUnseen();
+                   // EntryPoint.WriteToConsole($"UNSEEN 1 RAN {Originator.Handle}");
                 }
             }
             else
@@ -353,14 +360,20 @@ public class PlayerPerception
                 if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
                 {
                     SetTargetSeen();
+                    //EntryPoint.WriteToConsole($"SEEN 2 RAN {Originator.Handle}");
                 }
                 else
                 {
                     SetTargetUnseen();
+                    //EntryPoint.WriteToConsole($"UNSEEN 2 RAN {Originator.Handle}");
                 }
             }
             GameFiber.Yield();//TR TEST 28
             RanSightThisUpdate = true;
+        }
+        else
+        {
+            SetTargetUnseen();
         }
         GameTimeLastLOSCheck = Game.GameTime;
         return true;

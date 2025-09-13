@@ -33,9 +33,10 @@ public class FireDispatcher
     private IPlacesOfInterest PlacesOfInterest;
     private IModItems ModItems;
     private IShopMenus ShopMenus;
+    private ICrimes Crimes;
     private bool ShouldRunAmbientDispatch;
     public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, 
-        IPlacesOfInterest placesOfInterest, IModItems modItems, IShopMenus shopMenus)
+        IPlacesOfInterest placesOfInterest, IModItems modItems, IShopMenus shopMenus, ICrimes crimes)
     {
         Player = player;
         World = world;
@@ -49,6 +50,7 @@ public class FireDispatcher
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
         ShopMenus = shopMenus;
+        Crimes = crimes;
     }
 
     private float ClosestOfficerSpawnToPlayerAllowed => Player.Investigation.IsActive && Player.Investigation.RequiresEMS ? 100f : 250f;
@@ -308,7 +310,7 @@ public class FireDispatcher
     {
         try
         {
-            FireFighterSpawnTask firefighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems, ShopMenus);
+            FireFighterSpawnTask firefighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems, ShopMenus, Crimes);
             firefighterSpawnTask.AllowAnySpawn = allowAny;
             firefighterSpawnTask.AllowBuddySpawn = allowBuddy;
             firefighterSpawnTask.SpawnRequirement = spawnRequirement;

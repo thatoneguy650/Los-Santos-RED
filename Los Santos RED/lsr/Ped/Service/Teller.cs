@@ -28,6 +28,7 @@ public class Teller : PedExt
     {
         return $"Transact with {FormattedName}";
     }
+    public override float PickpocketDetectionMultiplier { get; set; } = 1.2f;
     public override void AddSpecificInteraction(ILocationInteractable player,MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
     {
         BankInteraction BankInteraction = new BankInteraction(player, AssociatedBank);

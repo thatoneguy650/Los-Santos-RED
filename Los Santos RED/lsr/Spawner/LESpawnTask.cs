@@ -16,12 +16,14 @@ public class LESpawnTask : SpawnTask
     private string UnitCode;
     private bool AddCanine;
     private IShopMenus ShopMenus;
+    private ICrimes Crimes;
     public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers,
-        IEntityProvideable world, IModItems modItems, bool addCanine, IShopMenus shopMenus) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
+        IEntityProvideable world, IModItems modItems, bool addCanine, IShopMenus shopMenus, ICrimes crimes) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
         AddCanine = addCanine;
         ShopMenus = shopMenus;
+        Crimes = crimes;
     }
 
     public List<Cop> SpawnedCops { get; set; } = new List<Cop>();
@@ -436,7 +438,7 @@ public class LESpawnTask : SpawnTask
         Pedestrian.RelationshipGroup = rg;
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", Pedestrian, true);
         bool isMale = PersonType.IsMale(Pedestrian);
-        Cop PrimaryCop = new Cop(Pedestrian, Settings, Pedestrian.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        Cop PrimaryCop = new Cop(Pedestrian, Settings, Pedestrian.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
 
         if(IsMarshalMember)
         {

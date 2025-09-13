@@ -52,7 +52,10 @@ public class ButtonPrompts
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
+
     }
+
+
 
     private void AttemptAddHotwireInteractPrompts()
     {
@@ -96,6 +99,7 @@ public class ButtonPrompts
     public void Dispose()
     {
         Prompts.Clear();
+       
     }
     public void Clear()
     {
@@ -470,6 +474,7 @@ public class ButtonPrompts
         //do more like this?
         Player.ActivityManager.CheckHidingButtonPrompts(this, Player.CurrentLookedAtObject);
         Player.ActivityManager.CheckDoorButtonPrompts(this, Player.CurrentLookedAtObject);
+        Player.ActivityManager.CheckPickpocketButtonPrompts(this, Player.CurrentLookedAtPed);
     }
     private void SittingPrompts()
     {

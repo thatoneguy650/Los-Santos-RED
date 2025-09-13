@@ -49,6 +49,9 @@ public class EMTBrain : PedBrain
         if (PedExt.DistanceToPlayer <= 150f)//50f
         {
             PedExt.PedReactions.Update(Player);
+
+            EntryPoint.WriteToConsole($"EMT BRAIN HasSeenScaryCrime:{PedExt.PedReactions.HasSeenScaryCrime} HasSeenAngryCrime:{PedExt.PedReactions.HasSeenAngryCrime}");
+
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
                 if (PedExt.WillFight && PedExt.PedReactions.HasSeenAngryCrime && Player.IsNotWanted)

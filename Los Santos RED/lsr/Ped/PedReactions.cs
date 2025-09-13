@@ -73,9 +73,23 @@ public class PedReactions
                 continue;
             }
             AddReaction(witnessedCrime, Player);
-            OldUpdate(witnessedCrime);
+            //OldUpdate(witnessedCrime);
             witnessedCrime.SetReactedTo();
         }
+
+        foreach (WitnessedCrime witnessedCrime in Civilian.CrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians))
+        {
+            if (witnessedCrime.IsPlayerWitnessedCrime && (!Player.IsAliveAndFree))// || Player.WantedLevel >= 3))
+            {
+                continue;
+            }
+            if (!witnessedCrime.IsPlayerWitnessedCrime && (witnessedCrime.Perpetrator.IsBusted || witnessedCrime.Perpetrator.IsUnconscious || witnessedCrime.Perpetrator.IsDead))
+            {
+                continue;
+            }
+            OldUpdate(witnessedCrime);
+        }
+
         OldDistressedUpdate();
         if(prevReactionTier != ReactionTier)
         {

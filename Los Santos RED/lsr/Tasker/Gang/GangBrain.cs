@@ -166,7 +166,7 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
-                else if (GangMember.IsFedUpWithPlayer && !arePoliceNearby)
+                else if (GangMember.CanAttackPlayer && !arePoliceNearby)
                 {
                     IsFedUp = true;
                     if (GangMember.WillFight)

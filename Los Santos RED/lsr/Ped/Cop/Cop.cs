@@ -68,6 +68,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int PlayerStandTooCloseLimit => 1;
     public override int InsultLimit => 2;
     public override string BlipName => "Police";
+    public override float PickpocketDetectionMultiplier { get; set; } = 2.0f;
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }

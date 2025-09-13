@@ -1707,6 +1707,9 @@ namespace LosSantosRED.lsr
 
             new CrimeDispatch(StaticStrings.TheftCrimeID,SDI.TheftDispatch),
             new CrimeDispatch(StaticStrings.ShopliftingCrimeID,SDI.Shoplifting),
+
+            new CrimeDispatch(StaticStrings.PickPocketingCrimeID, SDI.PickPocketing),
+
         };
             DispatchList = new List<Dispatch>
         {
@@ -1800,6 +1803,7 @@ namespace LosSantosRED.lsr
             ,SDI.TheftDispatch
             ,SDI.Shoplifting
             ,SDI.FicticiousPlates
+            ,SDI.PickPocketing
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)

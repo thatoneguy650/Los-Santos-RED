@@ -486,6 +486,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
 
     public int CopsKilled { get; private set; }
     public int CiviliansKilled { get; private set; }
+    public virtual float PickpocketDetectionMultiplier { get; set; } = 1.0f;
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -1823,5 +1824,18 @@ ENDENUM
         int healthToRemove = (int)Math.Ceiling(HealthToRemove);
         Pedestrian.Health = Pedestrian.Health - healthToRemove;
         EntryPoint.WriteToConsole($"PED EVENT: REMOVING HEALTH IN CRASH DamageAmount:{amount} isCollision{isCollision} healthToRemoved:{healthToRemove} CurrentHealth{Pedestrian.Health}");
+    }
+
+    public virtual void OnPlayerFailedPickpocketing(IInteractionable player)
+    {
+        if (!Pedestrian.Exists())
+        {
+            EntryPoint.WriteToConsole($"Pickpocket: {Pedestrian?.Handle:X8 ?? 0} failed to react, invalid state");
+            return;
+        }
+        HatesPlayer = true;
+        PlayerPerception.SetFakeSeen();
+        AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.PickPocketingCrimeID),player.Character.Position);
+        //EntryPoint.WriteToConsole($"Pickpocket: {Pedestrian.Handle:X8} reacted to pickpocket, IsCop={IsCop}, IsGangMember={IsGangMember}, HatesPlayer={HatesPlayer}, WillCallPolice={WillCallPolice}, WillCallPoliceIntense={WillCallPoliceIntense}, HasCellPhone={HasCellPhone}");
     }
 }

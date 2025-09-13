@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         void SetDefault();
         void SetHard();
         void SetPreferred();
+        
     }
 }

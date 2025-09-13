@@ -96,5 +96,6 @@ public interface IScannerDispatchableInformation
      Dispatch StoppingTrains { get; }
      Dispatch TheftDispatch { get; }
      Dispatch Shoplifting { get; }
+
 }
 

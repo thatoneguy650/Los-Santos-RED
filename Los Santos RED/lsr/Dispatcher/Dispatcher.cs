@@ -74,10 +74,10 @@ public class Dispatcher
     public void Setup()
     {
         GameTimeStartedDispatch = Game.GameTime;
-        LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus);
-        EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus);
+        LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus, Crimes);
+        EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus, Crimes);
         SecurityDispatcher = new SecurityDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, Crimes, ModItems, ShopMenus);
-        FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus);
+        FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus, Crimes);
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
         GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, ModItems, this);
         LocationDispatcher = new LocationDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, 

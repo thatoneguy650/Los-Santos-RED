@@ -11,10 +11,12 @@ public class EMTSpawnTask : SpawnTask
     private Agency Agency;
     private Vehicle SpawnedVehicle;
     private IShopMenus ShopMenus;
+    private ICrimes Crimes;
     public EMTSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, 
-        INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
+        INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus, ICrimes crimes) 
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
+        Crimes = crimes;
         Agency = agency;
         ShopMenus = shopMenus;
     }
@@ -201,7 +203,7 @@ public class EMTSpawnTask : SpawnTask
         EntryPoint.PersistentPedsCreated++;//TR
         ped.RelationshipGroup = new RelationshipGroup("MEDIC");
         bool isMale = PersonType.IsMale(ped);
-        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
+        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
         PrimaryEmt.SetStats(PersonType, Weapons, AddBlip, ShopMenus);
         if (ped.Exists())

@@ -400,7 +400,7 @@ public class CivilianSettings : ISettingsDefaultable
         HidingInUnknownVehicleSightDecreasePercentage = 0.9f;
         NeverSeenPlayerSightDecreasePercentage = 0.9f;
 
-        BaseRecognizeTime = 1200;
+        BaseRecognizeTime = 3000;// 1200;
 
 
         HidingInVehicleRecognizeIncreaseTime = 750;
@@ -412,7 +412,7 @@ public class CivilianSettings : ISettingsDefaultable
 
         HidingInUnknownVehicleRecognizeIncreaseTime = 500;
         NeverSeenPlayerRecognizeIncreaseTime = 500;
-        SeenPlayerRecognizeDecreaseTime = 1000;
+        SeenPlayerRecognizeDecreaseTime = 500;// 1000;
         VisiblyArmedRecognizeDecreaseTime = 2500;
 
         InjureOnVehicleCrash = true;

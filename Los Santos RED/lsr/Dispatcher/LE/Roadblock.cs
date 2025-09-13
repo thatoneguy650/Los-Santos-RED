@@ -37,6 +37,7 @@ public class Roadblock
     private IEntityProvideable World;
     private IModItems ModItems;
     private IShopMenus ShopMenus;
+    private ICrimes Crimes;
     private float InitialHeading;
     private bool AllowAnySpawn;
     private RoadNode RoadNode;
@@ -67,7 +68,8 @@ public class Roadblock
         Back = 2,
     }
     public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, 
-        IWeapons weapons, INameProvideable names, bool allowAnySpawn, IModItems modItems, bool enableCarBlocks, bool enableSpikeStrips, bool enableOtherBarriers, IShopMenus shopMenus)
+        IWeapons weapons, INameProvideable names, bool allowAnySpawn, IModItems modItems, bool enableCarBlocks, bool enableSpikeStrips, bool enableOtherBarriers, 
+        IShopMenus shopMenus, ICrimes crimes)
     {
         Player = player;
         World = world;
@@ -87,6 +89,7 @@ public class Roadblock
         EnableSpikeStrips = enableSpikeStrips;
         EnableOtherBarriers = enableOtherBarriers;
         ShopMenus = shopMenus;
+        Crimes = crimes;
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -407,7 +410,7 @@ public class Roadblock
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
         pos1.Heading = heading;
-        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World, ModItems, false, ShopMenus);//had .Copy() on the vehicle and ped for some reason?
+        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World, ModItems, false, ShopMenus, Crimes);//had .Copy() on the vehicle and ped for some reason?
         spawnTask.AllowAnySpawn = AllowAnySpawn;
         spawnTask.AttemptSpawn();
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
@@ -427,7 +430,7 @@ public class Roadblock
                 pos2.Heading = heading;
             }
 
-            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false, ShopMenus);
+            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems, false, ShopMenus, Crimes);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.SpawnWithAllWeapons = true;
             pedSpawn.AttemptSpawn();
