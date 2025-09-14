@@ -81,7 +81,8 @@ public class ModShopMenu
         AddColorCategories();
         AddExtraCategories();
         AddLicensePlateCategories();
-        AddModCategories();      
+        AddModCategories();  
+        AddWindowTintCategories();
     }
 
     private void AddLicensePlateCategories()
