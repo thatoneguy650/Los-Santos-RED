@@ -81,8 +81,8 @@ public class ModShopMenu
         AddColorCategories();
         AddExtraCategories();
         AddLicensePlateCategories();
-        AddModCategories();  
-        AddWindowTintCategories();
+        AddModCategories();
+        ThisIsANewName();
     }
 
     private void AddLicensePlateCategories()
@@ -174,7 +174,7 @@ public class ModShopMenu
             vmkt.AddToMenu();
         }
     }
-    private void AddWindowTintCategories()
+    private void ThisIsANewName()
     {
         EntryPoint.WriteToConsole("AddWindowTintCategories");
         VehicleWindowTintMenu windowTintMenu = new VehicleWindowTintMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
