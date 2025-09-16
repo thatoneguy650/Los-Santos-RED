@@ -199,8 +199,8 @@ public class ActivitySettings : ISettingsDefaultable
 
         BashDoorUnlockPercentage = 0.1f;
         AllowPedPickPockets = true;
-        PickPocketSuccessRate = 70f;
-        PickPocketBaseDetectionChance = 30f;
+        PickPocketSuccessRate = 60f;
+        PickPocketBaseDetectionChance = 40f;
         PickPocketDistance = 4.0f;
 
     }
