@@ -56,6 +56,14 @@ public class BusinessInterior : Interior
         {
             test.InventoryableLocation = newBusiness;
         }
+        foreach (OutfitInteract test in OutfitInteracts)
+        {
+            test.OutfitableLocation = newBusiness;
+        }
+        foreach (RestInteract test in RestInteracts)
+        {
+            test.RestableLocation = newBusiness;
+        }
     }
     public override void AddLocation(PossibleInteriors interiorList)
     {

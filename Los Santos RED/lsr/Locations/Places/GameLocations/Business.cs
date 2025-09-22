@@ -12,13 +12,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Business : GameLocation, IInventoryableLocation, ILocationSetupable, IPayoutDisbursable, ICraftable
+public class Business : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, IPayoutDisbursable, ICraftable
 {
     private UIMenu OfferSubMenu;
     private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
     private UIMenuItem PurchaseBusinessMenuItem;
     private UIMenuItem SellBusinessItem;
-
+    private UIMenu outfitsSubMenu;
+    private bool KeepInteractionGoing;
+    private UIMenuNumericScrollerItem<int> RestMenuItem;
 
     public Business() : base()
     {
@@ -492,5 +494,132 @@ public class Business : GameLocation, IInventoryableLocation, ILocationSetupable
             }
         };
         landlordMenu.BusinessesTab.items.Add(BusinessItem);
+    }
+    // Added Rest/Outfit functionality to businesses
+    public void CreateRestMenu(bool removeBanner)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Clear();
+        CreateRestInteractionMenu();
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        // StoreCamera?.StopImmediately(false);
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
+    public void CreateOutfitMenu(bool removeBanner, bool isInside)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Clear();
+        CreateOutfitInteractionMenu(removeBanner, isInside);
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        //StoreCamera?.StopImmediately(true);
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
+    private void CreateRestInteractionMenu()
+    {
+        RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your business to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+        RestMenuItem.Activated += (sender, selectedItem) =>
+        {
+            Rest(RestMenuItem.Value);
+        };
+        InteractionMenu.AddItem(RestMenuItem);
+    }
+    private void CreateOutfitInteractionMenu(bool removeBanner, bool isInside)
+    {
+        outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
+        if (removeBanner)
+        {
+            outfitsSubMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
+        {
+            outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, outfitsSubMenu, isInside, removeBanner);
+    }
+    private void Rest(int Hours)
+    {
+        Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
+        InteractionMenu.Visible = false;
+        KeepInteractionGoing = true;
+        Player.IsResting = true;
+        Player.IsSleeping = true;
+        Player.ButtonPrompts.AddPrompt("BusinessRest", "Cancel Rest", "BusinessRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+
+
+
+
+
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (Time.IsFastForwarding)
+                {
+                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                    {
+                        Player.HealthManager.ChangeHealth(1);
+                    }
+                    if (Player.ButtonPrompts.IsPressed("BusinessRest"))
+                    {
+                        Time.StopFastForwarding();
+                    }
+                    GameFiber.Yield();
+                }
+                Player.ButtonPrompts.RemovePrompts("BusinessRest");
+                Player.IsResting = false;
+                Player.IsSleeping = false;
+                InteractionMenu.Visible = true;
+                KeepInteractionGoing = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "FastForwardWatcher");
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT BUSINESS");
     }
 }

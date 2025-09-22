@@ -8907,8 +8907,13 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("MethLabExit",new Vector3(996.9594f, -3200.593f, -36.39368f), 94.21133f,"Exit"),
-                    new StandardInteriorInteract("MethLabStandard",new Vector3(1005.692f, -3200.322f, -38.51932f), 190.0661f,"Manage"),
-                    new CraftInteriorInteract ("DrugLab",new Vector3(1014.268f, -3195.008f, -38.99316f), 359.6527f, "DrugLab")
+                    new StandardInteriorInteract("MethLabStandard",new Vector3(1001.982f, -3194.954f, -38.99316f), 3.439017f ,"Manage")
+                    {
+                        CameraPosition = new Vector3(1001.73f, -3195.208f, -37.38067f),
+                        CameraDirection = new Vector3(0.8510147f, -0.5243264f, -0.02925463f),
+                        CameraRotation = new Rotator(-1.676406f, 6.384691E-05f, -121.638f)
+                    },
+                    new CraftInteriorInteract ("DrugLab",new Vector3(1005.692f, -3200.322f, -38.51932f), 190.0661f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
                     }
@@ -8921,6 +8926,10 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 89.46977f,
                 InteriorSets = new List<string>() { "weed_upgrade_equip", "weed_security_upgrade", "weed_growtha_stage3", "light_growtha_stage23_upgrade", "weed_hosea", "weed_growtha_stage3", "light_growthb_stage23_upgrade", "weed_hoseb", "weed_growthc_stage3", "light_growthc_stage23_upgrade", "weed_hosec", "weed_growthd_stage3", "light_growthd_stage23_upgrade", "weed_hosed", "weed_growthe_stage3", "light_growthe_stage23_upgrade", "weed_hosee", "weed_growthf_stage3", "light_growthf_stage23_upgrade", "weed_hosef", "weed_growthg_stage3", "light_growthg_stage23_upgrade", "weed_hoseg", "weed_growthh_stage3", "light_growthh_stage23_upgrade", "weed_hoseh", "weed_growthi_stage3", "light_growthi_stage23_upgrade", "weed_hosei", "weed_production", "weed_set_up", "weed_drying", "weed_chairs"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_3_biker_dlc_int_ware02_milo"},
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("bkr_prop_weed_table_01a", new SpawnPlace(new Vector3(1036.34f, -3202.96f, -39.12f), 0f)),
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("WeedFarmExit",new Vector3(1066.195f, -3183.523f, -39.16362f), 268.3729f,"Exit"),
@@ -8938,12 +8947,96 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 180.365f,
                 InteriorSets = new List<string>() { "basic_style_set", "door_blocker"},
                 RequestIPLs = new List<string>() { "imp_impexp_interior_placement_interior_1_impexp_intwaremedmilo"},
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(998.444031f, -3027.13477f, -37.8815155f), 1.99999857f)),
+                     new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(998.4199f, -2991.657f, -40.6270866f), -88.99975f)),
+                     new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(967.7358f, -3035.998f, -37.8815155f), 3.00044513f)),
+                     new PropSpawn("imp_prop_covered_vehicle_03a", new SpawnPlace(new Vector3(993.159f, -3026.787f, -37.8815155f), 0f)),
+                     new PropSpawn("imp_prop_covered_vehicle_03a", new SpawnPlace(new Vector3(955.1808f, -3023.62524f, -37.8815155f), -87.99966f)),
+                     new PropSpawn("imp_prop_covered_vehicle_03a", new SpawnPlace(new Vector3(998.2717f, -3004.65f, -40.6469765f), -86.99776f)),
+                     new PropSpawn("imp_prop_covered_vehicle_04a", new SpawnPlace(new Vector3(1008.51489f, -3021.986f, -40.6469765f), -92.9996948f)),
+                     new PropSpawn("imp_prop_covered_vehicle_05a", new SpawnPlace(new Vector3(977.9007f, -3030.784f, -40.6469765f), -88.99962f)),
+                     new PropSpawn("imp_prop_covered_vehicle_06a", new SpawnPlace(new Vector3(997.9313f, -3013.1f, -40.6469765f), -89.99959f)),
+                     new PropSpawn("imp_prop_covered_vehicle_06a", new SpawnPlace(new Vector3(1003.8584f, -3026.89282f, -37.8815155f), 179.999252f)),
+                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(998.5535f, -2995.5f, -40.6469765f), 89.00046f)),
+                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(963.4733f, -3035.95459f, -37.8815155f), 179.999619f)),
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("ChopShopExit",new Vector3(970.9332f, -2987.278f, -39.64696f), 0.9743451f,"Exit"),
                     new StandardInteriorInteract("ChopShopStandard",new Vector3(965.5502f, -3003.387f, -39.63989f), 267.6558f,"Manage"),
-                }
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("ChopShopRest1", new Vector3(959.6868f, -3000.77f, -39.63989f), 86.98959f,"Rest") //used couch,bed has clipping issues
+                    {
+                        CameraPosition = new Vector3(961.5975f, -3001.641f, -38.34194f),
+                        CameraDirection = new Vector3(-0.8738775f, 0.3507931f, -0.3365744f),
+                        CameraRotation = new Rotator(-19.6683f, 1.360008E-06f, 68.12842f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract("ChopShopOutfit",new Vector3(958.7991f, -3005.179f, -39.63989f), 268.0839f,"Change Outfit")
+                    {
+                        CameraPosition = new Vector3(961.2792f, -3005.627f, -38.95876f),
+                        CameraDirection = new Vector3(-0.9396999f, 0.196931f, -0.2796109f),
+                        CameraRotation = new Rotator(-16.23699f, -1.556174E-05f, 78.16393f)
+                    }
+                },
             },
+            new BusinessInterior(298497, "Car Wash")
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(26.00592f, -1402.265f, -73.99987f),
+                InteriorEgressHeading = 2.192509f,
+                InteriorSets = new List<string>() { "set_carwash_tints"},
+                RequestIPLs = new List<string>() { "m25_1_carwash"},
+                InteriorTintColor = 6,
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(24.0621262f, -1400.7699f, -74.9999f), -148.739349f)),
+                     new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(22.9341831f, -1396.99707f, -74.99724f), 36.6240578f)),
+                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(15.0238409f, -1399.77136f, -72.99987f), -88.05887f)) {PlaceOnGround = true }
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("CarWashExit",new Vector3(26.00592f, -1402.265f, -73.99987f), 170.6572f,"Exit"),
+                    new StandardInteriorInteract("CarWashStandard",new Vector3(23.45037f, -1397.562f, -73.99987f), 185.7595f,"Manage"){AutoCamera = false},
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("CarWashRest",new Vector3(24.65681f, -1390.613f, -73.99987f), 5.275957f,"Rest")
+                    {
+                        CameraPosition = new Vector3(26.512f, -1391.165f, -72.32277f),
+                        CameraDirection = new Vector3(-0.5051419f, 0.7012861f, -0.5030203f),
+                        CameraRotation = new Rotator(-30.20003f, 1.9757E-06f, 35.76551f)
+                    }
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract("CarWashOutfit",new Vector3(26.62634f, -1389.169f, -73.99987f), 173.1986f,"Change Outfit")
+                    {
+                        CameraPosition = new Vector3(25.94946f, -1391.412f, -73.18571f),
+                        CameraDirection = new Vector3(0.3517275f, 0.8755532f, -0.3312014f),
+                        CameraRotation = new Rotator(-19.34171f, -4.524213E-07f, -21.88633f)
+                    }
+                },
+            }
         });
     }
 
