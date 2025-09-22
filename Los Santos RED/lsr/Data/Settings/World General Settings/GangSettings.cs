@@ -150,18 +150,19 @@ public class GangSettings : ISettingsDefaultable
     [Description("Maximum additional time (in ms) between gang members speaking when in weapons free mode.")]
     public int TimeBetweenGangSpeak_HighCombat_Randomizer_Max { get; set; }
 
-    public int RepDeductedKilled { get; set; }
+
     [Description("Reputation deducted when killing an enemy Gang Member.")]
-    public int RepDeductedKilledTerritory { get; set; }
+    public int RepDeductedKilled { get; set; }
     [Description("Additional reputation deducted if an enemy Gang Member is killed in their territory.")]
-    public int RepDeductedInjured { get; set; }
+    public int RepDeductedKilledTerritory { get; set; }
     [Description("Reputation deducted when injuring an enemy Gang Member.")]
-    public int RepDeductedInjuredTerritory { get; set; }
+    public int RepDeductedInjured { get; set; }
     [Description("Additional reputation deducted if an enemy Gang Member is injured in their territory.")]
-    public int RepDeductedCarjacked { get; set; }
+    public int RepDeductedInjuredTerritory { get; set; }
     [Description("Reputation deducted when carjacking an enemy Gang Member.")]
-    public int RepDeductedCarjackedTerritory { get; set; }
+    public int RepDeductedCarjacked { get; set; }
     [Description("Additional reputation deducted if an enemy Gang Member is carjacked in their territory.")]
+    public int RepDeductedCarjackedTerritory { get; set; }
 
     public int IdleSpeakPercentage { get; set; }
     public int SevereCombatSpeakPercentage { get; set; }

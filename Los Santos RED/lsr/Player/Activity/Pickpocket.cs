@@ -102,7 +102,7 @@ public class PickPocket : Interaction
             CleanUp();
             return;
         }
-        //Target.HasBeenMugged = true;
+        Target.HasBeenMugged = true;
         //EntryPoint.WriteToConsole($"Pickpocket: Attempt registered, future attempts blocked for ped {Target.Pedestrian.Handle:X8}");
         AnimationDictionary.RequestAnimationDictionay(AnimDict);
         GameTimeStartedPickpocketing = Game.GameTime;
@@ -167,18 +167,14 @@ public class PickPocket : Interaction
             }
             else if (isDetected)
             {
-                Game.DisplayHelp("Pickpocketing failed! Detected!");
-                //Player.PlaySpeech("GENERIC_CURSE_MED", false);
+                Game.DisplayHelp("Pickpocket Detected!");
                 Target.PlaySpeech("GENERIC_INSULT_MED", false);
-                //Player.Violations.AddViolating(pickpocketCrime.ID);
-                //Target.WillCallPolice = true;
                 Target.OnPlayerFailedPickpocketing(Player);
                 //EntryPoint.WriteToConsole($"Pickpocket: Failed and detected pickpocket of {(Target.IsGangMember ? $"gang member {(Target as GangMember)?.Gang?.ShortName ?? "Unknown"}" : $"non-gang member, IsCop={Target.IsCop}")}, ped {Target.Pedestrian.Handle:X8}, CrimesWitnessed={Target.PlayerCrimesWitnessed.Count}, HasSeenMundaneCrime={Target.PedReactions.HasSeenMundaneCrime}, CurrentTask={Target.CurrentTask?.Name}, PedType={Target.GetType().Name}, CrimesViolating={string.Join(",", Player.Violations.CrimesViolating)}");
             }
             else
             {
-                Game.DisplayHelp("Pickpocketing failed! Not detected.");
-                //Player.PlaySpeech("GENERIC_CURSE_MED", false);
+                Game.DisplayHelp("Nothing Found.");
                 //EntryPoint.WriteToConsole($"Pickpocket: Failed but not detected pickpocket of {(Target.IsGangMember ? $"gang member {(Target as GangMember)?.Gang?.ShortName ?? "Unknown"}" : $"non-gang member, IsCop={Target.IsCop}")}, ped {Target.Pedestrian.Handle:X8}, PedType={Target.GetType().Name}, CrimesViolating={string.Join(",", Player.Violations.CrimesViolating)}");
             }
             CleanUp();
@@ -310,12 +306,6 @@ public class PickPocket : Interaction
                     Target.CurrentTask.Stop();
                     Target.CurrentTask = null;
                 }
-                //int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Target.Pedestrian, 0x811455F8);
-                //if (taskStatus == 7)
-                //{
-                //    EntryPoint.WriteToConsole($"Pickpocket: WARNING: Ped {Target.Pedestrian.Handle:X8} has no active task after cleanup, IsGangMember={Target.IsGangMember}, IsCop={Target.IsCop}");
-                //}
-                //EntryPoint.WriteToConsole($"Pickpocket: Restored tasking for ped {Target.Pedestrian.Handle:X8}, IsGangMember={Target.IsGangMember}, IsCop={Target.IsCop}, TaskStatus={taskStatus}, WillCallPolice={Target.WillCallPolice}, HasBeenMugged={Target.HasBeenMugged}, CrimesWitnessed={Target.PlayerCrimesWitnessed.Count}");
             }
         }
 
