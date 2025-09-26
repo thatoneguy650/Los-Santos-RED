@@ -343,6 +343,20 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
             Blip.Sprite = IsOwned ? BlipSprite.Business : BlipSprite.BusinessForSale;
         }
     }
+    public override void UpdateBlip(ITimeReportable time)
+    {
+        if (Blip.Exists())
+        {
+            MapIconColorString = (IsOwned ? "Green" : "White");
+            Blip.Sprite = IsOwned ? BlipSprite.Business : BlipSprite.BusinessForSale;
+            Blip.Color = Color.FromName(IsOwned ? "Green" : "White");
+        }
+        if (IsOwned)
+        {
+            return;
+        }
+        base.UpdateBlip(time);
+    }
     private string GetButtonPromptText()
     {
         if (IsOwned)
