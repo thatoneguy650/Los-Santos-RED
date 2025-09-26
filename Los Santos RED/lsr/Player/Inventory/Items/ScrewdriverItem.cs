@@ -81,9 +81,9 @@ public class ScrewdriverItem : ModItem
     }
 
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle);
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle, null, -1, -1);
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle)
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle, Vehicle TargetVehicle, int SeatTryingToEnter, int DoorIndex)
     {
         float LockpickAnimStopPercentage = 0.5f;
         float LockpickAnimRestartPercentage = 0.3f;
@@ -146,8 +146,28 @@ public class ScrewdriverItem : ModItem
                 }
                 break;
             }
+
+            if(isVehicle && TargetVehicle.Exists())
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("VehicleLockpick", "Break Window", "VehicleLockpick", GameControl.Enter, 999);
+                if(Player.ButtonPrompts.IsPressed("VehicleLockpick"))
+                {
+                    Player.SetCarBreakIn();
+                    NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
+                    break;
+                }
+            }
+
+            if (isVehicle && TargetVehicle.Exists() && TargetVehicle.Doors[DoorIndex].IsOpen)
+            {
+                EntryPoint.WriteToConsole($"LOCK PICK ENTRY BREAK 2: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
+                //Continue = false;
+                break;
+            }
             GameFiber.Yield();
         }
+        Player.ButtonPrompts.RemovePrompts("VehicleLockpick");
         if (hasPickedLock)
         {
             NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, animDictionary, animName, LockpickAnimStopPercentage);

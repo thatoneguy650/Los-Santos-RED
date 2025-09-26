@@ -101,6 +101,7 @@ namespace Mod
         private bool HasThrownInTunnel;
         private bool prevIsBreakingIntoCar;
         private InteriorDoor ClosestDoor;
+        private uint GameTimeLastSetBreakIn;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -334,6 +335,8 @@ namespace Mod
         public bool IsSecurityGuard { get; set; } = false;
         public bool IsRidingOnTrain { get; set; }
         public bool HasBustPowers => IsCop || IsSecurityGuard;
+
+        public bool AlwaysBreakIn => GameTimeLastSetBreakIn != 0 && Game.GameTime - GameTimeLastSetBreakIn <= 5000;
         //public bool IsHidingInVehicle { get; private set; }
         public bool CanBustPeds => (IsCop || IsSecurityGuard) && !IsIncapacitated;
         public bool IsServicePed => IsCop || IsEMT || IsFireFighter;
@@ -1053,6 +1056,10 @@ namespace Mod
         {
             GameTimeLastFedUpCop = Game.GameTime;
         }
+        public void SetCarBreakIn()
+        {
+            GameTimeLastSetBreakIn = Game.GameTime;
+        }
         public void ShootAt(Vector3 TargetCoordinate)
         {
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
@@ -1457,7 +1464,7 @@ namespace Mod
                 CurrentVehicle.AttemptToLock();
             }
             HandleScrewdriver();
-            if ((IsNotHoldingEnter || ActivityManager.HasScrewdriverInHand) && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
+            if ((IsNotHoldingEnter || ActivityManager.HasScrewdriverInHand) && !AlwaysBreakIn && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
             {
                 EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
                 CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter, ActivityManager.CurrentScrewdriver, Settings, this,this);
