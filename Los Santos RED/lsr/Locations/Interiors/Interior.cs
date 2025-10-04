@@ -19,6 +19,8 @@ public class Interior
     private bool IsActive = false;
     private bool IsRunningInteriorUpdate = false;
     protected List<Rage.Object> SpawnedProps = new List<Rage.Object>();
+    private int alarmSoundID;
+    protected bool isAlarmActive;
 
     public Interior()
     {
@@ -98,6 +100,8 @@ public class Interior
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
 
     public GameLocation GameLocation { get; set; }
+    public bool IsAlarmActive => isAlarmActive;
+    public bool IsNotAlarmed { get; set; }
 
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames)
     {
@@ -311,6 +315,7 @@ public class Interior
                         GameFiber.Yield();
                     }
                     NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                    TurnOffAlarm();
                     //SetInactive();
                     IsActive = false;
                     GameFiber.Yield();
@@ -581,5 +586,43 @@ public class Interior
     public virtual void AddLocation(PossibleInteriors lppInteriors)
     {
         lppInteriors.GeneralInteriors.Add(this);
+    }
+
+
+
+    public virtual void SetOffAlarm()
+    {
+        if(IsNotAlarmed)
+        {
+            return;
+        }
+        if(IsAlarmActive)
+        {
+            return;
+        }
+        alarmSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+        Vector3 Coords = Game.LocalPlayer.Character.Position;
+        uint GameTimeStarted = Game.GameTime;
+        while (!NativeFunction.Natives.REQUEST_SCRIPT_AUDIO_BANK<bool>("Alarms", false, -1) && Game.GameTime - GameTimeStarted <= 2000)
+        {
+            GameFiber.Yield();
+        }
+        isAlarmActive = true;
+        if(GameLocation != null)
+        {
+            Coords = GameLocation.EntrancePosition;
+        }
+        NativeFunction.Natives.PLAY_SOUND_FROM_COORD(alarmSoundID, "Burglar_Bell", Coords.X, Coords.Y, Coords.Z, "Generic_Alarms", false, 0, false);
+        //NativeFunction.Natives.PLAY_SOUND_FROM_COORD(alarmSoundID, "ALARMS_KLAXON_03_CLOSE", Coords.X, Coords.Y, Coords.Z, "", false,0,false);
+    }
+    public void TurnOffAlarm()
+    {
+        if(!IsAlarmActive)
+        {
+            return;
+        }
+        isAlarmActive = false;
+        NativeFunction.Natives.STOP_SOUND(alarmSoundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(alarmSoundID);
     }
 }

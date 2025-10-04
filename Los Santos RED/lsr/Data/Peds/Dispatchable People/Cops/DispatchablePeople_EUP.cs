@@ -234,7 +234,7 @@ public class DispatchablePeople_EUP
         DefaultConfigEXTRA(PeopleConfig_EUP);
 
         Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchablePeople+_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople+_EUP.xml");
+        //Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople+_EUP.xml");
     }
     private void SetupUSCG()
     {

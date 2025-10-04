@@ -1,93 +1,50 @@
-﻿using Rage.Native;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LosSantosRED.lsr.Interface;
-using System.Xml.Serialization;
-using RAGENativeUI;
-using LosSantosRED.lsr;
-using ExtensionsMethods;
 
-public class AnimationInteract : InteriorInteract
+public class AnimationPreInteract : ItemUsePreInteract
 {
+
+    private TheftInteract TheftInteract;
+    //private string AnimDict = "missheist_jewel";
+    //private string AnimName = "fp_smash_case_necklace";
+    //private int AnimationFlags = 0;
+
+
     private AnimationBundle endBundle;
     public List<AnimationBundle> StartAnimations { get; set; } = new List<AnimationBundle>() { };
-    public List<AnimationBundle> LoopAnimations { get; set; } = new List<AnimationBundle>() {  };
+    public List<AnimationBundle> LoopAnimations { get; set; } = new List<AnimationBundle>() { };
     public List<AnimationBundle> EndAnimations { get; set; } = new List<AnimationBundle>() { };
 
 
-    public bool IsScenario { get; set; } = false;
-    public AnimationInteract()
-    {
-    }
-
-    public AnimationInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public AnimationPreInteract()
     {
 
     }
-
-    public override void OnInteract()
+    public override void Start(IInteractionable player, ILocationInteractable locationInteractable, ISettingsProvideable settings, IModItems modItems, TheftInteract theftInteract)
     {
-        Interior.IsMenuInteracting = true;
-        Interior?.RemoveButtonPrompts();
-        RemovePrompt();
-        SetupCamera(false);
-        if (!WithWarp)
+        Player = player;
+        LocationInteractable = locationInteractable;
+        Settings = settings;
+        ModItems = modItems;
+        TheftInteract = theftInteract;
+
+        if (PerformAnimation())
         {
-            if (!MoveToPosition())
-            {
-                Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed");
-                LocationCamera?.StopImmediately(true);
-                return;
-            }
+            TheftInteract.SetUnlocked();
         }
-        if (IsScenario)
-        {
-            if (!UseScenario())
-            {
-                Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed");
-                LocationCamera?.StopImmediately(true);
-                return;
-            }
-        }
-        else
-        {
-            if (!PerformAnimation())
-            {
-                Interior.IsMenuInteracting = false;
-                Game.DisplayHelp("Interact Failed");
-                LocationCamera?.StopImmediately(true);
-                return;
-            }
-        }
-        GameFiber.Sleep(2000);
-        while(!Player.IsMoveControlPressed && Player.IsAliveAndFree)
-        {
-            GameFiber.Yield();
-        }
-        Interior.IsMenuInteracting = false;
         StopPerformingAnimation();
-        LocationCamera?.ReturnToGameplay(true);
-        LocationCamera?.StopImmediately(true);
-        
-    }
-    public override void AddPrompt()
-    {
-        if (Player == null)
-        {
-            return;
-        }
-        Player.ButtonPrompts.AttemptAddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
     }
     private bool PerformAnimation()
     {
-        Player.Character.Position = Position;
-        Player.Character.Heading = Heading;
+        Player.Character.Position = TheftInteract.Position;
+        Player.Character.Heading = TheftInteract.Heading;
         HashSet<string> dictionaryList = new HashSet<string>();
         AnimationBundle startBundle = StartAnimations.Where(x => x.Gender == "U" || x.Gender == Player.Gender).PickRandom();
         if (startBundle != null)
@@ -114,7 +71,7 @@ public class AnimationInteract : InteriorInteract
         if (startBundle != null)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, startBundle.Dictionary, startBundle.Name, startBundle.BlendIn, startBundle.BlendOut, startBundle.Time, startBundle.Flags, 0, false, false, false);
-            WaitForAnimation(startBundle.Dictionary, startBundle.Name);
+            TheftInteract.WaitForAnimation(startBundle.Dictionary, startBundle.Name);
         }
         if (loopBundle != null)
         {
@@ -127,11 +84,15 @@ public class AnimationInteract : InteriorInteract
         if (endBundle != null)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, endBundle.Dictionary, endBundle.Name, endBundle.BlendIn, endBundle.BlendOut, endBundle.Time, endBundle.Flags, 0, false, false, false);
-            WaitForAnimation(endBundle.Dictionary, endBundle.Name);
+            TheftInteract.WaitForAnimation(endBundle.Dictionary, endBundle.Name);
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         return true;
     }
 
-}
+    public void Dispose()
+    {
 
+    }
+  
+}

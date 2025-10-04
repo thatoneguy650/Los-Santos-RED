@@ -20,6 +20,12 @@ public class ScrewdriverItem : ModItem
     public int MinVehicleDoorPickTime { get; set; } = 4000;
     public int MaxVehicleDoorPickTime { get; set; } = 8000;
 
+
+    public float AlarmPercentageMin { get; set; } = 5f;//60f;
+    public float AlarmPercentageMax { get; set; } = 15f;//75f;
+    public uint GameTimeBetweenAlarmChecksMin { get; set; } = 4000;
+    public uint GameTimeBetweenAlarmChecksMax { get; set; } = 8000;
+
     public ScrewdriverItem()
     {
 
@@ -81,9 +87,9 @@ public class ScrewdriverItem : ModItem
     }
 
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle, null, -1, -1);
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle, Interior interior) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle, null, -1, -1, interior);
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle, Vehicle TargetVehicle, int SeatTryingToEnter, int DoorIndex)
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle, Vehicle TargetVehicle, int SeatTryingToEnter, int DoorIndex, Interior interior)
     {
         float LockpickAnimStopPercentage = 0.5f;
         float LockpickAnimRestartPercentage = 0.3f;
@@ -115,6 +121,8 @@ public class ScrewdriverItem : ModItem
         ScrewDriverObject = SpawnAndAttachItem(BasicUseable, true, true);
         bool isLooping = false;
         bool hasPickedLock = false;
+        uint GameTimeLastCheckedAlarm = Game.GameTime;
+        uint GameTimeBetweenAlarmChecks = RandomItems.GetRandomNumber(GameTimeBetweenAlarmChecksMin, GameTimeBetweenAlarmChecksMax);
         while (Player.IsAliveAndFree)
         {
             float pedAnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, animDictionary, animName);
@@ -132,6 +140,20 @@ public class ScrewdriverItem : ModItem
                 NativeFunction.Natives.SET_ANIM_RATE(Player.Character, LockpickAnimAnimRate, 2, false);
             }
             Player.WeaponEquipment.SetUnarmed();
+
+            if (Game.GameTime - GameTimeLastCheckedAlarm >= GameTimeBetweenAlarmChecks)
+            {
+                EntryPoint.WriteToConsole("SCREWNDRIVER, DID ALRM CHECK");
+                if (interior != null && RandomItems.RandomPercent(RandomItems.GetRandomNumber(AlarmPercentageMin, AlarmPercentageMax)))
+                {
+                    interior.SetOffAlarm();
+                    Player.HasSetOffAlarm(interior.GameLocation);
+                }
+                GameTimeBetweenAlarmChecks = RandomItems.GetRandomNumber(GameTimeBetweenAlarmChecksMin, GameTimeBetweenAlarmChecksMax);
+                GameTimeLastCheckedAlarm = Game.GameTime;
+            }
+
+
             if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
             {
                 break;

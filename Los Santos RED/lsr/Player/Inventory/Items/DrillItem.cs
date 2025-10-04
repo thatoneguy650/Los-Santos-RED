@@ -18,6 +18,12 @@ public class DrillItem : ModItem
 
     public uint MinDoorDrillTime { get; set; } = 5000;
     public uint MaxDoorDrillTime { get; set; } = 9000;
+
+
+    public float AlarmPercentageMin { get; set; } = 5f;
+    public float AlarmPercentageMax { get; set; } = 10f;
+    public uint GameTimeBetweenAlarmChecksMin { get; set; } = 2000;
+    public uint GameTimeBetweenAlarmChecksMax { get; set; } = 3000;
     public DrillItem()
     {
 
@@ -46,11 +52,11 @@ public class DrillItem : ModItem
         possibleItems?.DrillItems.Add(this);
     }
 
-    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe)
+    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior)
     {
         SetupDrillingAnimation();
         CreateAndAttachItem(Player);
-        PerformAnimation(Player, OnCompletedDrilling, isSafe);
+        PerformAnimation(Player, OnCompletedDrilling, isSafe, interior);
     }
     private void SetupDrillingAnimation()
     {
@@ -96,7 +102,7 @@ public class DrillItem : ModItem
         CreatedDrillProp = SpawnAndAttachItem(Player, true, true);
         
     }
-    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe)
+    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior)
     {
         Player.ActivityManager.StopDynamicActivity();
         Player.ActivityManager.IsPerformingActivity = true;
@@ -121,6 +127,8 @@ public class DrillItem : ModItem
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
+        uint GameTimeBetweenAlarmChecks = RandomItems.GetRandomNumber(GameTimeBetweenAlarmChecksMin,GameTimeBetweenAlarmChecksMax);
+        uint GameTimeLastCheckedAlarm = Game.GameTime;
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -134,6 +142,19 @@ public class DrillItem : ModItem
                 NativeFunction.Natives.PLAY_SOUND_FROM_ENTITY(soundID, "Drill", CreatedDrillProp, "DLC_HEIST_FLEECA_SOUNDSET", false, 0);
                 hasStartedSound = true;
             }
+
+            if(Game.GameTime - GameTimeLastCheckedAlarm >= GameTimeBetweenAlarmChecks)
+            {
+                EntryPoint.WriteToConsole("DRILLITEM, DID ALRM CHECK");
+                if (interior != null && RandomItems.RandomPercent(RandomItems.GetRandomNumber(AlarmPercentageMin,AlarmPercentageMax)))
+                {
+                    interior.SetOffAlarm();
+                    Player.HasSetOffAlarm(interior.GameLocation);
+                }
+                GameTimeBetweenAlarmChecks = RandomItems.GetRandomNumber(GameTimeBetweenAlarmChecksMin, GameTimeBetweenAlarmChecksMax);
+                GameTimeLastCheckedAlarm = Game.GameTime;
+            }
+
 
             if (Game.GameTime - GameTimeStarted >= DrillingTime)
             {

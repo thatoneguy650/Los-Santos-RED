@@ -30,6 +30,7 @@ public class ItemTheftInteract : TheftInteract
     public List<TheftInteractItem> PossibleItems { get; set; }
     public int MinItems { get; set; }
     public int MaxItems { get; set; }
+    public override bool ShouldHideMarker => !CanInteract;
     public List<AnimationPoint> RightHandAnimationPoints { get; set; } = new List<AnimationPoint>();
     public override void Setup(IModItems modItems, IClothesNames clothesNames)
     {

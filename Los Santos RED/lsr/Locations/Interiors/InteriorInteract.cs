@@ -69,6 +69,9 @@ public class InteriorInteract
 
     public bool IsAutoInteract { get; set; } = false;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
+    
+    public virtual bool ShouldHideMarker { get; set; } = false;
+    
     public virtual void Setup(IModItems modItems, IClothesNames clothesNames)
     {
         ModItems = modItems;
@@ -81,6 +84,10 @@ public class InteriorInteract
     public virtual void DisplayMarker(int markerType, float zOffset, float markerScale)
     {
         if(DistanceTo >= 30)
+        {
+            return;
+        }
+        if(ShouldHideMarker)
         {
             return;
         }
@@ -188,7 +195,7 @@ public class InteriorInteract
             LocationCamera.AutoInterior(Position, Heading, wait, true);
         }        
     }
-    protected virtual void WaitForAnimation(string animDict, string animName)
+    public virtual void WaitForAnimation(string animDict, string animName)
     {
         string PlayingDict = animDict;
         string PlayingAnim = animName;

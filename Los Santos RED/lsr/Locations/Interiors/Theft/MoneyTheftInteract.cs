@@ -24,6 +24,7 @@ public class MoneyTheftInteract : TheftInteract
     }
 
     protected override bool CanInteract => CashAmount > 0;
+    public override bool ShouldHideMarker => !CanInteract;
     public int CashMinAmount { get; set; }
     public int CashMaxAmount { get; set; }
     public int CashGainedPerIncrement { get; set; }

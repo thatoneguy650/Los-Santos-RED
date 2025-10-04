@@ -227,7 +227,7 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
         SetupAddonPlatesConfig();
-        SetupEUP();
+        //SetupEUP();
         SetupFullExpandedJurisdiction();
         SetupLosSantos2008();
         SetupLibertyCity();
@@ -274,7 +274,7 @@ public class ModDataFileManager
         string Description2 = "" +
             "Adds DLC vehicles to the vanilla traffic." +
             "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." + Environment.NewLine +
-            "Incompatible with Los Santos 2008 config." + Environment.NewLine +
+            "Incompatible with Los Santos 2008 config and the Liberty City Preservation Project." + Environment.NewLine +
             "Install the greskfullmoderntraffic_novanillagang_addon.oiv after greskfullmoderntraffic.oiv to remove all vanilla gang spawns." + Environment.NewLine +
             "Scout - Gabriele Cappellano - original sketch       Da7k - 3D model      Nacho - 3D model - porting, assets, mapping, bugfixes     Dani02 - bugfixes, glass shards     11john11 - model improvements, dlcpack, police rims, interior assets        Eddlm - custom handling" + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
@@ -432,7 +432,7 @@ public class ModDataFileManager
         //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations");
         //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\CenteredAbove");
         //Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Variations\\East");
-        string Description = "For use with Liberty City Remix v35 Centered"
+        string Description = "For use with Liberty City Remix v35 Centered. NOT COMPATIBLE WITH LIBERTY CITY PRESERVATION PROJECT!!"
             + Environment.NewLine + Environment.NewLine +
             "1. Install 'Liberty City Remix' according to instructions supplied in the download. Choose the Centered option. Make sure you can load into the map on vanilla GTA before proceeding."
             + Environment.NewLine +

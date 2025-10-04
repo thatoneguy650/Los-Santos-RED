@@ -114,7 +114,9 @@ public class ActivitySettings : ISettingsDefaultable
     public float PickPocketBaseDetectionChance { get; set; }
     [Description("Maximum distance (in meters) to pickpocket a ped.")]
     public float PickPocketDistance { get; set; }
-
+    public float AlarmPercentageDrill { get; set; }
+    public float AlarmPercentageLockpick { get; set; }
+    public float AlarmPercentageBash { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -202,6 +204,10 @@ public class ActivitySettings : ISettingsDefaultable
         PickPocketSuccessRate = 60f;
         PickPocketBaseDetectionChance = 40f;
         PickPocketDistance = 4.0f;
+
+        AlarmPercentageDrill = 10f;
+        AlarmPercentageLockpick = 15f;
+        AlarmPercentageBash = 50f;
 
     }
 }

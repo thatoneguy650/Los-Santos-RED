@@ -55,6 +55,11 @@ public class ActivityManager
     private HideableObject HideableObject;
     private InteriorDoor CurrentLookedAtDoor;
     private InteriorDoor CurrentClosestDoor;
+
+    private Interior CurrentLookedAtDoorInterior;
+    private Interior CurrentClosestDoorInterior;
+
+    public Interior ActiveDoorInterior => CurrentLookedAtDoorInterior != null ? CurrentLookedAtDoorInterior : CurrentClosestDoorInterior;
     private InteriorDoor ActiveDoor => CurrentLookedAtDoor != null ? CurrentLookedAtDoor : CurrentClosestDoor;
 
     private DynamicActivity LowerBodyActivity;
@@ -2095,6 +2100,7 @@ public class ActivityManager
                 }
                 if(door.ModelHash == currentLookedAtObject.Model.Hash && door.Position.DistanceTo2D(currentLookedAtObject.Position) <= 0.1f)
                 {
+                    CurrentLookedAtDoorInterior = interior;
                     CurrentLookedAtDoor = door;
                     EntryPoint.WriteToConsole($"YOU ARE LOOKING AT LOCKED DOOR {door.Position} IN {interior.Name} IsLocked:{door.IsLocked}");
                     return;
@@ -2102,9 +2108,10 @@ public class ActivityManager
             }
         }
     }
-    public void SetCurrentDoor(InteriorDoor interiorDoor)
+    public void SetCurrentDoor(InteriorDoor interiorDoor, Interior interior)
     {
         CurrentClosestDoor = interiorDoor;
+        CurrentClosestDoorInterior = interior;
         //if (interiorDoor != null)
         //{
         //    EntryPoint.WriteToConsole($"SET CLOSEST DOOR ISNULL:{CurrentClosestDoor == null}");
@@ -2155,7 +2162,7 @@ public class ActivityManager
             Game.DisplayHelp("Cannot start interact");
             return;
         }
-        ForceDoorActivity forceDoorActivity = new ForceDoorActivity(Actionable, LocationInteractable, Settings, doorObject, ActiveDoor, BasicUseable);
+        ForceDoorActivity forceDoorActivity = new ForceDoorActivity(Actionable, LocationInteractable, Settings, doorObject, ActiveDoor, BasicUseable, ActiveDoorInterior);
         if (forceDoorActivity.CanPerform(Actionable))
         {
             ForceCancelAllActive();

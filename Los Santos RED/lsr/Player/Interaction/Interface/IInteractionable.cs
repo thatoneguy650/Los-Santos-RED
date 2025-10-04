@@ -49,6 +49,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         VehicleRaceManager RacingManager { get; }
 
+        void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);
 
         // void OnDamagedVehicle();

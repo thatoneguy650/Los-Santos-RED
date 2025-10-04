@@ -72,6 +72,7 @@ namespace Mod
         public ILocationInteractable LocationInteractable { get; private set; }
         public bool IsFEJInstalled { get; private set; }
         public bool IsFMTInstalled { get; private set; }
+        public bool IsFEWInstalled { get; private set; }
         public string DebugString => "";
 
 
@@ -94,6 +95,9 @@ namespace Mod
 
             IsFMTInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmt"));
             EntryPoint.WriteToConsole($"FMT Installed: {IsFMTInstalled}", 0);
+
+            IsFEWInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfew"));
+            EntryPoint.WriteToConsole($"FEW Installed: {IsFEWInstalled}", 0);
 
             //if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
             //{

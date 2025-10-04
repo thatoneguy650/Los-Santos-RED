@@ -83,6 +83,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInWantedActiveMode { get; }
         VehicleRaceManager RacingManager { get; }
         Violations Violations { get; }
+        bool IsSetDisabledControls { get; set; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);
@@ -93,5 +94,6 @@ namespace LosSantosRED.lsr.Interface
         void ShowVehicleInteractMenu(bool showDefault);
         void PlaySpeech(string v1, bool v2);
         void ToggleAutoBackup();
+        void HasSetOffAlarm(GameLocation gameLocation);
     }
 }

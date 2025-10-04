@@ -7352,10 +7352,10 @@ IsTrespassingWhenClosed = true,
                 SearchLocations = new List<Vector3>() { new Vector3(-355.2124f, -47.33231f, 49.03636f) },
                 IsTrespassingWhenClosed = true,
                IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true },//unknown door1
-                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true },//Front Door1
-                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true },//Front Door1
-                   new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { ForceRotateOpen = true },//teller door
+                   new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.9555f, -54.50634f, 49.04526f), InteractHeader = 255.9796f },//unknown door1
+                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 162.9344f },//Front Door1
+                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 162.9344f },//Front Door1
+                   new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { LockWhenClosed = true,ForceRotateOpen = true },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7419,10 +7419,10 @@ IsTrespassingWhenClosed = true,
                IsTrespassingWhenClosed = true,IsWeaponRestricted = true
                ,SearchLocations = new List<Vector3>() { new Vector3(145.943f, -1037.929f, 29.36783f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
                , Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, },
-                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, } ,//Front Door1
-                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, } ,//Front Door2
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true },//teller door
+                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8517f, -1044.938f, 29.37783f), InteractHeader = 243.6279f },
+                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  159.3992f } ,//Front Door1
+                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  159.3992f } ,//Front Door2
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { LockWhenClosed = true,ForceRotateOpen = true, InteractPostion = new Vector3(144.9844f, -1041.089f, 29.36791f), InteractHeader = 246.9139f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7945,30 +7945,7 @@ IsTrespassingWhenClosed = true,
     }
     private void ClothingShops()
     {
-        PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
-        {
-                new Interior(82690, "Vangelico")
-                {
-                    LocalID = 82690,
-                    Name = "Vangelico",
-                    Doors = new List<InteriorDoor>()
-                    {
-                        new InteriorDoor()
-                        {
-                            Position = new Vector3(-631.1723f, -236.7114f, 38.06244f),
-                            LockWhenClosed = true,
-                        },
-                        new InteriorDoor()
-                        {
-                            Position = new Vector3(-630.4095f, -237.7712f, 38.0971f),
-                            LockWhenClosed = true,
-                        },
-                    },
-                    IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-                    InteractPoints = new List<InteriorInteract>()
-                    {
-                        new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
+        List<TheftInteractItem> VangelicoPossibleItems = new List<TheftInteractItem>() {
                                 new TheftInteractItem() {
                                     ModItemName = "Fake Gold Ring",
                                     MinItems = 6,
@@ -7992,11 +7969,46 @@ IsTrespassingWhenClosed = true,
                                     MinItems = 5,
                                     MaxItems = 5,
                                     Percentage = 100,
-                                },
-                            },
+                                }
+                                };
+
+        ItemUsePreInteract SmashGlassPreInteract = new AnimationPreInteract() { StartAnimations = new List<AnimationBundle>() { new AnimationBundle("missheist_jewel", "fp_smash_case_necklace", 16, 8.0f, -8.0f) } };
+
+        PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+                new Interior(82690, "Vangelico")
+                {
+                    LocalID = 82690,
+                    Name = "Vangelico",
+                    RequestIPLs = new List<string>() {"post_hiest_unload" },
+                    RemoveIPLs = new List<string>()
+                    {
+                            "jewel2fake","bh1_16_refurb",
+
+                    },
+                    Doors = new List<InteriorDoor>()
+                    {
+                        new InteriorDoor(1425919976,new Vector3(-631.9554f, -236.3333f, 38.20653f))
+                        {
+                            //Position = //Position = new Vector3(-631.1723f, -236.7114f, 38.06244f),
+                            LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
+                        },
+                        new InteriorDoor(9467943,new Vector3(-630.4265f, -238.4375f, 38.20653f))
+                        {
+                            //Position = new Vector3(-630.4095f, -237.7712f, 38.0971f),
+                            LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
+                        },
+                    },
+                    
+                    IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
+                    InteractPoints = new List<InteriorInteract>()
+                    {            
+                        new ItemTheftInteract() {
+
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngFrontR1",
                             Position = new Vector3( - 626.624f, -238.5478f, 38.05702f),
                             Heading = 211.9446f,
@@ -8004,35 +8016,11 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngFrontR2",
                             Position = new Vector3( - 625.6374f, -237.7162f, 38.05702f),
                             Heading = 207.4052f,
@@ -8040,35 +8028,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngMidL1",
                             Position = new Vector3( - 627.9446f, -233.8257f, 38.05702f),
                             Heading = 212.1647f,
@@ -8076,35 +8039,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngMidL2",
                             Position = new Vector3( - 626.9693f, -233.037f, 38.05702f),
                             Heading = 212.0368f,
@@ -8112,35 +8050,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngMidR1",
                             Position = new Vector3( - 626.7f, -235.4685f, 38.05702f),
                             Heading = 33.27945f,
@@ -8148,35 +8061,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngMidR2",
                             Position = new Vector3( - 625.7751f, -234.5709f, 38.05702f),
                             Heading = 32.57174f,
@@ -8184,35 +8072,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter1",
                             Position = new Vector3( - 623.116f, -233.0139f, 38.05702f),
                             Heading = 306.5918f,
@@ -8220,35 +8083,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter2",
                             Position = new Vector3( - 620.101f, -233.5278f, 38.05702f),
                             Heading = 37.02949f,
@@ -8256,35 +8094,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter3",
                             Position = new Vector3( - 619.5614f, -230.3965f, 38.05702f),
                             Heading = 126.2357f,
@@ -8292,35 +8105,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter4",
                             Position = new Vector3( - 621.0455f, -228.5942f, 38.05702f),
                             Heading = 122.6166f,
@@ -8328,35 +8116,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter5",
                             Position = new Vector3( - 624.0377f, -228.1052f, 38.05702f),
                             Heading = 217.7205f,
@@ -8364,35 +8127,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngCenter6",
                             Position = new Vector3( - 624.5729f, -231.036f, 38.05702f),
                             Heading = 307.6254f,
@@ -8400,35 +8138,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter1",
                             Position = new Vector3( - 624.9713f, -227.9358f, 38.05702f),
                             Heading = 35.42755f,
@@ -8436,35 +8149,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter2",
                             Position = new Vector3( - 623.9496f, -227.0906f, 38.05702f),
                             Heading = 34.9143f,
@@ -8472,35 +8160,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter3",
                             Position = new Vector3( - 620.6199f, -226.6056f, 38.05702f),
                             Heading = 306.7109f,
@@ -8508,35 +8171,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter4",
                             Position = new Vector3( - 619.5996f, -227.6832f, 38.05702f),
                             Heading = 297.4792f,
@@ -8544,35 +8182,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter5",
                             Position = new Vector3( - 618.4504f, -229.4612f, 38.05702f),
                             Heading = 296.6827f,
@@ -8580,35 +8193,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter6",
                             Position = new Vector3( - 617.5781f, -230.695f, 38.05702f),
                             Heading = 296.4518f,
@@ -8616,35 +8204,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter7",
                             Position = new Vector3( - 619.2208f, -233.6226f, 38.05702f),
                             Heading = 216.0172f,
@@ -8652,35 +8215,10 @@ IsTrespassingWhenClosed = true,
                             UseNavmesh = false,
                         },
                         new ItemTheftInteract() {
-                            PossibleItems = new List < TheftInteractItem > () {
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Gold Ring",
-                                    MinItems = 6,
-                                    MaxItems = 6,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Gold Ring",
-                                    MinItems = 8,
-                                    MaxItems = 8,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Fake Silver Ring",
-                                    MinItems = 3,
-                                    MaxItems = 3,
-                                    Percentage = 100,
-                                },
-                                new TheftInteractItem() {
-                                    ModItemName = "Silver Ring",
-                                    MinItems = 5,
-                                    MaxItems = 5,
-                                    Percentage = 100,
-                                },
-                            },
+                            PossibleItems = VangelicoPossibleItems,
                             MinItems = 4,
                             MaxItems = 5,
-                            ViolatingCrimeID = "JewelRobbery",
+                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
                             Name = "vngOuter8",
                             Position = new Vector3( - 620.0914f, -234.3648f, 38.05702f),
                             Heading = 213.1084f,

@@ -1404,7 +1404,7 @@ namespace Mod
         private void OnExcessiveSpeed()
         {
             GameFiber.Yield();
-            if (IsWanted && VehicleSpeedMPH >= 75f && IsInWantedActiveMode && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed && IsAliveAndFree)
+            if (IsWanted && VehicleSpeedMPH >= 55f && IsInWantedActiveMode && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed && IsAliveAndFree)
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
@@ -2667,7 +2667,20 @@ namespace Mod
             {
                 ClosestDoor = null;
             }
-            ActivityManager.SetCurrentDoor(ClosestDoor);
+            ActivityManager.SetCurrentDoor(ClosestDoor, closeLocation?.Interior);
+        }
+        public void HasSetOffAlarm(GameLocation gameLocation)
+        {
+            Vector3 position = Position;
+            if(gameLocation != null)
+            {
+                position = gameLocation.EntrancePosition;
+            }
+            Crime crimeObserved = Crimes.GetCrime(StaticStrings.BreakingEnteringAudibleCrimeID);
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, false, position, false);
+            PoliceResponse.AddCrime(crimeObserved, description, false, false);
+            Investigation.Start(position,false,true,false,false);
+            Scanner.AnnounceCrime(crimeObserved, description);
         }
         private void UpdateClosestLookedAtObject()
         {

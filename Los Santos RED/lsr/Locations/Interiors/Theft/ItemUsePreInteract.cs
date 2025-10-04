@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 [XmlInclude(typeof(DrillUsePreInteract))]
+[XmlInclude(typeof(AnimationPreInteract))]
 public class ItemUsePreInteract
 {
     protected IInteractionable Player;
     protected ILocationInteractable LocationInteractable;
     protected ISettingsProvideable Settings;
     protected IModItems ModItems;
+    protected TheftInteract TheftInteract;
     public ItemUsePreInteract()
     {
 
@@ -23,6 +25,7 @@ public class ItemUsePreInteract
         LocationInteractable = locationInteractable;
         Settings = settings;
         ModItems = modItems;
+        TheftInteract = theftInteract;
         if(theftInteract != null)
         {
             theftInteract.SetUnlocked();

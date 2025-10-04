@@ -22,6 +22,10 @@ public class ClothingShop : GameLocation
     public Vector3 ChangingRoomLocation { get; set; }
     public override int RegisterCashMin { get; set; } = 300;
     public override int RegisterCashMax { get; set; } = 1550;
+    public override int MinPriceRefreshHours { get; set; } = 12;
+    public override int MaxPriceRefreshHours { get; set; } = 24;
+    public override int MinRestockHours { get; set; } = 12;
+    public override int MaxRestockHours { get; set; } = 24;
     public ClothingShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Vector3 changingRoomLocation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

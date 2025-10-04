@@ -1055,6 +1055,13 @@ public class ShopMenus : IShopMenus
                 new MenuItem("SCHEISS RP Binoculars", 650),
 
             }),
+
+            new ShopMenu("VangelicoMenu","VangelicoMenu", new List<MenuItem>()
+            {
+                new VariablePriceMenuItem("Gold Ring", 150,175,75,125){ NumberOfItemsToPurchaseFromPlayer = 2, NumberOfItemsToSellToPlayer = 5, },
+                new VariablePriceMenuItem("Silver Ring", 25,35,10,12){ NumberOfItemsToPurchaseFromPlayer = 2, NumberOfItemsToSellToPlayer = 5, },
+            }),
+
             new ShopMenu("CheapHotelMenu","Cheap Hotel",new List<MenuItem>() { new MenuItem("Room: Single Twin",99),new MenuItem("Room: Single Queen", 130),new MenuItem("Room: Double Queen", 150),new MenuItem("Room: Single King", 160), }),
             new ShopMenu("ExpensiveHotelMenu","Expensive Hotel",new List<MenuItem>() { new MenuItem("Room: Single Queen", 189),new MenuItem("Room: Double Queen", 220),new MenuItem("Room: Single King", 250),new MenuItem("Room: Delux", 280), }),
             new ShopMenu("ConvenienceStoreMenu","Convenience Store",new List<MenuItem>() {

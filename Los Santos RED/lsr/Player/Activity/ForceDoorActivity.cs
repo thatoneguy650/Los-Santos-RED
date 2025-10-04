@@ -31,8 +31,12 @@ public class ForceDoorActivity : DynamicActivity
     private MenuPool MenuPool;
     private UIMenu ForceOpenMenu;
     private IBasicUseable BasicUseable;
-
-    public ForceDoorActivity(IActionable player, ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object doorObject, InteriorDoor interiorDoor, IBasicUseable basicUseable)
+    private Interior Interior;
+    private float alarmPercentDrill => Settings.SettingsManager.ActivitySettings.AlarmPercentageDrill;// 30f;
+    private float alarmPercentLockpick => Settings.SettingsManager.ActivitySettings.AlarmPercentageLockpick;//10f;
+    private float alarmPercentBash => Settings.SettingsManager.ActivitySettings.AlarmPercentageBash;//80f;
+    public ForceDoorActivity(IActionable player, ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object doorObject, InteriorDoor interiorDoor,
+        IBasicUseable basicUseable, Interior interior)
     {
         Player = player;
         LocationInteractable = locationInteractable;
@@ -40,6 +44,7 @@ public class ForceDoorActivity : DynamicActivity
         DoorObject = doorObject;
         InteriorDoor = interiorDoor;
         BasicUseable = basicUseable;
+        Interior = interior;
     }
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
@@ -104,8 +109,17 @@ public class ForceDoorActivity : DynamicActivity
             }
         }
 
-
-        if (DoorObject.Exists())
+        if(InteriorDoor != null && InteriorDoor.HasCustomInteractPosition)
+        {
+            FinalPlayerPos = InteriorDoor.InteractPostion;//DOORS ARE TOO FUCKY FOR THIS SHIT NativeHelper.GetOffsetPosition(machineInteraction.PropEntryPosition, machineInteraction.PropEntryHeading + Settings.SettingsManager.DebugSettings.DoorEntryAngle, Settings.SettingsManager.DebugSettings.DoorEntryValue);
+            FinalPlayerHeading = InteriorDoor.InteractHeader;
+            MoveInteraction moveInteraction = new MoveInteraction(LocationInteractable, FinalPlayerPos, FinalPlayerHeading);
+            if (!moveInteraction.MoveToMachine(4.0f))
+            {
+                return;
+            }
+        }
+        else if (DoorObject.Exists())
         {
 
 
@@ -175,8 +189,10 @@ public class ForceDoorActivity : DynamicActivity
         while (MenuPool.IsAnyMenuOpen())
         {
             MenuPool.ProcessMenus();
+            Player.IsSetDisabledControls = true;
             GameFiber.Yield();
         }
+        Player.IsSetDisabledControls = false;
     }
 
     private void DrillLock()
@@ -201,7 +217,7 @@ public class ForceDoorActivity : DynamicActivity
             return;
         }
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
-        drillItem.PerformDrillingAnimation(LocationInteractable, InteriorDoor.UnLockDoor, false);
+        drillItem.PerformDrillingAnimation(LocationInteractable, InteriorDoor.UnLockDoor, false, Interior);
         Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
     }
     private void BashDoor()
@@ -212,6 +228,8 @@ public class ForceDoorActivity : DynamicActivity
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, 1, 0, false, false, false);
         GameTimeStartedForcingDoor = Game.GameTime;
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
+        uint GameTimeBetweenBashCheckes = 5000;
+        uint GameTimeLastCheckedBashFail = Game.GameTime;
         while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -224,6 +242,15 @@ public class ForceDoorActivity : DynamicActivity
                 InteriorDoor.UnLockDoor();
                 Game.DisplayHelp("Door Opened");
                 break;
+            }
+            if(Game.GameTime - GameTimeLastCheckedBashFail >= GameTimeBetweenBashCheckes )
+            {
+                GameTimeLastCheckedBashFail = Game.GameTime;
+                if(RandomItems.RandomPercent(alarmPercentBash) && Interior != null)
+                {
+                    Interior.SetOffAlarm();
+                    Player.HasSetOffAlarm(Interior.GameLocation);
+                }
             }
             DisableControls();
             GameFiber.Yield();
@@ -240,7 +267,7 @@ public class ForceDoorActivity : DynamicActivity
         }
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
        //screwdriverItem.PickDoorLock(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor);
-        screwdriverItem.DoLockpickAnimation(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor, Settings, true, false);
+        screwdriverItem.DoLockpickAnimation(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor, Settings, true, false, Interior);
         Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
     }
     private void Exit()

@@ -1404,7 +1404,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
 
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
-        Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
+        //Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
     }
     private void DefaultConfig_FullModernTraffic()
     {

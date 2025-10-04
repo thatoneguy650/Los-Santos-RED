@@ -35,10 +35,11 @@ public class InteriorDoor
     public bool NeedsDefaultUnlock { get; set; } = false;
     public bool LockWhenClosed { get; set; } = false;
 
-
+    public bool HasCustomInteractPosition => InteractPostion != Vector3.Zero;
     public bool CanBeForcedOpenByPlayer { get; set; } = true;
 
-
+    public Vector3 InteractPostion { get; set; } = Vector3.Zero;
+    public float InteractHeader { get; set; } = 0f;
 
     public Rage.Object DoorObject => doorEntity;
 
