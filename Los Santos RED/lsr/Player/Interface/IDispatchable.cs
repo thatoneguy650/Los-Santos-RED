@@ -35,6 +35,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMoving { get; }
         float ClosestPoliceDistanceToPlayer { get; }
         bool IsInWantedActiveMode { get; }
+        bool IsInArmedMilitaryVehicle { get; }
 
         void OnHitSquadDispatched(Gang enemyGang, bool forceNoText);
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);

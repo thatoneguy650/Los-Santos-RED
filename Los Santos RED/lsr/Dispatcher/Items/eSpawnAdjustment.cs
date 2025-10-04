@@ -12,6 +12,9 @@ public enum eSpawnAdjustment
     InAirVehicle = 1 << 4,
     K9 = 1 << 5,
     ATV = 1 << 6,
+    InArmedMilitaryVehicle = 1 << 7,
+
+
     //StaticSuspect = 1 << 7,
     //Japanese = 1 << 7,
     //Snack = 1 << 8,

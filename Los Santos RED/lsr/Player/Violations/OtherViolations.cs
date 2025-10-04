@@ -194,6 +194,10 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.BuryingABody);
         }
+        if(Player.IsInArmedMilitaryVehicle)
+        {
+            Violations.AddViolating(StaticStrings.StolenArmedMilitaryVehicleCrimeID);
+        }
         CheckVehicleInvasion();
     }
     private void CheckVehicleInvasion()

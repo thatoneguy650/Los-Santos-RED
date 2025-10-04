@@ -65,6 +65,8 @@ public static class StaticStrings
     public static readonly string TrespassingOnMilitaryBaseCrimeID = "TrespassingOnMilitaryBase";
 
 
+    public static readonly string StolenArmedMilitaryVehicleCrimeID = "StolenArmedMilitaryVehicle";
+
     public static readonly string TrespessingCrimeID = "Trespassing";
 
     public static readonly string CivilianTrespessingCrimeID = "CivilianTrespassing";

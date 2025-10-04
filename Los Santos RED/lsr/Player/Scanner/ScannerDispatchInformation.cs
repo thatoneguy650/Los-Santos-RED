@@ -85,6 +85,7 @@ public class ScannerDispatchInformation
     public Dispatch ThreateningOfficerWithFirearm { get; private set; }
     public Dispatch TrespassingOnGovernmentProperty { get; private set; }
     public Dispatch TrespassingOnMilitaryBase { get; private set; }
+    public Dispatch StolenArmedMilitaryVehicle { get; private set; }
     public Dispatch Trespassing { get; private set; }
     public Dispatch VehicleCrashed { get; private set; }
     public Dispatch VehicleHitAndRun { get; private set; }
@@ -239,7 +240,19 @@ public class ScannerDispatchInformation
             LocationDescription = LocationSpecificity.Zone,
             MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName },"trespassing on military base"),
+                new AudioSet(new List<string>() { crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName },"trespassing on military base"),       
+            },
+        };
+        StolenArmedMilitaryVehicle = new Dispatch()
+        {
+            Name = "Stealing an Armed Military Vehicle",
+            ResultsInLethalForce = true,
+            CanBeReportedMultipleTimes = false,
+            LocationDescription = LocationSpecificity.Zone,
+            IncludeDrivingVehicle = true,
+            MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_person_in_a_stolen_vehicle.Apersoninastolenvehicle.FileName },"stolen military vehicle"),
             },
         };
         Trespassing = new Dispatch()

@@ -555,7 +555,7 @@ public class PlayerPerception
             {
                 continue;
             }
-            if (CanRecognizeTarget)
+            if (CanRecognizeTarget || (committing.IsIntense && CanSeeTarget))
             {
                 AddWitnessedCrime(committing, Originator.Pedestrian.Position);
             }

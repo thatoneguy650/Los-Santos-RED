@@ -1672,6 +1672,10 @@ namespace LosSantosRED.lsr
 
             new CrimeDispatch(StaticStrings.TrespassingOnMilitaryBaseCrimeID,SDI.TrespassingOnMilitaryBase),
 
+
+            new CrimeDispatch(StaticStrings.StolenArmedMilitaryVehicleCrimeID,SDI.StolenArmedMilitaryVehicle),
+            new CrimeDispatch(StaticStrings.StolenArmedMilitaryVehicleCrimeID,SDI.StolenArmedMilitaryVehicle),
+
             new CrimeDispatch(StaticStrings.TrespessingCrimeID,SDI.Trespassing),
             new CrimeDispatch(StaticStrings.CivilianTrespessingCrimeID,SDI.Trespassing),
             new CrimeDispatch(StaticStrings.VehicleInvasionCrimeID,SDI.SuspiciousActivity),
@@ -1717,6 +1721,7 @@ namespace LosSantosRED.lsr
             ,SDI.ShotsFiredAtAnOfficer
             ,SDI.AssaultingOfficer
             ,SDI.ThreateningOfficerWithFirearm
+            ,SDI.StolenArmedMilitaryVehicle
             ,SDI.TrespassingOnGovernmentProperty
             ,SDI.TrespassingOnMilitaryBase
             ,SDI.Trespassing

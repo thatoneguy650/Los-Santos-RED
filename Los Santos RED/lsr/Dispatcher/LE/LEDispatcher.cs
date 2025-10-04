@@ -1581,6 +1581,12 @@ public class LEDispatcher
                         addedAdjustment = true;
                         EntryPoint.WriteToConsole("LE DISPATCHER ADDED AIR VEHICLE ADJUSTMENT");
                     }
+                    if(Player.IsInArmedMilitaryVehicle)
+                    {
+                        addedSpawnAdjustments |= eSpawnAdjustment.InArmedMilitaryVehicle;
+                        addedAdjustment = true;
+                        EntryPoint.WriteToConsole("LE DISPATCHER ADDED ARMED MILITARY VEHICLE ADJUSTMENT");
+                    }
 
                     if (HasNeedToAmbientCanineDispatch)
                     {

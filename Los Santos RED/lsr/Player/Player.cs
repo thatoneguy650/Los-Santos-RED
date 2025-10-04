@@ -372,6 +372,7 @@ namespace Mod
         public bool IsHotWiring { get; private set; }
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
+        public bool IsInArmedMilitaryVehicle { get; private set; }
         public bool IsOnBicycle { get; private set; }
         public bool IsIncapacitated => IsStunned || IsRagdoll;
         public bool IsInCover { get; private set; }
@@ -2099,7 +2100,7 @@ namespace Mod
                 IsOnBicycle = CurrentVehicle.IsBicycle;
                 IsOnMotorcycle = CurrentVehicle.IsMotorcycle;
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || IsOnBicycle || IsOnMotorcycle || Game.LocalPlayer.Character.IsInHelicopter);
-
+                IsInArmedMilitaryVehicle = CurrentVehicle.VehicleClass == VehicleClass.Military && CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.DOES_VEHICLE_HAVE_WEAPONS<bool>(CurrentVehicle.Vehicle);
                 VehicleSpeed = CurrentVehicle.Vehicle.Speed;
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
                 CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
@@ -2131,6 +2132,7 @@ namespace Mod
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
                 CurrentVehicleIsRolledOver = false;
+                IsInArmedMilitaryVehicle = false;
                 VehicleSpeed = 0f;
                 prevCurrentVehicleHandle = 0;
             }

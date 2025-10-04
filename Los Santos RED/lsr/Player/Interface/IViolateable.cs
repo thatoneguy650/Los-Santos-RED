@@ -80,6 +80,7 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         bool IsInWantedActiveMode { get; }
         OutfitManager OutfitManager { get; }
+        bool IsInArmedMilitaryVehicle { get; }
 
         //  bool IsLootingBody { get; }
 
