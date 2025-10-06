@@ -21,6 +21,7 @@ public class Interior
     protected List<Rage.Object> SpawnedProps = new List<Rage.Object>();
     private int alarmSoundID;
     protected bool isAlarmActive;
+    private bool isOpen;
 
     public Interior()
     {
@@ -330,19 +331,36 @@ public class Interior
                 }
             }, "Unload Interiors");
     }
-    public void Update()
+    public void Update(bool IsOpen)
     {
         foreach (InteriorDoor door in Doors.Where(x=> !x.IsLocked && x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
         {
             EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
         }
-
-
         foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && x.LockWhenClosed && !x.HasRanLockWithEntity))
         {
             EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
             door.LockDoor();
+        }
+
+
+        if(isOpen != IsOpen)
+        {
+            if (IsOpen)
+            {      
+                if (GameLocation != null)
+                {
+                    GameLocation.IsServiceFilled = false;
+                }
+                EntryPoint.WriteToConsole($"Interior changed from closed to Open {Name}");
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"Interior changed from open to closed {Name}");
+            }
+            LoadDoors(IsOpen);
+            isOpen = IsOpen;
         }
 
         //if(IsTeleportEntry)

@@ -925,7 +925,7 @@ public class GameLocation : ILocationDispatchable
                /// UpdatePrompts();
                 if (IsActivated && HasInterior)
                 {
-                    Interior?.Update();
+                    Interior?.Update(IsOpen(time.CurrentHour));
                 }
                 if(DistanceToPlayer <= CloseRange)
                 {

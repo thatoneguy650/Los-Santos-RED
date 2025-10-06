@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Media;
 
 
@@ -94,7 +95,7 @@ public class Interiors : IInteriors
                 new BarberShopInterior(-99099,"Barber Shop")
                 {
                     IsTeleportEntry = true,
-                    
+
                     ForceAutoInteractName = "genericheaircutinteract1",
                     InteriorEgressPosition = new Vector3(123.7631f, -745.737f, 242.152f),
                     InteriorEgressHeading = 216.5336f,
@@ -133,7 +134,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579, new Vector3(-280.7851f, 6232.782f, 31.84548f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579, new Vector3(-280.7851f, 6232.782f, 31.84548f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(-281.9294f, 6232.255f, 31.69074f), InteractHeader =  221.1075f }
                     }
                 },
 
@@ -152,7 +153,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579, new Vector3(-1287.857f, -1115.742f, 7.140073f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579, new Vector3(-1287.857f, -1115.742f, 7.140073f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(-1288.312f, -1117.012f, 6.985244f), InteractHeader =  266.5429f }
                     }
                 },
                 new BarberShopInterior(37378,"Bob Mulet Rockford Hills")
@@ -170,8 +171,8 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2631455204,new Vector3(-823.2001f, -187.0831f, 37.81895f)) { NeedsDefaultUnlock = true,LockWhenClosed = true },
-                        new InteriorDoor(145369505,new Vector3(-822.4442f, -188.3924f, 37.81895f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2631455204,new Vector3(-823.2001f, -187.0831f, 37.81895f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(-823.0435f, -187.9848f, 37.56468f), InteractHeader =  299.3479f },
+                        new InteriorDoor(145369505,new Vector3(-822.4442f, -188.3924f, 37.81895f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(-823.0435f, -187.9848f, 37.56468f), InteractHeader =  299.3479f }
                     }
                 },
                 new BarberShopInterior(102146,"Herr Kutz Davis")
@@ -188,7 +189,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579,new Vector3(132.5569f, -1710.996f, 29.44157f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579,new Vector3(132.5569f, -1710.996f, 29.44157f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(133.1569f, -1712.003f, 29.29169f), InteractHeader =  309.559f }
                     }
                 },
                 new BarberShopInterior(112642,"Herr Kutz Mirror Park")
@@ -205,7 +206,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579,new Vector3(1207.873f, -470.0363f, 66.358f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579,new Vector3(1207.873f, -470.0363f, 66.358f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(1207.132f, -471.0517f, 66.14108f), InteractHeader =  240.7409f }
                     }
                 },
                 new BarberShopInterior(10242,"O'Sheas Sandy Shores")
@@ -222,7 +223,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579,new Vector3(1932.952f, 3725.154f, 32.9944f)) { NeedsDefaultUnlock = true,LockWhenClosed = true }
+                        new InteriorDoor(2450522579,new Vector3(1932.952f, 3725.154f, 32.9944f)) { NeedsDefaultUnlock = true,LockWhenClosed = true, InteractPostion = new Vector3(1934.125f, 3725.319f, 32.79781f), InteractHeader =  17.98306f }
                     }
                 },
 
@@ -240,7 +241,7 @@ public class Interiors : IInteriors
                     },
                     Doors = new List<InteriorDoor>()
                     {
-                        new InteriorDoor(2450522579,new Vector3(-29.86917f, -148.1571f, 57.22648f)) { NeedsDefaultUnlock = true,LockWhenClosed = true,CanBeForcedOpenByPlayer = true }
+                        new InteriorDoor(2450522579,new Vector3(-29.86917f, -148.1571f, 57.22648f)) { NeedsDefaultUnlock = true,LockWhenClosed = true,CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-30.95186f, -147.3276f, 57.07709f), InteractHeader =  156.1858f }
                     }
                 },
             }
@@ -560,17 +561,23 @@ public class Interiors : IInteriors
             },
 
             //Liquor
-            new Interior(33026,"Scoops Liquor Barn") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-
+            new Interior(33026,"Scoops Liquor Barn", // Added Door
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3082015943, new Vector3(1167.129f,2703.754f,38.30173f)){ LockWhenClosed = true, InteractPostion = new Vector3(1166.135f, 2703.446f, 38.17941f), InteractHeader = 3.388772f },
+                }) {
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
             InteractPoints = new List<InteriorInteract>()
                 {
+                    GenerateSafeDrillingInteract("scoopsbarnsafe1",new Vector3(1169.116f, 2717.82f, 37.15765f),267.4221f), // added safe
                     Generate247Interact1("scoopsitemtheft1",new Vector3(1166.253f, 2708.812f, 38.15771f), 359.1691f),
                     Generate247Interact4("scoopsitemtheft4",new Vector3(1166.231f, 2707.29f, 38.15771f), 95.36868f),
                 },
 
             },
             new Interior(104450,"Liquor Ace"){
-IsTrespassingWhenClosed = true,
+            IsTrespassingWhenClosed = true,
             IsWeaponRestricted = true,
             InteractPoints = new List<InteriorInteract>()
                 {
@@ -583,7 +590,7 @@ IsTrespassingWhenClosed = true,
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true },
+                    new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)){ LockWhenClosed = true, InteractPostion = new Vector3(-1226.444f, -902.2642f, 12.28599f), InteractHeader = 216.2369f },
                 }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
@@ -601,7 +608,7 @@ IsTrespassingWhenClosed = true,
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true },
+                    new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)){ LockWhenClosed = true, InteractPostion = new Vector3(-2973.862f, 391.0587f, 15.03532f), InteractHeader = 268.62f },
                 }) {
                 IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 InteractPoints = new List<InteriorInteract>()
@@ -616,7 +623,7 @@ IsTrespassingWhenClosed = true,
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true },
+                    new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)){ LockWhenClosed = true, InteractPostion = new Vector3(-1491.395f, -383.5826f, 40.15629f), InteractHeader = 318.9207f },
                 }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
@@ -633,7 +640,7 @@ IsTrespassingWhenClosed = true,
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true },
+                    new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)) { LockWhenClosed = true, InteractPostion = new Vector3(1141.588f, -981.139f, 46.41001f), InteractHeader = 102.0588f },
                 }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
 
                 InteractPoints = new List<InteriorInteract>()
@@ -7484,10 +7491,10 @@ IsTrespassingWhenClosed = true,
                 IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 SearchLocations = new List<Vector3>() { new Vector3(310.2834f, -276.4164f, 54.16457f) },
                 Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, },
-                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true }, //Front Door1
-                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true },//teller door
+                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f), InteractHeader =  250.7064f },//Vault Door
+                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { LockWhenClosed = true, InteractPostion = new Vector3(315.026f, -275.6472f, 53.92545f), InteractHeader =  165.5958f }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { LockWhenClosed = true, InteractPostion = new Vector3(315.026f, -275.6472f, 53.92545f), InteractHeader =  165.5958f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader =  257.4634f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7549,10 +7556,65 @@ IsTrespassingWhenClosed = true,
                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                 SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
                 Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, },
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true , CanBeForcedOpenByPlayer = true, }, //Front Door1
-                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = true, }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true },//teller door
+                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader =  351.4251f },//Vault Door sp door
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f  }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader =  357.0348f },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.013f, 486.0489f, 15.67541f),360f-358.9159f,-.4f),
+                        Heading = 358.9159f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.152f, 482.4714f, 15.67532f),360f-171.9128f,-.4f),
+                        Heading = 171.9128f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaulttop",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2952.514f, 484.314f, 15.67538f),360f-264.5385f,-.4f),
+                        Heading = 264.5385f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+            },
+            new BankInterior(202262,"Fleeca Bank") { // duplicate for MP Vault door 
+               IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
+                SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
+                Doors =  new List<InteriorDoor>() {
+                    new InteriorDoor(4231427725,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader =  351.4251f },//Vault Door mp door
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f  }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader =  357.0348f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7602,10 +7664,10 @@ IsTrespassingWhenClosed = true,
             },
             new BankInterior(90626,"Fleeca Bank") {
                IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, },
-                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true },
-                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true },
-                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true },//teller door
+                   new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  89.52586f }, // vault door
+                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
+                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  93.75737f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7655,10 +7717,10 @@ IsTrespassingWhenClosed = true,
             },
             new BankInterior(87810,"Fleeca Bank") {
                IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1217.313f, -331.7081f, 37.7808f) }, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3( - 1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, },
-                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true },
-                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true },
-                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true },//teller door
+                   new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300.011f},//vault door
+                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f },
+                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f  },
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader =  298.9969f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7713,29 +7775,29 @@ IsTrespassingWhenClosed = true,
                 IsTrespassingWhenClosed = true,IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
 
 
-                    
-                    
 
 
 
 
-                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true },//FRONT ENTRANCE RIGHT
-                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true },//FRONT ENTRANCE LEFT
+                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE RIGHT
+                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE LEFT
 
-                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true },//BACK ENTRANCE LEFT
-                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { LockWhenClosed = true },//BACK ENTRANCE RIGHT
+                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
+                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
 
-                    new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true },//gate to teller
-                    new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true },//FIRST GATE AFTER VAULT
-                    new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true },//SECOND GATE AFTER VAULT
+                    //new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.3379f, 219.594f, 106.2863f), InteractHeader =  340.1839f },// First gate to Teller area
+                    new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.3234f, 221.3495f, 106.2831f), InteractHeader =  251.4932f }, // Second gate to Vault within teller area
+                    new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
+                    new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
 
 
-                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true, LockWhenClosed = true, },//VAULT DOOR
+                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true, LockWhenClosed = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
 
 
                     //new InteriorDoor(1956494919,new Vector3(266.3624f, 217.5697f, 110.4328f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
                     //new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
                     //new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)) { LockWhenClosed = true },//teller door
+                    // 3048744503
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7890,10 +7952,12 @@ IsTrespassingWhenClosed = true,
             },
 
             new BankInterior(42754,"Blaine County Savings") {
-                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) }, Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true },//teller
-                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true },//FRONT 1
-                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true },//FRONT 2
+                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) },
+                Doors =  new List<InteriorDoor>()
+                {
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader =  46.74528f },//teller
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 2
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -7999,10 +8063,10 @@ IsTrespassingWhenClosed = true,
                             LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
                         },
                     },
-                    
+
                     IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
                     InteractPoints = new List<InteriorInteract>()
-                    {            
+                    {
                         new ItemTheftInteract() {
 
                             PossibleItems = VangelicoPossibleItems,
@@ -8301,14 +8365,14 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
 
 
                 Doors = new List<InteriorDoor>() {
-                    new InteriorDoor(812467272,new Vector3(-589.5225f, -1621.513f, 33.16225f)),//Inside
-                    new InteriorDoor(812467272,new Vector3(-590.8179f, -1621.425f, 33.16282f)),//Inside
+                    //new InteriorDoor(812467272,new Vector3(-589.5225f, -1621.513f, 33.16225f)), //Inside Which SIDE?
+                    //new InteriorDoor(812467272,new Vector3(-590.8179f, -1621.425f, 33.16282f)),//Inside  to add Interact
 
-                    new InteriorDoor(2667367614,new Vector3(-611.32f, -1610.089f, 27.15894f)),//Front Outside R
-                    new InteriorDoor(1099436502,new Vector3(-608.7289f, -1610.315f, 27.15894f)),//Front Ouitside L
-
-                    new InteriorDoor(2667367614,new Vector3(-592.7109f, -1628.986f, 27.15931f)),//Rear Outside R
-                    new InteriorDoor(1099436502,new Vector3(-592.9376f, -1631.577f, 27.15931f)),//Rear Ouitside L
+                    new InteriorDoor(2667367614,new Vector3(-611.32f, -1610.089f, 27.15894f)){ InteractPostion = new Vector3(-610.2036f, -1609.855f, 26.89858f), InteractHeader =  173.3626f},//Front Outside R
+                    new InteriorDoor(1099436502,new Vector3(-608.7289f, -1610.315f, 27.15894f)){ InteractPostion = new Vector3(-610.2036f, -1609.855f, 26.89858f), InteractHeader =  173.3626f},//Front Ouitside L
+                    // But what do we do about inside..pick one side run through to locked other end - unable to break open 
+                    new InteriorDoor(2667367614,new Vector3(-592.7109f, -1628.986f, 27.15931f)){ InteractPostion = new Vector3(-592.5037f, -1630.089f, 26.98354f), InteractHeader =  90.08755f},//Rear Outside R
+                    new InteriorDoor(1099436502,new Vector3(-592.9376f, -1631.577f, 27.15931f)){ InteractPostion = new Vector3(-592.5037f, -1630.089f, 26.98354f), InteractHeader =  90.08755f},//Rear Ouitside L
                     //doors dont stay open
 
                 },
