@@ -635,11 +635,11 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("USCG","OCEANA", 0, 100, 100),
 
-            new ZoneJurisdiction("BCSO","PALCOV", 0, 100, 100),
+            new ZoneJurisdiction("BCSOP","PALCOV", 0, 100, 100),
 
-            new ZoneJurisdiction("BCSO","PALETO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
+            new ZoneJurisdiction("BCSOP","PALETO", 0, 100, 100) { CanSpawnPedestrianOfficers = true, CanSpawnBicycleOfficers = true, },
 
-            new ZoneJurisdiction("BCSO","PALFOR", 0, 100, 100),
+            new ZoneJurisdiction("BCSOP","PALFOR", 0, 100, 100),
 
             new ZoneJurisdiction("LSDPR","PALHIGH", 0, 51, 51),
             new ZoneJurisdiction("LSSD","PALHIGH", 1, 49, 49),//new ZoneJurisdiction("LSSD","PALHIGH", 0, 100, 100),

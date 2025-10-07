@@ -214,6 +214,10 @@ public class Agencies : IAgencies
         Agency RHPD = new Agency("~b~", "RHPD", "RHPD", "Rockford Hills Police Department", "Blue", Classification.Police, "RHPDCops", "RHPDVehicles", "RH ", "Tasers", "RHPDSidearms", "RHPDLongGuns", "RHPD Officer") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 5, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
         Agency BCSO = new Agency("~r~", "BCSO", "BCSO", "Blaine County Sheriff", "Red", Classification.Sheriff, "BCSheriffPeds", "BCSOVehicles", "BCS ", "Tasers", "BCSOSidearms", "BCSOLongGuns", "BCSO Deputy") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 10, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
 
+
+        Agency BCSOPaleto = new Agency("~r~", "BCSOP", "BCSOP", "Blaine County Sheriff Paleto Bay", "Red", Classification.Sheriff, "BCSheriffPeds", "BCSOPaletoVehicles", "BCS ", "Tasers", "BCSOSidearms", "BCSOLongGuns", "BCSO Officer") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 10, OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };
+
+
         Agency LSPPFEJ = Extensions.DeepCopy(LSPP);
 
         LSPPFEJ.PersonnelID = "LSPPPeds";
@@ -289,7 +293,7 @@ public class Agencies : IAgencies
             LSPDFEJ,LSPDVWFEJ,LSPDELSFEJ,
             DPPD,RHPD,
             LSSDFEJ,LSSDVWFEJ,LSSDDVFEJ,LSSDMJFEJ,
-            BCSO,
+            BCSO,BCSOPaleto,
             LSPDASD,LSSDASD,
             LSPPFEJ,LSIAPDFEJ,
             SAHPFEJ,SASPA,SAPR,USCG,

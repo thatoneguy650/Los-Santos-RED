@@ -348,6 +348,15 @@ public class ShopMenus : IShopMenus
                 }
             }
         }
+
+        List<string> gunMenus = new List<string>() { "FamiliesDenMenu", "BallasDenMenu", "VarriosDenMenu","GunShop1", "GunShop3" };
+        foreach (ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList.Where(x => gunMenus.Contains(x.ID)))
+        {
+            shopMenu.Items.Add(new MenuItem("WIN 95", 450, 120) { Extras = new List<MenuItemExtra>() { new MenuItemExtra("Extended Clip",120), new MenuItemExtra("Suppressor",500), new MenuItemExtra("Flashlight",75) } });
+        }
+
+
+        //"WIN 95"
         ShopMenuTypes final = new ShopMenuTypes();
         final.ShopMenuList.AddRange(shopMenusToUpdate);
 

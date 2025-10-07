@@ -1479,6 +1479,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SAHPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SAHPVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("LSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSSDVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("BCSOVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.BCSOVehicles_FEJ_Modern),
+            new DispatchableVehicleGroup("BCSOPaletoVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.BCSOPaletoVehicles_FEJ_Modern),
+
             new DispatchableVehicleGroup("LSIAPDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSIAPDVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("LSPPVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.LSPPVehicles_FEJ_Modern),
             new DispatchableVehicleGroup("VWHillsLSSDVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.VWHillsLSSDVehicles_FEJ_Modern),
