@@ -44,7 +44,8 @@ public class DispatchableVehicle
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
 
-
+    public int RequiredPearlescentColorID { get; set; } = -1;
+    public int RequiredWindowTintID { get; set; } = -1;
 
     public int RequiredInteriorColorID { get; set; } = -1;
     public int RequiredDashColorID { get; set; } = -1;
@@ -352,6 +353,25 @@ public class DispatchableVehicle
             }
             NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(vehicleExt.Vehicle, pearlescentColor, RequiredWheelColorID);
         }
+        if (RequiredPearlescentColorID != -1)
+        {
+            int pearlescentColor;
+            int wheelColor;
+            unsafe
+            {
+                NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", vehicleExt.Vehicle, &pearlescentColor, &wheelColor);
+            }
+            NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(vehicleExt.Vehicle, RequiredPearlescentColorID, wheelColor);
+        }
+        GameFiber.Yield();// Is this required here? It's finished with colors yields then gets tint, is (!vehicleExt.Vehicle.Exists()) check needed after every yield?
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (RequiredWindowTintID != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_WINDOW_TINT(vehicleExt.Vehicle, RequiredWindowTintID);
+        }
         GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())
         {
@@ -367,6 +387,12 @@ public class DispatchableVehicle
         if(SetRandomCustomization && RandomItems.RandomPercent(RandomCustomizationPercentage))
         {
             SetVehicleRandomCustomization(vehicleExt);
+        }
+        if (IsMotorcycle && vehicleExt.Vehicle.Exists())
+        {
+            int frontMod = NativeFunction.Natives.GET_VEHICLE_MOD<int>(vehicleExt.Vehicle, 23);
+            bool frontVariation = NativeFunction.Natives.GET_VEHICLE_MOD_VARIATION<bool>(vehicleExt.Vehicle, 23);
+            NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, 24, frontMod, frontVariation);
         }
     }
 
