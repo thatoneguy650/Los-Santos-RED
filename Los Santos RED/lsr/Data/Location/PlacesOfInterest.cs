@@ -3575,7 +3575,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(1831.629f, 3662.91f, 33.92607f), 32f,55f),
                     new LEConditionalLocation(new Vector3(1835.127f, 3664.892f, 33.92607f), 32f,55f),
-                    new LEConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,55f),
+                    new LEConditionalLocation(new Vector3(1847.443f, 3672.036f, 33.41676f), 32f,55f),
                 } },
             new PoliceStation(new Vector3(-443.3767f, 6016.792f, 31.71221f), 310.4416f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {
                 BannerImagePath = "agencies\\lssdmain.png",
