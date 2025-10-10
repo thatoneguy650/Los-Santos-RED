@@ -15,6 +15,7 @@ public class InteriorDoor
     private float originalHeading = 0f;
     private bool HasOriginalHeading = false;
     private bool hasRanLockWithEntity;
+    private List<InteriorDoor> PairedDoors = new List<InteriorDoor>();
 
     //private bool WasForceRotatedOpen;
 
@@ -43,8 +44,12 @@ public class InteriorDoor
 
     public Rage.Object DoorObject => doorEntity;
 
+
+    public string DoorGroupName { get; set; }
+
     [XmlIgnore]
     public bool HasBeenForceRotatedOpen { get; set; }
+
 
     public bool HasRanLockWithEntity => hasRanLockWithEntity;
     public void LockDoor()
@@ -74,6 +79,18 @@ public class InteriorDoor
         }
         isLocked = false;
         hasRanLockWithEntity = false;
+
+        if(PairedDoors == null)
+        {
+            return;
+        }
+        foreach (InteriorDoor interiorDoor in PairedDoors)
+        {
+            if (interiorDoor.IsLocked)
+            {
+                interiorDoor.UnLockDoor();
+            }
+        }
     }
     public void Activate()
     {
@@ -158,6 +175,15 @@ public class InteriorDoor
             return "Force Door";
         }
         return "";
+    }
+
+    internal void AddPairedDoors(List<InteriorDoor> pairedDoors)
+    {
+        if(pairedDoors == null)
+        {
+            return;
+        }
+        PairedDoors = pairedDoors;
     }
 }
 

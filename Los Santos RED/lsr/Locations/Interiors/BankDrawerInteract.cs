@@ -43,7 +43,7 @@ public class BankDrawerInteract : InteriorInteract
         }
         if (!WithWarp)
         {
-            if (!MoveToPosition(3.0f))
+            if (!MoveToPosition(4.0f))
             {
                 Interior.IsMenuInteracting = false;
                 Game.DisplayHelp("Interact Failed");

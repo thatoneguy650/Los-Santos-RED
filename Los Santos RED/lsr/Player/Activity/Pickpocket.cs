@@ -247,34 +247,43 @@ public class PickPocket : Interaction
             uint modelHash = Game.GetHashKey("PICKUP_MONEY_WALLET");
             Vector3 moneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
 
-            if (Target.IsGangMember)
+
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || Player.CharacterModelIsPrimaryCharacter)
             {
-                modelHash = Game.GetHashKey("PICKUP_MONEY_VARIABLE");
-                int moneyPickupCreated = 0;
-                int pickupsToCreate = Math.DivRem(money, 500, out int remainder);
-                if (remainder > 0)
+
+                if (Target.IsGangMember)
                 {
-                    pickupsToCreate++;
-                }
-                for (int i = 0; i < pickupsToCreate; i++)
-                {
-                    int moneyToDrop = money - moneyPickupCreated;
-                    if (moneyToDrop > 500)
+                    modelHash = Game.GetHashKey("PICKUP_MONEY_VARIABLE");
+                    int moneyPickupCreated = 0;
+                    int pickupsToCreate = Math.DivRem(money, 500, out int remainder);
+                    if (remainder > 0)
                     {
-                        moneyToDrop = 500;
+                        pickupsToCreate++;
                     }
-                    moneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
-                    NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, moneyPos.X, moneyPos.Y, moneyPos.Z, 0, moneyToDrop, 1, false, true);
-                    moneyPickupCreated += moneyToDrop;
+                    for (int i = 0; i < pickupsToCreate; i++)
+                    {
+                        int moneyToDrop = money - moneyPickupCreated;
+                        if (moneyToDrop > 500)
+                        {
+                            moneyToDrop = 500;
+                        }
+                        moneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
+                        NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, moneyPos.X, moneyPos.Y, moneyPos.Z, 0, moneyToDrop, 1, false, true);
+                        moneyPickupCreated += moneyToDrop;
+                    }
+                }
+                else
+                {
+                    if (Target.IsMerchant)
+                    {
+                        modelHash = Game.GetHashKey("PICKUP_MONEY_DEP_BAG");
+                    }
+                    NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, moneyPos.X, moneyPos.Y, moneyPos.Z, 0, money, 1, false, true);
                 }
             }
             else
             {
-                if (Target.IsMerchant)
-                {
-                    modelHash = Game.GetHashKey("PICKUP_MONEY_DEP_BAG");
-                }
-                NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, moneyPos.X, moneyPos.Y, moneyPos.Z, 0, money, 1, false, true);
+                Player.BankAccounts.GiveMoney(money,false);
             }
 
             string description = $"Cash Stolen:~n~~g~${money}~s~";

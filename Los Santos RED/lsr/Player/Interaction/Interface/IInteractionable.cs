@@ -48,6 +48,7 @@ namespace LosSantosRED.lsr.Interface
         Dispatcher Dispatcher { get; }
         VehicleExt CurrentVehicle { get; }
         VehicleRaceManager RacingManager { get; }
+        bool CharacterModelIsPrimaryCharacter { get; }
 
         void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);

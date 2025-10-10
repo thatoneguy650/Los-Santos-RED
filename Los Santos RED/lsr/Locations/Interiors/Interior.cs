@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Interop;
 using System.Xml.Serialization;
 
 [Serializable()]
@@ -116,6 +117,10 @@ public class Interior
         foreach (InteriorInteract interiorInteract in AllInteractPoints)//InteractPoints)
         {
             interiorInteract.Setup(modItems, clothesNames);
+        }
+        foreach(InteriorDoor interiorDoor in Doors)
+        {
+            interiorDoor.AddPairedDoors(Doors.Where(x => x.DoorGroupName == interiorDoor.DoorGroupName && x.Position != interiorDoor.Position).ToList());
         }
     }
     public void DebugLockDoors()

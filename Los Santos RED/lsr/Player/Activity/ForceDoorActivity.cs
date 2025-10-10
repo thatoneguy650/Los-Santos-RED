@@ -32,8 +32,6 @@ public class ForceDoorActivity : DynamicActivity
     private UIMenu ForceOpenMenu;
     private IBasicUseable BasicUseable;
     private Interior Interior;
-    private float alarmPercentDrill => Settings.SettingsManager.ActivitySettings.AlarmPercentageDrill;// 30f;
-    private float alarmPercentLockpick => Settings.SettingsManager.ActivitySettings.AlarmPercentageLockpick;//10f;
     private float alarmPercentBash => Settings.SettingsManager.ActivitySettings.AlarmPercentageBash;//80f;
     public ForceDoorActivity(IActionable player, ILocationInteractable locationInteractable, ISettingsProvideable settings, Rage.Object doorObject, InteriorDoor interiorDoor,
         IBasicUseable basicUseable, Interior interior)
@@ -114,6 +112,7 @@ public class ForceDoorActivity : DynamicActivity
             FinalPlayerPos = InteriorDoor.InteractPostion;//DOORS ARE TOO FUCKY FOR THIS SHIT NativeHelper.GetOffsetPosition(machineInteraction.PropEntryPosition, machineInteraction.PropEntryHeading + Settings.SettingsManager.DebugSettings.DoorEntryAngle, Settings.SettingsManager.DebugSettings.DoorEntryValue);
             FinalPlayerHeading = InteriorDoor.InteractHeader;
             MoveInteraction moveInteraction = new MoveInteraction(LocationInteractable, FinalPlayerPos, FinalPlayerHeading);
+            moveInteraction.DistanceGrace = 2.0f;
             if (!moveInteraction.MoveToMachine(4.0f))
             {
                 return;

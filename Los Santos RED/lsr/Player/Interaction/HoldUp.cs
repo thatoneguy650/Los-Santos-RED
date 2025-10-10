@@ -228,36 +228,48 @@ public class HoldUp : Interaction
         uint modelHash = Game.GetHashKey("PICKUP_MONEY_WALLET");
         Vector3 MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
 
-        if (Target.IsGangMember)
+
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || Player.CharacterModelIsPrimaryCharacter)
         {
-            modelHash = Game.GetHashKey("PICKUP_MONEY_VARIABLE");
-            int MoneyPickupCreated = 0;
-            int PickupsToCreate = Math.DivRem(Target.Money, 500, out int Remainder);
-            if (Remainder > 0)
+
+            if (Target.IsGangMember)
             {
-                PickupsToCreate++;
-            }
-            for (int i = 0;i< PickupsToCreate; i++)
-            {
-                int MoneyToDrop = Target.Money - MoneyPickupCreated;
-                if(MoneyToDrop >= 500)
+                modelHash = Game.GetHashKey("PICKUP_MONEY_VARIABLE");
+                int MoneyPickupCreated = 0;
+                int PickupsToCreate = Math.DivRem(Target.Money, 500, out int Remainder);
+                if (Remainder > 0)
                 {
-                    MoneyToDrop = 500;
+                    PickupsToCreate++;
                 }
-                MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
-                NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", modelHash, MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, MoneyToDrop, 1, false, true);
-                MoneyPickupCreated += MoneyToDrop;
+                for (int i = 0; i < PickupsToCreate; i++)
+                {
+                    int MoneyToDrop = Target.Money - MoneyPickupCreated;
+                    if (MoneyToDrop >= 500)
+                    {
+                        MoneyToDrop = 500;
+                    }
+                    MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
+                    NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", modelHash, MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, MoneyToDrop, 1, false, true);
+                    MoneyPickupCreated += MoneyToDrop;
+                }
+                //EntryPoint.WriteToConsoleTestLong($"Mugging Calculated PickupsToCreate (Gang) {PickupsToCreate} Target.Money {Target.Money} Remainder {Remainder}");
             }
-            //EntryPoint.WriteToConsoleTestLong($"Mugging Calculated PickupsToCreate (Gang) {PickupsToCreate} Target.Money {Target.Money} Remainder {Remainder}");
+            else
+            {
+                if (Target.IsMerchant)
+                {
+                    modelHash = Game.GetHashKey("PICKUP_MONEY_DEP_BAG");
+                }
+                NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true); //NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true);
+            }
         }
         else
-        {       
-            if (Target.IsMerchant)
-            {
-                modelHash = Game.GetHashKey("PICKUP_MONEY_DEP_BAG");
-            }
-            NativeFunction.Natives.CREATE_AMBIENT_PICKUP(modelHash, MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true); //NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true);
+        {
+            Player.BankAccounts.GiveMoney(Target.Money,false);
         }
+
+
+
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
 
         string ItemsFound;
