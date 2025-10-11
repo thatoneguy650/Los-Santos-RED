@@ -19,7 +19,7 @@ using System.Runtime;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-public class GameLocation : ILocationDispatchable
+public class GameLocation : ILocationDispatchable, IPayoutDisbursable
 {
     protected LocationCamera StoreCamera;
     protected ILocationInteractable Player;
@@ -350,6 +350,7 @@ public class GameLocation : ILocationDispatchable
     public virtual int PayoutMax { get; set; }
     public virtual int SalesPrice { get; set; }
     public virtual int MaxSalesPrice { get; set; }
+    public virtual bool IsOwnable { get; set; }
     public int GrowthPercentage { get; set; } = 20;
     [XmlIgnore]
     public int CurrentSalesPrice { get; set; }
@@ -583,6 +584,7 @@ public class GameLocation : ILocationDispatchable
                 Transaction.VehicleDeliveryLocations = VehicleDeliveryLocations;
                 Transaction.VehiclePreviewPosition = VehiclePreviewLocation;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+                AddPropertyManagement();
                 InteractionMenu.Visible = true;
                 Transaction.ProcessTransactionMenu();
                 Transaction.DisposeTransactionMenu();
@@ -1377,7 +1379,7 @@ public class GameLocation : ILocationDispatchable
 
     public virtual void HandleOwnedLocation(IPropertyOwnable player, ITimeReportable time)
     {
-
+        Payout(player, time);
     }
     public virtual void AddOwnership()
     {
@@ -1390,7 +1392,7 @@ public class GameLocation : ILocationDispatchable
 
     public virtual SavedGameLocation GetSaveData()
     {
-        SavedBusiness saveLocation = new SavedBusiness(Name, IsOwned);
+        SavedGameLocation saveLocation = new SavedGameLocation(Name, IsOwned);
         if (IsOwned)
         {
             saveLocation.DateOfLastPayout = DatePayoutPaid;
@@ -1433,7 +1435,88 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AddToLandLordMenu(LandlordMenu landlordMenu)
     {
-
+        if (landlordMenu.BusinessesTab.items == null)
+        {
+            landlordMenu.BusinessesTab.items = new List<TabItem>();
+        }
+        TabMissionSelectItem BusinessItem = GetUIInformation();
+        BusinessItem.OnItemSelect += (selectedItem) =>
+        {
+            if (selectedItem != null && selectedItem.Name == "GPS")
+            {
+                Player.GPSManager.AddGPSRoute(Name, EntrancePosition, true);
+            }
+        };
+        landlordMenu.BusinessesTab.items.Add(BusinessItem);
+    }
+    public virtual void AddPropertyManagement()
+    {
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Inquire about {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                if (Purchase())
+                {
+                    MenuPool.CloseAllMenus();
+                    InteractionMenu.Clear();
+                }
+            };
+            subMenu.AddItem(businessManagementButton);
+        }
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenu subMenu = MenuPool.AddSubMenu(InteractionMenu, $"Manage {Name}");
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                OnSold();
+            };
+            subMenu.AddItem(businessManagementButton);
+        }
+    }
+    public virtual int CalculatePayoutAmount(int numberOfPaymentsToProcess)
+    {
+        int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
+        int payoutAmount = payout * numberOfPaymentsToProcess / PayoutFrequency;
+        return payoutAmount;
+    }
+    public void AddInteractionToMerchant(UIMenu headerMenu, AdvancedConversation conversation)
+    {
+        if (IsOwnable && !IsOwned && PurchasePrice > 0 && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Buy Property") { RightLabel = $"{PurchasePrice:C0}", Description = $"Earn between {PayoutMin:C0} and {PayoutMax:C0} every {PayoutFrequency} day(s)" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Purchase();
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
+        else if (IsOwned && Player.BankAccounts.BankAccountList.Any())
+        {
+            UIMenuItem businessManagementButton = new UIMenuItem("Sell Property") { RightLabel = $"{CurrentSalesPrice:C0}" };
+            businessManagementButton.Activated += (s, i) =>
+            {
+                Player.Properties.RemoveOwnedLocation(this);
+                Player.BankAccounts.GiveMoney(CurrentSalesPrice, true);
+                IsOwned = false;
+                DisplayMessage("~g~Sold", $"You have sold {Name} for {CurrentSalesPrice.ToString("C0")}");
+                conversation.Dispose();
+            };
+            headerMenu.AddItem(businessManagementButton);
+        }
+    }
+    public virtual void Payout(IPropertyOwnable player, ITimeReportable time)
+    {
+        int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
+        int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
+        player.BankAccounts.GiveMoney(payoutAmount, true);
+        int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
+        CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0 ? (int)(PurchasePrice * 1.2f) : MaxSalesPrice);
+        DatePayoutPaid = time.CurrentDateTime;
+        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
     }
     //public virtual void UpdatePrompts()
     //{

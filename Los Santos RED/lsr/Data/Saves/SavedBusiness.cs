@@ -14,8 +14,6 @@ public class SavedBusiness : SavedGameLocation
     {
         Name = name;
     }
-    public DateTime PayoutDate { get; set; }
-    public DateTime DateOfLastPayout { get; set; }
     public string ModItemToPayout { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();

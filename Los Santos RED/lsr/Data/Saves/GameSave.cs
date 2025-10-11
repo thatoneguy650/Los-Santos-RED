@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace LosSantosRED.lsr.Data
@@ -325,8 +326,8 @@ namespace LosSantosRED.lsr.Data
                 LoadHealth(player);
 
                 //LEGACY TO BE REMOVED
-                LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
-                LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+                //LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+                //LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
 
                 LoadOwnedProperties(player, placesOfInterest, modItems, settings, world);
                 GameFiber.Sleep(1000);

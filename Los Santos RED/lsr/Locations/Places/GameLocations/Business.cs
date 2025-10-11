@@ -190,13 +190,13 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
             PurchaseBusinessMenuItem.Description += "~n~~n~" + GetInquireDescription();
         }
     }
-    public virtual int CalculatePayoutAmount(int daysSinceLastPayment)
+    public override int CalculatePayoutAmount(int daysSinceLastPayment)
     {
         int payout = RandomItems.GetRandomNumberInt(PayoutMin, PayoutMax);
         int payoutAmount = payout * daysSinceLastPayment / PayoutFrequency;
         return payoutAmount;
     }
-    public void Payout(IPropertyOwnable player, ITimeReportable time)
+    public override void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
         {

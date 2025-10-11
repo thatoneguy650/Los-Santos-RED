@@ -24,6 +24,7 @@ public class ConvenienceStore : GameLocation, IGasPumpable
     public override int SalesPrice { get; set; } = 100000;
     public override int PayoutMin { get; set; } = 1000;
     public override int PayoutMax { get; set; } = 5000;
+    public override bool IsOwnable { get; set; } = true;
     public ConvenienceStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
