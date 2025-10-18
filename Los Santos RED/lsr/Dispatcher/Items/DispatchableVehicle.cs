@@ -330,9 +330,19 @@ public class DispatchableVehicle
                 NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, chosenColor);
             }
         }
-        if (RequiredPrimaryColorID != -1)
+        if (RequiredPrimaryColorID != -1 || RequiredSecondaryColorID != -1)
         {
-            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
+            int currentPrimaryColor;
+            int currentSecondaryColor;
+            unsafe
+            {
+                NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", vehicleExt.Vehicle, &currentPrimaryColor, &currentSecondaryColor);
+            }
+
+            int newPrimary = (RequiredPrimaryColorID != -1) ? RequiredPrimaryColorID : currentPrimaryColor;
+            int newSecondary = (RequiredSecondaryColorID != -1) ? RequiredSecondaryColorID : currentSecondaryColor;
+
+            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, newPrimary, newSecondary);
         }
         if (RequiredInteriorColorID != -1)
         {
