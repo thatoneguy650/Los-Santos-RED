@@ -2379,7 +2379,47 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca")
             {
                 BannerImagePath = "stores\\fleeca.png",
+                IsOnMPMap = false,
                 InteriorID = 90626,
+                VendorLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.291f, 2708.304f),
+                                                                    new Vector2(1172.311f, 2708.387f),
+                                                                    new Vector2(1172.286f, 2709.354f),
+                                                                    new Vector2(1177.512f, 2709.322f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.821f, 2710.764f),
+                                                                    new Vector2(1171.883f, 2711.214f),
+                                                                    new Vector2(1171.645f, 2716.751f),
+                                                                    new Vector2(1175.179f, 2716.31f),
+                                                                    new Vector2(1178.877f, 2712.224f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(1172.005f,2711.791f,38.06627f), 270.1688f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
+            },
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca") 
+            {
+                BannerImagePath = "stores\\fleeca.png",
+                IsOnSPMap = false,
+                InteriorID = 906262,
                 VendorLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
                 },
