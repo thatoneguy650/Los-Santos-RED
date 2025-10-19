@@ -330,9 +330,19 @@ public class DispatchableVehicle
                 NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, chosenColor);
             }
         }
-        if (RequiredPrimaryColorID != -1)
+        if (RequiredPrimaryColorID != -1 || RequiredSecondaryColorID != -1)
         {
-            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
+            int currentPrimaryColor;
+            int currentSecondaryColor;
+            unsafe
+            {
+                NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", vehicleExt.Vehicle, &currentPrimaryColor, &currentSecondaryColor);
+            }
+
+            int newPrimary = (RequiredPrimaryColorID != -1) ? RequiredPrimaryColorID : currentPrimaryColor;
+            int newSecondary = (RequiredSecondaryColorID != -1) ? RequiredSecondaryColorID : currentSecondaryColor;
+
+            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, newPrimary, newSecondary);
         }
         if (RequiredInteriorColorID != -1)
         {
@@ -410,6 +420,10 @@ public class DispatchableVehicle
         NativeFunction.Natives.SET_VEHICLE_MOD_KIT(vehicleExt.Vehicle, 0);
         foreach (int modKitIdType in ModTypesToRandomize)
         {
+            if(!vehicleExt.Vehicle.Exists())
+            {
+                return;
+            }
             int TotalMods = NativeFunction.Natives.GET_NUM_VEHICLE_MODS<int>(vehicleExt.Vehicle, modKitIdType);
             if (TotalMods <= 0)
             {
@@ -421,6 +435,7 @@ public class DispatchableVehicle
             }
             int toSet = RandomItems.GetRandomNumberInt(0, TotalMods - 1);
             NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, modKitIdType, toSet, false);
+            GameFiber.Yield();
             EntryPoint.WriteToConsole($"modKitIdType:{modKitIdType} toSet{toSet}");
         }
         float ExtraPercentage = 35f;
