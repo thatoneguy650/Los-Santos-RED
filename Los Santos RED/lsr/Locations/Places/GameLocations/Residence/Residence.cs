@@ -17,11 +17,12 @@ using System.Linq;
 using System.Runtime;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Serialization;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, ICraftable
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, ICraftable, IPayoutDisbursable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -34,6 +35,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     private IActivityPerformable ActivityPerformable;
     private UIMenuItem RentStopItem;
     private UIMenuItem SellHouseItem;
+    private UIMenuItem RentOutPropertyItem;
     private bool HasTeleported = false;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
@@ -66,6 +68,8 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public int ResidenceID { get; set; } = -999;
     public bool HasHeaderApartmentBuilding { get; set; } = false;
     public bool DisableInteractAfterPurchase { get; set; } = false;
+    [XmlIgnore]
+    public bool IsRentedOut { get; set; } = false;
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     [XmlIgnore]
@@ -139,6 +143,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         {
             return;
         }
+        if (IsRentedOut)
+        {
+            StandardInteract(null, false);
+            return;
+        }
         if (ResidenceInterior != null && ResidenceInterior.IsTeleportEntry && IsOwnedOrRented)
         {
             DoEntranceCamera(false);
@@ -168,7 +177,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
                 }
-                GenerateResidenceMenu(isInside);
+                if (IsRentedOut)
+                {
+                    GenerateRentOutMenu();
+                }
+                else
+                {
+                    GenerateResidenceMenu(isInside);
+                }
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();
@@ -313,6 +329,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
+        IsRentedOut = false;
     }
     public void ReRent(IPropertyOwnable player, ITimeReportable time)
     {
@@ -485,6 +502,15 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
                 MenuPool.CloseAllMenus();
                 Interior?.ForceExitPlayer(Player, this);
             };
+            if (RentalFee > 0)
+            {
+                RentOutPropertyItem = new UIMenuItem("Rent out the Property", $"Rent out the property to earn ${RentalFee} every {RentalDays} day(s).");
+                RentOutPropertyItem.Activated += (sender, e) =>
+                {
+                    OnRentOutProperty();
+                };
+                InteractionMenu.AddItem(RentOutPropertyItem);
+            }
             InteractionMenu.AddItem(SellHouseItem);
         }
     }
@@ -717,6 +743,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     {
         if (IsOwnedOrRented)
         {
+            if (IsRentedOut)
+            {
+                return $"Manage {Name}";
+            }
             return $"Enter {Name}";
         }
         else
@@ -791,6 +821,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         {
             ReRent(player, Time);
         }
+        if (IsOwned && IsRentedOut && DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, DateRentalPaymentDue) >= 0)
+        {
+            Payout(player, Time);
+        }
     }
     public override SavedGameLocation GetSaveData()
     {
@@ -843,6 +877,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         StringBuilder residenceInformation = new StringBuilder();
         if (IsOwned)
         {
+            if (IsRentedOut)
+            {
+                residenceInformation.AppendLine("~w~Status: ~y~Rented Out");
+            }
             residenceInformation.AppendLine("~w~Status: ~g~Owned");
         }
         else
@@ -850,6 +888,62 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             residenceInformation.AppendLine("~w~Status: ~o~Rented");
         }
         return residenceInformation.ToString();
+    }
+    private void GenerateRentOutMenu()
+    {
+        InteractionMenu.Clear();
+        AddRentOutMenu();
+        CashStorage.CreateInteractionMenu(Player, MenuPool, InteractionMenu, this, false, false);
+    }
+    private void AddRentOutMenu()
+    {
+        RentOutPropertyItem = new UIMenuItem("Stop renting out the property", "");
+        RentOutPropertyItem.Activated += (sender, e) =>
+        {
+            OnStopRentingOut();
+        };
+        InteractionMenu.AddItem(RentOutPropertyItem);
+    }
+    private void OnStopRentingOut()
+    {
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
+        IsRentedOut = false;
+    }
+    private void OnRentOutProperty()
+    {
+        MenuPool.CloseAllMenus();
+        Interior?.ForceExitPlayer(Player, this);
+        IsRentedOut = true;
+        DateRentalPaymentPaid = Time.CurrentDateTime;
+        DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
+    }
+
+    public override void Payout(IPropertyOwnable player, ITimeReportable time)
+    {
+        try
+        {
+            if (player == null)
+            {
+                return;
+            }
+            if (player.BankAccounts.BankAccountList.Any())
+            {
+                player.BankAccounts.GiveMoney(RentalFee, true);
+            }
+            else
+            {
+                CashStorage.StoredCash = CashStorage.StoredCash + RentalFee;
+            }
+            UpdateStoredData();
+            DateRentalPaymentPaid = time.CurrentDateTime;
+            DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
+            Game.DisplayNotification($"ERROR PAYING OUT RENT {ex.Message}");
+        }
     }
 }
 

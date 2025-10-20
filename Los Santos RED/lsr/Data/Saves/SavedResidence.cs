@@ -25,6 +25,7 @@ public class SavedResidence : SavedGameLocation
     public DateTime DateOfLastRentalPayment { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
+    public bool IsRentedOut { get; set; }
 
     public int StoredCash { get; set; }
     public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
@@ -39,6 +40,7 @@ public class SavedResidence : SavedGameLocation
                 savedPlace.IsRented = IsRentedByPlayer;
                 savedPlace.DateRentalPaymentDue = RentalPaymentDate;
                 savedPlace.DateRentalPaymentPaid = DateOfLastRentalPayment;
+                savedPlace.IsRentedOut = IsRentedOut;
                 if (savedPlace.WeaponStorage == null)
                 {
                     savedPlace.WeaponStorage = new WeaponStorage(settings);

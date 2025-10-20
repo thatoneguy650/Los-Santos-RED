@@ -50,7 +50,11 @@ public class Merchant : PedExt, IWeaponIssuable
             return $"Interact with {FormattedName}";
         }
     }
-
+    public override void AddSpecificInteraction(ILocationInteractable player, MenuPool menuPool, UIMenu headerMenu, AdvancedConversation advancedConversation)
+    {
+        base.AddSpecificInteraction(player, menuPool, headerMenu, advancedConversation);
+        AssociatedStore.AddInteractionToMerchant(headerMenu, advancedConversation);
+    }
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun, GameLocation store)
     {
         if (!Pedestrian.Exists())
