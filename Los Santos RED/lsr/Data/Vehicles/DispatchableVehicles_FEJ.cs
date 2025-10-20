@@ -2021,13 +2021,13 @@ public class DispatchableVehicles_FEJ
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
     }
-    public DispatchableVehicle Create_PoliceBuffaloSTX(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor)
-    {
-        DispatchableVehicle intermediate = Create_PoliceBuffaloSTX(ambientPercent,wantedPercent,liveryID,useOptionalColors,policeVehicleType,requiredColor,minWantedLevel,maxWantedLevel,minOccupants,maxOccupants,requiredPedGroup, groupName);
-        intermediate.RequiredDashColorID = requiredDashboardColor;
-        return intermediate;
-    }
-    public DispatchableVehicle Create_PoliceBuffaloSTX(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName)
+    //public DispatchableVehicle Create_PoliceBuffaloSTX(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor, int vapidStyleWheelsPercentage)
+    //{
+    //    DispatchableVehicle intermediate = Create_PoliceBuffaloSTX(ambientPercent,wantedPercent,liveryID,useOptionalColors,policeVehicleType,requiredColor,minWantedLevel,maxWantedLevel,minOccupants,maxOccupants,requiredPedGroup, groupName, vapidStyleWheelsPercentage);
+    //    intermediate.RequiredDashColorID = requiredDashboardColor;
+    //    return intermediate;
+    //}
+    public DispatchableVehicle Create_PoliceBuffaloSTX(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, PoliceVehicleType policeVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, int requiredDashboardColor, int vapidStyleWheelsPercentage)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBuffaloSTX, ambientPercent, wantedPercent);
         if (liveryID != -1)
@@ -2152,10 +2152,36 @@ public class DispatchableVehicles_FEJ
                 new DispatchableVehicleExtra(12, true, 100),
             };
         }
+
+        if (requiredDashboardColor != -1)
+        {
+            toReturn.RequiredDashColorID = requiredDashboardColor;
+        }
+
         if (requiredColor != -1)
         {
             toReturn.RequiredDashColorID = requiredColor;
         }
+
+
+        if (vapidStyleWheelsPercentage > 0)
+        {
+            if (toReturn.VehicleMods == null)
+            {
+                toReturn.VehicleMods = new List<DispatchableVehicleMod>();
+            }
+            List<DispatchableVehicleModValue> wheelmodvalues = new List<DispatchableVehicleModValue>()
+            {
+                new DispatchableVehicleModValue(52,vapidStyleWheelsPercentage),
+            };
+            toReturn.VehicleMods.Add(new DispatchableVehicleMod(23, vapidStyleWheelsPercentage)
+            {
+                DispatchableVehicleModValues = wheelmodvalues,
+            });
+        }
+
+
+
         toReturn.MatchDashColorToBaseColor = true;
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
         return toReturn;
