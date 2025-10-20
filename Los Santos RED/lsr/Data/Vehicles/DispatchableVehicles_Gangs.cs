@@ -331,6 +331,10 @@ public class DispatchableVehicles_Gangs
                 RequiresDLC = true,
             },
         };
+        foreach (var vehicle in UptownRidersVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetAngelsOfDeathVehicles()
     {
@@ -360,6 +364,10 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("nightblade", 25, 25) { MaxOccupants = 1,RequiresDLC = true ,RequiredPrimaryColorID = 134,RequiredSecondaryColorID = 112},
             //new DispatchableVehicle("wolfsbane", 25, 25) { MaxOccupants = 1,RequiresDLC = true ,RequiredPrimaryColorID = 134,RequiredSecondaryColorID = 112},
         };
+        foreach (var vehicle in AngelsOfDeathVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 10f;
+        }
     }
     private void SetSpanishLordsVehicles()
     {
@@ -386,6 +394,10 @@ public class DispatchableVehicles_Gangs
             //base
             new DispatchableVehicle("primo", 20, 20) {RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 68 },
         };
+        foreach (var vehicle in SpanishLordsVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetPetrovicVehicles()
     {
@@ -413,6 +425,10 @@ public class DispatchableVehicles_Gangs
             //base
             new DispatchableVehicle("ingot", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black    
         };
+        foreach (var vehicle in PetrovicVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetNorthHollandVehicles()
     {
@@ -430,6 +446,10 @@ public class DispatchableVehicles_Gangs
             Create_GangLandstalker2(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 28, 28, 35, -1, 16, 0, 3, 1, 1, true),
             Create_GangPatriot3(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 28, 28, 35, -1, 16, 0, 3, 1,-1, true),
         };
+        foreach (var vehicle in NorthHollandVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetBallasVehicles()
     {
@@ -456,6 +476,10 @@ public class DispatchableVehicles_Gangs
             //Base
             new DispatchableVehicle("baller", 55, 55){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 105,RequiredPearlescentColorID = 105,SetRandomCustomization = true,RandomCustomizationPercentage = 100f,RequiredWindowTintID = 3 },
         };
+        foreach (var vehicle in BallasVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetVagosVehicles()
     {
@@ -485,6 +509,10 @@ public class DispatchableVehicles_Gangs
             //Base
             new DispatchableVehicle("chino", 10, 10){ RequiredPrimaryColorID = 89,RequiredSecondaryColorID = 11,RequiredPearlescentColorID = 0},
         };
+        foreach (var vehicle in VagosVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 7f;
+        }
     }
     private void SetFamiliesVehicles()
     {
@@ -512,6 +540,10 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("buccaneer",10,10) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("tornado",10,10)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green 
         };
+        foreach (var vehicle in FamiliesVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetAncelottiVehicles()
     {
@@ -528,11 +560,15 @@ public class DispatchableVehicles_Gangs
             Create_GangOmniseGT(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, true),
             // 2 Door
             Create_GangCogcabrio(25, 25, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, true),
-            Create_GangComet7(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, -1, true),
+            Create_GangComet7(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, true),
             Create_GangDrafter(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, true),
             Create_GangNineF2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, false),
-            Create_GangTenf2(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, -1, true),
+            Create_GangTenf2(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 75, 75, 157, -1, 16, 0, 7, 3, true),
         };
+        foreach (var vehicle in AncelottiVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetMessinaVehicles()
     {
@@ -580,6 +616,10 @@ public class DispatchableVehicles_Gangs
                 RequiresDLC = true,
             }, // Livery 0 requirement
         };
+        foreach (var vehicle in MessinaVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetLupisellaVehicles()
     {
@@ -603,6 +643,10 @@ public class DispatchableVehicles_Gangs
             Create_GangRebla(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
             Create_GangWoodlander(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, -1, true),
         };
+        foreach (var vehicle in LupisellaVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 8f;
+        }
     }
     private void SetPavanoVehicles()
     {
@@ -622,12 +666,16 @@ public class DispatchableVehicles_Gangs
             Create_GangTailgater2(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 7, 3, true),
             // SUV
             Create_GangAleutian(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, -1,true),
-            Create_GangAstron(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, -1,true),
+            Create_GangAstron(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3,true),
             Create_GangGranger2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, -1,true),
             Create_GangLandstalker2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, -1,true),
             Create_GangRocoto(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, true),
             Create_GangWoodlander(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 52, 52, 59, -1, 16, 0, 3, 3, -1,true),
         };
+        foreach (var vehicle in PavanoVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 8f;
+        }
     }
     private void SetGambettiVehicles()
     {
@@ -653,6 +701,10 @@ public class DispatchableVehicles_Gangs
             Create_GangSentinel2(25, 25, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 2, 2, 4, -1, 16, 0, 3, 3, false),// Base mod
             Create_GangVectre(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, -1, true),
         };
+        foreach (var vehicle in GambettiVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetArmenianVehicles()
     {
@@ -675,6 +727,10 @@ public class DispatchableVehicles_Gangs
             Create_GangSchwarzer(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, false),
             Create_GangSchlagen(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
         };
+        foreach (var vehicle in ArmenianVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetCartelVehicles()
     {
@@ -696,6 +752,10 @@ public class DispatchableVehicles_Gangs
             //Base
             new DispatchableVehicle("rumpo3", 45, 45) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0,RequiredPearlescentColorID = 0},
         };
+        foreach (var vehicle in CartelVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 12f;
+        }
     }
     private void SetRedneckVehicles()
     {       
@@ -734,6 +794,10 @@ public class DispatchableVehicles_Gangs
             Create_GangYouga2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", true, false, -1, -1, 12, -1, 16, 12, 1, 5, true),
             Create_GangYouga3(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, true, -1, -1, 0, -1, 16, 12, 4, 5, true),
         };
+        foreach (var vehicle in RedneckVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 15f;
+        }
     }
     private void SetTriadVehicles()
     {
@@ -746,21 +810,21 @@ public class DispatchableVehicles_Gangs
             Create_GangChavosV6(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, true),
             Create_GangCinquemila(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, true),
             Create_GangHardy(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, 0, true),
-            Create_GangKuruma(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, 3, true),
+            Create_GangKuruma(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, true),
             Create_GangMinimus(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false,111, 111, 0, -1, 16, 0, 7, 3, true),
             Create_GangSentinel5(65, 65, GangVehicleType.Gang2, -1, -1, -1, -1, "", "", false, false,111, 12, 0, -1, 16, 0, 0, 3, true),
             // 2 door
             Create_GangElegy(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 111, 0, -1, 16, 0, 0, 3, 1, true),
             Create_GangEuros(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 111, 0, -1, 16, 0, 0, 3, 2, true),
             Create_GangEurosX32(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 15, 0, -1, 16, 0, 0, 3, -1, true),
-            Create_GangFuto2(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 15, 0, -1, 16, 0, 0, 3, 1, true),
+            Create_GangFuto2(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 15, 0, -1, 16, 0, 0, 3, true),
             Create_GangJester3(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 111, 0, -1, 16, 0, 0, 3, 1, true),
             Create_GangRemus(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 15, 0, -1, 16, 0, 0, 3, 2, true),
             Create_GangZR350(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 111, 0, -1, 16, 0, 0, 3, 3, true),
             // high end
-            Create_GangJester4(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 12, 0, -1, 16, 0, 7, 3, 7, true),
+            Create_GangJester4(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 12, 0, -1, 16, 0, 7, 3, true),
             Create_GangR300(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 111, 0, -1, 16, 0, 7, 3, 2, true),
-            Create_GangTenf2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 12, 0, -1, 16, 0, 7, 3, 5, true),
+            Create_GangTenf2(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 111, 12, 0, -1, 16, 0, 7, 3, true),
             //Base
             new DispatchableVehicle("fugitive", 10, 10){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 ,RequiredPearlescentColorID = 0},//white
             new DispatchableVehicle("washington", 10, 10){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111,RequiredPearlescentColorID = 0 },//white
@@ -768,13 +832,17 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("hakuchou", 45, 45){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111,RequiredPearlescentColorID = 0,MaxOccupants = 1 },//white
             new DispatchableVehicle("double", 45, 45){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111,RequiredPearlescentColorID = 0,MaxOccupants = 1 },//white
         };
+        foreach (var vehicle in TriadVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetKoreanVehicles()
     {
         KoreanVehicles = new List<DispatchableVehicle>()
         {
             // suv
-            Create_GangAstron(60, 60, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 7, 5, -1, 16, 12, 3, 3, 3, true),
+            Create_GangAstron(60, 60, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 7, 5, -1, 16, 12, 3, 3, true),
             Create_GangCavalcade3(50, 50, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 7, 5, -1, 16, 12, 3, 3, true),
             Create_GangDubsta2(50, 50, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 7, 5, -1, 16, 12, 3, 3, false), // base mod
             // 4 door
@@ -784,10 +852,10 @@ public class DispatchableVehicles_Gangs
             // 2 door
             Create_GangComet2(25, 25, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
             Create_GangComet5(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
-            Create_GangComet6(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, 5, true),
-            Create_GangComet7(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, 4, true),
+            Create_GangComet6(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
+            Create_GangComet7(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
             Create_GangFeltzer2(25, 25, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
-            Create_GangGrowler(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, 5, true),
+            Create_GangGrowler(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
             // tuner - 2 door
             Create_GangElegy(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 7, 5, -1, 16, 12, 0, 3, 2, true),
             Create_GangPrevion(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, 2, true),
@@ -802,6 +870,10 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("double", 25, 25){ RequiredPrimaryColorID = 7,RequiredSecondaryColorID = 12,RequiredPearlescentColorID = 5,MaxOccupants = 1 },
             new DispatchableVehicle("shinobi", 25, 25){ RequiredPrimaryColorID = 7,RequiredSecondaryColorID = 12,RequiredPearlescentColorID = 5,MaxOccupants = 1 },
         };
+        foreach (var vehicle in KoreanVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetMarabuntaVehicles()
     {
@@ -819,6 +891,10 @@ public class DispatchableVehicles_Gangs
             Create_GangTampa(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 70, 0, 0, -1, -1, 0, 1, 3, false),
             Create_GangSabreGT(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 70, 0, 0, -1, -1, 0, 1, 3, false),
         };
+        foreach (var vehicle in MarabuntaVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 7f;
+        }
     }
     private void SetDiablosVehicles()
     {
@@ -844,6 +920,10 @@ public class DispatchableVehicles_Gangs
             // Special
             Create_GangBanshee3(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 28, 0, 0, -1, 16, 0, 0, 3, true),
         };
+        foreach (var vehicle in DiablosVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetVarriosVehicles()
     {
@@ -864,6 +944,10 @@ public class DispatchableVehicles_Gangs
             //Base
             new DispatchableVehicle("buccaneer", 10, 10){ RequiredPrimaryColorID = 68,RequiredSecondaryColorID = 12, RequiredPearlescentColorID = 0, RequiredWindowTintID = 3},
         };
+        foreach (var vehicle in VarriosVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 7f;
+        }
     }
     private void SetYardiesVehicles()
     {
@@ -883,6 +967,10 @@ public class DispatchableVehicles_Gangs
             //Base
              new DispatchableVehicle("voodoo2", 10, 10){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
         };
+        foreach (var vehicle in YardiesVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
     }
     private void SetLostVehicles()
     {
@@ -912,6 +1000,10 @@ public class DispatchableVehicles_Gangs
             new DispatchableVehicle("gburrito", 15, 15) { MaxOccupants = 2 },
             new DispatchableVehicle("hexer", 25, 25) { MaxOccupants = 1,RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 12},
         };
+        foreach (var vehicle in LostVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 10f;
+        }
     }
 
     // Creator Corner 
@@ -3351,8 +3443,8 @@ public class DispatchableVehicles_Gangs
                         {
                             new DispatchableVehicleModValue(0,35),
                             new DispatchableVehicleModValue(1,35),
-                            new DispatchableVehicleModValue(2,15),
-                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(2,5),
+                            new DispatchableVehicleModValue(3,5),
                         },
                     },
                     new DispatchableVehicleMod(8,75) // curb feelers
@@ -4811,10 +4903,10 @@ public class DispatchableVehicles_Gangs
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
                             new DispatchableVehicleModValue(0,30),
-                            new DispatchableVehicleModValue(1,25),
-                            new DispatchableVehicleModValue(2,25),
-                            new DispatchableVehicleModValue(3,10),
-                            new DispatchableVehicleModValue(4,10),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(2,30),
+                            new DispatchableVehicleModValue(3,5),
+                            new DispatchableVehicleModValue(4,5),
                         },
                     },
                     new DispatchableVehicleMod(42,75) // 
@@ -9441,7 +9533,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangFuto2(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangFuto2, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -9530,8 +9622,7 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(0,50),
-                            new DispatchableVehicleModValue(1,50),
+                            new DispatchableVehicleModValue(0,100),
                         },
                     },
                     new DispatchableVehicleMod(9,75) // bumper strip
@@ -9631,7 +9722,8 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,40),
+                            new DispatchableVehicleModValue(1,60),
                         },
                     },
             };
@@ -10154,7 +10246,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     } // classic
     public DispatchableVehicle Create_GangGrowler(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangGrowler, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -10307,7 +10399,12 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
                         },
                     },
             };
@@ -10613,7 +10710,7 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(0,10),
                             new DispatchableVehicleModValue(1,10),
                             new DispatchableVehicleModValue(5,20),
-                            new DispatchableVehicleModValue(6,20),
+                            new DispatchableVehicleModValue(6,30),
                             new DispatchableVehicleModValue(8,20),
                             new DispatchableVehicleModValue(9,20),
 
@@ -12479,7 +12576,7 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(49,5),
                         },
                     },
-                    new DispatchableVehicleMod(48,50) // liveries
+                    new DispatchableVehicleMod(48,65) // liveries
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
@@ -12899,7 +12996,7 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(33,8),
                         },
                     },
-                    new DispatchableVehicleMod(48,50) // liveries
+                    new DispatchableVehicleMod(48,65) // liveries
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
 
@@ -15186,6 +15283,14 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(33,8),
                         },
                     },
+                    new DispatchableVehicleMod(48,65) // liveries
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(2,50),
+                            new DispatchableVehicleModValue(3,50),
+                        },
+                    },
             };
         }
         SetDefault(toReturn, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, useOptionalColors, useOptionalColors2, requiredPrimaryColor, requiredSecondaryColor, requiredPearlescent, requiredDashColor, requiredInteriorColor, requiredWheelColor, wheelType, windowTint, requiresDLC);
@@ -15389,10 +15494,9 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(0,25),
-                            new DispatchableVehicleModValue(2,25),
-                            new DispatchableVehicleModValue(4,25),
-                            new DispatchableVehicleModValue(5,25),
+                            new DispatchableVehicleModValue(0,33),
+                            new DispatchableVehicleModValue(2,33),
+                            new DispatchableVehicleModValue(4,33),
                         },
                     },
                     new DispatchableVehicleMod(1,50) // Front Bumper
@@ -15772,7 +15876,7 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(2,30),
                         },
                     },
-                    new DispatchableVehicleMod(48,50) // livery
+                    new DispatchableVehicleMod(48,65) // livery
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
@@ -16250,7 +16354,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangKuruma(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangKuruma, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -16335,7 +16439,10 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,25),
+                            new DispatchableVehicleModValue(2,25),
+                            new DispatchableVehicleModValue(3,25),
+                            new DispatchableVehicleModValue(5,25),
                         },
                     },
             };
@@ -16680,6 +16787,14 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(32,8),
                             new DispatchableVehicleModValue(36,8),
                             new DispatchableVehicleModValue(38,8),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,65) // Liveries
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,50),
+                            new DispatchableVehicleModValue(1,50),
                         },
                     },
             };
@@ -17407,11 +17522,12 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(49,5),
                         },
                     },
-                    new DispatchableVehicleMod(48,50) // liveries
+                    new DispatchableVehicleMod(48,100) // liveries
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(1,100),
+                            new DispatchableVehicleModValue(1,20),
+                            new DispatchableVehicleModValue(1,80),
                         },
                     },
             };
@@ -17660,11 +17776,10 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(1,20),
-                            new DispatchableVehicleModValue(5,20),
-                            new DispatchableVehicleModValue(9,20),
-                            new DispatchableVehicleModValue(13,20),
-                            new DispatchableVehicleModValue(17,20),
+                            new DispatchableVehicleModValue(1,25),
+                            new DispatchableVehicleModValue(5,25),
+                            new DispatchableVehicleModValue(9,25),
+                            new DispatchableVehicleModValue(13,25),
                         },
                     },
                     new DispatchableVehicleMod(1,75) // Front Bumper
@@ -17771,6 +17886,14 @@ public class DispatchableVehicles_Gangs
                         {
                             new DispatchableVehicleModValue(1,50),
                             new DispatchableVehicleModValue(4,50),
+                        },
+                    },
+                    new DispatchableVehicleMod(48,65) // liveries
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(2,50),
+                            new DispatchableVehicleModValue(3,50),
                         },
                     },
             };
@@ -17980,7 +18103,7 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(1,50),
                         },
                     },
-                    new DispatchableVehicleMod(48,50)
+                    new DispatchableVehicleMod(48,65)
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
@@ -18519,7 +18642,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangComet6(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangComet6, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -18683,7 +18806,13 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
+                            new DispatchableVehicleModValue(6,5),
                         },
                     },
             };
@@ -18692,7 +18821,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangComet7(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangComet7, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -18811,7 +18940,11 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,30),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(2,30),
+                            new DispatchableVehicleModValue(3,10),
+                            new DispatchableVehicleModValue(4,30),
                         },
                     },
             };
@@ -18820,7 +18953,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangJester4(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangJester4, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -18987,7 +19120,11 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(6,10),
+                            new DispatchableVehicleModValue(7,40),
+                            new DispatchableVehicleModValue(9,10),
+                            new DispatchableVehicleModValue(10,10),
                         },
                     },
             };
@@ -19220,13 +19357,21 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(33,8),
                         },
                     },
+                    new DispatchableVehicleMod(48,65) // Livery
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,50),
+                            new DispatchableVehicleModValue(1,50),
+                        },
+                    },
             };
         }
         SetDefault(toReturn, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, useOptionalColors, useOptionalColors2, requiredPrimaryColor, requiredSecondaryColor, requiredPearlescent, requiredDashColor, requiredInteriorColor, requiredWheelColor, wheelType, windowTint, requiresDLC);
         return toReturn;
     }
     public DispatchableVehicle Create_GangTenf2(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangTenf2, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -19407,7 +19552,8 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(5,60),
+                            new DispatchableVehicleModValue(14,40),
                         },
                     },
             };
@@ -21546,7 +21692,7 @@ public class DispatchableVehicles_Gangs
         return toReturn;
     }
     public DispatchableVehicle Create_GangAstron(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
-    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, int liveryID, bool requiresDLC)
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(GangAstron, ambientPercent, wantedPercent);
         if (gangVehicleType == GangVehicleType.Gang1)
@@ -21676,7 +21822,12 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(liveryID,100),
+                            new DispatchableVehicleModValue(0,15),
+                            new DispatchableVehicleModValue(1,15),
+                            new DispatchableVehicleModValue(2,15),
+                            new DispatchableVehicleModValue(3,15),
+                            new DispatchableVehicleModValue(4,15),
+                            new DispatchableVehicleModValue(5,15),
                         },
                     },
             };
