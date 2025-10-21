@@ -8321,7 +8321,6 @@ public class Interiors : IInteriors
                 new Vector3(-1075.071f, -250.3029f, 37.76332f),
 new Vector3(-1077.251f, -251.8201f, 44.02116f),
 new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
-            new Interior(119042,"Union Depository",new List<string>() { "FINBANK" },new List<string>() { }){ IsRestricted = true },
             new Interior(28162,"Clucking Bell Farms",new List<string>() { "CS1_02_cf_onmission1","CS1_02_cf_onmission2","CS1_02_cf_onmission3","CS1_02_cf_onmission4" },new List<string>() { "CS1_02_cf_offmission" }){ IsRestricted = true },
             new Interior(35330,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }){ IsRestricted = true },
             new Interior(67074,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }){ IsRestricted = true },
