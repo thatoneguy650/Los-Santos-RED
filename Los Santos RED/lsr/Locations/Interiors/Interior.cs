@@ -340,15 +340,18 @@ public class Interior
     {
         foreach (InteriorDoor door in Doors.Where(x=> !x.IsLocked && x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
         {
-            EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
+            //EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
         }
         foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && x.LockWhenClosed && !x.HasRanLockWithEntity))
         {
-            EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
+            //EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
             door.LockDoor();
         }
-
+        if(!IsOpen && Player.CurrentLocation != null && Player.CurrentLocation.CurrentInterior != null && Player.CurrentLocation.CurrentInterior == this)
+        {
+            return;//dont do anything until you leave
+        }
 
         if(isOpen != IsOpen)
         {

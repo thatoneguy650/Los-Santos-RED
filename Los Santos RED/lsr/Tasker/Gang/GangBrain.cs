@@ -133,18 +133,8 @@ public class GangBrain : PedBrain
             }
             else
             {
-                if (SeenPlayerReactiveCrime)
-                {
-                    if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && isNearHomeTerritory)
-                    {
-                        WillAttackPlayer = true;
-                    }
-                    else
-                    {
-                        WillFleeFromPlayer = true;
-                    }
-                }
-                else if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || (GangMember.IsHitSquad && GangMember.CanSeePlayer))
+                
+                if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || (GangMember.IsHitSquad && GangMember.EverSeenPlayer))
                 {
                     if (GangMember.WillFight)
                     {
@@ -178,7 +168,25 @@ public class GangBrain : PedBrain
                         WillFleeFromPlayer = true;
                     }
                 }
+                else if (SeenPlayerReactiveCrime)
+                {
+                    if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && isNearHomeTerritory)
+                    {
+                        WillAttackPlayer = true;
+                    }
+                    else
+                    {
+                        WillFleeFromPlayer = true;
+                    }
+                }
             }
+
+            //if(GangMember.IsHitSquad)
+            //{
+            //    WillAttackPlayer = true;
+            //    WillFleeFromPlayer = false;
+            //}
+
             if (WillAttackPlayer)
             {
                 if (IsFedUp)
@@ -207,9 +215,6 @@ public class GangBrain : PedBrain
             }
             else
             {
-
-
-
                 if (GangMember.IsBackupSquad && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
                 {
                     SetLocate(GangMember);

@@ -69,6 +69,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
+    public override bool CanCurrentlyRacePlayer => false;
     public override bool NeedsFullUpdate
     {
         get

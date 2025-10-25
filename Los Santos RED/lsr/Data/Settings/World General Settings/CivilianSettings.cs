@@ -224,7 +224,8 @@ public class CivilianSettings : ISettingsDefaultable
     public float PercentageTrustingOfPlayer { get; set; }
 
 
-
+    [Description("Percentage of civilians that will race you if challenged. Needs to be in a sport car.")]
+    public float PercentageWillRacePlayer { get; set; }
 
 
 
@@ -421,6 +422,9 @@ public class CivilianSettings : ISettingsDefaultable
 
         VehicleCrashInjureMinVehicleDamageTrigger = 35;
         VehicleCrashInjureRandomizePercentage = 0.4f;
+
+
+        PercentageWillRacePlayer = 45f;
 
     }
 

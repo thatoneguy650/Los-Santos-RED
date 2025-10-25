@@ -8047,7 +8047,7 @@ public class Interiors : IInteriors
                     RequestIPLs = new List<string>() {"post_hiest_unload" },
                     RemoveIPLs = new List<string>()
                     {
-                            "jewel2fake","bh1_16_refurb",
+                            "jewel2fake","bh1_16_refurb","bh1_16_doors_shut",
 
                     },
                     Doors = new List<InteriorDoor>()

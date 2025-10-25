@@ -64,7 +64,7 @@ public class Crime
     public uint TimeBetweenWarnings { get; set; } = 1800000;
     public uint GracePeriod { get; set; } = 0;
 
-
+    public bool RequiresRecognizingPlayer { get; set; } = false;
 
 
 

@@ -32,7 +32,11 @@ public class OutfitManager
     private bool IsFreeModeMale => Player.ModelName.ToLower() == "mp_m_freemode_01";
     private bool IsFreeModeFemale => Player.ModelName.ToLower() == "mp_f_freemode_01";
     private bool IsPlayerFreeMode => IsFreeModeMale || IsFreeModeFemale;
+    private bool IsPlayerMainCharacter => Player.CharacterModelIsPrimaryCharacter;
     private int DefaultHelmetDrawableID => IsFreeModeFemale || IsFreeModeMale ? 18 : Player.ModelName.ToLower() == "player_two" ? 25 : Player.ModelName.ToLower() == "player_one" ? 6 : Player.ModelName.ToLower() == "player_zero" ? 11 : -1;
+    private int DefaultMaskDrawableID => IsFreeModeFemale || IsFreeModeMale ? 4 : Player.ModelName.ToLower() == "player_two" ? 2 : Player.ModelName.ToLower() == "player_one" ? 12 : Player.ModelName.ToLower() == "player_zero" ? 2 : 0;
+
+
     public OutfitManager(IOutfitManageable player, ISavedOutfits savedOutfits)
     {
         Player = player;
@@ -474,7 +478,15 @@ public class OutfitManager
     }
     public void ToggleMask()
     {
-        ToggleComponent(1);
+        if (IsPlayerFreeMode)
+        {
+            ToggleComponent(1);
+        }
+        else if(IsPlayerMainCharacter)
+        {
+            ToggleComponent(0);
+        }
+        
     }
     public void ToggleBag()
     {
@@ -592,7 +604,15 @@ public class OutfitManager
     }
     private void UpdateMaskCheck()
     {
-        HasMaskOn = NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(Player.Character, 1) > 0;
+        if (IsPlayerFreeMode)
+        {
+            HasMaskOn = NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(Player.Character, 1) > 0;
+        }
+        else if (IsPlayerMainCharacter)
+        {
+            int PropIndex = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, 0);
+            HasMaskOn = PropIndex == DefaultMaskDrawableID;
+        }
         EntryPoint.WriteToConsole($"UpdateMaskCheck HasMaskOn {HasMaskOn}");
     }
     public void ToggleComponent(int componenetID)
@@ -797,6 +817,7 @@ public class OutfitManager
                 }
             }     
         }
+        UpdateMaskCheck();
     }
     private void PlayAnimation(string animDict, string animName)
     {
@@ -823,7 +844,7 @@ public class OutfitManager
         {
             return false;
         }
-        return true;
+        return ppc.DrawableID > 0;
     }
     private bool HasGloves()
     {
@@ -853,6 +874,9 @@ public class OutfitManager
     }
     public void CreateAccessoryMenu()
     {
+        SetDefaultMask();
+
+
         MenuPool menuPool = new MenuPool();
         UIMenu AccessoryUIMenu = new UIMenu("Accessories", "Toggle outfit accessories and clothing");
 
@@ -889,7 +913,17 @@ public class OutfitManager
         {
             HeadUIMenu.AddItem(GlassesMenuItem);
         }
-        UIMenuItem HatMenuItem = new UIMenuItem("Toggle Hat", "Take hat on or off");
+
+        string propHatText = "Toggle Hat";
+        string propHatTextDesc = "Take hat on or off";
+
+        if(IsPlayerMainCharacter)
+        {
+            propHatText = "Toggle Hat/Mask";
+            propHatTextDesc = "Take hat/mask on or off";
+        }
+
+        UIMenuItem HatMenuItem = new UIMenuItem(propHatText, propHatTextDesc);
         HatMenuItem.Activated += (sender, selectedItem) =>
         {
             ToggleHat();
@@ -907,7 +941,7 @@ public class OutfitManager
             ToggleHelmet();
         };
 
-            HeadUIMenu.AddItem(HelmetMenuItem);
+        HeadUIMenu.AddItem(HelmetMenuItem);
         
 
 
@@ -916,7 +950,7 @@ public class OutfitManager
         {
             ToggleMask();
         };
-        if (IsPlayerFreeMode && HasComponent(1))
+        if (IsPlayerFreeMode)// && HasComponent(1))
         {
             HeadUIMenu.AddItem(MaskMenuItem);
         }
@@ -1054,6 +1088,40 @@ public class OutfitManager
 
     }
 
+    private void SetDefaultMask()
+    {
+        if(IsPlayerFreeMode)
+        {
+            if (HasComponent(1))
+            {
+                return;
+            }
+            if (Player.CurrentModelVariation == null || Player.CurrentModelVariation.Components == null)
+            {
+                return;
+            }
+            Player.CurrentModelVariation.Components.RemoveAll(x => x.ComponentID == 1);
+            Player.CurrentModelVariation.Components.Add(new PedComponent(1, DefaultMaskDrawableID, 0, 0) { IsDefaultNotApplied = true });
+            EntryPoint.WriteToConsole("ADDED A DEFAULT MASK TO THE FREEMODE PED");
+        }
+        else if (IsPlayerMainCharacter)
+        {
+            if(HasProp(0))
+            {
+                return;
+            }
+            if (Player.CurrentModelVariation == null || Player.CurrentModelVariation.Props == null)
+            {
+                return;
+            }
+            Player.CurrentModelVariation.Props.RemoveAll(x => x.PropID == 0);
+            Player.CurrentModelVariation.Props.Add(new PedPropComponent(0, DefaultMaskDrawableID, 0) { IsDefaultNotApplied = true });
+            EntryPoint.WriteToConsole("ADDED A DEFAULT MASK TO THE MAIN CHAR PED");
+        }
+
+
+        
+    }
 
     public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner)
     {

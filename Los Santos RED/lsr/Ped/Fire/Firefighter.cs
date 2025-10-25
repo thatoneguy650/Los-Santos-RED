@@ -31,7 +31,7 @@ public class Firefighter : PedExt, IWeaponIssuable
     public bool IsUsingMountedWeapon { get; set; } = false;
     public bool IsRespondingToInvestigation { get; set; }
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
-
+    public override bool CanCurrentlyRacePlayer => false;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
