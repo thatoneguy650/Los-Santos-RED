@@ -7,7 +7,7 @@
 
 ![](https://img.shields.io/github/commit-activity/w/thatoneguy650/Los-Santos-RED)
 
-  Bored with the vanilla GTA 5 free roam mode? Wish there was more interaction and things to do? Hate how the cops will only ever kill and never arrest? Confused why civilians don't care that you are carrying a rocket launcher? Los Santos RED hopes to enhance the default criminal free roam experience by: adding an entirely new script based dispatching system, enhancing police/gang/civilian AI, adding stores and locations to visit, allowing you to perform actions and consume items you buy, giving you the ability to swap to any ped on the street and become that persona, adding new crimes that civilians and cops can report/arrest you for, enhancing the carjacking and lockpicking activities, adding and expanding civilian hold ups and interactions, completely rewriting the scanner system to be more immersive, and much more. The mod also aims to be extremely customizable by exposing tons of settings for the player to get the experience they want. Additional configuration settings are also available in the user editable xml files for even more customization.
+LSRP is a sub-mod for Los Santos Red, with the focus on being a more single-player roleplay experience. It adds more housing, hotels, stores, new businesses, legal businesses, landlord system, new gangs, gang heists & raids, drug production and more!
 
 ## Installation
 - Place all RAGE Plugin Hook files in the root GTA V directory
