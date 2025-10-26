@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         string PlayerName { get; }
         ArmorManager ArmorManager { get; }
+        bool CharacterModelIsPrimaryCharacter { get; }
     }
 }

@@ -215,21 +215,26 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
                 if(payoutAmount>0)
                 {
                     SimpleInventory.Add(itemToAdd, payoutAmount);
+                    UpdateSalesPrice();
                 }
             }
             else
             {
                 int payoutAmount = CalculatePayoutAmount(daysSinceLastPayment);
                 CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
+                UpdateSalesPrice();
             }
-            int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
-            CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0? (int)(PurchasePrice * 1.2f):MaxSalesPrice);
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
             Game.DisplayNotification($"ERROR in Payout {ex.Message}");
         }
+    }
+    private void UpdateSalesPrice()
+    {
+        int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
+        CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0 ? (int)(PurchasePrice * 1.2f) : MaxSalesPrice);
     }
     public override void Reset()
     {

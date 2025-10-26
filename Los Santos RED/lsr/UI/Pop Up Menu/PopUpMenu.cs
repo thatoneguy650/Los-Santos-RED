@@ -1175,8 +1175,12 @@ public class PopUpMenu
         };
 
 
+        PopUpBox ClothingBox = new PopUpBox(7, "Clothing", new Action(() => Player.OutfitManager.CreateAccessoryMenu()), "Opens the outfit and accessories menu. Remove or re-add existing clothing items.") { ClosesMenu = true };
+        PopUpBox ClothingBoxVehicle = new PopUpBox(6, "Clothing", new Action(() => Player.OutfitManager.CreateAccessoryMenu()), "Opens the outfit and accessories menu. Remove or re-add existing clothing items.") { ClosesMenu = true };
 
-        PopUpBox AffiliationActionBox = new PopUpBox(7, "Affilitation", AffilitationSubMenuName, "Open the Affiliation Sub Menu")
+
+
+        PopUpBox AffiliationActionBox = new PopUpBox(8, "Affilitation", AffilitationSubMenuName, "Open the Affiliation Sub Menu")
         {
             ClosesMenu = false,
             IsCurrentlyValid = new Func<bool>(() => true)
@@ -1197,6 +1201,7 @@ public class PopUpMenu
             InventoryBox,
             GroupBox,
             VehicleActionBox,
+            ClothingBox,
             //AffiliationActionBox,
         };
         List<PopUpBox> InVehicleMenuMaps = new List<PopUpBox>()
@@ -1210,6 +1215,7 @@ public class PopUpMenu
                 IconNameInvalid = "vehicle_black.png" },
             InventoryBox,
             GroupBox,
+            ClothingBoxVehicle,
             //AffiliationActionBox,
         };
 
@@ -1248,12 +1254,12 @@ public class PopUpMenu
             new PopUpBox(4,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here"),
             new PopUpBox(5,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),
             new PopUpBox(6,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
-            new PopUpBox(7,"Clothing/Outfit", new Action(() => Player.OutfitManager.CreateAccessoryMenu()), "Opens the outfit and accessories menu. Remove or re-add existing clothing items.") { ClosesMenu = true },
-            new PopUpBox(8,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
-            new PopUpBox(9,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
-            new PopUpBox(10,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
-            new PopUpBox(11,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
-            new PopUpBox(12,"Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },
+            //new PopUpBox(7,"Clothing/Outfit", new Action(() => Player.OutfitManager.CreateAccessoryMenu()), "Opens the outfit and accessories menu. Remove or re-add existing clothing items.") { ClosesMenu = true },
+            new PopUpBox(7,"BodyArmor","BodyArmorSubMenu","Open Body Armor Menu") { ClosesMenu = false },
+            new PopUpBox(8,"Wave Hands",new Action(() => Player.ActivityManager.WaveHands()),"Get Nearby Attention"),
+            new PopUpBox(9,"Taxi Actions","TaxiOptionsSubMenu","Access taxi items") { ClosesMenu = false },
+            new PopUpBox(10,"Bodily Functions","BodilyFunctionsSubMenu","Access bodily functions") { ClosesMenu = false },
+            new PopUpBox(11,"Crafting", new Action(() => UI.ToggleCraftingMenu()), "Opens the crafting menu") { ClosesMenu = true },
 
             
         };

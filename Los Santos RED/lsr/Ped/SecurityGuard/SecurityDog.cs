@@ -21,6 +21,7 @@ public class SecurityDog : SecurityGuard
     public override bool CanTransact => false;
     public override bool CanBeLooted { get; set; } = false;
     public override bool CanBeDragged { get; set; } = false;
+    public override bool CanCurrentlyRacePlayer => false;
 
 }
 

@@ -161,6 +161,8 @@ public class GangMember : PedExt, IWeaponIssuable
         WillHaveLongGuns = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithLongGuns : gt.PercentageWithLongGuns);
         WillHaveSidearms = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithSidearms : gt.PercentageWithSidearms);
         WillHaveMelee = RandomItems.RandomPercent(gt == null ? Gang.PercentageWithMelee : gt.PercentageWithMelee);
+        WillRacePlayer = RandomItems.RandomPercent(Gang.PercentageWillRacePlayer);
+
 
         if (IsHitSquad || IsBackupSquad || IsGeneralBackup)
         {

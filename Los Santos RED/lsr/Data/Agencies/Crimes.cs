@@ -160,15 +160,15 @@ public class Crimes : ICrimes
         Theft = new Crime(StaticStrings.TheftCrimeID, "Theft", 2, false, 28, true, true, true);
         Shoplifting = new Crime(StaticStrings.ShopliftingCrimeID, "Shoplifting", 2, false, 29, true, true, true);
 
-        DealingDrugs = new Crime(StaticStrings.DealingDrugsCrimeID, "Dealing Drugs", 2, false, 30, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal drugs~s~~n~Avoid dealing in public" };
-        DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 31, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
-        DrugPossession = new Crime(StaticStrings.DrugPossessionCrimeID, "Drug Possession", 2, false, 32, true, false, false) { MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~in possession of illegal drugs~s~~n~Avoid using in public" };
-        SuspiciousVehicle = new Crime(StaticStrings.SuspiciousVehicleCrimeID, "Suspicious Vehicle", 2, false, 33, true, false, false) { MaxObservingDistance = 30f, MaxReportingDistance = 15f, ShowsWarning = true, WarningMessage = "This vehicle is ~r~suspicious~s~~n~Remove offending items" };
+        DealingDrugs = new Crime(StaticStrings.DealingDrugsCrimeID, "Dealing Drugs", 2, false, 30, true, false, false) { RequiresRecognizingPlayer = true, MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal drugs~s~~n~Avoid dealing in public" };
+        DealingGuns = new Crime(StaticStrings.DealingGunsCrimeID, "Illegal Weapons Dealing", 2, false, 31, true, false, false) { RequiresRecognizingPlayer = true, MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~dealing illegal guns~s~~n~Avoid dealing in public" };
+        DrugPossession = new Crime(StaticStrings.DrugPossessionCrimeID, "Drug Possession", 2, false, 32, true, false, false) { RequiresRecognizingPlayer = true, MaxReportingDistance = 20f, ShowsWarning = true, WarningMessage = "You are ~r~in possession of illegal drugs~s~~n~Avoid using in public" };
+        SuspiciousVehicle = new Crime(StaticStrings.SuspiciousVehicleCrimeID, "Suspicious Vehicle", 2, false, 33, true, false, false) { RequiresRecognizingPlayer = true, MaxObservingDistance = 30f, MaxReportingDistance = 15f, ShowsWarning = true, WarningMessage = "This vehicle is ~r~suspicious~s~~n~Remove offending items" };
 
         SevereTrespessing = new Crime(StaticStrings.CivilianTrespessingCrimeID, "Trespassing", 2, false, 34, true, true, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
 
         Trespassing = new Crime(StaticStrings.TrespessingCrimeID, "Trespassing", 2, false, 35, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~trespassing~s~~n~Leave the area or avoid being spotted" };
-        VehicleInvasion = new Crime(StaticStrings.VehicleInvasionCrimeID, "Vehicle Invasion", 2, false, 36, true, true, true) { MaxReportingDistance = 15f };
+        VehicleInvasion = new Crime(StaticStrings.VehicleInvasionCrimeID, "Vehicle Invasion", 2, false, 36, true, true, true) { RequiresRecognizingPlayer = true, MaxReportingDistance = 15f };
 
 
         BuringABody = new Crime(StaticStrings.BuryingABody, "Burying Body", 2, false, 37, true, true, true) { MaxReportingDistance = 45f };
@@ -188,7 +188,7 @@ public class Crimes : ICrimes
 
         FicticiousLicensePlate = new Crime(StaticStrings.FicticiousLicensePlateCrimeID, "Ficticious Plates", 2, false, 48, false, false, false) { ShowsWarning = true, WarningMessage = "You are driving a vehicle with ~r~ficticious plates~s~~n~Use plates that belong to the same vehicle type to blend in" };
 
-        PickPocketing = new Crime(StaticStrings.PickPocketingCrimeID, "PickPocketing", 1, false, 49, true, false, true) { MaxReportingDistance = 20f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~pickpocketing~s~~n~Avoid pickpocketing in public", CanReportBySound = false, MaxObservingDistance = 20f, CanViolateMultipleTimes = true };
+        PickPocketing = new Crime(StaticStrings.PickPocketingCrimeID, "PickPocketing", 1, false, 49, true, false, true) { RequiresRecognizingPlayer = true, MaxReportingDistance = 20f, CanReleaseOnCite = true, ShowsWarning = true, WarningMessage = "You are ~r~pickpocketing~s~~n~Avoid pickpocketing in public", CanReportBySound = false, MaxObservingDistance = 20f, CanViolateMultipleTimes = true };
 
         SuspiciousActivity = new Crime(StaticStrings.SuspiciousActivityCrimeID, "Suspicious Activity", 1, false, 70, false, false, false) { GracePeriod = 180000, CanReleaseOnTalkItOut = true, CanReleaseOnCleanSearch = true, ShowsWarning = true, WarningMessage = "You are ~r~acting suspicious~s~~n~Leave the area to avoid issues" };
         InsultingOfficer = new Crime(StaticStrings.InsultingOfficerCrimeID, "Insulting a Police Officer", 2, false, 71, false, false, true);

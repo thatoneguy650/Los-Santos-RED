@@ -1836,5 +1836,20 @@ namespace LSR.Vehicles
             Windows.SetWindows(true);
 
         }
+
+        public bool IsRaceWorthy()
+        {
+            EntryPoint.WriteToConsole($"IsRaceWorthy CURRENT CLASS {vehicleClass}");
+            if(vehicleClass == VehicleClass.Muscle || 
+                vehicleClass == VehicleClass.SportClassic || 
+                vehicleClass == VehicleClass.Motorcycle || 
+                vehicleClass == VehicleClass.Super ||
+                vehicleClass == VehicleClass.Sport ||
+                vehicleClass == VehicleClass.Coupe)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

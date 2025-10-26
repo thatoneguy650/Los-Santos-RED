@@ -369,7 +369,7 @@ public class VehicleRacesMenu
             description += $"~n~Max Bet: ${MaxBet}";
         }
         MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", description, 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
-        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false);
+        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false,"Only one-on-one races allow pink slips");
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
         {
@@ -390,7 +390,7 @@ public class VehicleRacesMenu
             MoneyBetScoller.Enabled = !Checked;
             UpdateStartRaceDescription();
         };
-        if(RaceForPinksCheckbox != null && (selectedPlayerVehicle == null || !selectedPlayerVehicle.IsOwnedByPlayer))
+        if(RaceForPinksCheckbox != null && (selectedPlayerVehicle == null || !selectedPlayerVehicle.IsOwnedByPlayer || totalSelectedOpponents > 1))
         {
             RaceForPinksCheckbox.Enabled = false;
         }

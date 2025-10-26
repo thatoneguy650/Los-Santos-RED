@@ -105,7 +105,13 @@ public class AdvancedConversation
         ConversationSimple.ConversingPed?.AddSpecificInteraction(LocationInteractable, MenuPool, ConversationMenu, this);
         AddSpecificReply();
         AddQuestions();
-        if (ConversationSimple.ConversingPed != null && ConversationSimple.ConversingPed.CanCurrentlyRacePlayer)
+
+        if (ConversationSimple.ConversingPed != null)
+        {
+            EntryPoint.WriteToConsole($"CanCurrentlyRacePlayer:{ConversationSimple.ConversingPed.CanCurrentlyRacePlayer} WillRacePlayer:{ConversationSimple.ConversingPed.WillRacePlayer} IsInRaceWorthyCar:{ConversationSimple.ConversingPed.IsInRaceWorthyCar(World)}");
+        }
+
+        if (ConversationSimple.ConversingPed != null && ConversationSimple.ConversingPed.CanCurrentlyRacePlayer && ConversationSimple.ConversingPed.IsInRaceWorthyCar(World))
         {
             EntryPoint.WriteToConsole("UpdateMenuItems AddRaceMenu");
             AddRaceMenu();

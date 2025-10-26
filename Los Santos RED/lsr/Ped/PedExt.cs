@@ -452,7 +452,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public bool HasBeenSeenUnconscious { get; set; } = false;
-    public bool HasBeenSeenDead { get; set; } = false;   
+    public bool HasBeenSeenDead { get; set; } = false;
+    public bool WillRacePlayer { get; set; } = false;
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool WasSeenInDistressByServicePed { get; set; } = false;
     public uint GameTimeSeenDead => Game.GameTime - GameTimeFirstSeenDead;
@@ -481,11 +482,33 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeBuried => IsUnconscious || IsDead;
     public bool IsLoadedInTrunk { get; set; }
     public virtual bool HasWeapon => false;
-    public bool CanCurrentlyRacePlayer => IsInVehicle && IsDriver && !IsWanted && !IsDead && !IsUnconscious && !IsLSRFleeing;
+    public virtual bool CanCurrentlyRacePlayer => IsInVehicle && IsDriver && !IsWanted && !IsDead && !IsUnconscious && !IsLSRFleeing && WillRacePlayer;
     public int CopsKilled { get; private set; }
     public int CiviliansKilled { get; private set; }
     public virtual float PickpocketDetectionMultiplier { get; set; } = 1.0f;
     public bool IsInArmedMilitaryVehicle { get; private set; }
+    public bool IsInRaceWorthyCar(IEntityProvideable World)
+    {
+        if(!IsInVehicle)
+        {
+            return false;
+        }
+        if(!Pedestrian.Exists())
+        {
+            return false;
+        }
+        Vehicle currentVehicle = Pedestrian.CurrentVehicle;
+        if (!currentVehicle.Exists())
+        {
+            return false;
+        }
+        VehicleExt selectedVehicle = World.Vehicles.GetVehicleExt(currentVehicle);
+        if (selectedVehicle == null)
+        {
+            return false;
+        }
+        return selectedVehicle.IsRaceWorthy();
+    }
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -1071,6 +1094,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
         WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
         WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
+
+        WillRacePlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageWillRacePlayer);
+
+
         CanSurrender = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage);
         if (addBlip)
         {

@@ -202,6 +202,9 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public GangContact Contact { get; set; }
     public Color Color => Color.FromName(ColorString);
     public string ColorInitials => ColorPrefix + ShortName;
+
+    public float PercentageWillRacePlayer { get; set; } = 55f;
+
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {
@@ -496,6 +499,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         CopHitPaymentMin= 7500;
         CopHitPaymentMax = 10500;
         HostileRepLevel = -200;
+        PercentageWillRacePlayer = 55f;
     }
 
 }
