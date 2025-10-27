@@ -16,6 +16,11 @@ public class Bar : GameLocation
     {
 
     }
+    public override int PurchasePrice { get; set; } = 900000;
+    public override int SalesPrice { get; set; } = 350000;
+    public override int PayoutMin { get; set; } = 12000;
+    public override int PayoutMax { get; set; } = 16000;
+    public override bool IsOwnable { get; set; } = true;
     public override string TypeName { get; set; } = "Bar";
     public override int MapIcon { get; set; } = (int)BlipSprite.Bar;
     public override string ButtonPromptText { get; set; }

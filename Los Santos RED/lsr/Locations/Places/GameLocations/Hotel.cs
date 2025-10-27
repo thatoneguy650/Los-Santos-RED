@@ -17,6 +17,11 @@ public class Hotel : GameLocation
     {
 
     }
+    public override int PurchasePrice { get; set; } = 1000000;
+    public override int SalesPrice { get; set; } = 450000;
+    public override int PayoutMin { get; set; } = 15000;
+    public override int PayoutMax { get; set; } = 25000;
+    public override bool IsOwnable { get; set; } = true;
     public override string TypeName { get; set; } = "Hotel";
     public override int MapIcon { get; set; } = 475;
     public override string ButtonPromptText { get; set; }

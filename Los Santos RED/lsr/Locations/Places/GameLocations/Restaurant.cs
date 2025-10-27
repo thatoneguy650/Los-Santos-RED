@@ -21,6 +21,11 @@ public class Restaurant : GameLocation
     public override string ButtonPromptText { get; set; }
     public override int RegisterCashMin { get; set; } = 200;
     public override int RegisterCashMax { get; set; } = 1450;
+    public override int PurchasePrice { get; set; } = 600000;
+    public override int SalesPrice { get; set; } = 200000;
+    public override int PayoutMin { get; set; } = 5000;
+    public override int PayoutMax { get; set; } = 16000;
+    public override bool IsOwnable { get; set; } = true;
     public Restaurant(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID,FoodType foodType) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

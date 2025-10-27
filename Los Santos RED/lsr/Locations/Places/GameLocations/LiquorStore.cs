@@ -21,6 +21,11 @@ public class LiquorStore : GameLocation
     public override string ButtonPromptText { get; set; }
     public override int RegisterCashMin { get; set; } = 500;
     public override int RegisterCashMax { get; set; } = 1750;
+    public override int PurchasePrice { get; set; } = 500000;
+    public override int SalesPrice { get; set; } = 150000;
+    public override int PayoutMin { get; set; } = 4000;
+    public override int PayoutMax { get; set; } = 10000;
+    public override bool IsOwnable { get; set; } = true;
     public LiquorStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;

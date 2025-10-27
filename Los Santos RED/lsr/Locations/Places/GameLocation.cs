@@ -1512,11 +1512,14 @@ public class GameLocation : ILocationDispatchable, IPayoutDisbursable
     {
         int numberOfPaymentsToProcess = (time.CurrentDateTime - DatePayoutPaid).Days;
         int payoutAmount = CalculatePayoutAmount(numberOfPaymentsToProcess);
-        player.BankAccounts.GiveMoney(payoutAmount, true);
-        int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
-        CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0 ? (int)(PurchasePrice * 1.2f) : MaxSalesPrice);
-        DatePayoutPaid = time.CurrentDateTime;
-        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+        if (payoutAmount > 0)
+        {
+            player.BankAccounts.GiveMoney(payoutAmount, true);
+            int salesPriceToAdd = (int)(PurchasePrice * (GrowthPercentage / 100.0));
+            CurrentSalesPrice = Math.Min(CurrentSalesPrice + salesPriceToAdd, MaxSalesPrice == 0 ? (int)(PurchasePrice * 1.2f) : MaxSalesPrice);
+            DatePayoutPaid = time.CurrentDateTime;
+            DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+        }
     }
     //public virtual void UpdatePrompts()
     //{
