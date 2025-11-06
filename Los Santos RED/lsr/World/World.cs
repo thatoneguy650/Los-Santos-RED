@@ -73,6 +73,11 @@ namespace Mod
         public bool IsFEJInstalled { get; private set; }
         public bool IsFMTInstalled { get; private set; }
         public bool IsFEWInstalled { get; private set; }
+        public bool IsFMLPInstalled { get; private set; }
+
+        public bool IsFERSInstalled { get; private set; }   
+        public bool IsEUPInstalled { get; private set; }
+        public bool IsEUPSUPInstalled { get; private set; }
         public string DebugString => "";
 
 
@@ -99,6 +104,16 @@ namespace Mod
             IsFEWInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfew"));
             EntryPoint.WriteToConsole($"FEW Installed: {IsFEWInstalled}", 0);
 
+            IsFMLPInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmlp"));
+            EntryPoint.WriteToConsole($"FMLT Installed: {IsFMLPInstalled}", 0);
+
+            IsFERSInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfers"));
+            EntryPoint.WriteToConsole($"FERS Installed: {IsFERSInstalled}", 0);
+
+            IsEUPInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("eup"));
+            EntryPoint.WriteToConsole($"EUP Installed: {IsEUPInstalled}", 0);
+            IsEUPSUPInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("sup"));
+            EntryPoint.WriteToConsole($"EUP:S&P Installed: {IsEUPSUPInstalled}", 0);
             //if (Settings.SettingsManager.WorldSettings.SetMissionFlagOn)
             //{
             //    NativeFunction.Natives.SET_MINIGAME_IN_PROGRESS(true);
