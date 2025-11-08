@@ -2547,7 +2547,7 @@ public class Interiors_Liberty
         new Interior(176898, "Bohan Fire Station") { },
         });
     }
-    private void Stores() // gun stores
+    private void Stores() 
     {
         LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
@@ -2573,6 +2573,16 @@ public class Interiors_Liberty
                     new InteriorDoor(807349477, new Vector3(-1094.076f, 802.6436f, 14.86613f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1095.341f, 801.733f, 14.62144f), InteractHeader =  358.68f },
                 },
             },// GunStore -  Port Tudor, Alderney
+
+            // Clothing Store
+            new Interior(120834, "Russian Store")
+            {
+                Doors = new List<InteriorDoor>()
+                {  
+                    new InteriorDoor(377940039, new Vector3(1130.476f, 49.30932f, 16.11984f )) { LockWhenClosed = true, InteractPostion = new Vector3(1131.061f, 50.76342f, 15.86016f), InteractHeader =  90.57141f },
+                    new InteriorDoor(3762420618, new Vector3(1130.476f, 52.31177f, 16.11984f)) { LockWhenClosed = true, InteractPostion = new Vector3(1131.061f, 50.76342f, 15.86016f), InteractHeader =  90.57141f },
+                },
+            },
         });
     }
 
