@@ -70,6 +70,7 @@ public class Weapons : IWeapons
 
 
 
+        fewList.Add(new WeaponInformation("weapon_mustangrev", 60, WeaponCategory.Pistol, 1, 753031268, true, false, true, 1.5f, 1.7f, 1.5f, 1.7f, 1.0f, 1.5f, 1.0f, 1.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) {  CanPistolSuicide = true });
 
 
 

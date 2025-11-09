@@ -114,6 +114,12 @@ public class ModItems : IModItems
         PossibleItems newPossibleItems = new PossibleItems();
 
 
+        newPossibleItems.WeaponItems.Add(new WeaponItem("Duke Mustang .357",
+        "Show everyone you mean buisness with this classic steel piece of Americana. Built to last even through a zombie apocalypse.",
+        false, ItemType.Weapons)
+            { VanillaName = "Mustang Revolver", ModelName = "weapon_mustangrev", PoliceFindDuringPlayerSearchPercentage = 35, FindPercentage = 10 });
+
+
         newPossibleItems.WeaponItems.Add(new WeaponItem("Vom Feuer VF76",
             "The polymer handgun that started it all. Cheap enough to use as a drop gun, reliable enough to silence the witnesses.",
             false, ItemType.Weapons)

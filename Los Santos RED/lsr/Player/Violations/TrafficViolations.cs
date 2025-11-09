@@ -95,6 +95,10 @@ public class TrafficViolations
         {
             return;
         }
+        if(!Player.IsDriver)
+        {
+            return;
+        }
         if ((HasBeenDrivingAgainstTraffic || Game.LocalPlayer.IsDrivingAgainstTraffic) && IsFastEnoughToCheckViolations)
         {
             isDrivingSuspiciously = true;
@@ -131,6 +135,10 @@ public class TrafficViolations
     }
     private void UpdateVehicleCollisionsViolations()
     {
+        if(!Player.IsDriver)
+        {
+            return;
+        }
         if (RecentlyHitPed && IsFastEnoughToCheckViolations)
         {
             isDrivingSuspiciously = true;
