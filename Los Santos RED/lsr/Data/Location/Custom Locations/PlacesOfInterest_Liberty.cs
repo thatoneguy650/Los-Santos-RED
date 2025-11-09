@@ -3500,7 +3500,7 @@ public class PlacesOfInterest_Liberty
     {
         LibertyCityLocations.ClothingShops.AddRange(new List<ClothingShop>()
         {
-            new ClothingShop(new Vector3(1131.292f, 50.72863f, 15.8602f), 274.2502f, "Russian Store", "","", new Vector3(1118.766f, 54.50769f, 15.85339f)) { StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1127.265f, 46.71912f, 15.84883f), 355.0438f) } },
+            new ClothingShop(new Vector3(1131.292f, 50.72863f, 15.8602f), 274.2502f, "Russian Store", "","", new Vector3(1118.766f, 54.50769f, 15.85339f)) { StateID = StaticStrings.LibertyStateID,InteriorID = 120834,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1127.265f, 46.71912f, 15.84883f), 355.0438f) },MinPriceRefreshHours= 0 ,MaxPriceRefreshHours = 0,MinRestockHours = 0 ,MaxRestockHours = 0 },
             new ClothingShop(new Vector3(1166.561f, 233.396f, 19.33681f), 89.94569f, "Jewelry Store", "","", Vector3.Zero) { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(248.9821f, -164.9303f, 14.76574f), 4.162239f, "Perseus", "","", new Vector3(245.6139f, -177.8401f, 14.86145f)) { IsTemporarilyClosed = true ,StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(249.2022f, -175.4658f, 14.86148f), 358.7083f) } },
             new ClothingShop(new Vector3(260.4522f, 1303.977f, 14.71333f), 1.235396f, "Perseus", "","", new Vector3(257.0355f, 1290.913f, 14.76171f)) { IsTemporarilyClosed = true , StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(260.4872f, 1293.259f, 14.76175f), 357.0343f) } },
