@@ -139,8 +139,9 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             GameFiber.Yield();
 #endif
-
+            
             UI.SetupDebugMenu();
+            LoadDefaultMap();
             Game.FadeScreenIn(500, true);
             DisplayLoadSuccessfulMessage();
 
@@ -429,6 +430,13 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Debug Logic");
+        }
+        private void LoadDefaultMap()
+        {
+            if(ModDataFileManager.Settings.SettingsManager.WorldSettings.DefaultToMPMap) 
+            {
+                World.LoadMPMap();
+            }
         }
         private void DisplayCrashMessage()
         {

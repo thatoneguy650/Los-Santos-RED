@@ -93,6 +93,8 @@ public class WorldSettings : ISettingsDefaultable
     public bool ExtendedVehicleCleanup { get;  set; }
     public bool SuppressFEJVehiclesFromGenerators { get; set; }
     public bool SetMissionFlagOn { get; set; }
+    [Description("Set if you would want MP map to load in by default")]
+    public bool DefaultToMPMap { get; set; }
     //public int MaxPedsBeforeDispatchPause { get; set; }
     //public int MaxVehiclesBeforeDispatchPause { get; set; }
 
@@ -115,7 +117,7 @@ public class WorldSettings : ISettingsDefaultable
         AllowRandomVanityPlates = true;
         RandomVehicleVanityPlatesPercent = 3f;// 5f;
         ShowAllLocationsOnDirectory = false;
-
+        DefaultToMPMap = false;
         LowerPedSpawnsAtHigherWantedLevels = true;
 
         DefaultSpawnMultiplier = 1.0f;
