@@ -449,6 +449,43 @@ public class ShopMenus : IShopMenus
         }
         //Serialization.SerializeParam(fejPossibleShopMenus, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ShopMenus_FullExpandedExperience.xml");
     }
+    public ShopMenu GetSpecificInstancedMenu(string menuID)
+    {
+        ShopMenu toInstance = PossibleShopMenus.ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault();
+        if (toInstance == null)
+        {
+            return null;
+        }
+        List<MenuItem> InstancedItems = new List<MenuItem>();
+        foreach(MenuItem menuItem in toInstance.Items)
+        {
+
+            List<MenuItemExtra> InstancedExtras = new List<MenuItemExtra>();
+            foreach(MenuItemExtra menuItemExtra in menuItem.Extras)
+            {
+                InstancedExtras.Add(new MenuItemExtra(menuItemExtra.ExtraName, menuItemExtra.PurchasePrice, menuItemExtra.SalesPrice) { HasItem = menuItemExtra.HasItem });
+            }
+
+            InstancedItems.Add(new MenuItem(menuItem.ModItemName, menuItem.PurchasePrice, menuItem.SalesPrice)
+
+            {
+                IsIllicilt = menuItem.IsIllicilt,
+                SubPrice = menuItem.SubPrice,
+                SubAmount = menuItem.SubAmount,
+                MinimumPurchaseAmount = menuItem.MinimumPurchaseAmount,
+                MaximumPurchaseAmount = menuItem.MaximumPurchaseAmount,
+                PurchaseIncrement = menuItem.PurchaseIncrement,
+                NumberOfItemsToSellToPlayer = menuItem.NumberOfItemsToSellToPlayer,
+                NumberOfItemsToPurchaseFromPlayer = menuItem.NumberOfItemsToPurchaseFromPlayer,
+                IsFree = menuItem.IsFree,
+                ModItem = menuItem.ModItem,
+                Extras = InstancedExtras,
+            });
+        }
+        ShopMenu newInstance = new ShopMenu(toInstance.Name, toInstance.Name, InstancedItems) { GroupName = toInstance.GroupName,BannerOverride = toInstance.BannerOverride };
+
+        return newInstance;
+    }
     public ShopMenu GetSpecificMenu(string menuID)
     {
         return PossibleShopMenus.ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault();// ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault()?.Copy();
@@ -539,7 +576,7 @@ public class ShopMenus : IShopMenus
         {
             MenuID = propShopMenu.ShopMenuID;
         }
-        return GetSpecificMenu(MenuID);
+        return GetSpecificInstancedMenu(MenuID);
     }
 
 

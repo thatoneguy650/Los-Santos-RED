@@ -537,7 +537,7 @@ public class GameLocation : ILocationDispatchable
                 AssignedOrganization = Associations.GetOrganization(AssignedAssociationID);
             }
         }
-        Menu = shopMenus.GetSpecificMenu(MenuID);
+        Menu = shopMenus.GetSpecificInstancedMenu(MenuID);
         if (HasInterior)
         {
             interior = interiors?.GetInteriorByLocalID(InteriorID);
@@ -775,6 +775,21 @@ public class GameLocation : ILocationDispatchable
             cl.AddDistanceOffset(offsetToAdd);
         }
         RestrictedAreas?.AddDistanceOffset(offsetToAdd);
+
+        //moved into base class since its base class items
+        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
+        foreach(SpawnPlace spawnPlace in VehicleDeliveryLocations)
+        {
+            spawnPlace.AddDistanceOffset(offsetToAdd);
+        }
+
+        if (VehiclePreviewCameraPosition != Vector3.Zero)
+        {
+            VehiclePreviewCameraPosition += offsetToAdd;
+        }
+
+        
+
     }
     public virtual void RemoveMessage()
     {

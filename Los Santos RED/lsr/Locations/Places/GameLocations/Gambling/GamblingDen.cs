@@ -39,7 +39,7 @@ IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, I
 ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
-        Menu = ShopMenus.GetSpecificMenu(MenuID);
+        //Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)

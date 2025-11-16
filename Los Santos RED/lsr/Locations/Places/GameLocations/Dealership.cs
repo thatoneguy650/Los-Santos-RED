@@ -97,15 +97,15 @@ public class Dealership : GameLocation, ILicensePlatePreviewable
             }
         }, "CarDealershipInteract");
     }
-    public override void AddDistanceOffset(Vector3 offsetToAdd)
-    {
-        foreach(SpawnPlace sp in VehicleDeliveryLocations)
-        {
-            sp.AddDistanceOffset(offsetToAdd);
-        }
-        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
-        base.AddDistanceOffset(offsetToAdd);
-    }
+    //public override void AddDistanceOffset(Vector3 offsetToAdd)
+    //{
+    //    foreach(SpawnPlace sp in VehicleDeliveryLocations)
+    //    {
+    //        sp.AddDistanceOffset(offsetToAdd);
+    //    }
+    //    VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
+    //    base.AddDistanceOffset(offsetToAdd);
+    //}
     public override void AddLocation(PossibleLocations possibleLocations)
     {
         possibleLocations.CarDealerships.Add(this);

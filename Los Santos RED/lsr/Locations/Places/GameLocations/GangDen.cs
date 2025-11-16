@@ -74,7 +74,7 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
-        Menu = ShopMenus.GetSpecificMenu(MenuID);
+        //Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
         if (HasInterior)
@@ -474,15 +474,15 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         Game.RemoveNotification(NotificationHandle);
         NotificationHandle = Game.DisplayNotification(AssociatedGang.Contact.IconName, AssociatedGang.Contact.IconName, AssociatedGang.Contact.Name, header, message);
     }
-    public override void AddDistanceOffset(Vector3 offsetToAdd)
-    {
-        foreach (SpawnPlace sp in VehicleDeliveryLocations)
-        {
-            sp.AddDistanceOffset(offsetToAdd);
-        }
-        VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
-        base.AddDistanceOffset(offsetToAdd);
-    }
+    //public override void AddDistanceOffset(Vector3 offsetToAdd)
+    //{
+    //    foreach (SpawnPlace sp in VehicleDeliveryLocations)
+    //    {
+    //        sp.AddDistanceOffset(offsetToAdd);
+    //    }
+    //    VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
+    //    base.AddDistanceOffset(offsetToAdd);
+    //}
     private void CreateGangTerritoryBlip(IEntityProvideable world)
     {
         if (!Settings.SettingsManager.GangSettings.ShowGangTerritoryBlip || AssociatedGang == null)

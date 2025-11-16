@@ -13,9 +13,9 @@ public class MenuItemExtra
 
     }
 
-    public MenuItemExtra(string modItemName, int purchasePrice)
+    public MenuItemExtra(string extraName, int purchasePrice)
     {
-        ExtraName = modItemName;
+        ExtraName = extraName;
         PurchasePrice = purchasePrice;
     }
     public MenuItemExtra(string extraName, int purchasePrice, int salesPrice)
