@@ -827,8 +827,10 @@ public class Interiors_Liberty
                     new CraftInteriorInteract("Stove",new Vector3(-180.0553f, 1962.973f, 38.96647f), 1.711152f, "Stove")
                     {
                         CraftingFlag = "Stove",
-                        AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        AutoCamera = true,
+                        CameraPosition = new Vector3(-180.4922f, 1961.207f, 39.88343f),
+                        CameraDirection = new Vector3(0.44477f, 0.8541482f, -0.2694632f),
+                        CameraRotation = new Rotator(-15.63233f, 7.535821E-06f, -27.50679f)
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -883,8 +885,10 @@ public class Interiors_Liberty
                     new CraftInteriorInteract("Stove",new Vector3(332.1798f, 1354.332f, 45.04601f), 93.00458f, "Stove")
                     {
                         CraftingFlag = "Stove",
-                        AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        AutoCamera = true,
+                        CameraPosition = new Vector3(333.8228f, 1353.756f, 46.14905f),
+                        CameraDirection = new Vector3(-0.875756f, 0.2937503f, -0.3830956f),
+                    CameraRotation = new Rotator(-22.52556f, 3.74337E-05f, 71.45727f)
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -939,7 +943,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(846.6514f, 1901.495f, 18.51601f),
+                        CameraDirection = new Vector3(0.002083805f, -0.9392081f, -0.343342f),
+                        CameraRotation = new Rotator(-20.08062f, 2.485638E-08f, -179.8729f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -998,7 +1004,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(1125.352f, -6.974065f, 20.50294f),
+                        CameraDirection = new Vector3(-0.01129704f, 0.9287074f, -0.3706412f),
+                        CameraRotation = new Rotator(-21.75517f, -5.745287E-08f, 0.6969265f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1057,7 +1065,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(-725.342f, 1384.767f, 20.04454f),
+                        CameraDirection = new Vector3(0.9395224f, -0.001058639f, -0.3424857f),
+                        CameraRotation = new Rotator(-20.02839f, 5.910299E-07f, -90.06456f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1127,7 +1137,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(-197.08f, 1891.902f, 17.43028f),
+                        CameraDirection = new Vector3(-0.008799502f, 0.9579368f, -0.2868444f),
+                        CameraRotation = new Rotator(-16.66913f, -1.392539E-08f, 0.5262979f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1195,7 +1207,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(223.7284f, 1275.418f, 63.57302f),
+                        CameraDirection = new Vector3(-0.9374399f, 0.007484701f, -0.3480669f),
+                        CameraRotation = new Rotator(-20.36912f, -2.547174E-06f, 89.54255f)
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -1272,7 +1286,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(1053.231f, 641.4006f, 30.3391f),
+                        CameraDirection = new Vector3(0.8549131f, -0.4375533f, -0.2786946f),
+                        CameraRotation = new Rotator(-16.18231f, 0f, -117.1038f)
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -1416,7 +1432,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(-311.8942f, 1724.423f, 98.63117f),
+                        CameraDirection = new Vector3(0.1515174f, 0.9152469f, -0.3733171f),
+                        CameraRotation = new Rotator(-21.92034f, -2.300771E-07f, -9.399954f)
                     }
                 },
                 InventoryInteracts = new List<InventoryInteract>()
@@ -1482,7 +1500,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(1602.177f, 1019.422f, 34.12709f),
+                        CameraDirection = new Vector3(-0.02492519f, -0.9452553f, -0.3253785f),
+                        CameraRotation = new Rotator(-18.98851f, -5.643165E-08f, 178.4895f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1556,7 +1576,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(-1011.723f, 2050.741f, 27.16678f),
+                        CameraDirection = new Vector3(-0.02082958f, 0.9259633f, -0.3770387f),
+                        CameraRotation = new Rotator(-22.15037f, -5.761282E-08f, 1.288653f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1637,7 +1659,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(-1714.636f, 428.1001f, 8.326542f),
+                        CameraDirection = new Vector3(-0.9214435f, 0.03472181f, -0.3869577f),
+                        CameraRotation = new Rotator(-22.76533f, 2.893449E-07f, 87.842f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1714,7 +1738,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(106.7872f, 1983.799f, 23.89832f),
+                        CameraDirection = new Vector3(0.7054998f, 0.5933805f, -0.3875173f),
+                        CameraRotation = new Rotator(-22.80011f, -1.85228E-06f, -49.93354f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1784,7 +1810,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(107.1061f, 2023.655f, 23.85375f),
+                        CameraDirection = new Vector3(-0.6293289f, -0.6892445f, -0.3590086f),
+                        CameraRotation = new Rotator(-21.03932f, -1.829513E-06f, 137.6017f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1848,7 +1876,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(136.4559f, 1967.387f, 23.8466f),
+                        CameraDirection = new Vector3(0.6388482f, -0.6774699f, -0.3645648f),
+                        CameraRotation = new Rotator(-21.3808f, 0f, -136.6806f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1912,7 +1942,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(174.6859f, 1967.542f, 23.87333f),
+                        CameraDirection = new Vector3(0.5384172f, 0.7526636f, -0.3789519f),
+                        CameraRotation = new Rotator(-22.26878f, -6.458082E-06f, -35.578f)
                     }
                 },
                 Doors = new List<InteriorDoor>()
@@ -1972,7 +2004,9 @@ public class Interiors_Liberty
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
-                        CameraPosition = Vector3.Zero,
+                        CameraPosition = new Vector3(170.5612f, 1944.962f, 23.88007f),
+                        CameraDirection = new Vector3(-0.6436245f, 0.6620793f, -0.3839252f),
+                        CameraRotation = new Rotator(-22.57703f, 0f, 44.19024f)
                     }
                 },
                 Doors = new List<InteriorDoor>()

@@ -2114,9 +2114,9 @@ public class PlacesOfInterest_Liberty
                 MenuID = "DealerHangoutMenu3",
                 Name = "Charge Island Dealer",
                 Description = "Charge Island Dealer Hangout",
-                EntrancePosition = new Vector3(923.45f, 1265.04f, 202.79f),
+                EntrancePosition = new Vector3(918.066f, 1266.773f, 202.784785f),
                 EntranceHeading = 83.74f,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(923.45f, 1265.04f, 202.79f), 83.74f) },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(918.066f, 1266.773f, 202.784785f), 87.26839f) },
                 AppearPercentages = new List<AppearPercentage>()
                 {
                     new AppearPercentage(0,85),
@@ -2299,9 +2299,9 @@ public class PlacesOfInterest_Liberty
                 MenuID = "DealerHangoutMenu2",
                 Name = "Willis Dealer",
                 Description = "Willis Dealer Hangout 3",
-                EntrancePosition = new Vector3(2019.007f, 1172.729f, 227.21188f),
+                EntrancePosition = new Vector3(2010.455f, 1159.883f, 228.02798f),
                 EntranceHeading = 93.94168f,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(2019.007f, 1172.729f, 227.21188f), 93.94168f) },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(2010.455f, 1159.883f, 228.02798f), 352.8256f) },
                 AppearPercentages = new List<AppearPercentage>()
                 {
                     new AppearPercentage(0,85),
@@ -4729,7 +4729,7 @@ public class PlacesOfInterest_Liberty
     {
         VehicleModShops = new List<VehicleModShop>()
     {
-        new VehicleModShop(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f,"Native Engines", "The best repair shop in the whole Broker")
+        new VehicleModShop(new Vector3(1296.538f, 196.1006f, 20.92526f), 1.122816f,"Native Engines", "The best repair shop in the whole Broker")
         {
             OpenTime = 0,
             CloseTime = 24,
@@ -4737,9 +4737,9 @@ public class PlacesOfInterest_Liberty
             CanInteractWhenWanted = true,
             HasNoGarageDoors = false,
             StateID = StaticStrings.LibertyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(1296.495f, 197.1002f, 20.92298f), 180.8648f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(1296.538f, 196.1006f, 20.92526f), 1.122816f),
         },
-        new VehicleModShop(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f, "Auto Cowboys", "Servicing Holland since 1979")
+        new VehicleModShop(new Vector3(-69.68608f, 2033.346f, 19.8749f), 1.091649f, "Auto Cowboys", "Servicing Holland since 1979")
         {
             OpenTime = 0,
             CloseTime = 24,
@@ -4747,9 +4747,9 @@ public class PlacesOfInterest_Liberty
             CanInteractWhenWanted = true,
             HasNoGarageDoors = false,
             StateID = StaticStrings.LibertyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(-69.67624f, 2032.833f, 19.67877f), 0f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-69.68608f, 2033.346f, 19.8749f), 1.091649f),
         },
-        new VehicleModShop(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f, "Auto Limbo", "Where all the Union Drive accidents go")
+        new VehicleModShop(new Vector3(-275.5513f, 860.8f, 6.054256f), 1.075638f, "Auto Limbo", "Where all the Union Drive accidents go")
         {
             OpenTime = 0,
             CloseTime = 24,
@@ -4757,9 +4757,9 @@ public class PlacesOfInterest_Liberty
             CanInteractWhenWanted = true,
             HasNoGarageDoors = false,
             StateID = StaticStrings.LibertyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(-275.5403f, 860.2197f, 5.858531f), 0f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-275.5513f, 860.8f, 6.054256f), 1.075638f),
         },
-        new VehicleModShop(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+        new VehicleModShop(new Vector3(-910.1514f, 1682.272f, 17.07236f), 180.2158f, "Axel's Pay'n'Spray", "Franchising car repairs")
         {
             OpenTime = 0,
             CloseTime = 24,
@@ -4767,9 +4767,9 @@ public class PlacesOfInterest_Liberty
             CanInteractWhenWanted = true,
             HasNoGarageDoors = false,
             StateID = StaticStrings.AlderneyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(-909.8067f, 1682.673f, 16.87597f), 0f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-910.1514f, 1682.272f, 17.07236f), 180.2158f),
         },
-        new VehicleModShop(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f, "Axel's Pay'n'Spray", "Franchising car repairs")
+        new VehicleModShop(new Vector3(-1062.004f, 776.6253f, 10.37463f), 181.5542f, "Axel's Pay'n'Spray", "Franchising car repairs")
         {
             OpenTime = 0,
             CloseTime = 24,
@@ -4777,7 +4777,7 @@ public class PlacesOfInterest_Liberty
             CanInteractWhenWanted = true,
             HasNoGarageDoors = false,
             StateID = StaticStrings.AlderneyStateID,
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1062.014f, 777.8738f, 10.17912f), 0f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(-1062.004f, 776.6253f, 10.37463f), 181.5542f),
         },
     };
         LibertyCityLocations.VehicleModShops.AddRange(VehicleModShops);
