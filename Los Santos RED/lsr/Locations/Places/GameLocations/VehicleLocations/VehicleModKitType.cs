@@ -216,33 +216,46 @@ public class VehicleModKitType
             }
         }
     }
-    protected virtual string GetModItemName( int modKitValueID)
+    protected virtual string GetModItemName(int modKitValueID)
     {
-        //EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID}");
-        if(modKitValueID == -1)
+        if (modKitValueID == -1)
         {
             EntryPoint.WriteToConsole($"GetModItemName: {modKitValueID} IS NONE");
             return "None";
         }
-        string modItemName;
-        unsafe
+
+        try
         {
-            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x8935624F8C5592CC, ModdingVehicle.Vehicle, TypeID, modKitValueID);
-            modItemName = Marshal.PtrToStringAnsi(ptr2);
+            // Safely get the mod text label from Rockstar
+            string label = NativeFunction.Natives.GET_MOD_TEXT_LABEL<string>(
+                ModdingVehicle.Vehicle,
+                TypeID,
+                modKitValueID
+            );
+
+            if (!string.IsNullOrEmpty(label))
+            {
+                // Check if the text label exists
+                bool exists = NativeFunction.Natives.DOES_TEXT_LABEL_EXIST<bool>(label);
+                if (exists)
+                {
+                    // Rockstar stores many mod names in the audio lookup dictionary
+                    string display = NativeFunction.Natives.GET_FILENAME_FOR_AUDIO_CONVERSATION<string>(label);
+
+                    if (!string.IsNullOrEmpty(display))
+                    {
+                        return display;
+                    }
+                }
+            }
         }
-        if (NativeFunction.CallByHash<bool>(0xAC09CA973C564252, modItemName)) // DOES_TEXT_LABEL_EXIST
+        catch (Exception ex)
         {
-            // Retrieve the filename for the audio conversation
-            IntPtr filenamePtr = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, modItemName); // GET_FILENAME_FOR_AUDIO_CONVERSATION
-                                                                                                     // Convert the filenamePtr to a string and check if it's valid
-            string filename = filenamePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(filenamePtr) : string.Empty;
-            modItemName = filename;
+            EntryPoint.WriteToConsole($"Safe GetModItemName error: {ex.Message}");
         }
-        if (string.IsNullOrEmpty(modItemName))
-        {
-            modItemName = $"Item {modKitValueID}";
-        }
-        return modItemName;
+
+        // Fallback name
+        return $"Item {modKitValueID}";
     }
 
 
