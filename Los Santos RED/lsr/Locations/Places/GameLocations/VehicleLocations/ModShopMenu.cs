@@ -140,7 +140,7 @@ public class ModShopMenu
             new VehicleModKitType("Subwoofer",19, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Tire Smoke",20, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Hydraulics",21, this, InteractionMenu,MenuPool,Player),
-            new VehicleModToggle("Xenon",22, this, InteractionMenu,MenuPool,Player),
+            new VehicleModToggle("Xenon Lights",22, this, InteractionMenu,MenuPool,Player),
             new WheelVehicleModKitType("Front Wheels",23, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Back Wheels",24, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Plate holders", 25, this, InteractionMenu,MenuPool,Player),

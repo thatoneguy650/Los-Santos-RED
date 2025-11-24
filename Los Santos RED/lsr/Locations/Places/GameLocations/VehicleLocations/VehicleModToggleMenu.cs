@@ -94,9 +94,9 @@ public class VehicleModToggle : VehicleModKitType
         if (TypeName == "Turbo")
             return value == 1 ? 30000 : 12000;
         if (TypeName == "Xenon Lights")
-            return value == 1 ? 15000 : 7000;
+            return value == 1 ? 7500 : 3000;
 
         // Default for other toggles
-        return value == 1 ? 50000 : 10000;
+        return value == 1 ? 5000 : 1000;
     }
 }
