@@ -122,7 +122,7 @@ public class ModShopMenu
             new VehicleModKitType("Horns",14,"", this, InteractionMenu,MenuPool,Player),   
             new VehicleModKitType("Armor",16, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Nitrous",17, this, InteractionMenu,MenuPool,Player),
-            new VehicleModKitType("Turbo",18, this, InteractionMenu,MenuPool,Player),
+            new VehicleModToggle("Turbo",18, this, InteractionMenu,MenuPool,Player),
 
 
             new VehicleModKitType("Spoilers",0,"Add a spoiler", this, InteractionMenu,MenuPool,Player),
@@ -140,7 +140,7 @@ public class ModShopMenu
             new VehicleModKitType("Subwoofer",19, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Tire Smoke",20, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Hydraulics",21, this, InteractionMenu,MenuPool,Player),
-            new VehicleModKitType("Xenon",22, this, InteractionMenu,MenuPool,Player),
+            new VehicleModToggle("Xenon Lights",22, this, InteractionMenu,MenuPool,Player),
             new WheelVehicleModKitType("Front Wheels",23, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Back Wheels",24, this, InteractionMenu,MenuPool,Player),
             new VehicleModKitType("Plate holders", 25, this, InteractionMenu,MenuPool,Player),
