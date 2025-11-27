@@ -8229,7 +8229,7 @@ public class BlankLocationsData_Liberty
                             {
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-229.9644f, 924.7909f, 11.00709f),
+                                        Location = new Vector3(-229.9644f, 924.7909f, 10.00709f),
                                             Heading = 274.1806f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -8239,7 +8239,7 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-231.3217f, 923.7687f, 11.00709f),
+                                        Location = new Vector3(-231.3217f, 923.7687f, 10.00709f),
                                             Heading = 7.971545f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -8250,7 +8250,7 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-231.3796f, 925.6608f, 11.00709f),
+                                        Location = new Vector3(-231.3796f, 925.6608f, 10.00709f),
                                             Heading = 179.5679f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
@@ -21656,8 +21656,8 @@ public class BlankLocationsData_Liberty
                             {
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-872.0967f, 44.31443f, 2.257555f),
-                                            Heading = 179.8883f,
+                                        Location = new Vector3(-706.4737f, 3.998697f, 2.85902f),
+                                            Heading = 87.27906f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
                                             {
@@ -21667,8 +21667,8 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-873.4349f, 44.31087f, 2.257555f),
-                                            Heading = 175.1406f,
+                                        Location = new Vector3(-706.4193f, 2.787425f, 2.915739f),
+                                            Heading = 50.52862f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
                                             {
@@ -21678,8 +21678,8 @@ public class BlankLocationsData_Liberty
                                     },
                                     new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(-868.4222f, 37.66576f, 2.257556f),
-                                            Heading = 90.6143f,
+                                        Location = new Vector3(-708.8548f, 5.275024f, 2.896871f),
+                                            Heading = 241.0951f,
                                             TaskRequirements = TaskRequirements.Guard,
                                             ForcedScenarios = new List<string>()
                                             {
@@ -21692,13 +21692,13 @@ public class BlankLocationsData_Liberty
                             {
                                 new GangConditionalLocation()
                                 {
-                                    Location = new Vector3(-874.0295f, 35.67492f, 1.667185f),
-                                        Heading = 257.3039f,
+                                    Location = new Vector3(-711.4357f, 4.320689f, 2.309721f),
+                                        Heading = 244.1893f,
                                 },
                                 new GangConditionalLocation()
                                 {
-                                    Location = new Vector3(-873.6399f, 39.34357f, 1.666496f),
-                                        Heading = 258.5008f,
+                                    Location = new Vector3(-710.7849f, 7.759163f, 2.322095f),
+                                        Heading = 227.8739f,
                                 },
                             }
                     }
@@ -21706,7 +21706,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostPrison",
             Description = "",
-            EntrancePosition = new Vector3(-874.0295f, 35.67492f, 1.667185f),
+            EntrancePosition = new Vector3(-706.4737f, 3.998697f, 2.85902f),
             EntranceHeading = 0f,
         };
         BlankLocationPlaces.Add(LostPrison);
