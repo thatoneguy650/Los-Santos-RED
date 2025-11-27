@@ -299,6 +299,17 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(73, "Gloriana Legacy", "Gloriana", 1, "ABC   D1"));
         FullPlateTypeList.Add(new PlateType(74, "Gloriana Legacy Motorcycle", "Gloriana", 1, "ABC   D1") { IsMotorcyclePlate = true });
+
+
+
+
+        FullPlateTypeList.Add(new PlateType(75, "Jackson Older", "Jackson", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(76, "New Austin Black", "New Austin", 4, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(77, "Noochee Alt", "Noochee", 4, "   1234A"));
+        FullPlateTypeList.Add(new PlateType(78, "Putnam Older", "Putnam", 2, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(79, "Shoshone Older", "Shoshone", 2, "1 23456A"));
+
+
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");

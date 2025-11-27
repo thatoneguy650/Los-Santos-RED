@@ -242,6 +242,7 @@ public class ModItems : IModItems
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Schyster PMP 600", ItemType.Vehicles) { OverrideMakeName = "Schyster", OverrideClassName = "Sedan", ModelName = "civpmp600" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin S95", ItemType.Vehicles) { OverrideMakeName = "Karin", OverrideClassName = "Sedan", ModelName = "civs95" });
 
         //Trucks
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Firebolt Stock", ItemType.Vehicles) { ModelName = "civfireboltstock" });
@@ -259,8 +260,8 @@ public class ModItems : IModItems
 
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveron3" });
-        
 
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Kamacho Stock", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "civkamacho" });
 
 
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });
@@ -270,6 +271,10 @@ public class ModItems : IModItems
 
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
+
+
+        //Other
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Moving Van", false, ItemType.Vehicles) { OverrideMakeName = "Brute", ModelName = "civmovingvan" });
 
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems+_FullModernTraffic.xml");
     }
