@@ -1521,6 +1521,12 @@ public class GameLocation : ILocationDispatchable, IPayoutDisbursable
             DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
         }
     }
+
+    public virtual void HandleRaid()
+    {
+        DatePayoutPaid = Time.CurrentDateTime.AddDays(PayoutFrequency);
+        DatePayoutDue = Time.CurrentDateTime.AddDays(PayoutFrequency);
+    }
     //public virtual void UpdatePrompts()
     //{
 

@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 public class CityHall : GameLocation
@@ -30,6 +31,7 @@ public class CityHall : GameLocation
     private UIMenuItem DriversLicenseMenu;
     private UIMenuItem CCWLicenseMenu;
     private UIMenuItem PilotsLicenseMenu;
+    private UIMenu VehicleRegistrationMenu;
 
     public CityHall() : base()
     {
@@ -42,6 +44,7 @@ public class CityHall : GameLocation
     public int DriversLicenseFee { get; set; } = 150;
     public int CCWLicenseFee { get; set; } = 1500;
     public int PilotsLicenseFee { get; set; } = 2500;
+    public int VehicleRegistrationFee { get; set; } = 2500;
     public CityHall(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -119,11 +122,58 @@ public class CityHall : GameLocation
         InteractionMenu.AddItem(DriversLicenseMenu);
         InteractionMenu.AddItem(CCWLicenseMenu);
         InteractionMenu.AddItem(PilotsLicenseMenu);
-
+        GenerateVehicleRegistrationMenu();
 
         GenerateTests();
     }
+    private void GenerateVehicleRegistrationMenu()
+    {
+        if (Player.Character.LastVehicle == null)
+        {
+            return;
+        }
+        VehicleExt lastVehicleExt = new VehicleExt(Player.Character.LastVehicle, Settings);
+        VehicleRegistrationMenu = MenuPool.AddSubMenu(InteractionMenu, "Register a vehicle.");
+        VehicleRegistrationMenu.OnMenuOpen += (sender) =>
+        {
+            StoreCamera.HighlightEntity(lastVehicleExt.Vehicle);
+        };
+        VehicleRegistrationMenu.OnMenuClose += VehicleRegistrationMenu_OnMenuClose;
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
+        UIMenuItem menuItem = new UIMenuItem(lastVehicleExt.GetCarName(), $"Register vehicle.");
+        menuItem.RightLabel = VehicleRegistrationFee.ToString("C0");
+        menuItem.Activated += (sender, args) =>
+        {
+            if (Player.BankAccounts.GetMoney(true) <= VehicleRegistrationFee)
+            {
+                PlayErrorSound();
+                DisplayMessage("~r~Fund Shortage.", "You do not have enough money.");
+                return;
+            }
+            string documentNameToSearch = $"{lastVehicleExt.ModelName()}-{lastVehicleExt.CarPlate.PlateNumber}";
+            InventoryItem forgedDocumentItem = Player.Inventory.ItemsList.FirstOrDefault(x => x.ModItem != null && x.ModItem.ItemType == ItemType.Valuables && x.ModItem.Name.ToLower() == documentNameToSearch.ToLower());
 
+            if (forgedDocumentItem != null)
+            {
+                Player.Inventory.Remove(forgedDocumentItem.ModItem);
+                Player.BankAccounts.GiveMoney(-1 * VehicleRegistrationFee, true);
+                Player.VehicleOwnership.TakeOwnershipOfVehicle(lastVehicleExt, false);
+                PlaySuccessSound();
+                DisplayMessage("~g~Registered", $"Thank you for registering your vehicle with the state of San Andreas.");
+            }
+            else
+            {
+                PlayErrorSound();
+                DisplayMessage("~r~Registration Failed", $"Doesn't look like you have the right documents.");
+            }
+        };
+        VehicleRegistrationMenu.AddItem(menuItem);
+    }
+
+    private void VehicleRegistrationMenu_OnMenuClose(UIMenu sender)
+    {
+        StoreCamera.ReHighlightStoreWithCamera();
+    }
     private void GenerateTests()
     {
         //List<LicenseQuestion> Questions = new List<LicenseQuestion>

@@ -172,7 +172,7 @@ public class VehicleExporterInteraction : IContactMenuInteraction
         JobsSubMenu = MenuPool.AddSubMenu(VehicleExporterMenu, "Jobs");
         JobsSubMenu.RemoveBanner();
 
-        UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+        UIMenuItem TaskCancel = new UIMenuItem("Cancel Task", "Tell the exporter you can't complete the task.") { RightLabel = "~o~$?~s~" };
         TaskCancel.Activated += (sender, selectedItem) =>
         {
             Player.PlayerTasks.CancelTask(VehicleExporterContact);

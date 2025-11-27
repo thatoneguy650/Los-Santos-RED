@@ -23,7 +23,9 @@ public class Forger : GameLocation
     private UIMenu IDSubMenu;
     private UIMenu SellIDSubMenu;
     private UIMenu MarkedCashSubMenu;
-
+    private UIMenu ForgeDocumentSubMenu;
+    private Dictionary<UIMenuItem, VehicleExt> MenuLookup;
+    
     public Forger(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -39,7 +41,7 @@ public class Forger : GameLocation
     public int CustomPlateCost { get; set; } = 500;
     public int WantedPlateSalesPrice { get; set; } = 50;
     public int CleanPlateSalesPrice { get; set; } = 200;
-
+    public int DocumentForgeryCost { get; set; } = 5000;
 
     public int PoliceIdentificationSalesPrice { get; set; } = 550;
     public int IdentificationSalesPrice { get; set; } = 45;
@@ -48,6 +50,8 @@ public class Forger : GameLocation
 
 
     public int MarkedBillsSalesPrice { get; set; } = 1500;
+    public float VehiclePickupDistance { get; set; } = 25f;
+
 
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -215,6 +219,7 @@ public class Forger : GameLocation
         AddPlateSale();
         AddRandomPlateBuy();
         AddCustomPlateBuy();
+        AddForgedDocumentsBuy();
     }
     private void AddPlateSale()
     {
@@ -278,7 +283,7 @@ public class Forger : GameLocation
         };
         UIMenuListScrollerItem<PlateType> customPlateTypeMenuItem = new UIMenuListScrollerItem<PlateType>("Plate Type", "Current chosen plate type.", PlateTypes.PlateTypeManager.PlateTypeList) { };
         CustomPlateSubMenu.AddItem(customPlateTypeMenuItem);
-        UIMenuItem buyCustomPlateMenuItem = new UIMenuItem("Purchase", "Buy a the customized plate.") { RightLabel = CustomPlateRightLabe };
+        UIMenuItem buyCustomPlateMenuItem = new UIMenuItem("Purchase", "Buy a customized plate.") { RightLabel = CustomPlateRightLabe };
         CustomPlateSubMenu.AddItem(buyCustomPlateMenuItem);
         buyCustomPlateMenuItem.Activated += (sender, e) =>
         {
@@ -296,10 +301,101 @@ public class Forger : GameLocation
             DisplayMessage("~g~Purchased", $"Thank you for your purchase. Plate added to inventory.");
         };
     }
+    private void AddForgedDocumentsBuy()
+    {
+        MenuLookup = new Dictionary<UIMenuItem, VehicleExt>();
+        ForgeDocumentSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Forge documents for a vehicle.");
+        ForgeDocumentSubMenu.OnIndexChange += ForgeDocumentSubMenu_OnIndexChange; ;
+        ForgeDocumentSubMenu.OnMenuOpen += ForgeDocumentSubMenu_OnMenuOpen;
+        ForgeDocumentSubMenu.OnMenuClose += ForgeDocumentSubMenu_OnMenuClose;
+
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
+
+        foreach (VehicleExt veh in World.Vehicles.AllVehicleList)
+        {
+            if (!IsValidForForgery(veh))
+            {
+                continue;
+            }
+            VehicleItem vehicleItem = ModItems.GetVehicle(veh.Vehicle.Model.Name);
+            if (vehicleItem == null)
+            {
+                vehicleItem = ModItems.GetVehicle(veh.Vehicle.Model.Hash);
+            }
+            if (vehicleItem == null)
+            {
+                continue;
+            }
+            string CarName = veh.GetCarName();
+            UIMenuItem menuItem = new UIMenuItem(CarName, $"Forge documents for the car.");
+            menuItem.RightLabel = DocumentForgeryCost.ToString("C0");
+            menuItem.Activated += (sender, args) =>
+            {
+                if (Player.BankAccounts.GetMoney(false) <= DocumentForgeryCost)
+                {
+                    PlayErrorSound();
+                    DisplayMessage("~r~Cash Only", "You do not have enough cash on hand.");
+                    return;
+                }
+                Player.BankAccounts.GiveMoney(-1 * DocumentForgeryCost, false);
+                DocumentItem document = new DocumentItem();
+                document.Name = $"{veh.ModelName()}-{veh.CarPlate.PlateNumber}";
+                document.ItemType = ItemType.Valuables;
+                document.Description = $"Forged documents for {veh.GetCarName()} with the plate {veh.CarPlate.PlateNumber}.";
+                document.LicensePlate = veh.CarPlate;
+                document.VehicleModel = veh.ModelName();
+                Player.Inventory.Add(document, 1.0f);
+                PlaySuccessSound();
+                DisplayMessage("~g~Purchased", $"Thank you for your purchase. Forged documents added to inventory.");
+            };
+            MenuLookup.Add(menuItem, veh);
+            ForgeDocumentSubMenu.AddItem(menuItem);
+        }
+    }
+
+    private void ForgeDocumentSubMenu_OnMenuClose(UIMenu sender)
+    {
+        StoreCamera.ReHighlightStoreWithCamera();
+    }
+
+    private void ForgeDocumentSubMenu_OnMenuOpen(UIMenu sender)
+    {
+        ForgeDocumentSubMenu_OnIndexChange(sender, sender.CurrentSelection);
+    }
+
+    private void ForgeDocumentSubMenu_OnIndexChange(UIMenu sender, int newIndex)
+    {
+        if (sender == null && sender.MenuItems == null || !sender.MenuItems.Any() || newIndex == -1)
+        {
+            return;
+        }
+        UIMenuItem coolmen = sender.MenuItems[newIndex];
+        if(MenuLookup.TryGetValue(coolmen, out VehicleExt menuItem))
+        {
+            if (menuItem == null || !menuItem.Vehicle.Exists())
+            {
+                return;
+            }
+            StoreCamera.HighlightEntity(menuItem.Vehicle);
+        }
+        else
+        {
+            return;
+        }
+    }
+
     public override void AddLocation(PossibleLocations possibleLocations)
     {
         possibleLocations.Forgers.Add(this);
         base.AddLocation(possibleLocations);
+    }
+    private bool IsValidForForgery(VehicleExt toExport)
+    {
+        if (!toExport.Vehicle.Exists() || toExport.Vehicle.DistanceTo2D(EntrancePosition) > VehiclePickupDistance || !toExport.HasBeenEnteredByPlayer || toExport.CarPlate == null || string.IsNullOrEmpty(toExport.CarPlate.PlateNumber))
+        {
+            return false;
+        }
+        return true;
     }
 }
 

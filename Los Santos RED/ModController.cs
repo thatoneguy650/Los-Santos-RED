@@ -99,7 +99,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes,
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest, Weather, 
-                Time, ModDataFileManager.ModItems, ModDataFileManager.Organizations, ModDataFileManager.Interiors, ModDataFileManager.DispatchablePeople, ModDataFileManager.DispatchableVehicles);
+                Time, ModDataFileManager.ModItems, ModDataFileManager.Organizations, ModDataFileManager.Interiors, ModDataFileManager.DispatchablePeople, ModDataFileManager.DispatchableVehicles, Player);
             Dispatcher.Setup();
             Player.Dispatcher = Dispatcher;
             Player.Weather = Weather;

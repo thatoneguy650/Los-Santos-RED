@@ -9,15 +9,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LosSantosRED</RootNamespace>
     <AssemblyName>Los Santos RED</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\GTA5\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\GTA5\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,7 +35,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\GTA5\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -43,7 +44,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>E:\GTA5\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -96,16 +97,16 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>E:\GTA5\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>E:\GTA5\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="RagePluginHook">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
+    <Reference Include="RagePluginHookSDK">
+      <HintPath>..\..\..\..\GTA5\SDK\RagePluginHookSDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -244,6 +245,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangBriberyTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\Generic\DrugMeetTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Generic Contact\PayoffContactTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\PlayerTasks\GangRaidDefenseTask.cs" />
     <Compile Include="lsr\Player\Activity\ForceDoorActivity.cs" />
     <Compile Include="lsr\Player\Activity\HideableObject.cs" />
     <Compile Include="lsr\Player\Activity\HidingActivity.cs" />
@@ -559,6 +561,7 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\DocumentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
     <Compile Include="lsr\Player\Managers\CuffManager.cs" />

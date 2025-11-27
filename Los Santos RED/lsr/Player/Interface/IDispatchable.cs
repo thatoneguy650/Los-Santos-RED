@@ -40,5 +40,6 @@ namespace LosSantosRED.lsr.Interface
         void OnHitSquadDispatched(Gang enemyGang, bool forceNoText);
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
         void OnMarshalsDispatched(Agency agency);
+        void OnRaidSquadDispatched(Gang enemyGang, GameLocation propertyBeingRaided);
     }
 }

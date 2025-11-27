@@ -227,7 +227,13 @@ public class SimpleInventory
             }
         }
     }
-
+    public void RemoveAllItems()
+    {
+        foreach (InventoryItem inventoryItem in ItemsList.ToList())
+        {
+            Remove(inventoryItem.ModItem, inventoryItem.Amount);
+        }
+    }
     public List<ModItem> GetIllegalItems()
     {
         List<ModItem> items = new List<ModItem>();

@@ -1346,8 +1346,12 @@ namespace Mod
                 EntryPoint.WriteToConsole($"OnHitSquadDispatched SendHitSquadMessage {enemyGang.ShortName}");
             }
         }
-
-
+        public void OnRaidSquadDispatched(Gang enemyGang, GameLocation propertyBeingRaided)
+        {
+            Game.DisplayNotification($"{propertyBeingRaided.Name} at {propertyBeingRaided.StreetAddress} is being attacked by ~r~{enemyGang.FullName}.");
+            CellPhone.PlayTexttone();
+            GPSManager.AddGPSRoute(propertyBeingRaided.Name, propertyBeingRaided.EntrancePosition, true);
+        }
 
         public void OnMarshalsDispatched(Agency deployedAgency)
         {

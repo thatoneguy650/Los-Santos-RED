@@ -34,6 +34,7 @@ public class Dispatcher
     private IInteriors Interiors;
     private IDispatchablePeople DispatchablePeople;
     private IDispatchableVehicles DispatchableVehicles;
+    private readonly ILocationInteractable LocationInteractable;
 
     public LEDispatcher LEDispatcher { get; private set; }
     public EMSDispatcher EMSDispatcher { get; private set; }
@@ -46,7 +47,7 @@ public class Dispatcher
 
     public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes,
         IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, 
-        IOrganizations organizations, IInteriors interiors, IDispatchablePeople dispatchablePeople , IDispatchableVehicles dispatchableVehicles)
+        IOrganizations organizations, IInteriors interiors, IDispatchablePeople dispatchablePeople , IDispatchableVehicles dispatchableVehicles, ILocationInteractable locationInteractable)
     {
         Player = player;
         World = world;
@@ -70,6 +71,7 @@ public class Dispatcher
         Interiors = interiors;
         DispatchablePeople = dispatchablePeople;
         DispatchableVehicles = dispatchableVehicles;
+        LocationInteractable = locationInteractable;
     }
     public void Setup()
     {
@@ -79,7 +81,7 @@ public class Dispatcher
         SecurityDispatcher = new SecurityDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, Crimes, ModItems, ShopMenus);
         FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems, ShopMenus, Crimes);
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
-        GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, ModItems, this);
+        GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, ModItems, this, LocationInteractable);
         LocationDispatcher = new LocationDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, 
             Agencies, Jurisdictions, WeatherReporter, Time, ModItems, Interiors, DispatchablePeople, DispatchableVehicles);
         TaxiDispatcher = new TaxiDispatcher(World, Player, Agencies,Settings, Streets,Zones,Jurisdictions,Weapons,Names,PlacesOfInterest,Organizations,Crimes,ModItems,ShopMenus);

@@ -172,6 +172,8 @@ public class GangSettings : ISettingsDefaultable
     public bool AllowNonEnemyTargets { get; set; }
     public bool AllowFlyThroughWindshield { get; set; }
     public float FlyThroughWindshieldPercent { get; set; }
+    public int PercentageForHitToBeRaid { get; set; }
+    public int AllowedTimeForRaidDefense { get; set; }
 
     public GangSettings()
     {
@@ -321,6 +323,8 @@ public class GangSettings : ISettingsDefaultable
 
         // RemoveNonSpawnedGangMembersOnFoot_Extra = false;
         AllowFlyThroughWindshield = true;
+        PercentageForHitToBeRaid = 50;
+        AllowedTimeForRaidDefense = 300;
 
 
     }
