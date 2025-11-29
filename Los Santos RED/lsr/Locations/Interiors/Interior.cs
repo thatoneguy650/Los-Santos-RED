@@ -503,7 +503,10 @@ public class Interior
         {
             test.AddDistanceOffset(offsetToAdd);
         }
-        ClearPositions.ForEach(x => x += offsetToAdd);
+        for (int i = 0; i < ClearPositions.Count; i++)
+        {
+            ClearPositions[i] += offsetToAdd;
+        }
         if (PropSpawns != null)
         {
             foreach (PropSpawn test in PropSpawns)

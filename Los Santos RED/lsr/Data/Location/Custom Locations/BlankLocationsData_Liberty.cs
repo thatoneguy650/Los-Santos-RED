@@ -432,6 +432,7 @@ public class BlankLocationsData_Liberty
                 ActivateDistance = 300f,
                 ActivateCells = 8,
                 AssignedAssociationID = "NOOSE",
+                StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                     {
                         new ConditionalGroup(){
@@ -464,6 +465,7 @@ public class BlankLocationsData_Liberty
                 ActivateDistance = 300f,
                 ActivateCells = 8,
                 AssignedAssociationID = "NOOSE",
+                StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                     {
                         new ConditionalGroup(){
@@ -789,16 +791,20 @@ public class BlankLocationsData_Liberty
                         OverridePoorWeatherPercentage = 0.0f,
                         PossibleVehicleSpawns  = new List<ConditionalLocation>()
                         {
-                            new LEConditionalLocation(new Vector3(1751.889f, 194.048f, 13.95154f), 46.04592f, 0f) {
+                            new LEConditionalLocation(new Vector3(1751.889f, 194.048f, 13.95154f), 46.04592f, defaultSpawnPercentage) {
                                 AssociationID = "",
-                                RequiredVehicleGroup = "Motorcycle", },
+                                RequiredVehicleGroup = "Motorcycle",
+                                OverrideNightPercentage = 55.0f,
+                                OverridePoorWeatherPercentage = 0.0f },
                         },
                         PossiblePedSpawns = new List<ConditionalLocation>()
                         {
-                            new LEConditionalLocation(new Vector3(1751.912f, 192.218f, 14.47479f), 37.95805f, 0f) {
+                            new LEConditionalLocation(new Vector3(1751.912f, 192.218f, 14.47479f), 37.95805f, defaultSpawnPercentage) {
                                 AssociationID = "",
                                 RequiredPedGroup = "MotorcycleCop",
                                 TaskRequirements = TaskRequirements.Guard,
+                                OverrideNightPercentage = 55.0f,
+                                OverridePoorWeatherPercentage = 0.0f,
                                 ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
                         }
                     },
@@ -4354,6 +4360,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiHouse",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1274.195f, 751.9827f, 12.00912f),
             EntranceHeading = 0f,
         };
@@ -4405,6 +4412,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiPizzaThis",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1319.616f, 1005.551f, 24.27114f),
             EntranceHeading = 0f,
         };
@@ -4456,6 +4464,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiHouse2",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1272.842f, 1234.057f, 24.90157f),
             EntranceHeading = 0f,
         };
@@ -4601,6 +4610,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiGarages",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1215.377f, 1267.308f, 22.89254f),
             EntranceHeading = 0f,
         };
@@ -4670,6 +4680,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiFuelDepot",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-169.0973f, 2282.694f, 8.127981f),
             EntranceHeading = 0f,
         };
@@ -4739,6 +4750,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiWaste",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(785.4881f, 764.6891f, 8.225273f),
             EntranceHeading = 0f,
         };
@@ -4795,6 +4807,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiIndustrial",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-983.0907f, 302.0165f, 3.301536f),
             EntranceHeading = 0f,
         };
@@ -4846,6 +4859,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiDiner",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1128.458f, 1006.3f, 11.86016f),
             EntranceHeading = 0f,
         };
@@ -4908,6 +4922,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiAlley",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1280.691f, 1138.948f, 23.27316f),
             EntranceHeading = 0f,
         };
@@ -4959,6 +4974,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiResta",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-1093.209f, 739.0616f, 9.59402f),
             EntranceHeading = 0f,
         };
@@ -5010,6 +5026,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiMail",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-956.8408f, 983.1132f, 4.103022f),
             EntranceHeading = 0f,
         };
@@ -5158,6 +5175,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiStreet",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(37.23869f, 235.6022f, 14.05649f),
             EntranceHeading = 0f,
         };
@@ -5209,6 +5227,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiAlDenti",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(176.4462f, -137.3461f, 14.12011f),
             EntranceHeading = 0f,
         };
@@ -5260,6 +5279,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiSuffolk",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-31.29272f, 209.0046f, 13.68697f),
             EntranceHeading = 0f,
         };
@@ -5593,6 +5613,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiErsatz",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(2.063804f, 289.296f, 13.83997f),
             EntranceHeading = 0f,
         };
@@ -5644,6 +5665,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiTriangle",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(88.56058f, 577.0297f, 14.12042f),
             EntranceHeading = 0f,
         };
@@ -5695,6 +5717,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiStreet2",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-189.9118f, 281.1453f, 8.707762f),
             EntranceHeading = 0f,
         };
@@ -5746,6 +5769,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiStreet3",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-136.5861f, 391.0245f, 13.967f),
             EntranceHeading = 0f,
         };
@@ -5792,6 +5816,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             Name = "GambettiCityHall3",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(82.83299f, 50.36075f, 14.564f),
             EntranceHeading = 0f,
         };
@@ -5846,6 +5871,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             Name = "LupisellaBlock",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1306.208f, 2333.91f, 12.05332f),
             EntranceHeading = 0f,
         };
@@ -7095,6 +7121,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaJunction",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(23.56182f, 947.2537f, 14.04991f),
             EntranceHeading = 0f,
         };
@@ -7335,6 +7362,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaHome",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-174.6256f, 873.5905f, 11.5797f),
             EntranceHeading = 0f,
         };
@@ -7387,6 +7415,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaRimmers",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-63.35028f, 894.5917f, 14.04116f),
             EntranceHeading = 0f,
         };
@@ -8212,6 +8241,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaJerkov",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(380.3443f, 1060.605f, 13.97948f),
             EntranceHeading = 0f,
         };
@@ -8273,6 +8303,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaParking",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-236.4019f, 932.1202f, 9.434384f),
             EntranceHeading = 0f,
         };
@@ -8386,6 +8417,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaStreet",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(241.28f, 744.2643f, 14.34473f),
             EntranceHeading = 0f,
         };
@@ -8443,6 +8475,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             Name = "MessinaProsper",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(335.0375f, 795.1543f, 14.75599f),
             EntranceHeading = 0f,
         };
@@ -8498,6 +8531,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             Name = "PavanoTower1",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(92.97209f, 1800.243f, 19.73783f),
             EntranceHeading = 0f,
         };
@@ -8643,6 +8677,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             Name = "PavanoPark",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6.858032f, 1650.251f, 14.0243f),
             EntranceHeading = 0f,
         };
@@ -8882,6 +8917,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             Name = "PavanoAlley",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(315.4411f, 1551.918f, 13.94037f),
             EntranceHeading = 0f,
         };
@@ -9309,6 +9345,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             Name = "PavanoPyrite",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(347.3736f, 1235.462f, 13.98408f),
             EntranceHeading = 0f,
         };
@@ -9581,6 +9618,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             Name = "PavanoUGCP",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(343.9904f, 1609.114f, 2.326401f),
             EntranceHeading = 0f,
         };
@@ -9597,7 +9635,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -9691,7 +9729,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -9785,7 +9823,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -9917,6 +9955,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeLockup",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-777.5654f, 1540.002f, 12.99034f),
             EntranceHeading = 0f,
         };
@@ -9930,7 +9969,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -10062,6 +10101,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeMrFuk",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1010.889f, 1570.355f, 19.04609f),
             EntranceHeading = 0f,
         };
@@ -10207,6 +10247,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeSpanky",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1141.885f, 1392.678f, 19.13541f),
             EntranceHeading = 0f,
         };
@@ -10220,7 +10261,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -10314,7 +10355,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -10408,7 +10449,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -10541,6 +10582,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeErotica",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1245.343f, 1617.774f, 22.42315f),
             EntranceHeading = 0f,
         };
@@ -10604,6 +10646,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeGarages2",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1062.691f, 1642.404f, 17.87553f),
             EntranceHeading = 0f,
         };
@@ -10750,6 +10793,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeGozushi",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1026.924f, 1805.179f, 21.17312f),
             EntranceHeading = 0f,
         };
@@ -10895,6 +10939,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeBighorn",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1102.706f, 2167.413f, 26.97584f),
             EntranceHeading = 0f,
         };
@@ -10947,6 +10992,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeBite",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-754.8597f, 2182.453f, 19.78052f),
             EntranceHeading = 0f,
         };
@@ -10960,7 +11006,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -11092,6 +11138,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeCorner",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1216.933f, 1297.364f, 19.16998f),
             EntranceHeading = 0f,
         };
@@ -11143,6 +11190,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeGarages",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1374.259f, 1298.287f, 29.33731f),
             EntranceHeading = 0f,
         };
@@ -11194,6 +11242,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeAlley",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1381.325f, 1213.451f, 27.13636f),
             EntranceHeading = 0f,
         };
@@ -11245,6 +11294,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             Name = "KkangpaeAlley2",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1234.698f, 1190.258f, 19.19664f),
             EntranceHeading = 0f,
         };
@@ -11764,6 +11814,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadStreet5",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(234.0642f, 124.7465f, 14.01854f),
             EntranceHeading = 0f,
         };
@@ -11909,6 +11960,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadStreet7",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(247.2991f, 52.29225f, 14.75236f),
             EntranceHeading = 0f,
         };
@@ -12335,6 +12387,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadRestaurant",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(406.1982f, 176.7377f, 12.79652f),
             EntranceHeading = 0f,
         };
@@ -12727,6 +12780,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadStorage",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(493.6854f, 219.9518f, 4.194003f),
             EntranceHeading = 0f,
         };
@@ -13159,6 +13213,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadExchange",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(425.8936f, -169.4933f, 4.218603f),
             EntranceHeading = 0f,
         };
@@ -13705,6 +13760,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadSumYungGai",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1489.331f, 875.0566f, 21.42678f),
             EntranceHeading = 0f,
         };
@@ -13761,6 +13817,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadZhouMing",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1464.376f, 1195.405f, 36.66275f),
             EntranceHeading = 0f,
         };
@@ -13817,6 +13874,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadRsHaul",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(583.1158f, 245.0024f, 3.84978f),
             EntranceHeading = 0f,
         };
@@ -14081,6 +14139,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             Name = "TriadMechMechanic",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1292.37f, 1041.007f, 24.62847f),
             EntranceHeading = 0f,
         };
@@ -14096,7 +14155,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1060.557f, 224.3717f, 15.59858f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14237,7 +14296,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1116.795f, 12.65497f, 14.93323f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14311,7 +14370,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1166.035f, 0.06602886f, 15.25864f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14385,7 +14444,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1022.138f, -48.6943f, 9.500606f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14447,7 +14506,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1353.559f, 46.04258f, 17.79775f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14567,7 +14626,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1180.539f, -185.1522f, 16.44039f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14634,7 +14693,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1330.582f, -149.4676f, 12.96499f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14731,7 +14790,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1198.493f, 203.3723f, 19.91231f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14797,7 +14856,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1388.117f, 69.95895f, 16.5161f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -14910,7 +14969,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1557.437f, -118.1017f, 12.24019f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -15253,6 +15312,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             Name = "PetrovicMasterson",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1425.172f, 192.4428f, 20.78341f),
             EntranceHeading = 0f,
         };
@@ -15481,6 +15541,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             Name = "PetrovicHome2",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1193.487f, 298.6674f, 24.71638f),
             EntranceHeading = 0f,
         };
@@ -15657,7 +15718,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
 
 
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
@@ -16255,6 +16316,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             Name = "SpanishLordsFolsom",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(706.3038f, 2159.385f, 16.91493f),
             EntranceHeading = 0f,
         };
@@ -18589,6 +18651,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             Name = "HustlersBlock",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-274.2355f, 1970.004f, 18.16135f),
             EntranceHeading = 0f,
         };
@@ -18848,6 +18911,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             Name = "HustlersBlock3",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(155.2973f, 2032.302f, 17.96054f),
             EntranceHeading = 0f,
         };
@@ -19940,6 +20004,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             Name = "AodDiner",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-162.1211f, 734.6867f, 13.27417f),
             EntranceHeading = 0f,
         };
@@ -20234,6 +20299,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             Name = "AodLimbo",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-252.8676f, 854.4429f, 6.707807f),
             EntranceHeading = 0f,
         };
@@ -20326,6 +20392,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             Name = "AodScrap",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(-250.8419f, 2264.396f, 8.149212f),
             EntranceHeading = 0f,
         };
@@ -20759,7 +20826,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -21091,6 +21158,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostHardtack",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1825.443f, 665.3831f, 11.56585f),
             EntranceHeading = 0f,
         };
@@ -21147,6 +21215,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostBlock",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1845.13f, 532.4124f, 6.635712f),
             EntranceHeading = 0f,
         };
@@ -21256,6 +21325,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostBlock2",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1797.469f, 580.9626f, 6.299311f),
             EntranceHeading = 0f,
         };
@@ -21312,6 +21382,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostDiner",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1189.576f, 941.447f, 15.01071f),
             EntranceHeading = 0f,
         };
@@ -21363,6 +21434,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostBlock3",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1626.995f, 768.0521f, 22.3841f),
             EntranceHeading = 0f,
         };
@@ -21377,7 +21449,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -21558,7 +21630,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
+            StateID = StaticStrings.AlderneyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -21706,6 +21778,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostPrison",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-706.4737f, 3.998697f, 2.85902f),
             EntranceHeading = 0f,
         };
@@ -21773,6 +21846,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1679.995f, 189.6399f, 2.094099f),
             EntranceHeading = 0f,
         };
@@ -21856,6 +21930,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial2",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1347.75f, 192.7496f, -3.301115f),
             EntranceHeading = 0f,
         };
@@ -21912,6 +21987,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial3",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1230.861f, -6.642178f, 2.56322f),
             EntranceHeading = 0f,
         };
@@ -21979,6 +22055,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial4",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1036.522f, -98.54172f, 2.310921f),
             EntranceHeading = 0f,
         };
@@ -22035,6 +22112,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial5",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-828.4366f, -97.46684f, 2.316268f),
             EntranceHeading = 0f,
         };
@@ -22082,6 +22160,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial6",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-992.7452f, 141.425f, 2.931996f),
             EntranceHeading = 0f,
         };
@@ -22129,6 +22208,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostIndustrial7",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1030.307f, 225.6431f, 2.923784f),
             EntranceHeading = 0f,
         };
@@ -22176,6 +22256,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostBlock4",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1133.259f, 420.2699f, 6.297982f),
             EntranceHeading = 0f,
         };
@@ -22232,6 +22313,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostDiner2",
             Description = "",
+            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(-1250.135f, 429.8978f, 5.709956f),
             EntranceHeading = 0f,
         };
@@ -22511,7 +22593,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1626.656f, 557.8749f, 25.58451f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -22628,7 +22710,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1600.437f, 540.2205f, 32.23283f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -22729,7 +22811,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1515.371f, 561.4121f, 38.10307f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -22849,7 +22931,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1703.692f, 679.4326f, 24.55261f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -22923,7 +23005,7 @@ public class BlankLocationsData_Liberty
             EntrancePosition = new Vector3(1769.87f, 631.3967f, 22.80543f),
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -23002,7 +23084,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
@@ -23074,7 +23156,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
@@ -23146,7 +23228,7 @@ public class BlankLocationsData_Liberty
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = "Liberty",
+            StateID = StaticStrings.LibertyStateID,
 
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
@@ -23253,6 +23335,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesBurgershot",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1861.01f, 725.2467f, 21.54011f),
             EntranceHeading = 0f,
         };
@@ -23304,6 +23387,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesAlPizza",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1676.551f, 715.4472f, 25.18301f),
             EntranceHeading = 0f,
         };
@@ -23637,6 +23721,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesEarpSt",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1463.883f, 525.3993f, 34.91597f),
             EntranceHeading = 0f,
         };
@@ -23688,6 +23773,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesBlock3",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1749.632f, 759.1354f, 24.24877f),
             EntranceHeading = 0f,
         };
@@ -24026,6 +24112,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesStreet9",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1410.9f, 564.3398f, 35.80666f),
             EntranceHeading = 0f,
         };
@@ -24176,6 +24263,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesStreet11",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1984.459f, 861.532f, 21.76576f),
             EntranceHeading = 0f,
         };
@@ -24434,6 +24522,7 @@ public class BlankLocationsData_Liberty
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesDrugFactory",
             Description = "",
+            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(1580.05f, 314.4746f, 22.51044f),
             EntranceHeading = 0f,
         };
