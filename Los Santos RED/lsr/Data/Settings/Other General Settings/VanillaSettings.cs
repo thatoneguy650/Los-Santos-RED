@@ -26,6 +26,7 @@ public class VanillaSettings : ISettingsDefaultable
     [Description("Terminates the vanilla character select system (Michael, Franklin, Trevor Wheel). WILL DISABLE THE ROCKSTAR EDITOR WHICH CANNOT BE RE-ENABLED WITHOUT A GAME RESTART.")]
     public bool TerminateSelector { get; set; }
     public bool SupressVanillaCopCrimes { get; set; }
+    public bool SupressPauseMenu { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -51,6 +52,7 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateSelector = false;
         SupressVanillaCopCrimes = true;
         TerminateRespawnGlobalID = 5;
+        SupressPauseMenu = false;
     }
 
 }

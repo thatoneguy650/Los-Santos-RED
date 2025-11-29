@@ -814,6 +814,17 @@ public class Interiors_Liberty
         {
             new ResidenceInterior(152578,"Playboy X Penthouse") {
                 IsTeleportEntry = true,
+                ClearPositions = new List<Vector3>()
+                {
+                    new Vector3(-184.1548f, 1961.992f, 38.51996f),//inside
+                    new Vector3(-183.8999f, 1960.78f, 38.51996f),//inside
+                    new Vector3(-185.9561f, 1948.199f, 38.03967f),//outside 
+                    new Vector3(-185.6841f, 1946.752f, 38.03876f),// outside 
+                    new Vector3(-185.4692f, 1945.574f, 38.0397f),//outside 
+                    new Vector3(-184.8408f, 1946.914f, 38.03957f),//outside 
+                    new Vector3(-183.7612f, 1945.778f, 38.03967f),//outside 
+                    new Vector3(-183.9858f, 1946.752f, 38.0394f),//outside 
+                },
                 InteriorEgressPosition = new Vector3(-188.2347f, 1961.426f, 38.96125f),
                 InteriorEgressHeading = 179.2488f,
                 InteractPoints = new List<InteriorInteract>(){
@@ -872,10 +883,15 @@ public class Interiors_Liberty
             },
             new ResidenceInterior(142850,"Studio Apartment") {
                 IsTeleportEntry = true,
-                InteriorEgressPosition = new Vector3(333.9883f, 1345.539f, 45.0461f),
+                ClearPositions = new List<Vector3>()
+                {
+                    new Vector3(339.9005f, 1344.516f, 44.05374f),// chair1
+                    new Vector3(339.562f, 1346.509f, 44.05374f),// chair2
+                },
+                InteriorEgressPosition = new Vector3(334.1107f, 1345.541f, 45.04599f),
                 InteriorEgressHeading = 267.9149f,
                 InteractPoints = new List<InteriorInteract>(){
-                    new ExitInteriorInteract("studioaptExit1",new Vector3(333.9883f, 1345.539f, 45.0461f), 91.86633f ,"Exit") ,
+                    new ExitInteriorInteract("studioaptExit1",new Vector3(334.1107f, 1345.541f, 45.04599f), 91.86633f ,"Exit") ,
                     new StandardInteriorInteract("studioaptStandard1",new Vector3(337.8049f, 1345.959f, 45.04611f), 270.5879f,"Interact")
                     {
                         CameraPosition = new Vector3(335.7429f, 1347.893f, 46.22897f),
@@ -930,6 +946,12 @@ public class Interiors_Liberty
             },
             new ResidenceInterior(39170,"South Bohan Apartment") {// Inside Door is non functioning,Can walk through/can cause interior issues
                 IsTeleportEntry = false,
+                ClearPositions = new List<Vector3>()
+                {
+                    new Vector3(842.86f, 1902.804f, 16.46414f),// couch 
+                    new Vector3(836.1785f, 1903.79f, 16.47628f),// table chair1 
+                    new Vector3(836.8679f, 1904.958f, 16.47628f),// table chair2 
+                },
                 InteriorEgressPosition = new Vector3(841.2067f, 1899.031f, 17.49082f),
                 InteriorEgressHeading = 0.9092442f,
                 InteractPoints = new List<InteriorInteract>(){
@@ -1488,7 +1510,16 @@ public class Interiors_Liberty
                 },
             }, // Top of Westminister Towers
             new ResidenceInterior(133890,"720 Savannah Ave") {
+                ClearPositions = new List<Vector3>()
+                    {
+                        new Vector3(1603.894f, 1019.785f, 32.11328f),// chairs1 
+                        new Vector3(1603.909f, 1020.651f, 32.11328f),// 2 
+                        new Vector3(1604.738f, 1021.636f, 32.11328f ),// 3 
+                        new Vector3(1605.625f, 1020.938f, 32.11328f),// 4 
+                        new Vector3(1605.534f, 1020.076f, 32.11328f),// 5 
+                    },
                 InteractPoints = new List<InteriorInteract>(){
+
                     new StandardInteriorInteract("SavannahStandard1",new Vector3(1615.303f, 1019.263f, 33.12494f), 89.94624f,"Interact")
                     {
                         UseNavmesh =false,
@@ -1564,6 +1595,16 @@ public class Interiors_Liberty
                 },
             },
             new ResidenceInterior(113666,"15 Cariboo Ave") {
+                ClearPositions = new List<Vector3>()
+                    {
+                        new Vector3(-1002.648f, 2034.278f, 25.07441f),// chairs1
+                        new Vector3(-1000.751f, 2035.232f, 25.07441f),// 2
+                        new Vector3(-1001.838f, 2038.526f, 25.07441f ),// 3
+                        new Vector3(-1005.254f, 2043.892f, 25.07441f),// 4
+                        new Vector3(-1007.597f, 2049.994f, 25.07441f),// 5
+                        new Vector3(-1005.81f, 2050.669f, 25.07441f),// 6
+                        new Vector3( -1003.572f, 2051.382f, 25.07441f),// 7
+                    },
                 InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("CaribooStandard1",new Vector3(-1008.025f, 2037.689f, 26.06386f), 357.4294f,"Interact")
                     {

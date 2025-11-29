@@ -21,7 +21,7 @@ public class VanillaWorldManager
     private uint GameTimeLastTerminatedAudio;
     private bool isVanillaCarRaceActive;
     private uint GameTimeLastSetMaxWanted;
-
+    private int pauseHoldCounter = 0;
     public VanillaWorldManager(ISettingsProvideable settings)
     {
         Settings = settings;
@@ -120,7 +120,10 @@ public class VanillaWorldManager
         //        ActivateVanillaCarRace();
         //    }
         //}
-
+        if (Settings.SettingsManager.VanillaSettings.SupressPauseMenu)
+        {
+            SupressPauseMenu();
+        }
 
 
         if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
@@ -239,6 +242,35 @@ public class VanillaWorldManager
         Game.StartNewScript("blip_controller");
         isVanillaBlipsActive = true;
     }
+    private void SupressPauseMenu()
+    {
+        bool pauseKeyDown = Game.IsControlPressed(0, GameControl.FrontendPause) ||   // P + Start
+                            Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Escape);
 
+        if (pauseKeyDown)
+        {
+            if (!NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
+            {
+                pauseHoldCounter++;
+
+                if (pauseHoldCounter >= 10) 
+                {
+                    NativeFunction.Natives.ACTIVATE_FRONTEND_MENU(
+                        NativeFunction.Natives.GET_HASH_KEY<int>("FE_MENU_VERSION_SP_PAUSE"),
+                        true, 0);
+                }
+                else
+                {
+                    NativeFunction.Natives.ACTIVATE_FRONTEND_MENU(
+                        NativeFunction.Natives.GET_HASH_KEY<int>("FE_MENU_VERSION_SP_PAUSE"),
+                        false, 0);
+                }
+            }
+        }
+        else
+        {
+            pauseHoldCounter = 0;
+        }
+    }
 }
 
