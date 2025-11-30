@@ -903,7 +903,7 @@ public class LEDispatcher
     {
         //EntryPoint.WriteToConsole("LE DISPATCHER HAS DISPATCHED RAN1");
         HasDispatchedThisTick = false;
-        if (!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        if (!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return HasDispatchedThisTick;
         }

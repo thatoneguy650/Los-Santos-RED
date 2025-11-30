@@ -820,6 +820,34 @@ public class DebugVehicleSubMenu : DebugSubMenu
 
 
 
+        UIMenuItem setRandomPlateType = new UIMenuItem("Set Random Plate Type", "Set random plate type");
+        setRandomPlateType.Activated += (menu, item) =>
+        {
+
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                PlateType NewType = PlateTypes.GetRandomPlateType(Player.InterestedVehicle.IsMotorcycle);
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        Player.InterestedVehicle.Vehicle.LicensePlate = NewPlateNumber;
+                    }
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.InterestedVehicle.Vehicle, NewType.Index);
+                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index}, Index: {NewType.Index}, State: {NewType.StateID}, Description: {NewType.Description}");
+                }
+                else
+                {
+                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index} None Found");
+                }
+            }
+        };
+        vehicleItemsMenu.AddItem(setRandomPlateType);
+
+
+
+
         UIMenuItem setPlateNumber = new UIMenuItem("Set Plate Number", "Set playe number from input");
         setPlateNumber.Activated += (menu, item) =>
         {

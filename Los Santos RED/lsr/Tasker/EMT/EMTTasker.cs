@@ -38,7 +38,7 @@ public class EMTTasker
     }
     public void Update()
     {
-        if (!Settings.SettingsManager.EMSSettings.ManageTasking)
+        if (!Settings.SettingsManager.EMSSettings.ManageTasking || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return;
         }

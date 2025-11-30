@@ -19,7 +19,7 @@ public class FireConditionalLocation : ConditionalLocation
     }
     public override bool DetermineRun(bool force)
     {
-        if (!Settings.SettingsManager.FireSettings.ManageDispatching)
+        if (!Settings.SettingsManager.FireSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return false;
         }

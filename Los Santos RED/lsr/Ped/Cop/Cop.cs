@@ -221,12 +221,16 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             return;
         }
-        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+        }
         if (!Pedestrian.Exists())
         {
             return;
         }
-        if (!IsAnimal)
+        if (!IsAnimal && !EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             bool hasLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageWithLongGuns);
             bool percentusingLongGuns = RandomItems.RandomPercent(AssignedAgency.PercentageUsingLongGunsWheneverPossible);
@@ -267,6 +271,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             return;
         }
+        if(EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            return;
+        }
+
         //return;
         if (Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
         {

@@ -33,7 +33,7 @@ public class CopTasker
     }
     public void Update()
     {
-        if (!Settings.SettingsManager.PoliceTaskSettings.ManageTasking)
+        if (!Settings.SettingsManager.PoliceTaskSettings.ManageTasking || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return;
         }

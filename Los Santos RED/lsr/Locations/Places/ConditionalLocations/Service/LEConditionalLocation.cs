@@ -21,7 +21,7 @@ public class LEConditionalLocation : ConditionalLocation
     }
     public override bool DetermineRun(bool force)
     {
-        if(!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        if(!Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return false;
         }

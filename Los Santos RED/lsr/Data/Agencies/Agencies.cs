@@ -133,6 +133,10 @@ public class Agencies : IAgencies
     {
         return AgenciesList.Where(x => x.ResponseType == responseType).ToList();
     }
+    public Agency GetDefaultAgency()
+    {
+        return AgenciesList.Where(x => x.ID == "LSPD").FirstOrDefault();
+    }
     private void SetupDefault()
     {
         LSPD = new Agency("~b~", "LSPD", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LS ", "Tasers", "LSPDSidearms", "LSPDLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 1 ,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" };

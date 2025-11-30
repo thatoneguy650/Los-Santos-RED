@@ -1070,12 +1070,18 @@ namespace Mod
         {
             GameTimeLastShot = Game.GameTime;
         }
+        public void SetDefaultCop()
+        {
+            SetAgencyStatus(Agencies.GetDefaultAgency());
+        }
         public void SetAgencyStatus(Agency toassign)
         {
             if(toassign == null)
             {
                 return;
             }
+
+
             if(toassign.ResponseType == ResponseType.LawEnforcement)
             {
                 Cop meAsCop = new Cop(Character, Settings, Character.MaxHealth, toassign, true, Crimes, Weapons, PlayerName, ModelName, World);
@@ -1488,6 +1494,12 @@ namespace Mod
         }
         private bool IsFreeToEnter()
         {
+
+            if(EntryPoint.IsLSPDFRIntegrationEnabled)
+            {
+                return true;
+            }
+
             if(CurrentVehicle.HasBeenEnteredByPlayer || CurrentVehicle.IsAlwaysOpenForPlayer)
             {
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;

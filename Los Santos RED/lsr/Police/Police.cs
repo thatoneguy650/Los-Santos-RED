@@ -43,6 +43,11 @@ namespace LosSantosRED.lsr
         public List<Cop> CloseVehicleChasingCops { get; private set; } = new List<Cop>();
         public void Update()
         {
+            if (EntryPoint.IsLSPDFRIntegrationEnabled)
+            {
+                return; 
+            }
+
             UpdateCops();
             GameFiber.Yield();
             UpdateRecognition();

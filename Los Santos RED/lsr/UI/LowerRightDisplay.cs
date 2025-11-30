@@ -301,7 +301,7 @@ public class LowerRightDisplay
             }
         }
 
-        if(DisplayablePlayer.IntimidationManager.IsMinimumIntimidating)
+        if(!DisplayablePlayer.IsCop && DisplayablePlayer.IntimidationManager.IsMinimumIntimidating)
         {
             if (PlayerDisplay == "")
             {
@@ -313,7 +313,7 @@ public class LowerRightDisplay
             }
         }
         string stealthText = DisplayablePlayer.StealthManager.GetUIText();
-        if (!string.IsNullOrEmpty(stealthText))
+        if (!DisplayablePlayer.IsCop && !string.IsNullOrEmpty(stealthText))
         {
             PlayerDisplay += $" {UI.CurrentDefaultTextColor}{stealthText}";
         }

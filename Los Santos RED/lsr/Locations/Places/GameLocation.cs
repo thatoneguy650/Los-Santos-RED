@@ -770,6 +770,24 @@ public class GameLocation : ILocationDispatchable
         {
             AllLocation.AddRange(PossibleVehicleSpawns);
         }
+
+        if (PossibleGroupSpawns != null)
+        {
+
+            foreach (ConditionalGroup cd in PossibleGroupSpawns)
+            {
+                if (cd.PossiblePedSpawns != null)
+                {
+                    AllLocation.AddRange(cd.PossiblePedSpawns);
+                }
+                if (cd.PossibleVehicleSpawns != null)
+                {
+                    AllLocation.AddRange(cd.PossibleVehicleSpawns);
+                }
+            }
+
+        }
+
         foreach (ConditionalLocation cl in AllLocation)
         {
             cl.AddDistanceOffset(offsetToAdd);

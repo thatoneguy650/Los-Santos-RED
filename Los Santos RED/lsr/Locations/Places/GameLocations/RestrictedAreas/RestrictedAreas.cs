@@ -33,6 +33,10 @@ public class RestrictedAreas
     }
     public void Update(ILocationInteractable player, IEntityProvideable world)
     {
+        if(EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            return;
+        }
         foreach(RestrictedArea restrictedArea in RestrictedAreasList)
         {
             restrictedArea.Update(player, world);

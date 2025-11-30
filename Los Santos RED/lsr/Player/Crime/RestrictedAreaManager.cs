@@ -40,6 +40,12 @@ public class RestrictedAreaManager
     }
     public void Update()
     {
+
+        if (EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            return;
+        }
+
         foreach (GameLocation gl in World.Places.ActiveLocations.ToList())
         {
             if(gl.RestrictedAreas != null && gl.RestrictedAreas.RestrictedAreasList != null && gl.RestrictedAreas.RestrictedAreasList.Any())
@@ -84,6 +90,10 @@ public class RestrictedAreaManager
     }
     private void UpdateLocationRestrictions()
     {
+        if (EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            return;
+        }
         GameLocation restrictedLocation = World.Places.ActiveLocations.Where(x => x.RestrictedAreas != null && (x.RestrictedAreas.IsPlayerViolating() || x.RestrictedAreas.IsPlayerViolatingVanilla())).FirstOrDefault();
         if (restrictedLocation == null)
         {

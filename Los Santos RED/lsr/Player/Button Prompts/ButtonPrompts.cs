@@ -429,7 +429,7 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
-        if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowGrabbingPeds)
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled && Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowGrabbingPeds)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;
@@ -438,7 +438,7 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "Grab");
         }
-        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer */ && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.IsInWantedActiveMode /* Player.AnyPoliceRecentlySeenPlayer */ && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -446,7 +446,7 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowSurrender");
         }
-        if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
+        if(!EntryPoint.IsLSPDFRIntegrationEnabled && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
         {
             AddPrompt("ShowStopSurrender", "Stop Surrendering", "ShowStopSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -454,7 +454,7 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowStopSurrender");
         }
-        if (Settings.SettingsManager.PlayerOtherSettings.AllowYellGetDownPrompt && Player.CurrentLookedAtPed == null && !Player.ActivityManager.IsInteractingWithLocation && !Prompts.Any(x=> x.Identifier != "YellGetDown") && !Player.IsShowingFrontEndMenus && !Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer*/ && Player.ClosestPoliceDistanceToPlayer > 40f && Player.IsAliveAndFree && Player.IsAiming && Player.IsOnFoot)
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled && Settings.SettingsManager.PlayerOtherSettings.AllowYellGetDownPrompt && Player.CurrentLookedAtPed == null && !Player.ActivityManager.IsInteractingWithLocation && !Prompts.Any(x=> x.Identifier != "YellGetDown") && !Player.IsShowingFrontEndMenus && !Player.IsInWantedActiveMode /*!Player.AnyPoliceRecentlySeenPlayer*/ && Player.ClosestPoliceDistanceToPlayer > 40f && Player.IsAliveAndFree && Player.IsAiming && Player.IsOnFoot)
         {
             AddPrompt("YellGetDown", "Force All Down", "YellGetDown", Settings.SettingsManager.KeySettings.YellKeyModifier, Settings.SettingsManager.KeySettings.YellKey, 999);
         }

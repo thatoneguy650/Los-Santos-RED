@@ -184,7 +184,7 @@ public class EMSDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if(Settings.SettingsManager.EMSSettings.ManageDispatching)
+        if(Settings.SettingsManager.EMSSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             HandleAmbientSpawns();
         }   

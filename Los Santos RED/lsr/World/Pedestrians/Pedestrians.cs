@@ -278,7 +278,7 @@ public class Pedestrians : ITaskerReportable
                 else
                 {
 
-                    if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice || (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent))
+                    if (!EntryPoint.IsLSPDFRIntegrationEnabled && Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice || (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent))
                     {
                         Delete(Pedestrian);
                         continue;
@@ -295,7 +295,7 @@ public class Pedestrians : ITaskerReportable
                     {
                         continue;
                     }
-                    if (Settings.SettingsManager.SecuritySettings.RemoveNonSpawnedSecurity || (Settings.SettingsManager.SecuritySettings.RemoveAmbientSecurity && !Pedestrian.IsPersistent))
+                    if (!EntryPoint.IsLSPDFRIntegrationEnabled && Settings.SettingsManager.SecuritySettings.RemoveNonSpawnedSecurity || (Settings.SettingsManager.SecuritySettings.RemoveAmbientSecurity && !Pedestrian.IsPersistent))
                     {
                         Delete(Pedestrian);
                         continue;
@@ -1008,6 +1008,17 @@ public class Pedestrians : ITaskerReportable
         var AgencyData = GetAgencyData(Pedestrian, 0, ResponseType.LawEnforcement);
         Agency AssignedAgency = AgencyData.agency;
         DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
+
+
+        if(EntryPoint.IsLSPDFRIntegrationEnabled && AssignedAgency == null)
+        {
+            AssignedAgency = Agencies.GetDefaultAgency();
+        }
+        if(EntryPoint.IsLSPDFRIntegrationEnabled && AssignedPerson == null)
+        {
+            AssignedPerson = new DispatchablePerson();
+        }
+
         if(AssignedAgency == null || AssignedPerson == null || !Pedestrian.Exists())
         {
             if (Pedestrian.IsPersistent)

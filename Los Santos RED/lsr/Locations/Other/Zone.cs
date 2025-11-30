@@ -193,7 +193,7 @@ public class Zone
 
 
         string toDisplay = $"{CurrentDefaultTextColor}" + FullZoneName(settings);
-        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
         }
@@ -206,7 +206,7 @@ public class Zone
                 toDisplay += gr.ToZoneString();
             }
         }
-        else if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && AssignedSecondLEAgeny != null)
+        else if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && AssignedSecondLEAgeny != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} - " + AssignedSecondLEAgeny.ColorInitials;
         }

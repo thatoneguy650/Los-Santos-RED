@@ -35,7 +35,7 @@ public class FirefighterTasker
     }
     public void Update()
     {
-        if (!Settings.SettingsManager.FireSettings.ManageTasking)
+        if (!Settings.SettingsManager.FireSettings.ManageTasking || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return;
         }

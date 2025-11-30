@@ -1257,6 +1257,10 @@ public class PedSwap : IPedSwap
         {
             return;
         }
+        if (EntryPoint.IsLSPDFRIntegrationEnabled)
+        {
+            return;
+        }
         //EntryPoint.WriteToConsoleTestLong($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
         //bigbruh in discord, supplied the below, seems to work just fine
         unsafe
@@ -1269,6 +1273,10 @@ public class PedSwap : IPedSwap
     public void SetPlayerOffset()
     {
         if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            return;
+        }
+        if(EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return;
         }

@@ -155,6 +155,27 @@ public class MainMenu : ModUIMenu
         };
         VehicleItems.AddItem(RemoveVehicleOwnership);
 
+
+
+
+        UIMenuCheckboxItem SetLSPDFRIntegrationMenu = new UIMenuCheckboxItem("LSPDFR Integration",EntryPoint.IsLSPDFRIntegrationEnabled,"Enable to set LSR into LSPDFR Compatibility Mode.");
+
+        SetLSPDFRIntegrationMenu.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.IsLSPDFRIntegrationEnabled = Checked;
+
+            Settings.SettingsManager.ViolationSettings.TreatAsCop = Checked;
+            if (Checked)
+            {
+                Player.SetDefaultCop();
+            }
+            else
+            {
+                Player.RemoveAgencyStatus();
+            }
+        };
+        Main.AddItem(SetLSPDFRIntegrationMenu);
+
         UIMenuItem UnloadMod = new UIMenuItem("Deactivate Mod", "Deactivate mod and change back to vanilla. Use Shift+F10 to restart. Does not unload from RPH. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
         UnloadMod.Activated += (s, e) =>

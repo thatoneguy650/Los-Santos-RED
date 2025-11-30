@@ -20,7 +20,7 @@ public class EMSConditionalLocation : ConditionalLocation
     }
     public override bool DetermineRun(bool force)
     {
-        if (!Settings.SettingsManager.EMSSettings.ManageDispatching)
+        if (!Settings.SettingsManager.EMSSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             return false;
         }

@@ -2237,7 +2237,7 @@ public class ActivityManager
 
             IsPickPocketing = false;
             isStartingPickpocket = false;
-            if (!CanPickpocketLookedAtPed || IsInteractingWithLocation || IsConversing)
+            if (!CanPickpocketLookedAtPed || IsInteractingWithLocation || IsConversing || Player.IsCop)
             {
                 if (buttonPrompts.Prompts.Any(p => p.Text.StartsWith("Pickpocket")))
                 {

@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         Agency GetRandomAgency(ResponseType lawEnforcement);
         List<Agency> GetAgencies();
         List<Agency> GetAgenciesByResponse(ResponseType responseType);
+        Agency GetDefaultAgency();
     }
 }

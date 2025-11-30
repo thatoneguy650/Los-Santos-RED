@@ -184,7 +184,7 @@ public class FireDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.FireSettings.ManageDispatching)
+        if (Settings.SettingsManager.FireSettings.ManageDispatching || EntryPoint.IsLSPDFRIntegrationEnabled)
         {
             HandleAmbientSpawns();
         }
