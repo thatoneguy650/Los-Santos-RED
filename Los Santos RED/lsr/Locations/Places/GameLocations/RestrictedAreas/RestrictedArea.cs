@@ -66,9 +66,10 @@ public class RestrictedArea
         {
             for (int index = 0; index < Boundaries.Length; index++)
             {
-                Vector2 item = Boundaries[index];
-                item.X += offsetToAdd.X;
-                item.Y += offsetToAdd.Y;
+                    Boundaries[index] = new Vector2(
+                    Boundaries[index].X + offsetToAdd.X,
+                    Boundaries[index].Y + offsetToAdd.Y
+                );
             }
         }
     }

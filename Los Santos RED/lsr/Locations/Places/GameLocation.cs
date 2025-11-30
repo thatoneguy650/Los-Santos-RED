@@ -762,6 +762,17 @@ public class GameLocation : ILocationDispatchable
             CameraDirection += offsetToAdd;
         }
         List<ConditionalLocation> AllLocation = new List<ConditionalLocation>();
+        if (PossibleGroupSpawns != null)
+        {
+        foreach (ConditionalGroup group in PossibleGroupSpawns)
+            {
+        if (group.PossiblePedSpawns != null)
+            AllLocation.AddRange(group.PossiblePedSpawns);
+
+        if (group.PossibleVehicleSpawns != null)
+            AllLocation.AddRange(group.PossibleVehicleSpawns);
+            }
+        }
         if (PossiblePedSpawns != null)
         {
             AllLocation.AddRange(PossiblePedSpawns);
@@ -792,7 +803,31 @@ public class GameLocation : ILocationDispatchable
         {
             cl.AddDistanceOffset(offsetToAdd);
         }
-        RestrictedAreas?.AddDistanceOffset(offsetToAdd);
+        if (RestrictedAreas != null)
+        {
+        foreach (var ra in RestrictedAreas.RestrictedAreasList)
+            {
+                // Offset the main boundary points (Vector2)
+                if (ra.Boundaries != null)
+                {
+                    for (int i = 0; i < ra.Boundaries.Length; i++)
+                    {
+                        ra.Boundaries[i] = new Vector2(
+                            ra.Boundaries[i].X + offsetToAdd.X,
+                            ra.Boundaries[i].Y + offsetToAdd.Y
+                        );
+                    }
+                }
+                // Offset all cameras in this restricted area
+                if (ra.SecurityCameras != null)
+                {
+                foreach (var cam in ra.SecurityCameras)
+                {
+                     cam.Position += offsetToAdd; 
+                }
+             }
+          }
+        }
 
         //moved into base class since its base class items
         VehiclePreviewLocation?.AddDistanceOffset(offsetToAdd);
