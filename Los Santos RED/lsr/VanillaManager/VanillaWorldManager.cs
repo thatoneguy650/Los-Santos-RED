@@ -244,32 +244,18 @@ public class VanillaWorldManager
     }
     private void SupressPauseMenu()
     {
-        bool pauseKeyDown = Game.IsControlPressed(0, GameControl.FrontendPause) ||   // P + Start
-                            Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Escape);
+        bool pausePressed =
+            Game.IsControlJustPressed(0, GameControl.FrontendPause) ||
+            Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Escape);
 
-        if (pauseKeyDown)
+        if (pausePressed)
         {
             if (!NativeFunction.Natives.IS_PAUSE_MENU_ACTIVE<bool>())
             {
-                pauseHoldCounter++;
-
-                if (pauseHoldCounter >= 10) 
-                {
-                    NativeFunction.Natives.ACTIVATE_FRONTEND_MENU(
-                        NativeFunction.Natives.GET_HASH_KEY<int>("FE_MENU_VERSION_SP_PAUSE"),
-                        true, 0);
-                }
-                else
-                {
-                    NativeFunction.Natives.ACTIVATE_FRONTEND_MENU(
-                        NativeFunction.Natives.GET_HASH_KEY<int>("FE_MENU_VERSION_SP_PAUSE"),
-                        false, 0);
-                }
+                NativeFunction.Natives.ACTIVATE_FRONTEND_MENU(
+                NativeFunction.Natives.GET_HASH_KEY<int>("FE_MENU_VERSION_MP_PAUSE"), 0, -1
+                );
             }
-        }
-        else
-        {
-            pauseHoldCounter = 0;
         }
     }
 }
