@@ -185,7 +185,7 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(1, "San Andreas Yellow on Black", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
         FullPlateTypeList.Add(new PlateType(2, "San Andreas Yellow on Blue", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });;
         FullPlateTypeList.Add(new PlateType(3, "San Andreas Classic", StaticStrings.SanAndreasStateID, 0, "12ABC345") { AllowVanity = true });
-        FullPlateTypeList.Add(new PlateType(4, "San Andreas Exempt", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false });
+        FullPlateTypeList.Add(new PlateType(4, "San Andreas Exempt", StaticStrings.SanAndreasStateID, 0, "12ABC345") { CanOverwrite = false,InStateSpawnChance = 0 });
         FullPlateTypeList.Add(new PlateType(5, "North Yankton Old", StaticStrings.NorthYanktonStateID, 0, "123  ABC") { InStateSpawnChance = 0 });
 
 
@@ -311,11 +311,20 @@ public class PlateTypes : IPlateTypes
 
 
 
-        FullPlateTypeList.Add(new PlateType(80, "Athabasca", "Athabasca", 2, "123  ABC"));
-        FullPlateTypeList.Add(new PlateType(81, "British Washington", "British Washington", 2, "AB1  23C"));
-        FullPlateTypeList.Add(new PlateType(82, "Victoria 01", "Victoria", 2, "ABC 1234"));
-        FullPlateTypeList.Add(new PlateType(83, "Victoria 02", "Victoria", 2, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(80, "Athabasca", "Athabasca", 3, "123  ABC"));
+        FullPlateTypeList.Add(new PlateType(81, "British Washington", "British Washington", 3, "AB1  23C"));
+        FullPlateTypeList.Add(new PlateType(82, "Victoria 01", "Victoria", 3, "ABC 1234"));
+        FullPlateTypeList.Add(new PlateType(83, "Victoria 02", "Victoria", 3, "ABC 1234"));
 
+
+
+        FullPlateTypeList.Add(new PlateType(84, "Saguenay", "Saguenay", 2, "ABC  12D"));
+        FullPlateTypeList.Add(new PlateType(85, "Prince Albert Island", "Prince Albert Island", 2, "123  ABC"));
+        FullPlateTypeList.Add(new PlateType(86, "Superior", "Superior", 2, "ABCD 123"));
+        FullPlateTypeList.Add(new PlateType(87, "Nova Francia", "Nova Francia", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(88, "Newstolenland and Barcelos", "Newstolenland and Barcelos", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(89, "New Hanover", "New Hanover", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(90, "Assiniboia", "Assiniboia", 3, "ABC  123"));
 
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();

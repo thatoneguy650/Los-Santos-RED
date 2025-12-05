@@ -762,17 +762,6 @@ public class GameLocation : ILocationDispatchable
             CameraDirection += offsetToAdd;
         }
         List<ConditionalLocation> AllLocation = new List<ConditionalLocation>();
-        if (PossibleGroupSpawns != null)
-        {
-        foreach (ConditionalGroup group in PossibleGroupSpawns)
-            {
-        if (group.PossiblePedSpawns != null)
-            AllLocation.AddRange(group.PossiblePedSpawns);
-
-        if (group.PossibleVehicleSpawns != null)
-            AllLocation.AddRange(group.PossibleVehicleSpawns);
-            }
-        }
         if (PossiblePedSpawns != null)
         {
             AllLocation.AddRange(PossiblePedSpawns);
