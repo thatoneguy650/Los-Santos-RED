@@ -69,6 +69,10 @@ public class DynamicPlaces
             "prop_gas_pump_1d",// xero
             "prop_gas_pump_old2",//old xero
             "prop_gas_pump_old3",//old LTD
+
+             //lc
+            "bm_gaspump",
+            "bm_gaspump3"
         };
         GasPumpsModelHashes = new List<uint>()
         {
@@ -80,8 +84,10 @@ public class DynamicPlaces
             0xe469f8b3, //globe old
             0x64ff4c0e, ///globe new
 
-
+            //lc
             0x0f3b57cf//lc globe
+            0x149C6B9B,// bmgaspump terriol
+            0x233A7FCD,// bmgaspump3 ron
         };
         ATMModelNames = new List<string>() 
         {

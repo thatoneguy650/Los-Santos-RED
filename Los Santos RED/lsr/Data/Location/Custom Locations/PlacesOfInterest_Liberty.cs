@@ -96,12 +96,15 @@ public class PlacesOfInterest_Liberty
         {
             bl.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));
         }
+        Vector3 lppOffset = new Vector3(4949.947f, -3750.0441f, -0.000197f);
+        foreach (RaceMeetup rm in lppLC.RaceMeetups)
+        {
+            rm.AddDistanceOffset(-lppOffset);
+        }
         foreach (GameLocation gl in PlacesOfInterest.InteractableLocations())
         {
             gl.AddLocation(lppLC);
         }
-
-
         Serialization.SerializeParam(lppLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Locations_{StaticStrings.LPPConfigSuffix}.xml");
         //offset is (4949.947f, -3750.0441f, -0.000197f)); for lpp whenever / (-4950.0030f, 3749.9990f, 0.0000f)) Taken from YBN Mover
     }
