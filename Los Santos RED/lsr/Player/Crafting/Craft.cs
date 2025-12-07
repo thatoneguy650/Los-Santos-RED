@@ -157,11 +157,15 @@ namespace Mod
 
             uint GameTimeStartedCrafting = Game.GameTime;
             Player.ButtonPrompts.AttemptAddPrompt("craftingStop", "Stop Crafting", "stopcraftingprompt1", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            if (Settings.SettingsManager.ActivitySettings.AllowSkippingCrafting) 
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("craftingStop", "Skip Crafting", "skipcraftingprompt1", Settings.SettingsManager.KeySettings.InteractStart, 999);
+            }
             int craftedQuantity = 0;
             EntryPoint.WriteToConsole($"craftedQuantity{craftedQuantity} finalQuantity{finalQuantity}");
             while (craftedQuantity < finalQuantity)//Game.GameTime - GameTimeStartedCrafting <= (finalCraftableItem.Cooldown * finalQuantity))
             {
-                if (!Player.IsAliveAndFree || Player.IsUnconscious || Player.ButtonPrompts.IsPressed("stopcraftingprompt1"))
+                if (!Player.IsAliveAndFree || Player.IsUnconscious || Player.ButtonPrompts.IsPressed("stopcraftingprompt1") || (Settings.SettingsManager.ActivitySettings.AllowSkippingCrafting && Player.ButtonPrompts.IsPressed("skipcraftingprompt1")))
                 {
                     IsCrafting = false;
                     if (!string.IsNullOrEmpty(finalCraftableItem.CrimeId))
@@ -174,6 +178,13 @@ namespace Mod
                     {
                         Player.ButtonPrompts.RemovePrompts("craftingStop");
                         Game.DisplayHelp("Crafting cancelled.");
+                    }
+                    if(Player.ButtonPrompts.IsPressed("skipcraftingprompt1"))
+                    {
+                        Player.ButtonPrompts.RemovePrompts("craftingStop");
+                        Game.DisplayHelp("Skipped crafting.");
+                        Game.DisplaySubtitle($"Skipped crafting, crafted {productName} - {finalQuantity} {itemToGive.MeasurementName}(s)");
+                        itemToGive.AddToPlayerInventory(Player, finalQuantity - craftedQuantity);
                     }
                     else
                     {
