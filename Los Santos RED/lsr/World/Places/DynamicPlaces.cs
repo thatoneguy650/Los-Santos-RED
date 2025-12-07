@@ -85,7 +85,7 @@ public class DynamicPlaces
             0x64ff4c0e, ///globe new
 
             //lc
-            0x0f3b57cf//lc globe
+            0x0f3b57cf,//lc globe
             0x149C6B9B,// bmgaspump terriol
             0x233A7FCD,// bmgaspump3 ron
         };

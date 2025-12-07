@@ -395,7 +395,7 @@ public class Civilians
         }
         if (Settings.SettingsManager.SecuritySettings.AllowDetainment && PoliceRespondable.IsNotWanted)
         {
-            if (PoliceRespondable.IsDetainable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsStill)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldDetainPlayer))
+            if (PoliceRespondable.IsDetainable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsMovingSlowly)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldDetainPlayer))
             {
                 GameFiber.Yield();
                 PoliceRespondable.Arrest();

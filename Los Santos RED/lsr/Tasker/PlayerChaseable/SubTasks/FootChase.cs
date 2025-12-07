@@ -244,7 +244,7 @@ public class FootChase
         }
         else if (Player.IsDangerouslyArmed)
         {
-            if (Player.IsStill)
+            if (Player.IsStill || Player.IsMovingSlowly)
             {
                 if (GoToDistance >= 3f)
                 {

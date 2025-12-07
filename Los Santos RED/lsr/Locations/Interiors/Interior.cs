@@ -488,8 +488,14 @@ public class Interior
 
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {
-        InternalInteriorCoordinates += offsetToAdd;
-        DisabledInteriorCoords += offsetToAdd;
+        if (InternalInteriorCoordinates != Vector3.Zero)
+        {
+            InternalInteriorCoordinates += offsetToAdd;
+        }
+        if (DisabledInteriorCoords != Vector3.Zero)
+        {
+            DisabledInteriorCoords += offsetToAdd;
+        }
 
         foreach (InteriorDoor sl in Doors)
         {
@@ -497,8 +503,15 @@ public class Interior
             {
                 sl.Position += offsetToAdd;
             }
+            if(sl.InteractPostion != Vector3.Zero)
+            {
+                sl.InteractPostion += offsetToAdd;
+            }
         }
-        InteriorEgressPosition += offsetToAdd;
+        if (InteriorEgressPosition != Vector3.Zero)
+        {
+            InteriorEgressPosition += offsetToAdd;
+        }
         foreach(InteriorInteract test in AllInteractPoints)
         {
             test.AddDistanceOffset(offsetToAdd);
@@ -525,6 +538,7 @@ public class Interior
         {
             SearchLocations.ForEach(x => x += offsetToAdd);
         }
+        Doors
     }
 
 

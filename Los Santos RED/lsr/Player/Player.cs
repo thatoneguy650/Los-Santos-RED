@@ -322,8 +322,8 @@ namespace Mod
         public bool IsBeingANuisance { get; set; }
         public bool IsBeingBooked { get; set; }
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-        public bool IsBustable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !IsAiming && !RecentlyShot && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
-        public bool IsDetainable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !IsAiming && !RecentlyShot && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || IsIncapacitated);
+        public bool IsBustable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !IsAiming && !RecentlyShot && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (IsMovingSlowly && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
+        public bool IsDetainable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !IsAiming && !RecentlyShot && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (IsMovingSlowly && !IsMovingDynamically)) && (!IsInVehicle || IsIncapacitated);
         public bool IsAnimal => false;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -430,6 +430,7 @@ namespace Mod
         public bool IsSleeping { get; set; } = false;
         public bool IsSleepingOutside { get; set; } = false;
         public bool IsStill { get; private set; }
+        public bool IsMovingSlowly { get; private set; }
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }
         public bool IsVisiblyArmed { get; set; }
@@ -2231,7 +2232,7 @@ namespace Mod
                 GameTimeLastMovedFast = 0;
             }
             IsStill = VehicleSpeed <= 0.1f;
-
+            IsMovingSlowly = VehicleSpeed <= 2.0f;
             if (VehicleSpeedMPH >= 25f)
             {
                 if (GameTimeStartedMovingFast == 0)
@@ -2302,8 +2303,8 @@ namespace Mod
             {
                 GameTimeLastMovedFast = 0;
             }
-            IsStill = Character.IsStill;
-
+            IsStill =  Character.IsStill;
+            IsMovingSlowly = PlayerSpeed <= 2.0f;
             if (PlayerSpeed >= 3.0f)
             {
                 if (GameTimeStartedMovingFast == 0)

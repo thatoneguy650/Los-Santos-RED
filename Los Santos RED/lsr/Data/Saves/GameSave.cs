@@ -276,15 +276,30 @@ namespace LosSantosRED.lsr.Data
         {
             if (player.Licenses.HasDriversLicense)
             {
-                DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID };
+                DriversLicense = new DriversLicense() { 
+                    ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, 
+                    IssueDate = player.Licenses.DriversLicense.IssueDate, 
+                    IssueStateID = player.Licenses.DriversLicense.IssueStateID 
+                };
             }
             if (player.Licenses.HasCCWLicense)
             {
-                CCWLicense = new CCWLicense() { ExpirationDate = player.Licenses.CCWLicense.ExpirationDate, IssueDate = player.Licenses.CCWLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID };
+                CCWLicense = new CCWLicense() { 
+                    ExpirationDate = player.Licenses.CCWLicense.ExpirationDate, 
+                    IssueDate = player.Licenses.CCWLicense.IssueDate,
+                    IssueStateID = player.Licenses.DriversLicense.IssueStateID 
+                };
             }
             if (player.Licenses.HasPilotsLicense)
             {
-                PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IssueStateID = player.Licenses.DriversLicense.IssueStateID, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
+                PilotsLicense = new PilotsLicense() { 
+                    ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, 
+                    IssueDate = player.Licenses.PilotsLicense.IssueDate, 
+                    IssueStateID = player.Licenses.DriversLicense.IssueStateID, 
+                    IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, 
+                    IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, 
+                    IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed 
+                };
             }
         }
         private void SaveAgencies(ISaveable player)
