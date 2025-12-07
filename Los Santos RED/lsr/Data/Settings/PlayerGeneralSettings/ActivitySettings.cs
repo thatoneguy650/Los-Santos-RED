@@ -115,6 +115,7 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Maximum distance (in meters) to pickpocket a ped.")]
     public float PickPocketDistance { get; set; }
     public float AlarmPercentageBash { get; set; }
+    public bool AllowSkippingCrafting { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -205,6 +206,7 @@ public class ActivitySettings : ISettingsDefaultable
 
 
         AlarmPercentageBash = 50f;
+        AllowSkippingCrafting = false;
 
     }
 }
