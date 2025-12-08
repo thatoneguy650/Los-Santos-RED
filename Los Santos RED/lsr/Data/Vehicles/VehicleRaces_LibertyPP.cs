@@ -56,12 +56,18 @@ public class VehicleRaces_LibertyPP
         };
         List<VehicleRaceCheckpoint> westdykeCheckpoints1 = new List<VehicleRaceCheckpoint>()
         {
-                new VehicleRaceCheckpoint(0, new Vector3(3836.31079f, -1712.09619f, 21.3103142f)),
-                new VehicleRaceCheckpoint(1, new Vector3(3794.77979f, -1550.11011f, 17.5818539f)),
-                new VehicleRaceCheckpoint(2, new Vector3(4080.06885f, -1452.02124f, 10.0494022f)),
-                new VehicleRaceCheckpoint(3, new Vector3(4195.56348f, -1665.04712f, 23.2308636f)),
-                new VehicleRaceCheckpoint(4, new Vector3(4100.70654f, -1598.26318f, 33.98326f)),
-                new VehicleRaceCheckpoint(5, new Vector3(3889.49561f, -1538.62427f, 27.0374737f)),
+                new VehicleRaceCheckpoint(0, new Vector3(3853.279f, -1664.805f, 26.7716f)),
+                new VehicleRaceCheckpoint(1, new Vector3(3784.186f, -1710.111f, 16.57557f)),
+                new VehicleRaceCheckpoint(2, new Vector3(3794.896f, -1542.249f, 18.12416f)),
+                new VehicleRaceCheckpoint(3, new Vector3(3801.274f, -1496.944f, 18.15788f)),
+                new VehicleRaceCheckpoint(4, new Vector3(3856.283f, -1449.296f, 18.15768f)),
+                new VehicleRaceCheckpoint(5, new Vector3(3947.17f, -1447.374f, 17.21162f)),
+                new VehicleRaceCheckpoint(6, new Vector3(4077.229f, -1452.523f, 10.29842f)),
+                new VehicleRaceCheckpoint(7, new Vector3(4214.083f, -1594.015f, 21.86138f)),
+                new VehicleRaceCheckpoint(8, new Vector3(4195.846f, -1665.351f, 23.23079f)),
+                new VehicleRaceCheckpoint(9, new Vector3(4157.467f, -1663.906f, 24.67818f)),
+                new VehicleRaceCheckpoint(10, new Vector3(4100.892f, -1601.551f, 33.98298f)),
+                new VehicleRaceCheckpoint(11, new Vector3(3899.239f, -1538.656f, 27.04146f)),
         };
         VehicleRaceTrack westdyke1 = new VehicleRaceTrack("westdyke1", "Westdyke Circuit", "Westdyke Circuit", westdykeCheckpoints1, westdykeStarting1);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(westdyke1);
@@ -85,8 +91,9 @@ public class VehicleRaces_LibertyPP
                 new VehicleRaceCheckpoint(1, new Vector3(3557.19678f, -2211.79419f, 29.6560535f)),
                 new VehicleRaceCheckpoint(2, new Vector3(3556.19678f, -2376.79419f, 29.6560535f)),
                 new VehicleRaceCheckpoint(3, new Vector3(3416.69678f, -2726.79419f, 22.1560535f)),
-                new VehicleRaceCheckpoint(4, new Vector3(3213.53467f, -3011.819f,   22.7976131f)),
-                new VehicleRaceCheckpoint(5, new Vector3(3173.43384f, -3264.48f,    6.894373f)),
+                new VehicleRaceCheckpoint(4, new Vector3(3376.497f, -2814.183f, 21.4208f)),
+                new VehicleRaceCheckpoint(5, new Vector3(3213.53467f, -3011.819f,   22.7976131f)),
+                new VehicleRaceCheckpoint(6, new Vector3(3141.938f, -3270.851f, 6.35153f)),
         };
         VehicleRaceTrack plumsky1 = new VehicleRaceTrack("plumsky1", "Plumbers Skyway Sprint", "Plumbers Skyway Sprint", plumskyCheckpoints1, plumskyStarting1);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(plumsky1);
@@ -245,8 +252,8 @@ public class VehicleRaces_LibertyPP
                 new VehicleRaceCheckpoint(2, new Vector3(7369.06f, -2870.122f, 5.282921f)),
                 new VehicleRaceCheckpoint(3, new Vector3(7372.857f, -2991.981f, 5.446329f)),
                 new VehicleRaceCheckpoint(4, new Vector3(7497.459f, -3033.752f, 5.43575f)),
-                new VehicleRaceCheckpoint(4, new Vector3(7513.396f, -2984.252f, 5.241279f)),
-                new VehicleRaceCheckpoint(5, new Vector3(7513.334f, -2879.528f, 5.341697f)),
+                new VehicleRaceCheckpoint(5, new Vector3(7513.396f, -2984.252f, 5.241279f)),
+                new VehicleRaceCheckpoint(6, new Vector3(7513.334f, -2879.528f, 5.341697f)),
         };
         VehicleRaceTrack fiahotring1 = new VehicleRaceTrack("fiahotring1", "FIA Hotring", "Francis International Oval", FIACheckpoints1, FIAStarting1);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(fiahotring1);
