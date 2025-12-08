@@ -1628,6 +1628,26 @@ public class PlacesOfInterest_LibertyPP
             }
         };
         LibertyCityLocations.CarDealerships.Add(LuxuryAutos);
+        Dealership WestdykeAutos = new Dealership(new Vector3(4119.343f, -1795.858f, 24.56643f), 217.3433f, "Westdyke Autos", "", "SandersMenu")
+        {
+            CameraPosition = new Vector3(4132.356f, -1793.774f, 29.45f),
+            CameraDirection = new Vector3(-0.8982348f, 0.3947144f, -0.1933256f),
+            CameraRotation = new Rotator(-11.14693f, 2.828118E-05f, 66.27771f),
+            VehiclePreviewCameraPosition = new Vector3(4107.402f, -1788.207f, 26.57295f),
+            VehiclePreviewCameraDirection = new Vector3(0.05000588f, 0.9061947f, -0.4198935f),
+            VehiclePreviewCameraRotation = new Rotator(-24.82786f, 7.055409E-07f, -3.158508f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(4107.165f, -1784.14f, 24.13877f), 225.756f),
+            LicensePlatePreviewText = "DYKEAUTO",
+            StateID = StaticStrings.AlderneyStateID,
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+                    new SpawnPlace(new Vector3(4130.476f, -1788.203f, 23.6726f), 356.8591f),
+                    new SpawnPlace(new Vector3(4112.023f, -1803.687f, 23.67073f), 93.08408f),
+                    new SpawnPlace(new Vector3(4102.874f, -1803.63f, 23.67176f), 89.73994f),
+                    new SpawnPlace(new Vector3(4091.624f, -1791.169f, 23.91193f), 4.39786f),
+            }
+        };
+        LibertyCityLocations.CarDealerships.Add(WestdykeAutos);
     }
     private void DefaultConfig_FoodStands()
     {
