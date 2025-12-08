@@ -903,6 +903,7 @@ public class Interiors_LibertyPP
                 InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("lostclubhouseStandard1",new Vector3(3472.254f, -2909.05f, 26.34175f), 240.7863f,"Interact")
                     {
+                        UseNavmesh = false,
                         CameraPosition = new Vector3(3469.961f, -2909.845f, 28.30681f),
                         CameraDirection = new Vector3(0.984137f, 0.1675837f, -0.05822409f),
                         CameraRotation = new Rotator(-3.337882f, -1.721139E-05f, -80.33609f)
@@ -944,18 +945,23 @@ public class Interiors_LibertyPP
                     {
                         LockWhenClosed = true, CanBeForcedOpenByPlayer = false,
                     },
-                    new InteriorDoor(1292729623,new Vector3(4561.536f, -2049.603f, 6.348628f)) // front door r
+                    new InteriorDoor(566666890,new Vector3(4561.536f, -2049.603f, 6.348628f)) // front door r
                     {
                         LockWhenClosed = true, CanBeForcedOpenByPlayer = false,
                     },
                     new InteriorDoor(807349477,new Vector3(4570.098f, -2052.992f, 6.351658f)) // inside door 
                     {
-                        LockWhenClosed = false,
+                        LockWhenClosed = false, CanBeForcedOpenByPlayer = false,
+                    },
+                    new InteriorDoor(384356690,new Vector3(4564.622f, -2062.965f, 6.356998f)) // inside door 
+                    {
+                        LockWhenClosed = false, CanBeForcedOpenByPlayer = false,
                     },
                 },
                 InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("aodclubhouseStandard1",new Vector3(4566.753f, -2057.878f, 6.099845f), 90.69704f,"Interact")
                     {
+                        UseNavmesh = false,
                         CameraPosition = new Vector3(4567.76f, -2054.997f, 7.594522f),
                         CameraDirection = new Vector3(-0.3271181f, -0.915049f, -0.2359642f),
                         CameraRotation = new Rotator(-13.64847f, -7.467957E-06f, 160.3287f)

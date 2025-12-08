@@ -2173,13 +2173,13 @@ public class PlacesOfInterest_LibertyPP
                 new GangConditionalLocation(new Vector3(3478.01f, -2896.451f, 24.75788f), 204.2542f, 75f),
                 new GangConditionalLocation(new Vector3(3482.075f, -2898.846f, 24.75222f), 205.1445f, 75f),
             },
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(3452.045f, -2929.646f, 24.91097f), 58.84938f),
-            VehiclePreviewCameraPosition = new Vector3(3450.659f, -2927.49f, 25.81994f),
-            VehiclePreviewCameraDirection = new Vector3(0.3769946f, -0.8685846f, -0.3216144f),
-            VehiclePreviewCameraRotation = new Rotator(-18.76058f, -4.508396E-06f, -156.5376f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(3439.695f, -2920.223f, 25.30804f), 239.213f),
+            VehiclePreviewCameraPosition = new Vector3(3442.314f, -2925.696f, 27.24959f),
+            VehiclePreviewCameraDirection = new Vector3(-0.2890621f, 0.9210953f, -0.260819f),
+            VehiclePreviewCameraRotation = new Rotator(-15.11866f, -4.42192E-07f, 17.42312f),
             VehicleDeliveryLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(3443.997f, -2924.771f, 24.92832f), 58.89474f),
-                    new SpawnPlace(new Vector3(3454.412f, -2917.393f, 24.91169f), 326.8281f),
+                    new SpawnPlace(new Vector3(3426.549f, -2914.406f, 25.25528f), 240.7795f),
+                    new SpawnPlace(new Vector3(3427.536f, -2910.832f, 25.25538f), 241.3223f),
                 }
         };
         LibertyCityLocations.GangDens.Add(LostMainDen);
@@ -2355,10 +2355,10 @@ public class PlacesOfInterest_LibertyPP
                 new GangConditionalLocation(new Vector3(4547.398f, -2053.243f, 5.723994f), 176.603f, 75f),
                 new GangConditionalLocation(new Vector3(4542.602f, -2052.051f, 5.723258f), 180.0852f, 75f),
             },
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(4561.225f, -2022.16f, 5.375636f), 41.42289f),
-            VehiclePreviewCameraPosition = new Vector3(4557.503f, -2022.487f, 6.805256f),
-            VehiclePreviewCameraDirection = new Vector3(0.9969154f, 0.0147663f, -0.07708169f),
-            VehiclePreviewCameraRotation = new Rotator(-4.420841f, 2.609104E-07f, -89.1514f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(4561.993f, -2022.106f, 5.720048f), 34.04589f),
+            VehiclePreviewCameraPosition = new Vector3(4555.944f, -2022.406f, 7.466713f),
+            VehiclePreviewCameraDirection = new Vector3(0.9867437f, 0.01829198f, -0.1612519f),
+            VehiclePreviewCameraRotation = new Rotator(-9.279566f, -2.433079E-07f, -88.93799f),
             VehicleDeliveryLocations = new List<SpawnPlace>() {
                 new SpawnPlace(new Vector3(4560.015f, -2031.753f, 5.37559f), 0.06439044f),
                 new SpawnPlace(new Vector3(4555.645f, -2031.722f, 5.376274f), 358.5541f),
