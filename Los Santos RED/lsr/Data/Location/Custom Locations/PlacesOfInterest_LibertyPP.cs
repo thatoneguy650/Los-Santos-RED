@@ -2173,6 +2173,7 @@ public class PlacesOfInterest_LibertyPP
                 new GangConditionalLocation(new Vector3(3478.01f, -2896.451f, 24.75788f), 204.2542f, 75f),
                 new GangConditionalLocation(new Vector3(3482.075f, -2898.846f, 24.75222f), 205.1445f, 75f),
             },
+            // Lost Interior disables/removes map outside  // Preventing Vehicle Preview from working properly 
             VehiclePreviewLocation = new SpawnPlace(new Vector3(3439.695f, -2920.223f, 25.30804f), 239.213f),
             VehiclePreviewCameraPosition = new Vector3(3442.314f, -2925.696f, 27.24959f),
             VehiclePreviewCameraDirection = new Vector3(-0.2890621f, 0.9210953f, -0.260819f),
@@ -3591,8 +3592,8 @@ public class PlacesOfInterest_LibertyPP
                         {
                             SecurityCameras = new List<SecurityCamera>()
                             {
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5503.21338f, -3433.68848f, 3.57940388f), 107f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 8.630707f-90f-45f, },
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5503.23438f, -3477.8064f, 3.57630682f), 36f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = -75.6471252f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5503.21338f, -3433.68848f, 3.57940388f), 107f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 142.7063f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5503.23438f, -3477.8064f, 3.57630682f), 36f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 40.4807f-90f-45f, },
                             }
                         },
                         new RestrictedArea("Lower Easton Police Impound",new Vector2[]
@@ -3719,8 +3720,8 @@ public class PlacesOfInterest_LibertyPP
                         {
                             SecurityCameras = new List<SecurityCamera>()
                             {
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5295.06836f, -2031.65308f, 14.7418852f), 8.999996f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 63.87578f-90f-45f, },
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5274.04f, -1994.53564f, 15.0351963f), 81.99896f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 153.6937f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5295.06836f, -2031.65308f, 14.7418852f), 68.50541f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 63.87578f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(5274.04f, -1994.53564f, 15.0351963f), 180.5152f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 153.6937f-90f-45f, },
                             }
                         },
                     },
@@ -3815,8 +3816,8 @@ public class PlacesOfInterest_LibertyPP
                     {
                         new RestrictedArea("Leftwood Police Parking", LeftwoodImpoundLot,new List<InteriorDoor>(), RestrictedAreaType.ImpoundLot) {
                             SecurityCameras = new List<SecurityCamera>() {
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(4347.167f, -1973.02417f, 21.0898037f), 44.0f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = -87f-90f-45f, },
-                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(4302.627f, -1930.66418f, 20.9698029f), 180.0f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 121f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(4347.167f, -1973.02417f, 21.0898037f), 44.0f) { Name = "Security Cam 1",IsManuallyCreated = true,PropHeading = 32.37564f-90f-45f, },
+                                new SecurityCamera(Game.GetHashKey("prop_cctv_pole_04"), new Vector3(4302.627f, -1930.66418f, 20.9698029f), 180.0f) { Name = "Security Cam 2",IsManuallyCreated = true,PropHeading = 217.9528f-90f-45f, },
                             } },
 
                     }

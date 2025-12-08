@@ -909,7 +909,7 @@ public class Interiors_LibertyPP
                         CameraRotation = new Rotator(-3.337882f, -1.721139E-05f, -80.33609f)
                     },
 
-                    new ToiletInteract("lostclubhouseToiletl1",new Vector3(3473.675f, -2915.979f, 26.34175f), 152.7634f,"Use Toilet")
+                    new ToiletInteract("lostclubhouseToiletl1",new Vector3(3473.675f, -2915.979f, 26.34175f), 328.1089f,"Use Toilet")
                     {
                         UseNavmesh = false,
                         CameraPosition = new Vector3(3472.876f, -2917.777f, 27.22837f),
@@ -967,7 +967,7 @@ public class Interiors_LibertyPP
                         CameraRotation = new Rotator(-13.64847f, -7.467957E-06f, 160.3287f)
                     },
 
-                    new ToiletInteract("aodclubhouseToiletl1",new Vector3(4560.809f, -2071.146f, 7.500951f), 357.0692f,"Use Toilet")
+                    new ToiletInteract("aodclubhouseToiletl1",new Vector3(4560.809f, -2071.146f, 7.500951f), 180.1201f,"Use Toilet")
                     {
                         UseNavmesh = false,
                         CameraPosition = new Vector3(4561.576f, -2069.895f, 8.350286f),

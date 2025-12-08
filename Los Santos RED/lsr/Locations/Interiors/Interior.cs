@@ -538,7 +538,7 @@ public class Interior
         {
             SearchLocations.ForEach(x => x += offsetToAdd);
         }
-        Doors
+        Doors.Clear();
     }
 
 
