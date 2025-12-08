@@ -242,9 +242,11 @@ public class VehicleRaces_LibertyPP
         {
                 new VehicleRaceCheckpoint(0, new Vector3(7513.447f, -2763.41f, 5.230164f)),
                 new VehicleRaceCheckpoint(1, new Vector3(7369.14f, -2767.69f, 5.339633f)),
-                new VehicleRaceCheckpoint(2, new Vector3(7369.004f, -2943.598f, 5.340843f)),
-                new VehicleRaceCheckpoint(3, new Vector3(7513.396f, -2984.252f, 5.241279f)),
-                new VehicleRaceCheckpoint(4, new Vector3(7513.334f, -2879.528f, 5.341697f)),
+                new VehicleRaceCheckpoint(2, new Vector3(7369.06f, -2870.122f, 5.282921f)),
+                new VehicleRaceCheckpoint(3, new Vector3(7372.857f, -2991.981f, 5.446329f)),
+                new VehicleRaceCheckpoint(4, new Vector3(7497.459f, -3033.752f, 5.43575f)),
+                new VehicleRaceCheckpoint(4, new Vector3(7513.396f, -2984.252f, 5.241279f)),
+                new VehicleRaceCheckpoint(5, new Vector3(7513.334f, -2879.528f, 5.341697f)),
         };
         VehicleRaceTrack fiahotring1 = new VehicleRaceTrack("fiahotring1", "FIA Hotring", "Francis International Oval", FIACheckpoints1, FIAStarting1);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(fiahotring1);
@@ -264,12 +266,13 @@ public class VehicleRaces_LibertyPP
         };
         List<VehicleRaceCheckpoint> FIACheckpoints2 = new List<VehicleRaceCheckpoint>()
         {
-                new VehicleRaceCheckpoint(0, new Vector3(7369.14063f, -2764.21753f, 5.51887226f)),
-                new VehicleRaceCheckpoint(1, new Vector3(6913.1626f, -2972.21582f, 7.018955f)),
-                new VehicleRaceCheckpoint(2, new Vector3(6440.697f,  -2967.73022f, 30.0528927f)),
-                new VehicleRaceCheckpoint(3, new Vector3(6182.147f,  -2989.09058f, 47.76625f)),
-                new VehicleRaceCheckpoint(4, new Vector3(5676.947f,  -2984.14014f, 43.956955f)),
-                new VehicleRaceCheckpoint(5, new Vector3(4983.53174f, -2994.88965f, 14.3914824f)),
+                new VehicleRaceCheckpoint(0, new Vector3(7513.447f, -2763.41f, 5.230164f)),
+                new VehicleRaceCheckpoint(1, new Vector3(7369.14f, -2767.69f, 5.339633f)),
+                new VehicleRaceCheckpoint(2, new Vector3(6913.1626f, -2972.21582f, 7.018955f)),
+                new VehicleRaceCheckpoint(3, new Vector3(6440.697f,  -2967.73022f, 30.0528927f)),
+                new VehicleRaceCheckpoint(4, new Vector3(6182.147f,  -2989.09058f, 47.76625f)),
+                new VehicleRaceCheckpoint(5, new Vector3(5676.947f,  -2984.14014f, 43.956955f)),
+                new VehicleRaceCheckpoint(6, new Vector3(4983.53174f, -2994.88965f, 14.3914824f)),
 
         };
         VehicleRaceTrack fiastarjunction = new VehicleRaceTrack("fiastarjunction", "FIA Star Junction", "FIA to Star Junction", FIACheckpoints2, FIAStarting2);
@@ -279,19 +282,25 @@ public class VehicleRaces_LibertyPP
     {
         List<VehicleRaceStartingPosition> DukesHighwayStarting1 = new List<VehicleRaceStartingPosition>()
         {
-                new VehicleRaceStartingPosition(5, new Vector3(6559.921f,   -2363.58521f, 13.270463f), 315.8207f),
-                new VehicleRaceStartingPosition(4, new Vector3(6563.572f,   -2366.61035f, 13.2164621f), 319.7684f),
-                new VehicleRaceStartingPosition(3, new Vector3(6556.906f,   -2375.23413f, 13.2010422f), 324.2783f),
-                new VehicleRaceStartingPosition(2, new Vector3(6552.864f,   -2372.644f,   13.2509327f), 323.1328f),
-                new VehicleRaceStartingPosition(1, new Vector3(6545.67969f, -2381.84033f, 13.2413425f), 324.9805f),
                 new VehicleRaceStartingPosition(0, new Vector3(6550.248f,   -2384.8252f,  13.205533f),  324.8135f),
+                new VehicleRaceStartingPosition(1, new Vector3(6545.67969f, -2381.84033f, 13.2413425f), 324.9805f),
+                new VehicleRaceStartingPosition(2, new Vector3(6552.864f,   -2372.644f,   13.2509327f), 323.1328f),
+                new VehicleRaceStartingPosition(3, new Vector3(6556.906f,   -2375.23413f, 13.2010422f), 324.2783f),
+                new VehicleRaceStartingPosition(4, new Vector3(6563.572f,   -2366.61035f, 13.2164621f), 319.7684f),
+                new VehicleRaceStartingPosition(5, new Vector3(6559.921f,   -2363.58521f, 13.270463f), 315.8207f),
         };
         List<VehicleRaceCheckpoint> DukesHighwayCheckpoints1 = new List<VehicleRaceCheckpoint>()
         {
-                new VehicleRaceCheckpoint(0, new Vector3(6706.463f,   -2271.56714f, 13.3852625f)),
-                new VehicleRaceCheckpoint(1, new Vector3(7179.67969f, -2455.267f,   8.724315f)),
-                new VehicleRaceCheckpoint(2, new Vector3(7260.944f,   -2919.37939f, 19.2323627f)),
-                new VehicleRaceCheckpoint(3, new Vector3(7027.293f,   -3140.223f,   17.096983f)),
+                new VehicleRaceCheckpoint(0, new Vector3(6557.353f, -2371.844f, 13.21317f)),
+                new VehicleRaceCheckpoint(1, new Vector3(6717.319f, -2271.487f, 13.35466f)),
+                new VehicleRaceCheckpoint(2, new Vector3(6829.653f, -2291.332f, 14.18538f)),
+                new VehicleRaceCheckpoint(3, new Vector3(7042.986f, -2340.147f, 23.50827f)),
+                new VehicleRaceCheckpoint(4, new Vector3(7120.486f, -2387.482f, 12.51296f)),
+                new VehicleRaceCheckpoint(5, new Vector3(7224.004f, -2550.771f, 12.6413f)),
+                new VehicleRaceCheckpoint(6, new Vector3(7261.188f, -2916.162f, 19.26021f)),
+                new VehicleRaceCheckpoint(7, new Vector3(7209.49f, -3080.412f, 17.9143f)),
+                new VehicleRaceCheckpoint(8, new Vector3(7023.65f, -3140.889f, 16.99864f)),
+
 
         };
         VehicleRaceTrack dukeshighway1 = new VehicleRaceTrack("dukeshighway1", "Dukes Expressway", "Dukes Expressway Sprint", DukesHighwayCheckpoints1, DukesHighwayStarting1);

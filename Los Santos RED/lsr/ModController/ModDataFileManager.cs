@@ -420,8 +420,6 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "Credits:"
             + Environment.NewLine +
-            "box"
-            + Environment.NewLine +
             "Peter Badoingy";
         File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\readme.txt", Description);
     }
