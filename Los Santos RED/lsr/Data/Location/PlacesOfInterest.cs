@@ -103,6 +103,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LibertyCity();
+            DefaultConfig_LibertyCityPP();
             DefaultConfig_2008();
         }
 
@@ -6307,7 +6308,11 @@ public class PlacesOfInterest : IPlacesOfInterest
         PlacesOfInterest_Liberty placesOfInterest_Liberty = new PlacesOfInterest_Liberty(this);
         placesOfInterest_Liberty.DefaultConfig();
     }
-
+    private void DefaultConfig_LibertyCityPP()
+    {
+        PlacesOfInterest_LibertyPP placesOfInterest_Liberty = new PlacesOfInterest_LibertyPP(this);
+        placesOfInterest_Liberty.DefaultConfig();
+    }
     public void Setup()
     {
         foreach (GameLocation bl in AllLocations())

@@ -44,6 +44,7 @@ public class Interiors : IInteriors
             EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
             DefaultConfig();
             DefaultConfig_LibertyCity();
+            DefaultConfig_LibertyCityPP();
         }
         //Load Additive
         foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Interiors+_*.xml").OrderByDescending(x => x.Name))
@@ -59,6 +60,11 @@ public class Interiors : IInteriors
     private void DefaultConfig_LibertyCity()
     {
         Interiors_Liberty interiors_Liberty = new Interiors_Liberty(this);
+        interiors_Liberty.DefaultConfig();
+    }
+    private void DefaultConfig_LibertyCityPP()
+    {
+        Interiors_LibertyPP interiors_Liberty = new Interiors_LibertyPP(this);
         interiors_Liberty.DefaultConfig();
     }
     private void DefaultConfig()

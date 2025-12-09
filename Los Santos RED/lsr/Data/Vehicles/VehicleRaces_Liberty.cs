@@ -34,12 +34,12 @@ public class VehicleRaces_Liberty
             DukesTracks();
 
             Serialization.SerializeParam(VehicleRaceTypeManager, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\VehicleRaces_{StaticStrings.LibertyConfigSuffix}.xml");
-            foreach (VehicleRaceTrack vrt in VehicleRaceTypeManager.VehicleRaceTracks)
-            {
-                vrt.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));//lpp OFFSET
-            }
-            Serialization.SerializeParam(VehicleRaceTypeManager, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\VehicleRaces_{StaticStrings.LPPConfigSuffix}.xml");
-
+            //foreach (VehicleRaceTrack vrt in VehicleRaceTypeManager.VehicleRaceTracks)
+            //{
+            //    vrt.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));//lpp OFFSET
+            //}
+            //Serialization.SerializeParam(VehicleRaceTypeManager, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\VehicleRaces_{StaticStrings.LPPConfigSuffix}.xml");
+            // Your services are no longer required
 
         }
     }

@@ -52,17 +52,17 @@ public class Interiors_Liberty
         //Serialization.SerializeParam(lcEastInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Variations\\East\\Interiors_{StaticStrings.LibertyConfigSuffix}East.xml");
         //LCPP 4949.947f, -3750.0441f, -0.000197f / 4950.0030f, -3749.9990f, 0.0000f
 
-        PossibleInteriors lppInteriors = LibertyCityInteriors.Copy();
-        foreach (Interior interior in lppInteriors.AllInteriors())
-        {
-            interior.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));
-        }
+        //PossibleInteriors lppInteriors = LibertyCityInteriors.Copy();
+        //foreach (Interior interior in lppInteriors.AllInteriors())
+        //{
+        //    interior.AddDistanceOffset(new Vector3(4949.947f, -3750.0441f, -0.000197f));
+        //}
 
-        foreach (Interior intloc in LSInteriors.PossibleInteriors.AllInteriors())
-        {
-            intloc.AddLocation(lppInteriors);
-        }
-        Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
+        //foreach (Interior intloc in LSInteriors.PossibleInteriors.AllInteriors())
+        //{
+        //    intloc.AddLocation(lppInteriors);
+        //}
+        //Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
     private void Banks()
