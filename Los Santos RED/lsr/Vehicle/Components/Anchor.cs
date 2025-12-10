@@ -251,8 +251,15 @@ namespace LSR.Vehicles
         }
         public void Dispose()
         {
-            Cleanup();
-            DeleteRope();
+            if (VehicleToMonitor?.Vehicle.Exists() == true)
+            {
+                NativeFunction.Natives.SET_BOAT_ANCHOR(VehicleToMonitor.Vehicle, false);
+                NativeFunction.Natives.SET_BOAT_REMAINS_ANCHORED_WHILE_PLAYER_IS_DRIVER(VehicleToMonitor.Vehicle, false);
+                NativeFunction.Natives.SET_BOAT_LOW_LOD_ANCHOR_DISTANCE(VehicleToMonitor.Vehicle, -1.0f);
+            }
+
+            Cleanup(); // Remove all ropes ever created
+            DeleteRope(); // Remove current active rope (safety)
         }
         public static void CleanupAllRopes()
         {
