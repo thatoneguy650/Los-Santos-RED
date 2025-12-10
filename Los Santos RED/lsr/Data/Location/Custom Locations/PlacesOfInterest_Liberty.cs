@@ -3204,7 +3204,7 @@ public class PlacesOfInterest_Liberty
         LibertyCityLocations.GangDens.Add(PetrovicDen1);
 
 
-        GangDen AngelsDen = new GangDen(new Vector3(-385.5903f, 1701.063f, 6.09363f), 356.4827f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        GangDen AngelsDen = new GangDen(new Vector3(-385.5903f, 1701.063f, 6.09363f), 356.4827f, "Angles of Death Clubhouse", "", "AngelsDenMenu", "AMBIENT_GANG_ANGELS")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -3235,7 +3235,7 @@ public class PlacesOfInterest_Liberty
         };
         LibertyCityLocations.GangDens.Add(AngelsDen);
 
-        GangDen UptownDen = new GangDen(new Vector3(25.66632f, 2129.53f, 18.74488f), 356.3734f, "Uptown Riders Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_UPTOWN")
+        GangDen UptownDen = new GangDen(new Vector3(25.66632f, 2129.53f, 18.74488f), 356.3734f, "Uptown Riders Clubhouse", "", "UptownDenMenu", "AMBIENT_GANG_UPTOWN")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,

@@ -1161,7 +1161,7 @@ public class Interiors_LibertyPP
                 },
                 RestInteracts = new List<RestInteract>()
                 {
-                    new RestInteract("studioaptRest1", new Vector3(5290.90234f, -2413.54517f, 45.089f), 359.6932f,"Sleep")
+                    new RestInteract("studioaptRest1", new Vector3(5291f, -2413.4f, 45.09171f), 2.417527f,"Sleep")
                     {
                         CameraPosition = new Vector3(5294.2915f, -2413.06519f, 46.44382f),
                         CameraDirection = new Vector3(-0.7603666f, 0.4343084f, -0.4829274f),
@@ -1647,7 +1647,7 @@ public class Interiors_LibertyPP
             },// Brucie's Studio Apartment
             new ResidenceInterior(216578, "Single Room")
             {
-                IsTeleportEntry = false,
+                IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(5055.579f, -1877.20923f, 32.79669f),
                 InteriorEgressHeading = 87.70292f,
                 Doors = new List<InteriorDoor>()
@@ -1661,6 +1661,7 @@ public class Interiors_LibertyPP
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
+                    new ExitInteriorInteract("singrmaptExit1",new Vector3(5055.897f, -1876.774f, 32.79689f), 358.7548f ,"Exit") ,
                     new StandardInteriorInteract("singrmaptStandard1", new Vector3(5049.86133f, -1873.08521f, 32.79673f), 95.84647f, "Interact")
                     {
                         UseNavmesh = false,
@@ -1719,7 +1720,7 @@ public class Interiors_LibertyPP
             new ResidenceInterior(38402, "Apartment 204")
             {
                 IsTeleportEntry = true,
-                InteriorEgressPosition = new Vector3(4647.22852f, -1998.96118f, 97.53441f),
+                InteriorEgressPosition = new Vector3(4640.825f, -2007.534f, 97.53463f),
                 InteriorEgressHeading = 165.7377f,
                 Doors = new List<InteriorDoor>()
                 {
@@ -1732,7 +1733,7 @@ public class Interiors_LibertyPP
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("westaptExit1", new Vector3(4647.22852f, -1998.96118f, 97.53441f), 342.735f, "Exit"),
+                    new ExitInteriorInteract("westaptExit1", new Vector3(4640.825f, -2007.534f, 97.53463f), 346.1223f, "Exit"),
                     new StandardInteriorInteract("westaptStandard1", new Vector3(4643.2876f, -2013.25024f, 97.56591f), 257.585f, "Interact")
                     {
                         UseNavmesh = false,
@@ -1910,13 +1911,18 @@ public class Interiors_LibertyPP
                 IsTeleportEntry = false,
                 ClearPositions = new List<Vector3>()
                 {
-                    new Vector3(3947.29883f, -1715.76624f, 25.074213f),
-                    new Vector3(3949.1958f,  -1714.81213f, 25.074213f),
-                    new Vector3(3948.109f,   -1711.51819f, 25.074213f),
-                    new Vector3(3944.69287f, -1706.15222f, 25.074213f),
-                    new Vector3(3942.34985f, -1700.05029f, 25.074213f),
-                    new Vector3(3944.13672f, -1699.37524f, 25.074213f),
-                    new Vector3(3946.37476f, -1698.66211f, 25.074213f)
+                    new Vector3(3947.29883f, -1715.76624f, 25.0744f),
+                    new Vector3(3949.1958f,  -1714.81213f, 25.0744f),
+                    new Vector3(3948.109f,   -1711.51819f, 25.0744f),
+                    new Vector3(3944.69287f, -1706.15222f, 25.0744f),
+                    new Vector3(3942.34985f, -1700.05029f, 25.0744f),
+                    new Vector3(3944.13672f, -1699.37524f, 25.0744f),
+                    new Vector3(3946.37476f, -1698.66211f, 25.0744f),
+                    new Vector3(3946.428f,   -1698.62f,    25.0744f),
+                    new Vector3(3947.353f,   -1715.724f,   25.0744f),
+                    new Vector3(3949.25f,    -1714.77f,    25.0744f),
+                    new Vector3(3948.163f,   -1711.476f,   25.0744f),
+                    new Vector3(3944.747f,   -1706.11f,    25.0744f),
                 },
                 Doors = new List<InteriorDoor>()
                 {
@@ -1953,7 +1959,7 @@ public class Interiors_LibertyPP
                 },
                 RestInteracts = new List<RestInteract>()
                 {
-                    new RestInteract("CaribooRest1", new Vector3(3947.29688f, -1711.35425f, 26.0636539f), 359.507f, "Sleep")
+                    new RestInteract("CaribooRest1", new Vector3(3947.334f, -1711.594f, 26.06386f), 3.626719f, "Sleep")
                     {
                         UseNavmesh = false,
                         CameraPosition = new Vector3(3944.88574f, -1711.98315f, 27.1787128f),

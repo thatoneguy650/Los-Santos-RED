@@ -2302,7 +2302,7 @@ public class PlacesOfInterest_LibertyPP
         };
         LibertyCityLocations.GangDens.Add(KoreanDen1);
 
-        GangDen NorthHollandDen1 = new GangDen(new Vector3(-4782.549f, -1848.88f, 12.46692f), 359.1933f, "The North Holland Hustlers Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_HOLHUST")
+        GangDen NorthHollandDen1 = new GangDen(new Vector3(4782.549f, -1848.88f, 12.46692f), 359.1933f, "The North Holland Hustlers Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_HOLHUST")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -2351,7 +2351,7 @@ public class PlacesOfInterest_LibertyPP
         };
         LibertyCityLocations.GangDens.Add(PetrovicDen1);
 
-        GangDen AngelsDen = new GangDen(new Vector3(4564.356f, -2048.981f, 6.094771f), 356.4827f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        GangDen AngelsDen = new GangDen(new Vector3(4564.356f, -2048.981f, 6.094771f), 356.4827f, "Angles of Death Clubhouse", "", "AngelsDenMenu", "AMBIENT_GANG_ANGELS")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -2387,7 +2387,7 @@ public class PlacesOfInterest_LibertyPP
         };
         LibertyCityLocations.GangDens.Add(AngelsDen);
 
-        GangDen UptownDen = new GangDen(new Vector3(4975.615f, -1620.471f, 18.73886f), 357.6026f, "Uptown Riders Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_UPTOWN")
+        GangDen UptownDen = new GangDen(new Vector3(4975.615f, -1620.471f, 18.73886f), 357.6026f, "Uptown Riders Clubhouse", "", "UptownDenMenu", "AMBIENT_GANG_UPTOWN")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -4315,60 +4315,60 @@ public class PlacesOfInterest_LibertyPP
             new Residence(new Vector3(4805.877f, -2503.992f, 14.70955f), 274.091f, "Mayfair Towers Apt 16", ""){ StateID = StaticStrings.LibertyStateID, InteriorID = -1,OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
 
             //interior residences
-            new Residence(new Vector3(4760.573f, -1784.506f, 20.16148f), 269.3358f, "Playboy X Penthouse", "Xenotime Street") { StateID = StaticStrings.LibertyStateID, InteriorID = 152578,OpenTime = 0,CloseTime = 24, PurchasePrice = 1275000,SalesPrice = 580000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(4760.573f, -1784.506f, 20.16148f), 269.3358f, "Playboy X Penthouse", "Xenotime Street") { StateID = StaticStrings.LibertyStateID, InteriorID = 152578,OpenTime = 0,CloseTime = 24, PurchasePrice = 1275000,SalesPrice = 580000, RentalDays = 28, RentalFee = 10000,
 
                 CameraPosition = new Vector3(4764.73f, -1782.586f, 21.10646f),
                 CameraDirection = new Vector3(0.7119601f, -0.681676f, -0.1686142f),
                 CameraRotation = new Rotator(-9.707253f, 8.661754E-07f, -133.7551f)
                 },
-            new Residence(new Vector3(5285.526f, -2415.472f, 15.78899f), 356.4554f, "Albany Studio Apartment", "Albany Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 142850,OpenTime = 0,CloseTime = 24, PurchasePrice = 1075000,SalesPrice = 480000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(5285.526f, -2415.472f, 15.78899f), 356.4554f, "Albany Studio Apartment", "Albany Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 142850,OpenTime = 0,CloseTime = 24, PurchasePrice = 1075000,SalesPrice = 480000, RentalDays = 28, RentalFee = 10000,
 
                 CameraPosition = new Vector3(5290.346f, -2412.433f, 16.75525f),
                 CameraDirection = new Vector3(-0.7060308f, -0.704756f, -0.06956572f),
                 CameraRotation = new Rotator(-3.989044f, -1.711694E-06f, 134.9482f)
                 },
-            new Residence(new Vector3(5981.187f, -3129.01f, 6.038285f), 318.4304f, "Broker Studio Apartment", "Mohanet Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 113154,OpenTime = 0,CloseTime = 24, PurchasePrice = 1100000,SalesPrice = 480000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(5981.187f, -3129.01f, 6.038285f), 318.4304f, "Broker Studio Apartment", "Mohanet Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 113154,OpenTime = 0,CloseTime = 24, PurchasePrice = 1100000,SalesPrice = 480000, RentalDays = 28, RentalFee = 10000,
 
                 CameraPosition = new Vector3(5970.087f, -3129.94f, 38.61262f),
                 CameraDirection = new Vector3(0.6485046f, 0.639755f, -0.4124989f),
                 CameraRotation = new Rotator(-24.36191f, 1.218394E-05f, -45.38913f)
                 },
 
-            new Residence(new Vector3(5158.848f, -2463.702f, 14.95425f), 84.9242f, "Middle Park Penthouse", "Columbus Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 100610,OpenTime = 0,CloseTime = 24, PurchasePrice = 2275000,SalesPrice = 1100000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(5158.848f, -2463.702f, 14.95425f), 84.9242f, "Middle Park Penthouse", "Columbus Avenue") { StateID = StaticStrings.LibertyStateID, InteriorID = 100610,OpenTime = 0,CloseTime = 24, PurchasePrice = 2275000,SalesPrice = 1100000, RentalDays = 28, RentalFee = 15000,
 
                 CameraPosition = new Vector3(5149.497f, -2461.782f, 17.28627f),
                 CameraDirection = new Vector3(0.9464633f, -0.2554365f, -0.1973814f),
                 CameraRotation = new Rotator(-11.38387f, 1.676497E-05f, -105.1034f)
                 },
-            new Residence(new Vector3(5049.03f, -1872.895f, 20.78432f), 94.10531f, "8 Denver Avenue", "") { DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 216578,OpenTime = 0,CloseTime = 24, PurchasePrice = 175000,SalesPrice = 80000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(5049.03f, -1872.895f, 20.78432f), 94.10531f, "8 Denver Avenue", "") { StateID = StaticStrings.LibertyStateID, InteriorID = 216578,OpenTime = 0,CloseTime = 24, PurchasePrice = 65000,SalesPrice = 30000, RentalDays = 28, RentalFee = 1570,
 
                 CameraPosition = new Vector3(5044.43f, -1873.151f, 34.99313f),
                 CameraDirection = new Vector3(0.9213463f, -0.2853073f, -0.264047f),
                 CameraRotation = new Rotator(-15.31033f, 4.425946E-07f, -107.2058f)
                 },
 
-            new Residence(new Vector3(5784.468f, -1855.205f, 11.17343f), 91.03838f, "South Bohan Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 39170,OpenTime = 0,CloseTime = 24, PurchasePrice = 175000,SalesPrice = 80000, RentalDays = 28, RentalFee = 1270  },
-            new Residence(new Vector3(6084.9f, -3761.3f, 15.19304f), 272.1486f, "Broker Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 46850,OpenTime = 0,CloseTime = 24, PurchasePrice = 175000,SalesPrice = 80000, RentalDays = 28, RentalFee = 1270  },
-            new Residence(new Vector3(4225.104f, -2362.194f, 13.80571f), 2.633898f, "Alderney Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.AlderneyStateID, InteriorID = 111874,OpenTime = 0,CloseTime = 24, PurchasePrice = 275000,SalesPrice = 120000, RentalDays = 28, RentalFee = 1270  },
-            new Residence(new Vector3(4660.642f, -1994.996f, 17.47787f), 260.9493f, "Apartment 204", "Westminister Towers") { StateID = StaticStrings.LibertyStateID, InteriorID = 38402,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 380000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(5784.468f, -1855.205f, 11.17343f), 91.03838f, "South Bohan Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 39170,OpenTime = 0,CloseTime = 24, PurchasePrice = 175000,SalesPrice = 80000, RentalDays = 28, RentalFee = 4270  },
+            new Residence(new Vector3(6084.9f, -3761.3f, 15.19304f), 272.1486f, "Broker Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 46850,OpenTime = 0,CloseTime = 24, PurchasePrice = 175000,SalesPrice = 80000, RentalDays = 28, RentalFee = 4270  },
+            new Residence(new Vector3(4225.104f, -2362.194f, 13.80571f), 2.633898f, "Alderney Apartment", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.AlderneyStateID, InteriorID = 111874,OpenTime = 0,CloseTime = 24, PurchasePrice = 275000,SalesPrice = 120000, RentalDays = 28, RentalFee = 4270  },
+            new Residence(new Vector3(4660.642f, -1994.996f, 17.47787f), 260.9493f, "Apartment 204", "Westminister Towers") { StateID = StaticStrings.LibertyStateID, InteriorID = 38402,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 380000, RentalDays = 28, RentalFee = 8570,
 
                 CameraPosition = new Vector3(4709.918f, -1997.484f, 18.79484f),
                 CameraDirection = new Vector3(-0.9945877f, -0.02653906f, 0.1004535f),
                 CameraRotation = new Rotator(5.765284f, 2.815687E-07f, 91.52849f)
                 },
-            new Residence(new Vector3(6571.691f, -2726.371f, 33.11459f), 273.7906f, "720 Savannah Ave", "Rundown House") { DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 133890,OpenTime = 0,CloseTime = 24, PurchasePrice = 575000,SalesPrice = 260000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(6571.691f, -2726.371f, 33.11459f), 273.7906f, "720 Savannah Ave", "Rundown House") { DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 133890,OpenTime = 0,CloseTime = 24, PurchasePrice = 575000,SalesPrice = 260000, RentalDays = 28, RentalFee = 3570,
 
                 CameraPosition = new Vector3(6578.621f, -2733.208f, 37.67945f),
                 CameraDirection = new Vector3(-0.8461401f, 0.4780189f, -0.2356794f),
                 CameraRotation = new Rotator(-13.63168f, -6.149646E-06f, 60.53613f)
                 },
-            new Residence(new Vector3(3941.703f, -1717.08f, 25.93528f), 179.4532f, "15 Cariboo Ave", "") { DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 113666,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 460000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(3941.703f, -1717.08f, 25.93528f), 179.4532f, "15 Cariboo Ave", "") { DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 113666,OpenTime = 0,CloseTime = 24, PurchasePrice = 875000,SalesPrice = 460000, RentalDays = 28, RentalFee = 3570,
 
                 CameraPosition = new Vector3(3942.109f, -1729.522f, 31.4396f),
                 CameraDirection = new Vector3(-0.07080722f, 0.9743345f, -0.2136785f),
                 CameraRotation = new Rotator(-12.33801f, -3.823567E-07f, 4.156514f)
                 },
-            new Residence(new Vector3(3235.01f, -3316.938f, 7.174203f), 4.576244f, "13 Emery Street", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 107522,OpenTime = 0,CloseTime = 24, PurchasePrice = 575000,SalesPrice = 240000, RentalDays = 28, RentalFee = 1570,
+            new Residence(new Vector3(3235.01f, -3316.938f, 7.174203f), 4.576244f, "13 Emery Street", "") {  DisableInteractAfterPurchase = true, IsWalkup = true, StateID = StaticStrings.LibertyStateID, InteriorID = 107522,OpenTime = 0,CloseTime = 24, PurchasePrice = 575000,SalesPrice = 240000, RentalDays = 28, RentalFee = 3570,
 
                 CameraPosition = new Vector3(3248.532f, -3341.053f, 14.18333f),
                 CameraDirection = new Vector3(-0.6948197f, 0.6153328f, -0.3722783f),

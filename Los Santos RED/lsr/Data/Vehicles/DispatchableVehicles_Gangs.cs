@@ -392,7 +392,7 @@ public class DispatchableVehicles_Gangs
             Create_GangSultan(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 15, 0, 0, 3, false),
             Create_GangSultan2(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 15, 0, 0, 3, true),
             Create_GangSultan3(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 0, 0, 3, true),
-            Create_GangSultanRS(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 0, 0, 3, 0, 5, true),
+            Create_GangSultanRS(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 0, 0, 3, 0, 2, true),
             Create_GangTampa(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, -1, 0, 1, 3, false),
             Create_GangTulip(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 15, 0, 1, 3, true),
             // special
@@ -11461,11 +11461,10 @@ public class DispatchableVehicles_Gangs
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
-                            new DispatchableVehicleModValue(0,20),
-                            new DispatchableVehicleModValue(1,20),
-                            new DispatchableVehicleModValue(2,20),
-                            new DispatchableVehicleModValue(3,20),
-                            new DispatchableVehicleModValue(4,20),
+                            new DispatchableVehicleModValue(0,30),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(2,10),
+                            new DispatchableVehicleModValue(3,30),
                         },
                     },
                     new DispatchableVehicleMod(1,75) // Front Bumper
@@ -18387,7 +18386,6 @@ public class DispatchableVehicles_Gangs
                         {
                             new DispatchableVehicleModValue(1,50),
                             new DispatchableVehicleModValue(2,20),
-                            new DispatchableVehicleModValue(3,20),
                             new DispatchableVehicleModValue(7,10),
                         },
                     },
