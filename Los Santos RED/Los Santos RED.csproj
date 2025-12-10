@@ -779,6 +779,7 @@
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNamePopUp.cs" />
     <Compile Include="lsr\UI\Stree Name Pop Ups\StreetNode.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
+    <Compile Include="lsr\Vehicle\Components\Anchor.cs" />
     <Compile Include="lsr\Vehicle\Components\Door.cs" />
     <Compile Include="lsr\Vehicle\Components\Doors.cs" />
     <Compile Include="lsr\Vehicle\Components\Window.cs" />

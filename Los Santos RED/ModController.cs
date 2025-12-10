@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Helper;
+using LSR.Vehicles;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -175,7 +176,7 @@ namespace LosSantosRED.lsr
             Weather.Dispose();
             Debug.Dispose();
             WeatherManager.Dispose();
-
+            Anchor.CleanupAllRopes();
 
 
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");

@@ -98,7 +98,7 @@ public class VehicleSettings : ISettingsDefaultable
     public bool FuelUsesAnimationsAndProps { get; set; }
     public int PlayerEnteredPersistantVehicleLimit { get; set; }
 
-
+    public bool AllowAnchorToggle { get; set; } = true;
 
     public float DebugLastX { get; set; }
     public float DebugLastY { get; set; }

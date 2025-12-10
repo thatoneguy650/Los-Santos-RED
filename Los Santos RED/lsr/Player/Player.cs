@@ -831,6 +831,7 @@ namespace Mod
             if(resetPersistVehicle)
             {
                 VehicleManager.Reset();
+                World.Vehicles.CleanupAnchors();
             }
 
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
@@ -2369,6 +2370,10 @@ namespace Mod
                 }
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
+        }
+        public void ToggledAnchor(bool isDeployed)
+        {
+            EntryPoint.WriteToConsole($"PLAYER TOGGLED ANCHOR: IsDeployed={isDeployed}");
         }
         private void CheckAutoEngineDisableToggled()
         {

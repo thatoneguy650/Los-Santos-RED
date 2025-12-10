@@ -659,4 +659,11 @@ public class Vehicles
         //EntryPoint.WriteToConsole($"CleanupAmbient RAN DELETED CIVILIAN CAR");
         //Car.FullyDelete();
     }
+    public void CleanupAnchors()
+    {
+        foreach (VehicleExt veh in AllVehicleList)
+        {
+            veh.Anchor?.Dispose();
+        }
+    }
 }

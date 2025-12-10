@@ -57,5 +57,6 @@ namespace LosSantosRED.lsr.Interface
         void PlaySpeech(string v1, bool v2);
         void SetAngeredCop();
         void SetCarBreakIn();
+        void ToggledAnchor(bool newState);
     }
 }

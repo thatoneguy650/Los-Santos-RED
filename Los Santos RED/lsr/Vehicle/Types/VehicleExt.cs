@@ -71,6 +71,7 @@ namespace LSR.Vehicles
         public FuelTank FuelTank { get; set; }
         public Windows Windows { get; set; }
         public Doors Doors { get; set; }
+        public Anchor Anchor { get; set; }
         public VehicleBodyManager VehicleBodyManager { get; private set; }
         public WeaponStorage WeaponStorage { get; private set; }
         public Color DescriptionColor { get; set; }
@@ -381,6 +382,7 @@ namespace LSR.Vehicles
             Engine = new Engine(this, Settings);
             Windows = new Windows(this, settings);
             Doors = new Doors(this, settings);
+            Anchor = new Anchor(this);
             VehicleBodyManager = new VehicleBodyManager(this, Settings);
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
@@ -702,7 +704,10 @@ namespace LSR.Vehicles
                     Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
                     //GameFiber.Yield();//TR Removed 5
                 }
-
+                if (IsBoat)
+                {
+                    Anchor.Update();
+                }
                 VehicleBodyManager.UpdateData();
                 GameFiber.Yield();//TR Added 5
             }
@@ -1685,7 +1690,7 @@ namespace LSR.Vehicles
         }
         public virtual void UpdateInteractPrompts(IButtonPromptable player)
         {
-            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
+            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= (IsBoat ? 3.0f : 0.5f))
             {
                 player.ButtonPrompts.RemovePrompts("VehicleInteract");
                // EntryPoint.WriteToConsole("UpdateInteractPrompts BASE REMOVE 1");
@@ -1850,6 +1855,29 @@ namespace LSR.Vehicles
                 return true;
             }
             return false;
+        }
+        public void CreateAnchorInteractionMenu(MenuPool menuPool, UIMenu vehicleInteractMenu, IInteractionable player)
+        {
+            if (!Vehicle.Exists() || !IsBoat || Vehicle.Speed >= 3.0f ||
+                !Game.LocalPlayer.Character.IsInAnyVehicle(false) ||
+                !Game.LocalPlayer.Character.IsInVehicle(Vehicle, true) ||
+                !Settings.SettingsManager.VehicleSettings.AllowAnchorToggle)
+            {
+                return;
+            }
+            UIMenu anchorMenu = menuPool.AddSubMenu(vehicleInteractMenu, "Anchor");
+            anchorMenu.SubtitleText = "Toggle Anchor State";
+            anchorMenu.SetBannerType(EntryPoint.LSRedColor);
+            string buttonText = Anchor.IsDeployed ? "Retract Anchor" : "Deploy Anchor";
+            UIMenuItem anchorToggleItem = new UIMenuItem(buttonText, "Toggle the boat's anchor");
+            anchorToggleItem.Activated += (sender, e) =>
+            {
+                bool newState = !Anchor.IsDeployed;
+                Anchor.SetState(newState);
+                anchorToggleItem.Text = newState ? "Retract Anchor" : "Deploy Anchor";
+                player.ToggledAnchor(newState);
+            };
+            anchorMenu.AddItem(anchorToggleItem);
         }
     }
 }

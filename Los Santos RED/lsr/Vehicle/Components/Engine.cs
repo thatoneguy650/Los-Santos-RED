@@ -94,6 +94,10 @@ public class Engine
             {
                 return;
             }
+            if (VehicleToMonitor.Anchor != null && VehicleToMonitor.Anchor.IsDeployed && IsRunning)
+            {
+                IsRunning = false;
+            }
             if (VehicleToMonitor.IsHotWireLocked)
             {
                 if(!VehicleToMonitor.HasShowHotwireLockPrompt && Settings.SettingsManager.VehicleSettings.AutoHotwire)
@@ -138,6 +142,11 @@ public class Engine
             }
             else
             {
+                if (VehicleToMonitor.Anchor == null || !VehicleToMonitor.Anchor.IsDeployed)
+                {
+                    VehicleToMonitor.Vehicle.IsDriveable = true;
+                    VehicleToMonitor.Vehicle.IsEngineOn = true;
+                }
                 VehicleToMonitor.Vehicle.IsDriveable = true;
                 VehicleToMonitor.Vehicle.IsEngineOn = true;
 
