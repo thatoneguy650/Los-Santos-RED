@@ -152,7 +152,7 @@ public class Vehicles
         {
             SetFEJSuppressionStatus(false);
         }
-
+        Anchor.CleanupAllRopes();
     }
     public void Prune()
     {
