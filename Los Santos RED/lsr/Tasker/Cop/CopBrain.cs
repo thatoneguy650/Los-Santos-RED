@@ -308,7 +308,7 @@ public class CopBrain : PedBrain
         if (Cop.CurrentTask?.Name != "Chase")
         {
             //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
-            Cop.CurrentTask = new Chase(Cop, Player, World, Cop, Settings);
+            Cop.CurrentTask = new NewChase(Cop, Player, World, Cop, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

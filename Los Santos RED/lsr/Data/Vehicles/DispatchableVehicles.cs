@@ -1257,6 +1257,8 @@ public class DispatchableVehicles : IDispatchableVehicles
                     },
                 },
         };
+
+        
         ParkRangerStanierNew = new DispatchableVehicle("police5", 15, 20)
         {
             RequiredPrimaryColorID = 111,

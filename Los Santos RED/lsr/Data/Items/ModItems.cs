@@ -3339,6 +3339,17 @@ public class ModItems : IModItems
             new VehicleItem("Brute Bobcat Security Stockade", true, ItemType.Vehicles) { ModelName = "stockade4" },
             new VehicleItem("MTL Flatbed Custom 2", true, ItemType.Vehicles) { ModelName = "flatbed2" },
 
+            //Safehouse in the Hills
+            new VehicleItem("Grotti GT750", true, ItemType.Vehicles) { ModelName = "gt750" },
+            new VehicleItem("Ubermacht Sentinel XS4", true, ItemType.Vehicles) { ModelName = "sentinel6" },
+            new VehicleItem("Pfister X-treme", true, ItemType.Vehicles) { ModelName = "xtreme" },
+            new VehicleItem("Vapid FMJ Mk V", true, ItemType.Vehicles) { ModelName = "fmj2" },
+            new VehicleItem("Pfister Astrale", true, ItemType.Vehicles) { ModelName = "astrale" },
+            new VehicleItem("Grotti Itali Classic", true, ItemType.Vehicles) { ModelName = "itali2" },
+            new VehicleItem("Shitzu Keitora", true, ItemType.Vehicles) { ModelName = "keitora" },
+            new VehicleItem("Progen Luiva", true, ItemType.Vehicles) { ModelName = "luiva" },
+
+
             //Drift
             new VehicleItem("Declasse Drift Tampa", ItemType.Vehicles) { ModelName = "drifttampa", RequiresDLC = true, },
             new VehicleItem("Declasse Drift Yosemite", ItemType.Vehicles) { ModelName = "driftyosemite", RequiresDLC = true, },       
@@ -3354,6 +3365,11 @@ public class ModItems : IModItems
             new VehicleItem("Bravado Drift Gauntlet Hellfire", ItemType.Vehicles) { ModelName = "driftgauntlet4", RequiresDLC = true, },
             new VehicleItem("Annis Drift Hardy", ItemType.Vehicles) { ModelName = "drifthardy", RequiresDLC = true, },
             new VehicleItem("Declasse Dift Walton L35 2", ItemType.Vehicles) { ModelName = "driftl352", RequiresDLC = true, },
+
+            new VehicleItem("Vapid Drift Dominator GT", ItemType.Vehicles) { ModelName = "driftdominator9", RequiresDLC = true, },
+            new VehicleItem("Shitzu Drift Keitora", ItemType.Vehicles) { ModelName = "driftkeitora", RequiresDLC = true, },
+            new VehicleItem("Dinka Drift RT3000", ItemType.Vehicles) { ModelName = "driftrt3000", RequiresDLC = true, },
+            new VehicleItem("Ubermacht Drift Sentinel XS", ItemType.Vehicles) { ModelName = "driftsentinel2", RequiresDLC = true, },
 
 
             //Bikes

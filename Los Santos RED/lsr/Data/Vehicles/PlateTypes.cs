@@ -326,6 +326,12 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(89, "New Hanover", "New Hanover", 2, "ABC  123"));
         FullPlateTypeList.Add(new PlateType(90, "Assiniboia", "Assiniboia", 3, "ABC  123"));
 
+
+
+        FullPlateTypeList.Add(new PlateType(91, "Tintina", "Tintina", 1, "   ABC12"));
+        FullPlateTypeList.Add(new PlateType(92, "Ungava", "Ungava", 1, " 123 456"));
+        FullPlateTypeList.Add(new PlateType(93, "Denendeh Subdivision", "Denendeh Subdivision", 1, " 123456 "));
+
         FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
         FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
         Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\PlateTypes_FullModernLicensePlates.xml");
