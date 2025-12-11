@@ -1469,6 +1469,7 @@ namespace LSR.Vehicles
         }
         public void FullyDelete()
         {
+            Anchor?.Dispose();
             SonarBlip.Dispose();
             if (AttachedBlip.Exists())
             {
