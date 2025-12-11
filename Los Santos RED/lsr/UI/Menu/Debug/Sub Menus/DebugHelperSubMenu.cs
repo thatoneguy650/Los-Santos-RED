@@ -80,7 +80,15 @@ public class DebugHelperSubMenu : DebugSubMenu
         };
         HelperMenuItem.AddItem(spawnNearbyItems);
 
+        UIMenuListScrollerItem<Dispatch> dispatchScroller = new UIMenuListScrollerItem<Dispatch>("Dispatches", "Get a list of dispatches to play", Player.Scanner.GetDispatchList());
 
+        ;
+        dispatchScroller.Activated += (menu, item) =>
+        {
+            Player.Scanner.PlayDispatchDebug(dispatchScroller.SelectedItem);
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(dispatchScroller);
 
 
 

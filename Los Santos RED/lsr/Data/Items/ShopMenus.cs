@@ -1,22 +1,15 @@
 ﻿using ExtensionsMethods;
-using LosSantosRED.lsr;
+
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
-using NAudio.Gui;
-using Rage;
-using Rage.Native;
-using RAGENativeUI;
+
 using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Drawing;
+
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.LinkLabel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 
 
 public class ShopMenus : IShopMenus
@@ -55,10 +48,10 @@ public class ShopMenus : IShopMenus
         foreach (FileInfo fileInfo in LSRDirectory.GetFiles("ShopMenus+_*.xml").OrderByDescending(x => x.Name))
         {
             EntryPoint.WriteToConsole($"Loaded ADDITIVE SHOP MENUS config  {fileInfo.FullName}", 0);
-            ShopMenuTypes additivePossibleItems = Serialization.DeserializeParam<ShopMenuTypes>(fileInfo.FullName);      
+            ShopMenuTypes additivePossibleItems = Serialization.DeserializeParam<ShopMenuTypes>(fileInfo.FullName);
             foreach (ShopMenu shopMenu in additivePossibleItems.ShopMenuList)
             {
-                PossibleShopMenus.ShopMenuList.RemoveAll(x=> x.ID == shopMenu.ID);
+                PossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID == shopMenu.ID);
                 PossibleShopMenus.ShopMenuList.Add(shopMenu);
             }
 
@@ -106,7 +99,7 @@ public class ShopMenus : IShopMenus
         List<string> toRemoveMenus = new List<string>() { "BenefactorGallavanterMenu", "VapidMenu", "LuxuryAutosMenu", "PremiumDeluxeMenu", "AlbanyMenu", "SunshineMenu", "NationalMenu", "PaletoExportMenu" };
         oldPossibleShopMenus.ShopMenuList.RemoveAll(x => toRemoveMenus.Contains(x.ID));
         oldPossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
-            new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() {       
+            new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() {
                 new MenuItem("Gallivanter Baller",67000,45000),
                 new MenuItem("Benefactor Schafter",65000,34000),
                // new MenuItem("Benefactor Schafter (IV)",75000,52000),
@@ -295,12 +288,12 @@ public class ShopMenus : IShopMenus
         };
 
 
-        List<ShopMenu> shopMenusToUpdate =  fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => UpdatedWeapons.Contains(y.ModItemName))).ToList();
-        foreach(ShopMenu shopMenu in shopMenusToUpdate)
+        List<ShopMenu> shopMenusToUpdate = fejPossibleShopMenus.ShopMenuList.Where(x => x.Items.Any(y => UpdatedWeapons.Contains(y.ModItemName))).ToList();
+        foreach (ShopMenu shopMenu in shopMenusToUpdate)
         {
-            foreach(MenuItem menuItem in shopMenu.Items)
+            foreach (MenuItem menuItem in shopMenu.Items)
             {
-                if(menuItem.ModItemName == "Hawk & Little Combat Pistol")
+                if (menuItem.ModItemName == "Hawk & Little Combat Pistol")
                 {
                     menuItem.ModItemName = "Vom Feuer VF76";
                 }
@@ -318,12 +311,12 @@ public class ShopMenus : IShopMenus
                 }
 
 
-                if(menuItem.ModItemName == "Vom Feuer SCRAMP")
+                if (menuItem.ModItemName == "Vom Feuer SCRAMP")
                 {
                     menuItem.ModItemName = "Vom Feuer VF86";
                 }
 
-                if(menuItem.ModItemName == "Vom Feuer A5-1R")
+                if (menuItem.ModItemName == "Vom Feuer A5-1R")
                 {
                     menuItem.ModItemName = "Duke A5-1R";
                 }
@@ -349,10 +342,10 @@ public class ShopMenus : IShopMenus
             }
         }
 
-        List<string> gunMenus = new List<string>() { "FamiliesDenMenu", "BallasDenMenu", "VarriosDenMenu","GunShop1", "GunShop3" };
+        List<string> gunMenus = new List<string>() { "FamiliesDenMenu", "BallasDenMenu", "VarriosDenMenu", "GunShop1", "GunShop3" };
         foreach (ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList.Where(x => gunMenus.Contains(x.ID)))
         {
-            shopMenu.Items.Add(new MenuItem("WIN 95", 450, 120) { Extras = new List<MenuItemExtra>() { new MenuItemExtra("Extended Clip",120), new MenuItemExtra("Suppressor",500), new MenuItemExtra("Flashlight",75) } });
+            shopMenu.Items.Add(new MenuItem("WIN 95", 450, 120) { Extras = new List<MenuItemExtra>() { new MenuItemExtra("Extended Clip", 120), new MenuItemExtra("Suppressor", 500), new MenuItemExtra("Flashlight", 75) } });
         }
 
 
@@ -365,9 +358,9 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "SandersMenu" &&  x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
+        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "SandersMenu" && x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
-        if(vapidMenu != null)
+        if (vapidMenu != null)
         {
             vapidMenu.Items.Add(new MenuItem("Vapid Scout", 55000, 25000));
             vapidMenu.Items.Add(new MenuItem("Vapid Gemini", 35000, 15000));
@@ -413,14 +406,14 @@ public class ShopMenus : IShopMenus
         {
             sandersMenu.Items.Add(new MenuItem("Western Gargoyle Cruiser", 23000, 5800));
             sandersMenu.Items.Add(new MenuItem("Western Sovereign Cruiser", 27000, 11000));
-            
+
         }
         ShopMenu elitasMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "ElitasMenu").FirstOrDefault();
         if (elitasMenu != null)
         {
             elitasMenu.Items.Add(new MenuItem("Buckingham Maverick 2nd Gen", 1800000));
         }
-        foreach(ShopMenu menu in fejPossibleShopMenus.ShopMenuList)//swap some model names over
+        foreach (ShopMenu menu in fejPossibleShopMenus.ShopMenuList)//swap some model names over
         {
             if (menu.ID != "KarinMenu")
             {
@@ -441,8 +434,8 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullExpandedExperience()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        List<string> beerMenus = new List<string>() { "ConvenienceStoreMenu","LiquorStoreMenu","PizzaMenu","GasStationMenu","DeliGroceryMenu","ItalianMenu","PizzaThisMenu","AlDentesMenu","TwentyFourSevenMenu","FruitVineMenu","RonMenu","XeroMenu","LTDMenu","BarMenu" };
-        foreach (ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList.Where(x=> beerMenus.Contains(x.ID)))
+        List<string> beerMenus = new List<string>() { "ConvenienceStoreMenu", "LiquorStoreMenu", "PizzaMenu", "GasStationMenu", "DeliGroceryMenu", "ItalianMenu", "PizzaThisMenu", "AlDentesMenu", "TwentyFourSevenMenu", "FruitVineMenu", "RonMenu", "XeroMenu", "LTDMenu", "BarMenu" };
+        foreach (ShopMenu shopMenu in fejPossibleShopMenus.ShopMenuList.Where(x => beerMenus.Contains(x.ID)))
         {
             shopMenu.Items.Add(new MenuItem("Can of PiBwasser", 3));
             shopMenu.Items.Add(new MenuItem("Can of PiBwasser ICE", 3));
@@ -457,11 +450,11 @@ public class ShopMenus : IShopMenus
             return null;
         }
         List<MenuItem> InstancedItems = new List<MenuItem>();
-        foreach(MenuItem menuItem in toInstance.Items)
+        foreach (MenuItem menuItem in toInstance.Items)
         {
 
             List<MenuItemExtra> InstancedExtras = new List<MenuItemExtra>();
-            foreach(MenuItemExtra menuItemExtra in menuItem.Extras)
+            foreach (MenuItemExtra menuItemExtra in menuItem.Extras)
             {
                 InstancedExtras.Add(new MenuItemExtra(menuItemExtra.ExtraName, menuItemExtra.PurchasePrice, menuItemExtra.SalesPrice) { HasItem = menuItemExtra.HasItem });
             }
@@ -482,7 +475,7 @@ public class ShopMenus : IShopMenus
                 Extras = InstancedExtras,
             });
         }
-        ShopMenu newInstance = new ShopMenu(toInstance.Name, toInstance.Name, InstancedItems) { GroupName = toInstance.GroupName,BannerOverride = toInstance.BannerOverride };
+        ShopMenu newInstance = new ShopMenu(toInstance.Name, toInstance.Name, InstancedItems) { GroupName = toInstance.GroupName, BannerOverride = toInstance.BannerOverride };
 
         return newInstance;
     }
@@ -500,9 +493,9 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenu GetWeightedRandomMenuFromContainer(string containerID)
     {
-       // EntryPoint.WriteToConsole($"GetWeightedRandomMenuFromOverallGroup {containerID}");
+        // EntryPoint.WriteToConsole($"GetWeightedRandomMenuFromOverallGroup {containerID}");
         ShopMenuGroupContainer smgc = PossibleShopMenus.ShopMenuGroupContainers.Where(x => x.ID == containerID).FirstOrDefault();
-        if(smgc == null)
+        if (smgc == null)
         {
             //EntryPoint.WriteToConsole($"GetWeightedRandomMenuFromOverallGroup NO GROUP CONTAINER FOUND");
             return null;
@@ -517,7 +510,7 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenuGroupContainer GetSpecificGroupContainer(string containerID)
     {
-        if(string.IsNullOrEmpty(containerID) || containerID == "")
+        if (string.IsNullOrEmpty(containerID) || containerID == "")
         {
             return null;
         }
@@ -572,7 +565,7 @@ public class ShopMenus : IShopMenus
         {
             propShopMenu = PossibleShopMenus.PropShopMenus.Where(x => x.ModelName == propName).FirstOrDefault();
         }
-        if(propShopMenu != null)
+        if (propShopMenu != null)
         {
             MenuID = propShopMenu.ShopMenuID;
         }
@@ -593,21 +586,21 @@ public class ShopMenus : IShopMenus
 
     public int GetAverageStreetSalesPrice(ModItem modItem)
     {
-        if(modItem == null)
+        if (modItem == null)
         {
             EntryPoint.WriteToConsole($"GetAverageStreetSalesPrice NO MOD ITEM");
             return 0;
         }
         List<MenuItem> MatchingMenuItems = new List<MenuItem>();
         List<ShopMenuGroup> drugCustomerMenus = PossibleShopMenus.ShopMenuGroupList.Where(x => x.CategoryID == StaticStrings.DrugCustomerMenuID).ToList();
-        foreach(ShopMenuGroup group in drugCustomerMenus)
+        foreach (ShopMenuGroup group in drugCustomerMenus)
         {
-            foreach(PercentageSelectShopMenu pssm in group.PossibleShopMenus)
+            foreach (PercentageSelectShopMenu pssm in group.PossibleShopMenus)
             {
                 MatchingMenuItems.AddRange(pssm.ShopMenu.Items.Where(x => x.ModItemName == modItem.Name));
             }
         }
-        if(!MatchingMenuItems.Any())
+        if (!MatchingMenuItems.Any())
         {
             EntryPoint.WriteToConsole($"GetAverageStreetSalesPrice {modItem.Name} NO MATCHING MENUS");
             return 0;
@@ -951,12 +944,12 @@ public class ShopMenus : IShopMenus
     }
     public List<MedicalTreatment> GetMedicalTreatments(string treatmentOptionsID)
     {
-        return PossibleShopMenus.TreatmentOptionsList.Where(x=> x.ID == treatmentOptionsID).FirstOrDefault()?.MedicalTreatments;
+        return PossibleShopMenus.TreatmentOptionsList.Where(x => x.ID == treatmentOptionsID).FirstOrDefault()?.MedicalTreatments;
     }
     private void SetupPropMenus()
     {
         PossibleShopMenus.PropShopMenus.AddRange(
-        new List<PropShopMenu>() { 
+        new List<PropShopMenu>() {
             new PropShopMenu("prop_vend_snak_01", "CandyVendingMenu"),
             new PropShopMenu("prop_vend_water_01", "WaterVendingMenu"),
             new PropShopMenu(0x418f055a, "WaterVendingMenu"),
@@ -1360,7 +1353,7 @@ public class ShopMenus : IShopMenus
             new ShopMenu("FancyDeliMenu","Deli",new List<MenuItem>() { new MenuItem("Chicken Club Salad",10),new MenuItem("Spicy Seafood Gumbo",14),new MenuItem("Muffaletta",8),new MenuItem("Zucchini Garden Pasta",9),new MenuItem("Pollo Mexicano",12),new MenuItem("Italian Cruz Po'boy",19),new MenuItem("Chipotle Chicken Panini",10)}),
             new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44), }),
             new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15)}),
-            new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),}),            
+            new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),}),
             new ShopMenu("MexicanMenu","MexicanMenu",new List<MenuItem> {
                 new MenuItem("Asada Plate", 12),
                 new MenuItem("2 Tacos Combo", 10),
@@ -1855,7 +1848,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Bottle of Sinsimito Tequila", 30),
-                new MenuItem("Bottle of Cazafortuna Tequila", 35),                          
+                new MenuItem("Bottle of Cazafortuna Tequila", 35),
                 new MenuItem("Cardiaque Brandy", 65),
                 new MenuItem("Bourgeoix Cognac", 70),
                 new MenuItem("Macbeth Single Malt", 45),
@@ -2014,7 +2007,7 @@ public class ShopMenus : IShopMenus
     private void SpecificDealerships()
     {
 
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
     new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() {
         new MenuItem("Gallivanter Baller",67000,45000),
         new MenuItem("Gallivanter Baller 2",90000,56000),
@@ -2503,7 +2496,7 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
         new MenuItem("Buckingham Luxor",5000000),
         new MenuItem("Buckingham Luxor Deluxe",5500000),
         new MenuItem("Buckingham Miljet",3200000),
-        new MenuItem("Buckingham Nimbus",2900000), 
+        new MenuItem("Buckingham Nimbus",2900000),
         new MenuItem("Buckingham Shamal",1800000),
         new MenuItem("Buckingham Vestra",650000),
         new MenuItem("Mammoth Dodo",145000),
@@ -2534,10 +2527,10 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
         new MenuItem("Vapid Chino Custom",45000, 20000),
     }),
 });
-}
-private void SpecificVehicleExporters()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+    }
+    private void SpecificVehicleExporters()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
 new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
         new MenuItem("Vapid Dominator",55000,10000),
 
@@ -2687,10 +2680,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
 
 
 
-}
-private void SpecificVendingMachines()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+    }
+    private void SpecificVendingMachines()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
     new ShopMenu("CandyVendingMenu","Candybox Machine",new List<MenuItem>() {
         new MenuItem("Sticky Rib Phat Chips", 2),
         new MenuItem("Habanero Phat Chips", 2),
@@ -2728,10 +2721,10 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
         new MenuItem("Estancia Cigar", 50),
         new MenuItem("DIC Lighter", 5), }) { BannerOverride = "redwood.png" },
 });
-}
-private void SpecificWeaponsShops()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+    }
+    private void SpecificWeaponsShops()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
     new ShopMenu("AmmunationMenu","Ammunation",new List<MenuItem>() {
         new MenuItem("Hawk & Little PTF092F",550),
         new MenuItem("Hawk & Little Thunder",650),
@@ -2767,14 +2760,14 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
         new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },
         new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
 });
-}
+    }
 
-private void DrugDealerMenus()
-{
+    private void DrugDealerMenus()
+    {
 
 
 
-ShopMenuGroup CorruptDealerMenuGroup = new ShopMenuGroup(StaticStrings.CorruptDealerMenuGroupID, "Corrupt Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup CorruptDealerMenuGroup = new ShopMenuGroup(StaticStrings.CorruptDealerMenuGroupID, "Corrupt Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Corrupt Dealer 1", new List<MenuItem>() {
             new MenuItem("Cocaine", 180) { IsIllicilt = true,NumberOfItemsToSellToPlayer = 14 } }, StaticStrings.CorruptDealerMenuGroupID),1),
@@ -2820,10 +2813,10 @@ ShopMenuGroup CorruptDealerMenuGroup = new ShopMenuGroup(StaticStrings.CorruptDe
             new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}, StaticStrings.CrackDealerMenuGroupID),1),
 
 });
-PossibleShopMenus.ShopMenuGroupList.Add(CorruptDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(CorruptDealerMenuGroup);
 
 
-ShopMenuGroup MarijuanaDealerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaDealerMenuGroupID, "Marijuana Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup MarijuanaDealerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaDealerMenuGroupID, "Marijuana Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 1",  new List<MenuItem>() {
             new MenuItem("Marijuana",20, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 18  }}),10),
@@ -2856,9 +2849,9 @@ ShopMenuGroup MarijuanaDealerMenuGroup = new ShopMenuGroup(StaticStrings.Marijua
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Marijuana Dealer 15", new List<MenuItem>() {
             new MenuItem("Marijuana",14, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 11 }}),10),
  });
-PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaDealerMenuGroup);
 
-ShopMenuGroup ToiletCleanerDealerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerDealerMenuGroupID, "Toilet Cleaner Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup ToiletCleanerDealerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerDealerMenuGroupID, "Toilet Cleaner Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Toilet Dealer 1", new List<MenuItem>() {
             new MenuItem("Toilet Cleaner",27, 17) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 15 } }),30),
@@ -2873,9 +2866,9 @@ ShopMenuGroup ToiletCleanerDealerMenuGroup = new ShopMenuGroup(StaticStrings.Toi
             new MenuItem("Toilet Cleaner",23, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 12 },
             new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },}),10),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerDealerMenuGroup);
 
-ShopMenuGroup SpankDealerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKDealerMenuGroupID, "SPANK Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup SpankDealerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKDealerMenuGroupID, "SPANK Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "SPANK Dealer 1", new List<MenuItem>() {
             new MenuItem("SPANK", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 14 } }),1),
@@ -2893,10 +2886,10 @@ ShopMenuGroup SpankDealerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKDealer
             new MenuItem("SPANK", 48, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 12 },
             new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(SpankDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(SpankDealerMenuGroup);
 
 
-ShopMenuGroup MethDealerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineDealerMenuGroupID, "Meth Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup MethDealerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineDealerMenuGroupID, "Meth Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Meth Dealer 1", new List<MenuItem>() {
             new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 14 },new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }),1),
@@ -2916,9 +2909,9 @@ ShopMenuGroup MethDealerMenuGroup = new ShopMenuGroup(StaticStrings.Methamphetam
             new MenuItem("Meth Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
             new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(MethDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(MethDealerMenuGroup);
 
-ShopMenuGroup HeroinDealerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinDealerMenuGroupID, "Heroin Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup HeroinDealerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinDealerMenuGroupID, "Heroin Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 1", new List<MenuItem>() {
             new MenuItem("Heroin", 150, 110) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 10 } }, StaticStrings.HeroinDealerMenuGroupID),1),
@@ -2934,10 +2927,10 @@ ShopMenuGroup HeroinDealerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinDeal
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Heroin Dealer 5", new List<MenuItem>() {
             new MenuItem("Heroin", 155, 105) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 11 }, }, StaticStrings.HeroinDealerMenuGroupID),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(HeroinDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(HeroinDealerMenuGroup);
 
 
-ShopMenuGroup CrackDealerMenuGroup = new ShopMenuGroup(StaticStrings.CrackDealerMenuGroupID, "Crack Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup CrackDealerMenuGroup = new ShopMenuGroup(StaticStrings.CrackDealerMenuGroupID, "Crack Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Crack Dealer 1", new List<MenuItem>() {
             new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 10 },new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 }, }, StaticStrings.CrackDealerMenuGroupID),1),
@@ -2958,9 +2951,9 @@ ShopMenuGroup CrackDealerMenuGroup = new ShopMenuGroup(StaticStrings.CrackDealer
             new MenuItem("Crack Pipe",5) { IsIllicilt = true, NumberOfItemsToSellToPlayer = 5 },
             new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, StaticStrings.CrackDealerMenuGroupID),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(CrackDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(CrackDealerMenuGroup);
 
-ShopMenuGroup CocaineDealerMenuGroup = new ShopMenuGroup(StaticStrings.CokeDealerMenuGroupID, "Cocaine Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup CocaineDealerMenuGroup = new ShopMenuGroup(StaticStrings.CokeDealerMenuGroupID, "Cocaine Dealer Menus", StaticStrings.DrugDealerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugDealerMenuID, "Coke Dealer 1", new List<MenuItem>() {
             new MenuItem("Cocaine", 180, 130) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 14 } }, StaticStrings.CokeDealerMenuGroupID),1),
@@ -2978,10 +2971,10 @@ ShopMenuGroup CocaineDealerMenuGroup = new ShopMenuGroup(StaticStrings.CokeDeale
             new MenuItem("Cocaine", 172, 128) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 11 },
             new MenuItem("Hawk & Little PTF092F",250) { IsIllicilt = true } }, StaticStrings.CokeDealerMenuGroupID),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(CocaineDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(CocaineDealerMenuGroup);
 
 
-ShopMenuGroup MarijuanaCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaCustomerMenuGroupID, "Marijuana Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup MarijuanaCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MarijuanaCustomerMenuGroupID, "Marijuana Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 1", new List<MenuItem>() {
             new MenuItem("Marijuana",0, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10 }}),1),
@@ -2996,10 +2989,10 @@ ShopMenuGroup MarijuanaCustomerMenuGroup = new ShopMenuGroup(StaticStrings.Marij
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Marijuana Customer 6", new List<MenuItem>() {
             new MenuItem("Marijuana",0, 31) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 10 },}),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(MarijuanaCustomerMenuGroup);
 
 
-ShopMenuGroup ToiletCleanerCustomerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerCustomerMenuGroupID, "Toilet Cleaner Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup ToiletCleanerCustomerMenuGroup = new ShopMenuGroup(StaticStrings.ToiletCleanerCustomerMenuGroupID, "Toilet Cleaner Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 1", new List<MenuItem>() {
             new MenuItem("Toilet Cleaner",0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 8 } }),1),
@@ -3010,10 +3003,10 @@ ShopMenuGroup ToiletCleanerCustomerMenuGroup = new ShopMenuGroup(StaticStrings.T
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Toilet Customer 4", new List<MenuItem>() {
             new MenuItem("Toilet Cleaner",0, 39) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 8 } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(ToiletCleanerCustomerMenuGroup);
 
 
-ShopMenuGroup SPANKCustomerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKCustomerMenuGroupID, "SPANK Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup SPANKCustomerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKCustomerMenuGroupID, "SPANK Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 1", new List<MenuItem>() {
             new MenuItem("SPANK", 0, 62) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11 } }),1),
@@ -3024,10 +3017,10 @@ ShopMenuGroup SPANKCustomerMenuGroup = new ShopMenuGroup(StaticStrings.SPANKCust
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "SPANK Customer 4", new List<MenuItem>() {
             new MenuItem("SPANK", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 8 } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(SPANKCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(SPANKCustomerMenuGroup);
 
 
-ShopMenuGroup MethCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineCustomerMenuGroupID, "Meth Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup MethCustomerMenuGroup = new ShopMenuGroup(StaticStrings.MethamphetamineCustomerMenuGroupID, "Meth Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 1", new List<MenuItem>() {
             new MenuItem("Methamphetamine", 0, 85) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 10 } }),1),
@@ -3038,10 +3031,10 @@ ShopMenuGroup MethCustomerMenuGroup = new ShopMenuGroup(StaticStrings.Methamphet
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Meth Customer 4", new List<MenuItem>() {
             new MenuItem("Methamphetamine", 0, 77) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 11} }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(MethCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(MethCustomerMenuGroup);
 
 
-ShopMenuGroup CrackCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CrackCustomerMenuGroupID, "Crack Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup CrackCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CrackCustomerMenuGroupID, "Crack Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 1", new List<MenuItem>() {
             new MenuItem("Crack", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 6 } }),1),
@@ -3052,10 +3045,10 @@ ShopMenuGroup CrackCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CrackCust
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Crack Customer 4", new List<MenuItem>() {
             new MenuItem("Crack", 0, 66) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 8 } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(CrackCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(CrackCustomerMenuGroup);
 
 
-ShopMenuGroup CocaineCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CokeCustomerMenuGroupID, "Cocaine Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup CocaineCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CokeCustomerMenuGroupID, "Cocaine Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 1", new List<MenuItem>() {
             new MenuItem("Cocaine", 0, 210) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 6 } }),1),
@@ -3066,10 +3059,10 @@ ShopMenuGroup CocaineCustomerMenuGroup = new ShopMenuGroup(StaticStrings.CokeCus
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Coke Customer 4", new List<MenuItem>() {
             new MenuItem("Cocaine", 0, 208) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 8 } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(CocaineCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(CocaineCustomerMenuGroup);
 
 
-ShopMenuGroup HeroinCustomerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinCustomerMenuGroupID, "Heroin Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
+        ShopMenuGroup HeroinCustomerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinCustomerMenuGroupID, "Heroin Customer Menus", StaticStrings.DrugCustomerMenuID, new List<PercentageSelectShopMenu>()
 {
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 1", new List<MenuItem>() {
             new MenuItem("Heroin", 0, 180) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 6 } }),1),
@@ -3080,31 +3073,33 @@ ShopMenuGroup HeroinCustomerMenuGroup = new ShopMenuGroup(StaticStrings.HeroinCu
     new PercentageSelectShopMenu(new ShopMenu(StaticStrings.DrugCustomerMenuID, "Heroin Customer 4", new List<MenuItem>() {
             new MenuItem("Heroin", 0, 168) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 6 } }),1),
 });
-PossibleShopMenus.ShopMenuGroupList.Add(HeroinCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupList.Add(HeroinCustomerMenuGroup);
 
-}
-private void DenList()
-{
-LostDenMenu();
-FamiliesDenMenu();
-VagosDenMenu();
-BallasDenMenu();
-VarriosDenMenu();
-MarabunteDenMenu();
-TriadsDenMenu();
-KkangpaeDenMenu();
+    }
+    private void DenList()
+    {
+        AngelsDenMenu();
+        LostDenMenu();
+        UptownDenMenu();
+        FamiliesDenMenu();
+        VagosDenMenu();
+        BallasDenMenu();
+        VarriosDenMenu();
+        MarabunteDenMenu();
+        TriadsDenMenu();
+        KkangpaeDenMenu();
 
-DiablosDenMenu();
-YardiesDenMenu();
-ArmenianDenMenu();
-MadrazoDenMenu();
+        DiablosDenMenu();
+        YardiesDenMenu();
+        ArmenianDenMenu();
+        MadrazoDenMenu();
 
-GambettiDenMenu(); 
-PavanoDenMenu();
-LupisellaDenMenu();
-MessinaDenMenu();
-AncelottiDenMenu();
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> { 
+        GambettiDenMenu();
+        PavanoDenMenu();
+        LupisellaDenMenu();
+        MessinaDenMenu();
+        AncelottiDenMenu();
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
 
         new ShopMenu("GenericGangDenMenu","GenericGangDenMenu",new List<MenuItem>() {
             new MenuItem("Marijuana",16,12),
@@ -3205,10 +3200,383 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
         new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
             }),
 });
-}
-private void LostDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+    }
+    private void AngelsDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+                new ShopMenu("AngelsDenMenu","AngelsDenMenu",new List<MenuItem>() {
+
+
+                   new MenuItem("Methamphetamine",50, 34),
+                   new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+                   new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+                   new MenuItem("Meth Pipe",5),
+
+                    new MenuItem("G.E.S. Baseball Bat",45),
+                    new MenuItem("Flint Crowbar",30),
+                    new MenuItem("ProLaps Five Iron Golf Club",100),
+                    new MenuItem("Flint Hammer",20),
+                    new MenuItem("Flint Hatchet",75),
+                    new MenuItem("Brass Knuckles",100),
+                    new MenuItem("Combat Knife",100),
+                    new MenuItem("Vom Feuer Machete",20),
+                    new MenuItem("Switchblade",45),
+                    new MenuItem("Nightstick",45),
+                    new MenuItem("Flint Heavy Duty Pipe Wrench",20),
+                    new MenuItem("Pool Cue",30),
+
+                //Food
+                new MenuItem("Bottle of Barracho", 0) { IsFree = true },
+                new MenuItem("Bottle of PiBwasser", 0) { IsFree = true },
+                new MenuItem("Bottle of Blarneys", 0) { IsFree = true },
+                new MenuItem("Bottle of Logger", 0) { IsFree = true },
+                new MenuItem("Bottle of Patriot", 0) { IsFree = true },
+                new MenuItem("Bottle of Pride", 0) { IsFree = true },
+                new MenuItem("Bottle of Stronzo", 0) { IsFree = true },
+                new MenuItem("Bottle of A.M.", 0) { IsFree = true },
+                new MenuItem("Bottle of Jakeys", 0) { IsFree = true },
+                new MenuItem("Bottle of Dusche", 0) { IsFree = true },
+
+                //Pistola
+                new MenuItem("Hawk & Little PTF092F",400) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip",0),
+                    new MenuItemExtra("Extended Clip", 75),
+                    new MenuItemExtra("Flashlight", 70),
+                    new MenuItemExtra("Suppressor", 850) },  },
+                new MenuItem("Hawk & Little Thunder",450) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 105),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Hollow Point Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds",500),
+                    new MenuItemExtra("Mounted Scope", 1200),
+                    new MenuItemExtra("Flashlight", 75),
+                    new MenuItemExtra("Suppressor", 699),
+                    new MenuItemExtra("Compensator", 240), } },
+                new MenuItem("Hawk & Little Combat Pistol",750) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Flashlight", 80),
+                    new MenuItemExtra("Suppressor", 890), } },
+                new MenuItem("Hawk & Little Desert Slug",1100) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Flashlight", 95),
+                    new MenuItemExtra("Suppressor", 1100), } },
+                new MenuItem("Hawk & Little 1919 Tactical",900) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 50),
+                    new MenuItemExtra("Flashlight", 75),
+                    new MenuItemExtra("Suppressor", 950), } },
+                new MenuItem("Hawk & Little Raging Mare Dx",1500) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Rounds", 0),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Hollow Point Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Holographic Sight", 890),
+                    new MenuItemExtra("Small Scope", 570),
+                    new MenuItemExtra("Flashlight", 70), } },
+                new MenuItem("Vom Feuer SCRAMP",700) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Flashlight", 80),
+                    new MenuItemExtra("Suppressor", 890), } },
+                new MenuItem("Vom Feuer 1922",450) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Suppressor", 890), } },
+
+
+                //Shotgun
+                new MenuItem("Shrewsbury 420 Sawed-Off",200),
+                new MenuItem("Shrewsbury 420",250) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Flashlight", 95),
+                    new MenuItemExtra("Suppressor", 1100), } },
+                new MenuItem("Vom Feuer 569",350) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Shells", 0),
+                    new MenuItemExtra("Dragon's Breath Shells", 500),
+                    new MenuItemExtra("Steel Buckshot Shells", 500),
+                    new MenuItemExtra("Flechette Shells", 500),
+                    new MenuItemExtra("Explosive Slugs", 500),
+                    new MenuItemExtra("Holographic Sight", 670),
+                    new MenuItemExtra("Small Scope", 560),
+                    new MenuItemExtra("Medium Scope", 890),
+                    new MenuItemExtra("Flashlight", 85),
+                    new MenuItemExtra("Suppressor", 1890),
+                    new MenuItemExtra("Squared Muzzle Brake", 200), } },
+                new MenuItem("Vom Feuer IBS-12",540) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 85),
+                    new MenuItemExtra("Flashlight", 95),
+                    new MenuItemExtra("Suppressor", 1100), } },
+                new MenuItem("Hawk & Little HLSG",670) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Flashlight", 95),
+                    new MenuItemExtra("Suppressor", 1950),
+                    new MenuItemExtra("Grip", 120),} },
+                new MenuItem("Shrewsbury Taiga-12",560) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 550),
+                    new MenuItemExtra("Flashlight", 80),
+                    new MenuItemExtra("Suppressor", 1945),
+                    new MenuItemExtra("Grip", 224) } },
+                new MenuItem("Toto 12 Guage Sawed-Off",300),
+                new MenuItem("Shrewsbury Defender",700),
+                new MenuItem("Leotardo SPAZ-11",1000) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Flashlight", 95),
+                    new MenuItemExtra("Suppressor", 1100), } },
+
+                //SMG
+                new MenuItem("Shrewsbury Luzi",300) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Flashlight", 80),
+                    new MenuItemExtra("Suppressor", 1945),
+                    new MenuItemExtra("Scope", 556) } },
+                new MenuItem("Hawk & Little MP6",1000) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 550),
+                    new MenuItemExtra("Flashlight", 80),
+                    new MenuItemExtra("Suppressor", 1945) } },
+                new MenuItem("Hawk & Little XPM",1200) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Hollow Point Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Flashlight", 120),
+                    new MenuItemExtra("Holographic Sight", 760),
+                    new MenuItemExtra("Small Scope", 525),
+                    new MenuItemExtra("Medium Scope", 890),
+                    new MenuItemExtra("Suppressor", 1400),
+                    new MenuItemExtra("Flat Muzzle Brake", 255),
+                    new MenuItemExtra("Tactical Muzzle Brake",265),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 200),
+                    new MenuItemExtra("Precision Muzzle Brake", 276),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 345),
+                    new MenuItemExtra("Slanted Muzzle Brake", 205),
+                    new MenuItemExtra("Split-End Muzzle Brake", 200),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 500), } },
+                new MenuItem("Vom Feuer KEK-9",200) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120),
+                    new MenuItemExtra("Drum Magazine", 550),
+                    new MenuItemExtra("Suppressor", 1945) } },
+                new MenuItem("Hawk & Little Millipede",250) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 120), } },
+
+                //AR
+                new MenuItem("Shrewsbury A7-4K",450) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 225),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Scope", 567),
+                    new MenuItemExtra("Suppressor", 800),
+                    new MenuItemExtra("Grip", 200), } },
+                new MenuItem("Shrewsbury A2-1K",570) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 150),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Armor Piercing Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Grip", 120),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Holographic Sight", 780),
+                    new MenuItemExtra("Small Scope", 667),
+                    new MenuItemExtra("Large Scope", 989),
+                    new MenuItemExtra("Suppressor", 1200),
+                    new MenuItemExtra("Flat Muzzle Brake", 300),
+                    new MenuItemExtra("Tactical Muzzle Brake", 123),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
+                    new MenuItemExtra("Precision Muzzle Brake", 224),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 330),
+                    new MenuItemExtra("Slanted Muzzle Brake", 150),
+                    new MenuItemExtra("Split-End Muzzle Brake", 175),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 800), } },
+                new MenuItem("Vom Feuer A5-1R",550) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Box Magazine", 225),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Scope", 567),
+                    new MenuItemExtra("Suppressor", 800),
+                    new MenuItemExtra("Grip", 200), } },
+                new MenuItem("Vom Feuer A5-1R MK2",780) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 145),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Armor Piercing Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Grip", 120),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Holographic Sight", 870),
+                    new MenuItemExtra("Small Scope", 760),
+                    new MenuItemExtra("Large Scope", 900),
+                    new MenuItemExtra("Suppressor", 1200),
+                    new MenuItemExtra("Flat Muzzle Brake", 250),
+                    new MenuItemExtra("Tactical Muzzle Brake", 220),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
+                    new MenuItemExtra("Precision Muzzle Brake", 220),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
+                    new MenuItemExtra("Slanted Muzzle Brake", 230),
+                    new MenuItemExtra("Split-End Muzzle Brake", 225),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 670), } },
+                new MenuItem("Vom Feuer BFR",950) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Scope", 567),
+                    new MenuItemExtra("Suppressor", 800), } },
+                new MenuItem("Vom Feuer SL6",1200) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 225),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Scope", 567),
+                    new MenuItemExtra("Suppressor", 800),
+                    new MenuItemExtra("Grip", 200), } },
+                new MenuItem("Vom Feuer SL6 MK2",1400) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 145),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Armor Piercing Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Grip", 120),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Holographic Sight", 870),
+                    new MenuItemExtra("Small Scope", 760),
+                    new MenuItemExtra("Large Scope", 900),
+                    new MenuItemExtra("Suppressor", 1200),
+                    new MenuItemExtra("Flat Muzzle Brake", 250),
+                    new MenuItemExtra("Tactical Muzzle Brake", 220),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
+                    new MenuItemExtra("Precision Muzzle Brake", 220),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
+                    new MenuItemExtra("Slanted Muzzle Brake", 230),
+                    new MenuItemExtra("Split-End Muzzle Brake", 225),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 670), } },
+                new MenuItem("Shrewsbury Stinkov",400) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Drum Magazine", 225),} },
+                new MenuItem("Vom Feuer POCK",1450),
+
+                //LMG
+                new MenuItem("Shrewsbury PDA",2000) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Scope", 567),} },
+                new MenuItem("Vom Feuer M70E1",3000) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 145),
+                    new MenuItemExtra("Tracer Rounds", 500),
+                    new MenuItemExtra("Incendiary Rounds", 500),
+                    new MenuItemExtra("Armor Piercing Rounds", 500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Grip", 124),
+                    new MenuItemExtra("Holographic Sight", 556),
+                    new MenuItemExtra("Medium Scope", 760),
+                    new MenuItemExtra("Large Scope", 890),
+                    new MenuItemExtra("Flat Muzzle Brake", 120),
+                    new MenuItemExtra("Tactical Muzzle Brake", 125),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 130),
+                    new MenuItemExtra("Precision Muzzle Brake", 135),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 145),
+                    new MenuItemExtra("Slanted Muzzle Brake", 155),
+                    new MenuItemExtra("Split-End Muzzle Brake", 155),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 900),} },
+                new MenuItem("Hawk & Little Kenan",700) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),} },
+
+                //SNIPER
+                new MenuItem("Shrewsbury PWN",1500) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Scope", 890),
+                    new MenuItemExtra("Advanced Scope", 1400),
+                    new MenuItemExtra("Suppressor", 1900),} },
+                new MenuItem("Bartlett M92",2500) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Scope", 890),
+                    new MenuItemExtra("Advanced Scope", 1400),} },
+                new MenuItem("Bartlett M92 Mk2",4500) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 250),
+                    new MenuItemExtra("Incendiary Rounds", 1000),
+                    new MenuItemExtra("Armor Piercing Rounds", 1500),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+                    new MenuItemExtra("Explosive Rounds", 2000),
+                    new MenuItemExtra("Zoom Scope", 2500),
+                    new MenuItemExtra("Advanced Scope", 1500),
+                    new MenuItemExtra("Night Vision Scope", 3500),
+                    new MenuItemExtra("Thermal Scope", 9500),
+                    new MenuItemExtra("Suppressor", 1900),
+                    new MenuItemExtra("Squared Muzzle Brake", 125),
+                    new MenuItemExtra("Bell-End Muzzle Brake", 150),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 1800),} },
+                new MenuItem("Vom Feuer M23 DBS Scout",1230) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 550),
+                    new MenuItemExtra("Tracer Rounds",560),
+                    new MenuItemExtra("Incendiary Rounds", 1000),
+                    new MenuItemExtra("Armor Piercing Rounds", 1700),
+                    new MenuItemExtra("Full Metal Jacket Rounds", 550),
+                    new MenuItemExtra("Holographic Sight", 670),
+                    new MenuItemExtra("Large Scope", 890),
+                    new MenuItemExtra("Zoom Scope", 1200),
+                    new MenuItemExtra("Flashlight", 78),
+                    new MenuItemExtra("Suppressor", 1400),
+                    new MenuItemExtra("Flat Muzzle Brake", 123),
+                    new MenuItemExtra("Tactical Muzzle Brake", 125),
+                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
+                    new MenuItemExtra("Precision Muzzle Brake", 125),
+                    new MenuItemExtra("Heavy Duty Muzzle Brake", 134),
+                    new MenuItemExtra("Slanted Muzzle Brake", 145),
+                    new MenuItemExtra("Split-End Muzzle Brake", 134),
+                    new MenuItemExtra("Default Barrel", 0),
+                    new MenuItemExtra("Heavy Barrel", 1200),
+                    new MenuItemExtra("Grip", 130),} },
+
+                //OTHER
+                new MenuItem("RPG-7",1000){ SubAmount = 1,SubPrice = 100 },
+                new MenuItem("Hawk & Little MGL",1200){ Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Scope", 567),
+                    new MenuItemExtra("Grip", 200), },SubAmount = 6,SubPrice = 100 },
+                new MenuItem("M61 Grenade",400) { SubAmount = 1,SubPrice = 400 },
+                new MenuItem("Improvised Incendiary",120) { SubAmount = 1,SubPrice = 120 },
+                new MenuItem("BZ Gas Grenade",200) { SubAmount = 1,SubPrice = 200 },
+
+
+                new MenuItem("LCC Avarus",7000,5000),
+                new MenuItem("Western Zombie Chopper",6200,4200),
+                new MenuItem("Western Zombie Bobber",5500,3975),
+                new MenuItem("Western Wolfsbane",6000,4000),
+                new MenuItem("Western Daemon",3000,2000),
+                new MenuItem("Declasse Gang Burrito 2",9000,7000),
+
+                }),
+        }); ;
+    }
+    private void LostDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
        new ShopMenu("LostDenMenu","LostDenMenu",new List<MenuItem>() {
 
 
@@ -3578,2672 +3946,7 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
         new MenuItem("Declasse Gang Burrito",9000,7000),
        // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
             }),
-});;
-
-}
-private void FamiliesDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("FamiliesDenMenu","FamiliesDenMenu",new List<MenuItem>() {
-            new MenuItem("Marijuana", 15, 9),
-            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Smoke Shop Rolling Papers",2),
-            new MenuItem("Toilet Cleaner",20, 16) ,
-            new MenuItem("SPANK", 40, 25),
-            new MenuItem("Flint Hatchet",80),
-            new MenuItem("Brass Knuckles",150),
-            new MenuItem("Combat Knife",120),
-            new MenuItem("Vom Feuer Machete",29),
-            new MenuItem("Switchblade",55),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1450),
-        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",200),
-       // new MenuItem("Shrewsbury 420",200),
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        //new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Drum Magazine", 123),
-            new MenuItemExtra("Suppressor", 356) } },
-        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Holographic Sight", 780),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),} },
-        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Grip", 90),
-        //    new MenuItemExtra("Scope", 567),} },
-        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Tracer Rounds", 500),
-        //    new MenuItemExtra("Incendiary Rounds", 500),
-        //    new MenuItemExtra("Armor Piercing Rounds", 500),
-        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        //new MenuItem("Bartlett M92",4578),
-        //new MenuItem("Bartlett M92 Mk2",3456),
-        ////OTHER
-        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
-        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void VagosDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("VagosDenMenu","VagosDenMenu",new List<MenuItem>() {
-            new MenuItem("Marijuana",15, 9),
-            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Smoke Shop Rolling Papers",2),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",200),
-        new MenuItem("Shrewsbury 420",200),
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Drum Magazine", 123),
-            new MenuItemExtra("Suppressor", 356) } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),} },
-        //OTHER
-        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void BallasDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("BallasDenMenu","BallasDenMenu",new List<MenuItem>() {
-            new MenuItem("Crack",46, 39),
-            new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Crack Pipe",5),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void VarriosDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("VarriosDenMenu","VarriosDenMenu",new List<MenuItem>() {
-            new MenuItem("Crack",45, 39),
-            new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Crack Pipe",5),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-
-}
-private void MarabunteDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("MarabunteDenMenu", "MarabunteDenMenu", new List<MenuItem>() {
-            new MenuItem("Marijuana",14, 9),
-            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Smoke Shop Rolling Papers",2),
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 250), } },
-        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 300), } },
-        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 250), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        new MenuItem("Shrewsbury 420",375),
-        new MenuItem("Toto 12 Guage Sawed-Off",395),
-        new MenuItem("Shrewsbury Defender",750),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 275), } },
-        new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Drum Magazine", 180),
-            new MenuItemExtra("Suppressor", 450) } },
-        new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 220), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Drum Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 600), } },
-        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void TriadsDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("TriadsDenMenu", "TriadsDenMenu", new List<MenuItem>() {
-            new MenuItem("Heroin",130, 100),
-            new MenuItem("Heroin",115) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Heroin",105) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 250), } },
-        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 300), } },
-        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 250), } },
-        ////Shotgun
-        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        //new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        ////AR
-        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Drum Magazine", 250),
-            new MenuItemExtra("Suppressor", 600), } },
-        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 250),} },
-        //LMG
-        new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),} },
-        new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),} },
-        new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 250),} },
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Suppressor", 340)} },
-        //OTHER
-        new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void KkangpaeDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("KkangpaeDenMenu", "KkangpaeDenMenu", new List<MenuItem>() {
-            new MenuItem("Heroin",125, 100),
-            new MenuItem("Heroin",115) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Heroin",105) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        //new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Suppressor", 700), } },
-        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 50),
-        //    new MenuItemExtra("Suppressor", 200), } },
-        //new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 300), } },
-        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 250), } },
-        ////Shotgun
-        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        //new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Drum Magazine", 250),
-            new MenuItemExtra("Suppressor", 600), } },
-        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 250),} },
-        //LMG
-        new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void DiablosDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("DiablosDenMenu","DiablosDenMenu",new List<MenuItem>() {
-            new MenuItem("SPANK", 45, 29),
-            new MenuItem("SPANK",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("SPANK",30) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Flint Hatchet",80),
-            new MenuItem("Brass Knuckles",150),
-            new MenuItem("Combat Knife",120),
-            new MenuItem("Vom Feuer Machete",29),
-            new MenuItem("Switchblade",55),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        //new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 345), } },
-        //new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Suppressor", 556), } },
-        //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 50),
-        //    new MenuItemExtra("Suppressor", 125), } },
-        //new MenuItem("Hawk & Little Raging Mare Dx",1450),
-        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        //new MenuItem("Shrewsbury 420 Sawed-Off",200),
-        //new MenuItem("Shrewsbury 420",200),
-        //new MenuItem("Toto 12 Guage Sawed-Off",250),
-        new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        //new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Drum Magazine", 123),
-        //    new MenuItemExtra("Suppressor", 356) } },
-        //new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 456), } },
-        //new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Tracer Rounds", 500),
-        //    new MenuItemExtra("Incendiary Rounds", 500),
-        //    new MenuItemExtra("Armor Piercing Rounds", 500),
-        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-        //    new MenuItemExtra("Suppressor", 245) } },
-        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Holographic Sight", 780),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 200),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),} },
-        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Grip", 90),
-        //    new MenuItemExtra("Scope", 567),} },
-        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Tracer Rounds", 500),
-        //    new MenuItemExtra("Incendiary Rounds", 500),
-        //    new MenuItemExtra("Armor Piercing Rounds", 500),
-        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Suppressor", 340)} },
-        new MenuItem("Bartlett M92",4578),
-        new MenuItem("Bartlett M92 Mk2",3456),
-        ////OTHER
-        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
-        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void YardiesDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("YardiesDenMenu","YardiesDenMenu",new List<MenuItem>() {
-            new MenuItem("Marijuana", 13, 9),
-            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Smoke Shop Rolling Papers",2),
-            new MenuItem("Flint Hatchet",80),
-            new MenuItem("Brass Knuckles",150),
-            new MenuItem("Combat Knife",120),
-            new MenuItem("Vom Feuer Machete",29),
-            new MenuItem("Switchblade",55),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 50),
-        //    new MenuItemExtra("Suppressor", 125), } },
-        //new MenuItem("Hawk & Little Raging Mare Dx",1450),
-        //new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 125), } },
-        //new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 200), } },
-        //new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 68),
-        //    new MenuItemExtra("Mounted Scope", 890),
-        //    new MenuItemExtra("Suppressor", 145),
-        //    new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",200),
-        new MenuItem("Shrewsbury 420",200),
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Drum Magazine", 123),
-            new MenuItemExtra("Suppressor", 356) } },
-        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 456), } },
-        //new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Tracer Rounds", 500),
-        //    new MenuItemExtra("Incendiary Rounds", 500),
-        //    new MenuItemExtra("Armor Piercing Rounds", 500),
-        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-        //    new MenuItemExtra("Suppressor", 245) } },
-        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Holographic Sight", 780),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 200),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),} },
-        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Grip", 90),
-        //    new MenuItemExtra("Scope", 567),} },
-        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Tracer Rounds", 500),
-        //    new MenuItemExtra("Incendiary Rounds", 500),
-        //    new MenuItemExtra("Armor Piercing Rounds", 500),
-        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        //new MenuItem("Bartlett M92",4578),
-        //new MenuItem("Bartlett M92 Mk2",3456),
-        ////OTHER
-        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
-        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void ArmenianDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("ArmenianDenMenu","ArmenianDenMenu",new List<MenuItem>() {
-            new MenuItem("Heroin",135, 99),
-            new MenuItem("Heroin",120) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
-            new MenuItem("Heroin",100) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Flint Hatchet",80),
-            new MenuItem("Brass Knuckles",150),
-            new MenuItem("Combat Knife",120),
-            new MenuItem("Vom Feuer Machete",29),
-            new MenuItem("Switchblade",55),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1450),
-        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        ////Shotgun
-        //new MenuItem("Shrewsbury 420 Sawed-Off",200),
-        //new MenuItem("Shrewsbury 420",200),
-        //new MenuItem("Toto 12 Guage Sawed-Off",250),
-        //new MenuItem("Shrewsbury Defender",550),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Suppressor", 145), } },
-        //new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Drum Magazine", 123),
-        //    new MenuItemExtra("Suppressor", 356) } },
-        //new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Box Magazine", 200),
-            new MenuItemExtra("Suppressor", 225),} },
-        new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Holographic Sight", 780),
-            new MenuItemExtra("Suppressor", 225),} },
-        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),} },
-        new MenuItem("Vom Feuer LAR",550, 145) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 400),} },
-        //LMG
-        new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),} },
-        new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Grip", 90),
-            new MenuItemExtra("Scope", 567),} },
-        new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Suppressor", 340)} },
-        new MenuItem("Bartlett M92",4578),
-        new MenuItem("Bartlett M92 Mk2",3456),
-        //OTHER
-        new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
-        new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
-        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-
-
-        new MenuItem("Benefactor Schafter",10000,5000),
-        new MenuItem("Benefactor Serrano",8000,5000),
-        new MenuItem("Karin Futo",3000,1000),
-            }),
-});;
-}
-private void MadrazoDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-       new ShopMenu("MadrazoDenMenu","MadrazoDenMenu",new List<MenuItem>() {
-            new MenuItem("Methamphetamine",45, 34),
-
-
-            new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Meth Pipe",5),
-
-            new MenuItem("Flint Hatchet",80),
-            new MenuItem("Brass Knuckles",150),
-            new MenuItem("Combat Knife",120),
-            new MenuItem("Vom Feuer Machete",29),
-            new MenuItem("Switchblade",55),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 343) },  },
-        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 345), } },
-        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 556), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1450),
-        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 125), } },
-        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 145),
-            new MenuItemExtra("Compensator", 240), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",200),
-        new MenuItem("Shrewsbury 420",200),
-        new MenuItem("Toto 12 Guage Sawed-Off",250),
-        new MenuItem("Shrewsbury Defender",550),
-        //SMG
-        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 145), } },
-        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Drum Magazine", 123),
-            new MenuItemExtra("Suppressor", 356) } },
-        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),
-            new MenuItemExtra("Suppressor", 456), } },
-        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Suppressor", 245) } },
-        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 200),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Holographic Sight", 780),
-        //    new MenuItemExtra("Suppressor", 225),} },
-        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 200),} },
-        //LMG
-        new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),} },
-        new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Grip", 90),
-            new MenuItemExtra("Scope", 567),} },
-        new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Suppressor", 340)} },
-        new MenuItem("Bartlett M92",4578),
-        new MenuItem("Bartlett M92 Mk2",3456),
-        //OTHER
-        new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
-        new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
-        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
-        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
-        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
-            }),
-});
-}
-private void GambettiDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("GambettiDenMenu", "GambettiDenMenu", new List<MenuItem>() {
-            new MenuItem("Cocaine",150, 109),
-            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        //new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 300), } },
-        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        ////Shotgun
-        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        //new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        //AR
-        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Drum Magazine", 250),
-            new MenuItemExtra("Suppressor", 600), } },
-        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 200),
-            new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void PavanoDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("PavanoDenMenu", "PavanoDenMenu", new List<MenuItem>() {
-            new MenuItem("Cocaine",150, 109),
-            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        //new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 400), } },
-        //new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 120),
-        //    new MenuItemExtra("Suppressor", 700), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 250), } },
-        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 300), } },
-        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 250), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Drum Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 600), } },
-        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void LupisellaDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("LupisellaDenMenu", "LupisellaDenMenu", new List<MenuItem>() {
-            new MenuItem("Cocaine",150, 109),
-            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 50),
-        //    new MenuItemExtra("Suppressor", 200), } },
-        //new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 300), } },
-        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        new MenuItem("Shrewsbury 420",375),
-        new MenuItem("Toto 12 Guage Sawed-Off",395),
-        new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Drum Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 600), } },
-        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        //OTHER
-        new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void MessinaDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("MessinaDenMenu", "MessinaDenMenu", new List<MenuItem>() {
-            new MenuItem("Cocaine",150, 109),
-            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 50),
-            new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 100),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 85),
-        //    new MenuItemExtra("Suppressor", 300), } },
-        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 250), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        ////AR
-        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Drum Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 600), } },
-        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Suppressor", 250) } },
-        new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Box Magazine", 250),
-            new MenuItemExtra("Suppressor", 390),} },
-        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 145),
-        //    new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void AncelottiDenMenu()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-        new ShopMenu("AncelottiDenMenu", "AncelottiDenMenu", new List<MenuItem>() {
-            new MenuItem("Cocaine",150, 109),
-            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-            new MenuItem("Brass Knuckles",175),
-            new MenuItem("Combat Knife",150),
-            new MenuItem("Vom Feuer Machete",45),
-            new MenuItem("Switchblade",78),
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Suppressor", 500) },  },
-        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 400), } },
-        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Suppressor", 700), } },
-        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 50),
-        //    new MenuItemExtra("Suppressor", 200), } },
-        new MenuItem("Hawk & Little Raging Mare Dx",1600),
-        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 100),
-            new MenuItemExtra("Suppressor", 250), } },
-        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 300), } },
-        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 150),
-            new MenuItemExtra("Suppressor", 250), } },
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",350),
-        //new MenuItem("Shrewsbury 420",375),
-        //new MenuItem("Toto 12 Guage Sawed-Off",395),
-        //new MenuItem("Shrewsbury Defender",750),
-        ////SMG
-        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Suppressor", 275), } },
-        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),
-        //    new MenuItemExtra("Drum Magazine", 180),
-        //    new MenuItemExtra("Suppressor", 450) } },
-        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 220), } },
-        //AR
-        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Drum Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 600), } },
-        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),
-        //    new MenuItemExtra("Suppressor", 250) } },
-        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Box Magazine", 250),
-        //    new MenuItemExtra("Suppressor", 390),} },
-        new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Suppressor", 350),} },
-        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 125),
-        //    new MenuItemExtra("Drum Magazine", 250),} },
-        ////LMG
-        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 200),} },
-        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 150),} },
-        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 250),} },
-        ////SNIPER
-        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Suppressor", 340)} },
-        ////OTHER
-        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-            }),
-});
-}
-private void GunShopList()
-{
-GunShop1();
-GunShop2();
-GunShop3();
-GunShop4();
-GunShop5();
-}
-private void GunShop1()//general
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
-{
-        new ShopMenu("GunShop1","GunShop1",new List<MenuItem>() {
-            new MenuItem("G.E.S. Baseball Bat",70),
-            new MenuItem("Flint Crowbar",35),
-            new MenuItem("ProLaps Five Iron Golf Club",150),
-            new MenuItem("Flint Hammer",25),
-
-        //ArmorHealth
-        new MenuItem("Light Body Armor",650),
-        new MenuItem("Medium Body Armor",1250),
-        new MenuItem("Heavy Body Armor",1500),
-        new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
-
-        //Pistola
-        new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip",0),
-            new MenuItemExtra("Extended Clip", 75),
-            new MenuItemExtra("Flashlight", 70),
-            new MenuItemExtra("Suppressor", 850) },  },
-
-        new MenuItem("Hawk & Little Raging Mare Dx",1950,1245) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Rounds", 0),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Hollow Point Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Holographic Sight", 890),
-            new MenuItemExtra("Small Scope", 570),
-            new MenuItemExtra("Flashlight", 70), } },
-        new MenuItem("Vom Feuer P69",790,656) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 890), } },
-        new MenuItem("Shrewsbury S7A",1200, 950) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 68),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Hollow Point Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Flashlight", 75),
-            new MenuItemExtra("Mounted Scope", 890),
-            new MenuItemExtra("Suppressor", 780),
-            new MenuItemExtra("Compensator", 240), } },
-        new MenuItem("Coil Tesla",550),
-        new MenuItem("Vom Feuer 1922",995, 750) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 85),
-            new MenuItemExtra("Suppressor", 890), } },
-        new MenuItem("Vom Feuer Gruber",705, 400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Suppressor", 950), } },
-
-
-        //Shotgun
-        new MenuItem("Shrewsbury 420 Sawed-Off",250,150),
-        new MenuItem("Shrewsbury 420",400, 325) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Flashlight", 95),
-            new MenuItemExtra("Suppressor", 1100), } },
-
-        //SMG
-        new MenuItem("Shrewsbury Luzi",600,450) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120),
-            new MenuItemExtra("Flashlight", 80),
-            new MenuItemExtra("Suppressor", 1945),
-            new MenuItemExtra("Scope", 556) } },
-        new MenuItem("Hawk & Little Millipede",450,320) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 120), } },
-
-        //AR
-        new MenuItem("Shrewsbury A7-4K",650,550) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 225),
-            new MenuItemExtra("Flashlight", 90),
-            new MenuItemExtra("Scope", 567),
-            new MenuItemExtra("Suppressor", 800),
-            new MenuItemExtra("Grip", 200), } },
-        new MenuItem("Vom Feuer SL6 MK2",2200,1600) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Grip", 120),
-            new MenuItemExtra("Flashlight", 90),
-            new MenuItemExtra("Holographic Sight", 870),
-            new MenuItemExtra("Small Scope", 760),
-            new MenuItemExtra("Large Scope", 900),
-            new MenuItemExtra("Suppressor", 1200),
-            new MenuItemExtra("Flat Muzzle Brake", 250),
-            new MenuItemExtra("Tactical Muzzle Brake", 220),
-            new MenuItemExtra("Fat-End Muzzle Brake", 215),
-            new MenuItemExtra("Precision Muzzle Brake", 220),
-            new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
-            new MenuItemExtra("Slanted Muzzle Brake", 230),
-            new MenuItemExtra("Split-End Muzzle Brake", 225),
-            new MenuItemExtra("Default Barrel", 0),
-            new MenuItemExtra("Heavy Barrel", 670), } },
-        new MenuItem("Hawk & Little ZBZ-23",1200, 890) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 125),
-            new MenuItemExtra("Drum Magazine", 225),
-            new MenuItemExtra("Flashlight", 90),
-            new MenuItemExtra("Scope", 567),
-            new MenuItemExtra("Suppressor", 800),
-            new MenuItemExtra("Grip", 200), } },
-        new MenuItem("Vom Feuer POCK",1700,1400),
-
-        //LMG
-        new MenuItem("Vom Feuer M70E1",5000, 3400) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Extended Clip", 145),
-            new MenuItemExtra("Tracer Rounds", 500),
-            new MenuItemExtra("Incendiary Rounds", 500),
-            new MenuItemExtra("Armor Piercing Rounds", 500),
-            new MenuItemExtra("Full Metal Jacket Rounds", 500),
-            new MenuItemExtra("Grip", 124),
-            new MenuItemExtra("Holographic Sight", 556),
-            new MenuItemExtra("Medium Scope", 760),
-            new MenuItemExtra("Large Scope", 890),
-            new MenuItemExtra("Flat Muzzle Brake", 120),
-            new MenuItemExtra("Tactical Muzzle Brake", 125),
-            new MenuItemExtra("Fat-End Muzzle Brake", 130),
-            new MenuItemExtra("Precision Muzzle Brake", 135),
-            new MenuItemExtra("Heavy Duty Muzzle Brake", 145),
-            new MenuItemExtra("Slanted Muzzle Brake", 155),
-            new MenuItemExtra("Split-End Muzzle Brake", 155),
-            new MenuItemExtra("Default Barrel", 0),
-            new MenuItemExtra("Heavy Barrel", 900),} },
-
-        //SNIPER
-        new MenuItem("Shrewsbury PWN",2500, 1200) { Extras = new List<MenuItemExtra>() {
-            new MenuItemExtra("Default Clip", 0),
-            new MenuItemExtra("Scope", 890),
-            new MenuItemExtra("Advanced Scope", 1400),
-            new MenuItemExtra("Suppressor", 1900),} },
-
-
-        //new MenuItem("Shrewsbury BFD Dragmeout",1500, 1000) { Extras = new List<MenuItemExtra>() {
-        //    new MenuItemExtra("Default Clip", 0),
-        //    new MenuItemExtra("Extended Clip", 60),
-        //    new MenuItemExtra("Scope", 500),
-        //    new MenuItemExtra("Flashlight", 600),
-        //    new MenuItemExtra("Suppressor", 700),} },
-
-
-        //OTHER
-        new MenuItem("RPG-7",12550){ SubAmount = 1,SubPrice = 500 },
-        new MenuItem("M61 Grenade",800) { SubAmount = 1,SubPrice = 800 },
-        new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
-        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
-       // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
-
-
-        new MenuItem("Schmidt & Priss TL6 Scanner", 85),
-        new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
-
-    }
-    private void DenList()
-    {
-        AngelsDenMenu();
-        LostDenMenu();
-        UptownDenMenu();
-
-        FamiliesDenMenu();
-        VagosDenMenu();
-        BallasDenMenu();
-        VarriosDenMenu();
-        MarabunteDenMenu();
-        TriadsDenMenu();
-        KkangpaeDenMenu();
-
-        DiablosDenMenu();
-        YardiesDenMenu();
-        ArmenianDenMenu();
-        MadrazoDenMenu();
-
-        GambettiDenMenu(); 
-        PavanoDenMenu();
-        LupisellaDenMenu();
-        MessinaDenMenu();
-        AncelottiDenMenu();
-        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> { 
-
-                new ShopMenu("GenericGangDenMenu","GenericGangDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana",16,12),
-                    new MenuItem("Smoke Shop Rolling Papers",2),
-                    new MenuItem("Toilet Cleaner",22, 18) ,
-                    new MenuItem("SPANK", 45, 20),
-                    new MenuItem("Brass Knuckles",175),
-                    new MenuItem("Combat Knife",150),
-                    new MenuItem("Vom Feuer Machete",45),
-                    new MenuItem("Switchblade",78),
-                //Pistola
-                new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip",0),
-                    new MenuItemExtra("Extended Clip", 75),
-                    new MenuItemExtra("Suppressor", 500) },  },
-                new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 100),
-                    new MenuItemExtra("Suppressor", 400), } },
-                new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Suppressor", 700), } },
-                new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 50),
-                    new MenuItemExtra("Suppressor", 200), } },
-                new MenuItem("Hawk & Little Raging Mare Dx",1600),
-                new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 100),
-                    new MenuItemExtra("Suppressor", 250), } },
-                new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Suppressor", 300), } },
-                new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),
-                    new MenuItemExtra("Suppressor", 250), } },
-                //Shotgun
-                new MenuItem("Shrewsbury 420 Sawed-Off",350),
-                new MenuItem("Shrewsbury 420",375),
-                new MenuItem("Toto 12 Guage Sawed-Off",395),
-                new MenuItem("Shrewsbury Defender",750),
-                //SMG
-                new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),
-                    new MenuItemExtra("Suppressor", 275), } },
-                new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),
-                    new MenuItemExtra("Drum Magazine", 180),
-                    new MenuItemExtra("Suppressor", 450) } },
-                new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 220), } },
-                //AR
-                new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 200),
-                    new MenuItemExtra("Drum Magazine", 250),
-                    new MenuItemExtra("Suppressor", 600), } },
-                new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 200),
-                    new MenuItemExtra("Suppressor", 250) } },
-                new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Box Magazine", 250),
-                    new MenuItemExtra("Suppressor", 390),} },
-                new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Suppressor", 350),} },
-                new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 250),} },
-                //LMG
-                new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 200),} },
-                new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),} },
-                new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 250),} },
-                //SNIPER
-                new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Suppressor", 340)} },
-                //OTHER
-                new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
-                new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
-                new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
-                    }),
-        });
-    }
-    private void AngelsDenMenu()
-    {
-        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-                new ShopMenu("AngelsDenMenu","AngelsDenMenu",new List<MenuItem>() {
-
-
-                   new MenuItem("Methamphetamine",50, 34),
-                   new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-                   new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-                   new MenuItem("Meth Pipe",5),
-
-                    new MenuItem("G.E.S. Baseball Bat",45),
-                    new MenuItem("Flint Crowbar",30),
-                    new MenuItem("ProLaps Five Iron Golf Club",100),
-                    new MenuItem("Flint Hammer",20),
-                    new MenuItem("Flint Hatchet",75),
-                    new MenuItem("Brass Knuckles",100),
-                    new MenuItem("Combat Knife",100),
-                    new MenuItem("Vom Feuer Machete",20),
-                    new MenuItem("Switchblade",45),
-                    new MenuItem("Nightstick",45),
-                    new MenuItem("Flint Heavy Duty Pipe Wrench",20),
-                    new MenuItem("Pool Cue",30),
-
-                //Food
-                new MenuItem("Bottle of Barracho", 0) { IsFree = true },
-                new MenuItem("Bottle of PiBwasser", 0) { IsFree = true },
-                new MenuItem("Bottle of Blarneys", 0) { IsFree = true },
-                new MenuItem("Bottle of Logger", 0) { IsFree = true },
-                new MenuItem("Bottle of Patriot", 0) { IsFree = true },
-                new MenuItem("Bottle of Pride", 0) { IsFree = true },
-                new MenuItem("Bottle of Stronzo", 0) { IsFree = true },
-                new MenuItem("Bottle of A.M.", 0) { IsFree = true },
-                new MenuItem("Bottle of Jakeys", 0) { IsFree = true },
-                new MenuItem("Bottle of Dusche", 0) { IsFree = true },
-
-                //Pistola
-                new MenuItem("Hawk & Little PTF092F",400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip",0),
-                    new MenuItemExtra("Extended Clip", 75),
-                    new MenuItemExtra("Flashlight", 70),
-                    new MenuItemExtra("Suppressor", 850) },  },
-                new MenuItem("Hawk & Little Thunder",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 105),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds",500),
-                    new MenuItemExtra("Mounted Scope", 1200),
-                    new MenuItemExtra("Flashlight", 75),
-                    new MenuItemExtra("Suppressor", 699),
-                    new MenuItemExtra("Compensator", 240), } },
-                new MenuItem("Hawk & Little Combat Pistol",750) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("Hawk & Little Desert Slug",1100) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little 1919 Tactical",900) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 50),
-                    new MenuItemExtra("Flashlight", 75),
-                    new MenuItemExtra("Suppressor", 950), } },
-                new MenuItem("Hawk & Little Raging Mare Dx",1500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Rounds", 0),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Holographic Sight", 890),
-                    new MenuItemExtra("Small Scope", 570),
-                    new MenuItemExtra("Flashlight", 70), } },
-                new MenuItem("Vom Feuer SCRAMP",700) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("Vom Feuer 1922",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Suppressor", 890), } },
-
-
-                //Shotgun
-                new MenuItem("Shrewsbury 420 Sawed-Off",200),
-                new MenuItem("Shrewsbury 420",250) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Vom Feuer 569",350) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Shells", 0),
-                    new MenuItemExtra("Dragon's Breath Shells", 500),
-                    new MenuItemExtra("Steel Buckshot Shells", 500),
-                    new MenuItemExtra("Flechette Shells", 500),
-                    new MenuItemExtra("Explosive Slugs", 500),
-                    new MenuItemExtra("Holographic Sight", 670),
-                    new MenuItemExtra("Small Scope", 560),
-                    new MenuItemExtra("Medium Scope", 890),
-                    new MenuItemExtra("Flashlight", 85),
-                    new MenuItemExtra("Suppressor", 1890),
-                    new MenuItemExtra("Squared Muzzle Brake", 200), } },
-                new MenuItem("Vom Feuer IBS-12",540) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little HLSG",670) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1950),
-                    new MenuItemExtra("Grip", 120),} },
-                new MenuItem("Shrewsbury Taiga-12",560) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945),
-                    new MenuItemExtra("Grip", 224) } },
-                new MenuItem("Toto 12 Guage Sawed-Off",300),
-                new MenuItem("Shrewsbury Defender",700),
-                new MenuItem("Leotardo SPAZ-11",1000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-     
-                //SMG
-                new MenuItem("Shrewsbury Luzi",300) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945),
-                    new MenuItemExtra("Scope", 556) } },
-                new MenuItem("Hawk & Little MP6",1000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945) } },
-                new MenuItem("Hawk & Little XPM",1200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Flashlight", 120),
-                    new MenuItemExtra("Holographic Sight", 760),
-                    new MenuItemExtra("Small Scope", 525),
-                    new MenuItemExtra("Medium Scope", 890),
-                    new MenuItemExtra("Suppressor", 1400),
-                    new MenuItemExtra("Flat Muzzle Brake", 255),
-                    new MenuItemExtra("Tactical Muzzle Brake",265),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 200),
-                    new MenuItemExtra("Precision Muzzle Brake", 276),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 345),
-                    new MenuItemExtra("Slanted Muzzle Brake", 205),
-                    new MenuItemExtra("Split-End Muzzle Brake", 200),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 500), } },
-                new MenuItem("Vom Feuer KEK-9",200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Suppressor", 1945) } },
-                new MenuItem("Hawk & Little Millipede",250) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120), } },
-
-                //AR
-                new MenuItem("Shrewsbury A7-4K",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Shrewsbury A2-1K",570) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 780),
-                    new MenuItemExtra("Small Scope", 667),
-                    new MenuItemExtra("Large Scope", 989),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 300),
-                    new MenuItemExtra("Tactical Muzzle Brake", 123),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
-                    new MenuItemExtra("Precision Muzzle Brake", 224),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 330),
-                    new MenuItemExtra("Slanted Muzzle Brake", 150),
-                    new MenuItemExtra("Split-End Muzzle Brake", 175),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 800), } },
-                new MenuItem("Vom Feuer A5-1R",550) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Box Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Vom Feuer A5-1R MK2",780) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 870),
-                    new MenuItemExtra("Small Scope", 760),
-                    new MenuItemExtra("Large Scope", 900),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 250),
-                    new MenuItemExtra("Tactical Muzzle Brake", 220),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
-                    new MenuItemExtra("Precision Muzzle Brake", 220),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
-                    new MenuItemExtra("Slanted Muzzle Brake", 230),
-                    new MenuItemExtra("Split-End Muzzle Brake", 225),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 670), } },
-                new MenuItem("Vom Feuer BFR",950) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800), } },
-                new MenuItem("Vom Feuer SL6",1200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Vom Feuer SL6 MK2",1400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 870),
-                    new MenuItemExtra("Small Scope", 760),
-                    new MenuItemExtra("Large Scope", 900),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 250),
-                    new MenuItemExtra("Tactical Muzzle Brake", 220),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
-                    new MenuItemExtra("Precision Muzzle Brake", 220),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
-                    new MenuItemExtra("Slanted Muzzle Brake", 230),
-                    new MenuItemExtra("Split-End Muzzle Brake", 225),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 670), } },
-                new MenuItem("Shrewsbury Stinkov",400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),} },
-                new MenuItem("Vom Feuer POCK",1450),
-
-                //LMG
-                new MenuItem("Shrewsbury PDA",2000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Scope", 567),} },
-                new MenuItem("Vom Feuer M70E1",3000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 124),
-                    new MenuItemExtra("Holographic Sight", 556),
-                    new MenuItemExtra("Medium Scope", 760),
-                    new MenuItemExtra("Large Scope", 890),
-                    new MenuItemExtra("Flat Muzzle Brake", 120),
-                    new MenuItemExtra("Tactical Muzzle Brake", 125),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 130),
-                    new MenuItemExtra("Precision Muzzle Brake", 135),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 145),
-                    new MenuItemExtra("Slanted Muzzle Brake", 155),
-                    new MenuItemExtra("Split-End Muzzle Brake", 155),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 900),} },
-                new MenuItem("Hawk & Little Kenan",700) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),} },
-
-                //SNIPER
-                new MenuItem("Shrewsbury PWN",1500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Scope", 890),
-                    new MenuItemExtra("Advanced Scope", 1400),
-                    new MenuItemExtra("Suppressor", 1900),} },
-                new MenuItem("Bartlett M92",2500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Scope", 890),
-                    new MenuItemExtra("Advanced Scope", 1400),} },
-                new MenuItem("Bartlett M92 Mk2",4500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 250),
-                    new MenuItemExtra("Incendiary Rounds", 1000),
-                    new MenuItemExtra("Armor Piercing Rounds", 1500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Explosive Rounds", 2000),
-                    new MenuItemExtra("Zoom Scope", 2500),
-                    new MenuItemExtra("Advanced Scope", 1500),
-                    new MenuItemExtra("Night Vision Scope", 3500),
-                    new MenuItemExtra("Thermal Scope", 9500),
-                    new MenuItemExtra("Suppressor", 1900),
-                    new MenuItemExtra("Squared Muzzle Brake", 125),
-                    new MenuItemExtra("Bell-End Muzzle Brake", 150),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 1800),} },
-                new MenuItem("Vom Feuer M23 DBS Scout",1230) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 550),
-                    new MenuItemExtra("Tracer Rounds",560),
-                    new MenuItemExtra("Incendiary Rounds", 1000),
-                    new MenuItemExtra("Armor Piercing Rounds", 1700),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 550),
-                    new MenuItemExtra("Holographic Sight", 670),
-                    new MenuItemExtra("Large Scope", 890),
-                    new MenuItemExtra("Zoom Scope", 1200),
-                    new MenuItemExtra("Flashlight", 78),
-                    new MenuItemExtra("Suppressor", 1400),
-                    new MenuItemExtra("Flat Muzzle Brake", 123),
-                    new MenuItemExtra("Tactical Muzzle Brake", 125),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
-                    new MenuItemExtra("Precision Muzzle Brake", 125),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 134),
-                    new MenuItemExtra("Slanted Muzzle Brake", 145),
-                    new MenuItemExtra("Split-End Muzzle Brake", 134),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 1200),
-                    new MenuItemExtra("Grip", 130),} },
-
-                //OTHER
-                new MenuItem("RPG-7",1000){ SubAmount = 1,SubPrice = 100 },
-                new MenuItem("Hawk & Little MGL",1200){ Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Grip", 200), },SubAmount = 6,SubPrice = 100 },
-                new MenuItem("M61 Grenade",400) { SubAmount = 1,SubPrice = 400 },
-                new MenuItem("Improvised Incendiary",120) { SubAmount = 1,SubPrice = 120 },
-                new MenuItem("BZ Gas Grenade",200) { SubAmount = 1,SubPrice = 200 },
-
-
-                new MenuItem("LCC Avarus",7000,5000),
-                new MenuItem("Western Zombie Chopper",6200,4200),
-                new MenuItem("Western Zombie Bobber",5500,3975),
-                new MenuItem("Western Wolfsbane",6000,4000),
-                new MenuItem("Western Daemon",3000,2000),
-                new MenuItem("Declasse Gang Burrito 2",9000,7000),
-
-                }),
-        }); ;
-    }
-    private void LostDenMenu()
-    {
-        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
-               new ShopMenu("LostDenMenu","LostDenMenu",new List<MenuItem>() {
-
-
-                   new MenuItem("Methamphetamine",50, 34),
-                   new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
-                   new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
-                   new MenuItem("Meth Pipe",5),
-
-                    new MenuItem("G.E.S. Baseball Bat",45),
-                    new MenuItem("Flint Crowbar",30),
-                    new MenuItem("ProLaps Five Iron Golf Club",100),
-                    new MenuItem("Flint Hammer",20),
-                    new MenuItem("Flint Hatchet",75),
-                    new MenuItem("Brass Knuckles",100),
-                    new MenuItem("Combat Knife",100),
-                    new MenuItem("Vom Feuer Machete",20),
-                    new MenuItem("Switchblade",45),
-                    new MenuItem("Nightstick",45),
-                    new MenuItem("Flint Heavy Duty Pipe Wrench",20),
-                    new MenuItem("Pool Cue",30),
-
-                //Food
-                new MenuItem("Bottle of Barracho", 0) { IsFree = true },
-                new MenuItem("Bottle of PiBwasser", 0) { IsFree = true },
-                new MenuItem("Bottle of Blarneys", 0) { IsFree = true },
-                new MenuItem("Bottle of Logger", 0) { IsFree = true },
-                new MenuItem("Bottle of Patriot", 0) { IsFree = true },
-                new MenuItem("Bottle of Pride", 0) { IsFree = true },
-                new MenuItem("Bottle of Stronzo", 0) { IsFree = true },
-                new MenuItem("Bottle of A.M.", 0) { IsFree = true },
-                new MenuItem("Bottle of Jakeys", 0) { IsFree = true },
-                new MenuItem("Bottle of Dusche", 0) { IsFree = true },
-
-                //Pistola
-                new MenuItem("Hawk & Little PTF092F",400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip",0),
-                    new MenuItemExtra("Extended Clip", 75),
-                    new MenuItemExtra("Flashlight", 70),
-                    new MenuItemExtra("Suppressor", 850) },  },
-                new MenuItem("Hawk & Little Thunder",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 105),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds",500),
-                    new MenuItemExtra("Mounted Scope", 1200),
-                    new MenuItemExtra("Flashlight", 75),
-                    new MenuItemExtra("Suppressor", 699),
-                    new MenuItemExtra("Compensator", 240), } },
-                new MenuItem("Hawk & Little Combat Pistol",750) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("Hawk & Little Desert Slug",1100) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little 1919 Tactical",900) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 50),
-                    new MenuItemExtra("Flashlight", 75),
-                    new MenuItemExtra("Suppressor", 950), } },
-                new MenuItem("Hawk & Little Raging Mare Dx",1500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Rounds", 0),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Holographic Sight", 890),
-                    new MenuItemExtra("Small Scope", 570),
-                    new MenuItemExtra("Flashlight", 70), } },
-                new MenuItem("Vom Feuer SCRAMP",700) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 890), } },
-                new MenuItem("Vom Feuer 1922",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Suppressor", 890), } },
-
-
-                //Shotgun
-                new MenuItem("Shrewsbury 420 Sawed-Off",200),
-                new MenuItem("Shrewsbury 420",250) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Vom Feuer 569",350) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Shells", 0),
-                    new MenuItemExtra("Dragon's Breath Shells", 500),
-                    new MenuItemExtra("Steel Buckshot Shells", 500),
-                    new MenuItemExtra("Flechette Shells", 500),
-                    new MenuItemExtra("Explosive Slugs", 500),
-                    new MenuItemExtra("Holographic Sight", 670),
-                    new MenuItemExtra("Small Scope", 560),
-                    new MenuItemExtra("Medium Scope", 890),
-                    new MenuItemExtra("Flashlight", 85),
-                    new MenuItemExtra("Suppressor", 1890),
-                    new MenuItemExtra("Squared Muzzle Brake", 200), } },
-                new MenuItem("Vom Feuer IBS-12",540) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 85),
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-                new MenuItem("Hawk & Little HLSG",670) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1950),
-                    new MenuItemExtra("Grip", 120),} },
-                new MenuItem("Shrewsbury Taiga-12",560) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945),
-                    new MenuItemExtra("Grip", 224) } },
-                new MenuItem("Toto 12 Guage Sawed-Off",300),
-                new MenuItem("Shrewsbury Defender",700),
-                new MenuItem("Leotardo SPAZ-11",1000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Flashlight", 95),
-                    new MenuItemExtra("Suppressor", 1100), } },
-     
-                //SMG
-                new MenuItem("Shrewsbury Luzi",300) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945),
-                    new MenuItemExtra("Scope", 556) } },
-                new MenuItem("Hawk & Little MP6",1000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Flashlight", 80),
-                    new MenuItemExtra("Suppressor", 1945) } },
-                new MenuItem("Hawk & Little XPM",1200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Hollow Point Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Flashlight", 120),
-                    new MenuItemExtra("Holographic Sight", 760),
-                    new MenuItemExtra("Small Scope", 525),
-                    new MenuItemExtra("Medium Scope", 890),
-                    new MenuItemExtra("Suppressor", 1400),
-                    new MenuItemExtra("Flat Muzzle Brake", 255),
-                    new MenuItemExtra("Tactical Muzzle Brake",265),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 200),
-                    new MenuItemExtra("Precision Muzzle Brake", 276),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 345),
-                    new MenuItemExtra("Slanted Muzzle Brake", 205),
-                    new MenuItemExtra("Split-End Muzzle Brake", 200),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 500), } },
-                new MenuItem("Vom Feuer KEK-9",200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120),
-                    new MenuItemExtra("Drum Magazine", 550),
-                    new MenuItemExtra("Suppressor", 1945) } },
-                new MenuItem("Hawk & Little Millipede",250) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 120), } },
-
-                //AR
-                new MenuItem("Shrewsbury A7-4K",450) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Shrewsbury A2-1K",570) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 150),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 780),
-                    new MenuItemExtra("Small Scope", 667),
-                    new MenuItemExtra("Large Scope", 989),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 300),
-                    new MenuItemExtra("Tactical Muzzle Brake", 123),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
-                    new MenuItemExtra("Precision Muzzle Brake", 224),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 330),
-                    new MenuItemExtra("Slanted Muzzle Brake", 150),
-                    new MenuItemExtra("Split-End Muzzle Brake", 175),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 800), } },
-                new MenuItem("Vom Feuer A5-1R",550) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Box Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Vom Feuer A5-1R MK2",780) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 870),
-                    new MenuItemExtra("Small Scope", 760),
-                    new MenuItemExtra("Large Scope", 900),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 250),
-                    new MenuItemExtra("Tactical Muzzle Brake", 220),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
-                    new MenuItemExtra("Precision Muzzle Brake", 220),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
-                    new MenuItemExtra("Slanted Muzzle Brake", 230),
-                    new MenuItemExtra("Split-End Muzzle Brake", 225),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 670), } },
-                new MenuItem("Vom Feuer BFR",950) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800), } },
-                new MenuItem("Vom Feuer SL6",1200) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Suppressor", 800),
-                    new MenuItemExtra("Grip", 200), } },
-                new MenuItem("Vom Feuer SL6 MK2",1400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 120),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Holographic Sight", 870),
-                    new MenuItemExtra("Small Scope", 760),
-                    new MenuItemExtra("Large Scope", 900),
-                    new MenuItemExtra("Suppressor", 1200),
-                    new MenuItemExtra("Flat Muzzle Brake", 250),
-                    new MenuItemExtra("Tactical Muzzle Brake", 220),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 215),
-                    new MenuItemExtra("Precision Muzzle Brake", 220),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
-                    new MenuItemExtra("Slanted Muzzle Brake", 230),
-                    new MenuItemExtra("Split-End Muzzle Brake", 225),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 670), } },
-                new MenuItem("Shrewsbury Stinkov",400) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Drum Magazine", 225),} },
-                new MenuItem("Vom Feuer POCK",1450),
-
-                //LMG
-                new MenuItem("Shrewsbury PDA",2000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),
-                    new MenuItemExtra("Scope", 567),} },
-                new MenuItem("Vom Feuer M70E1",3000) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 145),
-                    new MenuItemExtra("Tracer Rounds", 500),
-                    new MenuItemExtra("Incendiary Rounds", 500),
-                    new MenuItemExtra("Armor Piercing Rounds", 500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Grip", 124),
-                    new MenuItemExtra("Holographic Sight", 556),
-                    new MenuItemExtra("Medium Scope", 760),
-                    new MenuItemExtra("Large Scope", 890),
-                    new MenuItemExtra("Flat Muzzle Brake", 120),
-                    new MenuItemExtra("Tactical Muzzle Brake", 125),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 130),
-                    new MenuItemExtra("Precision Muzzle Brake", 135),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 145),
-                    new MenuItemExtra("Slanted Muzzle Brake", 155),
-                    new MenuItemExtra("Split-End Muzzle Brake", 155),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 900),} },
-                new MenuItem("Hawk & Little Kenan",700) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 125),} },
-
-                //SNIPER
-                new MenuItem("Shrewsbury PWN",1500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Scope", 890),
-                    new MenuItemExtra("Advanced Scope", 1400),
-                    new MenuItemExtra("Suppressor", 1900),} },
-                new MenuItem("Bartlett M92",2500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Scope", 890),
-                    new MenuItemExtra("Advanced Scope", 1400),} },
-                new MenuItem("Bartlett M92 Mk2",4500) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 250),
-                    new MenuItemExtra("Incendiary Rounds", 1000),
-                    new MenuItemExtra("Armor Piercing Rounds", 1500),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 500),
-                    new MenuItemExtra("Explosive Rounds", 2000),
-                    new MenuItemExtra("Zoom Scope", 2500),
-                    new MenuItemExtra("Advanced Scope", 1500),
-                    new MenuItemExtra("Night Vision Scope", 3500),
-                    new MenuItemExtra("Thermal Scope", 9500),
-                    new MenuItemExtra("Suppressor", 1900),
-                    new MenuItemExtra("Squared Muzzle Brake", 125),
-                    new MenuItemExtra("Bell-End Muzzle Brake", 150),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 1800),} },
-                new MenuItem("Vom Feuer M23 DBS Scout",1230) { Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Extended Clip", 550),
-                    new MenuItemExtra("Tracer Rounds",560),
-                    new MenuItemExtra("Incendiary Rounds", 1000),
-                    new MenuItemExtra("Armor Piercing Rounds", 1700),
-                    new MenuItemExtra("Full Metal Jacket Rounds", 550),
-                    new MenuItemExtra("Holographic Sight", 670),
-                    new MenuItemExtra("Large Scope", 890),
-                    new MenuItemExtra("Zoom Scope", 1200),
-                    new MenuItemExtra("Flashlight", 78),
-                    new MenuItemExtra("Suppressor", 1400),
-                    new MenuItemExtra("Flat Muzzle Brake", 123),
-                    new MenuItemExtra("Tactical Muzzle Brake", 125),
-                    new MenuItemExtra("Fat-End Muzzle Brake", 150),
-                    new MenuItemExtra("Precision Muzzle Brake", 125),
-                    new MenuItemExtra("Heavy Duty Muzzle Brake", 134),
-                    new MenuItemExtra("Slanted Muzzle Brake", 145),
-                    new MenuItemExtra("Split-End Muzzle Brake", 134),
-                    new MenuItemExtra("Default Barrel", 0),
-                    new MenuItemExtra("Heavy Barrel", 1200),
-                    new MenuItemExtra("Grip", 130),} },
-
-                //OTHER
-                new MenuItem("RPG-7",1000){ SubAmount = 1,SubPrice = 100 },
-                new MenuItem("Hawk & Little MGL",1200){ Extras = new List<MenuItemExtra>() {
-                    new MenuItemExtra("Default Clip", 0),
-                    new MenuItemExtra("Flashlight", 90),
-                    new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Grip", 200), },SubAmount = 6,SubPrice = 100 },
-                new MenuItem("M61 Grenade",400) { SubAmount = 1,SubPrice = 400 },
-                new MenuItem("Improvised Incendiary",120) { SubAmount = 1,SubPrice = 120 },
-                new MenuItem("BZ Gas Grenade",200) { SubAmount = 1,SubPrice = 200 },
-
-
-                new MenuItem("Western Zombie Bobber",7000,5000),
-                new MenuItem("Western Zombie Chopper",6200,4200),
-                new MenuItem("Western Daemon",5500,3975),
-                new MenuItem("Western Daemon LOST",6000,4000),
-                new MenuItem("Western Bagger",3000,2000),
-                new MenuItem("Vapid Lost Slamvan",12000,8000),
-                new MenuItem("Declasse Gang Burrito",9000,7000),
-               // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
-                    }),
-        });;
+}); ;
 
     }
     private void UptownDenMenu()
@@ -6362,7 +4065,7 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
                 new MenuItem("Leotardo SPAZ-11",1000) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Flashlight", 95),
                     new MenuItemExtra("Suppressor", 1100), } },
-     
+
                 //SMG
                 new MenuItem("Shrewsbury Luzi",300) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
@@ -6612,12 +4315,1801 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
         }); ;
     }
     private void FamiliesDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("FamiliesDenMenu","FamiliesDenMenu",new List<MenuItem>() {
+            new MenuItem("Marijuana", 15, 9),
+            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Smoke Shop Rolling Papers",2),
+            new MenuItem("Toilet Cleaner",20, 16) ,
+            new MenuItem("SPANK", 40, 25),
+            new MenuItem("Flint Hatchet",80),
+            new MenuItem("Brass Knuckles",150),
+            new MenuItem("Combat Knife",120),
+            new MenuItem("Vom Feuer Machete",29),
+            new MenuItem("Switchblade",55),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1450),
+        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",200),
+       // new MenuItem("Shrewsbury 420",200),
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        //new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Drum Magazine", 123),
+            new MenuItemExtra("Suppressor", 356) } },
+        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Holographic Sight", 780),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),} },
+        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Grip", 90),
+        //    new MenuItemExtra("Scope", 567),} },
+        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Tracer Rounds", 500),
+        //    new MenuItemExtra("Incendiary Rounds", 500),
+        //    new MenuItemExtra("Armor Piercing Rounds", 500),
+        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        //new MenuItem("Bartlett M92",4578),
+        //new MenuItem("Bartlett M92 Mk2",3456),
+        ////OTHER
+        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
             }),
 });
-}
-private void GunShop2()//Pistol
+    }
+    private void VagosDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("VagosDenMenu","VagosDenMenu",new List<MenuItem>() {
+            new MenuItem("Marijuana",15, 9),
+            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Smoke Shop Rolling Papers",2),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",200),
+        new MenuItem("Shrewsbury 420",200),
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Drum Magazine", 123),
+            new MenuItemExtra("Suppressor", 356) } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),} },
+        //OTHER
+        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+    }
+    private void BallasDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("BallasDenMenu","BallasDenMenu",new List<MenuItem>() {
+            new MenuItem("Crack",46, 39),
+            new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Crack Pipe",5),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+    }
+    private void VarriosDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("VarriosDenMenu","VarriosDenMenu",new List<MenuItem>() {
+            new MenuItem("Crack",45, 39),
+            new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Crack Pipe",5),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+
+    }
+    private void MarabunteDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("MarabunteDenMenu", "MarabunteDenMenu", new List<MenuItem>() {
+            new MenuItem("Marijuana",14, 9),
+            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Smoke Shop Rolling Papers",2),
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 250), } },
+        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 300), } },
+        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 250), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        new MenuItem("Shrewsbury 420",375),
+        new MenuItem("Toto 12 Guage Sawed-Off",395),
+        new MenuItem("Shrewsbury Defender",750),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 275), } },
+        new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Drum Magazine", 180),
+            new MenuItemExtra("Suppressor", 450) } },
+        new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 220), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Drum Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 600), } },
+        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void TriadsDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("TriadsDenMenu", "TriadsDenMenu", new List<MenuItem>() {
+            new MenuItem("Heroin",130, 100),
+            new MenuItem("Heroin",115) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Heroin",105) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 250), } },
+        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 300), } },
+        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 250), } },
+        ////Shotgun
+        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        //new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        ////AR
+        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Drum Magazine", 250),
+            new MenuItemExtra("Suppressor", 600), } },
+        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 250),} },
+        //LMG
+        new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),} },
+        new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),} },
+        new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 250),} },
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Suppressor", 340)} },
+        //OTHER
+        new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void KkangpaeDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("KkangpaeDenMenu", "KkangpaeDenMenu", new List<MenuItem>() {
+            new MenuItem("Heroin",125, 100),
+            new MenuItem("Heroin",115) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Heroin",105) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        //new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Suppressor", 700), } },
+        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 50),
+        //    new MenuItemExtra("Suppressor", 200), } },
+        //new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 300), } },
+        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 250), } },
+        ////Shotgun
+        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        //new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Drum Magazine", 250),
+            new MenuItemExtra("Suppressor", 600), } },
+        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 250),} },
+        //LMG
+        new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void DiablosDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("DiablosDenMenu","DiablosDenMenu",new List<MenuItem>() {
+            new MenuItem("SPANK", 45, 29),
+            new MenuItem("SPANK",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("SPANK",30) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Flint Hatchet",80),
+            new MenuItem("Brass Knuckles",150),
+            new MenuItem("Combat Knife",120),
+            new MenuItem("Vom Feuer Machete",29),
+            new MenuItem("Switchblade",55),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        //new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 345), } },
+        //new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Suppressor", 556), } },
+        //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 50),
+        //    new MenuItemExtra("Suppressor", 125), } },
+        //new MenuItem("Hawk & Little Raging Mare Dx",1450),
+        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        //new MenuItem("Shrewsbury 420 Sawed-Off",200),
+        //new MenuItem("Shrewsbury 420",200),
+        //new MenuItem("Toto 12 Guage Sawed-Off",250),
+        new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        //new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Drum Magazine", 123),
+        //    new MenuItemExtra("Suppressor", 356) } },
+        //new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 456), } },
+        //new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Tracer Rounds", 500),
+        //    new MenuItemExtra("Incendiary Rounds", 500),
+        //    new MenuItemExtra("Armor Piercing Rounds", 500),
+        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+        //    new MenuItemExtra("Suppressor", 245) } },
+        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Holographic Sight", 780),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 200),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),} },
+        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Grip", 90),
+        //    new MenuItemExtra("Scope", 567),} },
+        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Tracer Rounds", 500),
+        //    new MenuItemExtra("Incendiary Rounds", 500),
+        //    new MenuItemExtra("Armor Piercing Rounds", 500),
+        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Suppressor", 340)} },
+        new MenuItem("Bartlett M92",4578),
+        new MenuItem("Bartlett M92 Mk2",3456),
+        ////OTHER
+        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+    }
+    private void YardiesDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("YardiesDenMenu","YardiesDenMenu",new List<MenuItem>() {
+            new MenuItem("Marijuana", 13, 9),
+            new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Smoke Shop Rolling Papers",2),
+            new MenuItem("Flint Hatchet",80),
+            new MenuItem("Brass Knuckles",150),
+            new MenuItem("Combat Knife",120),
+            new MenuItem("Vom Feuer Machete",29),
+            new MenuItem("Switchblade",55),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        //new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 50),
+        //    new MenuItemExtra("Suppressor", 125), } },
+        //new MenuItem("Hawk & Little Raging Mare Dx",1450),
+        //new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 125), } },
+        //new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 200), } },
+        //new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 68),
+        //    new MenuItemExtra("Mounted Scope", 890),
+        //    new MenuItemExtra("Suppressor", 145),
+        //    new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",200),
+        new MenuItem("Shrewsbury 420",200),
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Drum Magazine", 123),
+            new MenuItemExtra("Suppressor", 356) } },
+        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 456), } },
+        //new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Tracer Rounds", 500),
+        //    new MenuItemExtra("Incendiary Rounds", 500),
+        //    new MenuItemExtra("Armor Piercing Rounds", 500),
+        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),
+        //    new MenuItemExtra("Suppressor", 245) } },
+        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Holographic Sight", 780),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 200),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),} },
+        //new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Grip", 90),
+        //    new MenuItemExtra("Scope", 567),} },
+        //new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Tracer Rounds", 500),
+        //    new MenuItemExtra("Incendiary Rounds", 500),
+        //    new MenuItemExtra("Armor Piercing Rounds", 500),
+        //    new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        //new MenuItem("Bartlett M92",4578),
+        //new MenuItem("Bartlett M92 Mk2",3456),
+        ////OTHER
+        //new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+    }
+    private void ArmenianDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("ArmenianDenMenu","ArmenianDenMenu",new List<MenuItem>() {
+            new MenuItem("Heroin",135, 99),
+            new MenuItem("Heroin",120) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
+            new MenuItem("Heroin",100) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Flint Hatchet",80),
+            new MenuItem("Brass Knuckles",150),
+            new MenuItem("Combat Knife",120),
+            new MenuItem("Vom Feuer Machete",29),
+            new MenuItem("Switchblade",55),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1450),
+        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        ////Shotgun
+        //new MenuItem("Shrewsbury 420 Sawed-Off",200),
+        //new MenuItem("Shrewsbury 420",200),
+        //new MenuItem("Toto 12 Guage Sawed-Off",250),
+        //new MenuItem("Shrewsbury Defender",550),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Suppressor", 145), } },
+        //new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Drum Magazine", 123),
+        //    new MenuItemExtra("Suppressor", 356) } },
+        //new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Box Magazine", 200),
+            new MenuItemExtra("Suppressor", 225),} },
+        new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Holographic Sight", 780),
+            new MenuItemExtra("Suppressor", 225),} },
+        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),} },
+        new MenuItem("Vom Feuer LAR",550, 145) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 400),} },
+        //LMG
+        new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),} },
+        new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Grip", 90),
+            new MenuItemExtra("Scope", 567),} },
+        new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Suppressor", 340)} },
+        new MenuItem("Bartlett M92",4578),
+        new MenuItem("Bartlett M92 Mk2",3456),
+        //OTHER
+        new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+        new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+        //new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        //new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        //new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+
+
+        new MenuItem("Benefactor Schafter",10000,5000),
+        new MenuItem("Benefactor Serrano",8000,5000),
+        new MenuItem("Karin Futo",3000,1000),
+            }),
+}); ;
+    }
+    private void MadrazoDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+       new ShopMenu("MadrazoDenMenu","MadrazoDenMenu",new List<MenuItem>() {
+            new MenuItem("Methamphetamine",45, 34),
+
+
+            new MenuItem("Methamphetamine",40) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Methamphetamine",35) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Meth Pipe",5),
+
+            new MenuItem("Flint Hatchet",80),
+            new MenuItem("Brass Knuckles",150),
+            new MenuItem("Combat Knife",120),
+            new MenuItem("Vom Feuer Machete",29),
+            new MenuItem("Switchblade",55),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 343) },  },
+        new MenuItem("Hawk & Little Combat Pistol",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 345), } },
+        new MenuItem("Hawk & Little Desert Slug",1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 556), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1134) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1450),
+        new MenuItem("Vom Feuer P69",790) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 125), } },
+        new MenuItem("Vom Feuer SCRAMP",780) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Shrewsbury S7A",1140) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 145),
+            new MenuItemExtra("Compensator", 240), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",200),
+        new MenuItem("Shrewsbury 420",200),
+        new MenuItem("Toto 12 Guage Sawed-Off",250),
+        new MenuItem("Shrewsbury Defender",550),
+        //SMG
+        new MenuItem("Shrewsbury Luzi",455) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 145), } },
+        new MenuItem("Vom Feuer KEK-9",250) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Drum Magazine", 123),
+            new MenuItemExtra("Suppressor", 356) } },
+        new MenuItem("Hawk & Little Millipede",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),
+            new MenuItemExtra("Suppressor", 456), } },
+        new MenuItem("Shrewsbury A2-1K",656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Suppressor", 245) } },
+        //new MenuItem("Vom Feuer A5-1R",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 200),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Holographic Sight", 780),
+        //    new MenuItemExtra("Suppressor", 225),} },
+        new MenuItem("Shrewsbury Stinkov",450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 200),} },
+        //LMG
+        new MenuItem("Shrewsbury PDA",1200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),} },
+        new MenuItem("Vom Feuer BAT",1340) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Grip", 90),
+            new MenuItemExtra("Scope", 567),} },
+        new MenuItem("Vom Feuer M70E1",1680) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),} },
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Suppressor", 340)} },
+        new MenuItem("Bartlett M92",4578),
+        new MenuItem("Bartlett M92 Mk2",3456),
+        //OTHER
+        new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+        new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+        new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+        new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+        new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+            }),
+});
+    }
+    private void GambettiDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("GambettiDenMenu", "GambettiDenMenu", new List<MenuItem>() {
+            new MenuItem("Cocaine",150, 109),
+            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        //new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 300), } },
+        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        ////Shotgun
+        //new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        //new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        //AR
+        new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Drum Magazine", 250),
+            new MenuItemExtra("Suppressor", 600), } },
+        new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 200),
+            new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void PavanoDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("PavanoDenMenu", "PavanoDenMenu", new List<MenuItem>() {
+            new MenuItem("Cocaine",150, 109),
+            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        //new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 400), } },
+        //new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 120),
+        //    new MenuItemExtra("Suppressor", 700), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 250), } },
+        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 300), } },
+        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 250), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Drum Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 600), } },
+        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void LupisellaDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("LupisellaDenMenu", "LupisellaDenMenu", new List<MenuItem>() {
+            new MenuItem("Cocaine",150, 109),
+            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 50),
+        //    new MenuItemExtra("Suppressor", 200), } },
+        //new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 300), } },
+        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        new MenuItem("Shrewsbury 420",375),
+        new MenuItem("Toto 12 Guage Sawed-Off",395),
+        new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Drum Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 600), } },
+        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        //OTHER
+        new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void MessinaDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("MessinaDenMenu", "MessinaDenMenu", new List<MenuItem>() {
+            new MenuItem("Cocaine",150, 109),
+            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 50),
+            new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        //new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 100),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        //new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 85),
+        //    new MenuItemExtra("Suppressor", 300), } },
+        //new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 250), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        ////AR
+        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Drum Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 600), } },
+        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Suppressor", 250) } },
+        new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Box Magazine", 250),
+            new MenuItemExtra("Suppressor", 390),} },
+        //new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 145),
+        //    new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void AncelottiDenMenu()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+        new ShopMenu("AncelottiDenMenu", "AncelottiDenMenu", new List<MenuItem>() {
+            new MenuItem("Cocaine",150, 109),
+            new MenuItem("Cocaine",130) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
+            new MenuItem("Cocaine",110) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 5000, PurchaseIncrement = 500 },
+            new MenuItem("Brass Knuckles",175),
+            new MenuItem("Combat Knife",150),
+            new MenuItem("Vom Feuer Machete",45),
+            new MenuItem("Switchblade",78),
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Suppressor", 500) },  },
+        new MenuItem("Hawk & Little Combat Pistol",800) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 400), } },
+        new MenuItem("Hawk & Little Desert Slug",1400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Suppressor", 700), } },
+        //new MenuItem("Hawk & Little 1919 Tactical",1300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 50),
+        //    new MenuItemExtra("Suppressor", 200), } },
+        new MenuItem("Hawk & Little Raging Mare Dx",1600),
+        new MenuItem("Vom Feuer P69",900) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 100),
+            new MenuItemExtra("Suppressor", 250), } },
+        new MenuItem("Vom Feuer SCRAMP",850) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 300), } },
+        new MenuItem("Shrewsbury S7A",1300) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 150),
+            new MenuItemExtra("Suppressor", 250), } },
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",350),
+        //new MenuItem("Shrewsbury 420",375),
+        //new MenuItem("Toto 12 Guage Sawed-Off",395),
+        //new MenuItem("Shrewsbury Defender",750),
+        ////SMG
+        //new MenuItem("Shrewsbury Luzi",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Suppressor", 275), } },
+        //new MenuItem("Vom Feuer KEK-9",300) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),
+        //    new MenuItemExtra("Drum Magazine", 180),
+        //    new MenuItemExtra("Suppressor", 450) } },
+        //new MenuItem("Hawk & Little Millipede",550) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 220), } },
+        //AR
+        //new MenuItem("Shrewsbury A7-4K",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Drum Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 600), } },
+        //new MenuItem("Shrewsbury A2-1K",850) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),
+        //    new MenuItemExtra("Suppressor", 250) } },
+        //new MenuItem("Vom Feuer A5-1R",950) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Box Magazine", 250),
+        //    new MenuItemExtra("Suppressor", 390),} },
+        new MenuItem("Vom Feuer A5-1R MK2",1250) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Suppressor", 350),} },
+        //new MenuItem("Shrewsbury Stinkov",650) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 125),
+        //    new MenuItemExtra("Drum Magazine", 250),} },
+        ////LMG
+        //new MenuItem("Shrewsbury PDA",1500) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 200),} },
+        //new MenuItem("Vom Feuer BAT",1700) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 150),} },
+        //new MenuItem("Vom Feuer M70E1",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 250),} },
+        ////SNIPER
+        //new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Suppressor", 340)} },
+        ////OTHER
+        //new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+        //new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+        //new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
+            }),
+});
+    }
+    private void GunShopList()
+    {
+        GunShop1();
+        GunShop2();
+        GunShop3();
+        GunShop4();
+        GunShop5();
+    }
+    private void GunShop1()//general
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
 {
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
+        new ShopMenu("GunShop1","GunShop1",new List<MenuItem>() {
+            new MenuItem("G.E.S. Baseball Bat",70),
+            new MenuItem("Flint Crowbar",35),
+            new MenuItem("ProLaps Five Iron Golf Club",150),
+            new MenuItem("Flint Hammer",25),
+
+        //ArmorHealth
+        new MenuItem("Light Body Armor",650),
+        new MenuItem("Medium Body Armor",1250),
+        new MenuItem("Heavy Body Armor",1500),
+        new MenuItem("Full Body Armor",2000),
+        new MenuItem("Health Pack",1550),
+
+        //Pistola
+        new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip",0),
+            new MenuItemExtra("Extended Clip", 75),
+            new MenuItemExtra("Flashlight", 70),
+            new MenuItemExtra("Suppressor", 850) },  },
+
+        new MenuItem("Hawk & Little Raging Mare Dx",1950,1245) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Rounds", 0),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Hollow Point Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Holographic Sight", 890),
+            new MenuItemExtra("Small Scope", 570),
+            new MenuItemExtra("Flashlight", 70), } },
+        new MenuItem("Vom Feuer P69",790,656) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 890), } },
+        new MenuItem("Shrewsbury S7A",1200, 950) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 68),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Hollow Point Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Flashlight", 75),
+            new MenuItemExtra("Mounted Scope", 890),
+            new MenuItemExtra("Suppressor", 780),
+            new MenuItemExtra("Compensator", 240), } },
+        new MenuItem("Coil Tesla",550),
+        new MenuItem("Vom Feuer 1922",995, 750) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 85),
+            new MenuItemExtra("Suppressor", 890), } },
+        new MenuItem("Vom Feuer Gruber",705, 400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Suppressor", 950), } },
+
+
+        //Shotgun
+        new MenuItem("Shrewsbury 420 Sawed-Off",250,150),
+        new MenuItem("Shrewsbury 420",400, 325) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Flashlight", 95),
+            new MenuItemExtra("Suppressor", 1100), } },
+
+        //SMG
+        new MenuItem("Shrewsbury Luzi",600,450) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120),
+            new MenuItemExtra("Flashlight", 80),
+            new MenuItemExtra("Suppressor", 1945),
+            new MenuItemExtra("Scope", 556) } },
+        new MenuItem("Hawk & Little Millipede",450,320) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 120), } },
+
+        //AR
+        new MenuItem("Shrewsbury A7-4K",650,550) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 225),
+            new MenuItemExtra("Flashlight", 90),
+            new MenuItemExtra("Scope", 567),
+            new MenuItemExtra("Suppressor", 800),
+            new MenuItemExtra("Grip", 200), } },
+        new MenuItem("Vom Feuer SL6 MK2",2200,1600) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Grip", 120),
+            new MenuItemExtra("Flashlight", 90),
+            new MenuItemExtra("Holographic Sight", 870),
+            new MenuItemExtra("Small Scope", 760),
+            new MenuItemExtra("Large Scope", 900),
+            new MenuItemExtra("Suppressor", 1200),
+            new MenuItemExtra("Flat Muzzle Brake", 250),
+            new MenuItemExtra("Tactical Muzzle Brake", 220),
+            new MenuItemExtra("Fat-End Muzzle Brake", 215),
+            new MenuItemExtra("Precision Muzzle Brake", 220),
+            new MenuItemExtra("Heavy Duty Muzzle Brake", 235),
+            new MenuItemExtra("Slanted Muzzle Brake", 230),
+            new MenuItemExtra("Split-End Muzzle Brake", 225),
+            new MenuItemExtra("Default Barrel", 0),
+            new MenuItemExtra("Heavy Barrel", 670), } },
+        new MenuItem("Hawk & Little ZBZ-23",1200, 890) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 125),
+            new MenuItemExtra("Drum Magazine", 225),
+            new MenuItemExtra("Flashlight", 90),
+            new MenuItemExtra("Scope", 567),
+            new MenuItemExtra("Suppressor", 800),
+            new MenuItemExtra("Grip", 200), } },
+        new MenuItem("Vom Feuer POCK",1700,1400),
+
+        //LMG
+        new MenuItem("Vom Feuer M70E1",5000, 3400) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Extended Clip", 145),
+            new MenuItemExtra("Tracer Rounds", 500),
+            new MenuItemExtra("Incendiary Rounds", 500),
+            new MenuItemExtra("Armor Piercing Rounds", 500),
+            new MenuItemExtra("Full Metal Jacket Rounds", 500),
+            new MenuItemExtra("Grip", 124),
+            new MenuItemExtra("Holographic Sight", 556),
+            new MenuItemExtra("Medium Scope", 760),
+            new MenuItemExtra("Large Scope", 890),
+            new MenuItemExtra("Flat Muzzle Brake", 120),
+            new MenuItemExtra("Tactical Muzzle Brake", 125),
+            new MenuItemExtra("Fat-End Muzzle Brake", 130),
+            new MenuItemExtra("Precision Muzzle Brake", 135),
+            new MenuItemExtra("Heavy Duty Muzzle Brake", 145),
+            new MenuItemExtra("Slanted Muzzle Brake", 155),
+            new MenuItemExtra("Split-End Muzzle Brake", 155),
+            new MenuItemExtra("Default Barrel", 0),
+            new MenuItemExtra("Heavy Barrel", 900),} },
+
+        //SNIPER
+        new MenuItem("Shrewsbury PWN",2500, 1200) { Extras = new List<MenuItemExtra>() {
+            new MenuItemExtra("Default Clip", 0),
+            new MenuItemExtra("Scope", 890),
+            new MenuItemExtra("Advanced Scope", 1400),
+            new MenuItemExtra("Suppressor", 1900),} },
+
+
+        //new MenuItem("Shrewsbury BFD Dragmeout",1500, 1000) { Extras = new List<MenuItemExtra>() {
+        //    new MenuItemExtra("Default Clip", 0),
+        //    new MenuItemExtra("Extended Clip", 60),
+        //    new MenuItemExtra("Scope", 500),
+        //    new MenuItemExtra("Flashlight", 600),
+        //    new MenuItemExtra("Suppressor", 700),} },
+
+
+        //OTHER
+        new MenuItem("RPG-7",12550){ SubAmount = 1,SubPrice = 500 },
+        new MenuItem("M61 Grenade",800) { SubAmount = 1,SubPrice = 800 },
+        new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
+        new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
+       // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
+
+
+        new MenuItem("Schmidt & Priss TL6 Scanner", 85),
+        new MenuItem("Schmidt & Priss RD4 Radar Detector",45),
+
+            }),
+});
+    }
+    private void GunShop2()//Pistol
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
 {
         new ShopMenu("GunShop2","GunShop2",new List<MenuItem>() {
 
@@ -6817,10 +6309,10 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
        // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
             }),
 });
-}
-private void GunShop3()//SMG
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
+    }
+    private void GunShop3()//SMG
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
 {
         new ShopMenu("GunShop3","GunShop3",new List<MenuItem>() {
             new MenuItem("Combat Knife",120),
@@ -6980,10 +6472,10 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
        // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
             }),
 });
-}
-private void GunShop4()//AR
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
+    }
+    private void GunShop4()//AR
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
 {
         new ShopMenu("GunShop4","GunShop4",new List<MenuItem>() {
                             //ArmorHealth
@@ -7229,10 +6721,10 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
        // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
             }),
 });
-}
-private void GunShop5()//heavy?
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
+    }
+    private void GunShop5()//heavy?
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
 {
         new ShopMenu("GunShop5","GunShop5",new List<MenuItem>() {
 
@@ -7476,11 +6968,11 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
        // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
             }),
 });
-}
+    }
 
-private void DealerHangouts()
-{
-PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
+    private void DealerHangouts()
+    {
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
        new ShopMenu("DealerHangoutMenu1","DealerHangoutMenu1",new List<MenuItem>() {
             new VariablePriceMenuItem("Marijuana", 13, 15, 11, 12) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
             new VariablePriceMenuItem("Toilet Cleaner",17, 20, 14, 16) { NumberOfItemsToSellToPlayer = 15, NumberOfItemsToPurchaseFromPlayer = 10,IsIllicilt = true },
@@ -7658,11 +7150,11 @@ PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
         new MenuItem("BZ Gas Grenade",100) { NumberOfItemsToSellToPlayer = 5,IsIllicilt = true, SubAmount = 1,SubPrice = 100 },
        }),
 });
-}
-private void MenuGroupList()
-{
-ShopMenuGroupContainer PoorAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.PoorAreaDrugDealerMenuGroupID, "Poor Area Dealer Menu",
-new List<PercentageSelectGroupMenuContainer>() {
+    }
+    private void MenuGroupList()
+    {
+        ShopMenuGroupContainer PoorAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.PoorAreaDrugDealerMenuGroupID, "Poor Area Dealer Menu",
+        new List<PercentageSelectGroupMenuContainer>() {
                 new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 15),
                 new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 15),
                 new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 15),
@@ -7670,9 +7162,9 @@ new List<PercentageSelectGroupMenuContainer>() {
                 new PercentageSelectGroupMenuContainer(StaticStrings.CrackDealerMenuGroupID, 15),
                 new PercentageSelectGroupMenuContainer(StaticStrings.HeroinDealerMenuGroupID, 5),
                 new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID, 15),
-});
-ShopMenuGroupContainer PoorAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.PoorAreaDrugCustomerMenuGroupID, "Poor Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>() {
+        });
+        ShopMenuGroupContainer PoorAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.PoorAreaDrugCustomerMenuGroupID, "Poor Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>() {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 10),
@@ -7680,10 +7172,10 @@ ShopMenuGroupContainer PoorAreaCustomerMenuGroup = new ShopMenuGroupContainer(St
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackCustomerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinCustomerMenuGroupID, 2),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 10),
-    });
+            });
 
-ShopMenuGroupContainer MiddleAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MiddleAreaDrugDealerMenuGroupID, "Middle Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>() {
+        ShopMenuGroupContainer MiddleAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MiddleAreaDrugDealerMenuGroupID, "Middle Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>() {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 40),
@@ -7691,9 +7183,9 @@ ShopMenuGroupContainer MiddleAreaDealerMenuGroup = new ShopMenuGroupContainer(St
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackDealerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinDealerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID, 5),
-    });
-ShopMenuGroupContainer MiddleAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MiddleAreaDrugCustomerMenuGroupID, "Middle Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>() {
+            });
+        ShopMenuGroupContainer MiddleAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MiddleAreaDrugCustomerMenuGroupID, "Middle Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>() {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 40),
@@ -7701,11 +7193,11 @@ ShopMenuGroupContainer MiddleAreaCustomerMenuGroup = new ShopMenuGroupContainer(
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackCustomerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinCustomerMenuGroupID, 5),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 5),
-    });
+            });
 
-ShopMenuGroupContainer RichAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.RichAreaDrugDealerMenuGroupID, "Rich Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer RichAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.RichAreaDrugDealerMenuGroupID, "Rich Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 2),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 1),
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 30),
@@ -7713,10 +7205,10 @@ ShopMenuGroupContainer RichAreaDealerMenuGroup = new ShopMenuGroupContainer(Stat
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackDealerMenuGroupID, 2),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinDealerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID, 1),
-    });
-ShopMenuGroupContainer RichAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.RichAreaDrugCustomerMenuGroupID, "Rich Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer RichAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.RichAreaDrugCustomerMenuGroupID, "Rich Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 2),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 1),
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 30),
@@ -7724,151 +7216,151 @@ ShopMenuGroupContainer RichAreaCustomerMenuGroup = new ShopMenuGroupContainer(St
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackCustomerMenuGroupID, 2),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 1),
-    });
+            });
 
-ShopMenuGroupContainer MethamphetamineAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, "Methamphetamine Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer MethamphetamineAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, "Methamphetamine Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer MethamphetamineAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID, "Methamphetamine Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer MethamphetamineAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID, "Methamphetamine Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 85),
-    });
+            });
 
-ShopMenuGroupContainer ToiletCleanerAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, "Toilet Cleaner Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer ToiletCleanerAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, "Toilet Cleaner Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer ToiletCleanerAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID, "Toilet Cleaner Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer ToiletCleanerAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID, "Toilet Cleaner Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 85),
-    });
+            });
 
-ShopMenuGroupContainer MarijuanaAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, "Marijuana Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer MarijuanaAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, "Marijuana Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 100),
-    });
-ShopMenuGroupContainer MarijuanaAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID, "Marijuana Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer MarijuanaAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID, "Marijuana Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 100),
-    });
+            });
 
-ShopMenuGroupContainer CokeAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugDealerMenuGroupID, "Coke Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer CokeAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugDealerMenuGroupID, "Coke Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.CokeDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer CokeAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugCustomerMenuGroupID, "Coke Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer CokeAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugCustomerMenuGroupID, "Coke Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.CokeCustomerMenuGroupID, 85),
-    });
+            });
 
-ShopMenuGroupContainer CrackAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugDealerMenuGroupID, "Crack Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer CrackAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugDealerMenuGroupID, "Crack Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer CrackAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugCustomerMenuGroupID, "Crack Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer CrackAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugCustomerMenuGroupID, "Crack Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.CrackCustomerMenuGroupID, 85),
-    });
+            });
 
-ShopMenuGroupContainer HeroinAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugDealerMenuGroupID, "Heroin Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer HeroinAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugDealerMenuGroupID, "Heroin Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer HeroinAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugCustomerMenuGroupID, "Heroin Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer HeroinAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugCustomerMenuGroupID, "Heroin Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.HeroinCustomerMenuGroupID, 85),
-    });
+            });
 
-ShopMenuGroupContainer SPANKAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugDealerMenuGroupID, "SPANK Area Dealer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+        ShopMenuGroupContainer SPANKAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugDealerMenuGroupID, "SPANK Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID, 90),
-    });
-ShopMenuGroupContainer SPANKAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugCustomerMenuGroupID, "SPANK Area Customer Menu",
-    new List<PercentageSelectGroupMenuContainer>()
-    {
+            });
+        ShopMenuGroupContainer SPANKAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugCustomerMenuGroupID, "SPANK Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
             new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
             new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 85),
-    });
+            });
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaCustomerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaCustomerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaCustomerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaCustomerMenuGroup);
 
-PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaDealerMenuGroup);
-PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaCustomerMenuGroup);
-}
-public void Setup(IModItems modItems)
-{
-foreach(ShopMenu sm in AllMenus())
-{
-    int totalItems = sm.Items.Count;
-    for (int i = totalItems - 1; i >= 0; i--)
-    {
-        MenuItem mi = sm.Items[i];
-        if(mi != null)
-        {
-            mi.ModItem = modItems.Get(mi.ModItemName);
-        }
-        if (mi.ModItem == null)
-        {
-            EntryPoint.WriteToConsole($"Shop Menus ERROR Corresponding Item NOT FOUND {mi.ModItemName} in MENU {sm.Name} REMOVING FROM MENU",0);
-            sm.Items.RemoveAt(i);
-        }
-        mi.UpdatePrices();
-        mi.UpdateStock();
+        PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaCustomerMenuGroup);
     }
-    if(totalItems == 0)
+    public void Setup(IModItems modItems)
     {
-        EntryPoint.WriteToConsole($"Shop Menus ERROR No Menu Items in MENU {sm.Name}", 0);
+        foreach (ShopMenu sm in AllMenus())
+        {
+            int totalItems = sm.Items.Count;
+            for (int i = totalItems - 1; i >= 0; i--)
+            {
+                MenuItem mi = sm.Items[i];
+                if (mi != null)
+                {
+                    mi.ModItem = modItems.Get(mi.ModItemName);
+                }
+                if (mi.ModItem == null)
+                {
+                    EntryPoint.WriteToConsole($"Shop Menus ERROR Corresponding Item NOT FOUND {mi.ModItemName} in MENU {sm.Name} REMOVING FROM MENU", 0);
+                    sm.Items.RemoveAt(i);
+                }
+                mi.UpdatePrices();
+                mi.UpdateStock();
+            }
+            if (totalItems == 0)
+            {
+                EntryPoint.WriteToConsole($"Shop Menus ERROR No Menu Items in MENU {sm.Name}", 0);
+            }
+        }
     }
-}
-}
 
 
 }

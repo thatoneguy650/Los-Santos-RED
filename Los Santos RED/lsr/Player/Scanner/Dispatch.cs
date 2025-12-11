@@ -120,4 +120,9 @@ public class Dispatch
         HasBeenPlayedThisWanted = true;
         TimesPlayed++;
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

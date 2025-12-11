@@ -46,6 +46,7 @@ public class NewChase : ComplexTask
 
     private HeliEngage HeliEngage;
     private bool isSetSlow;
+    private int CurrentMissionID;
 
     public NewChase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
@@ -692,6 +693,7 @@ public class NewChase : ComplexTask
                     if (Player.WantedLevel == 1)
                     {
                         IsSetFollow = true;
+                        CurrentMissionID = -1;
                         NativeFunction.Natives.TASK_VEHICLE_FOLLOW(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character, 25f, (int)eCustomDrivingStyles.PoliceFollow, 10);//NativeFunction.Natives.TASK_VEHICLE_FOLLOW(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character, 100f, (int)eCustomDrivingStyles.Code3, 10);
                         EntryPoint.WriteToConsole($"{Ped.Handle} ASSIGN TASK TASK_VEHICLE_FOLLOW WANTED 1");
                     }
@@ -705,7 +707,7 @@ public class NewChase : ComplexTask
 
 
 
-                        SetPassiveChase();
+                        //SetPassiveChase();
 
 
                         //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, true);
@@ -766,7 +768,7 @@ public class NewChase : ComplexTask
             //NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
             SetChaseTask(7);
 
-            SetPassiveChase();
+           //SetPassiveChase();
 
 
             //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
@@ -833,7 +835,10 @@ public class NewChase : ComplexTask
                     NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
                     NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, false);
 
-                    SetChaseTask(2);
+                    if (CurrentMissionID != 2)
+                    {
+                        SetChaseTask(2);
+                    }
 
 
                     ////NEW CHASE STUFF
@@ -861,8 +866,10 @@ public class NewChase : ComplexTask
                     NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);
                     NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableSpinOutDuringVehicleChase, false);
                     NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, false);
-
-                    SetChaseTask(3);
+                    if (CurrentMissionID != 3)
+                    {
+                        SetChaseTask(3);
+                    }
 
                     ////NEW CHASE STUFF
                     //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.CantPullAlongsideInFront, false);
@@ -906,8 +913,11 @@ public class NewChase : ComplexTask
                     // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
                     // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, false);
                     // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
-                    SetChaseTask(7);
-                    SetPassiveChase();
+                    if (CurrentMissionID != 7)
+                    {
+                        SetChaseTask(7);
+                    }
+                    //SetPassiveChase();
 
 
                     IsSetPassive = true;
@@ -923,45 +933,45 @@ public class NewChase : ComplexTask
             }
 
 
-            if (Player.WantedLevel <= 2 && (Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f))
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 20f);
-                isSetSlow = true;
-                EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW TRUE");
-            }
-            else
-            {
-                if (isSetSlow)
-                {
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 900f);
-                    isSetSlow = false;
-                    EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW FALSE");
-                }
-            }
-            if (Player.WantedLevel >= 2)
-            {
+            //if (Player.WantedLevel <= 2 && (Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f))
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 20f);
+            //    isSetSlow = true;
+            //    EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW TRUE");
+            //}
+            //else
+            //{
+            //    if (isSetSlow)
+            //    {
+            //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 900f);
+            //        isSetSlow = false;
+            //        EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW FALSE");
+            //    }
+            //}
+            //if (Player.WantedLevel >= 2)
+            //{
 
-                if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
-                {
-                    if (!isSetCode3Close)
-                    {
-                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-                        isSetCode3Close = true;
-                        isSetRegularCode3 = false;
-                        EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
-                    }
-                }
-                else
-                {
-                    if (isSetRegularCode3)
-                    {
-                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-                        isSetRegularCode3 = true;
-                        isSetCode3Close = false;
-                        EntryPoint.WriteToConsole("SET CODE 3 REG");
-                    }
-                }
-            }
+            //    if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
+            //    {
+            //        if (!isSetCode3Close)
+            //        {
+            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+            //            isSetCode3Close = true;
+            //            isSetRegularCode3 = false;
+            //            EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (isSetRegularCode3)
+            //        {
+            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+            //            isSetRegularCode3 = true;
+            //            isSetCode3Close = false;
+            //            EntryPoint.WriteToConsole("SET CODE 3 REG");
+            //        }
+            //    }
+            //}
 
         }
         if (Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))
@@ -973,13 +983,14 @@ public class NewChase : ComplexTask
         {
             HeliEngage.UpdateTask();
         }
-        VehicleChase_CheckStuck();
+        //VehicleChase_CheckStuck();
 
     }
     private void SetChaseTask(int MissionType)
     {
         if (Ped.Pedestrian.CurrentVehicle.Exists() && Game.LocalPlayer.Character.Exists() && Game.LocalPlayer.Character.CurrentVehicle.Exists())
         {
+            CurrentMissionID = MissionType;
             NativeFunction.Natives.TASK_VEHICLE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
             Game.LocalPlayer.Character.CurrentVehicle, MissionType,
             90f,

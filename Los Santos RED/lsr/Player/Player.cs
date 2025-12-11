@@ -1235,6 +1235,10 @@ namespace Mod
                 {
                     Scanner.OnNooseDeployed();
                 }
+                else if (officerType?.GroupName == "SWAT")
+                {
+                    Scanner.OnSWATDeployed();
+                }
                 else if (agency?.ID == "FIB" && WantedLevel >= 4)
                 {
                     Scanner.OnFIBHETDeployed();

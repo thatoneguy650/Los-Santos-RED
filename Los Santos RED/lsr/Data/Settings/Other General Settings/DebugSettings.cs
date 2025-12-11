@@ -57,7 +57,7 @@ public class DebugSettings : ISettingsDefaultable
     public float LockpickAnimOutroRate { get; set; }
     public int LockpickAnimFlags { get; set; }
     public float LockpickAnimAnimRate { get; set; }
-    public int ChaseMissionType { get; set; }
+    public float StraightLineDistanceChase { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -142,6 +142,6 @@ public class DebugSettings : ISettingsDefaultable
         LockpickAnimOutroRate = -8.0f;
         LockpickAnimFlags = 0;
         LockpickAnimAnimRate = 1.0f;
-        ChaseMissionType = 7;
+        StraightLineDistanceChase = 20f;
     }
 }
