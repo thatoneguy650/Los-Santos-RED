@@ -632,6 +632,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToPositionVehicleRaceTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\MarshalGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\RegularGoToInVehicleTaskState.cs" />
+    <Compile Include="lsr\Tasker\PlayerChaseable\NewChase.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\SubTasks\HeliEngage.cs" />
     <Compile Include="lsr\Tasker\Racing\GeneralRace.cs" />
     <Compile Include="lsr\Tasker\Taxi\TaxiDriverBrain.cs" />

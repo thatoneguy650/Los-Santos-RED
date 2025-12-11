@@ -389,7 +389,7 @@ namespace Mod
                 if (isInVehicle != value)
                 {
                     isInVehicle = value;
-                    OnIsInVehicleChanged();
+                    OnIsInVehicleChanged();       
                 }
             }
         }
