@@ -100,6 +100,10 @@ public class DispatchablePerson
     public float NoHelmetPercentage { get; set; } = 0f;
 
     public bool ShrinkHeadForMask { get; set; } = false;
+
+
+
+    public bool IsInvisibleAndInvulnerable { get; set; } = false;
     public string GetDescription()
     {
         string description = "";
@@ -275,6 +279,15 @@ public class DispatchablePerson
         if (CombatFloatsToSet != null && CombatFloatsToSet.Any())
         {
             CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
+        }
+        if(IsInvisibleAndInvulnerable)
+        {
+            pedExt.Pedestrian.IsVisible = false;
+            pedExt.Pedestrian.IsInvincible = true;
+            pedExt.Pedestrian.CanBePulledOutOfVehicles = false;
+            pedExt.Pedestrian.CanBeShotInVehicles = false;
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(pedExt.Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, false);
+            NativeFunction.Natives.BLOCK_ALL_SPEECH_FROM_PED(pedExt.Pedestrian, true, true);
         }
     }
     public DispatchablePerson()

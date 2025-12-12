@@ -34,10 +34,18 @@ public class TaxiRide
         RespondingDriver = respondingDriver;
         TaxiDrivingStyle = new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f);
         PossibleTaxiDrivingStyles = new List<PedDrivingStyle>() {
-            new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 15f),
-            new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee },
-            new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee },
+            new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 15f),         
         };
+
+        if(RequestedFirm?.FastSpeedFee != -1)
+        {
+            PossibleTaxiDrivingStyles.Add(new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee });
+        }
+        if(RequestedFirm?.CrazySpeedFee != -1)
+        {
+            PossibleTaxiDrivingStyles.Add(new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee });
+        }
+
         PickupLocation = new SpawnLocation();
         DestinationLocation = new SpawnLocation();
     }
@@ -50,9 +58,17 @@ public class TaxiRide
         TaxiDrivingStyle = new PedDrivingStyle("Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 10f);
         PossibleTaxiDrivingStyles = new List<PedDrivingStyle>() {
             new PedDrivingStyle("Drive Normal", eCustomDrivingStyles.Taxi_StandardDrivingMode, 15f),
-            new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee },
-            new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee },
         };
+
+        if (RequestedFirm?.FastSpeedFee != -1)
+        {
+            PossibleTaxiDrivingStyles.Add(new PedDrivingStyle("Step On It", eCustomDrivingStyles.TaxiRushed_AvoidCarsObeyLights, 42f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.FastSpeedFee });
+        }
+        if (RequestedFirm?.CrazySpeedFee != -1)
+        {
+            PossibleTaxiDrivingStyles.Add(new PedDrivingStyle("Crazy", eCustomDrivingStyles.TaxiCrazy_AvoidCars, 90f) { Fee = RequestedFirm == null ? 0 : RequestedFirm.CrazySpeedFee });
+        }
+
         PickupLocation = new SpawnLocation();
         DestinationLocation = new SpawnLocation();
     }

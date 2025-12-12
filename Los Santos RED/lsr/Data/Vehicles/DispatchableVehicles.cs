@@ -104,6 +104,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> LCPDVehicles;
     private List<DispatchableVehicle> TaxiVehicles;
     private List<DispatchableVehicle> RideshareVehicles;
+    private List<DispatchableVehicle> KnowayVehicles;
     private List<DispatchableVehicle> WeazelVehicles;
     private List<DispatchableVehicle> HigginsVehicles;
     private List<DispatchableVehicle> ImportExportVehicles;
@@ -565,6 +566,21 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("radi", 100, 100),
             new DispatchableVehicle("gresley", 100, 100),
         };
+
+        KnowayVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("vivanite2", 100, 100) { ForceStayInSeats = new List<int>() { -1 }, RequiredPrimaryColorID = 134,RequiredSecondaryColorID = 134,VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
+                        },
+                    },
+                } },
+            
+        };
+
         WeazelVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("rumpo", 100, 100) { RequiredLiveries = new List<int>() { 0 } },
             new DispatchableVehicle("conada", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
@@ -1400,6 +1416,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other 
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("knowayvehicles",KnowayVehicles),
             new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
             new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
             new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
@@ -1700,6 +1717,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             //Other
             new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
             new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+            new DispatchableVehicleGroup("knowayvehicles",KnowayVehicles),
             new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
             new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
             new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),

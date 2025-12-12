@@ -65,6 +65,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SpanishLordsPeds;
     public List<DispatchablePerson> OtherPeds { get; private set; }
     public List<DispatchablePerson> TaxiDrivers { get; private set; }
+    public List<DispatchablePerson> KnowayDrivers { get; private set; }
     public List<DispatchablePerson> VendorPeds { get; private set; }
     public List<DispatchablePerson> IllicitMarketplacePeds { get; private set; }
     public List<DispatchablePerson> TellerPeds { get; private set; }
@@ -1897,6 +1898,11 @@ public class DispatchablePeople : IDispatchablePeople
         TaxiDrivers = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_socenlat_01",100,100),
         };
+
+        KnowayDrivers = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_socenlat_01",100,100) { IsInvisibleAndInvulnerable = true },
+        };
+
         VendorPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_strvend_01",100,100),
             new DispatchablePerson("s_m_m_linecook",100,100),
@@ -2022,6 +2028,9 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("knowaypeds", KnowayDrivers));
+
+
         PeopleGroupLookup.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
 
 
@@ -2948,6 +2957,7 @@ public class DispatchablePeople : IDispatchablePeople
         //Other
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("knowaypeds", KnowayDrivers));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));

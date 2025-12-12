@@ -21,6 +21,7 @@ public class Organizations : IOrganizations
     private Organization LSRGuns;
     private TaxiFirm RydeMe;
     private TaxiFirm Schlecht;
+    private TaxiFirm KnoWay;
     private Organization WezelNews;
 
     public PossibleOrganizations PossibleOrganizations { get; private set; }
@@ -200,6 +201,24 @@ public class Organizations : IOrganizations
             Description = "Reporting the Right News",
             HeadDataGroupID = "AllHeads",
         };
+
+
+        KnoWay = new TaxiFirm("~w~","knoway","KnoWay","Knoway","White","knowaypeds","knowayvehicles","","","","","Robot")
+        {
+            Description = "Let us take you for a ride",
+            HeadDataGroupID = "AllHeads",
+            ContactName = StaticStrings.KnowayContactName,
+            IsDefault = true,
+            BannerImagePath = "stores\\knoway.png",
+            BaseFare = 12,
+            PricePerMile = 6,
+            FastSpeedFee = -1,
+            CrazySpeedFee = -1,
+            FightPercentage = 0f,
+            FightPolicePercentage = 0f,
+            CallPolicePercentage = 100f,
+            CallPoliceForSeriousCrimesPercentage = 100f,
+        };
     }
     private void DefaultConfig()
     {
@@ -216,6 +235,7 @@ public class Organizations : IOrganizations
             DowntownCabCoOld,
             RydeMe,
             Schlecht,
+            KnoWay,
         };
         Serialization.SerializeParam(PossibleOrganizations, ConfigFileName);
     }
@@ -277,6 +297,7 @@ public class Organizations : IOrganizations
             SunderedCab,
             RydeMe,
             Schlecht,
+            KnoWay,
         };
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Organizations_FullExpandedJurisdiction.xml");
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations_LosSantos2008.xml");
@@ -308,7 +329,8 @@ public class Organizations : IOrganizations
         {
             NYCTaxiCo,
             RydeMe,
-            Schlecht
+            Schlecht,
+            KnoWay,
         };
         Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
         //
@@ -325,7 +347,8 @@ public class Organizations : IOrganizations
             DowntownCabCoOld,
             NYCTaxiCo,
             RydeMe,
-            Schlecht
+            Schlecht,
+            KnoWay,
         };
         Serialization.SerializeParam(PossibleOrganizations_LibertyCityPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Organizations_{StaticStrings.LPPConfigSuffix}.xml");
     }

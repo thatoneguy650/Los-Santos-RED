@@ -45,6 +45,7 @@ public static class StaticStrings
     public static readonly string LSRGunDealerContactName = "LSR Gun Dealer";
     public static readonly string SchlechtContactName = "Schlecht Rideshare";
     public static readonly string RydeMeContactName = "RydeMe Rideshare";
+    public static readonly string KnowayContactName = "KnoWay";//these have gotta go, but where?
 
     public static readonly string HellCabContactName = "Hell Cab";//these have gotta go, but where?
     public static readonly string PurpleCabContactName = "Purple Cab Co.";//these have gotta go, but where?
