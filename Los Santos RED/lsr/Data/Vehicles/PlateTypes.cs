@@ -266,7 +266,7 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(54, "Gloriana", "Gloriana", 2, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(55, "Tippecanoe", "Tippecanoe", 2, " 123ABC "));
-        FullPlateTypeList.Add(new PlateType(56, "Humboldt", "Humboldt", 2, "1234ABCD"));
+        FullPlateTypeList.Add(new PlateType(56, "West Elizabth", "West Elizabth", 2, "1234ABCD"));
 
 
 
@@ -283,7 +283,7 @@ public class PlateTypes : IPlateTypes
 
 
 
-        FullPlateTypeList.Add(new PlateType(64, "Niobrara", "Niobrara", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(64, "New Hanover", "New Hanover", 2, "ABC  123"));
         FullPlateTypeList.Add(new PlateType(65, "Putnam", "Putnam", 2, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(66, "Pascagoula", "Pascagoula", 2, "ABC  123"));
         FullPlateTypeList.Add(new PlateType(67, "Coosa", "Coosa", 2, "1A2345B6"));
@@ -323,7 +323,7 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(86, "Superior", "Superior", 2, "ABCD 123"));
         FullPlateTypeList.Add(new PlateType(87, "Nova Francia", "Nova Francia", 2, "ABC  123"));
         FullPlateTypeList.Add(new PlateType(88, "Newstolenland and Barcelos", "Newstolenland and Barcelos", 2, "ABC  123"));
-        FullPlateTypeList.Add(new PlateType(89, "New Hanover", "New Hanover", 2, "ABC  123"));
+        FullPlateTypeList.Add(new PlateType(89, "New Wolfsburg", "New Wolfsburg", 2, "ABC  123"));
         FullPlateTypeList.Add(new PlateType(90, "Assiniboia", "Assiniboia", 3, "ABC  123"));
 
 

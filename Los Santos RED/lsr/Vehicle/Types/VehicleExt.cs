@@ -1617,7 +1617,7 @@ namespace LSR.Vehicles
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (Time.IsNight && Engine.IsRunning)
+            if (Time.NeedsHeadlights && Engine.IsRunning)
             {
                 unsafe
                 {

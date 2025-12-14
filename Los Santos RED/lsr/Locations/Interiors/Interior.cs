@@ -207,7 +207,7 @@ public class Interior
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
                 }
-                LoadDoors(isOpen);
+                LoadDoors(isOpen, true);
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
                     DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
@@ -243,7 +243,7 @@ public class Interior
             }
         }, "Load Interior");
     }
-    protected virtual void LoadDoors(bool isOpen)
+    protected virtual void LoadDoors(bool isOpen, bool reLockForcedEntry)
     {
         EntryPoint.WriteToConsole($"LOAD DOORS RAN {isOpen}");
         if (isOpen)
@@ -256,9 +256,20 @@ public class Interior
         else
         {
             EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen}");
-            foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
+
+            if (reLockForcedEntry)
             {
-                door.LockDoor();
+                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
+                {
+                    door.LockDoor();
+                }
+            }
+            else
+            {
+                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
+                {
+                    door.LockDoor();
+                }
             }
         }
     }
@@ -352,6 +363,10 @@ public class Interior
         {
             return;//dont do anything until you leave
         }
+        if(Player.CurrentLocation.TimeOutside < 10000)
+        {
+            return; //give you 10 seconds OUTSIde befoe it locks
+        }
 
         if(isOpen != IsOpen)
         {
@@ -367,7 +382,7 @@ public class Interior
             {
                 EntryPoint.WriteToConsole($"Interior changed from open to closed {Name}");
             }
-            LoadDoors(IsOpen);
+            LoadDoors(IsOpen, false);
             isOpen = IsOpen;
         }
 

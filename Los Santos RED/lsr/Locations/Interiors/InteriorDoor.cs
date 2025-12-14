@@ -52,6 +52,9 @@ public class InteriorDoor
 
 
     public bool HasRanLockWithEntity => hasRanLockWithEntity;
+    [XmlIgnore]
+    public bool HasBeenForcedOpen { get; private set; }
+
     public void LockDoor()
     {
         //doorEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Rage.Object>(Position.X, Position.Y, Position.Z, 3.0f, ModelHash, true, false, true);
@@ -92,6 +95,12 @@ public class InteriorDoor
             }
         }
     }
+
+    public void ForceOpenDoor()
+    {
+        HasBeenForcedOpen = true;
+        UnLockDoor();
+    }
     public void Activate()
     {
         if(NeedsDefaultUnlock)
@@ -107,6 +116,7 @@ public class InteriorDoor
             ForceRotateCloseDoor();
         }
         hasRanLockWithEntity = false;
+        HasBeenForcedOpen = false;
     }
     public void AddDistanceOffset(Vector3 offsetToAdd)
     {

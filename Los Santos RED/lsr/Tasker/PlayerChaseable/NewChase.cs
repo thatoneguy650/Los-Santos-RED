@@ -933,45 +933,45 @@ public class NewChase : ComplexTask
             }
 
 
-            //if (Player.WantedLevel <= 2 && (Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f))
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 20f);
-            //    isSetSlow = true;
-            //    EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW TRUE");
-            //}
-            //else
-            //{
-            //    if (isSetSlow)
-            //    {
-            //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 900f);
-            //        isSetSlow = false;
-            //        EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW FALSE");
-            //    }
-            //}
-            //if (Player.WantedLevel >= 2)
-            //{
+            if (Player.WantedLevel <= 2 && (Player.VehicleSpeedMPH <= 30f && Ped.DistanceToPlayer <= 35f))
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 20f);
+                isSetSlow = true;
+                EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW TRUE");
+            }
+            else
+            {
+                if (isSetSlow)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 900f);
+                    isSetSlow = false;
+                    EntryPoint.WriteToConsole($"{Ped.Handle} SET SLOW FALSE");
+                }
+            }
+            if (Player.WantedLevel >= 2)
+            {
 
-            //    if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
-            //    {
-            //        if (!isSetCode3Close)
-            //        {
-            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-            //            isSetCode3Close = true;
-            //            isSetRegularCode3 = false;
-            //            EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (isSetRegularCode3)
-            //        {
-            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-            //            isSetRegularCode3 = true;
-            //            isSetCode3Close = false;
-            //            EntryPoint.WriteToConsole("SET CODE 3 REG");
-            //        }
-            //    }
-            //}
+                if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
+                {
+                    if (!isSetCode3Close)
+                    {
+                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                        isSetCode3Close = true;
+                        isSetRegularCode3 = false;
+                        EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
+                    }
+                }
+                else
+                {
+                    if (isSetRegularCode3)
+                    {
+                        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                        isSetRegularCode3 = true;
+                        isSetCode3Close = false;
+                        EntryPoint.WriteToConsole("SET CODE 3 REG");
+                    }
+                }
+            }
 
         }
         if (Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInPlane))

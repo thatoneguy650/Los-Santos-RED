@@ -49,6 +49,21 @@ namespace Mod
         public bool IsNight { get; private set; } = false;
         public bool IsFastForwarding { get; private set; } = false;
         public bool ForceShowClock { get; set; } = false;
+
+
+        public bool NeedsHeadlights
+        {
+            get
+            {
+                if (CurrentHour <= 5 || CurrentHour >= 21)
+                {
+                    return true;
+                }
+
+                //6-20 = IsNight
+                return true;
+            }
+        }
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
