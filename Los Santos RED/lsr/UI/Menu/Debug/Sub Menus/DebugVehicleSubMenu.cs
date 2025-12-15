@@ -269,6 +269,18 @@ public class DebugVehicleSubMenu : DebugSubMenu
             }
         };
         vehicleItemsMenu.AddItem(SetDoorOpenMenuItem);
+
+
+
+        UIMenuNumericScrollerItem<int> SetInSeatMenuItem = new UIMenuNumericScrollerItem<int>("Set In Seat", "Set the player in the given seat", -1, 15, 1) { Value = -1 };
+        SetInSeatMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle != null && Player.InterestedVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_PED_INTO_VEHICLE(Player.Character, Player.InterestedVehicle.Vehicle, SetInSeatMenuItem.Value);
+            }
+        };
+        vehicleItemsMenu.AddItem(SetInSeatMenuItem);
     }
 
     private void CreateModificationItem()

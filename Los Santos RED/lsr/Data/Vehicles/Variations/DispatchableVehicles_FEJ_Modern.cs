@@ -485,6 +485,9 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceMaverick(1,1,2,false,-1,-1,0,2,2,3,"Pilot","Helicopter",true),
             DispatchableVehicles_FEJ.Create_PoliceMaverick(0,30,2,false,-1,-1,3,4,2,3,"Pilot","Helicopter",true),
 
+            DispatchableVehicles_FEJ.Create_PoliceBuzzard(1,1,2,false,-1,-1,0,2,2,3,"Pilot","Helicopter",true),
+            DispatchableVehicles_FEJ.Create_PoliceBuzzard(0,20,2,false,-1,-1,3,4,2,3,"Pilot","Helicopter",true),
+
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             DispatchableVehicles_FEJ.Create_PoliceVindicator(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65),
             DispatchableVehicles_FEJ.Create_PoliceThrust(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65,134,0,0),
@@ -1003,6 +1006,7 @@ public class DispatchableVehicles_FEJ_Modern
 
             DispatchableVehicles_FEJ.Create_PoliceFrogger(0,30,0,false,1,1,5,5,3,4,"FIBHET","",false),
             DispatchableVehicles_FEJ.Create_PoliceMaverick(0,30,3,false,1,1,5,5,3,4,"FIBHET","",false),
+            DispatchableVehicles_FEJ.Create_PoliceBuzzard(0,20,3,false,1,1,5,5,3,4,"FIBHET","", true),
 
             DispatchableVehicles_FEJ.Create_PoliceBeaverRam(0,50,-1,false,PoliceVehicleType.Marked,12,5,5,6,8,"FIBHET",""),
 

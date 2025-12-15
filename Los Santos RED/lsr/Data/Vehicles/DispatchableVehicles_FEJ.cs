@@ -57,9 +57,11 @@ public class DispatchableVehicles_FEJ
     public string PoliceAnnihilator = "annihilatorliv";
     public string PoliceMaverick = "polmavliv";
     public string PoliceFrogger = "polfroggerliv";
+    public string PoliceBuzzard = "polbuzzardliv";
 
     //Military
     public string MilitaryHumvee = "insurgent3";
+    public string MilValkyrie = "milvalkyrie2";
 
     //Service
     public string FireTruck = "firetruckliv";
@@ -179,6 +181,7 @@ public class DispatchableVehicles_FEJ
 
             Create_PoliceFrogger(1,50,2,false,134,0,0,4,3,4,"Pilot","", true),
             Create_PoliceMaverick(1,100,0,false,134,0,0,4,3,4,"Pilot","", true),
+            Create_PoliceBuzzard(1,25,0,false,134,134,0,4,3,4,"Pilot","", true),
         };
 
         SheriffHeliVehicles_FEJ = new List<DispatchableVehicle>()
@@ -190,6 +193,7 @@ public class DispatchableVehicles_FEJ
 
             Create_PoliceFrogger(1,200,4,false,-1,-1,0,4,3,4,"Pilot","", true),
             Create_PoliceMaverick(1,100,1,false,-1,-1,0,4,3,4,"Pilot","", true),
+            Create_PoliceBuzzard(1,25,1,false,134,134,0,4,3,4,"Pilot","", true),
         };
 
         ArmyVehicles_FEJ = new List<DispatchableVehicle>()
@@ -226,7 +230,9 @@ public class DispatchableVehicles_FEJ
     
             //HELI
             new DispatchableVehicle("cargobob",1,15) { RequiredPedGroup = "Pilot", RequiredGroupIsDriverOnly = true, RequiredPrimaryColorID = 153, RequiredSecondaryColorID = 153, MinOccupants = 3, MaxOccupants = 4},
-            
+            Create_MilValkyrie(1,25,-1,false,25,25,0,6,4,6,"Pilot","", true),
+
+
             //Boat
             new DispatchableVehicle("dinghy5", 1, 100) { FirstPassengerIndex = 3, RequiredPrimaryColorID = 152, RequiredSecondaryColorID = 0, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4, MinWantedLevelSpawn = 6,MaxWantedLevelSpawn = 10, },
         };
@@ -377,6 +383,50 @@ public class DispatchableVehicles_FEJ
     public DispatchableVehicle Create_PoliceMaverick(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor,int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
     {
         DispatchableVehicle toReturn = new DispatchableVehicle(PoliceMaverick, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        toReturn.RequiredGroupIsDriverOnly = RequiredGroupIsDriverOnly;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        toReturn.RequiredPrimaryColorID = requiredColor;
+        toReturn.RequiredSecondaryColorID = requiredSecondaryColor;
+        return toReturn;
+    }
+    public DispatchableVehicle Create_PoliceBuzzard(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor, int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(PoliceBuzzard, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        toReturn.RequiredGroupIsDriverOnly = RequiredGroupIsDriverOnly;
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName);
+        toReturn.RequiredPrimaryColorID = requiredColor;
+        toReturn.RequiredSecondaryColorID = requiredSecondaryColor;
+        return toReturn;
+    }
+    public DispatchableVehicle Create_MilValkyrie(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, int requiredColor, int requiredSecondaryColor, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants, string requiredPedGroup, string groupName, bool RequiredGroupIsDriverOnly)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(MilValkyrie, ambientPercent, wantedPercent);
         if (liveryID != -1)
         {
             toReturn.VehicleMods = new List<DispatchableVehicleMod>()
