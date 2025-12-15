@@ -4578,6 +4578,68 @@ public class PlacesOfInterest : IPlacesOfInterest
                 IsOnSPMap = false,
             },
 
+            // Mansions Update - Safe House In The Hills
+
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 75000,
+                PurchasePrice = 12000000,
+                SalesPrice = 4800000,
+                Name = "The Vinewood Residence",
+                FullName = "The Vinewood Residence",
+                EntrancePosition = new Vector3(540.7787f, 780.194f, 202.2567f),//540.7787f, 780.194f, 202.2567f), 303.1488f
+                EntranceHeading = 303.1488f,
+                CameraPosition = new Vector3(536.8636f, 784.0091f, 210.6874f),
+                CameraDirection = new Vector3(-0.1185752f, -0.9612161f, -0.2490051f),
+                CameraRotation = new Rotator(-14.41865f, -1.112945E-05f, 172.9675f),
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 304385,
+                IsOnSPMap = false,
+                IsWalkup = true,
+                DisableInteractAfterPurchase = true,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 75000,
+                PurchasePrice = 12000000,
+                SalesPrice = 4800000,
+                Name = "The Richman Villa",
+                FullName = "The Richman Villa",
+                EntrancePosition = new Vector3(-1695.184f, 490.6279f, 129.0772f),
+                EntranceHeading = 284.000f,
+                CameraPosition = new Vector3(-1700.671f, 495.3455f, 138.0742f),
+                CameraDirection = new Vector3(0.7919388f, -0.543322f, -0.2786289f),
+                CameraRotation = new Rotator(-16.17839f, -1.333467E-06f, -124.4527f),
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 302593,
+                IsOnSPMap = false,
+                IsWalkup = true,
+                DisableInteractAfterPurchase = true,
+            },
+            new Residence()
+            {
+                RentalDays = 28,
+                RentalFee = 75000,
+                PurchasePrice = 12000000,
+                SalesPrice = 4800000,
+                Name = "The Tongva Estate",
+                FullName = "The Tongva Estate",
+                EntrancePosition = new Vector3(-2552.234f, 1914.009f, 169.0935f),
+                EntranceHeading = 158.1219f,
+                CameraPosition = new Vector3(-2548.953f, 1923.06f, 181.9508f),
+                CameraDirection = new Vector3(-0.8709613f, -0.4103091f, -0.2703199f),
+                CameraRotation = new Rotator(-15.68331f, 2.438667E-05f, 115.2251f),
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 303617,
+                IsOnSPMap = false,
+                IsWalkup = true,
+                DisableInteractAfterPurchase = true,
+            },
         };
 
         ApartmentBuildings = new List<ApartmentBuilding>()

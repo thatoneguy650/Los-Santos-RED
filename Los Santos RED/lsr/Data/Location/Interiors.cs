@@ -7299,6 +7299,759 @@ public class Interiors : IInteriors
             new Vector3(-43.14818f,-583.9168f,78.83031f),
             },
             },
+
+            // Mansion Update - Safe House in The Hills
+
+            new ResidenceInterior(304385, "Vinewood Mansion") // 304641 Mansion Lower // 304897 Garage
+            {
+                IsTeleportEntry = false,
+                InternalInteriorCoordinates = new Vector3(539.7012f, 749.0894f, 201.3616f),
+                DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
+                RequestIPLs = new List<string>()
+                {
+                    "m25_2_ch2_04_mansion_interior_a",
+                    "m25_2_ch2_04_mansion_interior_b",
+                    "m25_2_ch2_04_mansion_interior_c",
+                    "apa_ch2_04_mansion_shared",
+                    "apa_ch2_04_mansion_private",
+                    "apa_ch2_04_mansion_railings_p",
+                    "apa_ch2_04_mansion_furniture",
+                    "apa_ch2_04_mansion_firepit",
+                    "m25_2_east_mansion_gym",
+                    "apa_ch2_04_mansion_grass",
+                    "m25_2_east_dog_house"
+                },
+                RemoveIPLs = new List<string>()
+                {
+                    "apa_ch2_04_mansion_original",
+                    "apa_ch2_04_props_original",
+                },
+                InteriorSets = new List<string>()
+                {
+                    "set_style_loft",
+                    "set_style_loft_tint",
+                    "set_art_loft",
+                    "set_loft_trophy_planter",
+                    "set_loft_shelving_planter",
+                    "set_loft_arcade_blocker",// remove for access to arcade
+                    "set_loft_podium_blocker", // remove to view podium
+                    "set_gar_podium_blocker",
+                    "set_wallpaper_subtle",
+                    // "set_xmas", // optional event
+                    "set_ai_tablets_03",
+                    "set_pet_dog",
+                    "set_pet_cat",
+                    "SET_BASE_VAULT_09", // 0-9
+                    "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
+                },
+                InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
+                InteriorWallpaperColor = 3, // 1 pink, 2 purple, 3 green, 
+                LinkedInteriorCoords = new List<Vector3>()
+                {
+                    new Vector3(547.4955f, 734.136f, 190.5045f), // Lower level
+                    new Vector3(548.6964f, 766.8868f, 186.076f)  // Garage
+                },
+                NeedsActivation = true,
+                NeedsSetDisabled = false,
+                MaxUpdateDistance = 75f,
+                IsTrespassingWhenClosed = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    //Front Gates
+                    new InteriorDoor(546378757,new Vector3(540.4052f, 772.7877f, 202.3633f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.9895f, 775.1228f, 202.1997f), InteractHeader =  126.279f },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(537.0177f, 777.0928f, 202.3633f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.9895f, 775.1228f, 202.1997f), InteractHeader =  126.279f },// Right Gate
+                    //Front Main Door
+                    new InteriorDoor(1214652241,new Vector3(537.6889f, 748.1211f, 202.7288f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.1918f, 749.3905f, 202.4767f), InteractHeader =  218.3573f },
+                    // Front Side Door
+                    new InteriorDoor(1214652241,new Vector3(562.1526f, 735.7503f, 202.7288f)) { LockWhenClosed = true, InteractPostion = new Vector3(561.2835f, 736.7664f, 161.4438f), InteractHeader =  128.4835f },
+                    //The Glass Door Collection.   why so many R!!!
+                    // Side Door 
+                    new InteriorDoor(1902523249,new Vector3(571.6558f, 717.3541f, 197.7076f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    //Rear Doors
+                    new InteriorDoor(610346728,new Vector3(554.7199f, 713.9336f, 202.791f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(551.3597f, 714.9407f, 202.791f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(610346728,new Vector3(547.3989f, 716.1801f, 202.791f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(544.0388f, 717.1873f, 202.791f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(644312889,new Vector3(532.6902f, 734.4709f, 202.7914f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(644312889,new Vector3(527.1413f, 741.4933f, 202.7914f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    // Rear Ground level doors
+                    new InteriorDoor(379718506,new Vector3(527.2657f, 741.3351f, 199.0974f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(379718506,new Vector3(533.6911f, 733.0539f, 199.0974f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(459707559,new Vector3(534.0909f, 727.2502f, 197.7076f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract()
+                    {
+                        Name = "VineManStandard1",
+                        Position = new Vector3(556.9463f, 717.9183f, 202.3616f),
+                        Heading = 71.28945f,
+                        CameraPosition = new Vector3(556.2785f, 718.1345f, 203.2843f),
+                        CameraDirection = new Vector3(-0.9419408f, 0.2881967f, -0.1723081f),
+                        CameraRotation = new Rotator(-9.922045f, -3.293602E-05f, 72.98796f),
+                        ButtonPromptText = "Mansion Control",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "VineManSink1",
+                        Position = new Vector3(568.7961f, 729.5415f, 198.7077f),
+                        Heading = 249.9514f,
+                        CameraPosition = new Vector3(568.2829f, 731.0812f, 199.936f),
+                        CameraDirection = new Vector3(0.2307573f, -0.9096405f, -0.3454059f),
+                        CameraRotation = new Rotator(-20.20658f, 9.097668E-07f, -165.7655f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "VineManSink2",
+                        Position = new Vector3(568.4394f, 728.1791f, 198.7077f),
+                        Heading = 250.4398f,
+                        CameraPosition = new Vector3(568.2829f, 731.0812f, 199.936f),
+                        CameraDirection = new Vector3(0.2307573f, -0.9096405f, -0.3454059f),
+                        CameraRotation = new Rotator(-20.20658f, 9.097668E-07f, -165.7655f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "VineManSink3",
+                        Position = new Vector3(527.9149f, 751.3004f, 198.7078f),
+                        Heading = 311.8061f,
+                        CameraPosition = new Vector3(526.5371f, 751.9152f, 199.9375f),
+                        CameraDirection = new Vector3(0.8850042f, -0.1360552f, -0.44526f),
+                        CameraRotation = new Rotator(-26.43998f, -1.430264E-06f, -98.73988f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "VineManSink4",
+                        Position = new Vector3(548.546f, 733.1766f, 198.7077f),
+                        Heading = 307.4635f,
+                        CameraPosition = new Vector3(548.9492f, 731.7667f, 199.6707f),
+                        CameraDirection = new Vector3(0.1043601f, 0.9066385f, -0.4087977f),
+                        CameraRotation = new Rotator(-24.12933f, 4.677571E-07f, -6.566227f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "VineManToilet1",
+                        Position = new Vector3(566.4648f, 723.4943f, 198.7077f),
+                        Heading = 71.65858f,
+                        CameraPosition = new Vector3(568.6635f, 722.3741f, 200.0983f),
+                        CameraDirection = new Vector3(-0.7594374f, 0.4847547f, -0.4338982f),
+                        CameraRotation = new Rotator(-25.7152f, -1.231912E-05f, 57.4496f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "VineManToilet2",
+                        Position = new Vector3(526.5916f, 753.1428f, 198.7078f),
+                        Heading = 303.6657f,
+                        CameraPosition = new Vector3(526.7256f, 751.1488f, 199.6905f),
+                        CameraDirection = new Vector3(0.1396634f, 0.8952051f, -0.4232045f),
+                        CameraRotation = new Rotator(-25.03706f, -1.413479E-06f, -8.867388f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "VineManToilet3",
+                        Position = new Vector3(547.0101f, 733.7941f, 198.7077f),
+                        Heading = 34.09992f,
+                        CameraPosition = new Vector3(548.9147f, 733.4722f, 199.794f),
+                        CameraDirection = new Vector3(-0.8088776f, 0.3496555f, -0.4727134f),
+                        CameraRotation = new Rotator(-28.21058f, 2.228374E-05f, 66.62251f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "VineManOutfit1",
+                        Position = new Vector3(563.8438f, 728.3643f, 198.7077f),
+                        Heading = 162.8777f,
+                        CameraPosition = new Vector3(563.2036f, 726.1241f, 199.6131f),
+                        CameraDirection = new Vector3(0.3225141f, 0.872908f, -0.3660823f),
+                        CameraRotation = new Rotator(-21.47421f, -1.972542E-05f, -20.2778f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                    new OutfitInteract()
+                    {
+                        Name = "VineManOutfit2",
+                        Position = new Vector3(522.7722f, 750.9181f, 198.7078f),
+                        Heading = 216.0308f,
+                        CameraPosition = new Vector3(524.2657f, 749.1966f, 199.4991f),
+                        CameraDirection = new Vector3(-0.5652148f, 0.751561f, -0.3401299f),
+                        CameraRotation = new Rotator(-19.88478f, -3.268454E-05f, 36.94516f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                },
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract("VineManCash",new Vector3(561.9986f, 740.5093f, 187.0761f), 70.07521f,"Access Cash")
+                    {
+                        CanAccessCash = true,
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(559.2673f, 741.267f, 187.7953f),
+                        CameraDirection = new Vector3(0.9154354f, -0.3126789f, -0.2533968f),
+                        CameraRotation = new Rotator(-14.67861f, -1.014965E-05f, -108.8583f)
+                    },
+                    new InventoryInteract("VineManInventory",new Vector3(546.2561f, 720.489f, 202.3625f), 257.3846f ,"Access Items")
+                    {
+                        CanAccessItems = true,
+                        CanAccessCash = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(545.6318f, 722.8356f, 203.4903f),
+                        CameraDirection = new Vector3(0.2099156f, -0.9504443f, -0.2293272f),
+                        CameraRotation = new Rotator(-13.25746f, -4.605039E-06f, -167.5456f)
+                    },
+                    new InventoryInteract("VineManWeapons",new Vector3(555.1046f, 744.7869f, 191.5046f), 73.7746f ,"Access Weapons")
+                    {
+                        CanAccessWeapons = true,
+                        CanAccessCash = false,
+                        CanAccessItems = false,
+                        CameraPosition = new Vector3(555.7337f, 741.4341f, 192.6279f),
+                        CameraDirection = new Vector3(-0.1983978f, 0.9519771f, -0.2331909f),
+                        CameraRotation = new Rotator(-13.48501f, 3.29242E-06f, 11.77228f)
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "VineManRest1",
+                        Position = new Vector3(559.1583f, 715.5945f, 198.7077f),
+                        Heading = 345.1967f,
+                        CameraPosition = new Vector3(562.3942f, 714.9716f, 199.9915f),
+                        CameraDirection = new Vector3(-0.5556331f, 0.6874091f, -0.4676971f),
+                        CameraRotation = new Rotator(-27.88491f, 5.795572E-06f, 38.94863f),
+                        ButtonPromptText = "Sleep",
+                    },
+                    new RestInteract()
+                    {
+                        Name = "VineManRest2",
+                        Position = new Vector3(533.7569f, 743.2491f, 198.7077f),
+                        Heading = 129.4636f,
+                        CameraPosition = new Vector3(531.8244f, 745.6447f, 199.7839f),
+                        CameraDirection = new Vector3(-0.01646183f, -0.9022155f, -0.4309713f),
+                        CameraRotation = new Rotator(-25.52922f, 1.614369E-05f, 178.9547f),
+                        ButtonPromptText = "Sleep",
+                    },
+                },
+            },
+            new ResidenceInterior(302593, "Richman Mansion") // 303105 Mansion Lower - 302849 Garage - 303361 underground TP garage
+            {
+                IsTeleportEntry = false,
+                InternalInteriorCoordinates = new Vector3(-1666.368f, 478.9271f, 128.2216f),
+                DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
+                RequestIPLs = new List<string>()
+                {
+                    "m25_2_ch1_06e_mansion_interior_a",
+                    "m25_2_ch1_06e_mansion_interior_b",
+                    "m25_2_ch1_06e_mansion_interior_c",
+                    "m25_2_ch1_06e_mansion_interior_d",// underground garage??  - require TP
+                    "hei_ch1_06e_mansion_shared",
+                    "hei_ch1_06f_mansion_shared",
+                    "hei_ch1_06e_mansion_private",
+                    "hei_ch1_06e_mansion_railings_p",
+                    "hei_ch1_06e_mansion_furniture",
+                    "hei_ch1_06e_mansion_firepit",
+                    "hei_ch1_roads_mansion",
+                    "m25_2_mansion_gym",
+                    "m25_2_dog_house"
+                },
+                RemoveIPLs = new List<string>()
+                {
+                    "hei_ch1_06e_mansion_original",
+                    "hei_ch1_06f_mansion_original",
+                    "hei_ch1_06e_props_original",
+                    "hei_ch1_roads_original",
+                },
+                InteriorSets = new List<string>()
+                {
+                    "set_style_cali",
+                    "set_style_cali_tint",
+                    "set_art_regency",
+                    "set_trophy_planter",
+                    "set_shelving_planter",
+                    "set_arcade_blocker",// remove for access to arcade
+                    "set_podium_blocker", // remove to view car podium
+                    "set_wallpaper_coastal",
+                    "set_elev_cali",
+                    // "set_xmas", // optional event
+                    "set_ai_tablets_02",
+                    "set_pet_dog",
+                    "set_pet_cat",
+                    "SET_BASE_VAULT_09", // 0-9
+                    "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
+                },
+                InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
+                InteriorWallpaperColor = 1, // 1 pink, 2 purple, 3 green, 
+                LinkedInteriorCoords = new List<Vector3>()
+                {
+                    new Vector3(-1649.63f, 480.9779f, 117.3645f), // Lower level
+                    new Vector3(-1679.877f, 493.596f, 112.9351f),  // Garage
+                    new Vector3(-1679.877f, 493.596f, 56.45712f)  // UG Garage TP
+                },
+                NeedsActivation = true,
+                NeedsSetDisabled = false,
+                MaxUpdateDistance = 75f,
+                IsTrespassingWhenClosed = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    //Front Gates
+                    new InteriorDoor(546378757,new Vector3(-1688.234f, 487.7502f, 129.2232f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1691.038f, 487.4737f, 129.0547f), InteractHeader =  195.0674f },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(-1693.499f, 486.2354f, 129.2232f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1691.038f, 487.4737f, 129.0547f), InteractHeader =  195.0674f },// Right Gate
+                    //Front Main Door
+                    new InteriorDoor(1214652241,new Vector3(-1666f, 476.703f, 129.5887f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1666.963f, 477.5536f, 129.3367f), InteractHeader =  286.9074f },
+                    // Front Side Door
+                    new InteriorDoor(1214652241,new Vector3(-1645.998f, 495.2693f, 129.5887f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1647.105f, 494.6232f, 129.3304f), InteractHeader =  234.7378f },
+                    //The Glass Door Collection.   why so many R!!!
+                    // Side Door 
+                    new InteriorDoor(1902523249,new Vector3(-1625.437f, 497.7122f, 124.5675f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    //Rear Doors
+                    new InteriorDoor(610346728,new Vector3(-1628.177f, 480.6531f, 129.6509f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(-1630.3f, 477.8601f, 129.6509f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(610346728,new Vector3(-1632.85f, 474.5861f, 129.6509f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(-1634.973f, 471.7931f, 129.6509f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(644312889,new Vector3(-1655f, 467.2318f, 129.6514f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(644312889,new Vector3(-1663.663f, 464.5003f, 129.6514f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    // Rear Ground level doors
+                    new InteriorDoor(379718506,new Vector3(-1663.471f, 464.5612f, 125.9573f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(379718506,new Vector3(-1653.461f, 467.6718f, 125.9573f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(459707559,new Vector3(-1647.886f, 466.0095f, 124.5675f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract()
+                    {
+                        Name = "RichManStandard1",
+                        Position = new Vector3(-1631.088f, 484.1435f, 129.2215f),
+                        Heading = 141.9888f,
+                        CameraPosition = new Vector3(-1631.583f, 483.4824f, 130.491f),
+                        CameraDirection = new Vector3(-0.5921783f, -0.7821652f, -0.1937588f),
+                        CameraRotation = new Rotator(-11.17223f, -4.351328E-06f, 142.8706f),
+                        ButtonPromptText = "Mansion Control",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "RichManSink1",
+                        Position = new Vector3(-1637.824f, 499.3179f, 125.5676f),
+                        Heading = 318.8713f,
+                        CameraPosition = new Vector3(-1639.7f, 499.3607f, 126.9005f),
+                        CameraDirection = new Vector3(0.9257138f, -0.01213465f, -0.3780301f),
+                        CameraRotation = new Rotator(-22.21172f, 1.440949E-06f, -90.75101f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "RichManSink2",
+                        Position = new Vector3(-1636.724f, 498.4678f, 125.5676f),
+                        Heading = 323.2496f,
+                        CameraPosition = new Vector3(-1639.7f, 499.3607f, 126.9005f),
+                        CameraDirection = new Vector3(0.9257138f, -0.01213465f, -0.3780301f),
+                        CameraRotation = new Rotator(-22.21172f, 1.440949E-06f, -90.75101f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "RichManSink3",
+                        Position = new Vector3(-1672.613f, 468.6583f, 125.5678f),
+                        Heading = 15.08837f,
+                        CameraPosition = new Vector3(-1673.647f, 467.2804f, 126.6939f),
+                        CameraDirection = new Vector3(0.3734254f, 0.7615845f, -0.5296626f),
+                        CameraRotation = new Rotator(-31.98266f, -4.026245E-06f, -26.11996f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "RichManSink4",
+                        Position = new Vector3(-1648.391f, 481.6124f, 125.5676f),
+                        Heading = 15.1032f,
+                        CameraPosition = new Vector3(-1646.669f, 481.0813f, 126.5789f),
+                        CameraDirection = new Vector3(-0.7772382f, 0.4752269f, -0.4123834f),
+                        CameraRotation = new Rotator(-24.35464f, 1.593192E-05f, 58.55713f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "RichManToilet1",
+                        Position = new Vector3(-1633.065f, 495.0471f, 125.5676f),
+                        Heading = 142.2997f,
+                        CameraPosition = new Vector3(-1631.229f, 496.305f, 126.4559f),
+                        CameraDirection = new Vector3(-0.7603783f, -0.5334623f, -0.370463f),
+                        CameraRotation = new Rotator(-21.74417f, -5.515052E-06f, 125.0525f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "RichManToilet2",
+                        Position = new Vector3(-1674.741f, 468.1071f, 125.5678f),
+                        Heading = 21.22382f,
+                        CameraPosition = new Vector3(-1672.877f, 467.3521f, 126.58f),
+                        CameraDirection = new Vector3(-0.7499061f, 0.4907002f, -0.4436825f),
+                        CameraRotation = new Rotator(-26.33908f, -5.71606E-06f, 56.80132f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "RichManToilet3",
+                        Position = new Vector3(-1649.5f, 480.3549f, 125.5676f),
+                        Heading = 102.1732f,
+                        CameraPosition = new Vector3(-1648.073f, 482.0002f, 126.6711f),
+                        CameraDirection = new Vector3(-0.650461f, -0.6093656f, -0.4534028f),
+                        CameraRotation = new Rotator(-26.96222f, -4.789454E-06f, 133.1317f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "RichManOutfit1",
+                        Position = new Vector3(-1638.374f, 494.2638f, 125.5676f),
+                        Heading = 233.8339f,
+                        CameraPosition = new Vector3(-1636.61f, 492.9518f, 126.3909f),
+                        CameraDirection = new Vector3(-0.7163812f, 0.5986869f, -0.3582904f),
+                        CameraRotation = new Rotator(-20.99524f, 7.315889E-06f, 50.11416f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                    new OutfitInteract()
+                    {
+                        Name = "RichManOutfit2",
+                        Position = new Vector3(-1673.138f, 464.4393f, 125.5774f),
+                        Heading = 283.2098f,
+                        CameraPosition = new Vector3(-1671.012f, 465.0901f, 126.3334f),
+                        CameraDirection = new Vector3(-0.9119738f, -0.2431012f, -0.3304627f),
+                        CameraRotation = new Rotator(-19.29686f, 4.522973E-07f, 104.926f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                },
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract("RichManCash",new Vector3(-1650.519f, 496.7319f, 113.9361f), 141.1508f,"Access Cash")
+                    {
+                        CanAccessCash = true,
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(-1652.662f, 493.7836f, 115.5617f),
+                        CameraDirection = new Vector3(0.6016333f, 0.7298114f, -0.3246732f),
+                        CameraRotation = new Rotator(-18.94578f, 1.08321E-05f, -39.50109f)
+                    },
+                    new InventoryInteract("RichManInventory",new Vector3(-1637.131f, 475.1227f, 129.2224f), 322.4516f ,"Access Items")
+                    {
+                        CanAccessItems = true,
+                        CanAccessCash = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(-1639.214f, 475.4368f, 130.2755f),
+                        CameraDirection = new Vector3(0.9597504f, -0.07396424f, -0.27094f),
+                        CameraRotation = new Rotator(-15.72021f, 4.434744E-07f, -94.40685f)
+                    },
+                    new InventoryInteract("RichManWeapons",new Vector3(-1656.811f, 491.8578f, 118.3647f), 143.089f ,"Access Weapons")
+                    {
+                        CanAccessWeapons = true,
+                        CanAccessCash = false,
+                        CanAccessItems = false,
+                        CameraPosition = new Vector3(-1654.153f, 491.1298f, 119.3278f),
+                        CameraDirection = new Vector3(-0.9729856f, 0.1047977f, -0.20571f),
+                        CameraRotation = new Rotator(-11.87106f, -3.271621E-06f, 83.85252f)
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "RichManRest1",
+                        Position = new Vector3(-1628.169f, 485.2527f, 125.5676f),
+                        Heading = 55.12185f,
+                        CameraPosition = new Vector3(-1626.336f, 487.9178f, 126.8432f),
+                        CameraDirection = new Vector3(-0.8441857f, -0.2577846f, -0.4699975f),
+                        CameraRotation = new Rotator(-28.03413f, 1.209081E-05f, 106.9808f),
+                        ButtonPromptText = "Sleep",
+                    },
+                    new RestInteract()
+                    {
+                        Name = "RichManRest2",
+                        Position = new Vector3(-1662.965f, 471.2917f, 125.5676f),
+                        Heading = 194.4916f,
+                        CameraPosition = new Vector3(-1665.626f, 470.5981f, 126.5776f),
+                        CameraDirection = new Vector3(0.8449312f, -0.3228377f, -0.4264588f),
+                        CameraRotation = new Rotator(-25.24304f, -9.439106E-07f, -110.9112f),
+                        ButtonPromptText = "Sleep",
+                    },
+                },
+            },
+            new ResidenceInterior(303617, "Tongva Estate") // 303873 Mansion Lower - 304129 Garage 
+            {
+                IsTeleportEntry = false,
+                InternalInteriorCoordinates = new Vector3(-2586.065f, 1909.995f, 166.3754f),
+                DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
+                RequestIPLs = new List<string>()
+                {
+                    "m25_2_ch1_09_mansion_interior_a",
+                    "m25_2_ch1_09_mansion_interior_b",
+                    "m25_2_ch1_09_mansion_interior_c",
+                    "hei_ch1_09_mansion_shared",
+                    "hei_ch1_09_mansion_private",
+                    "hei_ch1_09_mansion_railings_p",
+                    "hei_ch1_09_mansion_furniture",
+                    "hei_ch1_09_mansion_firepit",
+                    "m25_2_tongva_mansion_gym",
+                    "m25_2_tongva_dog_house",
+                    "m25_2_mansion_props",
+                    "m25_2_knoway_sign"
+                },
+                RemoveIPLs = new List<string>()
+                {
+                    "hei_ch1_09_mansion_original",
+                    "hei_ch1_09_props_original",
+                },
+                InteriorSets = new List<string>()
+                {
+                    "set_style_holly",
+                    "set_style_reg_tint",
+                    "set_art_coastal",
+                    "set_reg_trophy_planter",
+                    "set_reg_shelving_planter",
+                    "set_reg_arcade_blocker",// remove for access to arcade
+                    "set_reg_podium_blocker", // remove to view car podium
+                    //"set_wallpaper_coastal",
+                    "set_elev_holly",
+                    // "set_xmas", // optional event
+                    "set_ai_tablets_01",
+                    "set_pet_dog",
+                    "set_pet_cat",
+                    "SET_BASE_VAULT_09", // 0-9 
+                    "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
+                },
+                InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
+                InteriorWallpaperColor = 2, // 1 pink, 2 purple, 3 green, 
+                LinkedInteriorCoords = new List<Vector3>()
+                {
+                    new Vector3(-2587.496f, 1893.193f, 155.5183f), // Lower level
+                    new Vector3(-2568.934f, 1920.203f, 151.0898f),  // Garage
+                },
+                NeedsActivation = true,
+                NeedsSetDisabled = false,
+                MaxUpdateDistance = 75f,
+                IsTrespassingWhenClosed = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    //Front Gates
+                    new InteriorDoor(546378757,new Vector3(-2559.125f, 1910.828f, 169.0264f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2557.584f, 1913.073f, 168.8668f), InteractHeader =  60.16923f },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(-2556.632f, 1915.706f, 169.0264f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2557.584f, 1913.073f, 168.8668f), InteractHeader =  60.16923f },// Right Gate
+                    //Front Main Door
+                    new InteriorDoor(1214652241,new Vector3(-2588.283f, 1910.256f, 167.7426f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2587.18f, 1910.988f, 167.4905f), InteractHeader =  187.8592f },
+                    // Front Side Door
+                    new InteriorDoor(1214652241,new Vector3(-2574.255f, 1886.703f, 167.7426f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2574.526f, 1887.975f, 167.2997f), InteractHeader =  134.5419f },
+                    //The Glass Door Collection.   why so many R!!!
+                    // Side Door 
+                    new InteriorDoor(1902523249,new Vector3(-2576.088f, 1866.078f, 162.7214f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    //Rear Doors
+                    new InteriorDoor(610346728,new Vector3(-2592.22f, 1872.264f, 167.8047f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(-2594.518f, 1874.915f, 167.8047f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(610346728,new Vector3(-2597.198f, 1878.084f, 167.8047f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(610346728,new Vector3(-2599.496f, 1880.734f, 167.8047f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(644312889,new Vector3(-2599.817f, 1901.408f, 167.8052f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(644312889,new Vector3(-2600.74f, 1910.311f, 167.8052f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    // Rear Ground level doors
+                    new InteriorDoor(379718506,new Vector3(-2600.719f, 1910.111f, 164.1112f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                    new InteriorDoor(379718506,new Vector3(-2599.731f, 1899.676f, 164.1112f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+
+                    new InteriorDoor(459707559,new Vector3(-2602.503f, 1894.561f, 162.7214f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract()
+                    {
+                        Name = "TongvaManStandard1",
+                        Position = new Vector3(-2588.221f, 1874.424f, 167.3754f),
+                        Heading = 37.08359f,
+                        CameraPosition = new Vector3(-2588.287f, 1874.523f, 168.5065f),
+                        CameraDirection = new Vector3(-0.6003212f, 0.7630259f, -0.2395956f),
+                        CameraRotation = new Rotator(-13.86267f, 2.638163E-06f, 38.19439f),
+                        ButtonPromptText = "Mansion Control",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "TongvaManSink1",
+                        Position = new Vector3(-2571.971f, 1877.887f, 163.7215f),
+                        Heading = 218.5177f,
+                        CameraPosition = new Vector3(-2571.743f, 1879.326f, 164.9517f),
+                        CameraDirection = new Vector3(-0.1614727f, -0.869786f, -0.4662604f),
+                        CameraRotation = new Rotator(-27.79183f, -8.203353E-06f, 169.483f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "TongvaManSink2",
+                        Position = new Vector3(-2573.052f, 1876.918f, 163.7215f),
+                        Heading = 213.1772f,
+                        CameraPosition = new Vector3(-2571.743f, 1879.326f, 164.9517f),
+                        CameraDirection = new Vector3(-0.1614727f, -0.869786f, -0.4662604f),
+                        CameraRotation = new Rotator(-27.79183f, -8.203353E-06f, 169.483f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "TongvaManSink3",
+                        Position = new Vector3(-2594.821f, 1918.202f, 163.7216f),
+                        Heading = 275.5909f,
+                        CameraPosition = new Vector3(-2595.677f, 1919.255f, 164.8872f),
+                        CameraDirection = new Vector3(0.6860619f, -0.5078313f, -0.5209861f),
+                        CameraRotation = new Rotator(-31.39842f, -1.000244E-06f, -126.5093f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "TongvaManSink4",
+                        Position = new Vector3(-2587.126f, 1891.847f, 163.7215f),
+                        Heading = 275.9665f,
+                        CameraPosition = new Vector3(-2588.06f, 1892.928f, 164.8409f),
+                        CameraDirection = new Vector3(0.7002586f, -0.5184285f, -0.4907849f),
+                        CameraRotation = new Rotator(-29.39218f, 2.841728E-05f, -126.514f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "TongvaManToilet1",
+                        Position = new Vector3(-2577.099f, 1874.065f, 163.7215f),
+                        Heading = 38.75992f,
+                        CameraPosition = new Vector3(-2576.473f, 1872.285f, 164.5299f),
+                        CameraDirection = new Vector3(-0.2683225f, 0.8737446f, -0.4056764f),
+                        CameraRotation = new Rotator(-23.93352f, 1.401134E-06f, 17.07146f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "TongvaManToilet2",
+                        Position = new Vector3(-2594.964f, 1920.429f, 163.7216f),
+                        Heading = 275.4833f,
+                        CameraPosition = new Vector3(-2595.956f, 1918.648f, 164.4876f),
+                        CameraDirection = new Vector3(0.6178432f, 0.6872252f, -0.3820881f),
+                        CameraRotation = new Rotator(-22.46309f, -2.494453E-05f, -41.95682f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "TongvaManToilet3",
+                        Position = new Vector3(-2588.123f, 1893.235f, 163.7215f),
+                        Heading = 6.980606f,
+                        CameraPosition = new Vector3(-2586.716f, 1892.097f, 164.6647f),
+                        CameraDirection = new Vector3(-0.542122f, 0.7053415f, -0.4567243f),
+                        CameraRotation = new Rotator(-27.17593f, -9.597185E-07f, 37.5457f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                },
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "TongvaManOutfit1",
+                        Position = new Vector3(-2576.785f, 1879.506f, 163.7375f),
+                        Heading = 125.5254f,
+                        CameraPosition = new Vector3(-2578.385f, 1878.097f, 164.4855f),
+                        CameraDirection = new Vector3(0.7255976f, 0.5931448f, -0.3488372f),
+                        CameraRotation = new Rotator(-20.41621f, -3.461798E-05f, -50.73548f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                    new OutfitInteract()
+                    {
+                        Name = "TongvaManOutfit2",
+                        Position = new Vector3(-2598.941f, 1919.988f, 163.7313f),
+                        Heading = 183.4191f,
+                        CameraPosition = new Vector3(-2598.72f, 1917.806f, 164.4619f),
+                        CameraDirection = new Vector3(-0.03982368f, 0.9475648f, -0.3170725f),
+                        CameraRotation = new Rotator(-18.48598f, 1.069016E-06f, 2.406576f),
+                        ButtonPromptText = "Change Outfit",
+                    },
+                },
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract("TongvaManCash",new Vector3(-2571.802f, 1890.763f, 152.09f), 40.03425f,"Access Cash")
+                    {
+                        CanAccessCash = true,
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(-2574.604f, 1893.93f, 153.5698f),
+                        CameraDirection = new Vector3(0.6034796f, -0.7421095f, -0.2916949f),
+                        CameraRotation = new Rotator(-16.95945f, 2.588514E-05f, -140.8822f)
+                    },
+                    new InventoryInteract("TongvaManInventory",new Vector3(-2595.618f, 1882.083f, 167.3763f), 217.928f ,"Access Items")
+                    {
+                        CanAccessItems = true,
+                        CanAccessCash = false,
+                        CanAccessWeapons = false,
+                        CameraPosition = new Vector3(-2595.13f, 1884.447f, 168.5531f),
+                        CameraDirection = new Vector3(-0.1384349f, -0.9126551f, -0.3845731f),
+                        CameraRotation = new Rotator(-22.61724f, 4.624518E-07f, 171.3749f)
+                    },
+                    new InventoryInteract("TongvaManWeapons",new Vector3(-2575.402f, 1898.142f, 156.5184f), 42.3088f ,"Access Weapons")
+                    {
+                        CanAccessWeapons = true,
+                        CanAccessCash = false,
+                        CanAccessItems = false,
+                        CameraPosition = new Vector3(-2576.197f, 1895.23f, 157.5323f),
+                        CameraDirection = new Vector3(0.2255414f, 0.9533221f, -0.2007687f),
+                        CameraRotation = new Rotator(-11.58191f, 8.715189E-06f, -13.31056f)
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "TongvaManRest1",
+                        Position = new Vector3(-2587.608f, 1871.429f, 163.7215f),
+                        Heading = 305.516f,
+                        CameraPosition = new Vector3(-2585.669f, 1869.515f, 164.6172f),
+                        CameraDirection = new Vector3(-0.1609594f, 0.9028355f, -0.398723f),
+                        CameraRotation = new Rotator(-23.49837f, 1.070625E-05f, 10.10861f),
+                        ButtonPromptText = "Sleep",
+                    },
+                    new RestInteract()
+                    {
+                        Name = "TongvaManRest2",
+                        Position = new Vector3(-2594.129f, 1908.17f, 163.7215f),
+                        Heading = 93.20876f,
+                        CameraPosition = new Vector3(-2594.396f, 1910.733f, 164.615f),
+                        CameraDirection = new Vector3(-0.4609557f, -0.7899873f, -0.404277f),
+                        CameraRotation = new Rotator(-23.84583f, 2.426987E-05f, 149.7365f),
+                        ButtonPromptText = "Sleep",
+                    },
+                },
+            },
         });
     }
     private void Banks()
