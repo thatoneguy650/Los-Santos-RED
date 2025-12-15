@@ -23,7 +23,7 @@ public class Interior
     private int alarmSoundID;
     protected bool isAlarmActive;
     private bool isOpen;
-
+    public bool HasEntitySets => InteriorSets != null && InteriorSets.Any();
     public Interior()
     {
 
@@ -342,11 +342,14 @@ public class Interior
                     GameFiber.Yield();
                 }
                 // Deactivate interior sets
-                foreach (string interiorSet in InteriorSets ?? Enumerable.Empty<string>())
+                if (HasEntitySets)
                 {
-                    if (string.IsNullOrEmpty(interiorSet)) continue;
-                    try { NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet); } catch { }
-                    GameFiber.Yield();
+                    foreach (string interiorSet in InteriorSets)
+                    {
+                        if (string.IsNullOrEmpty(interiorSet)) continue;
+                        try { NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet); } catch { }
+                        GameFiber.Yield();
+                    }
                 }
 
                 // Deactivate style patterns

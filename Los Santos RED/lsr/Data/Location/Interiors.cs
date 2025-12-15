@@ -7358,12 +7358,12 @@ public class Interiors : IInteriors
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
-                    new InteriorDoor(546378757,new Vector3(540.4052f, 772.7877f, 202.3633f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.9895f, 775.1228f, 202.1997f), InteractHeader =  126.279f },// Left Gate
-                    new InteriorDoor(3045375478,new Vector3(537.0177f, 777.0928f, 202.3633f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.9895f, 775.1228f, 202.1997f), InteractHeader =  126.279f },// Right Gate
+                    new InteriorDoor(546378757,new Vector3(540.4052f, 772.7877f, 202.3633f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(537.0177f, 777.0928f, 202.3633f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Right Gate
                     //Front Main Door
-                    new InteriorDoor(1214652241,new Vector3(537.6889f, 748.1211f, 202.7288f)) { LockWhenClosed = true, InteractPostion = new Vector3(538.1918f, 749.3905f, 202.4767f), InteractHeader =  218.3573f },
+                    new InteriorDoor(1214652241,new Vector3(537.6889f, 748.1211f, 202.7288f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     // Front Side Door
-                    new InteriorDoor(1214652241,new Vector3(562.1526f, 735.7503f, 202.7288f)) { LockWhenClosed = true, InteractPostion = new Vector3(561.2835f, 736.7664f, 161.4438f), InteractHeader =  128.4835f },
+                    new InteriorDoor(1214652241,new Vector3(562.1526f, 735.7503f, 202.7288f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     //The Glass Door Collection.   why so many R!!!
                     // Side Door 
                     new InteriorDoor(1902523249,new Vector3(571.6558f, 717.3541f, 197.7076f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
@@ -7611,12 +7611,12 @@ public class Interiors : IInteriors
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
-                    new InteriorDoor(546378757,new Vector3(-1688.234f, 487.7502f, 129.2232f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1691.038f, 487.4737f, 129.0547f), InteractHeader =  195.0674f },// Left Gate
-                    new InteriorDoor(3045375478,new Vector3(-1693.499f, 486.2354f, 129.2232f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1691.038f, 487.4737f, 129.0547f), InteractHeader =  195.0674f },// Right Gate
+                    new InteriorDoor(546378757,new Vector3(-1688.234f, 487.7502f, 129.2232f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(-1693.499f, 486.2354f, 129.2232f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Right Gate
                     //Front Main Door
-                    new InteriorDoor(1214652241,new Vector3(-1666f, 476.703f, 129.5887f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1666.963f, 477.5536f, 129.3367f), InteractHeader =  286.9074f },
+                    new InteriorDoor(1214652241,new Vector3(-1666f, 476.703f, 129.5887f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     // Front Side Door
-                    new InteriorDoor(1214652241,new Vector3(-1645.998f, 495.2693f, 129.5887f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1647.105f, 494.6232f, 129.3304f), InteractHeader =  234.7378f },
+                    new InteriorDoor(1214652241,new Vector3(-1645.998f, 495.2693f, 129.5887f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     //The Glass Door Collection.   why so many R!!!
                     // Side Door 
                     new InteriorDoor(1902523249,new Vector3(-1625.437f, 497.7122f, 124.5675f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
@@ -7860,12 +7860,12 @@ public class Interiors : IInteriors
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
-                    new InteriorDoor(546378757,new Vector3(-2559.125f, 1910.828f, 169.0264f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2557.584f, 1913.073f, 168.8668f), InteractHeader =  60.16923f },// Left Gate
-                    new InteriorDoor(3045375478,new Vector3(-2556.632f, 1915.706f, 169.0264f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2557.584f, 1913.073f, 168.8668f), InteractHeader =  60.16923f },// Right Gate
+                    new InteriorDoor(546378757,new Vector3(-2559.125f, 1910.828f, 169.0264f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Left Gate
+                    new InteriorDoor(3045375478,new Vector3(-2556.632f, 1915.706f, 169.0264f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },// Right Gate
                     //Front Main Door
-                    new InteriorDoor(1214652241,new Vector3(-2588.283f, 1910.256f, 167.7426f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2587.18f, 1910.988f, 167.4905f), InteractHeader =  187.8592f },
+                    new InteriorDoor(1214652241,new Vector3(-2588.283f, 1910.256f, 167.7426f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     // Front Side Door
-                    new InteriorDoor(1214652241,new Vector3(-2574.255f, 1886.703f, 167.7426f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2574.526f, 1887.975f, 167.2997f), InteractHeader =  134.5419f },
+                    new InteriorDoor(1214652241,new Vector3(-2574.255f, 1886.703f, 167.7426f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
                     //The Glass Door Collection.   why so many R!!!
                     // Side Door 
                     new InteriorDoor(1902523249,new Vector3(-2576.088f, 1866.078f, 162.7214f)) { LockWhenClosed = true, CanBeForcedOpenByPlayer = false },
