@@ -696,6 +696,7 @@ public class Interior
     {
         InteriorTintColor = -1;
         InteriorSetStyleID = -1;
+        InteriorWallpaperColor = -1;
     }
 
     public virtual void AddLocation(PossibleInteriors lppInteriors)
