@@ -742,25 +742,6 @@ public class Interior
     }
     // Refresh main interior and discovered linked interiors
 
-    private void RefreshStyle()
-    {
-        if (InteriorSetStyleID == -1 || InternalID == 0)
-            return;
-
-        // Remove ALL known styles
-        for (int i = 0; i <= 10; i++)
-        {
-            NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(
-                InternalID, $"entity_set_style_{i}");
-        }
-
-        // Apply desired style
-        NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(
-            InternalID, $"entity_set_style_{InteriorSetStyleID}");
-
-        NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
-    }
-
     private void RefreshInteriorAndLinked(int interiorId)
     {
         NativeFunction.Natives.REFRESH_INTERIOR(interiorId);
@@ -817,32 +798,5 @@ public class Interior
         // Return true as long as we didn't error out (optimistic).
         // If you have a custom check (GET_INTERIOR_ENTITY_SET_ACTIVE) in your native set, use it here.
         return true;
-    }
-
-    private void ApplyInteriorSetsTo(int interiorID)
-    {
-        if (interiorID == 0) return;
-
-        foreach (string interiorSet in InteriorSets)
-        {
-            if (string.IsNullOrEmpty(interiorSet)) continue;
-
-            TryActivateEntitySetWithVerify(interiorID, interiorSet, 0);
-
-            if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase))
-            {
-                if (InteriorWallpaperColor != -1)
-                    NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(interiorID, interiorSet, InteriorWallpaperColor);
-            }
-            else if (InteriorTintColor != -1)
-            {
-                SetInteriorColorTint(interiorSet, InteriorTintColor);
-            }
-
-            GameFiber.Yield();
-        }
-
-        NativeFunction.Natives.REFRESH_INTERIOR(interiorID);
-        GameFiber.Yield();
     }
 }
