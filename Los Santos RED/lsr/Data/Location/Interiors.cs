@@ -7331,16 +7331,17 @@ public class Interiors : IInteriors
                     "set_style_loft",
                     "set_style_loft_tint",
                     "set_art_loft",
+                    "set_elev_loft",
                     "set_loft_trophy_planter",
                     "set_loft_shelving_planter",
                     "set_loft_arcade_blocker",// remove for access to arcade
                     "set_loft_podium_blocker", // remove to view podium
-                    "set_gar_podium_blocker",
                     "set_wallpaper_subtle",
                     // "set_xmas", // optional event
                     "set_ai_tablets_03",
                     "set_pet_dog",
                     "set_pet_cat",
+                    "SET_ELEV_STD",
                     "SET_BASE_VAULT_09", // 0-9
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
@@ -7593,6 +7594,7 @@ public class Interiors : IInteriors
                     "set_ai_tablets_02",
                     "set_pet_dog",
                     "set_pet_cat",
+                    "SET_ELEV_STD",
                     "SET_BASE_VAULT_09", // 0-9
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
@@ -7843,6 +7845,7 @@ public class Interiors : IInteriors
                     "set_ai_tablets_01",
                     "set_pet_dog",
                     "set_pet_cat",
+                    "SET_ELEV_STD",
                     "SET_BASE_VAULT_09", // 0-9 
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
