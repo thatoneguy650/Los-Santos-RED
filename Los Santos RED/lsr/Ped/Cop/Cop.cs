@@ -60,7 +60,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override int TaserAccuracy { get; set; } = 30;
     public override int TaserShootRate { get; set; } = 100;
     public override int VehicleAccuracy { get; set; } = 10;
-    public override int VehicleShootRate { get; set; } = 20;
+    public override int VehicleShootRate { get; set; } = 80;
     public override int TurretAccuracy { get; set; } = 30;
     public override int TurretShootRate { get; set; } = 1000;
     public override bool AutoCallsInUnconsciousPeds { get; set; } = true;

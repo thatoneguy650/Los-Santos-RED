@@ -496,11 +496,13 @@ public class WeaponInventory
                 {
                     WeaponOwner.Pedestrian.Accuracy = WeaponOwner.TurretAccuracy;
                     NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.TurretShootRate);
+                   // EntryPoint.WriteToConsole("PED HAS VEHICLE WEAPON SETTINGS SHOOT RATE TO WeaponOwner.TurretShootRate");
                 }
                 else
                 {
                     WeaponOwner.Pedestrian.Accuracy = WeaponOwner.VehicleAccuracy;
                     NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.VehicleShootRate);
+                   // EntryPoint.WriteToConsole("PED DOES NOT HAVE VEHICLE WEAPON SETTINGS SHOOT RATE TO 500");
                 }
                 NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
             }

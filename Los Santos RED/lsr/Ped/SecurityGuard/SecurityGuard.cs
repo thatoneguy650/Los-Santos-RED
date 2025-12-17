@@ -52,7 +52,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public override int TaserAccuracy { get; set; } = 30;
     public override int TaserShootRate { get; set; } = 100;
     public override int VehicleAccuracy { get; set; } = 10;
-    public override int VehicleShootRate { get; set; } = 20;
+    public override int VehicleShootRate { get; set; } = 60;
     public override int TurretAccuracy { get; set; } = 10;
     public override int TurretShootRate { get; set; } = 1000;
     public CopVoice Voice { get; private set; }

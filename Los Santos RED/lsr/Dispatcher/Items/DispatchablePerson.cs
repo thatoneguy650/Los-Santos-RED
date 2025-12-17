@@ -44,8 +44,8 @@ public class DispatchablePerson
 
     public int VehicleAccuracyMin { get; set; } = 1;//2;//5
     public int VehicleAccuracyMax { get; set; } = 4;//5
-    public int VehicleShootRateMin { get; set; } = 5;//10;//20
-    public int VehicleShootRateMax { get; set; } = 10;//15;//20
+    public int VehicleShootRateMin { get; set; } = 60;//5;//10;//20
+    public int VehicleShootRateMax { get; set; } = 100;//10;//15;//20
 
 
     public int TurretAccuracyMin { get; set; } = 10;
