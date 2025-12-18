@@ -286,6 +286,7 @@ public class Interior
 
                 // 11. Final refresh
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                GameFiber.Yield(); // yield to all interior markers to register properly
 
                 foreach (InteriorInteract ii in AllInteractPoints ?? Enumerable.Empty<InteriorInteract>())
                     ii.OnInteriorLoaded();
