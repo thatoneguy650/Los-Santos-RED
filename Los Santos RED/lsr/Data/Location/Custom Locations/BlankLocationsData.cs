@@ -165,6 +165,7 @@ public class BlankLocationsData
         {
             OpenTime = 0,
             CloseTime = 24,
+            IsOnSPMap = false,
             InteriorID = 252673,
             ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
