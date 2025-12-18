@@ -25,6 +25,8 @@ public class Interior
     private bool isOpen;
     [XmlIgnore]
     private bool HasEntitySets => (InteriorSets != null && InteriorSets.Any()) || InteriorSetStyleID != -1;
+    private readonly Dictionary<int, HashSet<string>> ActivatedSetsByInterior
+        = new Dictionary<int, HashSet<string>>();
     public Interior()
     {
 
@@ -182,7 +184,18 @@ public class Interior
 
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 GameFiber.Yield();
+                // HARD RESET linked interiors BEFORE activation
+                foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
+                {
+                    int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
+                        coord.X, coord.Y, coord.Z);
 
+                    if (linkedID != 0)
+                    {
+                        ForceClearInterior(linkedID);
+                        TrackActivatedSet(linkedID, "__forced_clear__");
+                    }
+                }
                 // Remove IPLs
                 foreach (string ipl in RemoveIPLs)
                 {
@@ -222,6 +235,7 @@ public class Interior
                 {
                     if (string.IsNullOrEmpty(interiorSet)) continue;
                     TryActivateEntitySetWithVerify(InternalID, interiorSet, 0);
+                    TrackActivatedSet(InternalID, interiorSet);
 
                     if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase) && InteriorWallpaperColor != -1)
                         NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(InternalID, interiorSet, InteriorWallpaperColor);
@@ -241,6 +255,7 @@ public class Interior
                     {
                         if (string.IsNullOrEmpty(interiorSet)) continue;
                         TryActivateEntitySetWithVerify(linkedID, interiorSet, 0);
+                        TrackActivatedSet(linkedID, interiorSet);
 
                         if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase) && InteriorWallpaperColor != -1)
                             NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(linkedID, interiorSet, InteriorWallpaperColor);
@@ -335,6 +350,7 @@ public class Interior
         {
             try
             {
+                DeactivateTrackedSets();
                 NativeFunction.Natives.UNPIN_INTERIOR(InternalID);
                 NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, false);
                 if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
@@ -814,5 +830,72 @@ public class Interior
         // Return true as long as we didn't error out (optimistic).
         // If you have a custom check (GET_INTERIOR_ENTITY_SET_ACTIVE) in your native set, use it here.
         return true;
+    }
+    private void TrackActivatedSet(int interiorId, string setName)
+    {
+        if (interiorId == 0 || string.IsNullOrEmpty(setName))
+            return;
+
+        if (!ActivatedSetsByInterior.TryGetValue(interiorId, out var setList))
+        {
+            setList = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            ActivatedSetsByInterior[interiorId] = setList;
+        }
+
+        setList.Add(setName);
+    }
+
+    private void DeactivateTrackedSets()
+    {
+        foreach (var kvp in ActivatedSetsByInterior)
+        {
+            int interiorId = kvp.Key;
+
+            foreach (string setName in kvp.Value)
+            {
+                try
+                {
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(interiorId, setName);
+                }
+                catch { }
+            }
+
+            NativeFunction.Natives.REFRESH_INTERIOR(interiorId);
+        }
+
+        ActivatedSetsByInterior.Clear();
+    }
+    private void ForceClearInterior(int interiorId)
+    {
+        if (interiorId == 0)
+            return;
+
+        // Known persistent offender sets across DLC interiors
+        string[] knownPatterns =
+        {
+        "SET_BASE_",
+        "SET_VAULT_",
+        "SET_SECURITY_",
+        "SET_STYLE_",
+        "entity_set_style_",
+        "set_style_",
+        "style_",
+        "style"
+    };
+
+        for (int i = 0; i <= 20; i++)
+        {
+            foreach (string prefix in knownPatterns)
+            {
+                try
+                {
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(
+                        interiorId, prefix + i);
+                }
+                catch { }
+            }
+        }
+
+        NativeFunction.Natives.REFRESH_INTERIOR(interiorId);
     }
 }
