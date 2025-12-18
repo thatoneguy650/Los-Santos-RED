@@ -280,12 +280,12 @@ public class Interior
                     }
                     GameFiber.Yield();
                 }
-
-                // 10. Final refresh
-                NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
-
-                // 11. Doors / interactions
+                // 10. Doors / interactions
                 LoadDoors(isOpen, false);
+                // Final Refresh moved to end to ensure doors are in correct state
+
+                // 11. Final refresh
+                NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
 
                 foreach (InteriorInteract ii in AllInteractPoints ?? Enumerable.Empty<InteriorInteract>())
                     ii.OnInteriorLoaded();
