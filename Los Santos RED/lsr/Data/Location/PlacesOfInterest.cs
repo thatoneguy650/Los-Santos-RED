@@ -1781,7 +1781,39 @@ public class PlacesOfInterest : IPlacesOfInterest
                 HasNoGarageDoors = true,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(228.374f, -992.5745f, -98.99996f), 178.1117f),
             },
-
+            new VehicleModShop(new Vector3(519.7184f, 760.2784f, 201.7066f), 308.3585f,"Garage","Vinewood Residence.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = false,
+                ShowsOnTaxi = false,
+                IsOnSPMap = false,
+                IsBlipEnabled = false,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(560.7867f, 723.4037f, 186.4097f), 344.5037f),
+            },
+            new VehicleModShop(new Vector3(-1683.727f, 464.6574f, 128.7632f), 18.17992f,"Garage","Richman Residence.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = false,
+                ShowsOnTaxi = false,
+                IsOnSPMap = false,
+                IsBlipEnabled = false,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1635.179f, 489.82f, 113.5566f), 52.1517f),
+            },
+            new VehicleModShop(new Vector3(-2596.229f, 1929.979f, 166.9171f), 276.0984f,"Garage","Tongva Residence.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                ShowsOnDirectory = false,
+                ShowsOnTaxi = false,
+                IsOnSPMap = false,
+                IsBlipEnabled = false,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-2581.754f, 1877.22f, 151.7105f), 312.1215f),
+            },
         };
 
     }
