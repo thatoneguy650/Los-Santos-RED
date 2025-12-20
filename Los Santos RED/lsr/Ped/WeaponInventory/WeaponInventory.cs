@@ -485,6 +485,7 @@ public class WeaponInventory
         HasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(WeaponOwner.Pedestrian, out CurrentVehicleWeapon);//3450622333 searchlight
         WeaponOwner.IsUsingMountedWeapon = HasVehicleWeapon;
         HasSearchlight = WeaponOwner.Pedestrian.CurrentVehicle.Exists() && NativeFunction.Natives.DOES_VEHICLE_HAVE_SEARCHLIGHT<bool>(WeaponOwner.Pedestrian.CurrentVehicle);
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} HasVehicleWeapon {HasVehicleWeapon} HasSearchlight {HasSearchlight} CurrentVehicleWeapon {CurrentVehicleWeapon}");
     }
     public void UpdateSettings()
     {

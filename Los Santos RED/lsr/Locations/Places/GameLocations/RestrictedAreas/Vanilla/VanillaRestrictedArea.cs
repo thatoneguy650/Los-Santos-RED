@@ -19,7 +19,7 @@ public class VanillaRestrictedArea
             if(angledRestrictedArea.CheckInside(player.Position))
             {
                 isPlayerViolating = true;
-                EntryPoint.WriteToConsole("PLAYER IS INSIDE ANGLED AREA VIOLATIONS!");
+                //EntryPoint.WriteToConsole("PLAYER IS INSIDE ANGLED AREA VIOLATIONS!");
                 return;
             }
         }

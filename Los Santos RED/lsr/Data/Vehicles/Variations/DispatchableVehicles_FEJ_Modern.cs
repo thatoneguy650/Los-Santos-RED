@@ -571,6 +571,7 @@ public class DispatchableVehicles_FEJ_Modern
 
             DispatchableVehicles_FEJ.Create_PoliceMaverick(1,150,10,false,-1,-1,0,5,4,4,"Pilot","Helicopter",true),
             DispatchableVehicles_FEJ.Create_PoliceAnnihilator(1,150,5,false,-1,0,5,4,4,"Pilot","Helicopter",true),
+            DispatchableVehicles_FEJ.Create_PoliceValkyrie(1,150,0,false,-1,-1,0,5,4,4,"Pilot","Helicopter",true),
         };
         BCSOVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
 
@@ -633,6 +634,7 @@ public class DispatchableVehicles_FEJ_Modern
 
             DispatchableVehicles_FEJ.Create_PoliceMaverick(1,150,10,false,-1,-1,0,5,4,4,"Pilot","Helicopter",true),
             DispatchableVehicles_FEJ.Create_PoliceAnnihilator(1,150,5,false,-1,0,5,4,4,"Pilot","Helicopter",true),
+            DispatchableVehicles_FEJ.Create_PoliceValkyrie(1,150,0,false,-1,-1,0,5,4,4,"Pilot","Helicopter",true),
         };
         BCSOPaletoVehicles_FEJ_Modern.ForEach(x => x.MaxRandomDirtLevel = 15.0f);
 

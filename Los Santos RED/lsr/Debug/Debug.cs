@@ -530,9 +530,22 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+
+        Cop found = World.Pedestrians.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(found == null || !found.Pedestrian.Exists())
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"TASK_COMBAT_PED {found.Handle} DefaultCombatFlag:{found.DefaultCombatFlag}");
+
+        found.Pedestrian.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
+
+        NativeFunction.Natives.TASK_COMBAT_PED(found.Pedestrian, Player.Character, found.DefaultCombatFlag, 16);
+
+
         //NativeFunction.Natives.SET_RADIO_TO_STATION_NAME("RADIO_23_INTEGRITY");
 
-       // NativeFunction.Natives.x477D9DB48F889591("RADIO_01_CLASS_ROCK", true);
+        // NativeFunction.Natives.x477D9DB48F889591("RADIO_01_CLASS_ROCK", true);
 
         //NativeFunction.CallByHash<bool>(0x477D9DB48F889591, "RADIO_01_CLASS_ROCK", true);
 
@@ -5667,8 +5680,9 @@ private void contacttest()
 
             bool canSeePlayer = cop.CanSeePlayer;
 
-            string retardedcops = $"IsDriver:{cop.IsDriver}";
+            string retardedcops = $"IsDriver:{cop.IsDriver} RelationshipGroup:{cop.Pedestrian.RelationshipGroup.Name}";
 
+            
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
@@ -5747,7 +5761,7 @@ private void contacttest()
             {
                 EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RelationshipGroup:{cop.Pedestrian.RelationshipGroup} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
 
             }
 
@@ -5755,7 +5769,7 @@ private void contacttest()
             {
                 EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RelationshipGroup:{cop.Pedestrian.RelationshipGroup} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
             }
 
         }
