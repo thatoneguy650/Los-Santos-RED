@@ -1803,7 +1803,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 HasNoGarageDoors = true,
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-1635.179f, 489.82f, 113.5566f), 52.1517f),
             },
-            new VehicleModShop(new Vector3(-2596.229f, 1929.979f, 166.9171f), 276.0984f,"Garage","Richman Residence.")
+            new VehicleModShop(new Vector3(-2596.229f, 1929.979f, 166.9171f), 276.0984f,"Garage","Tongva Residence.")
             {
                 OpenTime = 0,
                 CloseTime = 24,
