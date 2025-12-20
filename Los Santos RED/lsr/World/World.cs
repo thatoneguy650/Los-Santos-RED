@@ -193,6 +193,7 @@ namespace Mod
                 Game.FadeScreenOut(1500, true);
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
                 NativeFunction.Natives.x0888C3502DBBEEF5();// ON_ENTER_MP();
+                LoadMansionIPLs();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = true;
             }
@@ -202,10 +203,12 @@ namespace Mod
             if (IsMPMapLoaded)
             {
                 Game.FadeScreenOut(1500, true);
+                UnloadMansionIPLs();
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
+    
             }
         }
         public void AddBlip(Blip myBlip)
@@ -362,5 +365,63 @@ namespace Mod
         {
             isTrafficDisabled = false;
         }
+        private void LoadMansionIPLs()
+        {
+            foreach (string ipl in mansionMPIPLs)
+            {
+                NativeFunction.Natives.REQUEST_IPL(ipl);
+            }
+            foreach (string ipl in mansionSPIPLs)
+            {
+                NativeFunction.Natives.REMOVE_IPL(ipl);
+            }
+        }
+        private void UnloadMansionIPLs()
+        {
+            foreach (string ipl in mansionMPIPLs)
+            {
+                NativeFunction.Natives.REMOVE_IPL(ipl);
+            }
+            foreach (string ipl in mansionSPIPLs)
+            {
+                NativeFunction.Natives.REQUEST_IPL(ipl);
+            }
+        }
+        private List<string> mansionMPIPLs = new List<string>()
+        {
+        // VineWood Mansion
+        "m25_2_ch2_04_mansion_interior_a",
+        "apa_ch2_04_mansion_shared",
+        "apa_ch2_04_mansion_private",
+        "apa_ch2_04_mansion_railings_p",
+        "apa_ch2_04_mansion_grass",
+        // Richman Mansion
+        "m25_2_ch1_06e_mansion_interior_a",
+        "hei_ch1_06e_mansion_shared",
+        "hei_ch1_06f_mansion_shared",
+        "hei_ch1_06e_mansion_private",
+        "hei_ch1_06e_mansion_railings_p",
+        "hei_ch1_roads_mansion",
+        // Tongva Mansion
+        "m25_2_ch1_09_mansion_interior_a",
+        "hei_ch1_09_mansion_shared",
+        "hei_ch1_09_mansion_private",
+        "hei_ch1_09_mansion_railings_p",
+        "m25_2_mansion_props"
+        };
+        private List<string> mansionSPIPLs = new List<string>()
+        {
+        // VineWood Mansion
+        "apa_ch2_04_mansion_original",
+        "apa_ch2_04_props_original",
+        // Richman Mansion
+        "hei_ch1_06e_mansion_original",
+        "hei_ch1_06f_mansion_original",
+        "hei_ch1_06e_props_original",
+        // Tongva Mansion
+        "hei_ch1_roads_original",
+        "hei_ch1_09_mansion_original",
+        "hei_ch1_09_props_original"
+        };
     }
 }

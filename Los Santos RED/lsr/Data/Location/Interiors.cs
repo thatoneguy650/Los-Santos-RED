@@ -7334,22 +7334,12 @@ public class Interiors : IInteriors
                 DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
                 RequestIPLs = new List<string>()
                 {
-                    "m25_2_ch2_04_mansion_interior_a",
                     "m25_2_ch2_04_mansion_interior_b",
                     "m25_2_ch2_04_mansion_interior_c",
-                    "apa_ch2_04_mansion_shared",
-                    "apa_ch2_04_mansion_private",
-                    "apa_ch2_04_mansion_railings_p",
                     "apa_ch2_04_mansion_furniture",
                     "apa_ch2_04_mansion_firepit",
                     "m25_2_east_mansion_gym",
-                    "apa_ch2_04_mansion_grass",
                     "m25_2_east_dog_house"
-                },
-                RemoveIPLs = new List<string>()
-                {
-                    "apa_ch2_04_mansion_original",
-                    "apa_ch2_04_props_original",
                 },
                 InteriorSets = new List<string>()
                 {
@@ -7583,26 +7573,13 @@ public class Interiors : IInteriors
                 DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
                 RequestIPLs = new List<string>()
                 {
-                    "m25_2_ch1_06e_mansion_interior_a",
                     "m25_2_ch1_06e_mansion_interior_b",
                     "m25_2_ch1_06e_mansion_interior_c",
                     "m25_2_ch1_06e_mansion_interior_d",// underground garage??  - require TP
-                    "hei_ch1_06e_mansion_shared",
-                    "hei_ch1_06f_mansion_shared",
-                    "hei_ch1_06e_mansion_private",
-                    "hei_ch1_06e_mansion_railings_p",
                     "hei_ch1_06e_mansion_furniture",
                     "hei_ch1_06e_mansion_firepit",
-                    "hei_ch1_roads_mansion",
                     "m25_2_mansion_gym",
                     "m25_2_dog_house"
-                },
-                RemoveIPLs = new List<string>()
-                {
-                    "hei_ch1_06e_mansion_original",
-                    "hei_ch1_06f_mansion_original",
-                    "hei_ch1_06e_props_original",
-                    "hei_ch1_roads_original",
                 },
                 InteriorSets = new List<string>()
                 {
@@ -7837,22 +7814,12 @@ public class Interiors : IInteriors
                 DisabledInteriorCoords = new Vector3(0f, 0f, 0f),
                 RequestIPLs = new List<string>()
                 {
-                    "m25_2_ch1_09_mansion_interior_a",
                     "m25_2_ch1_09_mansion_interior_b",
                     "m25_2_ch1_09_mansion_interior_c",
-                    "hei_ch1_09_mansion_shared",
-                    "hei_ch1_09_mansion_private",
-                    "hei_ch1_09_mansion_railings_p",
                     "hei_ch1_09_mansion_furniture",
                     "hei_ch1_09_mansion_firepit",
                     "m25_2_tongva_mansion_gym",
                     "m25_2_tongva_dog_house",
-                    "m25_2_mansion_props",
-                },
-                RemoveIPLs = new List<string>()
-                {
-                    "hei_ch1_09_mansion_original",
-                    "hei_ch1_09_props_original",
                 },
                 InteriorSets = new List<string>()
                 {
