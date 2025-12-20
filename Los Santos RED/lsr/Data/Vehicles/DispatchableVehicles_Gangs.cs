@@ -122,6 +122,7 @@ public class DispatchableVehicles_Gangs
     public string GangSentinel = "sentinel";
     public string GangSentinel2 = "sentinel2";
     public string GangSentinel5 = "sentinel5";
+    public string GangSentinel6 = "sentinel6";
     public string GangStalion = "stalion"; // Wheels + Extra
     public string GangStreiter = "streiter";
     public string GangSugoi = "sugoi";
@@ -422,6 +423,7 @@ public class DispatchableVehicles_Gangs
             Create_GangCheburek(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 1, 1, true),
             Create_GangCognoscenti(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 7, 1, true),
             Create_GangSentinel5(65, 65, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 3, 1, true),
+            Create_GangSentinel6(65, 65, GangVehicleType.Gang2, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 3, 1, true),
             Create_GangSchafter2(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 7, 1, false),
             Create_GangSchafter3(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 7, 1, true),
             Create_GangSchafter4(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 0, 0, 0, -1, 16, 0, 7, 1, true),
@@ -638,6 +640,7 @@ public class DispatchableVehicles_Gangs
             Create_GangKomoda(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
             Create_GangRhinehart(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
             Create_GangSentinel5(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangSentinel6(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
             Create_GangVstr(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, -1, true),
             Create_GangStreiter(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
             //SUV 
@@ -692,6 +695,7 @@ public class DispatchableVehicles_Gangs
             Create_GangCognoscenti(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, true),
             Create_GangDeity(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, true),
             Create_GangSentinel5(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false,false, 2, 2, 4, -1, 16, 0, 3, 3, true),
+            Create_GangSentinel6(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false,false, 2, 2, 4, -1, 16, 0, 3, 3, true),
             Create_GangTailgater(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, false),
             Create_GangTailgater2(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, true),
             Create_GangVstr(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 2, 2, 4, -1, 16, 0, 7, 3, -1, true),
@@ -720,6 +724,7 @@ public class DispatchableVehicles_Gangs
             // 4 Door
             Create_GangCheburek(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 1, 1, true),
             Create_GangSentinel5(65, 65, GangVehicleType.Gang2, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 0, 1, true),
+            Create_GangSentinel6(65, 65, GangVehicleType.Gang2, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 0, 1, true),
             Create_GangSchafter2(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, false), // base mod
             Create_GangSchafter3(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
             Create_GangSchafter4(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
@@ -852,6 +857,7 @@ public class DispatchableVehicles_Gangs
             Create_GangChavosV6(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 7, 7, 5, -1, 16, 12, 7, 3, true),
             Create_GangMinimus(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 7, 7, 5, -1, 16, 12, 7, 3, true),
             Create_GangSentinel5(75, 75, GangVehicleType.Gang2, -1, -1, -1,4, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
+            Create_GangSentinel6(75, 75, GangVehicleType.Gang2, -1, -1, -1,4, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
             // 2 door
             Create_GangComet2(25, 25, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
             Create_GangComet5(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 7, 12, 5, -1, 16, 12, 0, 3, true),
@@ -17639,6 +17645,184 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(3,20),
                             new DispatchableVehicleModValue(4,20),
                             new DispatchableVehicleModValue(5,20),
+                        },
+                    },
+                    new DispatchableVehicleMod(23,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(2,7),
+                            new DispatchableVehicleModValue(3,7),
+                            new DispatchableVehicleModValue(9,7),
+                            new DispatchableVehicleModValue(10,7),
+                            new DispatchableVehicleModValue(11,7),
+                            new DispatchableVehicleModValue(13,7),
+                            new DispatchableVehicleModValue(17,7),
+                            new DispatchableVehicleModValue(21,7),
+                            new DispatchableVehicleModValue(28,7),
+                            new DispatchableVehicleModValue(29,7),
+                            new DispatchableVehicleModValue(30,7),
+                            new DispatchableVehicleModValue(32,7),
+                            new DispatchableVehicleModValue(35,7),
+                            new DispatchableVehicleModValue(36,7),
+                        },
+                    },
+            };
+        }
+        SetDefault(toReturn, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, useOptionalColors, useOptionalColors2, requiredPrimaryColor, requiredSecondaryColor, requiredPearlescent, requiredDashColor, requiredInteriorColor, requiredWheelColor, wheelType, windowTint, requiresDLC);
+        return toReturn;
+    }
+    public DispatchableVehicle Create_GangSentinel6(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(GangSentinel6, ambientPercent, wantedPercent);
+        if (gangVehicleType == GangVehicleType.Gang1) // Clean
+        {
+
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>() {
+
+                    new DispatchableVehicleMod(0,100) //spoiler
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,50),
+                            new DispatchableVehicleModValue(1,50),
+                        },
+                    },
+                    new DispatchableVehicleMod(1,100) //front bumper
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,50),
+                            new DispatchableVehicleModValue(1,50),
+                        },
+                    },
+                    new DispatchableVehicleMod(2,100) //rear bumper
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,35),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(2,35),
+                        },
+                    },
+                    new DispatchableVehicleMod(3,100) // skirts
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,35),
+                            new DispatchableVehicleModValue(1,30),
+                            new DispatchableVehicleModValue(2,35),
+                        },
+                    },
+                    new DispatchableVehicleMod(4,100) // exhaust
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,25),
+                            new DispatchableVehicleModValue(1,25),
+                            new DispatchableVehicleModValue(2,25),
+                            new DispatchableVehicleModValue(3,25),
+                        },
+                    },
+                    new DispatchableVehicleMod(7,100) // hood
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,33),
+                            new DispatchableVehicleModValue(3,33),
+                            new DispatchableVehicleModValue(6,33),
+                        },
+                    },
+                    new DispatchableVehicleMod(23,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,11),
+                            new DispatchableVehicleModValue(7,10),
+                            new DispatchableVehicleModValue(13,11),
+                            new DispatchableVehicleModValue(15,10),
+                            new DispatchableVehicleModValue(31,15),
+                            new DispatchableVehicleModValue(32,11),
+                            new DispatchableVehicleModValue(39,10),
+                            new DispatchableVehicleModValue(40,11),
+                            new DispatchableVehicleModValue(43,11),
+                        },
+                    },
+            };
+        }
+        else if (gangVehicleType == GangVehicleType.Gang2) // sports Setup
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>() {
+
+                    new DispatchableVehicleMod(0,100) // spoilers
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(2,25),
+                            new DispatchableVehicleModValue(3,25),
+                            new DispatchableVehicleModValue(4,25),
+                            new DispatchableVehicleModValue(5,25),
+                        },
+                    },
+                    new DispatchableVehicleMod(1,100) // front bumper
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(2,30),
+                            new DispatchableVehicleModValue(3,30),
+                            new DispatchableVehicleModValue(4,30),
+                        },
+                    },
+                    new DispatchableVehicleMod(2,100) // rear bumper
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,32),
+                            new DispatchableVehicleModValue(4,33),
+                            new DispatchableVehicleModValue(5,35),
+                        },
+                    },
+                    new DispatchableVehicleMod(3,100) // skirts
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(3,20),
+                            new DispatchableVehicleModValue(4,20),
+                            new DispatchableVehicleModValue(5,20),
+                            new DispatchableVehicleModValue(6,20),
+                            new DispatchableVehicleModValue(7,10),
+                            new DispatchableVehicleModValue(8,10),
+                        },
+                    },
+                    new DispatchableVehicleMod(4,100) // exhaust
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,25),
+                            new DispatchableVehicleModValue(1,25),
+                            new DispatchableVehicleModValue(2,25),
+                            new DispatchableVehicleModValue(3,25),
+                        },
+                    },
+                    new DispatchableVehicleMod(7,100) // hood
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,24),
+                            new DispatchableVehicleModValue(1,24),
+                            new DispatchableVehicleModValue(2,24),
+                            new DispatchableVehicleModValue(3,24),
+                            new DispatchableVehicleModValue(4,14),
+                            new DispatchableVehicleModValue(5,14),
+                            new DispatchableVehicleModValue(6,14),
+                        },
+                    },
+                    new DispatchableVehicleMod(10,50) // rear roof spoiler
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
                         },
                     },
                     new DispatchableVehicleMod(23,100)
