@@ -181,7 +181,7 @@ public class Interior
                         InternalID = resolved;
                 }
 
-                // 4. FORCE CLEAR 
+                // 4. FORCE CLEAR
                 ForceClearInterior(InternalID);
 
                 foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
@@ -254,8 +254,7 @@ public class Interior
                     {
                         if (string.IsNullOrEmpty(interiorSet))
                             continue;
-
-                        if (TryActivateEntitySetWithVerify(InternalID, interiorSet, 0))
+                        if (TryActivateEntitySetWithVerify(linkedID, interiorSet, 0))
                             TrackActivatedSet(linkedID, interiorSet);
 
                         if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
@@ -286,6 +285,7 @@ public class Interior
 
                 // 11. Final refresh
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+
                 GameFiber.Yield(); // yield to all interior markers to register properly
 
                 foreach (InteriorInteract ii in AllInteractPoints ?? Enumerable.Empty<InteriorInteract>())
@@ -402,8 +402,7 @@ public class Interior
                         GameFiber.Yield();
                     }
                 }
-
-                //  Final refresh and alarm cleanup
+                // Final refresh and alarm cleanup
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 TurnOffAlarm();
                 IsActive = false;
@@ -832,17 +831,14 @@ public class Interior
 
         string[] prefixes =
         {
-        "SET_VAULT",
-        "SET_SECURITY",
         "SET_STYLE",
         "SET_WALLPAPER",
         "entity_set_",
         "entity_set_style",
         "set_style",
         "style"
-    };
-
-        // Numeric suffixes (0–20, some DLCs exceed 9)
+        };
+        // Numeric suffixes (0–12)
         for (int i = 0; i <= 12; i++)
         {
             foreach (string p in prefixes)
