@@ -767,7 +767,7 @@ public class Interior
 
     // Activate an entity set and verify it activated
     // returns true if activated successfully
-    private bool TryActivateEntitySetWithVerify(int interiorID, string setName, int maxTicksToWait = 10)
+    private bool TryActivateEntitySetWithVerify(int interiorID, string setName, int maxTicksToWait = 30) // 0.5 seconds at 16ms per tick
     {
         if (string.IsNullOrEmpty(setName)) return false;
         try
