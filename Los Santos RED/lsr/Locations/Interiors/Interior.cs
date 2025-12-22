@@ -832,7 +832,6 @@ public class Interior
 
         string[] prefixes =
         {
-        "SET_BASE",
         "SET_VAULT",
         "SET_SECURITY",
         "SET_STYLE",
