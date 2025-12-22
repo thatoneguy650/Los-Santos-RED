@@ -224,8 +224,8 @@ public class Interior
                     if (string.IsNullOrEmpty(interiorSet))
                         continue;
 
-                    TryActivateEntitySetWithVerify(InternalID, interiorSet, 0);
-                    TrackActivatedSet(InternalID, interiorSet);
+                    if (TryActivateEntitySetWithVerify(InternalID, interiorSet, 0))
+                        TrackActivatedSet(InternalID, interiorSet);
 
                     if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
                         && InteriorWallpaperColor != -1)
@@ -255,8 +255,8 @@ public class Interior
                         if (string.IsNullOrEmpty(interiorSet))
                             continue;
 
-                        TryActivateEntitySetWithVerify(linkedID, interiorSet, 0);
-                        TrackActivatedSet(linkedID, interiorSet);
+                        if (TryActivateEntitySetWithVerify(InternalID, interiorSet, 0))
+                            TrackActivatedSet(linkedID, interiorSet);
 
                         if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
                             && InteriorWallpaperColor != -1)
@@ -766,9 +766,9 @@ public class Interior
         yield return $"style{styleID}";
     }
 
-    // Activate an entity set and do a short verification loop that it "took"
-    // returns true if we observed the set active (best-effort)
-    private bool TryActivateEntitySetWithVerify(int interiorID, string setName, int maxTicksToWait = 60)
+    // Activate an entity set and verify it activated
+    // returns true if activated successfully
+    private bool TryActivateEntitySetWithVerify(int interiorID, string setName, int maxTicksToWait = 10)
     {
         if (string.IsNullOrEmpty(setName)) return false;
         try
@@ -778,23 +778,18 @@ public class Interior
         catch
         {
             // swallow - native may ignore invalid names
+            return false;
         }
-
         int ticks = 0;
-        // best-effort: call refresh and yield a few times; there's no direct "is entity set active" native in the environment common to all versions
-        while (ticks < maxTicksToWait)
+        while (!NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(interiorID, setName) && ticks < maxTicksToWait)
         {
             NativeFunction.Natives.REFRESH_INTERIOR(interiorID);
             GameFiber.Yield();
             ticks++;
         }
-
-        // We can't reliably query "is entity set active" with the standard natives in all versions,
-        // but calling ACTIVATE + REFRESH stabilizes the state for many DLC types.
-        // Return true as long as we didn't error out (optimistic).
-        // If you have a custom check (GET_INTERIOR_ENTITY_SET_ACTIVE) in your native set, use it here.
-        return true;
+        return NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(interiorID, setName);
     }
+
     private void TrackActivatedSet(int interiorId, string setName)
     {
         if (interiorId == 0 || string.IsNullOrEmpty(setName))
