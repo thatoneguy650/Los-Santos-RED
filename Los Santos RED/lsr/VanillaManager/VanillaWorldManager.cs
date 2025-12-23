@@ -22,6 +22,7 @@ public class VanillaWorldManager
     private bool isVanillaCarRaceActive;
     private uint GameTimeLastSetMaxWanted;
     private int pauseHoldCounter = 0;
+    private bool hasRestoredFog;
     public VanillaWorldManager(ISettingsProvideable settings)
     {
         Settings = settings;
@@ -124,7 +125,14 @@ public class VanillaWorldManager
         {
             SupressPauseMenu();
         }
-
+        if (Settings.SettingsManager.VanillaSettings.RevealMap)
+        {
+            RevealMap();
+        }
+        else
+        {
+            RestoreFogOfWar();
+        }
 
         if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
         {
@@ -257,6 +265,19 @@ public class VanillaWorldManager
                 );
             }
         }
+    }
+        private void RevealMap()
+    {
+        hasRestoredFog = false;
+        NativeFunction.Natives.SET_MINIMAP_HIDE_FOW(true);
+    }
+    private void RestoreFogOfWar()
+    {
+        if (hasRestoredFog)
+            return;
+
+        NativeFunction.Natives.SET_MINIMAP_HIDE_FOW(false);
+        hasRestoredFog = true;
     }
 }
 
