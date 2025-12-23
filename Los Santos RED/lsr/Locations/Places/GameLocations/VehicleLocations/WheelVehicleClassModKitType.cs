@@ -75,6 +75,7 @@ public class WheelVehicleClassModKitType : VehicleModKitType
     public override void AddToMenu()
     {
         WheelClassSubMenu = MenuPool.AddSubMenu(InteractionMenu, WheelTypeName);
+        WheelClassSubMenu.SetBannerType(EntryPoint.LSRedColor);
         if (ModdingVehicle == null || !ModdingVehicle.Vehicle.Exists())
         {
             return;

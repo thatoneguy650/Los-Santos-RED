@@ -40,6 +40,7 @@ public class VehicleLicensePlateMenu
     public void Setup()
     {
         LicensePlatesMenu = MenuPool.AddSubMenu(VehicleHeaderMenu, "License Plates");
+        LicensePlatesMenu.SetBannerType(EntryPoint.LSRedColor);
         LicensePlatesMenu.SubtitleText = "LICENSE PLATES";
         VehicleHeaderMenu.MenuItems[VehicleHeaderMenu.MenuItems.Count() - 1].Description = "Pick License Plates";
         AddLicensePlates();
@@ -53,6 +54,7 @@ public class VehicleLicensePlateMenu
         }
 
         LicensePlatesStyleMenu = MenuPool.AddSubMenu(LicensePlatesMenu, "Style");
+        LicensePlatesStyleMenu.SetBannerType(EntryPoint.LSRedColor);
         LicensePlatesStyleMenu.SubtitleText = "STYLE";
         LicensePlatesMenu.MenuItems[LicensePlatesMenu.MenuItems.Count() - 1].Description = "Pick License Plate Style";
 
@@ -93,7 +95,6 @@ public class VehicleLicensePlateMenu
             }
         };
         LicensePlatesMenu.AddItem(setPlateNumber);
-
 
 
         LicensePlatesStyleMenu.OnMenuOpen += (sender) =>

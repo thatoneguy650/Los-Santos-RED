@@ -34,6 +34,8 @@ public class VehicleColorMenu
     private UIMenu interiorcolorGroupMenu;
     private UIMenu dashboardcolorGroupMenu;
     private UIMenu colorFullMenu;
+    private UIMenu xenonColorMenu;
+    private UIMenu neonColorMenu;
 
     private List<ColorMenuItem> PrimaryColorMenuItems = new List<ColorMenuItem>();
     private List<ColorMenuItem> SecondaryColorMenuItems = new List<ColorMenuItem>();
@@ -41,6 +43,7 @@ public class VehicleColorMenu
     private List<ColorMenuItem> WheelColorMenuItems = new List<ColorMenuItem>();
     private List<ColorMenuItem> InteriorColorMenuItems = new List<ColorMenuItem>();
     private List<ColorMenuItem> DashboardColorMenuItems = new List<ColorMenuItem>();
+    private List<ColorMenuItem>[] NeonMenuItems = new List<ColorMenuItem>[4];
     public VehicleColorMenu(MenuPool menuPool, UIMenu vehicleHeaderMenu, ILocationInteractable player, VehicleExt moddingVehicle, ModShopMenu modShopMenu, VehicleVariation currentVariation, GameLocation gameLocation)
     {
         MenuPool = menuPool;
@@ -229,7 +232,34 @@ public class VehicleColorMenu
         };
         PrimaryColorMenuItems = new List<ColorMenuItem>();
         CreateBetterColorMenu();
+        SetupNeonColorMenu();
+        SetupXenonColorMenu();
     }
+    private readonly Dictionary<int, string> XenonColors = new Dictionary<int, string>
+    {
+        { 0, "White" }, { 1, "Blue" }, { 2, "Electric Blue" },
+        { 3, "Mint Green" }, { 4, "Lime Green" }, { 5, "Yellow" },
+        { 6, "Golden Shower" }, { 7, "Orange" }, { 8, "Red" },
+        { 9, "Pony Pink" }, { 10, "Hot Pink" }, { 11, "Purple" },
+        { 12, "Blacklight" }
+    };
+
+    private List<VehicleColorLookup> NeonColors = new List<VehicleColorLookup>()
+    {
+        new VehicleColorLookup(0, "White", "Neon", "White", 0) { RGBColor = System.Drawing.Color.FromArgb(255, 255, 255) },
+        new VehicleColorLookup(1, "Blue", "Neon", "Blue", 1) { RGBColor = System.Drawing.Color.FromArgb(0, 0, 255) },
+        new VehicleColorLookup(2, "Electric Blue", "Neon", "Electric Blue", 2) { RGBColor = System.Drawing.Color.FromArgb(0, 150, 255) },
+        new VehicleColorLookup(3, "Mint Green", "Neon", "Mint Green", 3) { RGBColor = System.Drawing.Color.FromArgb(50, 255, 155) },
+        new VehicleColorLookup(4, "Lime Green", "Neon", "Lime Green", 4) { RGBColor = System.Drawing.Color.FromArgb(100, 255, 0) },
+        new VehicleColorLookup(5, "Yellow", "Neon", "Yellow", 5) { RGBColor = System.Drawing.Color.FromArgb(255, 255, 0) },
+        new VehicleColorLookup(6, "Golden Shower", "Neon", "Golden Shower", 6) { RGBColor = System.Drawing.Color.FromArgb(204, 204, 0) },
+        new VehicleColorLookup(7, "Orange", "Neon", "Orange", 7) { RGBColor = System.Drawing.Color.FromArgb(255, 128, 0) },
+        new VehicleColorLookup(8, "Red", "Neon", "Red", 8) { RGBColor = System.Drawing.Color.FromArgb(255, 0, 0) },
+        new VehicleColorLookup(9, "Pony Pink", "Neon", "Pony Pink", 9) { RGBColor = System.Drawing.Color.FromArgb(255, 102, 204) },
+        new VehicleColorLookup(10, "Hot Pink", "Neon", "Hot Pink", 10) { RGBColor = System.Drawing.Color.FromArgb(255, 0, 255) },
+        new VehicleColorLookup(11, "Purple", "Neon", "Purple", 11) { RGBColor = System.Drawing.Color.FromArgb(153, 0, 153) },
+        new VehicleColorLookup(12, "Blacklight", "Neon", "Blacklight", 12){RGBColor = System.Drawing.Color.FromArgb(15, 3, 255) }
+    };
     private void CreateBetterColorMenu()
     {
         CreateTypeSubMenus();
@@ -435,8 +465,17 @@ public class VehicleColorMenu
                 dashboardcolorGroupMenu.AddItem(actualColorDashboard);
 
 
+                colorFullMenu.OnMenuOpen += (sender) =>
+                {
+                    if (CurrentVariation == null)
+                        return;
 
+                    // Only build Xenon menu if it hasn't been created yet
+                    SetupXenonColorMenu();
 
+                    // Only build Neon menu if it hasn't been created yet
+                    SetupNeonColorMenu();
+                };
 
 
 
@@ -490,30 +529,37 @@ public class VehicleColorMenu
     {
         //Color Stuff Here
         colorFullMenu = MenuPool.AddSubMenu(VehicleHeaderMenu, "Colors");
+        colorFullMenu.SetBannerType(EntryPoint.LSRedColor);
         colorFullMenu.SubtitleText = "COLORS";
         VehicleHeaderMenu.MenuItems[VehicleHeaderMenu.MenuItems.Count() - 1].Description = "Pick Colors";
 
         primaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Primary Color");
+        primaryColorMenu.SetBannerType(EntryPoint.LSRedColor);
         primaryColorMenu.SubtitleText = "PRIMARY COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Primary Colors";
 
         secondaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Secondary Color");
+        secondaryColorMenu.SetBannerType(EntryPoint.LSRedColor);
         secondaryColorMenu.SubtitleText = "SECONDARY COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
 
         pearlescentColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Pearlescent Color");
+        pearlescentColorMenu.SetBannerType(EntryPoint.LSRedColor);
         pearlescentColorMenu.SubtitleText = "PEARLESCENT COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Pearlescent Colors";
 
         wheelColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Wheel Color");
+        wheelColorMenu.SetBannerType(EntryPoint.LSRedColor);
         wheelColorMenu.SubtitleText = "WHEEL COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Wheel Colors";
 
         interiorColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Interior Color");
+        interiorColorMenu.SetBannerType(EntryPoint.LSRedColor);
         interiorColorMenu.SubtitleText = "INTERIOR COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Interior Colors";
 
         dashboardColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Dashboard Color");
+        dashboardColorMenu.SetBannerType(EntryPoint.LSRedColor);
         dashboardColorMenu.SubtitleText = "DASHBOARD COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Dashboard Colors";
     }
@@ -523,6 +569,7 @@ public class VehicleColorMenu
     private void SetupPrimaryColors(string colorGroupString)
     {
         primarycolorGroupMenu = MenuPool.AddSubMenu(primaryColorMenu, colorGroupString);
+        primarycolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         primarycolorGroupMenu.SubtitleText = "PRIMARY COLORS";
         primaryColorMenu.MenuItems[primaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
         primarycolorGroupMenu.OnMenuOpen += (sender) =>
@@ -616,6 +663,7 @@ public class VehicleColorMenu
     private void SetupSecondaryColors(string colorGroupString)
     {
         secondarycolorGroupMenu = MenuPool.AddSubMenu(secondaryColorMenu, colorGroupString);
+        secondarycolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         secondarycolorGroupMenu.SubtitleText = "SECONDARY COLORS";
         secondaryColorMenu.MenuItems[secondaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
         secondarycolorGroupMenu.OnMenuOpen += (sender) =>
@@ -700,6 +748,7 @@ public class VehicleColorMenu
     private void SetupPearlColors(string colorGroupString)
     {
         pearlescentcolorGroupMenu = MenuPool.AddSubMenu(pearlescentColorMenu, colorGroupString);
+        pearlescentcolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         pearlescentcolorGroupMenu.SubtitleText = "PEARLESCENT COLORS";
         pearlescentColorMenu.MenuItems[pearlescentColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
 
@@ -785,6 +834,7 @@ public class VehicleColorMenu
     private void SetupWheelColors(string colorGroupString)
     {
         wheelcolorGroupMenu = MenuPool.AddSubMenu(wheelColorMenu, colorGroupString);
+        wheelcolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         wheelcolorGroupMenu.SubtitleText = "WHEEL COLORS";
         wheelColorMenu.MenuItems[wheelColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
         wheelcolorGroupMenu.OnMenuOpen += (sender) =>
@@ -870,6 +920,7 @@ public class VehicleColorMenu
     private void SetupInteriorColors(string colorGroupString)
     {
         interiorcolorGroupMenu = MenuPool.AddSubMenu(interiorColorMenu, colorGroupString);
+        interiorcolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         interiorcolorGroupMenu.SubtitleText = "INTERIOR COLORS";
         interiorColorMenu.MenuItems[interiorColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
         interiorcolorGroupMenu.OnMenuOpen += (sender) =>
@@ -949,6 +1000,7 @@ public class VehicleColorMenu
     private void SetupDashboardColors(string colorGroupString)
     {
         dashboardcolorGroupMenu = MenuPool.AddSubMenu(dashboardColorMenu, colorGroupString);
+        dashboardcolorGroupMenu.SetBannerType(EntryPoint.LSRedColor);
         dashboardcolorGroupMenu.SubtitleText = "DASHBOARD COLORS";
         dashboardColorMenu.MenuItems[dashboardColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
         dashboardcolorGroupMenu.OnMenuOpen += (sender) =>
@@ -1069,5 +1121,212 @@ public class VehicleColorMenu
         public UIMenuItem UIMenuItem { get; set; }
         public int ColorID { get; set; }
         public int Index { get; set; }
+    }
+
+    // Xenon and Neon Color Menu Setup
+    // Xenon Color Menu Setup
+    private void SetupXenonColorMenu()
+    {
+        if (ModdingVehicle?.Vehicle == null || !ModdingVehicle.Vehicle.Exists()) return;
+
+        NativeFunction.Natives.SET_VEHICLE_MOD_KIT(ModdingVehicle.Vehicle, 0);
+
+        bool hasXenonsSaved = CurrentVariation.VehicleMods.Any(m => m.ID == 22 && m.Output == 1);
+        bool hasXenonsActual = NativeFunction.Natives.IS_TOGGLE_MOD_ON<bool>(ModdingVehicle.Vehicle, 22);
+        bool hasXenons = hasXenonsSaved || hasXenonsActual;
+
+        if (!hasXenonsSaved && hasXenonsActual)
+        {
+            var mod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == 22);
+            if (mod != null)
+                mod.Output = 1;
+            else
+                CurrentVariation.VehicleMods.Add(new VehicleMod(22, 1));
+        }
+
+        if (xenonColorMenu == null)
+        {
+            xenonColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Xenon Headlight Color");
+            xenonColorMenu.SetBannerType(EntryPoint.LSRedColor);
+            xenonColorMenu.SubtitleText = "XENON COLORS";
+        }
+        else
+        {
+            xenonColorMenu.Clear();
+        }
+
+        int originalColor = CurrentVariation.XenonLightColor >= 0 ? CurrentVariation.XenonLightColor : 0;
+
+        foreach (var kvp in XenonColors)
+        {
+            int colorID = kvp.Key;
+            string colorName = kvp.Value;
+
+            var item = new UIMenuItem(colorName, hasXenons ? $"Set Xenon headlights to {colorName}" : "You need Xenons installed first");
+            item.Enabled = hasXenons;
+
+            bool active = hasXenons && originalColor == colorID;
+
+            item.RightBadge = active ? UIMenuItem.BadgeStyle.Tick : UIMenuItem.BadgeStyle.None;
+            item.RightLabel = active ? "" : (hasXenons ? "~r~$500~s~" : "");
+
+            item.Activated += (sender, selectedItem) =>
+            {
+                if (!hasXenons)
+                {
+                    DisplayMessage("You need Xenons installed first!");
+                    return;
+                }
+
+                if (originalColor == colorID)
+                {
+                    DisplayMessage("Already Set");
+                    return;
+                }
+
+                if (!ChargeClient(500)) return;
+
+                CurrentVariation.XenonLightColor = colorID;
+                try { NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(ModdingVehicle.Vehicle, colorID); }
+                catch { }
+
+                // Inline sync
+                foreach (UIMenuItem menuItem in xenonColorMenu.MenuItems)
+                {
+                    int menuID = XenonColors.First(x => x.Value == menuItem.Text).Key;
+                    menuItem.RightBadge = menuID == colorID ? UIMenuItem.BadgeStyle.Tick : UIMenuItem.BadgeStyle.None;
+                    menuItem.RightLabel = menuID == colorID ? "" : "~r~$500~s~";
+                }
+
+                DisplayMessage($"Xenon headlights set to {colorName}");
+            };
+
+            xenonColorMenu.AddItem(item);
+        }
+
+        xenonColorMenu.OnIndexChange += (sender, newIndex) =>
+        {
+            if (newIndex == -1 || !hasXenons) return;
+
+            int previewID = XenonColors.First(x => x.Value == sender.MenuItems[newIndex].Text).Key;
+            try { NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(ModdingVehicle.Vehicle, previewID); }
+            catch { }
+        };
+
+        xenonColorMenu.OnMenuClose += (sender) =>
+        {
+            if (ModdingVehicle?.Vehicle == null || !ModdingVehicle.Vehicle.Exists()) return;
+            try { NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(ModdingVehicle.Vehicle, originalColor); }
+            catch { }
+        };
+    }
+    // Neon Color Menu Setup
+    private void SetupNeonColorMenu()
+    {
+        if (ModdingVehicle?.Vehicle == null || !ModdingVehicle.Vehicle.Exists()) return;
+
+        bool hasNeons = CurrentVariation.VehicleNeons.Any(n => n.IsEnabled);
+
+        if (neonColorMenu == null)
+        {
+            neonColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Neon Lights Color");
+            neonColorMenu.SetBannerType(EntryPoint.LSRedColor);
+            neonColorMenu.SubtitleText = "NEON COLORS";
+        }
+        else
+        {
+            neonColorMenu.Clear();
+        }
+
+        if (NeonMenuItems[0] == null) NeonMenuItems[0] = new List<ColorMenuItem>();
+
+        int originalR = CurrentVariation.NeonColorR;
+        int originalG = CurrentVariation.NeonColorG;
+        int originalB = CurrentVariation.NeonColorB;
+
+        foreach (VehicleColorLookup color in NeonColors)
+        {
+            UIMenuItem item = new UIMenuItem(color.ColorName, hasNeons ? "Set neon color to " + color.ColorName : "You need Neons installed first");
+            item.Enabled = hasNeons;
+
+            bool active = hasNeons && CurrentVariation != null &&
+                          CurrentVariation.NeonColorR == color.RGBColor.R &&
+                          CurrentVariation.NeonColorG == color.RGBColor.G &&
+                          CurrentVariation.NeonColorB == color.RGBColor.B;
+
+            item.RightBadge = active ? UIMenuItem.BadgeStyle.Tick : UIMenuItem.BadgeStyle.None;
+            item.RightLabel = active ? "" : (hasNeons ? "~r~$1500~s~" : "");
+
+            var cmi = new ColorMenuItem(item, color.ColorID, color.ColorID);
+            NeonMenuItems[0].Add(cmi);
+            neonColorMenu.AddItem(item);
+
+            item.Activated += (sender, selectedItem) =>
+            {
+                if (!hasNeons)
+                {
+                    DisplayMessage("You need Neons installed first!");
+                    return;
+                }
+
+                bool isAlreadySet = CurrentVariation.NeonColorR == color.RGBColor.R &&
+                                    CurrentVariation.NeonColorG == color.RGBColor.G &&
+                                    CurrentVariation.NeonColorB == color.RGBColor.B;
+
+                if (isAlreadySet)
+                {
+                    DisplayMessage("Already Set as Neon Color");
+                    return;
+                }
+
+                if (!ChargeClient(500)) return;
+
+                CurrentVariation.NeonColorR = color.RGBColor.R;
+                CurrentVariation.NeonColorG = color.RGBColor.G;
+                CurrentVariation.NeonColorB = color.RGBColor.B;
+
+                foreach (VehicleNeon vehicleNeon in CurrentVariation.VehicleNeons)
+                {
+                    try { NativeFunction.Natives.SET_VEHICLE_NEON_ENABLED(ModdingVehicle.Vehicle, vehicleNeon.ID, vehicleNeon.IsEnabled); }
+                    catch { }
+                }
+
+                try { NativeFunction.Natives.SET_VEHICLE_NEON_COLOUR(ModdingVehicle.Vehicle, CurrentVariation.NeonColorR, CurrentVariation.NeonColorG, CurrentVariation.NeonColorB); }
+                catch { }
+
+                foreach (var menuItem in NeonMenuItems[0])
+                {
+                    bool isNowActive = menuItem.ColorID == color.ColorID;
+                    menuItem.UIMenuItem.RightBadge = isNowActive ? UIMenuItem.BadgeStyle.Tick : UIMenuItem.BadgeStyle.None;
+                    menuItem.UIMenuItem.RightLabel = isNowActive ? "" : "~r~$1500~s~";
+                }
+
+                DisplayMessage("Neon color updated");
+            };
+        }
+
+        neonColorMenu.OnIndexChange += (sender, newIndex) =>
+        {
+            if (ModdingVehicle?.Vehicle == null || !ModdingVehicle.Vehicle.Exists() || newIndex == -1) return;
+            if (!hasNeons) return;
+
+            UIMenuItem selected = sender.MenuItems[newIndex];
+            ColorMenuItem lookup = NeonMenuItems[0].FirstOrDefault(x => x.UIMenuItem == selected);
+            if (lookup == null) return;
+
+            VehicleColorLookup col = NeonColors.FirstOrDefault(c => c.ColorID == lookup.ColorID);
+            if (col == null) return;
+
+            try { NativeFunction.Natives.SET_VEHICLE_NEON_COLOUR(ModdingVehicle.Vehicle, col.RGBColor.R, col.RGBColor.G, col.RGBColor.B); }
+            catch { }
+        };
+
+        neonColorMenu.OnMenuClose += (sender) =>
+        {
+            if (ModdingVehicle?.Vehicle == null || !ModdingVehicle.Vehicle.Exists()) return;
+
+            try { NativeFunction.Natives.SET_VEHICLE_NEON_COLOUR(ModdingVehicle.Vehicle, originalR, originalG, originalB); }
+            catch { }
+        };
     }
 }

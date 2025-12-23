@@ -71,7 +71,7 @@ public class ModShopMenu
             AddModItems();
         }
         InteractionMenu.Visible = true;
-
+        InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
 
         EntryPoint.WriteToConsole($"InteractionMenu.Visible {InteractionMenu.Visible}");
     }
@@ -82,7 +82,8 @@ public class ModShopMenu
         AddExtraCategories();
         AddLicensePlateCategories();
         AddModCategories();
-        ThisIsANewName();
+        AddNeonCategories();
+        ThisIsANewName();// lol poor tints
     }
 
     private void AddLicensePlateCategories()
@@ -179,6 +180,12 @@ public class ModShopMenu
         EntryPoint.WriteToConsole("AddWindowTintCategories");
         VehicleWindowTintMenu windowTintMenu = new VehicleWindowTintMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
         windowTintMenu.Setup();
+    }
+    private void AddNeonCategories()
+    {
+        EntryPoint.WriteToConsole("AddNeonCategories");
+        VehicleNeonMenu vehicleNeonMenu = new VehicleNeonMenu(MenuPool, InteractionMenu, Player, ModdingVehicle, this, CurrentVariation, GameLocation);
+        vehicleNeonMenu.Setup();
     }
     public void DisplayInsufficientFundsMessage(int price)
     {
