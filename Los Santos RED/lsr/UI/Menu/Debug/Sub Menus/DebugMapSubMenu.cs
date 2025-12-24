@@ -68,12 +68,15 @@ public class DebugMapSubMenu : DebugSubMenu
             menu.Visible = false;
         };
         GeneralSubMenu.AddItem(SetBigMap);//CreateDisableLSItem()
-        UIMenuItem RevealMap = new UIMenuItem("Reveal Map", "Reveal the enitre map and remove fog of war");
+        UIMenuItem RevealMap = new UIMenuItem("Reveal Map", "Toggle fog of war on/off");
         RevealMap.Activated += (menu, item) =>
         {
-            NativeFunction.Natives.SET_MINIMAP_HIDE_FOW(true);
+            Settings.SettingsManager.VanillaSettings.RevealMap =
+                !Settings.SettingsManager.VanillaSettings.RevealMap;
+
             menu.Visible = false;
         };
+
         GeneralSubMenu.AddItem(RevealMap);
 
 
