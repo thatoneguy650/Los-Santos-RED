@@ -488,6 +488,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_PoliceBuzzard(1,1,2,false,-1,-1,0,2,2,3,"Pilot","Helicopter",true),
             DispatchableVehicles_FEJ.Create_PoliceBuzzard(0,20,2,false,-1,-1,3,4,2,3,"Pilot","Helicopter",true),
 
+            DispatchableVehicles_FEJ.Create_PoliceValkyrie(1,1,5,false,-1,-1,0,2,2,3,"Pilot","Helicopter",true),
+            DispatchableVehicles_FEJ.Create_PoliceValkyrie(0,20,5,false,-1,-1,3,4,2,3,"Pilot","Helicopter",true),
+
+
+
             DispatchableVehicles_FEJ.Create_PoliceSanchez(1,0,2,false,PoliceVehicleType.Marked,0,-1,2,1,1,"DirtBike","DirtBike",10),
             DispatchableVehicles_FEJ.Create_PoliceVindicator(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65),
             DispatchableVehicles_FEJ.Create_PoliceThrust(55,20,0,false,PoliceVehicleType.Marked,-1,-1,2,1,1,"MotorcycleCop","Motorcycle",65,134,0,0),

@@ -195,6 +195,7 @@ public class DispatchableVehicles_FEJ
             Create_PoliceFrogger(1,200,4,false,-1,-1,0,4,3,4,"Pilot","", true),
             Create_PoliceMaverick(1,100,1,false,-1,-1,0,4,3,4,"Pilot","", true),
             Create_PoliceBuzzard(1,25,1,false,134,134,0,4,3,4,"Pilot","", true),
+            Create_PoliceValkyrie(1,25,4,false,134,134,0,4,3,4,"Pilot","", true),
         };
 
         ArmyVehicles_FEJ = new List<DispatchableVehicle>()
