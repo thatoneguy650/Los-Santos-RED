@@ -19,7 +19,8 @@ public class Interior
     protected ISettingsProvideable Settings;
     private bool IsActive = false;
     private bool IsRunningInteriorUpdate = false;
-    protected List<Rage.Object> SpawnedProps = new List<Rage.Object>();
+    [XmlIgnore]
+    public List<Rage.Object> SpawnedProps = new List<Rage.Object>();
     private int alarmSoundID;
     protected bool isAlarmActive;
     private bool isOpen;

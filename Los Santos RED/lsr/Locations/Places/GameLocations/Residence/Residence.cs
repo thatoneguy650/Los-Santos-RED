@@ -21,7 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, ICraftable
+public class Residence : GameLocation, ILocationSetupable, IRestableLocation, IInventoryableLocation, IOutfitableLocation, ICraftable , ITrophyLocation
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -74,7 +74,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public override bool ShowInteractPrompt => !IgnoreEntranceInteract && CanInteract && !HasHeaderApartmentBuilding && (!IsOwnedOrRented || (IsOwnedOrRented && !DisableInteractAfterPurchase));
     public override bool IsBlipEnabled => base.IsBlipEnabled && !HasHeaderApartmentBuilding;
     public GameLocation GameLocation => this;
-
+    public List<TrophyPlacement> PlacedTrophies { get; set; } = new List<TrophyPlacement>();
     public string CraftingFlag { get; set; } = null;
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -821,6 +821,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             if (CashStorage != null)
             {
                 myRes.StoredCash = CashStorage.StoredCash;
+            }
+            if (ResidenceInterior != null && ResidenceInterior.SavedPlacedTrophies != null && ResidenceInterior.SavedPlacedTrophies.Any())
+            {
+                myRes.PlacedTrophies = new List<TrophyPlacement>(ResidenceInterior.SavedPlacedTrophies);
             }
         }
         return myRes;
