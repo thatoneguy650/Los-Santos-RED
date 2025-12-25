@@ -822,9 +822,9 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 myRes.StoredCash = CashStorage.StoredCash;
             }
-            if (ResidenceInterior != null && ResidenceInterior.SavedPlacedTrophies != null && ResidenceInterior.SavedPlacedTrophies.Any())
+            if (ResidenceInterior != null)
             {
-                myRes.PlacedTrophies = new List<TrophyPlacement>(ResidenceInterior.SavedPlacedTrophies);
+                myRes.PlacedTrophies = ResidenceInterior.SavedPlacedTrophies.ToList();
             }
         }
         return myRes;

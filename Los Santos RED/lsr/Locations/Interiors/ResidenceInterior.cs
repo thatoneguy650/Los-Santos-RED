@@ -93,56 +93,43 @@ public class ResidenceInterior : Interior
     {
         interiorList.ResidenceInteriors.Add(this);
     }
-    public virtual void Load(bool isOpen)
+    public new void Load(bool isOpen)
     {
         base.Load(isOpen);
         SpawnPlacedTrophies();
     }
 
-    public virtual void Unload()
-    {
-        RemoveSpawnedTrophies();
-        base.Unload();
-    }
     private void SpawnPlacedTrophies()
     {
         if (PlacedTrophies == null || PlacedTrophies.Count == 0)
         {
             return;
         }
-
         if (!TrophyInteract.CabinetDatasByInterior.TryGetValue(InternalID, out CabinetData cabinetData) || cabinetData == null)
         {
             return;
         }
-
         if (cabinetData.Slots == null || cabinetData.Slots.Count == 0)
         {
             return;
         }
-
         float trophyHeading = cabinetData.TrophyHeading;
-
         foreach (TrophySlot trophySlot in cabinetData.Slots)
         {
             if (!PlacedTrophies.TryGetValue(trophySlot.SlotID, out int trophyID) || trophyID == 0)
             {
                 continue;
             }
-
             if (!TrophyInteract.TrophyRegistry.TryGetValue(trophyID, out TrophyDefinition trophyDefinition))
             {
                 continue;
             }
-
             uint modelHash = Game.GetHashKey(trophyDefinition.ModelName);
-
             NativeFunction.Natives.REQUEST_MODEL(modelHash);
             while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash))
             {
                 GameFiber.Yield();
             }
-
             Rage.Object trophyObject = new Rage.Object(modelHash, trophySlot.Position, trophyHeading);
             if (trophyObject.Exists())
             {
@@ -150,26 +137,11 @@ public class ResidenceInterior : Interior
                 NativeFunction.Natives.SET_ENTITY_COLLISION(entityHandle, false, false);
                 NativeFunction.Natives.FREEZE_ENTITY_POSITION(entityHandle, true);
                 trophyObject.IsPersistent = true;
-
                 SpawnedTrophies[trophySlot.SlotID] = trophyObject;
-                // Do NOT add to base SpawnedProps
+                SpawnedProps.Add(trophyObject);
             }
-
             NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
         }
     }
-
-    private void RemoveSpawnedTrophies()
-    {
-        foreach (Rage.Object trophyObject in SpawnedTrophies.Values)
-        {
-            if (trophyObject.Exists())
-            {
-                trophyObject.Delete();
-            }
-        }
-        SpawnedTrophies.Clear();
-    }
-
 }
 

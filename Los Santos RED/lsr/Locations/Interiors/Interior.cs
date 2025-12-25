@@ -20,7 +20,7 @@ public class Interior
     private bool IsActive = false;
     private bool IsRunningInteriorUpdate = false;
     [XmlIgnore]
-    public List<Rage.Object> SpawnedProps = new List<Rage.Object>();
+    public List<Rage.Object> SpawnedProps { get; private set; } = new List<Rage.Object>();
     private int alarmSoundID;
     protected bool isAlarmActive;
     private bool isOpen;
@@ -340,7 +340,6 @@ public class Interior
             {
                 // Remove all spawned props immediately
                 RemoveSpawnedProps();
-
                 // Force-clear main interior (brute-force sanitation)
                 ForceClearInterior(InternalID);
 
@@ -694,7 +693,7 @@ public class Interior
             player.Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);
         }
     }
-    private void RemoveSpawnedProps()
+    public void RemoveSpawnedProps()
     {
         foreach(Rage.Object prop in SpawnedProps)
         {

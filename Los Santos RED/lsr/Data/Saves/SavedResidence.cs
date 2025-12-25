@@ -63,10 +63,10 @@ public class SavedResidence : SavedGameLocation
                 savedPlace.CashStorage.StoredCash = StoredCash;
                 if (savedPlace.ResidenceInterior != null)
                 {
-                    var interior = savedPlace.ResidenceInterior;
+                    ResidenceInterior interior = savedPlace.ResidenceInterior;
 
                     // Clear previous trophies/props
-                    interior.Unload();
+                    interior.RemoveSpawnedProps();
                     interior.PlacedTrophies.Clear();
                     interior.SavedPlacedTrophies.Clear();
 
