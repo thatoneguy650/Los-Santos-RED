@@ -68,6 +68,7 @@ public class VehicleWindowTintMenu
             return;
 
         tintMenu = MenuPool.AddSubMenu(InteractionMenu, "Window Tint");
+        tintMenu.SetBannerType(EntryPoint.LSRedColor);
         if (tintMenu == null)
             return;
 

@@ -27,65 +27,86 @@ public class VehicleModToggle : VehicleModKitType
 
         bool isOn = NativeFunction.Natives.IS_TOGGLE_MOD_ON<bool>(ModdingVehicle.Vehicle, TypeID);
 
-        var menu = MenuPool.AddSubMenu(InteractionMenu, TypeName);
+        UIMenu menu = MenuPool.AddSubMenu(InteractionMenu, TypeName);
+        menu.SetBannerType(EntryPoint.LSRedColor);
+
         InteractionMenu.MenuItems.Last().Description = $"Toggle {TypeName}";
 
-        var offItem = new UIMenuItem("None");
-        var onItem = new UIMenuItem("Installed");
+        UIMenuItem offItem = new UIMenuItem("None");
+        UIMenuItem onItem = new UIMenuItem("Installed");
 
         menu.AddItem(offItem);
         menu.AddItem(onItem);
 
-        RefreshDisplay();
+        UpdateUI(isOn);
 
-        menu.OnItemSelect += (sender, item, index) =>
+        menu.OnItemSelect += (sender, selectedItem, index) =>
         {
-            bool wantOn = item == onItem;
-            if (wantOn == isOn)
-                return;
+            bool wantOn = selectedItem == onItem;
+            if (wantOn == isOn) return;
 
-            int actionPrice = GetPrice(TypeID, wantOn ? 1 : 0);
-
-            if (Player.BankAccounts.GetMoney(true) < actionPrice)
+            int price = GetPrice(TypeID, wantOn ? 1 : 0);
+            if (Player.BankAccounts.GetMoney(true) < price)
             {
-                ModShopMenu.DisplayInsufficientFundsMessage(actionPrice);
+                ModShopMenu.DisplayInsufficientFundsMessage(price);
                 return;
             }
 
-            Player.BankAccounts.GiveMoney(-actionPrice, true);
-            ModShopMenu.DisplayPurchasedMessage(actionPrice);
+            ModShopMenu.DisplayPurchasedMessage(price);
+            Player.BankAccounts.GiveMoney(-price, true);
 
             NativeFunction.Natives.TOGGLE_VEHICLE_MOD(ModdingVehicle.Vehicle, TypeID, wantOn);
 
-            var mod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == TypeID);
+            VehicleMod mod = CurrentVariation.VehicleMods.FirstOrDefault(x => x.ID == TypeID);
             if (mod != null)
                 mod.Output = wantOn ? 1 : -1;
             else
                 CurrentVariation.VehicleMods.Add(new VehicleMod(TypeID, wantOn ? 1 : -1));
 
             isOn = wantOn;
-            RefreshDisplay();
+            UpdateUI(isOn);
+
+            if (TypeID == 22) // Xenon Lights
+            {
+                if (wantOn)
+                {
+                    if (CurrentVariation.XenonLightColor < 0)
+                    {
+                        CurrentVariation.XenonLightColor = 0; // Default white
+                        try { NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(ModdingVehicle.Vehicle, 0); }
+                        catch { }
+                    }
+                }
+                else
+                {
+                    CurrentVariation.XenonLightColor = -1; // Reset on uninstall
+                }
+            }
         };
 
-        void RefreshDisplay()
+        menu.OnMenuClose += (sender) =>
         {
-            int displayPrice = GetPrice(TypeID, isOn ? 0 : 1);
-            if (isOn)
+            NativeFunction.Natives.TOGGLE_VEHICLE_MOD(ModdingVehicle.Vehicle, TypeID, isOn);
+        };
+
+        void UpdateUI(bool currentState)
+        {
+            int price = GetPrice(TypeID, currentState ? 0 : 1);
+
+            if (currentState)
             {
                 onItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
                 offItem.RightBadge = UIMenuItem.BadgeStyle.None;
-                offItem.RightLabel = $"~r~${displayPrice}~s~";
+                offItem.RightLabel = $"~r~${price}~s~";
                 onItem.RightLabel = "";
             }
             else
             {
                 offItem.RightBadge = UIMenuItem.BadgeStyle.Tick;
                 onItem.RightBadge = UIMenuItem.BadgeStyle.None;
-                onItem.RightLabel = $"~r~${displayPrice}~s~";
+                onItem.RightLabel = $"~r~${price}~s~";
                 offItem.RightLabel = "";
             }
-
-            menu.RefreshIndex();
         }
     }
 

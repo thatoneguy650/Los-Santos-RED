@@ -37,6 +37,7 @@ public class VehicleExtrasMenu
     public void Setup()
     {
         ExtrasMenu = MenuPool.AddSubMenu(VehicleHeaderMenu, "Extras");
+        ExtrasMenu.SetBannerType(EntryPoint.LSRedColor);
         ExtrasMenu.SubtitleText = "EXTRAS";
         VehicleHeaderMenu.MenuItems[VehicleHeaderMenu.MenuItems.Count() - 1].Description = "Pick Extras";
         AddExtras();
