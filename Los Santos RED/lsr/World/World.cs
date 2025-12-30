@@ -123,7 +123,14 @@ namespace Mod
         {
             if (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehicles)
             {
-                NativeMemory.SetMPGlobals();
+                if (EntryPoint.IsEnhancedVersion)
+                {
+                    NativeMemoryEnhanced.SetMPGlobals();
+                }
+                else
+                {
+                    NativeMemory.SetMPGlobals();
+                }
             }
         }
         public void Update()

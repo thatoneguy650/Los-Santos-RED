@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Enhanced|Any CPU = Debug Enhanced|Any CPU
+		Debug Enhanced|x64 = Debug Enhanced|x64
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Obfuscate|Any CPU = Obfuscate|Any CPU
@@ -22,6 +24,10 @@ Global
 		Test|x64 = Test|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug Enhanced|Any CPU.ActiveCfg = Debug Enhanced|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug Enhanced|Any CPU.Build.0 = Debug Enhanced|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug Enhanced|x64.ActiveCfg = Debug Enhanced|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug Enhanced|x64.Build.0 = Debug Enhanced|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|Any CPU.Build.0 = Debug|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|x64.ActiveCfg = Debug|x64
