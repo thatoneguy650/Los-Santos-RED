@@ -15,6 +15,9 @@ public class PossibleInteriors
     public List<GangDenInterior> GangDenInteriors { get; private set; } = new List<GangDenInterior>();
     public List<BankInterior> BankInteriors { get; private set; } = new List<BankInterior>();
     public List<BarberShopInterior> BarberShopInteriors { get; private set; } = new List<BarberShopInterior>();
+
+    public List<ClothingShopInterior> ClothingShopInteriors { get; private set; } = new List<ClothingShopInterior>();
+
     public List<BusinessInterior> BusinessInteriors { get; set; } = new List<BusinessInterior>();
     public List<Interior> AllInteriors()
     {
@@ -24,6 +27,7 @@ public class PossibleInteriors
         Allinteriors.AddRange(GangDenInteriors);
         Allinteriors.AddRange(BankInteriors);
         Allinteriors.AddRange(BarberShopInteriors);
+        Allinteriors.AddRange(ClothingShopInteriors);
         Allinteriors.AddRange(BusinessInteriors);
         return Allinteriors;
     }

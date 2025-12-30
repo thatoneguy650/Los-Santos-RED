@@ -9045,6 +9045,25 @@ public class Interiors : IInteriors
             },
             }
         });
+
+
+        PossibleInteriors.ClothingShopInteriors.AddRange(new List<ClothingShopInterior>()
+        { 
+            new ClothingShopInterior(96258,"Sub Urban Harmony") {
+                IsTrespassingWhenClosed = true, IsWeaponRestricted = true,
+
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(1780022985,new Vector3(617.2458f, 2751.022f, 42.75777f)) { InteractPostion = new Vector3(618.3388f, 2750.28f, 42.08902f), InteractHeader = 3.158015f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+
+                TryOnInteracts = new List<TryOnInteract>() { 
+                        new TryOnInteract("suburbanHarmonyTryOn1",new Vector3(617.6456f, 2766.707f, 42.08809f), 178.6625f,"Try On Clothes")
+                        {
+                            IsAutoInteract = true,
+                        } } }, 
+        });
+
     }
     private void Other()
     {

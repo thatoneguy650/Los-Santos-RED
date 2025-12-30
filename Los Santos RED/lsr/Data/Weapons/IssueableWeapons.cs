@@ -91,6 +91,12 @@ public class IssueableWeapons : IIssuableWeapons
 
     private void DefaultConfig_FullExpandedWeapons()
     {
+
+        IssuableWeapon weaponNanoPistol = new IssuableWeapon("weapon_nanopistol",
+            new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), new WeaponComponent("Suppressor"), }), 45);
+
+        IssuableWeapon weaponMustangeRevolver = new IssuableWeapon("weapon_mustangerev", new WeaponVariation(), 65);
+
         //COPS
         List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
         {
@@ -170,17 +176,21 @@ public class IssueableWeapons : IIssuableWeapons
 
 
         //NEW
+        weaponMustangeRevolver.SpawnChance = 45;
         List<IssuableWeapon> LSSDSidearms_Modern = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
+            weaponMustangeRevolver,
         };
+        weaponMustangeRevolver.SpawnChance = 10;
         List<IssuableWeapon> LSPDSidearms_Modern = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
             new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(), 95),
             new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 95),
+            weaponMustangeRevolver,
         };
         List<IssuableWeapon> LSPDLongGuns_Modern = new List<IssuableWeapon>()
         {
@@ -233,6 +243,37 @@ public class IssueableWeapons : IIssuableWeapons
         };
 
 
+        //Gangs
+        List<IssuableWeapon> FamiliesSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(FamiliesSidearms);
+        List<IssuableWeapon> BallasSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(BallasSidearms);
+        List<IssuableWeapon> VagosSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(VagosSidearms);
+        List<IssuableWeapon> VarriosSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(VarriosSidearms);
+        List<IssuableWeapon> MarabuntaSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(MarabuntaSidearms);
+        List<IssuableWeapon> LostSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(LostSidearms);
+        List<IssuableWeapon> KkangpaeSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(KkangpaeSidearms);
+        List<IssuableWeapon> MafiaSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(MafiaSidearms);
+        List<IssuableWeapon> TriadsSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(TriadsSidearms);
+
+
+        weaponMustangeRevolver.SpawnChance = 65;
+        weaponNanoPistol.SpawnChance = 45;
+
+        FamiliesSidearms_Modern.Add(weaponNanoPistol);
+
+        BallasSidearms_Modern.Add(weaponNanoPistol);
+        BallasSidearms_Modern.Add(weaponMustangeRevolver);
+
+        VagosSidearms_Modern.Add(weaponNanoPistol);
+
+        VarriosSidearms_Modern.Add(weaponNanoPistol);
+
+        MarabuntaSidearms_Modern.Add(weaponNanoPistol);
+
+        LostSidearms_Modern.Add(weaponNanoPistol);
+        LostSidearms_Modern.Add(weaponMustangeRevolver);
+
+        KkangpaeSidearms_Modern.Add(weaponNanoPistol);
+
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_FEW = new List<IssuableWeaponsGroup>
         {
             new IssuableWeaponsGroup("AllSidearms", AllSidearms_Modern),
@@ -276,8 +317,50 @@ public class IssueableWeapons : IIssuableWeapons
 
             //MilitarySidearms
             //MilitaryLongGuns
+
+            //Gangs
+            new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms_Modern),
+            //new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns),
+            new IssuableWeaponsGroup("LostSidearms", LostSidearms_Modern),
+            //new IssuableWeaponsGroup("LostLongGuns", LostLongGuns),
+            new IssuableWeaponsGroup("VagosSidearms", VagosSidearms_Modern),
+            //new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns),
+            new IssuableWeaponsGroup("BallasSidearms", BallasSidearms_Modern),
+            //new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns),
+            new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms_Modern),
+            //new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns),
+            new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms_Modern),
+            //new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns),
+            new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms_Modern),
+            //new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns),
+            new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms_Modern),
+            //new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
+            new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms_Modern),
+            //new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns)
+
+
         };
 
+
+
+        /* new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms),
+            new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns),
+            new IssuableWeaponsGroup("LostSidearms", LostSidearms),
+            new IssuableWeaponsGroup("LostLongGuns", LostLongGuns),
+            new IssuableWeaponsGroup("VagosSidearms", VagosSidearms),
+            new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns),
+            new IssuableWeaponsGroup("BallasSidearms", BallasSidearms),
+            new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns),
+            new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms),
+            new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns),
+            new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms),
+            new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns),
+            new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms),
+            new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns),
+            new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms),
+            new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
+            new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms),
+            new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),*/
 
         /*	LSPDSidearms = AllSidearms
 	LSSDSidearms

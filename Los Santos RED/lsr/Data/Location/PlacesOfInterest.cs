@@ -1103,6 +1103,23 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         ClothingShops = new List<ClothingShop>()
         {
+
+                new ClothingShop(new Vector3(618.1257f, 2750.503f, 42.08913f), 182.7492f, "Suburban Harmony","Low-quality clothing at low prices.","GenericClothesShop",new Vector3(617.6456f, 2766.707f, 42.08809f))
+                {
+                    //VendorModels = new List<string>() { "s_f_y_shop_low" }, VendorPosition = new Vector3(427.1392f, -806.624f, 29.49114f), VendorHeading = 78.23051f,
+                    OpenTime = 4, CloseTime = 22,
+                    InteriorID = 96258,
+                    CameraPosition = new Vector3(623.5804f, 2728.085f, 50.10598f), 
+                    CameraDirection = new Vector3(-0.2745018f, 0.931403f, -0.2390337f), 
+                    CameraRotation = new Rotator(-13.82952f, -2.637787E-06f, 16.42123f),
+                },
+
+
+
+
+
+
+
                 new ClothingShop(new Vector3(430.0404f, -804.3267f, 29.49115f), 359.4608f, "Binco Textile City","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(430.0404f, -804.3267f, 29.49115f))
                 {
                     IsEnabled = false,
@@ -1113,13 +1130,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     OpenTime = 4, CloseTime = 22,
                     InteriorID = 22786,
                 },
-                new ClothingShop(new Vector3(618.1533f, 2749.669f, 42.08868f), 181.2038f, "Suburban Harmony","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(618.1533f, 2749.669f, 42.08868f))
-                {
-                    IsEnabled = false,
-                    //VendorModels = new List<string>() { "s_f_y_shop_low" }, VendorPosition = new Vector3(427.1392f, -806.624f, 29.49114f), VendorHeading = 78.23051f,
-                    OpenTime = 4, CloseTime = 22,
-                    InteriorID = 96258,
-                },
+
                 new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0092CBCB.mp3"},//rockford hills
                 new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0289F802.mp3"},//rockford hills
         

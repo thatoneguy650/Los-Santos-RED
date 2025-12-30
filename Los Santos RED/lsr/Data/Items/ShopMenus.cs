@@ -572,7 +572,11 @@ public class ShopMenus : IShopMenus
         return GetSpecificInstancedMenu(MenuID);
     }
 
-
+    public PedClothingShopMenu GetPedClothingShopMenu(string pedClothingShopMenuID)
+    {
+        return PossibleShopMenus.PedClothingShopMenus.FirstOrDefault(x => x.ID == pedClothingShopMenuID);
+        //public PedVariationShopMenu PedVariationShopMenu
+    }
     public PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID)
     {
         return PossibleShopMenus.PedVariationShopMenus.FirstOrDefault(x => x.ID == pedVariationShopMenuID);
@@ -655,8 +659,22 @@ public class ShopMenus : IShopMenus
         SetupTreatments();
         SetupPedVariationMenus();
         SetupVehicleVariationMenus();
+        SetupClothingStoreMenus();
         Serialization.SerializeParam(PossibleShopMenus, ConfigFileName);
     }
+
+    private void SetupClothingStoreMenus()
+    {
+        PedClothingShopMenu pedClothingShopMenu = new PedClothingShopMenu();
+        pedClothingShopMenu.ID = "GenericClothesShop";
+        pedClothingShopMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            new PedClothingShopMenuItem("Test Shirt","Test Description",50,"mp_f_freemode_01",new PedClothingComponent(11, 49, new List<int>() { 1,2 }),new List<PedClothingComponent>() { new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }),
+            new PedClothingShopMenuItem("Test Shirt 2","Test Description 2",60,"mp_f_freemode_01",new PedClothingComponent(11, 9, new List<int>() { 13 }),new List<PedClothingComponent>() { new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 9, new List<int>() { 0 }) , }),
+        };
+        PossibleShopMenus.PedClothingShopMenus.Add(pedClothingShopMenu);
+    }
+
     private void SetupPedVariationMenus()
     {
         PedVariationShopMenu pedVariationShopMenu = new PedVariationShopMenu();

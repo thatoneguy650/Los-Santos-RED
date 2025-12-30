@@ -56,7 +56,7 @@ public class VanillaSettings : ISettingsDefaultable
         SupressVanillaCopCrimes = true;
         TerminateRespawnGlobalID = 5;
         SupressPauseMenu = false;
-        RevealMap = false;
+        RevealMap = true;
     }
 
 }

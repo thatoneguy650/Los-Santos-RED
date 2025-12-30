@@ -61,7 +61,7 @@ namespace Mod
                 }
 
                 //6-20 = IsNight
-                return true;
+                return false;
             }
         }
         public void Dispose()

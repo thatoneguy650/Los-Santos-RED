@@ -216,6 +216,12 @@
     <Compile Include="lsr\Locations\Interiors\Barber\FakeCustomizeInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\SalonInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BusinessInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\ClothingPurchaseMenu.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\ClothingShopInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\PedClothingComponent.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\PedClothingShopMenu.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\PedClothingShopMenuItem.cs" />
+    <Compile Include="lsr\Locations\Interiors\Clothing Store\TryOnInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\CraftInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
@@ -849,7 +855,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\SubwayStation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BusStop.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\ClothingShop.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\CustomizeShops\ClothingShop.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\ConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationRespawnable.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Hotel\HotelRoom.cs" />

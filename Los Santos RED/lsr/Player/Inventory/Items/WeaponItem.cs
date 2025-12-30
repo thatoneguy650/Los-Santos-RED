@@ -82,6 +82,7 @@ public class WeaponItem : ModItem
         {
             description += $"~n~~b~DLC Weapon";
         }
+        EntryPoint.WriteToConsole($"GET TYPE DESCRIPTION RAN FOR {ModelName} VanillaName:{VanillaName} MenuCategory:{MenuCategory}");
         return Description;
     }
 
