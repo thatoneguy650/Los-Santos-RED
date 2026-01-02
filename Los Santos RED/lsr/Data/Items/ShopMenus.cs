@@ -575,7 +575,6 @@ public class ShopMenus : IShopMenus
     public PedClothingShopMenu GetPedClothingShopMenu(string pedClothingShopMenuID)
     {
         return PossibleShopMenus.PedClothingShopMenus.FirstOrDefault(x => x.ID == pedClothingShopMenuID);
-        //public PedVariationShopMenu PedVariationShopMenu
     }
     public PedVariationShopMenu GetPedVariationMenu(string pedVariationShopMenuID)
     {
@@ -669,8 +668,19 @@ public class ShopMenus : IShopMenus
         pedClothingShopMenu.ID = "GenericClothesShop";
         pedClothingShopMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
         {
-            new PedClothingShopMenuItem("Test Shirt","Test Description",50,"mp_f_freemode_01",new PedClothingComponent(11, 49, new List<int>() { 1,2 }),new List<PedClothingComponent>() { new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }),
-            new PedClothingShopMenuItem("Test Shirt 2","Test Description 2",60,"mp_f_freemode_01",new PedClothingComponent(11, 9, new List<int>() { 13 }),new List<PedClothingComponent>() { new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 9, new List<int>() { 0 }) , }),
+
+            new PedClothingShopMenuItem("Polo Shirt","Show you are worth it.",50,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 14, new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 }), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }){ Category = "Shirts" },
+
+            new PedClothingShopMenuItem("Fitted T Shirt","Test Description",50,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 49, new List<int>() { 1,0}), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }){ Category = "Shirts" },
+            new PedClothingShopMenuItem("Loose Button-Up","Test Description 2",60,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 9, new List<int>() { 13 }), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 9, new List<int>() { 0 }) , }){ Category = "Shirts" },
+
+
+            new PedClothingShopMenuItem("Heels","",75,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(6, 0, new List<int>() { 0 }), }){ Category = "Shoes" },
+            new PedClothingShopMenuItem("Chucks","",75,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(6, 3, new List<int>() { 0 }), }){ Category = "Shoes" },
+            new PedClothingShopMenuItem("Flip Flops","",75,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(6, 5, new List<int>() { 0 }), }){ Category = "Shoes" },
+
+            new PedClothingShopMenuItem("Small Gold Watch","",660,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(6, 2, new List<int>() { 0 }){ IsProp = true, }, }){ Category = "Watches" },
+            new PedClothingShopMenuItem("Large Gold Watch","",860,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(6, 5, new List<int>() { 0 }) { IsProp = true, }, } ){ Category = "Watches" },
         };
         PossibleShopMenus.PedClothingShopMenus.Add(pedClothingShopMenu);
     }

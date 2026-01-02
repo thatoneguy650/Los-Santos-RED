@@ -7371,6 +7371,7 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
@@ -7612,6 +7613,7 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
@@ -7851,6 +7853,7 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates

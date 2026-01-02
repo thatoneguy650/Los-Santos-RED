@@ -16,6 +16,8 @@ public class ClothingPurchaseMenu
     private TryOnInteract TryOnInteract;
     private MenuPool MenuPool;
     private UIMenu InteractionMenu;
+    private PedVariation WorkingVariation;
+    private List<UIMenu> CategoryList;
     public ClothingPurchaseMenu(ILocationInteractable player, ClothingShop clothingShop, TryOnInteract tryOnInteract, ISettingsProvideable settings)
     {
         Player = player;
@@ -35,15 +37,36 @@ public class ClothingPurchaseMenu
         {
             Player.IsTransacting = false;
         };
-
-
-        foreach(PedClothingShopMenuItem pedClothingShopMenuItem in ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelName.ToLower() == Player.ModelName.ToLower()))
+        CategoryList = new List<UIMenu>();
+        foreach (PedClothingShopMenuItem pedClothingShopMenuItem in ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
         {
-            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, InteractionMenu, ClothingShop);
+            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category), ClothingShop);
         }
 
         InteractionMenu.Visible = true;
 
+    }
+    private UIMenu CreateSubMenu(string menuName)
+    {
+        if (string.IsNullOrEmpty(menuName))
+        {
+            return InteractionMenu;
+        }
+        UIMenu createdCategory = CategoryList.Where(x => x.SubtitleText.ToLower() == menuName.ToLower()).FirstOrDefault();
+        if(createdCategory != null)
+        {
+            //EntryPoint.WriteToConsole($"menuName {menuName} FOUND {    string.Join(",", CategoryList.Select(x=>x.SubtitleText)       ) }");
+            return createdCategory;
+
+        }
+        //else
+        //{
+        //    EntryPoint.WriteToConsole($"menuName {menuName} NOT FOUND {string.Join(",", CategoryList.Select(x => x.SubtitleText))}");
+        //}
+        createdCategory = MenuPool.AddSubMenu(InteractionMenu, menuName);
+        CategoryList.Add(createdCategory);
+
+        return createdCategory;
     }
     public void Dispose()
     {

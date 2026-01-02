@@ -9,6 +9,7 @@ public class PedClothingComponent
     public int ComponentID { get; set; }
     public int DrawableID { get; set; }
     public List<int> PossibleTextures { get; set; }
+    public bool IsProp { get; set; }
     public PedClothingComponent()
     {
 

@@ -4642,6 +4642,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 IsOnSPMap = false,
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
+                IsEnabled = false,
             },
             new Residence()
             {
@@ -4662,6 +4663,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 IsOnSPMap = false,
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
+                IsEnabled = false,
             },
             new Residence()
             {
@@ -4682,6 +4684,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 IsOnSPMap = false,
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
+                IsEnabled = false,
             },
         };
 

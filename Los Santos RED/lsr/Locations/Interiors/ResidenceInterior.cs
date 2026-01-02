@@ -58,6 +58,13 @@ public class ResidenceInterior : Interior
             }
         }
     }
+
+
+
+
+
+
+
     public void SetResidence(Residence newResidence)
     {
         residence = newResidence;

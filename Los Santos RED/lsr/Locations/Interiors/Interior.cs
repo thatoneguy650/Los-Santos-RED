@@ -148,156 +148,101 @@ public class Interior
         {
             try
             {
-                // 1. Resolve initial interior
-                InternalID = InternalInteriorCoordinates != Vector3.Zero
-                    ? NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                        InternalInteriorCoordinates.X,
-                        InternalInteriorCoordinates.Y,
-                        InternalInteriorCoordinates.Z)
-                    : LocalID;
-
-                // 2. Request ALL IPLs FIRST
-                foreach (string ipl in RequestIPLs)
-                {
-                    if (!string.IsNullOrEmpty(ipl) &&
-                        !NativeFunction.Natives.IS_IPL_ACTIVE<bool>(ipl))
-                    {
-                        NativeFunction.Natives.REQUEST_IPL(ipl);
-                    }
-                    GameFiber.Yield();
-                }
-
-                GameFiber.Yield();
-
-                // 3. Re-resolve interior AFTER IPLs
                 if (InternalInteriorCoordinates != Vector3.Zero)
                 {
-                    int resolved = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                        InternalInteriorCoordinates.X,
-                        InternalInteriorCoordinates.Y,
-                        InternalInteriorCoordinates.Z);
-
-                    if (resolved != 0)
-                        InternalID = resolved;
+                    InternalID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(InternalInteriorCoordinates.X, InternalInteriorCoordinates.Y, InternalInteriorCoordinates.Z);
                 }
-
-                // 4. FORCE CLEAR
-                ForceClearInterior(InternalID);
-
-                foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
+                else
                 {
-                    int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                        coord.X, coord.Y, coord.Z);
-
-                    if (linkedID != 0)
-                        ForceClearInterior(linkedID);
+                    InternalID = LocalID;
                 }
-
-                GameFiber.Yield();
-
-                // 5. Pin / activate interior
+                if (NeedsSetDisabled)
+                {
+                    NativeFunction.Natives.DISABLE_INTERIOR(InternalID, false);
+                }
                 if (NeedsActivation)
                 {
                     NativeFunction.Natives.PIN_INTERIOR_IN_MEMORY(InternalID);
                     NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, true);
-
                     if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
+                    {
                         NativeFunction.Natives.CAP_INTERIOR(InternalID, false);
-
-                    GameFiber.Yield();
+                    }
                 }
-
-                // 6. Remove IPLs (if any)
-                foreach (string ipl in RemoveIPLs)
+                foreach (string iplName in RequestIPLs)
                 {
-                    if (!string.IsNullOrEmpty(ipl) &&
-                        NativeFunction.Natives.IS_IPL_ACTIVE<bool>(ipl))
+                    if (!NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
                     {
-                        NativeFunction.Natives.REMOVE_IPL(ipl);
+                        NativeFunction.Natives.REQUEST_IPL(iplName);
                     }
                     GameFiber.Yield();
                 }
-
-                // 7. Activate entity sets
-                foreach (string interiorSet in InteriorSets)
+                foreach (string iplName in RemoveIPLs)
                 {
-                    if (string.IsNullOrEmpty(interiorSet))
-                        continue;
-
-                    if (TryActivateEntitySetWithVerify(InternalID, interiorSet, 0))
-                        TrackActivatedSet(InternalID, interiorSet);
-
-                    if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
-                        && InteriorWallpaperColor != -1)
+                    if (NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
                     {
-                        NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(
-                            InternalID, interiorSet, InteriorWallpaperColor);
+                        NativeFunction.Natives.REMOVE_IPL(iplName);
                     }
-                    else if (InteriorTintColor != -1)
-                    {
-                        SetInteriorColorTint(interiorSet, InteriorTintColor);
-                    }
-
                     GameFiber.Yield();
                 }
-
-                // 8. Linked interiors (same sets, no re-clear)
-                foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
-                {
-                    int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                        coord.X, coord.Y, coord.Z);
-
-                    if (linkedID == 0)
-                        continue;
-
-                    foreach (string interiorSet in InteriorSets)
-                    {
-                        if (string.IsNullOrEmpty(interiorSet))
-                            continue;
-                        if (TryActivateEntitySetWithVerify(linkedID, interiorSet, 0))
-                            TrackActivatedSet(linkedID, interiorSet);
-
-                        if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
-                            && InteriorWallpaperColor != -1)
-                        {
-                            NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(
-                                linkedID, interiorSet, InteriorWallpaperColor);
-                        }
-                    }
-
-                    NativeFunction.Natives.REFRESH_INTERIOR(linkedID);
-                    GameFiber.Yield();
-                }
-
-                // 9. Optional style activation
+                // Deactivate the current entity set style before activating the new one ( If one is loaded )
                 if (InteriorSetStyleID != -1)
                 {
-                    foreach (string styleName in GetEntitySetNamePatterns(InteriorSetStyleID))
+                    string previousEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                    EntryPoint.WriteToConsole($"Deactivating previous entity set style: {previousEntitySetStyle}");
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, previousEntitySetStyle);
+                    GameFiber.Yield();
+                }
+                foreach (string interiorSet in InteriorSets)
+                {
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
+                    if (InteriorTintColor != -1)
                     {
-                        if (TryActivateEntitySetWithVerify(InternalID, styleName, 0))
-                            break;
+                        SetInteriorColorTint(interiorSet, InteriorTintColor);  // Apply the tint color to each interior set
                     }
                     GameFiber.Yield();
                 }
-                // 10. Doors / interactions
-                LoadDoors(isOpen, false);
-                // Final Refresh moved to end to ensure doors are in correct state
-
-                // 11. Final refresh
+                // Activate new entity set style
+                if (InteriorSetStyleID != -1)
+                {
+                    string newEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                    EntryPoint.WriteToConsole($"Activating new entity set style: {newEntitySetStyle}");
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
+                    GameFiber.Yield();
+                }
+                LoadDoors(isOpen, true);
+                if (DisabledInteriorCoords != Vector3.Zero)
+                {
+                    DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                    NativeFunction.Natives.DISABLE_INTERIOR(DisabledInteriorID, false);
+                    NativeFunction.Natives.CAP_INTERIOR(DisabledInteriorID, false);
+                    NativeFunction.Natives.REFRESH_INTERIOR(DisabledInteriorID);
+                    GameFiber.Yield();
+                }
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+                if (AllInteractPoints != null)
+                {
+                    foreach (InteriorInteract ii in AllInteractPoints)
+                    {
+                        ii.OnInteriorLoaded();
+                    }
+                }
 
-                GameFiber.Yield(); // yield to all interior markers to register properly
 
-                foreach (InteriorInteract ii in AllInteractPoints ?? Enumerable.Empty<InteriorInteract>())
-                    ii.OnInteriorLoaded();
 
                 IsActive = true;
-                EntryPoint.WriteToConsole($"Load Interior {Name} isOpen={isOpen}");
+                GameFiber.Yield();
+
+                EntryPoint.WriteToConsole($"Load Interior {Name} isOpen{isOpen}");
+
+
+                //GameFiber.Sleep(250);
+                // LoadDoors(isOpen);
+
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole(
-                    $"Load Exception: {ex.Message}\n{ex.StackTrace}", 0);
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
             }
         }, "Load Interior");
     }
@@ -337,82 +282,70 @@ public class Interior
         {
             try
             {
-                // Remove all spawned props immediately
-                RemoveSpawnedProps();
-
-                // Force-clear main interior (brute-force sanitation)
-                ForceClearInterior(InternalID);
-
-                // Deactivate any sets tracked by this script (redundant but safe)
-                DeactivateTrackedSets();
-
-                // Unpin and deactivate the interior
-                NativeFunction.Natives.UNPIN_INTERIOR(InternalID);
-                NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, false);
-                if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
-                    NativeFunction.Natives.CAP_INTERIOR(InternalID, true);
-
-                GameFiber.Yield();
-
-                // Remove requested IPLs
-                foreach (string ipl in RequestIPLs ?? Enumerable.Empty<string>())
+                if (NeedsSetDisabled)
                 {
-                    if (!string.IsNullOrEmpty(ipl) && NativeFunction.Natives.IS_IPL_ACTIVE<bool>(ipl))
-                        NativeFunction.Natives.REMOVE_IPL(ipl);
+                    NativeFunction.Natives.DISABLE_INTERIOR(InternalID, true);
+                }
+                if (NeedsActivation)
+                {
+                    NativeFunction.Natives.UNPIN_INTERIOR(InternalID);
+                    NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, false);
+                    if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
+                    {
+                        NativeFunction.Natives.CAP_INTERIOR(InternalID, true);
+                    }
+                }
+                foreach (string iplName in RequestIPLs)
+                {
+                    NativeFunction.Natives.REMOVE_IPL(iplName);
                     GameFiber.Yield();
                 }
-
-                // Reapply removed IPLs if needed (rare, but maintains consistency)
-                foreach (string ipl in RemoveIPLs ?? Enumerable.Empty<string>())
+                foreach (string iplName in RemoveIPLs)
                 {
-                    if (!string.IsNullOrEmpty(ipl) && !NativeFunction.Natives.IS_IPL_ACTIVE<bool>(ipl))
-                        NativeFunction.Natives.REQUEST_IPL(ipl);
+                    NativeFunction.Natives.REQUEST_IPL(iplName);
                     GameFiber.Yield();
                 }
-
-                // Clear linked interiors
-                foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
+                foreach (string interiorSet in InteriorSets)
                 {
-                    int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(coord.X, coord.Y, coord.Z);
-                    if (linkedID == 0) continue;
-
-                    ForceClearInterior(linkedID);
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
                     GameFiber.Yield();
                 }
-
-                // Deactivate doors
-                foreach (InteriorDoor door in Doors ?? Enumerable.Empty<InteriorDoor>())
+                // Deactivate the current entity set style if active
+                if (InteriorSetStyleID != -1)
+                {
+                    string entitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                    EntryPoint.WriteToConsole($"Deactivating entity set style on unload: {entitySetStyle}");
+                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entitySetStyle);
+                    GameFiber.Yield();
+                }
+                foreach (InteriorDoor door in Doors)
                 {
                     door.LockDoor();
+                    //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, 0.0f, 50.0f); //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
+                    //door.IsLocked = true;
                     door.Deactivate();
                     GameFiber.Yield();
                 }
-
-                // Handle disabled interiors
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
-                    DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                        DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
-
-                    if (DisabledInteriorID != 0)
-                    {
-                        ForceClearInterior(DisabledInteriorID);
-                        NativeFunction.Natives.DISABLE_INTERIOR(DisabledInteriorID, true);
-                        NativeFunction.Natives.REFRESH_INTERIOR(DisabledInteriorID);
-                        GameFiber.Yield();
-                    }
+                    DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                    NativeFunction.Natives.DISABLE_INTERIOR(DisabledInteriorID, true);
+                    NativeFunction.Natives.CAP_INTERIOR(DisabledInteriorID, true);
+                    NativeFunction.Natives.REFRESH_INTERIOR(DisabledInteriorID);
+                    GameFiber.Yield();
                 }
-                // Final refresh and alarm cleanup
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 TurnOffAlarm();
+                //SetInactive();
                 IsActive = false;
-
                 GameFiber.Yield();
+
                 EntryPoint.WriteToConsole($"Unload Interior {Name}");
+                //new Vector3(-19.51501f, -597.6929f, 94.02557f)
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Unload Exception: {ex.Message}\n{ex.StackTrace}", 0);
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
         }, "Unload Interiors");
@@ -755,6 +688,27 @@ public class Interior
         NativeFunction.Natives.RELEASE_SOUND_ID(alarmSoundID);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+
+
+
     // Helper to generate possible entity set names for a given style ID
     private IEnumerable<string> GetEntitySetNamePatterns(int styleID)
     {
@@ -879,4 +833,5 @@ public class Interior
             // Silent by design — invalid names are expected
         }
     }
+    */
 }
