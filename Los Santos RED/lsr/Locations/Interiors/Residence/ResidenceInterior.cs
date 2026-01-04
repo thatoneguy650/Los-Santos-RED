@@ -1,15 +1,18 @@
 ﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-
+[XmlInclude(typeof(MansionInterior))]
 public class ResidenceInterior : Interior
 {
     protected Residence residence;
+
     public Residence Residence => residence;
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
     public List<InventoryInteract> InventoryInteracts { get; set; } = new List<InventoryInteract>();
     public List<OutfitInteract> OutfitInteracts { get; set; } = new List<OutfitInteract>();
+    public List<TrophyInteract> TrophyInteracts { get; set; } = new List<TrophyInteract>();
     [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {
@@ -20,6 +23,7 @@ public class ResidenceInterior : Interior
             AllInteracts.AddRange(RestInteracts);
             AllInteracts.AddRange(InventoryInteracts);
             AllInteracts.AddRange(OutfitInteracts);
+            AllInteracts.AddRange(TrophyInteracts);
             return AllInteracts;
         }
     }
@@ -31,6 +35,7 @@ public class ResidenceInterior : Interior
     {
 
     }
+
     protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
     {
         if (isOpen && Residence != null && Residence.IsOwnedOrRented)
@@ -58,13 +63,6 @@ public class ResidenceInterior : Interior
             }
         }
     }
-
-
-
-
-
-
-
     public void SetResidence(Residence newResidence)
     {
         residence = newResidence;
@@ -80,10 +78,27 @@ public class ResidenceInterior : Interior
         {
             test.OutfitableLocation = newResidence;
         }
+        foreach (TrophyInteract test in TrophyInteracts)
+        {
+            test.TrophyableLocation = newResidence;
+            EntryPoint.WriteToConsole($"{newResidence.Name} ADDING TROPHY INTERACT");
+        }
     }
     public override void AddLocation(PossibleInteriors interiorList)
     {
         interiorList.ResidenceInteriors.Add(this);
+    }
+
+    public void OnPlayerLoadedSave()
+    {
+        if(!IsActive)
+        {
+            return;
+        }
+        foreach (TrophyInteract test in TrophyInteracts)
+        {
+            test.SpawnTrophies();
+        }
     }
 }
 

@@ -388,6 +388,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.BodyArmorItems);
         AllItems.AddRange(PossibleItems.RadarDetectorItems);
         AllItems.AddRange(PossibleItems.HardwareItems);
+        AllItems.AddRange(PossibleItems.TrophyItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -563,6 +564,7 @@ public class ModItems : IModItems
         DefaultConfig_Valuables();
         DefaultConfig_FEE();
         DefaultConfig_HardwareItems();
+        DefaultConfig_TrophyItems();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
     private void DefaultConfig_FEE()
@@ -593,6 +595,42 @@ public class ModItems : IModItems
              new HardwareItem("Chemicals", "For Science! Mix responsibly... or don't.", ItemType.Equipment){
                 ModelItemID = "ng_proc_paintcan02a",
                 ItemSubType = ItemSubType.Misc},
+        });
+    }
+    private void DefaultConfig_TrophyItems()
+    {
+        PossibleItems.TrophyItems.AddRange(new List<TrophyItem>
+        {
+            new TrophyItem("100 Races", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_100races", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("10 Year Anniversary", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_10yo", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Three Comma Club", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_3commaclub", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("$500 Million Earned", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_500mil", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Adversary Champion", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_adversary", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Arcade Master", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_arcademaster", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Arena War Legend", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_arenawarlegend", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Car Collector", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_carcollector", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Career Criminal", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_careercriminal", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Cayo Perico Heist", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_cayoperico", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Collector", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_collector", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Completionist", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_completionist", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Diamond Casino Heist", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_diamondcasino", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Doomsday Heist", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_doomsday", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Entrepreneur", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_entrepreneur", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Flight School", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_flightschool", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("GTA V Veteran", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_gtav", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Heist Professional", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_heistpro", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("LS Car Meet", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_lscm", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Criminal Mastermind", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_mastermind", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Nine Figure Earner", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_ninefig", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Platinum Award", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_platinum", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Rank 100", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_rank100", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Rank 500", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_rank500", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Rank 1000", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_rank1000", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Spotlight Award", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_spotlight", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Story Completion", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_story", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Vault Cracker", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_vault", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("Well Liked", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_wellliked", ItemSubType = ItemSubType.Misc,},
+            new TrophyItem("World Record Holder", "", ItemType.Valuables){ ModelItemID = "m25_2_prop_m52_trpy_worldrecord", ItemSubType = ItemSubType.Misc,},      
         });
     }
     private void DefaultConfig_Armor()

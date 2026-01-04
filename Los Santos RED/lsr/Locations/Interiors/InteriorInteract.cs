@@ -21,6 +21,8 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(ItemTheftInteract))]
 [XmlInclude(typeof(SalonInteract))]
 [XmlInclude(typeof(CraftInteriorInteract))]
+[XmlInclude(typeof(TrophyInteract))]
+[XmlInclude(typeof(TryOnInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract
@@ -78,6 +80,10 @@ public class InteriorInteract
         ClothesNames = clothesNames;
     }
     public virtual void OnInteriorLoaded()
+    {
+
+    }
+    public virtual void OnInteriorUnloaded()
     {
 
     }

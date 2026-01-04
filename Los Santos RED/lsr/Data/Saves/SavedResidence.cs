@@ -25,7 +25,7 @@ public class SavedResidence : SavedGameLocation
     public DateTime DateOfLastRentalPayment { get; set; }
     public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
     public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
-
+    public List<TrophyPlacement> TrophyPlacements { get; set; } = new List<TrophyPlacement>();
     public int StoredCash { get; set; }
     public override void LoadSavedData(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings, IEntityProvideable world)
     {
@@ -56,6 +56,15 @@ public class SavedResidence : SavedGameLocation
                     savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                 }
                 savedPlace.CashStorage.StoredCash = StoredCash;
+                savedPlace.TrophyPlacements = new List<TrophyPlacement>();
+                if (TrophyPlacements != null)
+                {
+                    foreach (TrophyPlacement trophyPlacement in TrophyPlacements)
+                    {
+                        savedPlace.TrophyPlacements.Add(new TrophyPlacement(trophyPlacement.SlotID, trophyPlacement.TrophyModelName));
+                    }
+                }
+                savedPlace.OnPlayerLoadedSave();
                 savedPlace.RefreshUI();
             }
         }

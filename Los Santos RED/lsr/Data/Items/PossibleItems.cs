@@ -43,6 +43,7 @@ public class PossibleItems
     public List<EquipmentItem> EquipmentItems { get; private set; } = new List<EquipmentItem>();
     public List<BodyArmorItem> BodyArmorItems { get; private set; } = new List<BodyArmorItem>();
     public List<HardwareItem> HardwareItems { get; private set; } = new List<HardwareItem>();
+    public List<TrophyItem> TrophyItems { get; private set; } = new List<TrophyItem>();
     public List<ModItem> AllItems()
     {
         List<ModItem> AllItems = new List<ModItem>();
@@ -79,6 +80,7 @@ public class PossibleItems
         AllItems.AddRange(BodyArmorItems);
         AllItems.AddRange(HardwareItems);
         AllItems.AddRange(ModItems);
+        AllItems.AddRange(TrophyItems);
         return AllItems;
     }
 

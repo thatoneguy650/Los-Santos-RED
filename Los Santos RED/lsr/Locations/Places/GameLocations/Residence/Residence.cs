@@ -58,6 +58,9 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     public CashStorage CashStorage { get; set; }
     [XmlIgnore]
     public ResidenceInterior ResidenceInterior { get; set; }
+    [XmlIgnore]
+    public List<TrophyPlacement> TrophyPlacements { get; set; }
+
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -313,6 +316,10 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
+        foreach(TrophyPlacement tp in TrophyPlacements)
+        {
+            tp.DespawnTrophy();
+        }
     }
     public void ReRent(IPropertyOwnable player, ITimeReportable time)
     {
@@ -822,6 +829,14 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 myRes.StoredCash = CashStorage.StoredCash;
             }
+            if(TrophyPlacements != null)
+            {
+                myRes.TrophyPlacements = new List<TrophyPlacement>();
+                foreach(TrophyPlacement trophyPlacements in TrophyPlacements)
+                {
+                    myRes.TrophyPlacements.Add(new TrophyPlacement(trophyPlacements.SlotID, trophyPlacements.TrophyModelName));
+                }
+            }
         }
         return myRes;
     }
@@ -851,5 +866,11 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         }
         return residenceInformation.ToString();
     }
+
+    public void OnPlayerLoadedSave()
+    {
+        ResidenceInterior?.OnPlayerLoadedSave();
+    }
+
 }
 

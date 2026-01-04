@@ -12,19 +12,18 @@ using System.Xml.Serialization;
 [Serializable()]
 public class Interior
 {
-    private bool IsInside;
+    protected bool IsInside;
     protected IInteractionable Player;
     protected ILocationInteractable LocationInteractable;
     protected GameLocation InteractableLocation;
     protected ISettingsProvideable Settings;
-    private bool IsActive = false;
-    private bool IsRunningInteriorUpdate = false;
+    protected bool IsActive = false;
+    protected bool IsRunningInteriorUpdate = false;
     protected List<Rage.Object> SpawnedProps = new List<Rage.Object>();
-    private int alarmSoundID;
+    protected int alarmSoundID;
     protected bool isAlarmActive;
-    private bool isOpen;
-    [XmlIgnore]
-    private readonly Dictionary<int, HashSet<string>> ActivatedSetsByInterior = new Dictionary<int, HashSet<string>>();
+    protected bool isOpen;
+
     public Interior()
     {
 
@@ -64,9 +63,9 @@ public class Interior
         Name = name;
     }
     [XmlIgnore]
-    public int InternalID { get; private set; }
+    public int InternalID { get; protected set; }
     [XmlIgnore]
-    public int DisabledInteriorID { get; private set; }
+    public int DisabledInteriorID { get; protected set; }
     [XmlIgnore]
     public bool IsMenuInteracting { get; set; }
     public int LocalID { get; set; }
@@ -142,7 +141,7 @@ public class Interior
             EntryPoint.WriteToConsole($"INTERIOR: {Name} {door.ModelHash} {door.Position} UNLOCKED");
         }
     }
-    public void Load(bool isOpen)
+    public virtual void Load(bool isOpen)
     {
         GameFiber.StartNew(delegate
         {
@@ -276,7 +275,7 @@ public class Interior
             }
         }
     }
-    public void Unload()
+    public virtual void Unload()
     {
         GameFiber.StartNew(delegate
         {
@@ -337,6 +336,17 @@ public class Interior
                 NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 TurnOffAlarm();
                 //SetInactive();
+
+
+                if (AllInteractPoints != null)
+                {
+                    foreach (InteriorInteract ii in AllInteractPoints)
+                    {
+                        ii.OnInteriorUnloaded();
+                    }
+                }
+
+
                 IsActive = false;
                 GameFiber.Yield();
 
@@ -503,7 +513,6 @@ public class Interior
         RemoveButtonPrompts();
         TeleportOut();
     }
-
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {
         if (InternalInteriorCoordinates != Vector3.Zero)
@@ -558,8 +567,6 @@ public class Interior
         }
         Doors.Clear();
     }
-
-
     private void SetInactive()
     {
         if (IsInside)
@@ -626,7 +633,7 @@ public class Interior
             player.Violations.AddViolating(StaticStrings.ArmedRobberyCrimeID);
         }
     }
-    private void RemoveSpawnedProps()
+    protected void RemoveSpawnedProps()
     {
         foreach(Rage.Object prop in SpawnedProps)
         {
@@ -637,21 +644,10 @@ public class Interior
         }
         SpawnedProps.Clear();
     }
-    [OnDeserialized()]
-    private void SetValuesOnDeserialized(StreamingContext context)
-    {
-        InteriorTintColor = -1;
-        InteriorSetStyleID = -1;
-        InteriorWallpaperColor = -1;
-    }
-
     public virtual void AddLocation(PossibleInteriors lppInteriors)
     {
         lppInteriors.GeneralInteriors.Add(this);
     }
-
-
-
     public virtual void SetOffAlarm()
     {
         if(IsNotAlarmed)
@@ -687,151 +683,4 @@ public class Interior
         NativeFunction.Natives.STOP_SOUND(alarmSoundID);
         NativeFunction.Natives.RELEASE_SOUND_ID(alarmSoundID);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-
-
-
-
-    // Helper to generate possible entity set names for a given style ID
-    private IEnumerable<string> GetEntitySetNamePatterns(int styleID)
-    {
-        yield return $"entity_set_style_{styleID}";
-        yield return $"set_style_{styleID}";
-        yield return $"set_style0{styleID}";
-        yield return $"style_{styleID}";
-        yield return $"style{styleID}";
-    }
-
-    // Activate an entity set and verify it activated
-    // returns true if activated successfully
-    private bool TryActivateEntitySetWithVerify(int interiorID, string setName, int maxTicksToWait = 30) // 0.5 seconds at 16ms per tick
-    {
-        if (string.IsNullOrEmpty(setName)) return false;
-        try
-        {
-            NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(interiorID, setName);
-        }
-        catch
-        {
-            // swallow - native may ignore invalid names
-            return false;
-        }
-        int ticks = 0;
-        while (!NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(interiorID, setName) && ticks < maxTicksToWait)
-        {
-            NativeFunction.Natives.REFRESH_INTERIOR(interiorID);
-            GameFiber.Yield();
-            ticks++;
-        }
-        return NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(interiorID, setName);
-    }
-
-    private void TrackActivatedSet(int interiorId, string setName)
-    {
-        if (interiorId == 0 || string.IsNullOrEmpty(setName))
-            return;
-
-        if (!ActivatedSetsByInterior.TryGetValue(interiorId, out var setList))
-        {
-            setList = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            ActivatedSetsByInterior[interiorId] = setList;
-        }
-
-        setList.Add(setName);
-    }
-
-    private void DeactivateTrackedSets()
-    {
-        foreach (var kvp in ActivatedSetsByInterior)
-        {
-            int interiorId = kvp.Key;
-
-            foreach (string setName in kvp.Value)
-            {
-                try
-                {
-                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(interiorId, setName);
-                }
-                catch { }
-            }
-
-            NativeFunction.Natives.REFRESH_INTERIOR(interiorId);
-        }
-
-        ActivatedSetsByInterior.Clear();
-    }
-
-    private void ForceClearInterior(int interiorId)
-    {
-        if (interiorId == 0)
-            return;
-
-        string[] prefixes =
-        {
-        "SET_STYLE",
-        "SET_WALLPAPER",
-        "entity_set_",
-        "entity_set_style",
-        "set_style",
-        "style"
-        };
-        // Numeric suffixes (0–12)
-        for (int i = 0; i <= 12; i++)
-        {
-            foreach (string p in prefixes)
-            {
-                TryDeactivate(interiorId, $"{p}_{i}");
-                TryDeactivate(interiorId, $"{p}{i}");
-            }
-        }
-
-        // Letter suffixes (A–Z)
-        for (char c = 'A'; c <= 'Z'; c++)
-        {
-            foreach (string p in prefixes)
-            {
-                TryDeactivate(interiorId, $"{p}_{c}");
-                TryDeactivate(interiorId, $"{p}{c}");
-            }
-        }
-
-        // Bare prefixes (many legacy DLCs use exact names)
-        foreach (string p in prefixes)
-        {
-            TryDeactivate(interiorId, p);
-        }
-    }
-
-    private void TryDeactivate(int interiorId, string setName)
-    {
-        try
-        {
-            if (NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(interiorId, setName))
-            {
-                NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(interiorId, setName);
-            }
-        }
-        catch
-        {
-            // Silent by design — invalid names are expected
-        }
-    }
-    */
 }

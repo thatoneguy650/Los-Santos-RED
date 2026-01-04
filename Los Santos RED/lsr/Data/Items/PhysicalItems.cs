@@ -64,8 +64,46 @@ public class PhysicalItems : IPropItems
         DefaultConfig_Drugs();
         DefaultConfig_Tools();
         DefaultConfig_ArmorHealth();
+        DefaultConfig_Trophies();
         DefaultConfig_FEE();
         Serialization.SerializeParams(PhysicalItemsList, ConfigFileName);
+    }
+
+    private void DefaultConfig_Trophies()
+    {
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
+        { 
+            new PhysicalItem("m25_2_prop_m52_trpy_100races", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_10yo", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_3commaclub", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_500mil", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_adversary", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_arcademaster", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_arenawarlegend", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_carcollector", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_careercriminal", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_cayoperico", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_collector", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_completionist", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_diamondcasino", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_doomsday", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_entrepreneur", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_flightschool", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_gtav", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_heistpro", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_lscm", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_mastermind", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_ninefig", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_platinum", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_rank100", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_rank500", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_rank1000", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_spotlight", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_story", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_vault", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_wellliked", new List<PropAttachment>(){ } ),
+            new PhysicalItem("m25_2_prop_m52_trpy_worldrecord", new List<PropAttachment>(){ } ),
+        });
     }
 
     private void DefaultConfig_FEE()

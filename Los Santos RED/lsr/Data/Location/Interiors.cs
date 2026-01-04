@@ -7327,7 +7327,7 @@ public class Interiors : IInteriors
             //        "set_reg_trophy_planter"
 
 
-            new ResidenceInterior(304385, "Vinewood Mansion") // 304641 Mansion Lower // 304897 Garage
+            new MansionInterior(304385, "Vinewood Mansion") // 304641 Mansion Lower // 304897 Garage
             {
                 IsTeleportEntry = false,
                 InternalInteriorCoordinates = new Vector3(539.7012f, 749.0894f, 201.3616f),
@@ -7566,8 +7566,32 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Sleep",
                     },
                 },
+                TrophyInteracts = new List<TrophyInteract>()
+                {
+                    new TrophyInteract("VinewoodTrophy", new Vector3(548.5652f, 739.2119f, 198.7076f), 345.7989f, "Manage Trophies")
+                    {
+                        CameraPosition = new Vector3(539.2967f, 738.8112f, 199.5518f),
+                        CameraDirection = new Vector3(-0.7532488f, -0.6125796f, -0.2395045f),
+                        CameraRotation = new Rotator(-13.8573f, 0f, 129.1197f),
+                        CabinetData = new CabinetData
+                        {
+                            CabinetCameraPosition = new Vector3(539.2967f, 738.8112f, 199.5518f),
+                            CabinetCameraDirection = new Vector3(-0.7532488f, -0.6125796f, -0.2395045f),
+                            CabinetCameraRotation = new Rotator(-13.8573f, 8.353992E-06f, 129.1197f),
+                            TrophyHeading = 128.529f,
+                            Slots = new List<TrophySlot>
+                            {
+                                new TrophySlot { SlotID = 1, Position = new Vector3(537.8293f, 735.0106f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.6434f, 735.7286f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new TrophySlot { SlotID = 2, Position = new Vector3(537.2085f, 735.796f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.0245f, 736.5135f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new TrophySlot { SlotID = 3, Position = new Vector3(536.5898f, 736.5798f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(537.4056f, 737.2984f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new TrophySlot { SlotID = 4, Position = new Vector3(535.9694f, 737.3654f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.8177f, 738.0441f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new TrophySlot { SlotID = 5, Position = new Vector3(535.3489f, 738.1505f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.1988f, 738.829f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) }
+                            }
+                        }
+                    },
+                },
             },
-            new ResidenceInterior(302593, "Richman Mansion") // 303105 Mansion Lower - 302849 Garage - 303361 underground TP garage
+            new MansionInterior(302593, "Richman Mansion") // 303105 Mansion Lower - 302849 Garage - 303361 underground TP garage
             {
                 IsTeleportEntry = false,
                 InternalInteriorCoordinates = new Vector3(-1666.368f, 478.9271f, 128.2216f),
@@ -7808,8 +7832,32 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Sleep",
                     },
                 },
+                TrophyInteracts = new List<TrophyInteract>()
+                {
+                    new TrophyInteract("RichmanTrophy", new Vector3(-1654.08f, 483.7208f, 125.5676f), 53.3514f, "Manage Trophies")
+                    {
+                        CameraPosition = new Vector3(-1656.854f, 475.0268f, 126.2049f),
+                        CameraDirection = new Vector3(0.3005681f, -0.9286817f, -0.2172768f),
+                        CameraRotation = new Rotator(-12.54914f, 0f, -162.0658f),
+                        CabinetData = new CabinetData
+                        {
+                            CabinetCameraPosition = new Vector3(-1656.854f, 475.0268f, 126.2049f),
+                            CabinetCameraDirection = new Vector3(0.3005681f, -0.9286817f, -0.2172768f),
+                            CabinetCameraRotation = new Rotator(-12.54914f, 2.186674E-07f, -162.0658f),
+                            TrophyHeading = 197.7647f,
+                            Slots = new List<TrophySlot>
+                            {
+                                new TrophySlot { SlotID = 1, Position = new Vector3(-1653.841f, 472.2335f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1654.183f, 473.2792f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new TrophySlot { SlotID = 2, Position = new Vector3(-1654.795f, 471.9278f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1655.186f, 472.9626f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new TrophySlot { SlotID = 3, Position = new Vector3(-1655.746f, 471.6235f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1656.093f, 472.6762f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new TrophySlot { SlotID = 4, Position = new Vector3(-1656.699f, 471.3182f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1657.047f, 472.3747f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new TrophySlot { SlotID = 5, Position = new Vector3(-1657.652f, 471.0128f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1658.002f, 472.0732f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) }
+                            }
+                        },
+                    },
+                },
             },
-            new ResidenceInterior(303617, "Tongva Estate") // 303873 Mansion Lower - 304129 Garage 
+            new MansionInterior(303617, "Tongva Estate") // 303873 Mansion Lower - 304129 Garage 
             {
                 IsTeleportEntry = false,
                 InternalInteriorCoordinates = new Vector3(-2586.065f, 1909.995f, 166.3754f),
@@ -8046,6 +8094,30 @@ public class Interiors : IInteriors
                         CameraDirection = new Vector3(-0.4609557f, -0.7899873f, -0.404277f),
                         CameraRotation = new Rotator(-23.84583f, 2.426987E-05f, 149.7365f),
                         ButtonPromptText = "Sleep",
+                    },
+                },
+                TrophyInteracts = new List<TrophyInteract>()
+                {
+                new TrophyInteract("TongvaTrophy", new Vector3(-2583.869f, 1896.979f, 163.7214f), 312.7611f, "Manage Trophies")
+                    {
+                        CameraPosition = new Vector3(-2591.883f, 1901.446f, 164.3784f),
+                        CameraDirection = new Vector3(-0.9708887f, -0.09680843f, -0.2190962f),
+                        CameraRotation = new Rotator(-12.65596f, 0f, 95.69421f),
+                        CabinetData = new CabinetData
+                        {
+                            CabinetCameraPosition = new Vector3(-2591.883f, 1901.446f, 164.3784f),
+                            CabinetCameraDirection = new Vector3(-0.9708887f, -0.09680843f, -0.2190962f),
+                            CabinetCameraRotation = new Rotator(-12.65596f, 4.37517E-07f, 95.69421f),
+                            TrophyHeading = 96.0f,
+                            Slots = new List<TrophySlot>
+                            {
+                                new TrophySlot { SlotID = 1, Position = new Vector3(-2595.189f, 1899.111f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.049f, 1899.246f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
+                                new TrophySlot { SlotID = 2, Position = new Vector3(-2595.292f, 1900.106f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.141f, 1900.243f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
+                                new TrophySlot { SlotID = 3, Position = new Vector3(-2595.395f, 1901.1f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.234f, 1901.239f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
+                                new TrophySlot { SlotID = 4, Position = new Vector3(-2595.498f, 1902.095f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.322f, 1902.235f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
+                                new TrophySlot { SlotID = 5, Position = new Vector3(-2595.601f, 1903.091f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.41f, 1903.231f, 164.1613f), CameraDirection = new Vector3(-0.9911417f, -0.08792067f, -0.0995392f), CameraRotation = new Rotator(-5.712636f, 2.037833E-06f, 95.06924f) }
+                            }
+                        }
                     },
                 },
             },

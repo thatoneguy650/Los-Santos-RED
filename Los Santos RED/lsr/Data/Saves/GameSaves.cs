@@ -200,6 +200,9 @@ public class GameSaves : IGameSaves
             InventoryItems = new List<InventorySave>() { new InventorySave("Marijuana",5.0f) }, 
             WeaponInventory = new List<StoredWeapon>() { new StoredWeapon(3219281620, Vector3.Zero, new WeaponVariation(), 50), }
         });
+
+        AlexisGameSave.SavedGameLocations.Add(new SavedResidence("The Vinewood Residence", true, false) { TrophyPlacements = new List<TrophyPlacement>() { new TrophyPlacement(1, "m25_2_prop_m52_trpy_10yo") } });
+
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false,0) };
         AlexisGameSave.SaveNumber = 1;
         AlexisGameSave.VoiceName = "A_F_M_BEVHILLS_01_WHITE_FULL_01";

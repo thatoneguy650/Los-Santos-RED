@@ -246,7 +246,12 @@
     <Compile Include="lsr\Locations\Interiors\CraftInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\CabinetData.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\MansionInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophyPlacement.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophySlot.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\AnimationPreInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophyInteract.cs" />
     <Compile Include="lsr\Locations\Other\GangTerritory.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\CivilianConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
@@ -299,7 +304,7 @@
     <Compile Include="lsr\Locations\Interiors\Theft\ItemUsePreInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\MoneyTheftInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\OutfitInteract.cs" />
-    <Compile Include="lsr\Locations\Interiors\ResidenceInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\ResidenceInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\RestInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\SinkInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\StandardInteriorInteract.cs" />
@@ -592,6 +597,7 @@
     <Compile Include="lsr\Player\Inventory\Items\PipeItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RadarDetectorItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\RollingPapersItem.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\TrophyItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\VariablePriceMenuItem.cs" />
     <Compile Include="lsr\Player\Managers\CuffManager.cs" />

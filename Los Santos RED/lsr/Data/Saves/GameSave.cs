@@ -339,9 +339,9 @@ namespace LosSantosRED.lsr.Data
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
 
-                //LEGACY TO BE REMOVED
-                LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
-                LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+                ////LEGACY TO BE REMOVED
+                //LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
+                //LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
 
                 LoadOwnedProperties(player, placesOfInterest, modItems, settings, world);
                 GameFiber.Sleep(1000);
