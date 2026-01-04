@@ -193,15 +193,6 @@ public class Interior
                     NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, previousEntitySetStyle);
                     GameFiber.Yield();
                 }
-                foreach (string interiorSet in InteriorSets)
-                {
-                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
-                    if (InteriorTintColor != -1)
-                    {
-                        SetInteriorColorTint(interiorSet, InteriorTintColor);  // Apply the tint color to each interior set
-                    }
-                    GameFiber.Yield();
-                }
                 // Activate new entity set style
                 if (InteriorSetStyleID != -1)
                 {
@@ -209,6 +200,38 @@ public class Interior
                     EntryPoint.WriteToConsole($"Activating new entity set style: {newEntitySetStyle}");
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
+                }
+                foreach (string interiorSet in InteriorSets)
+                {
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
+                    if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
+                        && InteriorWallpaperColor != -1)
+                    {
+                        NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(
+                            InternalID, interiorSet, InteriorWallpaperColor);
+                    }
+                    else if (InteriorTintColor != -1)
+                    {
+                        SetInteriorColorTint(interiorSet, InteriorTintColor);
+                    }
+                    GameFiber.Yield();
+                }
+                if (LinkedInteriorCoords.Any())
+                {
+                    foreach (Vector3 coord in LinkedInteriorCoords)
+                    {
+                        int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(coord.X, coord.Y, coord.Z);
+                        if (linkedID != 0 && linkedID != InternalID)
+                        {
+                            foreach (string interiorSet in InteriorSets)
+                            {
+                                NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(linkedID, interiorSet);
+
+                                GameFiber.Yield();
+                            }
+                            NativeFunction.Natives.REFRESH_INTERIOR(linkedID);
+                        }
+                    }
                 }
                 LoadDoors(isOpen, true);
                 if (DisabledInteriorCoords != Vector3.Zero)
@@ -317,6 +340,22 @@ public class Interior
                     EntryPoint.WriteToConsole($"Deactivating entity set style on unload: {entitySetStyle}");
                     NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entitySetStyle);
                     GameFiber.Yield();
+                }
+                if (LinkedInteriorCoords.Any())
+                {
+                    foreach (Vector3 coord in LinkedInteriorCoords)
+                    {
+                        int linkedID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(coord.X, coord.Y, coord.Z);
+                        if (linkedID != 0 && linkedID != InternalID)
+                        {
+                            foreach (string interiorSet in InteriorSets)
+                            {
+                                NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(linkedID, interiorSet);
+                                GameFiber.Yield();
+                            }
+                            NativeFunction.Natives.REFRESH_INTERIOR(linkedID);
+                        }
+                    }
                 }
                 foreach (InteriorDoor door in Doors)
                 {
@@ -706,7 +745,7 @@ public class Interior
 
     /*
 
-
+    GARBAGE - GARBAGE GARBAGE GARBAGE - KEEP FOR REFERENCE IF NEEDED LATER
 
 
     // Helper to generate possible entity set names for a given style ID
