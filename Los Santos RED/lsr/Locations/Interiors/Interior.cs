@@ -187,29 +187,37 @@ public class Interior
                     }
                     GameFiber.Yield();
                 }
-                // Deactivate the current entity set style before activating the new one ( If one is loaded )
+                if (InteriorSetStyleID >= -1)
+                {
+                    for (int i = 0; i <= 9; i++)
+                    {
+                        string oldStyle = $"entity_set_style_{i}";
+                        if (NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(InternalID, oldStyle))
+                        {
+                            NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, oldStyle);
+                            GameFiber.Yield();
+                        }
+                    }
+                }
                 if (InteriorSetStyleID != -1)
                 {
-                    string previousEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
-                    EntryPoint.WriteToConsole($"Deactivating previous entity set style: {previousEntitySetStyle}");
-                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, previousEntitySetStyle);
+                    string styleName = $"entity_set_style_{InteriorSetStyleID}";
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, styleName);
                     GameFiber.Yield();
                 }
                 foreach (string interiorSet in InteriorSets)
                 {
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
-                    if (InteriorTintColor != -1)
+                    if (interiorSet.StartsWith("SET_WALLPAPER_", StringComparison.OrdinalIgnoreCase)
+                        && InteriorWallpaperColor != -1)
                     {
-                        SetInteriorColorTint(interiorSet, InteriorTintColor);  // Apply the tint color to each interior set
+                        NativeFunction.Natives.SET_INTERIOR_ENTITY_SET_TINT_INDEX(
+                            InternalID, interiorSet, InteriorWallpaperColor);
                     }
-                    GameFiber.Yield();
-                }
-                // Activate new entity set style
-                if (InteriorSetStyleID != -1)
-                {
-                    string newEntitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
-                    EntryPoint.WriteToConsole($"Activating new entity set style: {newEntitySetStyle}");
-                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
+                    else if (InteriorTintColor != -1)
+                    {
+                        SetInteriorColorTint(interiorSet, InteriorTintColor);
+                    }
                     GameFiber.Yield();
                 }
                 LoadDoors(isOpen, true);
