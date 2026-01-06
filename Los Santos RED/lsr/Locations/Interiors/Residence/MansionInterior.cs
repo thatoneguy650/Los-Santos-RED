@@ -11,6 +11,10 @@ using System.Xml.Serialization;
 
 public class MansionInterior : ResidenceInterior
 {
+    private string CurrentMansionValueEntitySet;
+    private List<string> defaultEntities = new List<string>() { "SET_BASE_VAULT_00", "SET_BASE_VAULT_01", "SET_BASE_VAULT_02", "SET_BASE_VAULT_03", 
+        "SET_BASE_VAULT_04", "SET_BASE_VAULT_05", "SET_BASE_VAULT_06", "SET_BASE_VAULT_07", "SET_BASE_VAULT_08", "SET_BASE_VAULT_09" };
+    private List<int> LinkedInteriorIDs = new List<int>();
     [XmlIgnore]
     private readonly Dictionary<int, HashSet<string>> ActivatedSetsByInterior = new Dictionary<int, HashSet<string>>();
     public MansionInterior(int iD, string name) : base(iD, name)
@@ -19,8 +23,122 @@ public class MansionInterior : ResidenceInterior
 
     public MansionInterior()
     {
+
+    }
+    public override void OnPlayerLoadedSave()
+    {
+        MatchVaultToStoredCash();
+        base.OnPlayerLoadedSave();
+    }
+    public override void OnStoredCashChanged(int storedCash)
+    {
+        if(InteriorSets == null)
+        {
+            return;
+        }
+        if(!InteriorSets.Exists(x => x == "SET_BASE_VAULT_00"))
+        {
+            return;
+        }
+        if(!IsActive)
+        {
+            return;
+        }
+        SetEntitySet(storedCash);
     }
 
+    private void MatchVaultToStoredCash()
+    {
+        EntryPoint.WriteToConsole("MatchVaultToStoredCash LOADED START");
+        if (InteriorSets == null)
+        {
+            return;
+        }
+        if(Residence == null)
+        {
+            return;
+        }
+        if (!InteriorSets.Exists(x => x == "SET_BASE_VAULT_00"))
+        {
+            return;
+        }
+        SetEntitySet(Residence.CashStorage.StoredCash);
+    }
+    //maybe do this another way? store the entity sets themselves and set what cash amount they go with, they just select all and deactivate, then select what you need and activate.
+    private void SetEntitySet(int Cash)
+    {
+        List<string> toRun = GetVaultEntitySetListForCurrentCash(Cash);
+
+
+        EntryPoint.WriteToConsole($"SetEntitySet Cash{Cash} {string.Join(",", toRun)}");
+
+        foreach (string entity in defaultEntities)
+        {
+            NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entity);
+        }
+        foreach (string entity in toRun)
+        {
+            NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, entity);
+        }
+        NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
+
+        foreach (int id in LinkedInteriorIDs)
+        {
+            foreach (string entity in defaultEntities)
+            {
+                NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(id, entity);
+            }
+            foreach (string entity in toRun)
+            {
+                NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(id, entity);
+            }
+            NativeFunction.Natives.REFRESH_INTERIOR(id);
+        }
+    }
+    private List<string> GetVaultEntitySetListForCurrentCash(int currentCash)
+    {
+        //not right, turns to gold and overlaps eventually?
+        List<string> toReturn = new List<string>();
+        toReturn.Add("SET_BASE_VAULT_00");
+        if (currentCash >= 25000)
+        {
+            toReturn.Add("SET_BASE_VAULT_01");
+        }
+        if (currentCash >= 75000)
+        {
+            toReturn.Add("SET_BASE_VAULT_02");
+        }
+        if (currentCash >= 250000)
+        {
+            toReturn.Add("SET_BASE_VAULT_03");
+        }
+        if (currentCash >= 500000)
+        {
+            toReturn.Add("SET_BASE_VAULT_04");
+        }
+        if (currentCash >= 1000000)
+        {
+            toReturn.Add("SET_BASE_VAULT_05");//still cash
+        }
+
+        if (currentCash >= 2000000)//gold starts here
+        {
+            toReturn.Add("SET_BASE_VAULT_06");
+        }
+        //if (currentCash >= 3000000)
+        //{
+        //    toReturn.Add("SET_BASE_VAULT_07");
+        //}
+        //if (currentCash >= 4000000)
+        //{
+        //    toReturn.Add("SET_BASE_VAULT_08");
+        //}
+        //if (currentCash >= 10000000)
+        //{
+        //    toReturn.Add("SET_BASE_VAULT_09");
+        //}
+        return toReturn;
+    }
     public override void Load(bool isOpen)
     {
         GameFiber.StartNew(delegate
@@ -126,6 +244,7 @@ public class MansionInterior : ResidenceInterior
                     GameFiber.Yield();
                 }
 
+                LinkedInteriorIDs = new List<int>();
                 // 8. Linked interiors (same sets, no re-clear)
                 foreach (Vector3 coord in LinkedInteriorCoords ?? Enumerable.Empty<Vector3>())
                 {
@@ -134,6 +253,8 @@ public class MansionInterior : ResidenceInterior
 
                     if (linkedID == 0)
                         continue;
+
+                    LinkedInteriorIDs.Add(linkedID);
 
                     foreach (string interiorSet in InteriorSets)
                     {
@@ -176,7 +297,11 @@ public class MansionInterior : ResidenceInterior
                 foreach (InteriorInteract ii in AllInteractPoints ?? Enumerable.Empty<InteriorInteract>())
                     ii.OnInteriorLoaded();
 
+
+                
+
                 IsActive = true;
+                MatchVaultToStoredCash();
                 EntryPoint.WriteToConsole($"Load Interior {Name} isOpen={isOpen}");
             }
             catch (Exception ex)

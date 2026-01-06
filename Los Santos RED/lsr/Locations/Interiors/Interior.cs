@@ -107,7 +107,10 @@ public class Interior
     public bool IsAlarmActive => isAlarmActive;
     public bool IsNotAlarmed { get; set; }
 
-    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames)
+
+    public List<AudioEmitter> AudioEmitters { get; set; } = new List<AudioEmitter>();
+
+    public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames, IRadioStations radioStations)
     {
         Settings = settings;
         Player = player;
@@ -118,7 +121,7 @@ public class Interior
         }
         foreach (InteriorInteract interiorInteract in AllInteractPoints)//InteractPoints)
         {
-            interiorInteract.Setup(modItems, clothesNames);
+            interiorInteract.Setup(modItems, clothesNames, radioStations);
         }
         foreach(InteriorDoor interiorDoor in Doors)
         {
@@ -682,5 +685,10 @@ public class Interior
         isAlarmActive = false;
         NativeFunction.Natives.STOP_SOUND(alarmSoundID);
         NativeFunction.Natives.RELEASE_SOUND_ID(alarmSoundID);
+    }
+
+    public virtual void OnStoredCashChanged(int storedCash)
+    {
+
     }
 }

@@ -33,9 +33,9 @@ public class MoneyTheftInteract : TheftInteract
     public List<AnimationPoint> RightHandAnimationPoints { get; set; } = new List<AnimationPoint>();
     public List<AnimationPoint> LeftHandAnimationPoints { get; set; } = new List<AnimationPoint>();
 
-    public override void Setup(IModItems modItems, IClothesNames clothesNames)
+    public override void Setup(IModItems modItems, IClothesNames clothesNames, IRadioStations radioStations)
     {
-        base.Setup(modItems, clothesNames);
+        base.Setup(modItems, clothesNames, radioStations);
         if (RightHandAnimationPoints == null || !RightHandAnimationPoints.Any())
         {
             RightHandAnimationPoints = new List<AnimationPoint>() { new AnimationPoint(0, 0.01f, true), new AnimationPoint(1, 0.4f, false), new AnimationPoint(2, 0.6f, true), new AnimationPoint(3, 0.8f, false) };

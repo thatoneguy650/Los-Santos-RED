@@ -59,7 +59,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     [XmlIgnore]
     public ResidenceInterior ResidenceInterior { get; set; }
     [XmlIgnore]
-    public List<TrophyPlacement> TrophyPlacements { get; set; }
+    public List<DisplayPlacement> DisplayPlacements { get; set; } = new List<DisplayPlacement>();
 
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
@@ -316,9 +316,9 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
         SimpleInventory.Reset();
         UpdateStoredData();
         CashStorage.Reset();
-        foreach(TrophyPlacement tp in TrophyPlacements)
+        foreach(DisplayPlacement tp in DisplayPlacements)
         {
-            tp.DespawnTrophy();
+            tp.DespawnDisplay();
         }
     }
     public void ReRent(IPropertyOwnable player, ITimeReportable time)
@@ -829,12 +829,12 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             {
                 myRes.StoredCash = CashStorage.StoredCash;
             }
-            if(TrophyPlacements != null)
+            if(DisplayPlacements != null)
             {
-                myRes.TrophyPlacements = new List<TrophyPlacement>();
-                foreach(TrophyPlacement trophyPlacements in TrophyPlacements)
+                myRes.TrophyPlacements = new List<DisplayPlacement>();
+                foreach(DisplayPlacement trophyPlacements in DisplayPlacements)
                 {
-                    myRes.TrophyPlacements.Add(new TrophyPlacement(trophyPlacements.SlotID, trophyPlacements.TrophyModelName));
+                    myRes.TrophyPlacements.Add(new DisplayPlacement(trophyPlacements.SlotID, trophyPlacements.ModItemName));
                 }
             }
         }

@@ -1492,6 +1492,11 @@ public class GameLocation : ILocationDispatchable
     {
 
     }
+
+    public virtual void OnStoredCashChanged(int storedCash)
+    {
+        Interior?.OnStoredCashChanged(storedCash);
+    }
     //public virtual void UpdatePrompts()
     //{
 

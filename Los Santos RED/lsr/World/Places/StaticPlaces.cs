@@ -84,7 +84,7 @@ public class StaticPlaces
         }
         foreach(Interior interior in Interiors.PossibleInteriors.AllInteriors())
         {
-            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems, ClothesNames);
+            interior.Setup(player, PlacesOfInterest, Settings, locationInteractable, ModItems, ClothesNames, ModDataFileManager.RadioStations);
         }
 
         foreach(StoredSpawn spawnPlace in PlacesOfInterest.PossibleLocations.StoredSpawns)

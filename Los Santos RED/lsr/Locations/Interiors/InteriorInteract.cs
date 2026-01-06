@@ -21,7 +21,8 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(ItemTheftInteract))]
 [XmlInclude(typeof(SalonInteract))]
 [XmlInclude(typeof(CraftInteriorInteract))]
-[XmlInclude(typeof(TrophyInteract))]
+[XmlInclude(typeof(DisplayInteract))]
+[XmlInclude(typeof(AudioEmitterInteract))]
 [XmlInclude(typeof(TryOnInteract))]
 //UrinalInteract
 //ToiletInteract
@@ -74,7 +75,7 @@ public class InteriorInteract
     
     public virtual bool ShouldHideMarker { get; set; } = false;
     
-    public virtual void Setup(IModItems modItems, IClothesNames clothesNames)
+    public virtual void Setup(IModItems modItems, IClothesNames clothesNames, IRadioStations radioStations)
     {
         ModItems = modItems;
         ClothesNames = clothesNames;

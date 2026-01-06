@@ -12,7 +12,7 @@ public class ResidenceInterior : Interior
     public List<RestInteract> RestInteracts { get; set; } = new List<RestInteract>();
     public List<InventoryInteract> InventoryInteracts { get; set; } = new List<InventoryInteract>();
     public List<OutfitInteract> OutfitInteracts { get; set; } = new List<OutfitInteract>();
-    public List<TrophyInteract> TrophyInteracts { get; set; } = new List<TrophyInteract>();
+    public List<DisplayInteract> TrophyInteracts { get; set; } = new List<DisplayInteract>();
     [XmlIgnore]
     public override List<InteriorInteract> AllInteractPoints
     {
@@ -78,9 +78,9 @@ public class ResidenceInterior : Interior
         {
             test.OutfitableLocation = newResidence;
         }
-        foreach (TrophyInteract test in TrophyInteracts)
+        foreach (DisplayInteract test in TrophyInteracts)
         {
-            test.TrophyableLocation = newResidence;
+            test.DisplayLocation = newResidence;
             EntryPoint.WriteToConsole($"{newResidence.Name} ADDING TROPHY INTERACT");
         }
     }
@@ -89,15 +89,15 @@ public class ResidenceInterior : Interior
         interiorList.ResidenceInteriors.Add(this);
     }
 
-    public void OnPlayerLoadedSave()
+    public virtual void OnPlayerLoadedSave()
     {
         if(!IsActive)
         {
             return;
         }
-        foreach (TrophyInteract test in TrophyInteracts)
+        foreach (DisplayInteract test in TrophyInteracts)
         {
-            test.SpawnTrophies();
+            test.SpawnDisplayProps();
         }
     }
 }

@@ -11,5 +11,5 @@ public class CabinetData
     public Vector3 CabinetCameraDirection { get; set; }
     public Rotator CabinetCameraRotation { get; set; }
     public float TrophyHeading { get; set; } = 180f;
-    public List<TrophySlot> Slots { get; set; }
+    public List<DisplaySlot> Slots { get; set; }
 }

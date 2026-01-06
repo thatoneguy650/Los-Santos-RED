@@ -968,5 +968,24 @@ public class WeaponItem : ModItem
         possibleItems?.WeaponItems.RemoveAll(x => x.ModelName == ModelName);
         possibleItems?.WeaponItems.Add(this);
     }
+
+    public override Rage.Object SpawnObject(Vector3 position, float heading)
+    {
+        if(ModelItem == null || ModelItem.ModelHash == 0)
+        {
+            return null;
+        }
+        NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
+        if (!NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
+        {
+            return null;       
+        }
+        Rage.Object toReturn = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(ModelItem.ModelHash, 60, position.X, position.Y, position.Z, true, 1.0f, 0, 0, 1);
+        if(toReturn.Exists())
+        {
+            toReturn.Heading = heading;
+        }
+        return toReturn;
+    }
 }
 

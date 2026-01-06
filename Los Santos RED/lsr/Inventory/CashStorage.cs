@@ -18,7 +18,7 @@ public class CashStorage
     private UIMenuListScrollerItem<int> incrementScroller;
     private UIMenuNumericScrollerItem<int> storeCashScroller;
     private UIMenuNumericScrollerItem<int> removeCashScroller;
-    private int MaxAccountValue = 5000000;
+    private int MaxAccountValue = 500000000;
     private GameLocation GameLocation;
     private uint NotificationHandle;
     private UIMenuItem cashStorageSubMenuItem;
@@ -105,11 +105,14 @@ public class CashStorage
 
 
 
+ 
+
+
                 if (WithAnimation)
                 {
                     Player.ActivityManager.PerformCashAnimation(false);
                 }
-
+                GameLocation?.OnStoredCashChanged(StoredCash);
 
 
                 if (GameLocation != null)
@@ -147,7 +150,7 @@ public class CashStorage
                 {
                     Player.ActivityManager.PerformCashAnimation(true);
                 }
-
+                GameLocation?.OnStoredCashChanged(StoredCash);
 
                 if (GameLocation != null)
                 {

@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 
-public class TrophyInteract : InteriorInteract
+public class DisplayInteract : InteriorInteract
 {
-    private UIMenu TrophyMainMenu;
+    private UIMenu DisplayMainMenu;
     private MenuPool MenuPool;
 
-    public TrophyInteract() 
+    public DisplayInteract() 
     { 
 
     }
 
-    public TrophyInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public DisplayInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
         AutoCamera = false;
     }
 
     [XmlIgnore]
-    public Residence TrophyableLocation { get; set; }
+    public Residence DisplayLocation { get; set; }
     public CabinetData CabinetData { get; set; }
 
 
@@ -65,14 +65,21 @@ public class TrophyInteract : InteriorInteract
 
     private void CreateTrophyMenu()
     {
-        TrophyMainMenu = new UIMenu("Trophies","Manage Placed Trophies");
+        DisplayMainMenu = new UIMenu("Displays","Manage Placed Displays");
         MenuPool = new MenuPool();
-        MenuPool.Add(TrophyMainMenu);
-        foreach(TrophySlot trophySlot in CabinetData.Slots)
+        MenuPool.Add(DisplayMainMenu);
+        DisplayMainMenu.SetBannerType(EntryPoint.LSRedColor);
+
+        if (CabinetData == null)
         {
-            trophySlot.AddToMenu(MenuPool, TrophyMainMenu, ModItems, TrophyableLocation, this, LocationCamera);
+            return;
         }
-        TrophyMainMenu.Visible = true;
+
+        foreach(DisplaySlot trophySlot in CabinetData.Slots)
+        {
+            trophySlot.AddToMenu(MenuPool, DisplayMainMenu, ModItems, DisplayLocation, this, LocationCamera);
+        }
+        DisplayMainMenu.Visible = true;
 
         while (MenuPool.IsAnyMenuOpen() && Player.ActivityManager.CanPerformActivitiesExtended)
         {
@@ -86,37 +93,37 @@ public class TrophyInteract : InteriorInteract
     }
     public override void OnInteriorLoaded()
     {
-        SpawnTrophies();//should be done when you get close or when you enter actually
+        SpawnDisplayProps();//should be done when you get close or when you enter actually
         base.OnInteriorLoaded();
     }
     public override void OnInteriorUnloaded()
     {
-        DespawnTrophies();
+        DespawnDisplayProps();
         base.OnInteriorUnloaded();
     }
-    public void SpawnTrophies()
+    public void SpawnDisplayProps()
     {
         //spawn trophies based on what is stored
-        if(TrophyableLocation == null || CabinetData == null || TrophyableLocation.TrophyPlacements == null)
+        if(DisplayLocation == null || CabinetData == null || DisplayLocation.DisplayPlacements == null)
         {
             return;
         }
-        foreach(TrophyPlacement trophyPlacement in TrophyableLocation.TrophyPlacements)
+        foreach(DisplayPlacement trophyPlacement in DisplayLocation.DisplayPlacements)
         {
-            trophyPlacement.SpawnTrophy(CabinetData);
+            trophyPlacement.SpawnDisplay(CabinetData, ModItems);
         }
     }
-    public void DespawnTrophies()
+    public void DespawnDisplayProps()
     {
         EntryPoint.WriteToConsole("DespawnTrophies RAN");
-        if (TrophyableLocation == null || CabinetData == null || TrophyableLocation.TrophyPlacements == null)
+        if (DisplayLocation == null || CabinetData == null || DisplayLocation.DisplayPlacements == null)
         {
             return;
         }
-        foreach (TrophyPlacement trophyPlacement in TrophyableLocation.TrophyPlacements)
+        foreach (DisplayPlacement trophyPlacement in DisplayLocation.DisplayPlacements)
         {
-            trophyPlacement.DespawnTrophy();
-            EntryPoint.WriteToConsole($"DespawnTrophies DELETED TROPHY {trophyPlacement.SlotID} {trophyPlacement.TrophyModelName}");
+            trophyPlacement.DespawnDisplay();
+            EntryPoint.WriteToConsole($"DespawnTrophies DELETED TROPHY {trophyPlacement.SlotID} {trophyPlacement.ModItemName}");
         }
     }
 }

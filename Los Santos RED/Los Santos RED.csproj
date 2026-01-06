@@ -227,6 +227,7 @@
     <Compile Include="lsr\Dispatcher\Civilian\TaxiDispatcher.cs" />
     <Compile Include="lsr\Helper\CraftableItemLookupModel.cs" />
     <Compile Include="lsr\Inventory\CashStorage.cs" />
+    <Compile Include="lsr\Locations\Interiors\AudioEmitter.cs" />
     <Compile Include="lsr\Locations\Interiors\BankDrawerInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\BankInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Barber\BarberShopInterior.cs" />
@@ -244,14 +245,15 @@
     <Compile Include="lsr\Locations\Interiors\Clothing Store\PedClothingShopMenuItem.cs" />
     <Compile Include="lsr\Locations\Interiors\Clothing Store\TryOnInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\CraftInteriorInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\AudioEmitterInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\Trophy\CabinetData.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\MansionInterior.cs" />
-    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophyPlacement.cs" />
-    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophySlot.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\DisplayPlacement.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\DisplaySlot.cs" />
     <Compile Include="lsr\Locations\Interiors\Theft\AnimationPreInteract.cs" />
-    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\TrophyInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\Trophy\DisplayInteract.cs" />
     <Compile Include="lsr\Locations\Other\GangTerritory.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\CivilianConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />

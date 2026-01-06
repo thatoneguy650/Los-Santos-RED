@@ -201,7 +201,7 @@ public class GameSaves : IGameSaves
             WeaponInventory = new List<StoredWeapon>() { new StoredWeapon(3219281620, Vector3.Zero, new WeaponVariation(), 50), }
         });
 
-        AlexisGameSave.SavedGameLocations.Add(new SavedResidence("The Vinewood Residence", true, false) { TrophyPlacements = new List<TrophyPlacement>() { new TrophyPlacement(1, "m25_2_prop_m52_trpy_10yo") } });
+        AlexisGameSave.SavedGameLocations.Add(new SavedResidence("The Vinewood Residence", true, false) { TrophyPlacements = new List<DisplayPlacement>() { new DisplayPlacement(1, "10 Year Anniversary") } });
 
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false,0) };
         AlexisGameSave.SaveNumber = 1;

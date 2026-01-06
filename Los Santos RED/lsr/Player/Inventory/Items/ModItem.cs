@@ -828,5 +828,16 @@ public class ModItem
         possibleItems?.ModItems.RemoveAll(x => x.Name == Name);
         possibleItems?.ModItems.Add(this);
     }
+
+
+
+    public virtual Rage.Object SpawnObject(Vector3 position, float heading)
+    {
+        if(ModelItem == null)
+        {
+            return null;
+        }
+        return new Rage.Object(ModelItem.ModelName, position, heading);
+    }
 }
 

@@ -7357,7 +7357,7 @@ public class Interiors : IInteriors
                     "set_pet_dog",
                     "set_pet_cat",
                     "SET_ELEV_STD",
-                    "SET_BASE_VAULT_09", // 0-9
+                    "SET_BASE_VAULT_00", // 0-9
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
                 InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
@@ -7371,7 +7371,25 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
-
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_3","Lobby (1)"),
+                    new AudioEmitter($"se_dlc25-2_mansion_arcade_loc_3","Arcade"),
+                    new AudioEmitter($"se_dlc25-2_mansion_cigar_room_loc_3","Cigar Room"),
+                    new AudioEmitter($"se_dlc25-2_mansion_gallery_loc_3","Gallery"),
+                    new AudioEmitter($"se_dlc25-2_mansion_guest_bedroom_loc_3","Guest Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_kitchen_loc_3","Kitchen"),
+                    new AudioEmitter($"se_dlc25-2_mansion_master_bedroom_loc_3","Master Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_office_loc_3","Office"),
+                    new AudioEmitter($"se_dlc25-2_mansion_trophy_room_loc_3","Trophy Room"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_02_loc_3","Lobby (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_03_loc_3","Lobby (3)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_01_loc_3","Club (1)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_02_loc_3","Club (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_loc_3","Garage"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_top_loc_3","Garage Top"),
+                    new AudioEmitter($"se_dlc25-2_basement_mod_garage_loc_3","Mod Garage"),
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
@@ -7412,6 +7430,19 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Mansion Control",
                         UseNavmesh = false,
                     },
+
+                    new AudioEmitterInteract()
+                    {
+                        Name = "vineManRadio1",
+                        Position = new Vector3(559.986f, 735.6894f, 202.3616f), 
+                        Heading =  340.6097f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(558.4035f, 734.8576f, 203.3967f), 
+                        CameraDirection = new Vector3(0.7726462f, 0.5604747f, -0.2981373f), 
+                        CameraRotation = new Rotator(-17.34576f, 2.683351E-06f, -54.04301f),
+                    },
+
                     new SinkInteract()
                     {
                         Name = "VineManSink1",
@@ -7566,9 +7597,9 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Sleep",
                     },
                 },
-                TrophyInteracts = new List<TrophyInteract>()
+                TrophyInteracts = new List<DisplayInteract>()
                 {
-                    new TrophyInteract("VinewoodTrophy", new Vector3(548.5652f, 739.2119f, 198.7076f), 345.7989f, "Manage Trophies")
+                    new DisplayInteract("VinewoodTrophy", new Vector3(548.5652f, 739.2119f, 198.7076f), 345.7989f, "Manage Trophies")
                     {
                         CameraPosition = new Vector3(539.2967f, 738.8112f, 199.5518f),
                         CameraDirection = new Vector3(-0.7532488f, -0.6125796f, -0.2395045f),
@@ -7579,13 +7610,13 @@ public class Interiors : IInteriors
                             CabinetCameraDirection = new Vector3(-0.7532488f, -0.6125796f, -0.2395045f),
                             CabinetCameraRotation = new Rotator(-13.8573f, 8.353992E-06f, 129.1197f),
                             TrophyHeading = 128.529f,
-                            Slots = new List<TrophySlot>
+                            Slots = new List<DisplaySlot>
                             {
-                                new TrophySlot { SlotID = 1, Position = new Vector3(537.8293f, 735.0106f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.6434f, 735.7286f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
-                                new TrophySlot { SlotID = 2, Position = new Vector3(537.2085f, 735.796f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.0245f, 736.5135f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
-                                new TrophySlot { SlotID = 3, Position = new Vector3(536.5898f, 736.5798f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(537.4056f, 737.2984f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
-                                new TrophySlot { SlotID = 4, Position = new Vector3(535.9694f, 737.3654f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.8177f, 738.0441f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
-                                new TrophySlot { SlotID = 5, Position = new Vector3(535.3489f, 738.1505f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.1988f, 738.829f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) }
+                                new DisplaySlot { SlotID = 1, Position = new Vector3(537.8293f, 735.0106f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.6434f, 735.7286f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new DisplaySlot { SlotID = 2, Position = new Vector3(537.2085f, 735.796f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(538.0245f, 736.5135f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new DisplaySlot { SlotID = 3, Position = new Vector3(536.5898f, 736.5798f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(537.4056f, 737.2984f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new DisplaySlot { SlotID = 4, Position = new Vector3(535.9694f, 737.3654f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.8177f, 738.0441f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) },
+                                new DisplaySlot { SlotID = 5, Position = new Vector3(535.3489f, 738.1505f, 198.73f), Rotation = 180f, CameraPosition = new Vector3(536.1988f, 738.829f, 199.2184f), CameraDirection = new Vector3(-0.7748819f, -0.6112047f, -0.1612045f), CameraRotation = new Rotator(-9.276819f, 6.055617E-06f, 128.2654f) }
                             }
                         }
                     },
@@ -7622,7 +7653,7 @@ public class Interiors : IInteriors
                     "set_pet_dog",
                     "set_pet_cat",
                     "SET_ELEV_STD",
-                    "SET_BASE_VAULT_09", // 0-9
+                    "SET_BASE_VAULT_00", // 0-9
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
                 InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
@@ -7637,7 +7668,25 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
-
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_2","Lobby (1)"),
+                    new AudioEmitter($"se_dlc25-2_mansion_arcade_loc_2","Arcade"),
+                    new AudioEmitter($"se_dlc25-2_mansion_cigar_room_loc_2","Cigar Room"),
+                    new AudioEmitter($"se_dlc25-2_mansion_gallery_loc_2","Gallery"),
+                    new AudioEmitter($"se_dlc25-2_mansion_guest_bedroom_loc_2","Guest Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_kitchen_loc_2","Kitchen"),
+                    new AudioEmitter($"se_dlc25-2_mansion_master_bedroom_loc_2","Master Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_office_loc_2","Office"),
+                    new AudioEmitter($"se_dlc25-2_mansion_trophy_room_loc_2","Trophy Room"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_02_loc_2","Lobby (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_03_loc_2","Lobby (3)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_01_loc_2","Club (1)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_02_loc_2","Club (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_loc_2","Garage"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_top_loc_2","Garage Top"),
+                    new AudioEmitter($"se_dlc25-2_basement_mod_garage_loc_2","Mod Garage"),
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
@@ -7677,6 +7726,17 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-11.17223f, -4.351328E-06f, 142.8706f),
                         ButtonPromptText = "Mansion Control",
                         UseNavmesh = false,
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "richManRadio1",
+                        Position = new Vector3(-1646.744f, 493.4464f, 129.2216f),
+                        Heading =  58.19645f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1646.32f, 490.8949f, 130.3006f), 
+                        CameraDirection = new Vector3(-0.2820303f, 0.9240854f, -0.2579244f), 
+                        CameraRotation = new Rotator(-14.94694f, 1.767345E-06f, 16.97216f),
                     },
                     new SinkInteract()
                     {
@@ -7832,9 +7892,9 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Sleep",
                     },
                 },
-                TrophyInteracts = new List<TrophyInteract>()
+                TrophyInteracts = new List<DisplayInteract>()
                 {
-                    new TrophyInteract("RichmanTrophy", new Vector3(-1654.08f, 483.7208f, 125.5676f), 53.3514f, "Manage Trophies")
+                    new DisplayInteract("RichmanTrophy", new Vector3(-1654.08f, 483.7208f, 125.5676f), 53.3514f, "Manage Trophies")
                     {
                         CameraPosition = new Vector3(-1656.854f, 475.0268f, 126.2049f),
                         CameraDirection = new Vector3(0.3005681f, -0.9286817f, -0.2172768f),
@@ -7845,13 +7905,13 @@ public class Interiors : IInteriors
                             CabinetCameraDirection = new Vector3(0.3005681f, -0.9286817f, -0.2172768f),
                             CabinetCameraRotation = new Rotator(-12.54914f, 2.186674E-07f, -162.0658f),
                             TrophyHeading = 197.7647f,
-                            Slots = new List<TrophySlot>
+                            Slots = new List<DisplaySlot>
                             {
-                                new TrophySlot { SlotID = 1, Position = new Vector3(-1653.841f, 472.2335f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1654.183f, 473.2792f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
-                                new TrophySlot { SlotID = 2, Position = new Vector3(-1654.795f, 471.9278f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1655.186f, 472.9626f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
-                                new TrophySlot { SlotID = 3, Position = new Vector3(-1655.746f, 471.6235f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1656.093f, 472.6762f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
-                                new TrophySlot { SlotID = 4, Position = new Vector3(-1656.699f, 471.3182f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1657.047f, 472.3747f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
-                                new TrophySlot { SlotID = 5, Position = new Vector3(-1657.652f, 471.0128f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1658.002f, 472.0732f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) }
+                                new DisplaySlot { SlotID = 1, Position = new Vector3(-1653.841f, 472.2335f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1654.183f, 473.2792f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new DisplaySlot { SlotID = 2, Position = new Vector3(-1654.795f, 471.9278f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1655.186f, 472.9626f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new DisplaySlot { SlotID = 3, Position = new Vector3(-1655.746f, 471.6235f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1656.093f, 472.6762f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new DisplaySlot { SlotID = 4, Position = new Vector3(-1656.699f, 471.3182f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1657.047f, 472.3747f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) },
+                                new DisplaySlot { SlotID = 5, Position = new Vector3(-1657.652f, 471.0128f, 125.59f), Rotation = 0f, CameraPosition = new Vector3(-1658.002f, 472.0732f, 126.0424f), CameraDirection = new Vector3(0.298961f, -0.9462714f, -0.123259f), CameraRotation = new Rotator(-7.080229f, -5.592172E-06f, -162.4668f) }
                             }
                         },
                     },
@@ -7887,7 +7947,7 @@ public class Interiors : IInteriors
                     "set_pet_dog",
                     "set_pet_cat",
                     "SET_ELEV_STD",
-                    "SET_BASE_VAULT_09", // 0-9 
+                    "SET_BASE_VAULT_00", // 0-9 
                     "SET_VAULT_DOOR_OPEN"  // _Closed or _Open
                 },
                 InteriorTintColor = 0, // 0 = white, 1 = green, 2 = purple, 3 = pink
@@ -7901,7 +7961,25 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
-
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_1","Lobby (1)"),
+                    new AudioEmitter($"se_dlc25-2_mansion_arcade_loc_1","Arcade"),
+                    new AudioEmitter($"se_dlc25-2_mansion_cigar_room_loc_1","Cigar Room"),
+                    new AudioEmitter($"se_dlc25-2_mansion_gallery_loc_1","Gallery"),
+                    new AudioEmitter($"se_dlc25-2_mansion_guest_bedroom_loc_1","Guest Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_kitchen_loc_1","Kitchen"),
+                    new AudioEmitter($"se_dlc25-2_mansion_master_bedroom_loc_1","Master Bedroom"),
+                    new AudioEmitter($"se_dlc25-2_mansion_office_loc_1","Office"),
+                    new AudioEmitter($"se_dlc25-2_mansion_trophy_room_loc_1","Trophy Room"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_02_loc_1","Lobby (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_lobby_03_loc_1","Lobby (3)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_01_loc_1","Club (1)"),
+                    new AudioEmitter($"se_dlc25-2_basement_club_02_loc_1","Club (2)"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_loc_1","Garage"),
+                    new AudioEmitter($"se_dlc25-2_basement_garage_top_loc_1","Garage Top"),
+                    new AudioEmitter($"se_dlc25-2_basement_mod_garage_loc_1","Mod Garage"),
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     //Front Gates
@@ -7941,6 +8019,17 @@ public class Interiors : IInteriors
                         CameraRotation = new Rotator(-13.86267f, 2.638163E-06f, 38.19439f),
                         ButtonPromptText = "Mansion Control",
                         UseNavmesh = false,
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "TongvaManRadio1",
+                        Position = new Vector3(-2575.946f, 1887.959f, 167.3755f),
+                        Heading =  313.3403f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-2577.902f, 1887.922f, 168.3668f), 
+                        CameraDirection = new Vector3(0.962104f, 0.06839093f, -0.2639669f), 
+                        CameraRotation = new Rotator(-15.30557f, -6.970706E-06f, -85.93398f),
                     },
                     new SinkInteract()
                     {
@@ -8096,9 +8185,9 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Sleep",
                     },
                 },
-                TrophyInteracts = new List<TrophyInteract>()
+                TrophyInteracts = new List<DisplayInteract>()
                 {
-                new TrophyInteract("TongvaTrophy", new Vector3(-2583.869f, 1896.979f, 163.7214f), 312.7611f, "Manage Trophies")
+                new DisplayInteract("TongvaTrophy", new Vector3(-2583.869f, 1896.979f, 163.7214f), 312.7611f, "Manage Trophies")
                     {
                         CameraPosition = new Vector3(-2591.883f, 1901.446f, 164.3784f),
                         CameraDirection = new Vector3(-0.9708887f, -0.09680843f, -0.2190962f),
@@ -8109,13 +8198,13 @@ public class Interiors : IInteriors
                             CabinetCameraDirection = new Vector3(-0.9708887f, -0.09680843f, -0.2190962f),
                             CabinetCameraRotation = new Rotator(-12.65596f, 4.37517E-07f, 95.69421f),
                             TrophyHeading = 96.0f,
-                            Slots = new List<TrophySlot>
+                            Slots = new List<DisplaySlot>
                             {
-                                new TrophySlot { SlotID = 1, Position = new Vector3(-2595.189f, 1899.111f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.049f, 1899.246f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
-                                new TrophySlot { SlotID = 2, Position = new Vector3(-2595.292f, 1900.106f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.141f, 1900.243f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
-                                new TrophySlot { SlotID = 3, Position = new Vector3(-2595.395f, 1901.1f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.234f, 1901.239f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
-                                new TrophySlot { SlotID = 4, Position = new Vector3(-2595.498f, 1902.095f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.322f, 1902.235f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
-                                new TrophySlot { SlotID = 5, Position = new Vector3(-2595.601f, 1903.091f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.41f, 1903.231f, 164.1613f), CameraDirection = new Vector3(-0.9911417f, -0.08792067f, -0.0995392f), CameraRotation = new Rotator(-5.712636f, 2.037833E-06f, 95.06924f) }
+                                new DisplaySlot { SlotID = 1, Position = new Vector3(-2595.189f, 1899.111f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.049f, 1899.246f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
+                                new DisplaySlot { SlotID = 2, Position = new Vector3(-2595.292f, 1900.106f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.141f, 1900.243f, 164.1613f), CameraDirection = new Vector3(-0.9913322f, -0.09000064f, -0.0957096f), CameraRotation = new Rotator(-5.492163f, 3.69888E-06f, 95.18752f) },
+                                new DisplaySlot { SlotID = 3, Position = new Vector3(-2595.395f, 1901.1f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.234f, 1901.239f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
+                                new DisplaySlot { SlotID = 4, Position = new Vector3(-2595.498f, 1902.095f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.322f, 1902.235f, 164.1613f), CameraDirection = new Vector3(-0.9913208f, -0.08587798f, -0.09953921f), CameraRotation = new Rotator(-5.712637f, 2.09146E-06f, 94.95116f) },
+                                new DisplaySlot { SlotID = 5, Position = new Vector3(-2595.601f, 1903.091f, 163.742f), Rotation = 0f, CameraPosition = new Vector3(-2594.41f, 1903.231f, 164.1613f), CameraDirection = new Vector3(-0.9911417f, -0.08792067f, -0.0995392f), CameraRotation = new Rotator(-5.712636f, 2.037833E-06f, 95.06924f) }
                             }
                         }
                     },
