@@ -11,7 +11,7 @@ using System.Xml.Linq;
 public class PlacesOfInterest_LibertyPP
 {
     private PossibleLocations LibertyCityLocations;
-    private PedCustomizerLocation DefaultPedCustomizerLocationLC;
+    private PedCustomizerLocation DefaultPedCustomizerLocation;
     private PlacesOfInterest PlacesOfInterest;
     private List<Airport> Airports;
     private List<BodyExport> BodyExports;
