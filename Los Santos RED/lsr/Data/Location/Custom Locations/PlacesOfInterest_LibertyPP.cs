@@ -74,7 +74,7 @@ public class PlacesOfInterest_LibertyPP
         DefaultConfig_Sports();
         DefaultConfig_SubwayStations();
         DefaultConfig_VehicleExporters();
-        LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocationLC;
+        LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
 
         PossibleLocations lppLC = LibertyCityLocations.Copy();
 
