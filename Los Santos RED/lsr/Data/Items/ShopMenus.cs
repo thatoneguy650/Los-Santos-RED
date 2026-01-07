@@ -2554,6 +2554,329 @@ public class ShopMenus : IShopMenus
         new MenuItem("Western Daemon",26000, 19000),
         new MenuItem("Vapid Chino Custom",45000, 20000),
     }),
+        //LCPP Menus  
+
+        new ShopMenu("IVBudgetCarsMenu", "Big Paulie Budget Cars", new List<MenuItem>()
+        {
+            new MenuItem("Albany Buccaneer (IV)", 22000, 11000), // lcbuccaneer
+            new MenuItem("Albany Buccaneer Luxe (IV)", 28000, 14000), // lcbuccaneer3
+            new MenuItem("Albany Emperor (IV)", 20000, 10000), // lcemperor
+            new MenuItem("Albany Manana (IV)", 15000, 7500), // lcmanana
+            new MenuItem("Albany Primo (IV)", 25000, 15000), // lcprimo
+            new MenuItem("Albany Virgo (IV)", 18000, 9000), // lcvirgo
+            new MenuItem("Albany Virgo Classic (IV)", 20000, 10000), // lcvirgo3
+
+            new MenuItem("BF Club (IV)", 16000, 8000), // lcclub
+
+            new MenuItem("Bravado Bison (IV)", 35000, 16000), // lcbison
+            new MenuItem("Bravado Feroci (IV)", 15000, 7500), // lcferoci
+            new MenuItem("Bravado Gauntlet (IV)", 25000, 12500), // lcgauntlet
+
+            new MenuItem("Classique Stalion (IV)", 18000, 9000), // lcstalion
+
+            new MenuItem("Declasse Burrito (IV)", 18000, 9000), // lcburrito3
+            new MenuItem("Declasse Merit (IV)", 17000, 8500), // lcmerit
+            new MenuItem("Declasse Moonbeam (IV)", 24000, 12000), // lcmoonbeam
+            new MenuItem("Declasse Premier (IV)", 18000, 9000), // lcpremier
+            new MenuItem("Declasse Rhapsody (IV)", 17000, 8500), // lcrhapsody
+            new MenuItem("Declasse Sabre (IV)", 8000, 4000), // lcsabre
+            new MenuItem("Declasse Sabre Turbo (IV)", 12000, 6000), // lcsabregt
+            new MenuItem("Declasse Tampa (IV)", 16000, 8000), // lctampa
+            new MenuItem("Declasse Vigero (IV)", 17000, 8500), // lcvigero
+            new MenuItem("Declasse Voodoo (IV)", 10000, 5000), // lcvoodoo3
+            new MenuItem("Declasse Voodoo Custom (IV)", 15000, 7500), // lcvoodoo
+
+            new MenuItem("Dinka Blista Compact (IV)", 19000, 9500), // lcblista2
+            new MenuItem("Dinka Chavos (IV)", 16000, 8000), // lcchavos
+            new MenuItem("Dinka Perennial (IV)", 14000, 7000), // lcperennial
+
+            new MenuItem("Dundreary Admiral (IV)", 18000, 9000), // lcadmiral
+            new MenuItem("Dundreary Regina (IV)", 12000, 6000), // lcregina
+            new MenuItem("Dundreary Regina 4-dr (IV)", 10000, 4000), // lcregina3
+
+            new MenuItem("Emperor Habanero (IV)", 22000, 11000), // lchabanero
+            new MenuItem("Emperor Lokus (IV)", 18000, 9000), // lclokus
+
+            new MenuItem("Imponte DF8-90 (IV)", 17000, 8500), // lcdf8
+            new MenuItem("Imponte Dukes (IV)", 20000, 10000), // lcdukes
+            new MenuItem("Imponte Ruiner (IV)", 20000, 10000), // lcruiner
+
+            new MenuItem("Karin Dilettante (IV)", 15000, 8000), // lcdilettante
+            new MenuItem("Karin Futo (IV)", 18000, 9000), // lcfuto
+            new MenuItem("Karin Intruder (IV)", 16000, 8000), // lcintruder
+
+            new MenuItem("Vapid Bobcat XL (IV)", 23000, 11500), // lcbobcatxl
+            new MenuItem("Vapid Chino (IV)", 19000, 9500), // lcchino
+            new MenuItem("Vapid Minivan (IV)", 20000, 10000), // lcminivan
+            new MenuItem("Vapid Peyote (IV)", 18000, 9000), // lcpeyote
+            new MenuItem("Vapid Radius (IV)", 16000, 8000), // lcradi
+            new MenuItem("Vapid Speedo (IV)", 22000, 11000), // lcspeedo
+
+            new MenuItem("Vulcar Ingot (IV)", 14000, 7000), // lcingot
+            new MenuItem("Weeny Issi Classic (IV)", 21000, 10500), // lcissi2
+
+            new MenuItem("Willard Faction (IV)", 17000, 8500), // lcfaction
+            new MenuItem("Willard Marbelle (IV)", 13000, 6500), // lcmarbelle
+            new MenuItem("Willard Solair (IV)", 16000, 8000), // lcsolair
+            new MenuItem("Willard Willard (IV)", 15000, 7500), // lcwillard
+        }),
+
+        // Auto Eroticar 
+        new ShopMenu("IVEroticarMenu", "Auto Eroticar", new List<MenuItem>()
+        {
+            new MenuItem("Albany Cavalcade (IV)", 55000, 32000), // lccavalcade
+            new MenuItem("Albany Cavalcade 2nd Gen (IV)", 60000, 35000), // lccavalcade2
+            new MenuItem("Albany Presidente (IV)", 45000, 25000), // lcpres
+            new MenuItem("Albany Presidente V10S (IV)", 85000, 51000), // lcpres2
+            new MenuItem("Albany Primo Custom (IV)", 40000, 22000), // lcprimo2
+            new MenuItem("Albany Virgo (IV)", 38000, 22000), // lcvirgo
+            new MenuItem("Albany Virgo Classic Custom (IV)", 40000, 23000), // lcvirgo2
+            new MenuItem("Albany Virgo Classic (IV)", 42000, 24000), // lcvirgo3
+            new MenuItem("Albany Washington (IV)", 48000, 28000), // lcwashington
+
+            new MenuItem("Anus Pinnacle (IV)", 42000, 24000), // lcpinnacle
+
+            new MenuItem("Benefactor Feltzer Coupe (IV)", 65000, 38000), // lcfeltzer
+            new MenuItem("Benefactor Schafter LE (IV)", 55000, 32000), // lcshafter
+            new MenuItem("Benefactor Schafter V12 (IV)", 70000, 42000), // lcschafter3
+            new MenuItem("Benefactor Serrano (IV)", 45000, 26000), // lcserrano
+
+            new MenuItem("Bravado Buffalo (IV)", 60000, 35000), // lcbuffalo
+            new MenuItem("Bravado Gauntlet (IV)", 52000, 30000), // lcgauntlet
+
+            new MenuItem("Cheval Surge (IV)", 45000, 26000), // lcsurge
+            new MenuItem("Classique Stalion (IV)", 40000, 23000), // lcstalion
+
+            new MenuItem("Declasse Granger (IV)", 52000, 30000), // lcgranger
+            new MenuItem("Declasse Premier Classic (IV)", 40000, 22000), // lcpremier2
+            new MenuItem("Declasse Sabre Turbo (IV)", 45000, 26000), // lcsabregt
+            new MenuItem("Declasse Tampa (IV)", 38000, 22000), // lctampa
+            new MenuItem("Declasse Voodoo Custom (IV)", 36000, 21000), // lcvoodoo
+
+            new MenuItem("Dinka Chavos S (IV)", 38000, 17000), // lcchavos2
+            new MenuItem("Dinka Jester (IV)", 60000, 35000), // lcjester
+            new MenuItem("Dinka Sugoi (IV)", 55000, 32000), // lcsugoi
+
+            new MenuItem("Dundreary Landstalker (IV)", 48000, 28000), // lclandstalker
+            new MenuItem("Gallivanter Baller (IV)", 50000, 30000), // lcballer
+
+            new MenuItem("Imponte Phoenix 455 RS (IV)", 45000, 26000), // lcphoenix2
+
+            new MenuItem("Karin Futo Alt (IV)", 40000, 22000), // lcfuto3
+            new MenuItem("Karin Kuruma (IV)", 65000, 38000), // lckuruma
+            new MenuItem("Karin Sultan RS (IV)", 80000, 40000), // lcsultanrs
+            new MenuItem("Karin Sultan S (IV)", 50000, 28000), // lcsultans
+
+            new MenuItem("Lampadati Novak (IV)", 55000, 32000), // lcnovak
+            new MenuItem("Maibatsu Vincent (IV)", 35000, 23000), // lcvincent
+            new MenuItem("Mammoth Patriot (IV)", 55000, 32000), // lcpatriot
+
+            new MenuItem("Schyster Fusilade (IV)", 55000, 32000), // lcfusilade
+            new MenuItem("Schyster PMP 600 (IV)", 50000, 30000), // lcpmp600
+
+            new MenuItem("Ubermacht Oracle XS (IV)", 55000, 32000), // lcoracle
+            new MenuItem("Ubermacht Rebla (IV)", 50000, 29000), // lcreblaiv
+            new MenuItem("Ubermacht Sentinel GTS (IV)", 60000, 35000), // lcsentinel5
+
+            new MenuItem("Vapid Chino (IV)", 40000, 23000), // lcchino
+            new MenuItem("Vapid Fortune (IV)", 45000, 26000), // lcfortune
+            new MenuItem("Vapid Huntley Sport (IV)", 55000, 32000), // lchuntley2
+            new MenuItem("Vapid Peyote (IV)", 35000, 20000), // lcpeyote
+            new MenuItem("Vapid Stanier S (IV)", 45000, 25000), // lcstanier2
+            new MenuItem("Vapid Uranus LozSpeed (IV)", 50000, 29000), // lcuranus
+
+            new MenuItem("Willard Faction (IV)", 40000, 23000), // lcfaction
+
+            new MenuItem("Zirconium Stratum (IV)", 38000, 17000), // lcstratum
+            new MenuItem("Zirconium Stratum Sedan (IV)", 55000, 25000), // lcstratum2
+        }),
+
+        // Luxury Autos - High-End LCPP Cars + Filler
+        new ShopMenu("IVLuxuryMenu", "Luxury Autos", new List<MenuItem>()
+        {
+            new MenuItem("Benefactor Feltzer Coupe (IV)", 80000, 48000), // lcfeltzer
+            new MenuItem("Benefactor Schafter GTR (IV)", 160000, 96000), // lcshaftergtr
+            new MenuItem("Benefactor Schafter V12 (IV)", 90000, 54000), // lcschafter3
+            new MenuItem("Benefactor Schlagen GT (IV)", 80000, 47000), // lcschlagen
+
+            new MenuItem("Bravado Banshee (IV)", 95000, 57000), // lcbanshee
+            new MenuItem("Coil Raiden (IV)", 70000, 40000), // lcraiden
+            new MenuItem("Dewbauchee Super GT (IV)", 120000, 72000), // lcsupergt
+
+            new MenuItem("Enus Cognoscenti (IV)", 150000,105000), // lccognoscenti
+            new MenuItem("Enus Cognoscenti 55 (IV)", 150000,105000), // lccog55
+            new MenuItem("Enus Jubilee (IV)", 119000,65000), // lcjubilee
+            new MenuItem("Enus Super Diamond (IV)", 235000,189000), // lcsuperd2
+            new MenuItem("Enus Super Drop Diamond (IV)", 655000,467000), // lcsuperd3
+
+            new MenuItem("Grotti Carbonizzare (IV)", 140000, 84000), // lccarbonizzare
+            new MenuItem("Grotti Cheetah (IV)", 240000,189000), // lccheetah
+            new MenuItem("Grotti Cheetah Classic (IV)", 334500,259000), // lccheetah2 - same as 3?
+           // new MenuItem("Grotti Cheetah Classic (IV)", 334500,259000), // lccheetah3 - same as 2 ?
+            new MenuItem("Grotti Turismo (IV)", 110000, 66000), // lcturismo
+
+            new MenuItem("Invetero Coquette (IV)", 85000, 51000), // lccoquette
+            new MenuItem("Invetero Coquette Classic (IV)", 90000, 54000), // lccoquette5
+
+            new MenuItem("Modena Typhoon (IV)", 140000, 84000), // lctyphoon
+            new MenuItem("Obey 9F (IV)", 105000, 63000), // lcninef
+            new MenuItem("Ocelot F620 (IV)", 85000, 51000), // lcf620
+            new MenuItem("Pegassi Infernus (IV)", 340000,225000), // lcinfernus
+            new MenuItem("Pfister Comet (IV)", 95000, 57000), // lccomet2
+            new MenuItem("Vapid Bullet (IV)", 170000, 102000), // lcbullet
+
+            // Filler
+            new MenuItem("Enus Huntley S",65000, 38000),
+            new MenuItem("Enus Cognoscenti Cabrio",75000,30000),
+            new MenuItem("Enus Cognoscenti (Armored)",500000,250000),
+            new MenuItem("Enus Paragon R",256000,125000),
+            new MenuItem("Enus Paragon R (Armored)",550000,340000),
+            new MenuItem("Enus Paragon S",295000,120000),
+
+            // Gotta have the Grotti for Grotti's   
+            new MenuItem("Grotti Stinger",95000,76000),
+            new MenuItem("Grotti Stinger GT",98000,77000),
+            new MenuItem("Grotti Bestia GTS",134000,98000),
+            new MenuItem("Grotti Furia",255000,167000),
+            new MenuItem("Grotti Itali GTO",342000,278000),
+            new MenuItem("Grotti Itali RSX",545600,345000),
+            new MenuItem("Grotti X80 Proto",567000,453000),
+            new MenuItem("Grotti Turismo Classic",100000,75000),
+            new MenuItem("Grotti Turismo R",150000,86000),
+            new MenuItem("Grotti Visione",676500,450000),
+            new MenuItem("Grotti Turismo Omaggio",325000,125000),
+            new MenuItem("Grotti Itali Classic",90000,56000),
+            new MenuItem("Grotti GT750",97000,52000),
+
+            new MenuItem("Pfister Astrale",95000,72000),
+            new MenuItem("Pfister Comet Retro Custom",130000,65000),
+            new MenuItem("Pfister Comet Safari",135000,95000),
+            new MenuItem("Pfister Comet SR",155000,115000),
+            new MenuItem("Pfister Comet S2",165000,120000),
+            new MenuItem("Pfister X-treme",195000,130000),
+            new MenuItem("Pfister Growler",167000,98000),
+            new MenuItem("Pfister Neon",177000,122000),
+            new MenuItem("Pfister 811",189000,105000),
+
+            new MenuItem("Pegassi Monroe",21000,14000),
+            new MenuItem("Pegassi Vacca",220000,100000),
+            new MenuItem("Pegassi Toros",89000,62000),
+        }),
+
+        // Westdyke Autos - LCPP Motorcycles
+        new ShopMenu("IVMotorcyclesMenu", "Westdyke Autos", new List<MenuItem>()
+        {
+            // Sport / Performance
+            new MenuItem("Dinka Akuma (IV)", 10000, 5000),// lcakuma
+            new MenuItem("Pegassi Bati 801 (IV)", 16000, 7000),// lcbati
+            new MenuItem("Dinka Double T (IV)", 12000, 7500),// lcdouble
+            new MenuItem("Dinka Double T Custom (IV)", 14500, 8500),// lcdouble2
+            new MenuItem("Shitzu Hakuchou (IV)", 19000, 11200),// lchakuchou
+            new MenuItem("Shitzu Hakuchou Custom (IV)", 22000, 13000),// lchakuchou3
+            new MenuItem("Principe Nemesis (IV)", 13500, 6700),// lcnemesis
+            new MenuItem("Shitzu NRG-900 (IV)", 20000, 12000),// lcnrg900
+            new MenuItem("Shitzu PCJ-600 (IV)", 9000, 3900),// lcpcj
+            new MenuItem("Shitzu Vader (IV)", 9500, 4200),// lcvader
+            new MenuItem("Pegassi Ruffian (IV)", 9900, 3000),// lcruffian
+            // Choppers
+            new MenuItem("Western Angel (IV)", 11000, 6000),// lcangel
+            new MenuItem("Western Bagger (IV)", 8000, 4000),// lcbagger
+            new MenuItem("Western Diabolus (IV)", 14000, 8200),// lcdiabolus
+            new MenuItem("Western Freeway (IV)", 7800, 4300),// lcfreeway
+            new MenuItem("Western Hellfury (IV)", 12500, 7200),// lchellfury
+            new MenuItem("Western Revenant (IV)", 13500, 8000),// lcrevenant
+            new MenuItem("Western Sovereign (IV)", 16000, 9500),// lcsovereign
+            new MenuItem("Western Wolfsbane Classic (IV)", 12000, 7000),// lcwolfsbane2
+            new MenuItem("Western Zombie Bobber (IV)", 14000, 8200),// lczombiea
+            // Liberty Chop Shop
+            new MenuItem("LCC Hexer (IV)",27000,13000),// lchexer
+            new MenuItem("LCC Lycan (IV)", 13000, 7500),// lclycan
+            new MenuItem("LCC Lycan Custom (IV)", 14500, 8500),// lclycan2
+            new MenuItem("LCC Nightblade Classic (IV)", 15000, 9000),// lcnightblade2
+            // Off-Road
+            new MenuItem("Maibatsu Sanchez Livery (IV)", 7500, 3800),// lcsanchez2
+            // Scooters
+            new MenuItem("Pegassi Faggio Classic (IV)", 6500, 3000),// lcfaggio
+            new MenuItem("Pegassi Faggio (IV)", 8000, 4000) ,// lcfaggio3
+
+            //  Filler bikes
+            new MenuItem("Maibatsu Sanchez",7000,4500),
+            new MenuItem("Maibatsu Manchez",9500,4600),
+            new MenuItem("Maibatsu Manchez Scout",9600,4500),
+            new MenuItem("Shitzu Defiler",34000,15340),
+            new MenuItem("Shitzu Hakuchou Drag",25000,12500),
+            new MenuItem("Dinka Enduro",6500,4300),
+            new MenuItem("Dinka Thrust",13000,8000),
+            new MenuItem("Dinka Vindicator",10000,5000),
+            new MenuItem("Pegassi FCR 1000",24000,12000),
+            new MenuItem("Principe Diabolus",15000,8000),
+            new MenuItem("Principe Diabolus Custom",17000,10500),
+            new MenuItem("Principe Lectro",18000,12400),
+            new MenuItem("Nagasaki Carbon RS",40000,22500),
+            new MenuItem("Nagasaki BF400",12000,6200),
+            new MenuItem("Nagasaki Shinobi", 34000,12000),
+            new MenuItem("LCC Innovation",35000,21000)
+        }),
+
+        new ShopMenu("LCElitasMenu","PlaneMan",new List<MenuItem>() {
+
+            //Heli
+            new MenuItem("Buckingham Conada",2500000),
+            new MenuItem("Sparrow",175000),
+            new MenuItem("Sea Sparrow",185000),
+
+            new MenuItem("Nagasaki Havok",155000),
+            new MenuItem("Nagasaki Buzzard",1250000),
+
+            new MenuItem("Buckingham Maverick",1100000),
+            new MenuItem("Buckingham Volatus",1200000),
+            new MenuItem("Buckingham SuperVolito Carbon",2100000),
+            new MenuItem("Buckingham SuperVolito",2000000),
+            new MenuItem("Buckingham Swift Deluxe",1600000),
+
+            new MenuItem("Western Cargobob",5500000),
+            new MenuItem("HVY Skylift",6500000),
+            new MenuItem("Maibatsu Frogger",1400000),
+
+            //Airplane
+            new MenuItem("Buckingham Alpha-Z1",350000),
+            new MenuItem("Buckingham Howard NX-25",650000),
+            new MenuItem("Buckingham Luxor",5000000),
+            new MenuItem("Buckingham Luxor Deluxe",5500000),
+            new MenuItem("Buckingham Miljet",3200000),
+            new MenuItem("Buckingham Nimbus",2900000),
+
+            new MenuItem("Nagasaki Ultralight",45000),
+            new MenuItem("Western Seabreeze",750000),
+        }),
+
+        new ShopMenu("HappyBoatMenu","HappynessIslandBoats",new List<MenuItem>()
+        {
+            // LCPP Boats
+            new MenuItem("Blade (IV)", 120000),
+            new MenuItem("Floater (IV)", 80000),
+            new MenuItem("Reefer (IV)", 150000),
+            new MenuItem("Smuggler (IV)", 200000),
+            new MenuItem("Shitzu Violator (IV)", 180000),
+
+            // LS Boats
+            new MenuItem("Dinka Marquis",240000),
+            new MenuItem("Lampadati Toro",190000),
+            new MenuItem("Nagasaki Dinghy",45000),
+            new MenuItem("Nagasaki Dinghy 2",50000),
+            new MenuItem("Pegassi Speeder",185000),
+            new MenuItem("Shitzu Jetmax",250000),
+            new MenuItem("Shitzu Longfin",275000),
+            new MenuItem("Shitzu Squalo",85000),
+            new MenuItem("Shitzu Suntrap",35000),
+            new MenuItem("Shitzu Tropic",75000),
+
+            // LS Jetski
+            new MenuItem("Speedophile Seashark",5000),
+            new MenuItem("Speedophile Seashark 3",7000),
+        }),
+
+
 });
     }
     private void SpecificVehicleExporters()
@@ -2648,9 +2971,9 @@ new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
         new MenuItem("Pegassi Zentorno",0,200000),
         new MenuItem("Pegassi Zorrusso",0,250000),
 
-    }),
+         }),
 
-new ShopMenu("PaletoExportMenu", "Paleto Exports", new List<MenuItem>() {
+    new ShopMenu("PaletoExportMenu", "Paleto Exports", new List<MenuItem>() {
         new MenuItem("Bravado Youga",0, 5000),
         new MenuItem("Bravado Gresley",0, 5500),
         new MenuItem("Bravado Bison",0, 6500),
@@ -2700,8 +3023,90 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Dinka Jester RR",0,40000),
     }),
 
+        new ShopMenu("IVExportMidHighMenu", "Vehicle Exports (Mid–High)", new List<MenuItem>()
+        {
+            new MenuItem("Albany Presidente (IV)", 0, 15000),
+            new MenuItem("Albany Presidente V10S (IV)", 0, 22000),
+            new MenuItem("Benefactor Schafter LE (IV)", 0, 18000),
+            new MenuItem("Benefactor Schafter V12 (IV)", 0, 22000),
+            new MenuItem("Ubermacht Sentinel GTS (IV)", 0, 21000),
+            new MenuItem("Ubermacht Oracle XS (IV)", 0, 19000),
+            new MenuItem("Enus Cognoscenti (IV)", 0, 35000),
+            new MenuItem("Enus Cognoscenti 55 (IV)", 0, 42000),
+            new MenuItem("Enus Super Diamond (IV)", 0, 55000),
 
-});
+            new MenuItem("Dinka Jester (IV)", 0, 18000),
+            new MenuItem("Karin Kuruma (IV)", 0, 19000),
+            new MenuItem("Karin Sultan S (IV)", 0, 16000),
+            new MenuItem("Karin Sultan RS (IV)", 0, 24000),
+            new MenuItem("Grotti Carbonizzare (IV)", 0, 32000),
+            new MenuItem("Grotti Turismo (IV)", 0, 30000),
+            new MenuItem("Invetero Coquette Classic (IV)", 0, 28000),
+            new MenuItem("Grotti Bestia GTS", 0, 36000),
+            new MenuItem("Pfister Neon", 0, 42000),
+
+            new MenuItem("Grotti Cheetah (IV)", 0, 50000),
+            new MenuItem("Grotti Cheetah Classic (IV)", 0, 62000),
+            new MenuItem("Pegassi Infernus (IV)", 0, 60000),
+            new MenuItem("Vapid Bullet (IV)", 0, 52000),
+
+            new MenuItem("Enus Jubilee (IV)", 0, 28000),
+            new MenuItem("Vapid Huntley Sport (IV)", 0, 24000),
+            new MenuItem("Lampadati Novak (IV)", 0, 26000),
+
+            new MenuItem("Shitzu Hakuchou (IV)", 0, 13000),
+            new MenuItem("Shitzu Hakuchou Custom (IV)", 0, 14500),
+            new MenuItem("Western Sovereign (IV)", 0, 15000),
+        }),
+        new ShopMenu("IVExportLowMidMenu", "Vehicle Exports (Low–Mid)", new List<MenuItem>()
+        {
+            new MenuItem("Albany Buccaneer (IV)", 0, 6000),
+            new MenuItem("Albany Buccaneer Luxe (IV)", 0, 7500),
+            new MenuItem("Albany Emperor (IV)", 0, 6500),
+            new MenuItem("Albany Primo (IV)", 0, 5000),
+            new MenuItem("Albany Virgo (IV)", 0, 5500),
+            new MenuItem("Albany Washington (IV)", 0, 5500),
+            new MenuItem("Declasse Sabre (IV)", 0, 4500),
+            new MenuItem("Declasse Sabre Turbo (IV)", 0, 6000),
+            new MenuItem("Declasse Vigero (IV)", 0, 6500),
+            new MenuItem("Bravado Gauntlet (IV)", 0, 7500),
+            new MenuItem("Imponte Dukes (IV)", 0, 7000),
+            new MenuItem("Imponte Ruiner (IV)", 0, 6500),
+            new MenuItem("Willard Faction (IV)", 0, 6500),
+            new MenuItem("Willard Marbelle (IV)", 0, 4500),
+            new MenuItem("Willard Solair (IV)", 0, 5000),
+            new MenuItem("Dundreary Regina (IV)", 0, 4500),
+
+            new MenuItem("Karin Futo (IV)", 0, 5500),
+            new MenuItem("Dinka Blista Compact (IV)", 0, 5000),
+            new MenuItem("Dinka Chavos (IV)", 0, 5500),
+            new MenuItem("Zirconium Stratum (IV)", 0, 5500),
+            new MenuItem("Zirconium Stratum Sedan (IV)", 0, 6500),
+
+            new MenuItem("Gallivanter Baller (IV)", 0, 8500),
+            new MenuItem("Dundreary Landstalker (IV)", 0, 8000),
+            new MenuItem("Declasse Granger (IV)", 0, 9000),
+            new MenuItem("Vapid Bobcat XL (IV)", 0, 8500),
+            new MenuItem("Declasse Burrito (IV)", 0, 7000),
+            new MenuItem("Vapid Speedo (IV)", 0, 7500),
+
+            new MenuItem("Bravado Buffalo (IV)", 0, 9000),
+            new MenuItem("Benefactor Feltzer Coupe (IV)", 0, 11000),
+            new MenuItem("Pfister Comet (IV)", 0, 12000),
+            new MenuItem("Invetero Coquette (IV)", 0, 13000),
+            new MenuItem("Ocelot F620 (IV)", 0, 12000),
+
+            new MenuItem("Pegassi Bati 801 (IV)", 0, 8500),
+            new MenuItem("Shitzu NRG-900 (IV)", 0, 9500),
+            new MenuItem("Dinka Double T (IV)", 0, 8000),
+            new MenuItem("Dinka Double T Custom (IV)", 0, 9000),
+            new MenuItem("Principe Nemesis (IV)", 0, 7000),
+            new MenuItem("Western Hellfury (IV)", 0, 9000),
+            new MenuItem("Western Diabolus (IV)", 0, 9500),
+            new MenuItem("LCC Hexer (IV)", 0, 11000),
+        }),
+
+        });
 
 
 

@@ -11,7 +11,7 @@ using System.Xml.Linq;
 public class PlacesOfInterest_LibertyPP
 {
     private PossibleLocations LibertyCityLocations;
-    private PedCustomizerLocation DefaultPedCustomizerLocation;
+    private PedCustomizerLocation DefaultPedCustomizerLocationLC;
     private PlacesOfInterest PlacesOfInterest;
     private List<Airport> Airports;
     private List<BodyExport> BodyExports;
@@ -23,7 +23,6 @@ public class PlacesOfInterest_LibertyPP
     private List<RepairGarage> RepairGarages;
     private List<VehicleModShop> VehicleModShops;
     private List<VehicleExporter> VehicleExporters;
-
 
     public PlacesOfInterest_LibertyPP(PlacesOfInterest placesOfInterest)
     {
@@ -75,7 +74,7 @@ public class PlacesOfInterest_LibertyPP
         DefaultConfig_Sports();
         DefaultConfig_SubwayStations();
         DefaultConfig_VehicleExporters();
-        LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocation;
+        LibertyCityLocations.PedCustomizerLocation = DefaultPedCustomizerLocationLC;
 
         PossibleLocations lppLC = LibertyCityLocations.Copy();
 
@@ -721,7 +720,8 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 24,
                 InteriorID = 164866,
                 VendorPersonnelID = "BarPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6122.559f, -3746.585f, 15.48475f), 176.0122f) },
+                ExtaVendorSpawnPercentage = 0f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6122.559f, -3746.585f, 13.48475f), 176.0122f) },
                 StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
@@ -734,10 +734,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 24,
                 InteriorID = 54018,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                new SpawnPlace(new Vector3(4754.746f, -2805.157f, 10.39501f), 0.8224639f),
-                new SpawnPlace(new Vector3(4750.163f, -2805.139f, 10.39505f), 0.7455646f)
+                new SpawnPlace(new Vector3(4754.746f, -2805.157f, 8.39501f), 0.8224639f),
+                new SpawnPlace(new Vector3(4750.163f, -2805.139f, 8.39505f), 0.7455646f)
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -751,10 +752,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 24,
                 InteriorID = 80386,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                new SpawnPlace(new Vector3(6330.663f, -2515.596f, 35.51512f), 182.208f),
-                new SpawnPlace(new Vector3(6335.267f, -2515.52f, 35.51512f), 183.8725f)
+                new SpawnPlace(new Vector3(6330.663f, -2515.596f, 33.51512f), 182.208f),
+                new SpawnPlace(new Vector3(6335.267f, -2515.52f, 33.51512f), 183.8725f)
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -768,7 +770,8 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 24,
                 InteriorID = 121346,
                 VendorPersonnelID = "BarPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6654.771f, -3196.343f, 25.18558f), 272.2538f) },
+                ExtaVendorSpawnPercentage = 0f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6654.771f, -3196.343f, 23.18558f), 272.2538f) },
                 StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
@@ -782,7 +785,8 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 2,
                 InteriorID = 78338,
                 VendorPersonnelID = "BarPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6136.197f, -3526.964f, 18.27434f), 268.7266f) },
+                ExtaVendorSpawnPercentage = 0f,
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6136.197f, -3526.964f, 16.27434f), 268.7266f) },
                 StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
@@ -795,10 +799,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 2,
                 InteriorID = 113666,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 25f, 
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(6376.991f, -1550.331f, 17.72202f), 127.1123f),
-                    new SpawnPlace(new Vector3(6378.778f, -1553.282f, 17.72204f), 137.1951f)
+                    new SpawnPlace(new Vector3(6376.991f, -1550.331f, 15.72202f), 127.1123f),
+                    new SpawnPlace(new Vector3(6378.778f, -1553.282f, 15.72204f), 137.1951f)
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -812,11 +817,12 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 2,
                 InteriorID = 67586,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 35f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(3612.80762f, -3243.654f, 10.0099955f), 47.77391f),
-                    new SpawnPlace(new Vector3(3622.72681f, -3243.58887f, 10.0099955f), 357.8109f),
-                    new SpawnPlace(new Vector3(3617.8418f, -3247.95068f, 10.0099955f), 181.4274f)
+                    new SpawnPlace(new Vector3(3612.80762f, -3243.654f, 8.0099955f), 47.77391f),
+                    new SpawnPlace(new Vector3(3622.72681f, -3243.58887f, 8.0099955f), 357.8109f),
+                    new SpawnPlace(new Vector3(3617.8418f, -3247.95068f, 8.0099955f), 181.4274f)
                 },
                 StateID = StaticStrings.AlderneyStateID,
             },
@@ -830,10 +836,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 2,
                 InteriorID = 12034,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(4755.039f, -2901.779f, 11.7114573f), 217.491f),
-                    new SpawnPlace(new Vector3(4752.865f, -2901.731f, 11.7014475f), 189.6392f)
+                    new SpawnPlace(new Vector3(4755.039f, -2901.779f, 9.7114573f), 217.491f),
+                    new SpawnPlace(new Vector3(4752.865f, -2901.731f, 9.7014475f), 189.6392f)
                 },
 
                 StateID = StaticStrings.LibertyStateID,
@@ -848,13 +855,28 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 2,
                 InteriorID = 126210,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(4705.25f, -3097.199f, 7.683848f), 183.9442f),
-                    new SpawnPlace(new Vector3(4703.629f, -3097.244f, 7.68385f), 183.9442f)
+                    new SpawnPlace(new Vector3(4705.25f, -3097.199f, 5.683848f), 183.9442f),
+                    new SpawnPlace(new Vector3(4703.629f, -3097.244f, 5.68385f), 183.9442f)
                 },
 
                 StateID = StaticStrings.LibertyStateID,
+            },
+            new Bar(new Vector3(4789.221f, -2859.199f, 14.40985f), 183.1031f, "Bahama Mama's", "","BarMenu")
+            {
+                InteriorID = 130818,
+                VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 35f,
+                VendorLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(4793.736f, -2848.192f, 3.822031f), 179.5796f),
+                    new SpawnPlace(new Vector3(4796.532f, -2843.472f, 3.669319f), 271.8682f),
+                    new SpawnPlace(new Vector3(4799.743f, -2816.704f, 4.169299f), 182.1243f),
+                    new SpawnPlace(new Vector3(4792.512f, -2816.932f, 4.169302f), 180.2005f)
+                },
+                StateID = StaticStrings.LibertyStateID
             },
             // NonVendor Bars
             new Bar() {
@@ -876,20 +898,6 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
                 StateID = StaticStrings.LibertyStateID,
-            },
-
-            new Bar(new Vector3(4789.221f, -2859.199f, 14.40985f), 183.1031f, "Bahama Mama's", "","BarMenu")
-            {
-                InteriorID = 130818,
-                VendorPersonnelID = "BarPeds",
-                VendorLocations = new List<SpawnPlace>()
-                {
-                    new SpawnPlace(new Vector3(4793.736f, -2848.192f, 5.822031f), 179.5796f),
-                    new SpawnPlace(new Vector3(4796.532f, -2843.472f, 5.669319f), 271.8682f),
-                    new SpawnPlace(new Vector3(4799.743f, -2816.704f, 6.169299f), 182.1243f),
-                    new SpawnPlace(new Vector3(4792.512f, -2816.932f, 6.169302f), 180.2005f)
-                },
-                StateID = StaticStrings.LibertyStateID
             },
             new Bar(new Vector3(3679.422f, -2716.388f, 19.56574f), 267.1285f, "Leprechauns Winklepicker", "Take a bite of our fanny","FancyFishMenu") { StateID = StaticStrings.AlderneyStateID },
             new Bar(new Vector3(4654.713f, -1902.926f, 17.47365f), 180.2428f, "Linen Lounge", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
@@ -913,7 +921,7 @@ public class PlacesOfInterest_LibertyPP
         {
             new BodyExport(new Vector3(5248.9f, -3068.368f, 14.75021f), 90.79181f, "Easton Medical Center", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
             new BodyExport(new Vector3(6184.368f, -1427.732f, 20.11838f), 174.3487f, "Bohan Medical Research", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
-            new BodyExport(new Vector3(3658.467f, -2884.291f, 21.63115f), 89.27634f, "North Tudor Medical Center", "Always looking for fresh meat!") {StateID = StaticStrings.LibertyStateID, OpenTime = 20, CloseTime = 4 },
+            new BodyExport(new Vector3(3658.467f, -2884.291f, 21.63115f), 89.27634f, "North Tudor Medical Center", "Always looking for fresh meat!") {StateID = StaticStrings.AlderneyStateID, OpenTime = 20, CloseTime = 4 },
         };
         LibertyCityLocations.BodyExports.AddRange(BodyExports);
     }
@@ -1543,7 +1551,7 @@ public class PlacesOfInterest_LibertyPP
     }
     private void DefaultConfig_Dealerships()
     {
-        Dealership PaulieBudgetcar = new Dealership(new Vector3(3534.966f, -3324.852f, 6.786107f), 187.5414f, "Big Paulie Budget Cars", "Something affordable for everyone", "PremiumDeluxeMenu")
+        Dealership PaulieBudgetcar = new Dealership(new Vector3(3534.966f, -3324.852f, 6.786107f), 187.5414f, "Big Paulie Budget Cars", "Something affordable for everyone", "IVBudgetCarsMenu")
         {
             LicensePlatePreviewText = "PAULIE",
             StateID = StaticStrings.AlderneyStateID,
@@ -1564,7 +1572,7 @@ public class PlacesOfInterest_LibertyPP
             },
         };
         LibertyCityLocations.CarDealerships.Add(PaulieBudgetcar);
-        Dealership AutoEroticar = new Dealership(new Vector3(3700.829f, -2137.202f, 23.05553f), 271.584f, "Auto Eroticar", "Prestigious Automobiles", "PremiumDeluxeMenu")
+        Dealership AutoEroticar = new Dealership(new Vector3(3700.829f, -2137.202f, 23.05553f), 271.584f, "Auto Eroticar", "Prestigious Automobiles", "IVEroticarMenu")
         {
             CameraPosition = new Vector3(3717.649f, -2145.816f, 30.69428f),
             CameraDirection = new Vector3(-0.8539895f, 0.4877165f, -0.1812029f),
@@ -1585,29 +1593,26 @@ public class PlacesOfInterest_LibertyPP
             }
         };
         LibertyCityLocations.CarDealerships.Add(AutoEroticar);
-        Dealership ElitásTravel = new Dealership(new Vector3(5498.056f, -3952.759f, 4.68028f), 54.10436f, "Elitás Travel", "There's first class and then there's Elitas", "ElitasMenu")
+        Dealership ElitásTravel = new Dealership(new Vector3(7346.312f, -2520.609f, 5.808244f), 226.975f, "Elitás Travel", "There's first class and then there's Elitas", "LCElitasMenu")
         {
-            CameraPosition = new Vector3(5477.497f, -3951.466f, 13.66865f),
-            CameraDirection = new Vector3(0.9653754f, -0.06314611f, -0.2531064f),
-            CameraRotation = new Rotator(-14.66141f, 4.964116E-06f, -93.74244f),
+            CameraPosition = new Vector3(7349.475f, -2529.174f, 9.519826f),
+            CameraDirection = new Vector3(-0.2934668f, 0.9230703f, -0.2486332f),
+            CameraRotation = new Rotator(-14.39665f, 4.186903E-05f, 17.63674f),
             BannerImagePath = "stores\\elitastravel.png",
-            VehiclePreviewCameraPosition = new Vector3(5549.793f, -3973.792f, 11.44665f),
-            VehiclePreviewCameraDirection = new Vector3(0.4488039f, -0.7965226f, -0.4051257f),
-            VehiclePreviewCameraRotation = new Rotator(-23.899f, -0.03512173f, -150.6007f),
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(5557.132f, -3986.933f, 4.584295f), 329.9921f),
+            VehiclePreviewCameraPosition = new Vector3(7380.006f, -2505.675f, 9.491469f),
+            VehiclePreviewCameraDirection = new Vector3(-0.1739272f, -0.9525952f, -0.249623f),
+            VehiclePreviewCameraRotation = new Rotator(-14.4552f, 1.080064E-05f, 169.6528f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(7378.077f, -2519.028f, 5.701517f), 318.653f),
             LicensePlatePreviewText = "Elitaz",
             StateID = StaticStrings.LibertyStateID,
             VehicleDeliveryLocations = new List<SpawnPlace>()
             {
-                    new SpawnPlace(new Vector3(5578.945f, -3999.795f, 4.584559f), 329.9788f),
-                    new SpawnPlace(new Vector3(5588.871f, -3936.209f, 4.584278f), 329.9645f),
-                    new SpawnPlace(new Vector3(5601.849f, -3913.685f, 4.312748f), 331.6451f),
-                    new SpawnPlace(new Vector3(5575.722f, -3959.03f, 4.312681f), 331.4282f),
-                    new SpawnPlace(new Vector3(5534.12f, -3974.175f, 4.31236f), 330.026f),
+                    new SpawnPlace(new Vector3(7425.58f, -2466.061f, 5.69969f), 318.255f),
+                    new SpawnPlace(new Vector3(7450.189f, -2478.324f, 5.701986f), 0.5567576f),
             }
         };
         LibertyCityLocations.CarDealerships.Add(ElitásTravel);
-        Dealership LuxuryAutos = new Dealership(new Vector3(5240.563f, -2447.86f, 14.65696f), 40.51297f, "Luxury Autos", "You sure you can afford this?", "LuxuryAutosMenu")
+        Dealership LuxuryAutos = new Dealership(new Vector3(5240.563f, -2447.86f, 14.65696f), 40.51297f, "Luxury Autos", "You sure you can afford this?", "IVLuxuryMenu")
         {
             CameraPosition = new Vector3(5232.968f, -2440.033f, 20.04572f),
             CameraDirection = new Vector3(0.6726631f, -0.7206753f, -0.1677838f),
@@ -1628,7 +1633,7 @@ public class PlacesOfInterest_LibertyPP
             }
         };
         LibertyCityLocations.CarDealerships.Add(LuxuryAutos);
-        Dealership WestdykeAutos = new Dealership(new Vector3(4119.343f, -1795.858f, 24.56643f), 217.3433f, "Westdyke Autos", "", "SandersMenu")
+        Dealership WestdykeAutos = new Dealership(new Vector3(4119.343f, -1795.858f, 24.56643f), 217.3433f, "Westdyke Autos", "", "IVMotorcyclesMenu")
         {
             CameraPosition = new Vector3(4132.356f, -1793.774f, 29.45f),
             CameraDirection = new Vector3(-0.8982348f, 0.3947144f, -0.1933256f),
@@ -1648,12 +1653,30 @@ public class PlacesOfInterest_LibertyPP
             }
         };
         LibertyCityLocations.CarDealerships.Add(WestdykeAutos);
+        Dealership HappyIslandBoats = new Dealership(new Vector3(4839.993f, -3761.354f, 4.943236f), 118.4938f, "Happyness Island Boats", "", "HappyBoatMenu")
+        {
+            CameraPosition = new Vector3(4835.881f, -3767.187f, 7.664476f),
+            CameraDirection = new Vector3(-0.8783931f, -0.4651018f, -0.1100269f),
+            CameraRotation = new Rotator(-6.316864f, -8.375142E-06f, 117.9008f),
+            VehiclePreviewCameraPosition = new Vector3(4799.101f, -3790.096f, 4.373492f),
+            VehiclePreviewCameraDirection = new Vector3(0.1013948f, 0.9340025f, -0.3425763f),
+            VehiclePreviewCameraRotation = new Rotator(-20.03391f, -6.815721E-07f, -6.195738f),
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(4799.704f, -3779.6f, 0.3023784f), 117.4393f),
+            LicensePlatePreviewText = "HAPPY",
+            StateID = StaticStrings.LibertyStateID,
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+                    new SpawnPlace(new Vector3(4805.647f, -3790.102f, 0.2267452f), 26.97948f),
+                    new SpawnPlace(new Vector3(4814.057f, -3806.635f, 0.3559909f), 26.90115f),
+                    new SpawnPlace(new Vector3(4810.625f, -3823.273f, 0.2772601f), 29.95905f),
+            }
+        };
+        LibertyCityLocations.CarDealerships.Add(HappyIslandBoats);
     }
     private void DefaultConfig_FoodStands()
     {
         LibertyCityLocations.FoodStands.AddRange(new List<FoodStand>()
         {
-           // new FoodStand(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(3764.164f, -2379.106f, 19.5643f), 94.47754f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1188.392f, 1370.67f, 19.55794f), 264.8223f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             new FoodStand(new Vector3(3927.782f, -2374.98f, 19.56618f), 0.5199404f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1022.393f, 1376.817f, 19.56642f), 176.6684f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             new FoodStand(new Vector3(3924f, -2400.369f, 19.56748f), 183.4882f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1026.179f, 1347.799f, 19.56661f), 356.207f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
@@ -1681,14 +1704,15 @@ public class PlacesOfInterest_LibertyPP
             new FoodStand(new Vector3(4740.749f, -2110.356f, 12.87756f), 223.3621f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-149.6297f, 1088.547f, 14.41764f), 144.2847f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             new FoodStand(new Vector3(4726.802f, -2261.841f, 9.963533f), 291.2136f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-222.2786f, 1488.916f, 9.565118f), 108.8811f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             new FoodStand(new Vector3(4857.351f, -3111.072f, 14.75848f), 6.963999f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-222.2786f, 1488.916f, 9.565118f), 108.8811f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(4824.064f, -3762.798f, 4.342792f), 72.6163f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-222.2786f, 1488.916f, 9.565118f), 108.8811f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(4116.685f, -1800.947f, 24.47414f), 177.1595f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-222.2786f, 1488.916f, 9.565118f), 108.8811f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
 
             new FoodStand(new Vector3(5267.058f, -4028.505f, 4.940442f), 301.3558f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(318.7544f, -278.5309f, 4.24516f), 25.64678f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(5370.958f, -3969.699f, 4.93968f), 125.3503f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(419.214f, -219.8842f, 4.251615f), 215.5863f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(5596.587f, -3799.461f, 5.817865f), 181.1278f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(647.0709f, -49.74772f, 5.818226f), 0.467519f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(5595.608f, -3726.252f, 5.818119f), 2.443711f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(644.7056f, 24.07574f, 5.883476f), 177.2292f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(5118.388f, -2460.465f, 14.68384f), 99.073f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(168.1629f, 1288.782f, 14.28979f), 272.9615f) }, BannerImagePath = "stores\\beefybills.png" },
-            new FoodStand(new Vector3(4975.313f, -2494.541f, 7.171856f), 79.82909f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(25.67185f, 1256.202f, 6.774278f), 80.46771f) }, BannerImagePath = "stores\\beefybills.png" },
-            //new FoodStand(new Vector3(-12.09861f, 1205.744f, 10.18844f), 117.7195f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-12.09861f, 1205.744f, 9.88844f), 117.7195f) }, BannerImagePath = "stores\\beefybills.png" }, No Vendor Spawns - Map Issue?       
+            new FoodStand(new Vector3(4975.313f, -2494.541f, 7.171856f), 79.82909f,  "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(25.67185f, 1256.202f, 6.774278f), 80.46771f) }, BannerImagePath = "stores\\beefybills.png" },     
         });
     }
     private void DefaultConfig_FireStations()
@@ -3304,37 +3328,22 @@ public class PlacesOfInterest_LibertyPP
             new PawnShop(new Vector3(6970.346f, -2789.782f, 28.17134f), 183.9617f, "We Pay Cash Pawn", "","PawnShopMenuGeneric") {StateID = StaticStrings.LibertyStateID, MinPriceRefreshHours = 12, MaxPriceRefreshHours = 24,MinRestockHours = 12, MaxRestockHours = 24,MapIcon =642,},
         });
     }
-    private void DefaultConfig_PedCustomizeLocation() // Default for now
+    private void DefaultConfig_PedCustomizeLocation() 
     {
-        DefaultPedCustomizerLocation = new PedCustomizerLocation();
-        //DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(-1257.695f, 1610.94f, 23.20882f);
-        //DefaultPedCustomizerLocation.DefaultModelPedHeading = 0.3566196f;
-        //DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(-1252.206f, 1613.172f, 23.20882f);
-        //List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
-        //CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
-        //CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 1));
-        //CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 2));
-        //CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 3));
-        //CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(-1257.73f, 1613.432f, 23.80165f), new Vector3(-0.0111506f, -0.9745571f, -0.2238618f), new Rotator(-12.93596f, -2.737518E-08f, 179.3445f), 4));
 
-
-
-        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(1117.94f, 54.14467f, 15.85339f);
-        DefaultPedCustomizerLocation.DefaultModelPedHeading = 184.7249f;
-        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(1125.923f, 52.98021f, 15.86571f);
+        DefaultPedCustomizerLocationLC = new PedCustomizerLocation();
+        //6068.041f, -3695.71f, 15.85331f), 176.317f
+        DefaultPedCustomizerLocationLC.DefaultModelPedPosition = new Vector3(6067.887f, -3695.89943f, 15.85339f);
+        DefaultPedCustomizerLocationLC.DefaultModelPedHeading = 184.7249f;
+        DefaultPedCustomizerLocationLC.DefaultPlayerHoldingPosition = new Vector3(6075.87f, -3697.06389f, 15.86571f);
         List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(1118.04f, 51.75856f, 16.29714f), new Vector3(-0.007076373f, 0.9751766f, -0.2213152f), new Rotator(-12.78629f, 6.01895E-07f, 0.4157597f), 0));//new Vector3(402.8145f, -998.5043f, -98.29621f), new Vector3(-0.02121102f, 0.9286007f, -0.3704739f), new Rotator(-21.74485f, -5.170386E-07f, 1.308518f), 0));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(1118.006f, 53.37799f, 16.5719f), new Vector3(-0.01283151f, 0.9927738f, -0.1193125f), new Rotator(-6.852426f, -4.030857E-08f, 0.7405014f), 1));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(1117.979f, 53.1876f, 15.26992f), new Vector3(-0.01943615f, 0.9749539f, -0.2215562f), new Rotator(-12.80045f, 2.73604E-08f, 1.142066f), 2));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(1118.019f, 52.51995f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 3));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(1118.019f, 52.51995f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 4));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(6067.987f, -3698.28554f, 16.29714f), new Vector3(-0.007076373f, 0.9751766f, -0.2213152f), new Rotator(-12.78629f, 6.01895E-07f, 0.4157597f), 0));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(6067.953f, -3696.66611f, 16.5719f), new Vector3(-0.01283151f, 0.9927738f, -0.1193125f), new Rotator(-6.852426f, -4.030857E-08f, 0.7405014f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(6067.926f, -3696.8565f, 15.26992f), new Vector3(-0.01943615f, 0.9749539f, -0.2215562f), new Rotator(-12.80045f, 2.73604E-08f, 1.142066f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(6067.966f, -3697.52415f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(6067.966f, -3697.52415f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 4));
+        DefaultPedCustomizerLocationLC.CameraCyclerPositions = CameraCyclerPositions;
 
-
-
-
-
-
-        DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
     }
     private void DefaultConfig_Pharmacies()
     {
@@ -4490,10 +4499,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
                 InteriorID = 71682,
+                ExtaVendorSpawnPercentage = 0,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(4951.552f, -3204.325f, 15.70811f), 178.9063f),
-                    new SpawnPlace(new Vector3(4954.729f, -3204.581f, 15.70811f), 182.1575f)
+                    new SpawnPlace(new Vector3(4951.496f, -3204.496f, 13.70811f), 177.54f),
+                    new SpawnPlace(new Vector3(4954.721f, -3204.496f, 13.70811f), 177.54f)
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -4507,10 +4517,11 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
                 InteriorID= 133890,
+                ExtaVendorSpawnPercentage = 0,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(5204.035f, -2274.286f, 15.64895f), 269.4005f),
-                    new SpawnPlace(new Vector3(5204.069f, -2277.729f, 15.64894f), 273.7206f)
+                    new SpawnPlace(new Vector3(5204.04f, -2277.699f, 13.64895f), 270f),
+                    new SpawnPlace(new Vector3(5204.04f, -2274.307f, 13.64895f), 270f)
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -4596,6 +4607,7 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 101634,
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(6073.145f, -3743.317f, 15.88293f), 0.05432305f) }
 
             },
@@ -4795,14 +4807,15 @@ public class PlacesOfInterest_LibertyPP
                 InteriorID = 126722,
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(6825.802f, -3032.419f, 25.21198f), 270.0062f),
-                    new SpawnPlace(new Vector3(6826.004f, -3029.548f, 25.21198f), 273.842f),
+                    new SpawnPlace(new Vector3(6826.013f, -3029.573f, 23.21199f), 266.86f),
+                    new SpawnPlace(new Vector3(6825.861f, -3032.349f, 23.21199f), 266.86f),
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new MerchantConditionalLocation(new Vector3(6844.344f, -3032.33f, 24.9823f), 353.6783f, 55f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(6844.336f, -3032.349f, 22.9823f), 1.86f, 50f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
                 },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -4819,11 +4832,16 @@ public class PlacesOfInterest_LibertyPP
                 InteriorID = 156674,
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(5639.282f, -1752.567f, 16.31569f), 31.45064f),
-                    new SpawnPlace(new Vector3(5641.223f, -1751.344f, 16.31569f), 32.58868f)
-                }
+                    new SpawnPlace(new Vector3(5639.249f, -1752.694f, 14.3157f), 31.23f),
+                    new SpawnPlace(new Vector3(5641.179f, -1751.524f, 14.3157f), 31.23f)
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new MerchantConditionalLocation(new Vector3(5634.027f, -1754.147f, 14.3157f), 31.23f, 50f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                },
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -4836,16 +4854,16 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 112642,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(67.91145f, 781.9721f, 14.81999f), 90.90947f),
-                    new SpawnPlace(new Vector3(67.91145f, 781.9721f, 14.81999f), 90.90947f)
+                    new SpawnPlace(new Vector3(5017.363f, -2967.939f, 12.82008f), 87.54f),
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new MerchantConditionalLocation(new Vector3(5634.104f, -1754.288f, 16.31569f), 28.26038f, 55f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(5000.951f, -2971.517f, 12.77567f), 7.54f, 50f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
                 },
             },
             new Restaurant() {
@@ -4859,11 +4877,12 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 109570,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(4761.273f, -2060.571f, 13.04702f), 94.60755f)
+                    new SpawnPlace(new Vector3(4761.273f, -2060.571f, 11.04702f), 94.60755f)
                 }
             },
             new Restaurant() {
@@ -4877,16 +4896,17 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 134402,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(6300.744f, -1671.279f, 16.90751f), 47.51513f),
-                    new SpawnPlace(new Vector3(6298.794f, -1673.052f, 16.90752f), 43.35667f)
+                    new SpawnPlace(new Vector3(6300.729f, -1671.217f, 14.90752f), 47.83f),
+                    new SpawnPlace(new Vector3(6298.64f, -1673.277f, 14.90752f), 47.83f)
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new MerchantConditionalLocation(new Vector3(6296.459f, -1674.191f, 16.90752f), 40.94174f, 55f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(6296.493f, -1674.306f, 14.90752f), 47.83f, 50f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
                 },
             },
             new Restaurant() {
@@ -4900,9 +4920,10 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 105986,
-                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4571.398f, -3123.869f, 4.811164f), 358.8464f) }
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4571.398f, -3123.869f, 2.811164f), 358.8464f) }
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -4915,14 +4936,15 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.AlderneyStateID,
                 InteriorID = 59650,
-                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4181.021f, -1628.044f, 24.31399f), 180.1708f) },
+                VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4180.869f, -1628.156f, 22.314f), 180.7f) },
 
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new MerchantConditionalLocation(new Vector3(4190.209f, -1644.44922f, 24.1626339f), 209.8278f, 55f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
-                    new MerchantConditionalLocation(new Vector3(4177.42725f, -1644.34912f, 24.1626339f), 187.217f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(4190.209f, -1644.44922f, 22.1626339f), 209.8278f, 50f) { TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(4177.42725f, -1644.34912f, 22.1626339f), 187.217f, 50f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
                 },
             },
             //Burgershot Bowling
@@ -4937,10 +4959,11 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
-
                 InteriorID = 92162,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4590.571f, -3175.661f, 5.217072f), 250.1382f) }
+
             }, //Golden Pier Bowling
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -4953,6 +4976,7 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
 
                 InteriorID = 38146,
@@ -4966,8 +4990,6 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 6,
                 CloseTime = 22,
                 BannerImagePath = "stores\\cluckin.png",
-                VendorPersonnelID = "CluckinBellPeds",
-                VendorHeadDataGroupID = "AllHeads",
             },
             new Restaurant(new Vector3(6379.456f, -2881.191f, 25.09852f), 359.5992f,"Cluckin' Bell","Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) {
                 MenuID = "CluckinBellMenu",
@@ -4978,6 +5000,7 @@ public class PlacesOfInterest_LibertyPP
                 BannerImagePath = "stores\\cluckin.png",
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
 
                 InteriorID = 143874,
@@ -4994,6 +5017,7 @@ public class PlacesOfInterest_LibertyPP
                 StateID = StaticStrings.LibertyStateID,
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 InteriorID = 124162,
                 VendorLocations = new List<SpawnPlace>()
                 {
@@ -5003,8 +5027,8 @@ public class PlacesOfInterest_LibertyPP
 
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new MerchantConditionalLocation(new Vector3(5049.251f, -3189.10864f, 14.7585821f), 162.5283f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
-                    new MerchantConditionalLocation(new Vector3(5058.305f, -3204.62939f, 14.7823725f), 184.0074f, 55f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(5049.251f, -3189.10864f, 14.7585821f), 162.5283f, 50f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
+                    new MerchantConditionalLocation(new Vector3(5058.305f, -3204.62939f, 14.7823725f), 184.0074f, 50f){ TaskRequirements = TaskRequirements.AnyScenario | TaskRequirements.Guard },
                 },
             },
 
@@ -5040,12 +5064,13 @@ public class PlacesOfInterest_LibertyPP
                 InteriorID = 166914,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                   new SpawnPlace(new Vector3(3611.932f, -2790.614f, 25.4438f), 151.6612f),
-                   new SpawnPlace(new Vector3(3609.369f, -2797.919f, 25.44383f), 337.0622f)
+                   new SpawnPlace(new Vector3(3611.932f, -2790.614f, 23.4438f), 151.6612f),
+                   new SpawnPlace(new Vector3(3609.369f, -2797.919f, 23.44383f), 337.0622f)
                 },
                 StateID = StaticStrings.AlderneyStateID,
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(4848.44f, -1863.803f, 12.91685f), 89.72078f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 BannerImagePath = "stores\\twat.png",
@@ -5054,12 +5079,13 @@ public class PlacesOfInterest_LibertyPP
                 InteriorID = 66562,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                    new SpawnPlace(new Vector3(4852.911f, -1860.169f, 12.91317f), 182.5274f),
-                    new SpawnPlace(new Vector3(4854.048f, -1867.899f, 12.91319f), 0.8041525f)
+                    new SpawnPlace(new Vector3(4852.911f, -1860.169f, 10.91317f), 182.5274f),
+                    new SpawnPlace(new Vector3(4854.048f, -1867.899f, 10.91319f), 0.8041525f)
                 },
                 StateID = StaticStrings.LibertyStateID,
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(6163.752f, -3425.905f, 23.96916f), 290.0018f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 OpenTime = 6,
@@ -5067,13 +5093,14 @@ public class PlacesOfInterest_LibertyPP
                 InteriorID = 50178,
                 VendorLocations = new List<SpawnPlace>()
                 {
-                   new SpawnPlace(new Vector3(6160.429f, -3430.661f, 24.1937f), 17.51742f),
-                   new SpawnPlace(new Vector3(6157.035f, -3423.569f, 24.19372f), 196.9963f)
+                   new SpawnPlace(new Vector3(6160.429f, -3430.661f, 22.1937f), 17.51742f),
+                   new SpawnPlace(new Vector3(6157.035f, -3423.569f, 22.19372f), 196.9963f)
                 },
                 StateID = StaticStrings.LibertyStateID,
                 BannerImagePath = "stores\\twat.png",
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
 
             //Italian
@@ -5303,7 +5330,7 @@ public class PlacesOfInterest_LibertyPP
     {
         List<VehicleExporter> ExportersList = new List<VehicleExporter>()
         {
-            new VehicleExporter(new Vector3(5973.893f, -3431.343f, 6.089474f), 155.8235f,"East Hook Exports","Deliver Me Timbers","SunshineMenu") {
+            new VehicleExporter(new Vector3(5973.893f, -3431.343f, 6.089474f), 155.8235f,"East Hook Exports","Deliver Me Timbers","IVExportMidHighMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(5944.80664f, -3472.4043f, 5.129808f),336.13f),
                     new SpawnPlace(new Vector3(6003.39648f, -3417.01416f, 5.45981f),106.87f),
@@ -5316,7 +5343,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
             },
-            new VehicleExporter(new Vector3(5642.857f, -2164.316f, 2.714376f),175.517f,"Charge Island Exports","The boats are just a front","SunshineMenu") {
+            new VehicleExporter(new Vector3(5642.857f, -2164.316f, 2.714376f),175.517f,"Charge Island Exports","The boats are just a front","IVExportMidHighMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                 new SpawnPlace() {
                 Position = new Vector3(5666.107f, -2171.624f, 2.22979879f),
@@ -5340,7 +5367,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
             },
-            new VehicleExporter(new Vector3(4870.594f, -2937.176f, 14.81769f),90.90815f,"Star Junction Chop Shop","Hiding in plain sight, they'll never know","NationalMenu") {
+            new VehicleExporter(new Vector3(4870.594f, -2937.176f, 14.81769f),90.90815f,"Star Junction Chop Shop","Hiding in plain sight, they'll never know","IVExportLowMidMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                 new SpawnPlace() {
                 Position = new Vector3(4866.837f, -2933.224f, 14.2098093f),
@@ -5368,7 +5395,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
             },
-            new VehicleExporter(new Vector3(6133.665f, -1700.628f, 16.79538f), 90.47171f,"Bohan Chop Shop","Part em out, ship em off","NationalMenu") {
+            new VehicleExporter(new Vector3(6133.665f, -1700.628f, 16.79538f), 90.47171f,"Bohan Chop Shop","Part em out, ship em off","IVExportLowMidMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                 new SpawnPlace() {
                 Position = new Vector3(6121.987f, -1702.97424f, 16.1197987f),
@@ -5396,7 +5423,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
             },
-            new VehicleExporter(new Vector3(3995.672f, -1391.044f, 6.619572f), 218.6314f,"Alderney Chop Shop","Once a casino, now a chop shop","NationalMenu") {
+            new VehicleExporter(new Vector3(3995.672f, -1391.044f, 6.619572f), 218.6314f,"Alderney Chop Shop","Once a casino, now a chop shop","IVExportLowMidMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                 new SpawnPlace() {
                 Position = new Vector3(3982.69678f, -1404.42407f, 5.78979635f),
@@ -5424,7 +5451,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 0,
                 CloseTime = 24,
             },
-            new VehicleExporter(new Vector3(3973.28687f, -3234.934f, 4.30980062f),177.89f,"Port Tudor Exports","From Alderney to anywhere in the world","SunshineMenu") {
+            new VehicleExporter(new Vector3(3973.28687f, -3234.934f, 4.30980062f),177.89f,"Port Tudor Exports","From Alderney to anywhere in the world","IVExportMidHighMenu") {
                 ParkingSpaces = new List<SpawnPlace>() {
                 new SpawnPlace() {
                 Position = new Vector3(3972.877f, -3241.214f, 4.303302f),

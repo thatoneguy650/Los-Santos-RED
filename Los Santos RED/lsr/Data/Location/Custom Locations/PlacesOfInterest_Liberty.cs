@@ -1093,6 +1093,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 101634,
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1123.069f, 6.614799f, 15.84287f + 200), 0.05432305f) }
 
             },
@@ -1811,6 +1812,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 24,
                 InteriorID = 80386,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                 new SpawnPlace(new Vector3(1385.484f, 1234.314f, 35.51503f + 200), 202.0261f),
@@ -1828,6 +1830,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 24,
                 InteriorID = 121346,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1704.972f, 552.0669f, 225.18564f), 265.0143f) },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -1842,6 +1845,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 2,
                 InteriorID = 78338,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1186.088f, 223.1428f, 218.27395f), 270.9737f) },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -1856,6 +1860,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 2,
                 InteriorID = 113666,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(1428.454f, 2196.892f, 17.72204f + 200), 134.2915f),
@@ -1873,6 +1878,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 2,
                 InteriorID = 67586,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(-1337.139f, 506.3902f, 210.0102f), 47.77391f),
@@ -1891,6 +1897,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 2,
                 InteriorID = 12034,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(-194.9077f, 848.2651f, 11.71165f + 200), 217.491f),
@@ -1909,6 +1916,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 2,
                 InteriorID = 126210,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(-246.0471f, 653.0336f, 7.683851f + 200), 180.1919f),
@@ -3665,6 +3673,7 @@ public class PlacesOfInterest_Liberty
             {
                 InteriorID = 130818,
                 VendorPersonnelID = "BarPeds",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(-156.4031f, 901.8716f, 5.66932f), 177.0776f),
@@ -3701,6 +3710,7 @@ public class PlacesOfInterest_Liberty
                 InteriorID = 126722,
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1875.883f, 718.8391f, 25.21189f), 267.9538f) },
                 StateID = StaticStrings.LibertyStateID,
             },
@@ -3717,6 +3727,7 @@ public class PlacesOfInterest_Liberty
                 InteriorID = 156674,
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(688.6464f, 1996.255f, 16.31561f), 31.33071f) }
             },
             new Restaurant() {
@@ -3730,6 +3741,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 112642,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(67.91145f, 781.9721f, 14.81999f), 90.90947f) }
@@ -3745,6 +3757,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 109570,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-188.1336f, 1688.44f, 13.04693f), 89.43073f) }
@@ -3760,6 +3773,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 134402,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(1350.033f, 2078.295f, 16.90743f), 45.12792f) }
@@ -3775,6 +3789,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 105986,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-379.1163f, 625.4515f, 4.811082f), 357.4249f) }
@@ -3790,6 +3805,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.AlderneyStateID,
                 InteriorID = 59650,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(-768.1967f, 2122.303f, 24.31391f), 179.2184f) },
@@ -3812,6 +3828,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
 
                 InteriorID = 92162,
@@ -3828,6 +3845,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\burgershot.png",
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
 
                 InteriorID = 38146,
@@ -3843,6 +3861,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\cluckin.png",
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(1429.49f, 868.19f, 25.1f),2.2f,"Cluckin' Bell","Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood) {
                 MenuID = "CluckinBellMenu",
@@ -3853,6 +3872,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\cluckin.png",
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
 
                 InteriorID = 143874,
@@ -3865,6 +3885,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
                 VendorPersonnelID = "CluckinBellPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 InteriorID = 124162,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(116.7789f, 564.6393f, 14.80746f), 103.3126f) },
 
@@ -3909,6 +3930,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.AlderneyStateID,
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(-101.45f, 1886.24f, 12.92f),88.88f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 BannerImagePath = "stores\\twat.png",
@@ -3919,6 +3941,7 @@ public class PlacesOfInterest_Liberty
                 StateID = StaticStrings.LibertyStateID,
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(1213.59f, 324.08f, 24.19f),280.19f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 OpenTime = 6,
@@ -3929,6 +3952,7 @@ public class PlacesOfInterest_Liberty
                 BannerImagePath = "stores\\twat.png",
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
             },
 
             //Italian
