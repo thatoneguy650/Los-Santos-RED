@@ -719,6 +719,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 24,
                 InteriorID = 164866,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6122.559f, -3746.585f, 13.48475f), 176.0122f) },
@@ -733,6 +734,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 24,
                 InteriorID = 54018,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
@@ -751,6 +753,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 24,
                 InteriorID = 80386,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
@@ -769,6 +772,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 24,
                 InteriorID = 121346,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6654.771f, -3196.343f, 23.18558f), 272.2538f) },
@@ -784,6 +788,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 2,
                 InteriorID = 78338,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6136.197f, -3526.964f, 16.27434f), 268.7266f) },
@@ -798,6 +803,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 2,
                 InteriorID = 113666,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 25f, 
                 VendorLocations = new List<SpawnPlace>()
@@ -816,6 +822,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 2,
                 InteriorID = 67586,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 35f,
                 VendorLocations = new List<SpawnPlace>()
@@ -835,6 +842,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 2,
                 InteriorID = 12034,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
@@ -854,6 +862,7 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 8,
                 CloseTime = 2,
                 InteriorID = 126210,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 25f,
                 VendorLocations = new List<SpawnPlace>()
@@ -867,6 +876,7 @@ public class PlacesOfInterest_LibertyPP
             new Bar(new Vector3(4789.221f, -2859.199f, 14.40985f), 183.1031f, "Bahama Mama's", "","BarMenu")
             {
                 InteriorID = 130818,
+                IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 35f,
                 VendorLocations = new List<SpawnPlace>()
@@ -3331,18 +3341,18 @@ public class PlacesOfInterest_LibertyPP
     private void DefaultConfig_PedCustomizeLocation() 
     {
 
-        DefaultPedCustomizerLocationLC = new PedCustomizerLocation();
+        DefaultPedCustomizerLocation = new PedCustomizerLocation();
         //6068.041f, -3695.71f, 15.85331f), 176.317f
-        DefaultPedCustomizerLocationLC.DefaultModelPedPosition = new Vector3(6067.887f, -3695.89943f, 15.85339f);
-        DefaultPedCustomizerLocationLC.DefaultModelPedHeading = 184.7249f;
-        DefaultPedCustomizerLocationLC.DefaultPlayerHoldingPosition = new Vector3(6075.87f, -3697.06389f, 15.86571f);
+        DefaultPedCustomizerLocation.DefaultModelPedPosition = new Vector3(6067.887f, -3695.89943f, 15.85339f);
+        DefaultPedCustomizerLocation.DefaultModelPedHeading = 184.7249f;
+        DefaultPedCustomizerLocation.DefaultPlayerHoldingPosition = new Vector3(6075.87f, -3697.06389f, 15.86571f);
         List<CameraCyclerPosition> CameraCyclerPositions = new List<CameraCyclerPosition>();
         CameraCyclerPositions.Add(new CameraCyclerPosition("Default", new Vector3(6067.987f, -3698.28554f, 16.29714f), new Vector3(-0.007076373f, 0.9751766f, -0.2213152f), new Rotator(-12.78629f, 6.01895E-07f, 0.4157597f), 0));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(6067.953f, -3696.66611f, 16.5719f), new Vector3(-0.01283151f, 0.9927738f, -0.1193125f), new Rotator(-6.852426f, -4.030857E-08f, 0.7405014f), 1));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(6067.926f, -3696.8565f, 15.26992f), new Vector3(-0.01943615f, 0.9749539f, -0.2215562f), new Rotator(-12.80045f, 2.73604E-08f, 1.142066f), 2));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(6067.966f, -3697.52415f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 3));
         CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(6067.966f, -3697.52415f, 15.86643f), new Vector3(-0.004468728f, 0.9992217f, -0.03919213f), new Rotator(-2.246119f, 1.184854E-07f, 0.256237f), 4));
-        DefaultPedCustomizerLocationLC.CameraCyclerPositions = CameraCyclerPositions;
+        DefaultPedCustomizerLocation.CameraCyclerPositions = CameraCyclerPositions;
 
     }
     private void DefaultConfig_Pharmacies()
@@ -4499,6 +4509,7 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
                 InteriorID = 71682,
+                IsWalkup = true,
                 ExtaVendorSpawnPercentage = 0,
                 VendorLocations = new List<SpawnPlace>()
                 {
@@ -4517,6 +4528,7 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 TypeName = "Coffee Shop",
                 InteriorID= 133890,
+                IsWalkup = true,
                 ExtaVendorSpawnPercentage = 0,
                 VendorLocations = new List<SpawnPlace>()
                 {
@@ -4607,6 +4619,7 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 20,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 101634,
+                IsWalkup = true,
                 ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(6073.145f, -3743.317f, 15.88293f), 0.05432305f) }
 
@@ -4830,6 +4843,7 @@ public class PlacesOfInterest_LibertyPP
                 CloseTime = 22,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 156674,
+                IsWalkup = true,
                 VendorPersonnelID = "BurgerShotPeds",
                 VendorHeadDataGroupID = "AllHeads",
                 ExtaVendorSpawnPercentage = 0f,
@@ -4857,6 +4871,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 112642,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(5017.363f, -2967.939f, 12.82008f), 87.54f),
@@ -4880,6 +4895,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 109570,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(4761.273f, -2060.571f, 11.04702f), 94.60755f)
@@ -4899,6 +4915,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 134402,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(6300.729f, -1671.217f, 14.90752f), 47.83f),
@@ -4923,6 +4940,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 105986,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4571.398f, -3123.869f, 2.811164f), 358.8464f) }
             },
             new Restaurant() {
@@ -4939,6 +4957,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.AlderneyStateID,
                 InteriorID = 59650,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4180.869f, -1628.156f, 22.314f), 180.7f) },
 
                 PossiblePedSpawns = new List<ConditionalLocation>()
@@ -4962,6 +4981,7 @@ public class PlacesOfInterest_LibertyPP
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
                 InteriorID = 92162,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(4590.571f, -3175.661f, 5.217072f), 250.1382f) }
 
             }, //Golden Pier Bowling
@@ -4978,8 +4998,8 @@ public class PlacesOfInterest_LibertyPP
                 VendorHeadDataGroupID = "AllHeads",
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
-
                 InteriorID = 38146,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>() {new SpawnPlace(new Vector3(6389.916f, -3910.461f, 16.84486f), 155.9372f) }
             }, // Firefly Bowling
 
@@ -5002,8 +5022,8 @@ public class PlacesOfInterest_LibertyPP
                 VendorHeadDataGroupID = "AllHeads",
                 ExtaVendorSpawnPercentage = 0f,
                 StateID = StaticStrings.LibertyStateID,
-
                 InteriorID = 143874,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(6371.438f, -2896f, 25.1033f), 0.8869792f),
@@ -5019,6 +5039,7 @@ public class PlacesOfInterest_LibertyPP
                 VendorHeadDataGroupID = "AllHeads",
                 ExtaVendorSpawnPercentage = 0f,
                 InteriorID = 124162,
+                IsWalkup = true,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(5065.712f, -3183.676f, 14.80308f), 105.0725f),
@@ -5062,45 +5083,48 @@ public class PlacesOfInterest_LibertyPP
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 166914,
+                IsWalkup = true,
+                StateID = StaticStrings.AlderneyStateID,
+                VendorPersonnelID = "TwatPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                    new SpawnPlace(new Vector3(3611.932f, -2790.614f, 23.4438f), 151.6612f),
                    new SpawnPlace(new Vector3(3609.369f, -2797.919f, 23.44383f), 337.0622f)
                 },
-                StateID = StaticStrings.AlderneyStateID,
-                VendorPersonnelID = "TwatPeds",
-                VendorHeadDataGroupID = "AllHeads",
-                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(4848.44f, -1863.803f, 12.91685f), 89.72078f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 BannerImagePath = "stores\\twat.png",
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 66562,
+                IsWalkup = true,
+                StateID = StaticStrings.LibertyStateID,
+                VendorPersonnelID = "TwatPeds",
+                VendorHeadDataGroupID = "AllHeads",
+                ExtaVendorSpawnPercentage = 0f,
                 VendorLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(4852.911f, -1860.169f, 10.91317f), 182.5274f),
                     new SpawnPlace(new Vector3(4854.048f, -1867.899f, 10.91319f), 0.8041525f)
                 },
-                StateID = StaticStrings.LibertyStateID,
-                VendorPersonnelID = "TwatPeds",
-                VendorHeadDataGroupID = "AllHeads",
-                ExtaVendorSpawnPercentage = 0f,
             },
             new Restaurant(new Vector3(6163.752f, -3425.905f, 23.96916f), 290.0018f,"tw@","nu-media caffeine solutions provider","InternetCafeMenu",FoodType.Snack) {
                 OpenTime = 6,
                 CloseTime = 20,
                 InteriorID = 50178,
-                VendorLocations = new List<SpawnPlace>()
-                {
-                   new SpawnPlace(new Vector3(6160.429f, -3430.661f, 22.1937f), 17.51742f),
-                   new SpawnPlace(new Vector3(6157.035f, -3423.569f, 22.19372f), 196.9963f)
-                },
+                IsWalkup = true,
                 StateID = StaticStrings.LibertyStateID,
                 BannerImagePath = "stores\\twat.png",
                 VendorPersonnelID = "TwatPeds",
                 VendorHeadDataGroupID = "AllHeads",
                 ExtaVendorSpawnPercentage = 0f,
+                VendorLocations = new List<SpawnPlace>()
+                {
+                   new SpawnPlace(new Vector3(6160.429f, -3430.661f, 22.1937f), 17.51742f),
+                   new SpawnPlace(new Vector3(6157.035f, -3423.569f, 22.19372f), 196.9963f)
+                },
             },
 
             //Italian
