@@ -58,6 +58,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6538.14258f, -2347.73218f, 13.8131628f), 293.9003f, defaultSpawnPercentage) { OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>{ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
@@ -77,6 +79,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4978.57959f, -2066.58716f, 14.6191921f), 2.980924f, defaultSpawnPercentage) { OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>{ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE" } },
@@ -97,6 +101,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(7477.578f, -2907.88184f, 6.09556627f), 330.3031f, defaultSpawnPercentage) { OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>{ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
@@ -116,6 +122,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(3654.4978f, -2143.808f, 26.692934f), 58.73107f, defaultSpawnPercentage) { OverrideDispatchablePersonGroupID = "VehicleRacePeds", TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>{ "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_MOBILE" } },
@@ -138,6 +146,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6550.541f, -3941.54517f, 7.093464f), 280.9801f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -150,6 +160,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6577.031f, -2682.91919f, 30.8715343f), 92.10503f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -162,6 +174,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6813.5376f, -2560.58936f, 28.4308033f), 91.05238f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -175,6 +189,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6168.30566f, -2441.19531f, 24.8075027f), 271.6276f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -187,6 +203,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 23,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(6412.51074f, -1538.5542f, 16.0069637f), 1.335895f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -199,6 +217,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4017.60547f, -1599.98926f, 34.9283524f), 0.8309714f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -212,6 +232,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(3854.04077f, -1914.56616f, 21.2279129f), 91.87346f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -226,6 +248,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(3598.776f, -2984.4978f, 16.294714f), 253.8885f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -239,6 +263,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4234.27344f, -3742.541f, 2.334108f), 178.4972f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -251,6 +277,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(5195.46729f, -3866.81177f, 14.1214523f), 334.4337f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -263,6 +291,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(5206.062f, -3367.3623f, 14.1553926f), 179.6348f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -275,6 +305,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4688.92773f, -3609.03735f, 5.203979f), 136.8777f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -289,6 +321,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4563.51465f, -3094.2f, 4.147959f), 89.41318f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -302,6 +336,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(5306.772f, -2363.36133f, 14.0943623f), 178.8575f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "HighEndVehicles" },
@@ -314,6 +350,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 75f,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new CivilianConditionalLocation(new Vector3(4902.783f, -2077.83f, 14.1413422f), 90.62903f, defaultCarSpawnPercentage) { OverrideDispatchableVehicleGroupID = "ImportExportVehicles" },
@@ -330,8 +368,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             AssignedAssociationID = "NOOSE",
             StateID = StaticStrings.LibertyStateID,
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -370,8 +408,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             AssignedAssociationID = "NOOSE",
             StateID = StaticStrings.LibertyStateID,
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -426,6 +464,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 16,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -547,6 +587,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -639,6 +681,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -731,6 +775,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 20,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -823,6 +869,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 10,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -944,6 +992,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 20,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1036,6 +1086,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 22,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1128,6 +1180,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 10,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1220,6 +1274,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 20,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1341,6 +1397,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 2,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1433,6 +1491,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 16,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1526,6 +1586,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 22,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1617,6 +1679,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 18,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1738,6 +1802,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 16,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1830,6 +1896,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 22,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -1951,6 +2019,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 12,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2072,6 +2142,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 17,
             CloseTime = 21,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2186,6 +2258,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 16,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2271,6 +2345,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 10,
             CloseTime = 14,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2383,6 +2459,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 14,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2496,6 +2574,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 20,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2607,6 +2687,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 19,
             CloseTime = 22,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2718,6 +2800,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2829,6 +2913,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 22,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -2940,6 +3026,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 10,
             CloseTime = 16,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3052,6 +3140,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 12,
             CloseTime = 18,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3163,6 +3253,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 8,
             CloseTime = 12,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3248,6 +3340,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 20,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3334,6 +3428,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 10,
             CloseTime = 16,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3418,6 +3514,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 18,
             CloseTime = 22,
             StateID = StaticStrings.LibertyStateID,
+            ActivateCells = 3,
+            ActivateDistance = 125f,
             AssignedAssociationID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3526,8 +3624,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3547,8 +3645,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3568,8 +3666,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3589,8 +3687,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3610,8 +3708,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3631,8 +3729,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3652,8 +3750,8 @@ public class BlankLocationsData_LibertyPP
         {
             OpenTime = 6,
             CloseTime = 20,
-            ActivateDistance = 300f,
-            ActivateCells = 8,
+            ActivateDistance = 200f,
+            ActivateCells = 4,
             StateID = StaticStrings.LibertyStateID,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -3674,7 +3772,7 @@ public class BlankLocationsData_LibertyPP
         List<BlankLocation> blankLocationPlaces = new List<BlankLocation>() {
             //Algonquin
             new BlankLocation(new Vector3(4573.788f, -2445.35425f, 6.68325f), 32.41907f, "ALGSpeedTrap1", "Speed Trap Union Drive West 1") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3701,7 +3799,7 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(4639.02344f, -2901.32422f, 6.658971f), 180.2172f, "ALGSpeedTrap2", "Speed Trap Union Drive West 2") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3728,7 +3826,7 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(5331.81445f, -2307.36621f, 14.7138329f), 321.6855f, "ALGSpeedTrap3", "Covering Union Drive East") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3755,7 +3853,7 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(5405.5625f, -2923.811f, 8.603383f), 3.34502f, "ALGSpeedTrap4", "Covering Union Drive East") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3786,8 +3884,8 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(5353.141f, -2472.8623f, 7.64442f), 359.9992f, "ALGSpeedTrap5", "Union Drive East Tunnel") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(5353.141f, -2472.8623f, 7.64442f), 359.9992f, defaultSpawnPercentage) {
@@ -3798,8 +3896,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(4954.19141f, -2942.731f, 14.3408527f), 267.0054f, "ALGSpeedTrap6", "Star Junction Alley") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(4954.19141f, -2942.731f, 14.3408527f), 267.0054f, defaultSpawnPercentage) {
@@ -3810,8 +3908,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(4716.492f, -3029.17334f, 9.467564f), 269.5866f, "ALGSpeedTrap7", "Westminster Carpark") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(4716.492f, -3029.17334f, 9.467564f), 269.5866f, defaultSpawnPercentage) {
@@ -3822,8 +3920,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(4878.94629f, -2066.17725f, 14.6141129f), 179.4064f, "ALGSpeedTrap8", "Middle Park - Topaz Street Alley") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(4878.94629f, -2066.17725f, 14.6141129f), 179.4064f, defaultSpawnPercentage) {
@@ -3834,8 +3932,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(4964.486f, -2669.89624f, 14.3395329f), 270.0316f, "ALGSpeedTrap9", "Star Junction Alley across from The Majestic") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(4964.486f, -2669.89624f, 14.3395329f), 270.0316f, defaultSpawnPercentage) {
@@ -3847,7 +3945,7 @@ public class BlankLocationsData_LibertyPP
             },
             //Bohan
             new BlankLocation(new Vector3(5911.36865f, -1448.45825f, 39.4403229f), 314.965f, "BOHSpeedTrap1", "Valdez St. overlooking Grand Boulevard") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3874,8 +3972,8 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(6062.002f, -1597.10425f, 16.6604633f), 227.3036f, "BOHSpeedTrap2", "Across from Alpha Mail - Industrial") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(6062.002f, -1597.10425f, 16.6604633f), 227.3036f, defaultSpawnPercentage) {
@@ -3887,7 +3985,7 @@ public class BlankLocationsData_LibertyPP
             },
             //Dukes
             new BlankLocation(new Vector3(7072.162f, -2327.28223f, 23.9681339f), 231.4356f, "DUKSpeedTrap1", "Dukes Expressway") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3914,7 +4012,7 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(7160.093f, -3110.59058f, 18.248373f), 297.3787f, "DUKSpeedTrap2", "Dukes Expressway Alt Direction") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3941,8 +4039,8 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(6951.463f, -2714.728f, 28.7992439f), 43.6178f, "DUKSpeedTrap3", "Howard St Willis") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(6951.463f, -2714.728f, 28.7992439f), 43.6178f, defaultSpawnPercentage) {
@@ -3954,7 +4052,7 @@ public class BlankLocationsData_LibertyPP
             },
             //Broker
             new BlankLocation(new Vector3(6701.859f, -3557.82617f, 14.4745922f), 37.95805f, "BROSpeedTrap1", "Dukes Expressway Broker") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.LibertyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -3985,8 +4083,8 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(6307.552f, -2989.623f, 30.6187229f), 89.78445f, "BROSpeedTrap2", "Downtown Broker") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(6307.552f, -2989.623f, 30.6187229f), 89.78445f, defaultSpawnPercentage) {
@@ -3997,8 +4095,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(6368.26758f, -3414.86523f, 28.4733429f), 359.7886f, "BROSpeedTrap3", "South Slopes Broker") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(6368.26758f, -3414.86523f, 28.4733429f), 359.7886f, defaultSpawnPercentage) {
@@ -4010,7 +4108,7 @@ public class BlankLocationsData_LibertyPP
             },
             //Alderney
             new BlankLocation(new Vector3(3450.09668f, -2540.11914f, 29.4871235f), 162.3214f, "ALDSpeedTrap1", "Plumbers Skyway Berchem") {
-                ActivateDistance = 300f,ActivateCells = 8,
+                ActivateDistance = 150f,ActivateCells = 4,
                 StateID = StaticStrings.AlderneyStateID,
                 PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4037,8 +4135,8 @@ public class BlankLocationsData_LibertyPP
                 }
             },
             new BlankLocation(new Vector3(3924.03882f, -2435.56f, 19.1693344f), 267.0769f, "ALDSpeedTrap2", "Plumber's Skyway Alderney City") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(3924.03882f, -2435.56f, 19.1693344f), 267.0769f, defaultSpawnPercentage) {
@@ -4049,8 +4147,8 @@ public class BlankLocationsData_LibertyPP
                 },
             },
             new BlankLocation(new Vector3(3886.22876f, -3063.21631f, 7.65221f), 271.3782f, "ALDSpeedTrap3", "Roebuck Rd Tudor") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(3886.22876f, -3063.21631f, 7.65221f), 271.3782f, defaultSpawnPercentage) {
@@ -4062,8 +4160,8 @@ public class BlankLocationsData_LibertyPP
             },
             //Colony island
             new BlankLocation(new Vector3(5635.675f, -3095.39648f, 8.170388f), 89.80821f, "COLSpeedTrap1", "Colony Island") {
-                ActivateDistance = 300f,
-                ActivateCells = 8,
+                ActivateDistance = 150f,
+                ActivateCells = 4,
                 PossibleVehicleSpawns = new List<ConditionalLocation>()
                 {
                     new LEConditionalLocation(new Vector3(5635.675f, -3095.39648f, 8.170388f), 89.80821f, defaultSpawnPercentage) {
@@ -4086,9 +4184,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AodDiner",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4787.82568f, -3015.35742f, 13.2739725f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4148,6 +4248,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4339,9 +4441,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AodLimbo",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4697.079f, -2895.60132f, 6.70761f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4400,9 +4504,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AodScrap",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4699.105f, -1479.4873f, 8.149014f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4499,6 +4605,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4675,6 +4783,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANGELS",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -4854,6 +4964,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5107,9 +5219,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostHardtack",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3124.504f, -3084.66113f, 11.5656528f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5164,9 +5278,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostBlock",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3104.817f, -3217.63184f, 6.635515f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5221,9 +5337,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostBlock2",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3152.47778f, -3169.08154f, 6.299114f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5332,9 +5450,11 @@ public class BlankLocationsData_LibertyPP
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             Name = "LostDiner",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6139.523f, -2808.59717f, 15.0105124f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
                     new ConditionalGroup()
@@ -5388,9 +5508,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostBlock3",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3322.95166f, -2981.99219f, 22.3839035f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5447,7 +5569,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5627,7 +5750,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5715,9 +5839,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostPrison",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(4243.473f, -3746.04541f, 2.858823f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5783,9 +5909,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3269.95166f, -3560.4043f, 2.093902f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5851,9 +5979,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial2",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3602.19678f, -3557.29468f, -3.301312f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5935,9 +6065,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial3",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3719.086f, -3756.68628f, 2.563023f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -5992,9 +6124,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial4",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3913.4248f, -3848.586f, 2.310724f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6060,9 +6194,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial5",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(4121.51025f, -3847.511f, 2.316071f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6117,9 +6253,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostIndustrial6",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3957.20166f, -3608.61914f, 2.93179917f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6166,9 +6304,11 @@ public class BlankLocationsData_LibertyPP
 
             Name = "LostIndustrial7",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3919.63965f, -3524.40112f, 2.923587f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6214,9 +6354,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostBlock4",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3816.68774f, -3329.77441f, 6.29778528f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6262,9 +6404,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LostDiner2",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3699.81177f, -3320.14648f, 5.709759f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LOST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6328,6 +6472,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6452,6 +6598,8 @@ public class BlankLocationsData_LibertyPP
             EntrancePosition = new Vector3(5046.39746f, -1616.66919f, 19.7636738f),
             EntranceHeading = 0f,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6509,6 +6657,8 @@ public class BlankLocationsData_LibertyPP
             EntrancePosition = new Vector3(5044.07666f, -1584.60815f, 18.7540035f),
             EntranceHeading = 0f,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_UPTOWN",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6581,6 +6731,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 67586,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6726,9 +6878,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiHouse",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3675.752f, -2998.06152f, 12.0089226f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6778,9 +6932,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiPizzaThis",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3630.33081f, -2744.49316f, 24.2709427f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6831,9 +6987,11 @@ public class BlankLocationsData_LibertyPP
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             Name = "AncelottiHouse2",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3677.10474f, -2515.9873f, 24.9013729f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
                     new ConditionalGroup()
@@ -6888,7 +7046,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -6966,9 +7125,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiGarages",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3734.56982f, -2482.73633f, 22.8923435f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7018,9 +7179,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiFuelDepot",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4780.84961f, -1467.3501f, 8.127784f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7088,9 +7251,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiWaste",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5735.435f, -2985.355f, 8.225076f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7158,9 +7323,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiIndustrial",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3966.856f, -3448.02759f, 3.30133915f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7215,9 +7382,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiDiner",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3821.48877f, -2743.74414f, 11.8599625f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7267,9 +7436,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiAlley",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3669.25586f, -2611.09619f, 23.2729645f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7330,9 +7501,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiResta",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3856.73779f, -3010.98267f, 9.59382248f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7382,9 +7555,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "AncelottiMail",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(3993.106f, -2766.931f, 4.102825f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7442,7 +7617,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7520,9 +7696,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiStreet",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4987.18555f, -3514.442f, 14.0562925f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7572,9 +7750,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiAlDenti",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5126.393f, -3887.39038f, 14.1199121f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7624,9 +7804,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiSuffolk",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4918.6543f, -3541.03955f, 13.6867723f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7682,6 +7864,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7765,6 +7949,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7848,6 +8034,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7925,9 +8113,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiErsatz",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4952.01074f, -3460.74829f, 13.8397722f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -7977,9 +8167,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiTriangle",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5038.50732f, -3173.0144f, 14.120223f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8029,9 +8221,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiStreet2",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4760.035f, -3468.899f, 8.707564f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8081,9 +8275,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiStreet3",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4813.361f, -3359.01978f, 13.9668026f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8133,9 +8329,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "GambettiCityHall3",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5032.78f, -3699.68335f, 14.5638027f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8183,9 +8381,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "LupisellaBlock",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6256.155f, -1416.13428f, 12.0531225f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8241,6 +8441,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8417,7 +8619,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8570,7 +8773,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 113666,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8703,7 +8907,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8786,7 +8991,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8869,7 +9075,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -8952,7 +9159,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9036,7 +9244,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_LUPISELLA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9194,6 +9403,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9272,9 +9483,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaJunction",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4973.509f, -2802.79053f, 14.0497122f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9330,6 +9543,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9412,7 +9627,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9490,9 +9706,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaHome",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4775.32129f, -2876.45361f, 11.5795031f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9543,9 +9761,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaRimmers",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4886.59668f, -2855.45264f, 14.0409622f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9601,6 +9821,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9684,6 +9906,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9766,6 +9990,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9848,6 +10074,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -9930,6 +10158,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10012,6 +10242,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10095,6 +10327,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10267,9 +10501,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaJerkov",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5330.291f, -2689.43921f, 13.9792824f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10319,9 +10555,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaParking",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4713.545f, -2817.924f, 9.434187f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10384,6 +10622,8 @@ public class BlankLocationsData_LibertyPP
             EntrancePosition = new Vector3(4835.39453f, -2903.80786f, 14.0333023f),
             EntranceHeading = 0f,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10433,9 +10673,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaStreet",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5191.22656f, -3005.77979f, 14.344533f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10496,9 +10738,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "MessinaProsper",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5284.98438f, -2954.89f, 14.7557926f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_MESSINA",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10557,9 +10801,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PavanoTower1",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5042.919f, -1949.80115f, 19.7376328f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10616,7 +10862,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10694,9 +10941,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PavanoPark",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4956.80469f, -2099.79321f, 14.0241022f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10751,7 +11000,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10834,7 +11084,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10911,9 +11162,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PavanoAlley",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5265.3877f, -2198.12622f, 13.9401722f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -10968,6 +11221,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11051,7 +11306,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11134,6 +11390,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11216,6 +11474,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11293,9 +11553,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PavanoPyrite",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5297.32031f, -2514.582f, 13.9838829f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11343,7 +11605,6 @@ public class BlankLocationsData_LibertyPP
         BlankLocationPlaces.Add(PavanoPyrite);
         BlankLocation PavanoDiner = new BlankLocation()
         {
-
             Name = "PavanoDiner",
             Description = "",
             EntrancePosition = new Vector3(5291.239f, -2624.101f, 14.7164431f),
@@ -11351,6 +11612,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11434,6 +11697,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11511,9 +11776,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PavanoUGCP",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5293.937f, -2140.93018f, 2.326204f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PAVANO",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -11604,6 +11871,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -11745,6 +12014,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -11819,6 +12090,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -11893,6 +12166,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -11955,6 +12230,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12075,6 +12352,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12142,6 +12421,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12239,6 +12520,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12305,6 +12588,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12418,6 +12703,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -12541,6 +12828,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 88834,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -12692,9 +12981,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PetrovicMasterson",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6375.11865f, -3557.60132f, 20.7832127f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -12749,7 +13040,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -12832,6 +13124,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -12910,9 +13204,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "PetrovicHome2",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6143.43359f, -3451.37671f, 24.7161827f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -12958,6 +13254,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 78338,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_PETROVIC",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13100,6 +13398,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13182,6 +13482,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13264,6 +13566,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13341,9 +13645,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeLockup",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(4172.38135f, -2210.04224f, 12.9901428f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13391,7 +13697,6 @@ public class BlankLocationsData_LibertyPP
         BlankLocationPlaces.Add(KkangpaeLockup);
         BlankLocation KkangpaeTattoo = new BlankLocation()
         {
-
             Name = "KkangpaeTattoo",
             Description = "",
             EntrancePosition = new Vector3(3949.275f, -2134.71436f, 19.4717731f),
@@ -13399,7 +13704,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13477,9 +13783,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeMrFuk",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3939.05786f, -2179.68921f, 19.0458927f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13533,8 +13841,9 @@ public class BlankLocationsData_LibertyPP
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
-
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13612,9 +13921,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeSpanky",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3808.06177f, -2357.36621f, 19.1352139f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13669,7 +13980,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13745,7 +14057,6 @@ public class BlankLocationsData_LibertyPP
         BlankLocationPlaces.Add(KkangpaeKoreshSq);
         BlankLocation KkangpaeOffices = new BlankLocation()
         {
-
             Name = "KkangpaeOffices",
             Description = "",
             EntrancePosition = new Vector3(4033.441f, -2425.33618f, 19.5583038f),
@@ -13753,6 +14064,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13835,7 +14148,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13913,9 +14227,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeErotica",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3704.60376f, -2132.27f, 22.4229527f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -13967,9 +14283,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeGarages2",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3887.25586f, -2107.64014f, 17.8753338f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14035,8 +14353,9 @@ public class BlankLocationsData_LibertyPP
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
-
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14114,9 +14433,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeGozushi",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3923.023f, -1944.86523f, 21.172924f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14171,8 +14492,9 @@ public class BlankLocationsData_LibertyPP
             EntranceHeading = 0f,
             OpenTime = 0,
             CloseTime = 24,
-            StateID = StaticStrings.LibertyStateID,
-
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14250,9 +14572,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeBighorn",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3847.24072f, -1582.6311f, 26.9756432f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
             {
@@ -14302,9 +14626,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeBite",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(4195.087f, -1567.59131f, 19.780323f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14360,6 +14686,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14437,9 +14765,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeCorner",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3733.01367f, -2452.68018f, 19.1697826f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14489,9 +14819,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeGarages",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3575.68774f, -2451.75732f, 29.3371143f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14541,9 +14873,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeAlley",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3568.62183f, -2536.59326f, 27.1361637f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14593,9 +14927,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "KkangpaeAlley2",
             Description = "",
-            StateID = StaticStrings.AlderneyStateID,
             EntrancePosition = new Vector3(3715.24878f, -2559.78613f, 19.1964436f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.AlderneyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_KKANGPAE",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14653,6 +14989,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14735,6 +15073,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14817,6 +15157,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -14900,6 +15242,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15049,9 +15393,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadStreet5",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5184.01074f, -3625.29761f, 14.018343f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15106,6 +15452,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15183,9 +15531,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadStreet7",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5197.246f, -3697.752f, 14.7521629f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15240,6 +15590,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15322,6 +15674,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15405,6 +15759,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15554,9 +15910,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadRestaurant",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5356.145f, -3573.3064f, 12.7963228f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15617,6 +15975,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15821,7 +16181,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15900,9 +16261,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadStorage",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5443.63232f, -3530.09229f, 4.193806f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -15962,6 +16325,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16044,6 +16409,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16126,6 +16493,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16208,7 +16577,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16286,9 +16656,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadExchange",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5375.84033f, -3919.5376f, 4.218406f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16348,6 +16720,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16430,6 +16804,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16513,6 +16889,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16688,6 +17066,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16765,9 +17145,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadSumYungGai",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6439.278f, -2874.98755f, 21.4265842f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16822,9 +17204,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadZhouMing",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6414.32275f, -2554.63916f, 36.66255f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16879,9 +17263,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadRsHaul",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5533.0625f, -3505.04175f, 3.84958315f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -16942,6 +17328,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17112,9 +17500,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "TriadMechMechanic",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6242.317f, -2709.037f, 24.628273f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_WEICHENG",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17181,6 +17571,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 172034,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17372,9 +17764,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "HustlersBlock",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(4675.71143f, -1780.04016f, 18.1611538f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17430,6 +17824,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17601,9 +17997,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "HustlersBlock3",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5105.244f, -1717.74219f, 17.9603443f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17658,6 +18056,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17741,6 +18141,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17823,6 +18225,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17905,6 +18309,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -17987,6 +18393,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18069,6 +18477,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18151,6 +18561,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18233,6 +18645,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18315,7 +18729,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18398,6 +18813,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18481,6 +18898,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_HOLHUST",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18569,6 +18988,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>()
@@ -18626,6 +19047,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18710,6 +19133,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18888,6 +19313,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -18970,6 +19397,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19047,9 +19476,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "SpanishLordsFolsom",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(5656.25049f, -1590.65918f, 16.9147339f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19106,6 +19537,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19189,6 +19622,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19339,6 +19774,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19421,6 +19858,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19504,6 +19943,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19654,6 +20095,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19737,6 +20180,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19858,8 +20303,8 @@ public class BlankLocationsData_LibertyPP
                             {
                                 new GangConditionalLocation()
                                     {
-                                        Location = new Vector3(6155.857f, -1652.74609f, 16.0929031f),
-                                            Heading = 315.5219f,
+                                        Location = new Vector3(6158.376f, -1650.233f, 16.03096f),
+                                            Heading = 122.2056f,
                                             Percentage = 0f,
                                             AssociationID = "",
                                             RequiredPedGroup = "",
@@ -19912,6 +20357,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -19994,6 +20441,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20076,6 +20525,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20158,6 +20609,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20240,6 +20693,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20322,6 +20777,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20404,6 +20861,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20490,6 +20949,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20574,7 +21035,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20659,6 +21121,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20741,6 +21205,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20823,6 +21289,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_SPANISH",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -20908,6 +21376,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -21025,6 +21495,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -21126,6 +21598,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -21246,6 +21720,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -21320,6 +21796,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns = new List<ConditionalGroup>() {
@@ -21398,6 +21876,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
             PossibleGroupSpawns =
@@ -21468,7 +21948,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
 
@@ -21540,7 +22021,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             MenuID = "",
 
@@ -21603,9 +22085,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesBurgershot",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6810.957f, -3024.79736f, 21.5399132f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -21655,9 +22139,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesAlPizza",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6626.498f, -3034.597f, 25.1828136f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -21713,7 +22199,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -21796,7 +22283,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -21879,6 +22367,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -21956,9 +22446,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesEarpSt",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6413.83f, -3224.645f, 34.91577f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22008,9 +22500,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesBlock3",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6699.57861f, -2990.90869f, 24.2485733f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22066,6 +22560,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22148,6 +22644,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22232,7 +22730,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
-
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22312,9 +22811,11 @@ public class BlankLocationsData_LibertyPP
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             Name = "YardiesStreet9",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6360.84668f, -3185.70435f, 35.80646f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
                     new ConditionalGroup()
@@ -22373,6 +22874,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22450,9 +22953,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesStreet11",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6934.406f, -2888.51221f, 21.765564f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22513,6 +23018,8 @@ public class BlankLocationsData_LibertyPP
             OpenTime = 0,
             CloseTime = 24,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22597,6 +23104,8 @@ public class BlankLocationsData_LibertyPP
             CloseTime = 24,
             InteriorID = 121346,
             StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
@@ -22674,9 +23183,11 @@ public class BlankLocationsData_LibertyPP
         {
             Name = "YardiesDrugFactory",
             Description = "",
-            StateID = StaticStrings.LibertyStateID,
             EntrancePosition = new Vector3(6529.997f, -3435.56958f, 22.5102444f),
             EntranceHeading = 0f,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 75f,
+            ActivateCells = 3,
             AssignedAssociationID = "AMBIENT_GANG_YARDIES",
             PossibleGroupSpawns = new List<ConditionalGroup>()
                 {
