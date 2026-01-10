@@ -30,6 +30,7 @@ public class Interiors_LibertyPP
         Clubs();
         GangDens();
         GeneralInteriors();
+        Hospitals();
         Hotels();
         Residence();
         Restaurants();
@@ -1031,6 +1032,21 @@ public class Interiors_LibertyPP
             new Interior(41218, "The Majestic Hotel Elevator Floor"),
             new Interior(148994, "The Majestic Hotel Room"),
 
+        });
+    }
+
+    private void Hospitals()
+    {
+        LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
+        {
+            new Interior(375553, "Schottler Medical Center")
+            {
+                IsWeaponRestricted = true,
+            },
+            new Interior(387585, "Westdyke Memorial Hospital")
+            {
+                IsWeaponRestricted = true,
+            },
         });
     }
     private void Residence()
