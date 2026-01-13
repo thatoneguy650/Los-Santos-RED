@@ -19,11 +19,16 @@ public class OutfitManager
 {
     private IOutfitManageable Player;
     private ISavedOutfits SavedOutfits;
+    private ISettingsProvideable Settings;
+    private ILocationInteractable LocationInteractable;
     private List<int> AllPropIDs = new List<int>() { 0,1,6,7 };
     private List<int> AllComponentIDs = new List<int>() { 1,5,7,9 };
 
+
     private List<TorsoLookup> FreeModeMaleTorsoLookup = new List<TorsoLookup>();
     private List<TorsoLookup> FreeModeFemaleTorsoLookup = new List<TorsoLookup>();
+    private ClothingPurchaseMenu clothingPurchaseMenuProcess;
+
     private int DefaulShoeComponentID => IsFreeModeFemale ? 35 : IsFreeModeMale ? 34 : 0;
     private int DefaultTorsoComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 15 : 15;
     private int DefaultUndershirtComponentID => IsFreeModeFemale ? 15 : IsFreeModeMale ? 15 : 15;
@@ -37,14 +42,16 @@ public class OutfitManager
     private int DefaultMaskDrawableID => IsFreeModeFemale || IsFreeModeMale ? 4 : Player.ModelName.ToLower() == "player_two" ? 2 : Player.ModelName.ToLower() == "player_one" ? 12 : Player.ModelName.ToLower() == "player_zero" ? 2 : 0;
 
 
-    public OutfitManager(IOutfitManageable player, ISavedOutfits savedOutfits)
+    public OutfitManager(IOutfitManageable player, ISavedOutfits savedOutfits, ISettingsProvideable settings, ILocationInteractable locationInteractable)
     {
         Player = player;
         SavedOutfits = savedOutfits;
+        Settings = settings;
+        LocationInteractable = locationInteractable;
     }
     public List<SavedOutfit> CurrentCharactersOutfits => SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == Player.ModelName.ToLower() && !string.IsNullOrEmpty(x.CharacterName) && x.CharacterName.ToLower() == Player.PlayerName.ToLower()).ToList();
     public List<SavedOutfit> CurrentModelOutfits => SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == Player.ModelName.ToLower()).ToList();
-
+    public List<PedClothingShopMenuItem> PurchasedPedClothingShopMenuItems { get; set; } = new List<PedClothingShopMenuItem>();
     public bool HasMaskOn { get; private set; }
 
     public void Setup()
@@ -397,7 +404,7 @@ public class OutfitManager
     }
     public void Dispose()
     {
-
+        clothingPurchaseMenuProcess?.Dispose();
     }
     public void SetOutfit(SavedOutfit savedOutfit, bool doAnimation)
     {
@@ -1087,7 +1094,6 @@ public class OutfitManager
 
 
     }
-
     private void SetDefaultMask()
     {
         if(IsPlayerFreeMode)
@@ -1122,7 +1128,6 @@ public class OutfitManager
 
         
     }
-
     public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner)
     {
         subMenu.Clear();
@@ -1158,6 +1163,13 @@ public class OutfitManager
             };
             CharacterSubMenu.AddItem(uIMenuItem);
         }
+
+        UIMenu PurchasedItemsSubMenu = menuPool.AddSubMenu(subMenu, "Purchased Items");
+
+        clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, null, null, Settings);
+        clothingPurchaseMenuProcess.Start(menuPool, PurchasedItemsSubMenu, null, PurchasedPedClothingShopMenuItems, false, false);
+
+        //clothingPurchaseMenuProcess.Dispose();
     }
     public void TakeOffArmorVisually()
     {
@@ -1169,6 +1181,17 @@ public class OutfitManager
     }
 
 
+
+    public void PurchasePedClothingItem(PedClothingShopMenuItem purchasedItem)
+    {
+        if(purchasedItem == null)
+        {
+            return;
+        }
+        PurchasedPedClothingShopMenuItems.RemoveAll(x => x.Name == purchasedItem.Name && x.Category == purchasedItem.Category && x.ModelNames.All(purchasedItem.ModelNames.Contains));
+        PurchasedPedClothingShopMenuItems.Add(purchasedItem);
+        EntryPoint.WriteToConsole($"You purchased {purchasedItem.Name} FOR:{string.Join(",", purchasedItem.ModelNames)} Category:{purchasedItem.Category}");
+    }
     private class TorsoLookup
     {
         public TorsoLookup(int assignedComponenetID, int matchningTorsoComponenetID)

@@ -91,7 +91,7 @@ public class Interiors : IInteriors
     }
     public Interior GetInteriorByInternalID(int id)
     {
-        return PossibleInteriors.AllInteriors().Where(x => x.InternalID == id).FirstOrDefault();
+        return PossibleInteriors.AllInteriors().Where(x => x.CheckMatchingIDs(id)).FirstOrDefault();
     }
     private void BarberShops()
     {
@@ -9214,18 +9214,28 @@ public class Interiors : IInteriors
         PossibleInteriors.ClothingShopInteriors.AddRange(new List<ClothingShopInterior>()
         { 
             new ClothingShopInterior(96258,"Sub Urban Harmony") {
-                IsTrespassingWhenClosed = true, IsWeaponRestricted = true,
-
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(1780022985,new Vector3(617.2458f, 2751.022f, 42.75777f)) { InteractPostion = new Vector3(618.3388f, 2750.28f, 42.08902f), InteractHeader = 3.158015f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
                 },
-
-                TryOnInteracts = new List<TryOnInteract>() { 
-                        new TryOnInteract("suburbanHarmonyTryOn1",new Vector3(617.6456f, 2766.707f, 42.08809f), 178.6625f,"Try On Clothes")
-                        {
-                            IsAutoInteract = true,
-                        } } }, 
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("suburbanHarmonyTryOn1",new Vector3(617.6456f, 2766.707f, 42.08809f), 178.6625f,"Try On Clothes")
+                }},
+            new ClothingShopInterior(74754,"Discount Store") {
+                IsTrespassingWhenClosed = true, 
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(3146141106,new Vector3(-1.725257f, 6515.914f, 32.02779f)) { InteractPostion = new Vector3(-1.122339f, 6517.009f, 31.86892f), InteractHeader = 222.1187f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(868499217,new Vector3(-0.05637074f, 6517.461f, 32.02779f)) { InteractPostion = new Vector3(-1.122339f, 6517.009f, 31.86892f), InteractHeader = 222.1187f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("discountStorePaletoTryOn1",new Vector3(12.02322f, 6513.735f, 31.87785f), 79.29751f,"Try On Clothes")
+                }},
         });
 
     }

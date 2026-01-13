@@ -100,7 +100,7 @@ public class TryOnInteract : InteriorInteract
         }
         MenuPool.Add(InteractionMenu);
         ClothingPurchaseMenu clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, ClothingShop, this, Settings);
-        clothingPurchaseMenuProcess.Start(MenuPool, InteractionMenu);
+        clothingPurchaseMenuProcess.Start(MenuPool, InteractionMenu, OrbitCamera, ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x => x.ModelNames.Contains(Player.ModelName.ToLower())).ToList(),true, true);
 
         while (MenuPool.IsAnyMenuOpen() && Player.ActivityManager.CanPerformActivitiesExtended)
         {
@@ -133,5 +133,8 @@ public class TryOnInteract : InteriorInteract
         AnimEnterPosition += offsetToAdd;
         base.AddDistanceOffset(offsetToAdd);
     }
+
+
+
 }
 

@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleRaceManager RacingManager { get; }
         bool CharacterModelIsPrimaryCharacter { get; }
         bool IsSetDisabledControls { get; set; }
+        string ModelName { get; }
 
         void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);

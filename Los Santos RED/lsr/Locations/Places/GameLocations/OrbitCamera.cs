@@ -218,20 +218,24 @@ public class OrbitCamera
             if (IsSensitive)
             {
                 Radius += RadiusIncrementLow;
+                OnCameraLocationChanged();
             }
             else
             {
                 if (Radius <= 3.0f)
                 {
                     Radius += RadiusIncrementLow;
+                    OnCameraLocationChanged();
                 }
                 else if (Radius >= 20f)
                 {
                     Radius += RadiusIncrementHigh;
+                    OnCameraLocationChanged();
                 }
                 else
                 {
                     Radius += RadiusIncrement;
+                    OnCameraLocationChanged();
                 }
             }
         }
@@ -240,20 +244,24 @@ public class OrbitCamera
             if (IsSensitive)
             {
                 Radius -= RadiusIncrementLow;
+                OnCameraLocationChanged();
             }
             else
             {
                 if (Radius <= 3.0f)
                 {
                     Radius -= RadiusIncrementLow;
+                    OnCameraLocationChanged();
                 }
                 else if (Radius >= 25f)
                 {
                     Radius -= RadiusIncrementHigh;
+                    OnCameraLocationChanged();
                 }
                 else
                 {
                     Radius -= RadiusIncrement;
+                    OnCameraLocationChanged();
                 }
             }
         }
@@ -261,18 +269,22 @@ public class OrbitCamera
         if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 34) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 34)))
         {
             CamOffsetX += OffsetIncrementX;
+            OnCameraLocationChanged();
         }
         if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 35) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 35)))
         {
             CamOffsetX -= OffsetIncrementX;
+            OnCameraLocationChanged();
         }
         if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 32) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 32)))
         {
             CamOffsetZ += OffsetIncrementZ;
+            OnCameraLocationChanged();
         }
         if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 33) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 33)))
         {
             CamOffsetZ -= OffsetIncrementZ;
+            OnCameraLocationChanged();
         }
 
         if (AllowYOffset)
@@ -280,12 +292,18 @@ public class OrbitCamera
             if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 159) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 159)))
             {
                 CamOffsetY += OffsetIncrementY;
+                OnCameraLocationChanged();
             }
             if (IsInputPressed && (NativeFunction.Natives.IS_CONTROL_JUST_RELEASED<bool>(0, 160) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_RELEASED<bool>(0, 160)))
             {
                 CamOffsetY -= OffsetIncrementY;
+                OnCameraLocationChanged();
             }
         }
+    }
+    private void OnCameraLocationChanged()
+    {
+        EntryPoint.WriteToConsole($"ORBIT CAMERA OnOffsetChanged CamOffsetX:{CamOffsetX} CamOffsetY:{CamOffsetY} CamOffsetZ:{CamOffsetZ} Radius:{Radius}");
     }
     public void SetOffset(Vector3 vector3, float radius)
     {
@@ -306,5 +324,68 @@ public class OrbitCamera
     {
         OrbitingEntity = modelPed;
     }
+
+    public void SetHint(ePedFocusZone pedFocusZone)
+    {
+        EntryPoint.WriteToConsole($"ORBIT CAMERA SetHint {pedFocusZone}");
+        if(pedFocusZone == ePedFocusZone.None)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = InitialVerticalPositionOffset;
+            Radius = initialRadius;
+        }
+        else if (pedFocusZone == ePedFocusZone.Head || pedFocusZone == ePedFocusZone.LeftEar || pedFocusZone == ePedFocusZone.RightEar)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.7f;
+            Radius = 0.5f;
+        }
+        else if (pedFocusZone == ePedFocusZone.Legs)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.0f;
+            Radius = initialRadius;
+        }
+        else if (pedFocusZone == ePedFocusZone.Feet)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = -0.85f;
+            Radius = 0.5f;
+        }
+        else if (pedFocusZone == ePedFocusZone.Neck)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.45f;
+            Radius = 0.5f;
+        }
+        else if (pedFocusZone == ePedFocusZone.Chest)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.25f;
+            Radius = initialRadius;
+        }
+        else if (pedFocusZone == ePedFocusZone.LeftWrist)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.25f;
+            Radius = 0.5f;
+        }
+        else if (pedFocusZone == ePedFocusZone.RightWrist)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.25f;
+            Radius = 0.5f;
+        }
+    }
+
+
 }
 

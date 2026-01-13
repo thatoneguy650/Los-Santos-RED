@@ -258,6 +258,7 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\Civilian\CivilianConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\ePedFocusZone.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />

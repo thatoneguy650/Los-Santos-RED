@@ -37,6 +37,11 @@ public class AppliedOverlay
         {
             return;
         }
+        if (OverlayHash == 0 || CollectionHash == 0)
+        {
+            Setup();
+        }
+
         NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, CollectionHash, OverlayHash);
     }
     public void Setup()

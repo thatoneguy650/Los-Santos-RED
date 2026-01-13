@@ -30,6 +30,10 @@ public class MansionInterior : ResidenceInterior
         MatchVaultToStoredCash();
         base.OnPlayerLoadedSave();
     }
+    public override bool CheckMatchingIDs(int internalId)
+    {
+        return internalId == InternalID || LinkedInteriorIDs.Contains(internalId);
+    }
     public override void OnStoredCashChanged(int storedCash)
     {
         if(InteriorSets == null)

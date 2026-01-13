@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 public class ClothingPurchaseMenu
     {
     private ClothingShop ClothingShop;
+    private OrbitCamera OrbitCamera;
     private ILocationInteractable Player;
     private ISettingsProvideable Settings;
     private TryOnInteract TryOnInteract;
@@ -18,6 +19,10 @@ public class ClothingPurchaseMenu
     private UIMenu InteractionMenu;
     private PedVariation WorkingVariation;
     private List<UIMenu> CategoryList;
+    private List<UIMenu> SubCategoryList;
+
+    private List<CategoryLookup> CategoryLookups;
+
     public ClothingPurchaseMenu(ILocationInteractable player, ClothingShop clothingShop, TryOnInteract tryOnInteract, ISettingsProvideable settings)
     {
         Player = player;
@@ -25,10 +30,11 @@ public class ClothingPurchaseMenu
         Settings = settings;
         TryOnInteract = tryOnInteract;
     }
-    public void Start(MenuPool menuPool, UIMenu interactionMenu)
+    public void Start(MenuPool menuPool, UIMenu interactionMenu, OrbitCamera orbitCamera, List<PedClothingShopMenuItem> itemsToCreate, bool IsPurchase, bool MakeVisible)
     {
         MenuPool = menuPool;
         InteractionMenu = interactionMenu;
+        OrbitCamera = orbitCamera;
         InteractionMenu.OnMenuOpen += (sender) =>
         {
             Player.IsTransacting = true;
@@ -38,39 +44,98 @@ public class ClothingPurchaseMenu
             Player.IsTransacting = false;
         };
         CategoryList = new List<UIMenu>();
-        foreach (PedClothingShopMenuItem pedClothingShopMenuItem in ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
+        SubCategoryList = new List<UIMenu>();
+
+        CategoryLookups = new List<CategoryLookup>();
+
+        foreach (PedClothingShopMenuItem pedClothingShopMenuItem in itemsToCreate)//ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
         {
-            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category), ClothingShop);
+            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase);
         }
 
-        InteractionMenu.Visible = true;
-
+        if (MakeVisible)
+        {
+            InteractionMenu.Visible = true;
+        }
     }
-    private UIMenu CreateSubMenu(string menuName)
+
+    private UIMenu CreateSubMenu(string categoryName, string subCategoryName)
     {
-        if (string.IsNullOrEmpty(menuName))
+        UIMenu createdCategory = null;
+        CategoryLookup categoryLooup = CategoryLookups.Where(x => x.CategoryName == categoryName && x.SubCategoryName == subCategoryName).FirstOrDefault();
+
+        if(categoryLooup == null)
+        {
+            CategoryLookup newcategoryLooup = CategoryLookups.Where(x => x.CategoryName == categoryName).FirstOrDefault();
+            if(newcategoryLooup != null)
+            {
+                createdCategory = newcategoryLooup.CategoryMenu;
+            }
+        }
+
+
+
+        if (categoryLooup == null)
+        {
+            if (createdCategory == null)
+            {
+                createdCategory = MenuPool.AddSubMenu(InteractionMenu, categoryName);
+            }
+            UIMenu createdSubCategory = MenuPool.AddSubMenu(createdCategory, subCategoryName);
+            categoryLooup = new CategoryLookup(categoryName, subCategoryName, createdCategory, createdSubCategory);
+            CategoryLookups.Add(categoryLooup);
+        }
+        if (categoryLooup.SubCategoryMenu == null)
+        {
+            return categoryLooup.CategoryMenu;
+        }
+        return categoryLooup.SubCategoryMenu;
+    }
+
+
+    private UIMenu CreateSubMenu_Old(string categoryName,string subCategoryName)
+    {
+        if (string.IsNullOrEmpty(categoryName))
         {
             return InteractionMenu;
         }
-        UIMenu createdCategory = CategoryList.Where(x => x.SubtitleText.ToLower() == menuName.ToLower()).FirstOrDefault();
-        if(createdCategory != null)
+        UIMenu createdCategory = CategoryList.Where(x => x.SubtitleText.ToLower() == categoryName.ToLower()).FirstOrDefault();
+        if(createdCategory == null)
         {
-            //EntryPoint.WriteToConsole($"menuName {menuName} FOUND {    string.Join(",", CategoryList.Select(x=>x.SubtitleText)       ) }");
-            return createdCategory;
-
+            createdCategory = MenuPool.AddSubMenu(InteractionMenu, categoryName);
+            CategoryList.Add(createdCategory);
         }
-        //else
-        //{
-        //    EntryPoint.WriteToConsole($"menuName {menuName} NOT FOUND {string.Join(",", CategoryList.Select(x => x.SubtitleText))}");
-        //}
-        createdCategory = MenuPool.AddSubMenu(InteractionMenu, menuName);
-        CategoryList.Add(createdCategory);
-
-        return createdCategory;
+        if(string.IsNullOrEmpty(subCategoryName))
+        {
+            return createdCategory;
+        }
+        UIMenu createdSubCategory = SubCategoryList.Where(x => x.SubtitleText.ToLower() == subCategoryName.ToLower()).FirstOrDefault();
+        if (createdSubCategory == null)
+        {
+            createdSubCategory = MenuPool.AddSubMenu(createdCategory, subCategoryName);
+            SubCategoryList.Add(createdSubCategory);
+        }     
+        return createdSubCategory;
     }
     public void Dispose()
     {
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
     }
+    private class CategoryLookup
+    {
+        public CategoryLookup(string categoryName, string subCategoryName, UIMenu categoryMenu, UIMenu subCategoryMenu)
+        {
+            CategoryName = categoryName;
+            SubCategoryName = subCategoryName;
+            CategoryMenu = categoryMenu;
+            SubCategoryMenu = subCategoryMenu;
+        }
+
+        public string CategoryName { get; set; }
+        public string SubCategoryName { get; set; }
+        public UIMenu CategoryMenu { get; set; }
+        public UIMenu SubCategoryMenu { get; set; }
+    }
+
 }
 

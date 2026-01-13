@@ -174,7 +174,7 @@ namespace Mod
             MeleeManager = new MeleeManager(this, Settings);
             PlayerVoice = new PlayerVoice(this, Settings, Speeches);
             ClipsetManager = new ClipsetManager(this, Settings);
-            OutfitManager = new OutfitManager(this, savedOutfits);
+            OutfitManager = new OutfitManager(this, savedOutfits, Settings, this);
             OfficerMIAWatcher = new OfficerMIAWatcher(World, this, this, Settings, TimeControllable);
             RestrictedAreaManager = new RestrictedAreaManager(this, this, World, Settings, TimeControllable);
             TaxiManager = new TaxiManager(this, World,PlacesOfInterest, Settings);
