@@ -232,7 +232,8 @@ public class GameLocation : ILocationDispatchable
     [XmlIgnore]
     public List<Merchant> Vendors { get; set; } = new List<Merchant>();
 
-
+    [XmlIgnore]
+    public List<PedExt> SpawnedMerchants { get; set; } = new List<PedExt>();
 
 
 
@@ -1241,7 +1242,7 @@ public class GameLocation : ILocationDispatchable
         
         HandleVariableItems();
        // EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
-        Vendors = new List<Merchant>();
+       // Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
 
@@ -1328,9 +1329,22 @@ public class GameLocation : ILocationDispatchable
                 pedExt.DeleteBlip();
                 pedExt.Pedestrian.IsPersistent = false;
                 EntryPoint.WriteToConsole($"AttemptVendorDespawn MADE NON PERSIST");
+                pedExt.Pedestrian.Dismiss();
             }
+            SpawnedVendors.Clear();
         }
-        SpawnedVendors.Clear();
+
+        foreach (PedExt pedExt in SpawnedMerchants.ToList())
+        {
+            if (pedExt.Pedestrian.Exists())
+            {
+                pedExt.DeleteBlip();
+                pedExt.Pedestrian.IsPersistent = false;
+                EntryPoint.WriteToConsole($"AttemptMerchantDespawn MADE NON PERSIST MERCHANT");
+                pedExt.Pedestrian.Dismiss();
+            }
+            SpawnedMerchants.Clear();
+        }
     }
 
     public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)

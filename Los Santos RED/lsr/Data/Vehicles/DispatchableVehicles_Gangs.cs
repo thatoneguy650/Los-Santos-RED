@@ -380,13 +380,13 @@ public class DispatchableVehicles_Gangs
         SpanishLordsVehicles = new List<DispatchableVehicle>()
         {           
             // Custom low rider
-            Create_GangPrimo2(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 15, 0, 9, 3, -1, -1, -1, true),
+            Create_GangPrimo2(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 68, 0, -1, 15, 0, 9, 3, -1, -1, -1, true),
             //Suv
             Create_GangCavalcade(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 0, 0, 3, 3, true),
             Create_GangCavalcade2(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 0, 0, 3, 3, true),
             Create_GangCavalcade3(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 0, 0, 3, 3, true),
             // Cars
-            Create_GangPrimo(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 12, 0, -1, -1, 12, 2, 3, false), // base
+            Create_GangPrimo(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 68, 0, -1, -1, 12, 2, 3, false), // base
             Create_GangHermes(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 120, 1, 3, true),
             Create_GangPhoenix(55, 55, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 12, 0, -1, -1, 12, 1, 3, false),
             Create_GangSabreGT(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, -1, 0, 1, 3, false),

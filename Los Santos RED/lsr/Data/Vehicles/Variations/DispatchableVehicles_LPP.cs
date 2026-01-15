@@ -48,8 +48,8 @@ public class DispatchableVehicles_LPP
     {
         FDLCVehicles_FEJ_LC = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("fdlcheavy", 100, 100) { MinOccupants = 2, MaxOccupants = 4 },
-            new DispatchableVehicle("fdlcladder", 100, 100) { MinOccupants = 2, MaxOccupants = 4 },
+            //new DispatchableVehicle("fdlcheavy", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }, Too Large for general spawning
+            //new DispatchableVehicle("fdlcladder", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }, A little smaller than the truck above
             new DispatchableVehicle("fdlctruck", 100, 100) { MinOccupants = 2, MaxOccupants = 4 },
             new DispatchableVehicle("fdlctruck2", 100, 100) { MinOccupants = 2, MaxOccupants = 4 },
         };
