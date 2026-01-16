@@ -2614,6 +2614,7 @@ public class ShopMenus : IShopMenus
             new MenuItem("Albany Buccaneer (IV)", 22000, 11000), // lcbuccaneer
             new MenuItem("Albany Buccaneer Luxe (IV)", 28000, 14000), // lcbuccaneer3
             new MenuItem("Albany Emperor (IV)", 20000, 10000), // lcemperor
+            new MenuItem("Albany Emperor Rusty (IV)", 6500, 2800), // lcemperor
             new MenuItem("Albany Manana (IV)", 15000, 7500), // lcmanana
             new MenuItem("Albany Primo (IV)", 25000, 15000), // lcprimo
             new MenuItem("Albany Virgo (IV)", 18000, 9000), // lcvirgo
@@ -2633,6 +2634,7 @@ public class ShopMenus : IShopMenus
             new MenuItem("Declasse Premier (IV)", 18000, 9000), // lcpremier
             new MenuItem("Declasse Rhapsody (IV)", 17000, 8500), // lcrhapsody
             new MenuItem("Declasse Sabre (IV)", 8000, 4000), // lcsabre
+            new MenuItem("Declasse Sabre Beater (IV)", 5000, 2000), // lcsabre
             new MenuItem("Declasse Sabre Turbo (IV)", 12000, 6000), // lcsabregt
             new MenuItem("Declasse Tampa (IV)", 16000, 8000), // lctampa
             new MenuItem("Declasse Vigero (IV)", 17000, 8500), // lcvigero
@@ -2785,6 +2787,7 @@ public class ShopMenus : IShopMenus
             new MenuItem("Enus Paragon R",256000,125000),
             new MenuItem("Enus Paragon R (Armored)",550000,340000),
             new MenuItem("Enus Paragon S",295000,120000),
+            new MenuItem("Enus Windsor",180000,90000),
 
             // Gotta have the Grotti for Grotti's   
             new MenuItem("Grotti Stinger",95000,76000),
@@ -2885,6 +2888,7 @@ public class ShopMenus : IShopMenus
             new MenuItem("Buckingham Volatus",1200000),
             new MenuItem("Buckingham SuperVolito Carbon",2100000),
             new MenuItem("Buckingham SuperVolito",2000000),
+            new MenuItem("Buckingham Swift",1600000),
             new MenuItem("Buckingham Swift Deluxe",1600000),
 
             new MenuItem("Western Cargobob",5500000),
@@ -2898,9 +2902,13 @@ public class ShopMenus : IShopMenus
             new MenuItem("Buckingham Luxor Deluxe",5500000),
             new MenuItem("Buckingham Miljet",3200000),
             new MenuItem("Buckingham Nimbus",2900000),
-
+            new MenuItem("Buckingham Shamal",1800000),
+            new MenuItem("Buckingham Vestra",650000),
             new MenuItem("Nagasaki Ultralight",45000),
             new MenuItem("Western Seabreeze",750000),
+
+            new MenuItem("JoBuilt Mammatus",320000),
+            new MenuItem("JoBuilt Velum",550000),
         }),
 
         new ShopMenu("HappyBoatMenu","HappynessIslandBoats",new List<MenuItem>()
