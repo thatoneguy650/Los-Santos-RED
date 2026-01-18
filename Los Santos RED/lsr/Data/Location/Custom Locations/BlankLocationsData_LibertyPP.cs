@@ -2487,6 +2487,196 @@ public class BlankLocationsData_LibertyPP
                 },
         };
         BlankLocationPlaces.Add(ColonyIslandCops2);
+        // Happyness Island
+        BlankLocation HappyIslandCops = new BlankLocation()
+        {
+            Name = "HappynessIslandCops",
+            FullName = "HappynessIslandCops",
+            Description = "Cops on Happyness Island",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(4636.414f, -4215.933f, 4.83832f),
+            EntranceHeading = 260.7795f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 150f,
+            AssignedAssociationID = "LCPD",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = 0f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = 0f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4689.085f, -4209.68f, 4.838318f),
+                                            Heading = 260.7795f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_COP_IDLES",
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4635.6f, -4216.028f, 4.83832f),
+                                            Heading = 276.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4636.14f, -4215.154f, 4.83832f),
+                                            Heading = 181.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4636.414f, -4215.933f, 4.83832f),
+                                            Heading = 96.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4614.097f, -4219.415f, 4.83832f),
+                                            Heading = 1.42f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HappyIslandCops);
+        BlankLocation HappyIslandStatueCops = new BlankLocation()
+        {
+            Name = "HappyIslandStatue",
+            FullName = "HappyIslandStatue",
+            Description = "Cops in Happy Island Statue",
+            MapIcon = 162,
+            EntrancePosition = new Vector3(4578.415f, -4041.265f, 4.839075f),
+            EntranceHeading = 177.3806f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = StaticStrings.LibertyStateID,
+            ActivateDistance = 150f,
+            AssignedAssociationID = "LCPD",
+            PossibleGroupSpawns = new List<ConditionalGroup>()
+                {
+                    new ConditionalGroup()
+                    {
+                        Name = "",
+                            Percentage = defaultSpawnPercentage,
+                            OverrideNightPercentage = 0f,
+                            OverrideDayPercentage = -1f,
+                            OverridePoorWeatherPercentage = 0f,
+                            MinHourSpawn = 8,
+                            MaxHourSpawn = 20,
+                            MinWantedLevelSpawn = 0,
+                            MaxWantedLevelSpawn = 4,                           
+                            PossiblePedSpawns = new List<ConditionalLocation>()
+                            {
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4578.415f, -4041.265f, 4.839075f),
+                                            Heading = 181.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4581.817f, -4041.288f, 4.83907f),
+                                            Heading = 181.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4574.606f, -4038.535f, 13.06676f),
+                                            Heading = 181.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                                    new LEConditionalLocation()
+                                    {
+                                            Location = new Vector3(4573.622f, -4019.726f, 46.31398f),
+                                            Heading = 181.41f,
+                                            //AssociationID = "LCPD",
+                                            RequiredPedGroup = "",
+                                            RequiredVehicleGroup = "",
+                                            TaskRequirements = TaskRequirements.Guard,
+                                            ForcedScenarios = new List<string>()
+                                            {
+                                                "WORLD_HUMAN_STAND_MOBILE",
+                                                "WORLD_HUMAN_COP_IDLES",
+                                            },
+                                    },
+                            },
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(HappyIslandStatueCops);
     }
     private void RooftopSnipers()
     {
@@ -2623,6 +2813,24 @@ public class BlankLocationsData_LibertyPP
             },
         };
         BlankLocationPlaces.Add(LCRoofTopSniper7);
+        BlankLocation LCHappyIslandSniper = new BlankLocation(new Vector3(5166.409f, -2365.1123f, 44.605423f), 94.32448f, "LCHappyIslandSniper", "LC Happy Island Sniper")
+        {
+            ActivateDistance = 200f,
+            ActivateCells = 8,
+            StateID = StaticStrings.LibertyStateID,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(4580.013f, -4019.247f, 46.305f), 175.3217f, sniperSpawnPercentage)
+                {
+                    RequiredPedGroup = "Sniper",
+                    MinWantedLevelSpawn = 4,
+                    MaxWantedLevelSpawn = 6,
+                    TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,
+                    LongGunAlwaysEquipped = true
+                },
+            },
+        };
+        BlankLocationPlaces.Add(LCHappyIslandSniper);
     }
     private void SpeedTraps()
     {
