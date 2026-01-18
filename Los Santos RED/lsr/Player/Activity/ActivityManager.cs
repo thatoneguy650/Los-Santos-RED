@@ -317,6 +317,12 @@ public class ActivityManager
             new HideableObject(0x28b2940f,"Dumpster", "Hide inside Dumpster"),
             new HideableObject(0xbea0821b,"Garbage Can", "Hide inside Garbage Can"),  
             new HideableObject(0x28a7a0b9,"Port-O-Potty","Hide inside Port-O-Potty") {IsDoor = true },
+            //LCPP Dumpsters
+            new HideableObject(0xe02fbd70,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xfbcd74ab,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xcd7e180d,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xe7536414,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xeb12d336,"Dumpster", "Hide inside Dumpster"),
         };
 
 
