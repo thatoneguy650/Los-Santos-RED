@@ -2813,7 +2813,7 @@ public class BlankLocationsData_LibertyPP
             },
         };
         BlankLocationPlaces.Add(LCRoofTopSniper7);
-        BlankLocation LCHappyIslandSniper = new BlankLocation(new Vector3(5166.409f, -2365.1123f, 44.605423f), 94.32448f, "LCHappyIslandSniper", "LC Happy Island Sniper")
+        BlankLocation LCHappyIslandSniper = new BlankLocation(new Vector3(4580.013f, -4019.247f, 46.305f), 175.3217f, "LCHappyIslandSniper", "LC Happy Island Sniper")
         {
             ActivateDistance = 200f,
             ActivateCells = 8,
