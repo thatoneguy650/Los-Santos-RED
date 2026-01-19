@@ -35,6 +35,16 @@ public class MerchantConditionalLocation : ConditionalLocation
             merchantSpawnTask.AttemptSpawn();
             merchantSpawnTask.PostRun(this, GameLocation);
             //merchantSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
+            if (merchantSpawnTask.CreatedPeople != null)
+            {
+                foreach (Merchant ped in merchantSpawnTask.CreatedPeople)
+                {
+                    if (!GameLocation.SpawnedMerchants.Contains(ped))
+                    {
+                        GameLocation.SpawnedMerchants.Add(ped);
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {
