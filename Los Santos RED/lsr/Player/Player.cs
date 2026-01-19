@@ -237,6 +237,8 @@ namespace Mod
         public WeatherReporting Weather { get; set; }
         public StealthManager StealthManager { get; private set; }
         public VehicleRaceManager RacingManager { get; private set; }
+
+
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }

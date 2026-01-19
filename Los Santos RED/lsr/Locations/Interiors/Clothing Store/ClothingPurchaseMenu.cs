@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using RAGENativeUI;
 using System;
@@ -12,6 +13,7 @@ public class ClothingPurchaseMenu
     {
     private ClothingShop ClothingShop;
     private OrbitCamera OrbitCamera;
+    private PlayerPoser PlayerPoser;
     private ILocationInteractable Player;
     private ISettingsProvideable Settings;
     private TryOnInteract TryOnInteract;
@@ -35,6 +37,9 @@ public class ClothingPurchaseMenu
         MenuPool = menuPool;
         InteractionMenu = interactionMenu;
         OrbitCamera = orbitCamera;
+        PlayerPoser = new PlayerPoser(Player, Settings);
+        PlayerPoser.Setup();
+        EntryPoint.WriteToConsole("ClothingPurchaseMenu START RAN");
         InteractionMenu.OnMenuOpen += (sender) =>
         {
             Player.IsTransacting = true;
@@ -45,16 +50,17 @@ public class ClothingPurchaseMenu
         };
         CategoryList = new List<UIMenu>();
         SubCategoryList = new List<UIMenu>();
-
         CategoryLookups = new List<CategoryLookup>();
 
+        WorkingVariation = Player.CurrentModelVariation.Copy();
         foreach (PedClothingShopMenuItem pedClothingShopMenuItem in itemsToCreate)//ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
         {
-            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase);
+            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase, PlayerPoser, WorkingVariation);
         }
 
         if (MakeVisible)
         {
+            PlayerPoser.Start();
             InteractionMenu.Visible = true;
         }
     }
@@ -120,6 +126,7 @@ public class ClothingPurchaseMenu
     public void Dispose()
     {
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
+        PlayerPoser.Dispose();
     }
     private class CategoryLookup
     {

@@ -683,9 +683,9 @@ public class PopUpMenu
         Game.DisableControlAction(0, GameControl.LookLeftRight, true);
         Game.DisableControlAction(0, GameControl.LookUpDown, true);
         Game.DisableControlAction(0, GameControl.Attack, true);
-        Game.DisableControlAction(0, GameControl.Attack2, true);
-        Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
-        Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
+        Game.DisableControlAction(0, GameControl.Attack2, true); //Game.DisableControlAction(0, (GameControl)294, true); //Game.DisableControlAction(0, GameControl.Attack2, true);
+        Game.DisableControlAction(0, GameControl.MeleeAttack1, true); //Game.DisableControlAction(0, (GameControl)300, true); //Game.DisableControlAction(0, GameControl.MeleeAttack1, true);
+        Game.DisableControlAction(0, GameControl.MeleeAttack2, true); //Game.DisableControlAction(0, (GameControl)301, true); //Game.DisableControlAction(0, GameControl.MeleeAttack2, true);
         Game.DisableControlAction(0, GameControl.Aim, true);
         Game.DisableControlAction(0, GameControl.VehicleAim, true);
         Game.DisableControlAction(0, GameControl.AccurateAim, true);

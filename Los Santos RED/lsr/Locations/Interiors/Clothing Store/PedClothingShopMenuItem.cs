@@ -22,6 +22,7 @@ public class PedClothingShopMenuItem
     private UIMenuListScrollerItem<AppliedOverlay> AppliedOverlaysScroller;
     private UIMenuCheckboxItem isDefaultNotApplied;
 
+
     public string Name { get; set; }
     public string Description { get; set; } 
     public int PurchasePrice { get; set; }
@@ -39,6 +40,7 @@ public class PedClothingShopMenuItem
     public string Category { get; set; }
     public string SubCategory { get; set; }
     public ePedFocusZone PedFocusZone { get; set; } = ePedFocusZone.None;
+    public bool RemoveTorsoDecals { get; set; } = false;
     public PedClothingShopMenuItem()
     {
 
@@ -53,25 +55,30 @@ public class PedClothingShopMenuItem
         ForceSetComponenets = forceSetComponenets;
     }
 
-    public void AddToMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, ClothingShop clothingShop, OrbitCamera orbitCamera, bool IsPurchase)
+    public void AddToMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, ClothingShop clothingShop, OrbitCamera orbitCamera, bool IsPurchase, PlayerPoser playerPoser,PedVariation workingVariation)
     {
         if (PurchasePrice <= -1)
         {
             return;         
         }
-        WorkingVariation = player.CurrentModelVariation.Copy();
+        WorkingVariation = workingVariation;
         SubMenu = menuPool.AddSubMenu(interactionMenu, Name);
         SubMenuItem = interactionMenu.MenuItems[interactionMenu.MenuItems.Count() - 1];
         SubMenuItem.Description = Description;
         SubMenu.OnMenuOpen += (sender) =>
         {
+            WorkingVariation = player.CurrentModelVariation.Copy();
             ApplyItems(player, WorkingVariation, false);
             orbitCamera?.SetHint(PedFocusZone);
+            playerPoser?.SetHint(PedFocusZone);
+            CheckAndRemoveExistingDecals();
         };
         SubMenu.OnMenuClose += (sender) =>
         {
-            player.CurrentModelVariation.ApplyToPed(player.Character, false);
+            player.CurrentModelVariation.ApplyToPed(player.Character,true, false,false);
             orbitCamera?.Reset();
+            playerPoser?.Reset();
+            WorkingVariation = player.CurrentModelVariation.Copy();
         };
         //Give Optional Variations if available
         OptionalVariationScrollers = new List<UIMenuListScrollerItem<OptionalClothingChoice>>();
@@ -136,6 +143,7 @@ public class PedClothingShopMenuItem
                 player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
                 player.OutfitManager.PurchasePedClothingItem(this);
                 ApplyItems(player, player.CurrentModelVariation, true);
+                WorkingVariation = player.CurrentModelVariation.Copy();
             };
             SubMenu.AddItem(purchaseMenuItem);
         }
@@ -145,6 +153,7 @@ public class PedClothingShopMenuItem
             applyMenuItem.Activated += (sender, args) =>
             {
                 ApplyItems(player, player.CurrentModelVariation, true);
+                WorkingVariation = player.CurrentModelVariation.Copy();
                 NativeHelper.PlayAcceptSound();
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "Applied", "Purchased item has been applied");
             };
@@ -152,7 +161,10 @@ public class PedClothingShopMenuItem
         }
     }
 
-
+    private void CheckAndRemoveExistingDecals()
+    {
+        
+    }
 
     private void ApplyItems(ILocationInteractable player, PedVariation pedVariation, bool setDefaultNotApply)
     {
@@ -210,8 +222,12 @@ public class PedClothingShopMenuItem
     }
     private void ApplyOverlays(ILocationInteractable player, PedVariation pedVariation)
     {
-        if(ForceSetOverlays == null || !ForceSetOverlays.Any())
+        if(ForceSetOverlays == null || !ForceSetOverlays.Any())//Has no overlays, is not a tatto
         {
+            if (RemoveTorsoDecals)
+            {
+                pedVariation.AppliedOverlays.RemoveAll(x => x.ZoneName == "ZONE_TORSO");
+            }
             return;
         }
         if (pedVariation == null)

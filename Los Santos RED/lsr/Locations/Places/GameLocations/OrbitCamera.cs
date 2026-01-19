@@ -340,7 +340,7 @@ public class OrbitCamera
             CamOffsetX = 0f;
             CamOffsetY = 0f;
             CamOffsetZ = 0.7f;
-            Radius = 0.5f;
+            Radius = 0.9f;
         }
         else if (pedFocusZone == ePedFocusZone.Legs)
         {
@@ -354,14 +354,14 @@ public class OrbitCamera
             CamOffsetX = 0f;
             CamOffsetY = 0f;
             CamOffsetZ = -0.85f;
-            Radius = 0.5f;
+            Radius = 0.9f;
         }
         else if (pedFocusZone == ePedFocusZone.Neck)
         {
             CamOffsetX = 0f;
             CamOffsetY = 0f;
             CamOffsetZ = 0.45f;
-            Radius = 0.5f;
+            Radius = 0.9f;
         }
         else if (pedFocusZone == ePedFocusZone.Chest)
         {
@@ -374,15 +374,15 @@ public class OrbitCamera
         {
             CamOffsetX = 0f;
             CamOffsetY = 0f;
-            CamOffsetZ = 0.25f;
-            Radius = 0.5f;
+            CamOffsetZ = 0.4f;
+            Radius = 0.9f;
         }
         else if (pedFocusZone == ePedFocusZone.RightWrist)
         {
             CamOffsetX = 0f;
             CamOffsetY = 0f;
-            CamOffsetZ = 0.25f;
-            Radius = 0.5f;
+            CamOffsetZ = 0.4f;
+            Radius = 0.9f;
         }
     }
 

@@ -232,13 +232,6 @@ public class GameLocation : ILocationDispatchable
     [XmlIgnore]
     public List<Merchant> Vendors { get; set; } = new List<Merchant>();
 
-    [XmlIgnore]
-    public List<PedExt> SpawnedMerchants { get; set; } = new List<PedExt>();
-
-
-
-
-
     public Vector3 VehiclePreviewCameraPosition { get; set; } = Vector3.Zero;
     public Vector3 VehiclePreviewCameraDirection { get; set; } = Vector3.Zero;
     public Rotator VehiclePreviewCameraRotation { get; set; }
@@ -643,6 +636,10 @@ public class GameLocation : ILocationDispatchable
         {
             return;
         }
+        if(Menu == null)
+        {
+            return;
+        }
         if (DateTime.Compare(Time.CurrentDateTime, NextPriceRefreshTime) == 1)
         {
             foreach (MenuItem menuItem in Menu.Items)
@@ -660,6 +657,10 @@ public class GameLocation : ILocationDispatchable
     protected virtual void HandleSupplyRefreshes()
     {
         if (MinRestockHours <= 0 && MaxRestockHours <= 0)
+        {
+            return;
+        }
+        if (Menu == null)
         {
             return;
         }
@@ -1334,17 +1335,17 @@ public class GameLocation : ILocationDispatchable
             SpawnedVendors.Clear();
         }
 
-        foreach (PedExt pedExt in SpawnedMerchants.ToList())
-        {
-            if (pedExt.Pedestrian.Exists())
-            {
-                pedExt.DeleteBlip();
-                pedExt.Pedestrian.IsPersistent = false;
-                EntryPoint.WriteToConsole($"AttemptMerchantDespawn MADE NON PERSIST MERCHANT");
-                pedExt.Pedestrian.Dismiss();
-            }
-            SpawnedMerchants.Clear();
-        }
+        //foreach (PedExt pedExt in SpawnedMerchants.ToList()) 
+        //{
+        //    if (pedExt.Pedestrian.Exists())
+        //    {
+        //        pedExt.DeleteBlip();
+        //        pedExt.Pedestrian.IsPersistent = false;
+        //        EntryPoint.WriteToConsole($"AttemptMerchantDespawn MADE NON PERSIST MERCHANT");
+        //        pedExt.Pedestrian.Dismiss();
+        //    }
+        //    SpawnedMerchants.Clear();
+        //}
     }
 
     public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)

@@ -125,7 +125,8 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="RagePluginHook">
+    <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -248,6 +249,7 @@
     <Compile Include="lsr\Locations\Interiors\AudioEmitterInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\Residence\MoneyEntitySet.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\Trophy\CabinetData.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\MansionInterior.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\Trophy\DisplayPlacement.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="lsr\Locations\Places\GameLocations\ePedFocusZone.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\PlayerPoser.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Racing\RaceMeetup.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\ModShopMenu.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\VehicleLocations\PerformanceVehicleModKitType.cs" />

@@ -937,6 +937,21 @@ public class Interiors : IInteriors
     }
     private void Residence()
     {
+
+        List<MoneyEntitySet> DefaultVaultMoneyEntitySets = new List<MoneyEntitySet>()
+        {
+            new MoneyEntitySet("SET_BASE_VAULT_00",0,0),
+            new MoneyEntitySet("SET_BASE_VAULT_01",1,24999),
+            new MoneyEntitySet("SET_BASE_VAULT_02",25000,74999),
+            new MoneyEntitySet("SET_BASE_VAULT_03",75000,249999),
+            new MoneyEntitySet("SET_BASE_VAULT_04",250000,499999),
+            new MoneyEntitySet("SET_BASE_VAULT_05",500000,999999),
+            new MoneyEntitySet("SET_BASE_VAULT_06",1000000,1999999),
+            new MoneyEntitySet("SET_BASE_VAULT_07",2000000,2999999),
+            new MoneyEntitySet("SET_BASE_VAULT_08",3000000,3999999),
+            new MoneyEntitySet("SET_BASE_VAULT_09",4000000,999999999),
+        };
+
         PossibleInteriors.ResidenceInteriors.AddRange(new List<ResidenceInterior>()
         {
             //Apartments
@@ -7371,6 +7386,8 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+                MoneyInteriorCoords = new Vector3(547.4955f, 734.136f, 190.5045f),
+                MoneyEntitySets = DefaultVaultMoneyEntitySets,
                 AudioEmitters = new List<AudioEmitter>()
                 {
                     new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_3","Lobby (1)"),
@@ -7668,6 +7685,8 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+                MoneyInteriorCoords = new Vector3(-1649.63f, 480.9779f, 117.3645f),
+                MoneyEntitySets = DefaultVaultMoneyEntitySets,
                 AudioEmitters = new List<AudioEmitter>()
                 {
                     new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_2","Lobby (1)"),
@@ -7961,6 +7980,8 @@ public class Interiors : IInteriors
                 NeedsSetDisabled = false,
                 MaxUpdateDistance = 75f,
                 IsTrespassingWhenClosed = true,
+                MoneyInteriorCoords = new Vector3(-2587.496f, 1893.193f, 155.5183f),
+                MoneyEntitySets = DefaultVaultMoneyEntitySets,
                 AudioEmitters = new List<AudioEmitter>()
                 {
                     new AudioEmitter($"se_dlc25-2_mansion_lobby_loc_1","Lobby (1)"),

@@ -177,4 +177,19 @@ public class MerchantSpawnTask : SpawnTask
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
     }
+    public override void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation)
+    {
+        base.PostRun(conditionalLocation, gameLocation);
+        if(gameLocation == null)
+        {
+            return;
+        }
+        foreach (Merchant ped in CreatedPeople)
+        {
+            if (!gameLocation.Vendors.Any(x=> x.Handle == ped.Handle))
+            {
+                gameLocation.Vendors.Add(ped);
+            }
+        }
+    }
 }

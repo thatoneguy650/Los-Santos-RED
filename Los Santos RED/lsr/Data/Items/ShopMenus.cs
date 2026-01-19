@@ -670,19 +670,19 @@ public class ShopMenus : IShopMenus
         {
 
             new PedClothingShopMenuItem("Branded Polo Shirt","Show you are worth it.",50,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 14, new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 }), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }){ 
-                Category = "Shirts", SubCategory = "Polo", PedFocusZone = ePedFocusZone.Chest },
+                Category = "Shirts", SubCategory = "Polo", PedFocusZone = ePedFocusZone.Chest,RemoveTorsoDecals = true, },
 
             new PedClothingShopMenuItem("Fitted T Shirt","Test Description",50,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 49, new List<int>() { 1,0}), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 14, new List<int>() { 0 }) , }){ 
-                Category = "Shirts", SubCategory = "T-Shirts", PedFocusZone = ePedFocusZone.Chest },
+                Category = "Shirts", SubCategory = "T-Shirts", PedFocusZone = ePedFocusZone.Chest,RemoveTorsoDecals = true, },
             new PedClothingShopMenuItem("Loose Button-Up","Test Description 2",60,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { new PedClothingComponent(11, 9, new List<int>() { 13 }), new PedClothingComponent(8, 15, new List<int>() { 0 }), new PedClothingComponent(3, 9, new List<int>() { 0 }) , }){ 
-                Category = "Shirts", SubCategory = "Button Up", PedFocusZone = ePedFocusZone.Chest },
+                Category = "Shirts", SubCategory = "Button Up", PedFocusZone = ePedFocusZone.Chest,RemoveTorsoDecals = true, },
 
             new PedClothingShopMenuItem("LOST Supporter","Test Description 3",60,new List<string> () { "mp_f_freemode_01" },
             new List<PedClothingComponent>() { 
                 new PedClothingComponent(11, 385, new List<int>() { 0 }), 
                 new PedClothingComponent(8, 86, new List<int>() { 22,23,24 }), 
                 new PedClothingComponent(3, 0, new List<int>() { 0 }) , }){
-                Category = "Shirts", SubCategory = "T-Shirts", PedFocusZone = ePedFocusZone.Chest, 
+                Category = "Shirts", SubCategory = "Cuts", PedFocusZone = ePedFocusZone.Chest, 
                 ForceSetOverlays = new List<AppliedOverlay>() { 
                     new AppliedOverlay("mpBiker_overlays","MP_Biker_Tee_028_F","ZONE_TORSO"),
                     new AppliedOverlay("mpBiker_overlays","MP_Biker_Tee_029_F","ZONE_TORSO"),
@@ -690,7 +690,7 @@ public class ShopMenus : IShopMenus
                     new AppliedOverlay("mpBiker_overlays","MP_Biker_Tee_031_F","ZONE_TORSO"),
                     new AppliedOverlay("mpBiker_overlays","MP_Biker_Tee_034_F","ZONE_TORSO"),
                     new AppliedOverlay("mpBiker_overlays","MP_Biker_Tee_035_F","ZONE_TORSO"), 
-                } },
+                },RemoveTorsoDecals = true, },
 
             new PedClothingShopMenuItem("Aviators 1","",150,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() {
                 new PedClothingComponent(1, 11, new List<int>() { 0 }){ IsProp = true, }, }){
@@ -721,11 +721,11 @@ public class ShopMenus : IShopMenus
 
 
 
-            new PedClothingShopMenuItem("Los Santos Flat Brim","",78,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { 
-                new PedClothingComponent(0, 4, new List<int>() { 0 }){ IsProp = true, }, }){
+            new PedClothingShopMenuItem("Prolaps Golf","",78,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { 
+                new PedClothingComponent(0, 158, new List<int>() { 0 }){ IsProp = true, }, }){
                 Category = "Hats", SubCategory = "Baseball Caps", PedFocusZone = ePedFocusZone.Head, IsAccessory = true, },
-            new PedClothingShopMenuItem("iFruit Cap","",78,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() {
-                new PedClothingComponent(0, 9, new List<int>() { 0 }){ IsProp = true, }, }){
+            new PedClothingShopMenuItem("Sprunk Cap","",78,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 154, new List<int>() { 0 }){ IsProp = true, }, }){
                 Category = "Hats", SubCategory = "Baseball Caps", PedFocusZone = ePedFocusZone.Head, IsAccessory = true, },
             new PedClothingShopMenuItem("Straw Hat","",25,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 20, new List<int>() { 0 }){ IsProp = true, }, }){
@@ -733,7 +733,7 @@ public class ShopMenus : IShopMenus
 
             new PedClothingShopMenuItem("Necklace 1","",100,new List<string> () { "mp_f_freemode_01" },new List<PedClothingComponent>() { 
                 new PedClothingComponent(7, 7, new List<int>() { 0 }), }){
-                Category = "Necklaces", SubCategory = "Casual", PedFocusZone = ePedFocusZone.Neck, IsAccessory = true, },
+                Category = "Necklaces", SubCategory = "Casual", PedFocusZone = ePedFocusZone.Neck, IsAccessory = true,  },
         };
         PossibleShopMenus.PedClothingShopMenus.Add(pedClothingShopMenu);
     }

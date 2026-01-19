@@ -522,98 +522,104 @@ public class VehicleItem : ModItem
     }
     public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase, IEntityProvideable world, ISettingsProvideable settings)
     {
-        if (ModelItem != null && Transaction.VehiclePreviewPosition != null && Transaction.VehiclePreviewPosition.Position != Vector3.Zero)
+        if(ModelItem == null || Transaction.VehiclePreviewPosition == null || Transaction.VehiclePreviewPosition.Position == Vector3.Zero)
         {
-            uint modelHash = Game.GetHashKey(ModelItem.ModelName);
-            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(modelHash))
+            return;
+        }
+        uint modelHash = Game.GetHashKey(ModelItem.ModelName);
+        if (!NativeFunction.Natives.IS_MODEL_VALID<bool>(modelHash))
+        {
+            return;
+        }
+        try
+        {
+            NativeFunction.Natives.REQUEST_MODEL(modelHash);
+            uint GameTimeStarted = Game.GameTime;
+            while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash) )
             {
-                try
+                if(Game.GameTime - GameTimeStarted > 1000)
                 {
-                    NativeFunction.Natives.REQUEST_MODEL(modelHash);
-                    while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(modelHash))
-                    {
-                        GameFiber.Yield();
-                    }
-                    NativeFunction.Natives.CLEAR_AREA(Transaction.VehiclePreviewPosition.Position.X, Transaction.VehiclePreviewPosition.Position.Y, Transaction.VehiclePreviewPosition.Position.Z, 4f, true, false, false, false);
-                    Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.VehiclePreviewPosition.Position, Transaction.VehiclePreviewPosition.Heading);
-                    NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
-                    if (!Transaction.SellingVehicle.Exists())
-                    {
-                        return;
-                    }
-                    VehicleExt Car = new VehicleExt(Transaction.SellingVehicle, settings);
-                    Car.Setup();
-
-        if(Car.IsBoat)
-                    {
-                        Transaction.RotatePreview = false;
-                    }
-                    Car.WasModSpawned = true;
-                    Car.WasSpawnedEmpty = true;
-                    Car.IsManualCleanup = true;
-                    Car.CanHaveRandomItems = false;
-                    Car.CanHaveRandomWeapons = false;
-                    Car.CanHaveRandomCash = false;
-                    Car.AddVehicleToList(world);
-                    Transaction.SellingVehicle.Wash();
-                    CreateLiveryMenuOne(Transaction);
-                    // DEBUG LOG: Add this to check livery values
-                    EntryPoint.WriteToConsole($"Preview {ModelItem.ModelName}: HasLivery1={HasLivery1}, Count={NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Transaction.SellingVehicle)}, Current={NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(Transaction.SellingVehicle)}");
-                    // FIX: Set default livery if valid ones exist but unset (-1)
-                    if (HasLivery1)
-                    {
-                        int currentLivery = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(Transaction.SellingVehicle);
-                        if (currentLivery == -1)
-                        {
-                            currentLivery = 0;
-                            NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, currentLivery);
-                        }
-                        Livery1 = currentLivery;
-                        SetLivery1 = true;
-                    }
-                    else
-                    {
-                        if (isPurchase)
-                        {
-                            int primaryColor;
-                            int secondaryColor;
-                            unsafe
-                            {
-                                NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", Transaction.SellingVehicle, &primaryColor, &secondaryColor);
-                            }
-                            PrimaryColor = primaryColor;
-                            SecondaryColor = secondaryColor;
-                            int pearlescentColor;
-                            int wheelColor;
-                            unsafe
-                            {
-                                NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", Transaction.SellingVehicle, &pearlescentColor, &wheelColor);
-                            }
-                            PearlescentColor = pearlescentColor;
-                            WheelColor = wheelColor;
-                            //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
-                            //NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
-                        }
-                        else
-                        {
-                            Transaction.SellingVehicle.PrimaryColor = SellPrimaryColor;
-                            Transaction.SellingVehicle.SecondaryColor = SellSecondaryColor;
-                            //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, SellPrimaryColor, SellSecondaryColor);
-                        }
-                    }
-                    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
-                    Car.ForcePlateType(Transaction?.LicensePlatePreviewable?.LicensePlatePreviewText, 0);
+                    return;
                 }
-                catch (Exception ex)
+                GameFiber.Yield();
+            }
+            NativeFunction.Natives.CLEAR_AREA(Transaction.VehiclePreviewPosition.Position.X, Transaction.VehiclePreviewPosition.Position.Y, Transaction.VehiclePreviewPosition.Position.Z, 4f, true, false, false, false);
+            Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.VehiclePreviewPosition.Position, Transaction.VehiclePreviewPosition.Heading);//this already requests the model
+            NativeFunction.Natives.SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
+            if (!Transaction.SellingVehicle.Exists())
+            {
+                return;
+            }
+            VehicleExt Car = new VehicleExt(Transaction.SellingVehicle, settings);
+            Car.Setup();
+            if(Car.IsBoat)
+            {
+                Transaction.RotatePreview = false;
+            }
+            Car.WasModSpawned = true;
+            Car.WasSpawnedEmpty = true;
+            Car.IsManualCleanup = true;
+            Car.CanHaveRandomItems = false;
+            Car.CanHaveRandomWeapons = false;
+            Car.CanHaveRandomCash = false;
+            Car.AddVehicleToList(world);
+            Transaction.SellingVehicle.Wash();
+            CreateLiveryMenuOne(Transaction);
+            // DEBUG LOG: Add this to check livery values
+            EntryPoint.WriteToConsole($"Preview {ModelItem.ModelName}: HasLivery1={HasLivery1}, Count={NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Transaction.SellingVehicle)}, Current={NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(Transaction.SellingVehicle)}");
+            // FIX: Set default livery if valid ones exist but unset (-1)
+            if (HasLivery1)
+            {
+                int currentLivery = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(Transaction.SellingVehicle);
+                if (currentLivery == -1)
                 {
-                    EntryPoint.WriteToConsole($"LSR Preview Crash: {ex.Message}\n{ex.StackTrace}");
-                    if (Transaction.SellingVehicle.Exists())
+                    currentLivery = 0;
+                    NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, currentLivery);
+                }
+                Livery1 = currentLivery;
+                SetLivery1 = true;
+            }
+            else
+            {
+                if (isPurchase)
+                {
+                    int primaryColor;
+                    int secondaryColor;
+                    unsafe
                     {
-                        Transaction.SellingVehicle.Delete();
+                        NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", Transaction.SellingVehicle, &primaryColor, &secondaryColor);
                     }
+                    PrimaryColor = primaryColor;
+                    SecondaryColor = secondaryColor;
+                    int pearlescentColor;
+                    int wheelColor;
+                    unsafe
+                    {
+                        NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", Transaction.SellingVehicle, &pearlescentColor, &wheelColor);
+                    }
+                    PearlescentColor = pearlescentColor;
+                    WheelColor = wheelColor;
+                    //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
+                    //NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(Transaction.SellingVehicle, FinalPearlColor, FinalWheelColor);
+                }
+                else
+                {
+                    Transaction.SellingVehicle.PrimaryColor = SellPrimaryColor;
+                    Transaction.SellingVehicle.SecondaryColor = SellSecondaryColor;
+                    //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, SellPrimaryColor, SellSecondaryColor);
                 }
             }
+            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
+            Car.ForcePlateType(Transaction?.LicensePlatePreviewable?.LicensePlatePreviewText, 0);
         }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"LSR Preview Crash: {ex.Message}\n{ex.StackTrace}");
+            if (Transaction.SellingVehicle.Exists())
+            {
+                Transaction.SellingVehicle.Delete();
+            }
+        }     
     }
     private void CreateLiveryMenuOne(Transaction Transaction)
     {
