@@ -143,6 +143,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public int ChaseDefaultMission { get; set; }
     public int ChaseRecklessMission { get; set; }
     public int ChaseVeryRecklessMission { get; set; }
+    public float FlyThroughWindshieldPercentage { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -268,6 +269,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AlwaysUseLongGunWantedLevelLimit = 4;
         EnableConfigFlagPoliceTakeCrashDamage = true;
         AllowFlyThroughWindshield = true;
+        FlyThroughWindshieldPercentage = 45f;
         ChaseDefaultMission = 7;
         ChaseVeryRecklessMission = 3;
         ChaseRecklessMission = 2;

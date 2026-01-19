@@ -315,7 +315,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)250, true);
             //EntryPoint.WriteToConsole("COP SET TAKE DAMAGE");
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.AllowFlyThroughWindshield)
+        if (Settings.SettingsManager.PoliceTaskSettings.AllowFlyThroughWindshield && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.FlyThroughWindshieldPercentage))
         {
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)32, true);
             //EntryPoint.WriteToConsole("COP SET FLY THRU WINDSHIELD");
