@@ -14,7 +14,8 @@ using System.Windows.Forms;
 
 public class PedClothingShopMenuItem
 {
-    private PedVariation WorkingVariation;
+    //private PedVariation WorkingVariation;
+    private ClothingPurchaseMenu ClothingPurchaseMenu;
     private UIMenu SubMenu;
     private UIMenuItem SubMenuItem;
     //private List<OptionalClothingChoice> OptionalClothingChoices;
@@ -55,20 +56,24 @@ public class PedClothingShopMenuItem
         ForceSetComponenets = forceSetComponenets;
     }
 
-    public void AddToMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, ClothingShop clothingShop, OrbitCamera orbitCamera, bool IsPurchase, PlayerPoser playerPoser,PedVariation workingVariation)
+    public void AddToMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, ClothingShop clothingShop, OrbitCamera orbitCamera, bool IsPurchase, PlayerPoser playerPoser, ClothingPurchaseMenu clothingPurchaseMenu)
     {
-        if (PurchasePrice <= -1)
+        if (IsPurchase && PurchasePrice <= -1)
         {
             return;         
         }
-        WorkingVariation = workingVariation;
+        ClothingPurchaseMenu = clothingPurchaseMenu;
         SubMenu = menuPool.AddSubMenu(interactionMenu, Name);
         SubMenuItem = interactionMenu.MenuItems[interactionMenu.MenuItems.Count() - 1];
         SubMenuItem.Description = Description;
         SubMenu.OnMenuOpen += (sender) =>
         {
-            WorkingVariation = player.CurrentModelVariation.Copy();
-            ApplyItems(player, WorkingVariation, false);
+            //WorkingVariation = player.CurrentModelVariation.Copy();
+
+            ClothingPurchaseMenu?.CopyCurrentModelVariation();
+
+
+            ApplyItems(player, ClothingPurchaseMenu.WorkingVariation, false);
             orbitCamera?.SetHint(PedFocusZone);
             playerPoser?.SetHint(PedFocusZone);
             CheckAndRemoveExistingDecals();
@@ -78,7 +83,8 @@ public class PedClothingShopMenuItem
             player.CurrentModelVariation.ApplyToPed(player.Character,true, false,false);
             orbitCamera?.Reset();
             playerPoser?.Reset();
-            WorkingVariation = player.CurrentModelVariation.Copy();
+            ClothingPurchaseMenu?.CopyCurrentModelVariation();
+            //WorkingVariation = player.CurrentModelVariation.Copy();
         };
         //Give Optional Variations if available
         OptionalVariationScrollers = new List<UIMenuListScrollerItem<OptionalClothingChoice>>();
@@ -93,7 +99,7 @@ public class PedClothingShopMenuItem
             UIMenuListScrollerItem<OptionalClothingChoice> variationsScrollerMenu = new UIMenuListScrollerItem<OptionalClothingChoice>($"Part {part}", "Pick optional variations to be set", OptionalClothingChoices);
             variationsScrollerMenu.IndexChanged += (sender, oldIndex, newIndex) =>
             {
-                ApplyItems(player, WorkingVariation, false);
+                ApplyItems(player, ClothingPurchaseMenu.WorkingVariation, false);
             };
             if (pedClothingComponent.PossibleTextures.Count > 1)
             {
@@ -109,7 +115,7 @@ public class PedClothingShopMenuItem
             UIMenuListScrollerItem<AppliedOverlay> OverlaysScrollerMenu = new UIMenuListScrollerItem<AppliedOverlay>($"Overlay", "Pick optional overlays to be set", ForceSetOverlays);
             OverlaysScrollerMenu.IndexChanged += (sender, oldIndex, newIndex) =>
             {
-                ApplyItems(player, WorkingVariation, false);
+                ApplyItems(player, ClothingPurchaseMenu.WorkingVariation, false);
             };
             if (ForceSetOverlays != null && ForceSetOverlays.Count() > 1)
             {
@@ -143,7 +149,10 @@ public class PedClothingShopMenuItem
                 player.BankAccounts.GiveMoney(-1 * PurchasePrice, true);
                 player.OutfitManager.PurchasePedClothingItem(this);
                 ApplyItems(player, player.CurrentModelVariation, true);
-                WorkingVariation = player.CurrentModelVariation.Copy();
+
+                ClothingPurchaseMenu.CopyCurrentModelVariation();
+
+                //WorkingVariation = player.CurrentModelVariation.Copy();
             };
             SubMenu.AddItem(purchaseMenuItem);
         }
@@ -153,7 +162,9 @@ public class PedClothingShopMenuItem
             applyMenuItem.Activated += (sender, args) =>
             {
                 ApplyItems(player, player.CurrentModelVariation, true);
-                WorkingVariation = player.CurrentModelVariation.Copy();
+                ClothingPurchaseMenu.CopyCurrentModelVariation();
+
+                //WorkingVariation = player.CurrentModelVariation.Copy();
                 NativeHelper.PlayAcceptSound();
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "Applied", "Purchased item has been applied");
             };

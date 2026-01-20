@@ -7,6 +7,7 @@ using System.Linq;
 
 public class WeaponSelector
 {
+    private uint GameTimePrint;
     private uint GameTimeLastToggledSelector;
     private bool canShoot;
     private bool isControlDisabled = false;
@@ -151,46 +152,60 @@ public class WeaponSelector
     {
         isControlDisabled = !enabled;
 
-        //if (enabled)
-        //{
-        //    isControlDisabled = false;
+        if (enabled)
+        {
+            //    isControlDisabled = false;
 
-            
 
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 24, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 257, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 69, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 70, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 92, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 114, true);
-        //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 331, true);
-        //}
-        //else
-        //{
-        //    isControlDisabled = true;
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 24, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 257, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 69, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 70, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 92, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 114, true);
-        //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 331, true);
-        //}
 
-        SetControls(enabled);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 24, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 257, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 69, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 70, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 92, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 114, true);
+            //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 331, true);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.Attack, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.Attack2, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack2, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.VehiclePassengerAttack, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack, enabled);
+            NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack2, enabled);
+        }
+        else
+        {
+            //    isControlDisabled = true;
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 24, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 257, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 69, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 70, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 92, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 114, true);
+            //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 331, true);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack2, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack2, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehiclePassengerAttack, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack, enabled);
+            NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack2, enabled);
+        }
 
-       // EntryPoint.WriteToConsole($"SetShootingEnabled isControlDisabled:{isControlDisabled} CurrentSelectorSetting {CurrentSelectorSetting}");
+        //SetControls(enabled);
+
+        //EntryPoint.WriteToConsole($"SetShootingEnabled isControlDisabled:{isControlDisabled} CurrentSelectorSetting {CurrentSelectorSetting}");
     }
-    private void SetControls(bool enabled)
-    {
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack2, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack2, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehiclePassengerAttack, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack, enabled);
-        NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack2, enabled);
-    }
+    //private void SetControls(bool enabled)
+    //{
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.Attack2, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleAttack2, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehiclePassengerAttack, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack, enabled);
+    //    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, (int)GameControl.VehicleFlyAttack2, enabled);
+    //}
     private void UpdateShooting()
     {
         if (prevCurrentWeapon?.Hash != Player.WeaponEquipment.CurrentWeapon?.Hash || Player.WeaponEquipment.CurrentWeapon == null)
@@ -210,6 +225,7 @@ public class WeaponSelector
             {
                 canShoot = false;
             }
+            //EntryPoint.WriteToConsole("PLAYER IS SHOOTING");
         }
         else if (BulletLimt > 1 && BulletLimt < 9999 && roundsFired > 0 && (roundsFired <= BulletLimt - 1) && BulletLimt > 0)
         {
@@ -221,7 +237,7 @@ public class WeaponSelector
             {
                 NativeFunction.Natives.SET_CONTROL_VALUE_NEXT_FRAME(2, (int)GameControl.Attack, 1.0f); //NativeFunction.Natives.xE8A25867FBA3B05E(2, 24, 1.0f);
             }
-            EntryPoint.WriteToConsole("Fired Round");
+           // EntryPoint.WriteToConsole("Fired Round");
             //roundsFired++;
         }
         else if (Player.ReleasedFireWeapon && (roundsFired > BulletLimt - 1) && BulletLimt > 0)
@@ -229,7 +245,7 @@ public class WeaponSelector
             roundsFired = 0;
             canShoot = true;
 
-            EntryPoint.WriteToConsole("Released Fire");
+           // EntryPoint.WriteToConsole("Released Fire");
         }
         if (Player.WeaponEquipment.CurrentWeapon == null)
         {
@@ -243,6 +259,13 @@ public class WeaponSelector
             //EntryPoint.WriteToConsole("Started Reloading");
         }
         SetShootingEnabled(canShoot);
+
+        //if(Game.GameTime - GameTimePrint > 500)
+        //{
+        //    EntryPoint.WriteToConsole($"Player.ReleasedFireWeapon{Player.ReleasedFireWeapon} Player.Character.IsShooting{Player.Character.IsShooting} BulletLimt{BulletLimt} canShoot{canShoot}");
+        //    GameTimePrint = Game.GameTime;
+        //}
+
     }
     private void UpdateSelectorHistory()
     {

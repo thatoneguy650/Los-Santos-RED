@@ -19,11 +19,15 @@ public class ClothingPurchaseMenu
     private TryOnInteract TryOnInteract;
     private MenuPool MenuPool;
     private UIMenu InteractionMenu;
-    private PedVariation WorkingVariation;
+    //private PedVariation WorkingVariation;
     private List<UIMenu> CategoryList;
     private List<UIMenu> SubCategoryList;
 
     private List<CategoryLookup> CategoryLookups;
+
+
+
+    public PedVariation WorkingVariation { get; private set; }
 
     public ClothingPurchaseMenu(ILocationInteractable player, ClothingShop clothingShop, TryOnInteract tryOnInteract, ISettingsProvideable settings)
     {
@@ -55,7 +59,7 @@ public class ClothingPurchaseMenu
         WorkingVariation = Player.CurrentModelVariation.Copy();
         foreach (PedClothingShopMenuItem pedClothingShopMenuItem in itemsToCreate)//ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
         {
-            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase, PlayerPoser, WorkingVariation);
+            pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase, PlayerPoser, this);
         }
 
         if (MakeVisible)
@@ -128,6 +132,12 @@ public class ClothingPurchaseMenu
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
         PlayerPoser.Dispose();
     }
+
+    public void CopyCurrentModelVariation()
+    {
+        WorkingVariation = Player.CurrentModelVariation.Copy();
+    }
+
     private class CategoryLookup
     {
         public CategoryLookup(string categoryName, string subCategoryName, UIMenu categoryMenu, UIMenu subCategoryMenu)

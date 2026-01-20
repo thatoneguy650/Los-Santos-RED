@@ -49,5 +49,9 @@ public class AppliedOverlay
         CollectionHash = Game.GetHashKey(CollectionName);
         OverlayHash = Game.GetHashKey(OverlayName);
     }
+    public override string ToString()
+    {
+        return $"{CollectionName}-{OverlayName}";
+    }
 
 }

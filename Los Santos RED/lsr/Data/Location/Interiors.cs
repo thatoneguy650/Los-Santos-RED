@@ -940,7 +940,7 @@ public class Interiors : IInteriors
 
         List<MoneyEntitySet> DefaultVaultMoneyEntitySets = new List<MoneyEntitySet>()
         {
-            new MoneyEntitySet("SET_BASE_VAULT_00",0,0),
+            new MoneyEntitySet("SET_BASE_VAULT_00",0,1999999),
             new MoneyEntitySet("SET_BASE_VAULT_01",1,24999),
             new MoneyEntitySet("SET_BASE_VAULT_02",25000,74999),
             new MoneyEntitySet("SET_BASE_VAULT_03",75000,249999),
