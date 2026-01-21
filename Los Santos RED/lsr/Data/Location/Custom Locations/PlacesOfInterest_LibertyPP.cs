@@ -1420,6 +1420,9 @@ public class PlacesOfInterest_LibertyPP
             new ConvenienceStore(new Vector3(3680.008f, -2549.904f, 25.4408f), 60.25175f, "Cheepo's", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
             new ConvenienceStore(new Vector3(4009.066f, -1827.736f, 20.93378f), 90.02924f,  "Ruhni Poohs Indian Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
             new ConvenienceStore(new Vector3(4065.872f, -1997.249f, 24.55272f), 138.7513f,  "Pedro's Mini Market", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+            new ConvenienceStore(new Vector3(3974.125f, -1519.832f, 32.66995f), 181.007f, "Grocery", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+            new ConvenienceStore(new Vector3(3951.793f, -1517.788f, 31.29018f), 179.7671f, "Grocery & Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.AlderneyStateID },
+
             new ConvenienceStore(new Vector3(6084.508f, -3539.242f, 18.70319f), 278.4318f, "Table Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
             new ConvenienceStore(new Vector3(6009.93f, -3591.366f, 16.02432f), 270.3828f, "Deli Sandwiches", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
             new ConvenienceStore(new Vector3(6037.938f, -3760.758f, 12.43063f), 88.80841f, "Timazone's Deli", "","ConvenienceStoreMenu") { StateID = StaticStrings.LibertyStateID },
@@ -1717,6 +1720,11 @@ public class PlacesOfInterest_LibertyPP
             new FoodStand(new Vector3(4116.685f, -1800.947f, 24.47414f), 177.1595f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4116.685f, -1800.947f, 22.47414f), 177.1595f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
             new FoodStand(new Vector3(4369.37f, -2256.757f, 15.62734f), 172.7887f,   "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4369.37f, -2256.757f, 13.62734f), 172.7887f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
             new FoodStand(new Vector3(4376.152f, -2280.124f, 15.63034f), 357.1571f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4376.152f, -2280.124f, 13.63034f), 357.1571f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
+            //Westdyke
+            new FoodStand(new Vector3(4370.146f, -1927.838f, 18.7374f), 272.8484f,   "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4370.146f, -1927.838f, 16.7374f), 272.8484f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
+            new FoodStand(new Vector3(4370.069f, -1917.091f, 18.73612f), 260.2348f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4370.069f, -1917.091f, 16.73612f), 260.2348f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
+            new FoodStand(new Vector3(4344.846f, -1873.062f, 23.18643f), 92.40092f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4344.846f, -1873.062f, 21.18643f), 92.40092f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
+            new FoodStand(new Vector3(4335.318f, -1857.729f, 23.14086f), 178.6567f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.AlderneyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4335.318f, -1857.729f, 21.14086f), 178.6567f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
 
             new FoodStand(new Vector3(4964.538f, -4073.773f, 5.275001f), 155.9896f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4964.538f, -4073.773f, 3.275001f), 155.9896f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
             new FoodStand(new Vector3(5649.894f, -3775.677f, 5.818119f), 271.4748f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5649.894f, -3775.677f, 3.818119f), 271.4748f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
@@ -1730,6 +1738,7 @@ public class PlacesOfInterest_LibertyPP
             new FoodStand(new Vector3(5118.813f, -2440.076f, 14.68385f), 265.2967f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5118.813f, -2440.076f, 12.68385f), 265.2967f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
             new FoodStand(new Vector3(5118.624f, -2401.291f, 14.6858f), 264.8643f,   "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5118.624f, -2401.291f, 12.6858f), 264.8643f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
 
+            new FoodStand(new Vector3(4550.123f, -2486.814f, 4.589512f), 232.4594f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4550.123f, -2486.814f, 2.589512f), 232.4594f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
             new FoodStand(new Vector3(4486.943f, -2271.326f, 4.104059f), 248.2815f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4486.943f, -2271.326f, 2.104059f), 248.2815f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125 },
             new FoodStand(new Vector3(4841.846f, -2119.576f, 14.7864f), 47.56853f,   "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4841.846f, -2119.576f, 12.7864f), 47.56853f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125},
             new FoodStand(new Vector3(4871.243f, -2573.714f, 12.40497f), 173.105f,   "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4871.243f, -2573.714f, 10.40497f), 173.105f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
@@ -1763,7 +1772,7 @@ public class PlacesOfInterest_LibertyPP
             new FoodStand(new Vector3(6088.357f, -3922.165f, 15.79217f), 9.639594f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6088.357f, -3922.165f, 13.79217f), 9.639594f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
             new FoodStand(new Vector3(6166.597f, -3937.217f, 16.44052f), 106.8126f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6166.597f, -3937.217f, 14.44052f), 106.8126f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
             new FoodStand(new Vector3(6258.046f, -3059.1f, 31.45988f), 48.02742f,    "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6258.046f, -3059.1f, 29.45988f), 48.02742f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
-        
+            new FoodStand(new Vector3(6029.103f, -3573.42f, 15.97888f), 91.5564f,    "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6029.103f, -3573.42f, 13.97888f), 91.5564f) }, BannerImagePath = "stores\\chihuahuahotdogs.png", ActivateDistance = 125},      
             // Happiness Island
             new FoodStand(new Vector3(4701.242f, -4203.466f, 4.838318f), 178.6166f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4701.242f, -4203.466f, 2.838318f), 178.6166f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
             new FoodStand(new Vector3(4601.658f, -4187.598f, 4.838317f), 115.3873f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4601.658f, -4187.598f, 2.838317f), 115.3873f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
@@ -1787,7 +1796,6 @@ public class PlacesOfInterest_LibertyPP
             new FoodStand(new Vector3(6739.272f, -2356.551f, 15.90711f), 169.0592f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6739.272f, -2356.551f, 13.90711f), 169.0592f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
             //Steinway Park
             new FoodStand(new Vector3(6041.902f, -2531.711f, 7.893699f), 271.1903f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6041.902f, -2531.711f, 5.893699f), 271.1903f) }, BannerImagePath = "stores\\chihuahuahotdogs.png",ActivateDistance = 125 },
-
 
             // Beefy Locations
             new FoodStand(new Vector3(4954.202f, -2143.93f, 4.92061f), 302.7637f,    "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4954.202f, -2143.93f, 4.92061f), 302.7637f) }, BannerImagePath = "stores\\beefybills.png", ActivateDistance = 125 },
@@ -3535,7 +3543,7 @@ public class PlacesOfInterest_LibertyPP
             new LiquorStore(new Vector3(5300.218f, -2184.728f, 14.71821f), 271.9344f, "Desratar Wine Store", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(4887.603f, -1981.29f, 23.97714f), 176.9975f, "Lady Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(3634.365f, -2588.989f, 25.44484f), 333.9839f, "Wine & Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.AlderneyStateID, },
-
+            new LiquorStore(new Vector3(3974.797f, -1810.476f, 20.14417f), 183.713f, "Bob's Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.AlderneyStateID, },
             new LiquorStore(new Vector3(6479.24f, -3269.563f, 28.35642f), 243.7716f, "Bob's Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(6598.446f, -3032.501f, 26.15483f), 269.9614f, "Liquor", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(6382.511f, -3440.119f, 26.08682f), 272.2683f, "Nik's Liquor & Wine", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
@@ -4891,6 +4899,17 @@ public class PlacesOfInterest_LibertyPP
                 TypeName = "Coffee Shop",
                 StateID = StaticStrings.AlderneyStateID,
             },
+            new Restaurant() {
+                MenuID = "CoffeeMenu",
+                Name = "Coffee Shop",
+                Description = "Coffee on the corner",
+                EntrancePosition = new Vector3(4008.913f, -1819.892f, 20.88819f),
+                EntranceHeading = 87.54162f,
+                OpenTime = 6,
+                CloseTime = 20,
+                TypeName = "Coffee Shop",
+                StateID = StaticStrings.AlderneyStateID,
+            },
             // Restaurants
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
@@ -5380,7 +5399,7 @@ public class PlacesOfInterest_LibertyPP
             new Restaurant(new Vector3(6420.359f, -2505.632f, 36.11824f), 359.4598f, "Cherry Popper Ice Cream", "","IceCreamMenu", FoodType.Dessert){ StateID = StaticStrings.LibertyStateID },
 
             //s.HO
-            new Restaurant(new Vector3(6427.569f, -2901.484f, 21.40972f), 92.50405f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3" },
+            new Restaurant(new Vector3(6427.569f, -2901.484f, 21.40972f), 92.50405f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3", StateID = StaticStrings.LibertyStateID  },
 
             //Wigwam
             new Restaurant(new Vector3(4886.781f, -3241.666f, 14.70797f), 359.4828f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.American | FoodType.Burger | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },
@@ -5479,7 +5498,7 @@ public class PlacesOfInterest_LibertyPP
             new Restaurant(new Vector3(4746.434f, -2760.067f, 9.853194f), 89.15031f, "The Flaming Fez", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(4842.253f, -2733.665f, 14.76149f), 90.12207f, "The Haitian Kitchen", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(4842.347f, -2778.69f, 14.7784f), 91.49546f, "The Haitian Kitchen", "","FancyGenericMenu", FoodType.American){ StateID = StaticStrings.LibertyStateID },
-
+            new Restaurant(new Vector3(3967.601f, -1810.01f, 20.35956f), 176.7437f, "Westdyke Deli", "","FancyGenericMenu", FoodType.Generic){ StateID = StaticStrings.AlderneyStateID },
             //Mexican
             new Restaurant(new Vector3(5980.922f, -3605.667f, 7.496796f), 183.4195f, "El Sobre", "","MexicanMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },
             new Restaurant(new Vector3(6529.486f, -3385.171f, 24.66998f), 178.3091f, "El Gringo Supremo's", "","MexicanMenu", FoodType.Mexican){ StateID = StaticStrings.LibertyStateID },

@@ -182,7 +182,10 @@
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_LostMC.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Mafia.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_NorthHolland.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_NorthHolland_LPP.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Petrovic.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Petrovic_LPP.cs" />
+    <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_SpanishLords_LPP.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_UptownRiders.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Gangs\DispatchablePeople_Varrios.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlay.cs" />
