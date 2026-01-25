@@ -384,6 +384,13 @@ public class OrbitCamera
             CamOffsetZ = 0.4f;
             Radius = 0.9f;
         }
+        else if (pedFocusZone == ePedFocusZone.Body)
+        {
+            CamOffsetX = 0f;
+            CamOffsetY = 0f;
+            CamOffsetZ = 0.1f;
+            Radius = 2.5f;
+        }
     }
 
 

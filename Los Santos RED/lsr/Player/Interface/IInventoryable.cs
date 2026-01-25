@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Interface
         ActivityManager ActivityManager { get; }
         Ped Character { get; }
         bool IsCop { get; set; }
+        OutfitManager OutfitManager { get; }
+
         void DisplayPlayerNotification();
         void RemoveAgencyStatus();
         void SetAgencyStatus(Agency agency);

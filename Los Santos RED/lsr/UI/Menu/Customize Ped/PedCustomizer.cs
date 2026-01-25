@@ -125,6 +125,7 @@ public class PedCustomizer
 
     public Gang AssignedGang { get; set; }
     public Agency AssignedAgency { get; set; }
+    public bool ShowDefaultNotApplied { get; set; } = true;
 
     public void Dispose(bool fadeOut)
     {
@@ -454,7 +455,7 @@ public class PedCustomizer
     {
         if (ModelPed.Exists())
         {
-            WorkingVariation?.ApplyToPed(ModelPed, false, true, true);
+            WorkingVariation?.ApplyToPed(ModelPed, true, true, ShowDefaultNotApplied);
         }
     }
     public bool IsDrawableBlacklisted(int componentID, int drawableID, bool isMale)

@@ -11,4 +11,5 @@ public enum ePedFocusZone
     RightWrist = 7,
     Legs = 8,
     Feet = 9,
+    Body = 10,
 }

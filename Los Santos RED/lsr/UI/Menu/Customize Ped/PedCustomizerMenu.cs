@@ -73,8 +73,16 @@ public class PedCustomizerMenu
         CustomizeOverlaysMenu.Setup(CustomizeMainMenu);
 
         CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
-        
-        
+
+
+        UIMenuCheckboxItem SetDefaultNotApplied = new UIMenuCheckboxItem("Apply Optional Items", false, "Select to display the optional items on the ped.");
+        SetDefaultNotApplied.CheckboxEvent += (sender, Checked) =>
+        {
+            PedCustomizer.ShowDefaultNotApplied = Checked;
+            PedCustomizer.OnVariationChanged();
+        };
+        CustomizeMainMenu.AddItem(SetDefaultNotApplied);
+
         UIMenuItem PrintVariation = new UIMenuItem("Print Variation", "Print the variation out to the log");
         PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Armour;
         PrintVariation.Activated += (sender, e) =>
@@ -99,6 +107,9 @@ public class PedCustomizerMenu
         };
         CustomizeMainMenu.AddItem(Exit);
     }
+
+
+
     public void Start()
     {
         OnModelChanged();

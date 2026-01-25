@@ -1,11 +1,13 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,30 +16,19 @@ using System.Windows.Forms;
 
 public class PedClothingShopMenuItem
 {
-    //private PedVariation WorkingVariation;
     private ClothingPurchaseMenu ClothingPurchaseMenu;
     private UIMenu SubMenu;
     private UIMenuItem SubMenuItem;
-    //private List<OptionalClothingChoice> OptionalClothingChoices;
     private List<UIMenuListScrollerItem<OptionalClothingChoice>> OptionalVariationScrollers;
     private UIMenuListScrollerItem<AppliedOverlay> AppliedOverlaysScroller;
     private UIMenuCheckboxItem isDefaultNotApplied;
-
-
     public string Name { get; set; }
     public string Description { get; set; } 
     public int PurchasePrice { get; set; }
-
-
     public bool IsAccessory { get; set; }
     public List<string> ModelNames { get; set; } = new List<string>();
     public List<PedClothingComponent> ForceSetComponenets { get; set; }
-
-
-
     public List<AppliedOverlay> ForceSetOverlays { get; set; }
-
-
     public string Category { get; set; }
     public string SubCategory { get; set; }
     public ePedFocusZone PedFocusZone { get; set; } = ePedFocusZone.None;
@@ -46,7 +37,6 @@ public class PedClothingShopMenuItem
     {
 
     }
-
     public PedClothingShopMenuItem(string name, string description, int purchasePrice, List<string> modelNames, List<PedClothingComponent> forceSetComponenets)
     {
         Name = name;
@@ -55,7 +45,6 @@ public class PedClothingShopMenuItem
         ModelNames = modelNames;
         ForceSetComponenets = forceSetComponenets;
     }
-
     public void AddToMenu(ILocationInteractable player, MenuPool menuPool, UIMenu interactionMenu, ClothingShop clothingShop, OrbitCamera orbitCamera, bool IsPurchase, PlayerPoser playerPoser, ClothingPurchaseMenu clothingPurchaseMenu)
     {
         if (IsPurchase && PurchasePrice <= -1)
@@ -92,16 +81,51 @@ public class PedClothingShopMenuItem
         foreach (PedClothingComponent pedClothingComponent in ForceSetComponenets)
         {
             List<OptionalClothingChoice> OptionalClothingChoices = new List<OptionalClothingChoice>();
-            foreach (int possibleTextureIDs in pedClothingComponent.PossibleTextures)
+
+            int totalVariations = 0;
+
+            if(pedClothingComponent.AllowAllTextureVariations)
             {
-                OptionalClothingChoices.Add(new OptionalClothingChoice($"Style {possibleTextureIDs}", possibleTextureIDs) { ComponentID = pedClothingComponent.ComponentID, IsProp = pedClothingComponent.IsProp });
+                int NumberOfTextureVariations = 0;
+                if (pedClothingComponent.IsProp)
+                {
+                    NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(player.Character, pedClothingComponent.ComponentID, pedClothingComponent.DrawableID);
+                }
+                else
+                {
+                    NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(player.Character, pedClothingComponent.ComponentID, pedClothingComponent.DrawableID);
+                }
+ 
+                for (int i = 0; i < NumberOfTextureVariations; i++)
+                {
+                    OptionalClothingChoices.Add(new OptionalClothingChoice($"Style {i}", i)
+                    {
+                        ComponentID = pedClothingComponent.ComponentID,
+                        IsProp = pedClothingComponent.IsProp
+                    });
+                    totalVariations++;
+                }
+                EntryPoint.WriteToConsole($"I AM {Name} {Category} {SubCategory} ComponentID:{pedClothingComponent.ComponentID} DrawableID:{pedClothingComponent.DrawableID} - NumberOfTextureVariations{NumberOfTextureVariations} totalVariations{totalVariations}");
             }
-            UIMenuListScrollerItem<OptionalClothingChoice> variationsScrollerMenu = new UIMenuListScrollerItem<OptionalClothingChoice>($"Part {part}", "Pick optional variations to be set", OptionalClothingChoices);
+            else
+            {
+                foreach (int possibleTextureIDs in pedClothingComponent.PossibleTextures)
+                {
+                    OptionalClothingChoices.Add(new OptionalClothingChoice($"Style {possibleTextureIDs}", possibleTextureIDs)
+                    {
+                        ComponentID = pedClothingComponent.ComponentID,
+                        IsProp = pedClothingComponent.IsProp
+                    });
+                    totalVariations++;
+                }
+            }
+            UIMenuListScrollerItem<OptionalClothingChoice> variationsScrollerMenu = new UIMenuListScrollerItem<OptionalClothingChoice>($"Part {part}", 
+                "Pick optional variations to be set", OptionalClothingChoices);
             variationsScrollerMenu.IndexChanged += (sender, oldIndex, newIndex) =>
             {
                 ApplyItems(player, ClothingPurchaseMenu.WorkingVariation, false);
             };
-            if (pedClothingComponent.PossibleTextures.Count > 1)
+            if (totalVariations >= 2)//pedClothingComponent.PossibleTextures.Count > 1 || AllowAllTextureVariations || 1 == 1)
             {
                 SubMenu.AddItem(variationsScrollerMenu);
             }
@@ -171,19 +195,16 @@ public class PedClothingShopMenuItem
             SubMenu.AddItem(applyMenuItem);
         }
     }
-
     private void CheckAndRemoveExistingDecals()
     {
         
     }
-
     private void ApplyItems(ILocationInteractable player, PedVariation pedVariation, bool setDefaultNotApply)
     {
         ApplyComponentsAndProps(player, pedVariation, setDefaultNotApply);
         ApplyOverlays(player, pedVariation);
         pedVariation.ApplyToPed(player.Character, false);
     }
-
     private void ApplyComponentsAndProps(ILocationInteractable player, PedVariation pedVariation, bool setDefaultNotApply)
     {
         if (ForceSetComponenets != null)
@@ -199,10 +220,19 @@ public class PedClothingShopMenuItem
 
             foreach (PedClothingComponent pedClothingComponent in ForceSetComponenets)
             {
-                int textureSelected = pedClothingComponent.PossibleTextures.FirstOrDefault();
+                int textureSelected = 0;// pedClothingComponent.PossibleTextures.FirstOrDefault();
+                if(pedClothingComponent.PossibleTextures != null && pedClothingComponent.PossibleTextures.Any())
+                {
+                    textureSelected = pedClothingComponent.PossibleTextures.FirstOrDefault();
+                }
                 if (OptionalVariationScrollers != null && OptionalVariationScrollers.Any())
                 {
-                    UIMenuListScrollerItem<OptionalClothingChoice> occ = OptionalVariationScrollers.Where(x => x.SelectedItem.ComponentID == pedClothingComponent.ComponentID && x.SelectedItem.IsProp == pedClothingComponent.IsProp).FirstOrDefault();
+                    UIMenuListScrollerItem<OptionalClothingChoice> occ = OptionalVariationScrollers
+                        .Where(x => !x.IsEmpty && 
+                    x.SelectedItem != null && 
+                    x.SelectedItem.ComponentID == pedClothingComponent.ComponentID && 
+                    x.SelectedItem.IsProp == pedClothingComponent.IsProp)
+                        .FirstOrDefault();
                     if (occ != null)
                     {
                         textureSelected = occ.SelectedItem.VariationID;

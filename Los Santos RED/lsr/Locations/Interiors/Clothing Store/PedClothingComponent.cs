@@ -10,6 +10,7 @@ public class PedClothingComponent
     public int DrawableID { get; set; }
     public List<int> PossibleTextures { get; set; }
     public bool IsProp { get; set; }
+    public bool AllowAllTextureVariations { get; set; } = false;
     public PedClothingComponent()
     {
 

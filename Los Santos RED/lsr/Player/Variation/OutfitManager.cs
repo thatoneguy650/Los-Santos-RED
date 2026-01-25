@@ -1128,7 +1128,7 @@ public class OutfitManager
 
         
     }
-    public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner)
+    public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner, bool AddPurchased)
     {
         subMenu.Clear();
         UIMenu ModelSubMenu = menuPool.AddSubMenu(subMenu, "By Model");
@@ -1164,11 +1164,13 @@ public class OutfitManager
             CharacterSubMenu.AddItem(uIMenuItem);
         }
 
-        UIMenu PurchasedItemsSubMenu = menuPool.AddSubMenu(subMenu, "Purchased Items");
-
-        clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, null, null, Settings);
-        clothingPurchaseMenuProcess.Start(menuPool, PurchasedItemsSubMenu, null, PurchasedPedClothingShopMenuItems, false, false);
-
+        if (AddPurchased)
+        {
+            EntryPoint.WriteToConsole($"DEBUG PURCHASED ITEMS RAN! AddPurchased{AddPurchased}");
+            UIMenu PurchasedItemsSubMenu = menuPool.AddSubMenu(subMenu, "Purchased Items");
+            clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, null, null, Settings);
+            clothingPurchaseMenuProcess.Start(menuPool, PurchasedItemsSubMenu, null, PurchasedPedClothingShopMenuItems, false, true);
+        }
         //clothingPurchaseMenuProcess.Dispose();
     }
     public void TakeOffArmorVisually()

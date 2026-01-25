@@ -155,7 +155,7 @@ public class SaveGameTab
                             TabView.Visible = false;
                             Game.IsPaused = false;
                             GameFiber.Sleep(500);
-                            GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems, Agencies, Contacts, Interactionable);
+                            GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems, Agencies, Contacts, Interactionable, ShopMenus);
                         }
                     };
                 }

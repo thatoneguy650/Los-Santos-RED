@@ -57,6 +57,13 @@ public class ClothingPurchaseMenu
         CategoryLookups = new List<CategoryLookup>();
 
         WorkingVariation = Player.CurrentModelVariation.Copy();
+
+        if (MakeVisible)
+        {
+            Player.PedSwap.ResetOffsetForCurrentModel();
+        }
+
+
         foreach (PedClothingShopMenuItem pedClothingShopMenuItem in itemsToCreate)//ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x=> x.ModelNames.Contains(Player.ModelName.ToLower())))
         {
             pedClothingShopMenuItem.AddToMenu(Player, MenuPool, CreateSubMenu(pedClothingShopMenuItem.Category, pedClothingShopMenuItem.SubCategory), ClothingShop, OrbitCamera, IsPurchase, PlayerPoser, this);
@@ -66,6 +73,7 @@ public class ClothingPurchaseMenu
         {
             PlayerPoser.Start();
             InteractionMenu.Visible = true;
+            EntryPoint.WriteToConsole("ClothingPurchaseMenu START MAKE VISIBLE");
         }
     }
 
@@ -131,6 +139,10 @@ public class ClothingPurchaseMenu
     {
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
         PlayerPoser.Dispose();
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
+        {
+            Player.PedSwap.AddOffset();
+        }
     }
 
     public void CopyCurrentModelVariation()

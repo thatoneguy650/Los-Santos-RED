@@ -117,10 +117,10 @@ public class PlayerPoser
         {
             return;
         }
-        if (!AnimationDictionary.RequestAnimationDictionayResult("move_clown@p_m_one_idles@"))
-        {
-            return;
-        }
+        //if (!AnimationDictionary.RequestAnimationDictionayResult("move_p_m_one_idles@generic"))
+        //{
+        //    return;
+        //}
         if (!AnimationDictionary.RequestAnimationDictionayResult("clothingshoes"))
         {
             return;
@@ -133,8 +133,10 @@ public class PlayerPoser
 
     private void SetDefaultAnimation()
     {
-        string dictionary = "move_clown@p_m_one_idles@";
-        string anim = "fidget_look_at_outfit_01";
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        return;//
+        string dictionary = "move_p_m_one_idles@generic";
+        string anim = "fidget_impatient";
         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, anim, 2.0f, -2.0f, -1, 0, 0, false, false, false);
     }
 

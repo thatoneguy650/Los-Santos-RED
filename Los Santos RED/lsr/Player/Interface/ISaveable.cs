@@ -36,5 +36,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsEMT { get; }
         bool IsSecurityGuard { get; }
         InteriorManager InteriorManager { get; }
+        OutfitManager OutfitManager { get; }
     }
 }

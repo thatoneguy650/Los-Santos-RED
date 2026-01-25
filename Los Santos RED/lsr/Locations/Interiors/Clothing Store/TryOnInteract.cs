@@ -80,7 +80,7 @@ public class TryOnInteract : InteriorInteract
         OrbitCamera.HandleUpdates = false;
         OrbitCamera.Radius = 1.25f;
         OrbitCamera.MinRadius = 0.25f;
-        OrbitCamera.MaxRadius = 1.75f;
+        OrbitCamera.MaxRadius = 2.75f;
         OrbitCamera.InitialVerticalOffset = 90f;
         OrbitCamera.InitialHorizonatlOffset = 90f;
         OrbitCamera.IsSensitive = true;

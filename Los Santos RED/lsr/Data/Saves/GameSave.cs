@@ -86,6 +86,9 @@ namespace LosSantosRED.lsr.Data
         public List<GangLoanSave> GangLoanSaves { get; set; } = new List<GangLoanSave>();
 
 
+        public List<PedClothingShopMenuItem> SavedPurchasedClothingItems { get; set; } = new List<PedClothingShopMenuItem>();
+
+
         //LEGACY TO BE REMOVED
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();//LEGACY TO BE REMOVED
         public List<SavedBusiness> SavedBusinesses { get; set; } = new List<SavedBusiness>();//LEGACY TO BE REMOVED
@@ -117,7 +120,18 @@ namespace LosSantosRED.lsr.Data
             SaveAgencies(player);
             SaveCellPhone(player); 
             SaveOwnedProperties(player);
+            SavePurchasedClothingItem(player);
         }
+
+        private void SavePurchasedClothingItem(ISaveable player)
+        {
+            SavedPurchasedClothingItems.Clear();
+            foreach(PedClothingShopMenuItem pedClothingShopMenuItem in player.OutfitManager.PurchasedPedClothingShopMenuItems)
+            {
+                SavedPurchasedClothingItems.Add(pedClothingShopMenuItem);
+            }
+        }
+
         private void SaveOwnedProperties(ISaveable player)
         {
             SavedGameLocations.Clear();
@@ -315,7 +329,8 @@ namespace LosSantosRED.lsr.Data
             CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone, player.CellPhone.CustomTextTone, player.CellPhone.CustomTheme, player.CellPhone.CustomBackground, player.CellPhone.CustomVolume, player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType, player.CellPhone.CustomPhoneOS);
         }
         //Load
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IContacts contacts, IInteractionable interactionable)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, 
+            IAgencies agencies, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, IContacts contacts, IInteractionable interactionable, IShopMenus shopMenus)
         {
             try
             {
@@ -344,6 +359,7 @@ namespace LosSantosRED.lsr.Data
                 //LoadBusinesses(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
 
                 LoadOwnedProperties(player, placesOfInterest, modItems, settings, world);
+                LoadSavedClothingItems(player, shopMenus);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -356,6 +372,15 @@ namespace LosSantosRED.lsr.Data
             }
         }
 
+        private void LoadSavedClothingItems(IInventoryable player, IShopMenus shopMenus)
+        {
+            //do we really wnat to save the whole xml again each time? would make it easier
+            player.OutfitManager.PurchasedPedClothingShopMenuItems.Clear();
+            foreach (PedClothingShopMenuItem pedClothingShopMenuItem in SavedPurchasedClothingItems)
+            {
+                    player.OutfitManager.PurchasedPedClothingShopMenuItems.Add(pedClothingShopMenuItem);         
+            }
+        }
 
         private void LoadMoney(IInventoryable player)
         {
