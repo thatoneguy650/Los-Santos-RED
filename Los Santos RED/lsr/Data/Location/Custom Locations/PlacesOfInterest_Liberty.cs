@@ -3915,7 +3915,7 @@ public class PlacesOfInterest_Liberty
             new Restaurant(new Vector3(1470.412f, 1244.412f, 36.11839f), 359.4598f, "Cherry Popper Ice Cream", "","IceCreamMenu", FoodType.Dessert){ StateID = StaticStrings.LibertyStateID },
 
             //s.HO
-            new Restaurant(new Vector3(1477.622f, 848.5602f, 21.41052f), 92.50406f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3" },
+            new Restaurant(new Vector3(1477.622f, 848.5602f, 21.41052f), 92.50406f, "S.Ho", "Become a real S. HO","NoodleMenu", FoodType.Korean) {BannerImagePath ="stores\\sho.png", ScannerFilePath ="01_specific_location\\0x1ABB2DE0.mp3", StateID = StaticStrings.LibertyStateID  },
 
             //Wigwam
             new Restaurant(new Vector3(-63.62645f, 508.2122f, 14.70847f), 358.7118f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.American | FoodType.Burger | FoodType.FastFood) { StateID =StaticStrings.AlderneyStateID, OpenTime = 6, CloseTime = 20, BannerImagePath = "stores\\wigwam.png", },

@@ -105,8 +105,11 @@ public class DispatchablePeople : IDispatchablePeople
     private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath;
     private DispatchablePeople_UptownRiders DispatchablePeople_UptownRiders;
 
+    private DispatchablePeople_NorthHolland_LPP DispatchablePeople_NorthHolland_LPP;
     private DispatchablePeople_NorthHolland DispatchablePeople_NorthHolland;
     private DispatchablePeople_Petrovic DispatchablePeople_Petrovic;
+    private DispatchablePeople_Petrovic_LPP DispatchablePeople_Petrovic_LPP;
+    private DispatchablePeople_SpanishLords_LPP DispatchablePeople_SpanishLords_LPP;
     private DispatchablePeople_Cops DispatchablePeople_Cops;
     private int optionalpropschance;
     private DispatchablePeople_AngelsOfDeath DispatchablePeople_AngelsOfDeath_LS;
@@ -128,10 +131,11 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> AngelsOfDeathPeds_LS { get; set; }
 
     public List<DispatchablePerson> UptownRidersPeds { get; set; }
-
-
+    public List<DispatchablePerson> SpanishLordsPeds_LPP { get; set; }
     public List<DispatchablePerson> PetrovicPeds { get; set; }
+    public List<DispatchablePerson> PetrovicPeds_LPP { get; set; }
     public List<DispatchablePerson> NorthHollandPeds { get; set; }
+    public List<DispatchablePerson> NorthHollandPeds_LPP { get; set; }
 
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
     public void Setup(IIssuableWeapons issuableWeapons)
@@ -1722,9 +1726,17 @@ public class DispatchablePeople : IDispatchablePeople
         DispatchablePeople_NorthHolland = new DispatchablePeople_NorthHolland(this);
         DispatchablePeople_NorthHolland.Setup();
 
+        DispatchablePeople_NorthHolland_LPP = new DispatchablePeople_NorthHolland_LPP(this);
+        DispatchablePeople_NorthHolland_LPP.Setup();
+
         DispatchablePeople_Petrovic = new DispatchablePeople_Petrovic(this);
         DispatchablePeople_Petrovic.Setup();
 
+        DispatchablePeople_Petrovic_LPP = new DispatchablePeople_Petrovic_LPP(this);
+        DispatchablePeople_Petrovic_LPP.Setup();
+
+        DispatchablePeople_SpanishLords_LPP = new DispatchablePeople_SpanishLords_LPP(this);
+        DispatchablePeople_SpanishLords_LPP.Setup();
 
 
         VagosPeds = new List<DispatchablePerson>() {
@@ -2020,8 +2032,11 @@ public class DispatchablePeople : IDispatchablePeople
 
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NorthHollandPeds", NorthHollandPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("NorthHollandPeds_LPP", NorthHollandPeds_LPP));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("PetrovicPeds", PetrovicPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("PetrovicPeds_LPP", PetrovicPeds_LPP));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("SpanishLordsPeds", SpanishLordsPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("SpanishLordsPeds_LPP", SpanishLordsPeds_LPP));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("UptownRidersPeds", UptownRidersPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("AngelsOfDeathPeds", AngelsOfDeathPeds_LS));
 

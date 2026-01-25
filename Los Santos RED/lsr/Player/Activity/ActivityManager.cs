@@ -323,6 +323,8 @@ public class ActivityManager
             new HideableObject(0xcd7e180d,"Dumpster", "Hide inside Dumpster"),
             new HideableObject(0xe7536414,"Dumpster", "Hide inside Dumpster"),
             new HideableObject(0xeb12d336,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xa2ab4268,"Dumpster", "Hide inside Dumpster"),
+            new HideableObject(0xca377456,"Garbage Can", "Hide inside Garbage Can"),
         };
 
 
