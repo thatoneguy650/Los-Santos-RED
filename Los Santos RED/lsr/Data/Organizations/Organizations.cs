@@ -282,12 +282,6 @@ public class Organizations : IOrganizations
             BannerImagePath = "stores\\sunderedtaxi.png",
         };
 
-        PossibleOrganizations_FullExpanded.GeneralOrganizations = new List<Organization>
-        {
-            VehicleExports,
-            UndergroundGuns,
-            WezelNews,
-        };
         PossibleOrganizations_FullExpanded.TaxiFirms = new List<TaxiFirm>
         {
             DowntownCabCo,
@@ -295,13 +289,10 @@ public class Organizations : IOrganizations
             PurpleCabCo,
             ShitiCabCo,
             SunderedCab,
-            RydeMe,
-            Schlecht,
-            KnoWay,
         };
-        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Organizations_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations_LosSantos2008.xml");
-        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Organizations_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Organizations+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations+_LosSantos2008.xml");
+        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Organizations+_FullExpandedJurisdiction.xml");
         //
     }
     private void DefaultConfig_LibertyCity()

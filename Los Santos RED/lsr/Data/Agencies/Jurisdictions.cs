@@ -716,7 +716,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
             //new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),      
         };
-        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\ZoneJurisdictions_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\ZoneJurisdictions+_FullExpandedJurisdiction.xml");
         //Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\ZoneJurisdictions_EUP.xml");
     }
     private void DefaultCountyConfig_FullExpandedJurisdiction()
@@ -746,7 +746,7 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("BCFD",StaticStrings.BlaineCountyID,0,100,100),
             new CountyJurisdiction("LSFD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
         };
-        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\CountyJurisdictions_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\CountyJurisdictions+_FullExpandedJurisdiction.xml");
         //Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\CountyJurisdictions_EUP.xml");
 
     }

@@ -74,6 +74,7 @@ public class DebugMenu : ModUIMenu
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);
 
+
         DebugSubMenus.Add(new DebugPlayerStateSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
         DebugSubMenus.Add(new DebugTeleportSubMenu(Debug, MenuPool, Player, PlacesOfInterest, World, interactionable));
         DebugSubMenus.Add(new DebugInventorySubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons, ModItems, Time, RadioStations, Names));
@@ -87,12 +88,12 @@ public class DebugMenu : ModUIMenu
         DebugSubMenus.Add(new DebugRelationshipSubMenu(Debug, MenuPool, Player, ModDataFileManager));
         DebugSubMenus.Add(new DebugOutfitSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugCrimeSubMenu(Debug, MenuPool, Player, Settings, Crimes, Tasker, World, Weapons));
-        
+
         DebugSubMenus.Add(new DebugMovementSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugTimeSubMenu(Debug, MenuPool, Player, Time));
-        
+
         DebugSubMenus.Add(new DebugAnimationSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));
-        DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings,Time,PoliceRespondable, ModDataFileManager, Gangs));
+        DebugSubMenus.Add(new DebugHelperSubMenu(Debug, MenuPool, Player, World, PlacesOfInterest, Settings, Time, PoliceRespondable, ModDataFileManager, Gangs));
         DebugSubMenus.Add(new DebugTrunkSubMenu(Debug, MenuPool, Player, ModDataFileManager, World));
         DebugSubMenus.Add(new DebugPerformanceSubMenu(Debug, MenuPool, Player));
         DebugSubMenus.Add(new DebugPropAttachSubMenu(Debug, MenuPool, Player, ModDataFileManager, this));

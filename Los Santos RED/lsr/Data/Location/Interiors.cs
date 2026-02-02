@@ -260,20 +260,7 @@ public class Interiors : IInteriors
             //Barber
 
             //Clothes
-            new Interior(19458,"Sub Urban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },
-            new Interior(22786, "BINCO Textile City",
-                new List<string>() {  },
-                new List<string>() {  },
-                new List<InteriorDoor>() {
-                    new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)) { CanBeForcedOpenByPlayer = true },
-                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) { CanBeForcedOpenByPlayer = true } }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },//doesntwork?
-            new Interior(10754,"Sub Urban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },
-            new Interior(1282,"Ponsonby") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
-            new Interior(14338,"Ponsonby") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
-            new Interior(22786,"Binco") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
-            new Interior(96266,"Suburban") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, },//suburban harmony
-            new Interior(17154,"Binco") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
-            new Interior(88066,"Discount Store") { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+
 
             //Ammunations
             new Interior(-555,"Ammunation Vespucci Boulevard",
@@ -8978,274 +8965,51 @@ public class Interiors : IInteriors
 
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
-                new Interior(82690, "Vangelico")
-                {
-                    LocalID = 82690,
-                    Name = "Vangelico",
-                    RequestIPLs = new List<string>() {"post_hiest_unload" },
-                    RemoveIPLs = new List<string>()
-                    {
-                            "jewel2fake","bh1_16_refurb","bh1_16_doors_shut",
-
-                    },
-                    Doors = new List<InteriorDoor>()
-                    {
-                        new InteriorDoor(1425919976,new Vector3(-631.9554f, -236.3333f, 38.20653f))
-                        {
-                            //Position = //Position = new Vector3(-631.1723f, -236.7114f, 38.06244f),
-                            DoorGroupName = "frontDoor",LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
-                        },
-                        new InteriorDoor(9467943,new Vector3(-630.4265f, -238.4375f, 38.20653f))
-                        {
-                            //Position = new Vector3(-630.4095f, -237.7712f, 38.0971f),
-                            DoorGroupName = "frontDoor",LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
-                        },
-                    },
-
-                    IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-                    InteractPoints = new List<InteriorInteract>()
-                    {
-                        new ItemTheftInteract() {
-
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngFrontR1",
-                            Position = new Vector3( - 626.624f, -238.5478f, 38.05702f),
-                            Heading = 211.9446f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngFrontR2",
-                            Position = new Vector3( - 625.6374f, -237.7162f, 38.05702f),
-                            Heading = 207.4052f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngMidL1",
-                            Position = new Vector3( - 627.9446f, -233.8257f, 38.05702f),
-                            Heading = 212.1647f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngMidL2",
-                            Position = new Vector3( - 626.9693f, -233.037f, 38.05702f),
-                            Heading = 212.0368f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngMidR1",
-                            Position = new Vector3( - 626.7f, -235.4685f, 38.05702f),
-                            Heading = 33.27945f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngMidR2",
-                            Position = new Vector3( - 625.7751f, -234.5709f, 38.05702f),
-                            Heading = 32.57174f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter1",
-                            Position = new Vector3( - 623.116f, -233.0139f, 38.05702f),
-                            Heading = 306.5918f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter2",
-                            Position = new Vector3( - 620.101f, -233.5278f, 38.05702f),
-                            Heading = 37.02949f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter3",
-                            Position = new Vector3( - 619.5614f, -230.3965f, 38.05702f),
-                            Heading = 126.2357f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter4",
-                            Position = new Vector3( - 621.0455f, -228.5942f, 38.05702f),
-                            Heading = 122.6166f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter5",
-                            Position = new Vector3( - 624.0377f, -228.1052f, 38.05702f),
-                            Heading = 217.7205f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngCenter6",
-                            Position = new Vector3( - 624.5729f, -231.036f, 38.05702f),
-                            Heading = 307.6254f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter1",
-                            Position = new Vector3( - 624.9713f, -227.9358f, 38.05702f),
-                            Heading = 35.42755f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter2",
-                            Position = new Vector3( - 623.9496f, -227.0906f, 38.05702f),
-                            Heading = 34.9143f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter3",
-                            Position = new Vector3( - 620.6199f, -226.6056f, 38.05702f),
-                            Heading = 306.7109f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter4",
-                            Position = new Vector3( - 619.5996f, -227.6832f, 38.05702f),
-                            Heading = 297.4792f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter5",
-                            Position = new Vector3( - 618.4504f, -229.4612f, 38.05702f),
-                            Heading = 296.6827f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter6",
-                            Position = new Vector3( - 617.5781f, -230.695f, 38.05702f),
-                            Heading = 296.4518f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter7",
-                            Position = new Vector3( - 619.2208f, -233.6226f, 38.05702f),
-                            Heading = 216.0172f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-                        new ItemTheftInteract() {
-                            PossibleItems = VangelicoPossibleItems,
-                            MinItems = 4,
-                            MaxItems = 5,
-                            ViolatingCrimeID = StaticStrings.TheftCrimeID,
-                            Name = "vngOuter8",
-                            Position = new Vector3( - 620.0914f, -234.3648f, 38.05702f),
-                            Heading = 213.1084f,
-                            ButtonPromptText = "Rob",
-                            UseNavmesh = false,
-                        },
-            },
-            }
+                
         });
 
 
         PossibleInteriors.ClothingShopInteriors.AddRange(new List<ClothingShopInterior>()
-        { 
-            new ClothingShopInterior(96258,"Sub Urban Harmony") {
+        {
+            new ClothingShopInterior(14338,"Ponsonby Rockford Hills")
+            {
                 IsTrespassingWhenClosed = true,
                 IsWeaponRestricted = true,
-                Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(1780022985,new Vector3(617.2458f, 2751.022f, 42.75777f)) { InteractPostion = new Vector3(618.3388f, 2750.28f, 42.08902f), InteractHeader = 3.158015f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
-                },
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(2372686273,new Vector3(-715.6154f, -157.2561f, 37.67493f)) { InteractPostion = new Vector3(-717.0651f, -157.011f, 36.98803f), InteractHeader = 300.4046f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2372686273,new Vector3(-716.6755f, -155.42f, 37.67493f)) { InteractPostion = new Vector3(-717.0651f, -157.011f, 36.98803f), InteractHeader = 300.4046f, CanBeForcedOpenByPlayer = true }, },
                 TryOnInteracts = new List<TryOnInteract>()
                 {
-                    new TryOnInteract("suburbanHarmonyTryOn1",new Vector3(617.6456f, 2766.707f, 42.08809f), 178.6625f,"Try On Clothes")
-                }},
-            new ClothingShopInterior(74754,"Discount Store") {
+                    new TryOnInteract("ponsonbys1TryOn1",new Vector3(-708.5226f, -160.4232f, 37.41514f), 28.45096f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(6914,"Ponsonby Burton")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(2372686273,new Vector3(-157.1293f, -306.4341f, 39.99308f)) { InteractPostion = new Vector3(-156.4969f, -305.4415f, 39.7325f), InteractHeader = 68.95364f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2372686273,new Vector3(-156.439f, -304.4294f, 39.99308f)) { InteractPostion = new Vector3(-156.4969f, -305.4415f, 39.7325f), InteractHeader = 68.95364f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("ponsonbys2TryOn1",new Vector3(-158.8961f, -297.3741f, 39.73328f), 159.3769f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(1282,"Ponsonby Morningwood")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(2372686273,new Vector3(-1456.201f, -233.3682f, 50.05648f)) { InteractPostion = new Vector3(-1455.84f, -232.4067f, 49.7874f), InteractHeader = 225.6414f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(2372686273,new Vector3(-1454.782f, -231.7927f, 50.05649f)) { InteractPostion = new Vector3(-1455.84f, -232.4067f, 49.7874f), InteractHeader = 225.6414f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("ponsonbys3TryOn1",new Vector3(-1456.604f, -241.297f, 49.80648f), 309.7452f,"Try On Clothes")
+                },
+            },
+
+            new ClothingShopInterior(74754,"Discount Store Paleto Bay") 
+            {
                 IsTrespassingWhenClosed = true, 
                 IsWeaponRestricted = true,
                 Doors = new List<InteriorDoor>()
@@ -9256,7 +9020,409 @@ public class Interiors : IInteriors
                 TryOnInteracts = new List<TryOnInteract>()
                 {
                     new TryOnInteract("discountStorePaletoTryOn1",new Vector3(12.02322f, 6513.735f, 31.87785f), 79.29751f,"Try On Clothes")
-                }},
+                }
+            },
+            new ClothingShopInterior(88066,"Discount Store Strawberry")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(868499217,new Vector3(82.38156f, -1392.752f, 29.52609f)) { InteractPostion = new Vector3(82.79227f, -1391.628f, 29.40493f), InteractHeader = 88.64867f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(3146141106,new Vector3(82.38156f, -1390.476f, 29.52609f)) { InteractPostion = new Vector3(82.79227f, -1391.628f, 29.40493f), InteractHeader = 88.64867f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("discountStoreStrawTryOn1",new Vector3(72.11845f, -1398.747f, 29.37615f), 303.7002f,"Try On Clothes")
+                }
+            },
+            new ClothingShopInterior(66562,"Discount Store Great Chaparral")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(3146141106,new Vector3(-1094.965f, 2706.964f, 19.25781f)) { InteractPostion = new Vector3(-1095.473f, 2705.865f, 19.08511f), InteractHeader = 43.60182f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(868499217,new Vector3(-1096.661f, 2705.446f, 19.25781f)) { InteractPostion = new Vector3(-1095.473f, 2705.865f, 19.08511f), InteractHeader = 43.60182f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("discountStoreGCTryOn1",new Vector3(-1108.125f, 2709.05f, 19.10787f), 252.9805f,"Try On Clothes")
+                }
+            },
+            new ClothingShopInterior(118274,"Discount Store Harmony")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(868499217,new Vector3(1196.825f, 2703.221f, 38.37257f)) { InteractPostion = new Vector3(1198.058f, 2702.745f, 38.15594f), InteractHeader = 357.7278f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(3146141106,new Vector3(1199.101f, 2703.221f, 38.37257f)) { InteractPostion = new Vector3(1198.058f, 2702.745f, 38.15594f), InteractHeader = 357.7278f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("discountStoreHarmonyTryOn1",new Vector3(1190.782f, 2713.385f, 38.22264f), 211.2059f,"Try On Clothes")
+                }
+            },
+            new ClothingShopInterior(60930,"Discount Store Grapeseed")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(868499217,new Vector3(1686.983f, 4821.741f, 42.21305f)) { InteractPostion = new Vector3(1686.615f, 4820.476f, 41.97727f), InteractHeader = 278.0056f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                    new InteriorDoor(3146141106,new Vector3(1687.282f, 4819.485f, 42.21305f)) { InteractPostion = new Vector3(1686.615f, 4820.476f, 41.97727f), InteractHeader = 278.0056f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("discountStoreGrapeseedTryOn1",new Vector3(1696.029f, 4828.994f, 42.06308f), 122.3131f,"Try On Clothes")
+                }
+            },
+
+            new ClothingShopInterior(22786, "BINCO Textile City")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)) { InteractPostion = new Vector3(417.3003f, -807.5683f, 29.39348f), InteractHeader = 265.3372f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) { InteractPostion = new Vector3(417.3003f, -807.5683f, 29.39348f), InteractHeader = 265.3372f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("bincoTextileTryOn1",new Vector3(428.8834f, -800.1843f, 29.49114f), 117.8901f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(17154, "BINCO Vespucci Canals")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(3146141106,new Vector3(-816.7932f, -1078.406f, 11.47806f)) { InteractPostion = new Vector3(-817.2803f, -1079.706f, 11.13252f), InteractHeader = 31.24407f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(868499217,new Vector3(-818.7643f, -1079.544f, 11.47806f)) { InteractPostion = new Vector3(-817.2803f, -1079.706f, 11.13252f), InteractHeader = 31.24407f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("bincoTextileTryOn1",new Vector3(-829.1951f, -1073.354f, 11.32811f), 242.6806f,"Try On Clothes")
+                },
+            },
+
+            new ClothingShopInterior(96258,"Sub Urban Harmony") 
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(1780022985,new Vector3(617.2458f, 2751.022f, 42.75777f)) { InteractPostion = new Vector3(618.3388f, 2750.28f, 42.08902f), InteractHeader = 3.158015f, CanBeForcedOpenByPlayer = true, NeedsDefaultUnlock = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("suburbanHarmonyTryOn1",new Vector3(617.6456f, 2766.707f, 42.08809f), 178.6625f,"Try On Clothes")
+                }
+            },
+            new ClothingShopInterior(19458,"Sub Urban Hawick") 
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(1780022985,new Vector3(127.8201f, -211.8274f, 55.22751f)) { InteractPostion = new Vector3(127.2825f, -210.7146f, 54.53591f), InteractHeader = 163.3276f, CanBeForcedOpenByPlayer = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("suburabnHawickTryon1",new Vector3(120.9149f, -226.3024f, 54.55783f), 331.6808f,"Try On Clothes")
+                }, 
+            },
+            new ClothingShopInterior(10754,"Sub Urban Del Perro") 
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(1780022985,new Vector3(-1201.435f, -776.8566f, 17.99184f)) { InteractPostion = new Vector3(-1201.684f, -777.8245f, 17.33805f), InteractHeader = 304.0914f, CanBeForcedOpenByPlayer = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("suburabnDelPerroTryon1",new Vector3(-1188.012f, -768.5594f, 17.32509f), 123.6756f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(87554,"Sub Urban Chumash") 
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(1780022985,new Vector3(-3167.75f, 1055.536f, 21.53288f)) { InteractPostion = new Vector3(-3168.201f, 1056.333f, 20.859f), InteractHeader = 156.0671f, CanBeForcedOpenByPlayer = true },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("suburabnChumashTryon1",new Vector3(-3175.308f, 1041.788f, 20.86321f), 333.3165f,"Try On Clothes")
+                },
+            },
+
+            new ClothingShopInterior(-9932,"Vespucci Movie Masks")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("vespucciMasksTryOn1",new Vector3(-1336.679f, -1277.453f, 4.877134f), 100.7063f,"Try On Masks")
+                },
+            },
+            new ClothingShopInterior(-9931,"Sanders Motorcycles Clothing")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("sandersHelmetTryOn1",new Vector3(268.8374f, -1155.124f, 29.29159f), 86.83341f,"Try On Helmets")
+                },
+            },
+
+            new ClothingShopInterior(82690, "Vangelico")
+            {
+                LocalID = 82690,
+                Name = "Vangelico",
+                RequestIPLs = new List<string>() {"post_hiest_unload" },
+                RemoveIPLs = new List<string>()
+                {
+                        "jewel2fake","bh1_16_refurb","bh1_16_doors_shut",
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(1425919976,new Vector3(-631.9554f, -236.3333f, 38.20653f))
+                    {
+                        //Position = //Position = new Vector3(-631.1723f, -236.7114f, 38.06244f),
+                        DoorGroupName = "frontDoor",LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
+                    },
+                    new InteriorDoor(9467943,new Vector3(-630.4265f, -238.4375f, 38.20653f))
+                    {
+                        //Position = new Vector3(-630.4095f, -237.7712f, 38.0971f),
+                        DoorGroupName = "frontDoor",LockWhenClosed = true,InteractPostion = new Vector3(-632.0832f, -237.9074f, 38.07156f), InteractHeader = 305.3878f,
+                    },
+                },
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("vengelicoTryOn1",new Vector3(-624.6606f, -232.5115f, 38.05705f), 117.1027f,"Try On Clothes")
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ItemTheftInteract() {
+
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngFrontR1",
+                        Position = new Vector3( - 626.624f, -238.5478f, 38.05702f),
+                        Heading = 211.9446f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngFrontR2",
+                        Position = new Vector3( - 625.6374f, -237.7162f, 38.05702f),
+                        Heading = 207.4052f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngMidL1",
+                        Position = new Vector3( - 627.9446f, -233.8257f, 38.05702f),
+                        Heading = 212.1647f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngMidL2",
+                        Position = new Vector3( - 626.9693f, -233.037f, 38.05702f),
+                        Heading = 212.0368f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngMidR1",
+                        Position = new Vector3( - 626.7f, -235.4685f, 38.05702f),
+                        Heading = 33.27945f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngMidR2",
+                        Position = new Vector3( - 625.7751f, -234.5709f, 38.05702f),
+                        Heading = 32.57174f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter1",
+                        Position = new Vector3( - 623.116f, -233.0139f, 38.05702f),
+                        Heading = 306.5918f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter2",
+                        Position = new Vector3( - 620.101f, -233.5278f, 38.05702f),
+                        Heading = 37.02949f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter3",
+                        Position = new Vector3( - 619.5614f, -230.3965f, 38.05702f),
+                        Heading = 126.2357f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter4",
+                        Position = new Vector3( - 621.0455f, -228.5942f, 38.05702f),
+                        Heading = 122.6166f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter5",
+                        Position = new Vector3( - 624.0377f, -228.1052f, 38.05702f),
+                        Heading = 217.7205f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngCenter6",
+                        Position = new Vector3( - 624.5729f, -231.036f, 38.05702f),
+                        Heading = 307.6254f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter1",
+                        Position = new Vector3( - 624.9713f, -227.9358f, 38.05702f),
+                        Heading = 35.42755f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter2",
+                        Position = new Vector3( - 623.9496f, -227.0906f, 38.05702f),
+                        Heading = 34.9143f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter3",
+                        Position = new Vector3( - 620.6199f, -226.6056f, 38.05702f),
+                        Heading = 306.7109f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter4",
+                        Position = new Vector3( - 619.5996f, -227.6832f, 38.05702f),
+                        Heading = 297.4792f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter5",
+                        Position = new Vector3( - 618.4504f, -229.4612f, 38.05702f),
+                        Heading = 296.6827f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter6",
+                        Position = new Vector3( - 617.5781f, -230.695f, 38.05702f),
+                        Heading = 296.4518f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter7",
+                        Position = new Vector3( - 619.2208f, -233.6226f, 38.05702f),
+                        Heading = 216.0172f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = VangelicoPossibleItems,
+                        MinItems = 4,
+                        MaxItems = 5,
+                        ViolatingCrimeID = StaticStrings.TheftCrimeID,
+                        Name = "vngOuter8",
+                        Position = new Vector3( - 620.0914f, -234.3648f, 38.05702f),
+                        Heading = 213.1084f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                    },
+        },
+            }
         });
 
     }

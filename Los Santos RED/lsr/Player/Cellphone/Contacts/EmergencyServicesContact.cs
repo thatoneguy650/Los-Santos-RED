@@ -24,6 +24,10 @@ public class EmergencyServicesContact : PhoneContact, IPhoneContact
         MenuInteraction = new EmergencyServicesInteraction(player, gangs, placesOfInterest, settings, jurisdictions, crimes, world);
         MenuInteraction.Start(this);
     }
-
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        EntryPoint.WriteToConsole($"EmergencyServicesContact-AddContacts RAN FOR {Name}");
+        possibleContacts.EmergencyServicesContact = this;
+    }
 }
 

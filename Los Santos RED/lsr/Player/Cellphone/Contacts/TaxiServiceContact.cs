@@ -24,6 +24,10 @@ public class TaxiServiceContact : PhoneContact, IPhoneContact
         MenuInteraction = new TaxiServiceInteraction(player, gangs, placesOfInterest, settings, modItems, this,crimes,weapons,names,shopMenus,world, TaxiFirm);
         MenuInteraction.Start(this);
     }
-
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.TaxiServiceContacts.RemoveAll(x => x.Name == Name);
+        possibleContacts.TaxiServiceContacts.Add(this);
+    }
 }
 

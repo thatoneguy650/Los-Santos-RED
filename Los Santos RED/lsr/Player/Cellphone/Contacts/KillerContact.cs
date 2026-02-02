@@ -22,6 +22,10 @@ public class KillerContact : PhoneContact, IPhoneContact
         MenuInteraction = new KillerInteraction(player, gangs, placesOfInterest, settings);
         MenuInteraction.Start(this);
     }
-
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.KillerContacts.RemoveAll(x => x.Name == Name);
+        possibleContacts.KillerContacts.Add(this);
+    }
 }
 

@@ -22,5 +22,10 @@ public class VehicleExporterContact : PhoneContact, IPhoneContact
         MenuInteraction = new VehicleExporterInteraction(player, gangs, placesOfInterest, settings, modItems, this);
         MenuInteraction.Start(this);
     }
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.VehicleExporterContacts.RemoveAll(x => x.Name == Name);
+        possibleContacts.VehicleExporterContacts.Add(this);
+    }
 }
 

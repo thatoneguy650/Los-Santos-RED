@@ -516,7 +516,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
             outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
-        Player.OutfitManager.CreateOutfitMenu(MenuPool, outfitsSubMenu, isInside, removeBanner, true);
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, outfitsSubMenu, isInside, removeBanner, true, false);
     }
     private void OnRentedOrPurchased()
     {

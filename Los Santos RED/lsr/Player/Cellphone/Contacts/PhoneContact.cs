@@ -59,4 +59,9 @@ public class PhoneContact
     {
         return new ContactRelationship(Name, this);
     }
+
+    public virtual void AddContacts(PossibleContacts possibleContacts)
+    {
+        
+    }
 }

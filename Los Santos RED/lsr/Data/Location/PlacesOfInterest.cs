@@ -1108,17 +1108,65 @@ public class PlacesOfInterest : IPlacesOfInterest
                 {
                     OpenTime = 4, CloseTime = 22,
                     InteriorID = 96258,
-                    CameraPosition = new Vector3(623.5804f, 2728.085f, 50.10598f), 
-                    CameraDirection = new Vector3(-0.2745018f, 0.931403f, -0.2390337f), 
-                    CameraRotation = new Rotator(-13.82952f, -2.637787E-06f, 16.42123f),
                     DisableRegularInteract = true,
                     VendorLocations = new List<SpawnPlace>()
                     {
-                        new SpawnPlace(new Vector3(427.1392f, -806.624f, 29.49114f),78.23051f)
+                        new SpawnPlace(new Vector3(612.7495f, 2762.705f, 42.08814f), 267.8017f)
                     },
                     VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
                 },
-                new ClothingShop(new Vector3(-1.203748f, 6516.808f, 31.86886f), 43.96292f,"Discount Store","A fresh fashion look every day.","GenericClothesShop")
+                new ClothingShop(new Vector3(127.2656f, -210.8601f, 54.53394f), 343.5752f, "Suburban Hawick","Low-quality clothing at low prices.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 19458,
+                    DisableRegularInteract = true,
+                    VendorLocations = new List<SpawnPlace>()
+                    {
+                        new SpawnPlace(new Vector3(127.1751f, -224.4369f, 54.55785f),67.74451f)
+                    },
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(-1201.583f, -777.7266f, 17.33841f), 124.1612f, "Suburban Del Perro","Low-quality clothing at low prices.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 10754,
+                    DisableRegularInteract = true,
+                    VendorLocations = new List<SpawnPlace>()
+                    {
+                        new SpawnPlace(new Vector3(-1194.017f, -766.9352f, 17.31606f),218.3366f)
+                    },
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(-3168.233f, 1056.191f, 20.85903f), 336.1733f, "Suburban Chumash","Low-quality clothing at low prices.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 87554,
+                    DisableRegularInteract = true,
+                    VendorLocations = new List<SpawnPlace>()
+                    {
+                        new SpawnPlace(new Vector3(-3168.979f, 1043.077f, 20.86323f),65.11476f)
+                    },
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+
+
+
+
+
+
+
+
+
+
+
+                new ClothingShop(new Vector3(-1.203748f, 6516.808f, 31.86886f), 43.96292f,"Discount Store Paleto Bay","A fresh fashion look every day.","GenericClothesShop")
                 {
                     OpenTime = 8,
                     CloseTime = 20,
@@ -1126,36 +1174,116 @@ public class PlacesOfInterest : IPlacesOfInterest
                     VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5.844515f, 6511.208f, 31.87785f), 38.01704f) },
                     DisableRegularInteract = true,
                     VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(82.68394f, -1391.648f, 29.40018f), 268.6164f,"Discount Store Strawberry","A fresh fashion look every day.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 88066,
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(73.78729f, -1392.828f, 29.37615f), 270.9362f) },
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(-1095.588f, 2705.948f, 19.08581f), 225.1095f,"Discount Store Great Chaparral","A fresh fashion look every day.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 66562,
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1102.408f, 2711.86f, 19.10787f), 219.3048f) },
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(1198.071f, 2702.92f, 38.15594f), 177.9302f,"Discount Store Harmony","A fresh fashion look every day.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 118274,
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1196.921f, 2711.813f, 38.22264f), 173.7284f) },
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+                new ClothingShop(new Vector3(1686.742f, 4820.526f, 41.97639f), 98.08424f,"Discount Store Grapeseed","A fresh fashion look every day.","GenericClothesShop")
+                {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 60930,
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1695.507f, 4822.706f, 42.06309f), 97.81013f) },
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
                 },
 
 
-
-                //NOT DONE
-                new ClothingShop(new Vector3(430.0404f, -804.3267f, 29.49115f), 359.4608f, "Binco Textile City","Low-quality clothing at low prices.","GenericClothesShop")
+                new ClothingShop(new Vector3(417.8476f, -807.7466f, 29.39305f), 92.20033f, "Binco Textile City","Low-quality clothing at low prices.","GenericClothesShop")
                 {
                     VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(427.1392f, -806.624f, 29.49114f), 78.23051f) },
-                    OpenTime = 4, CloseTime = 22,
+                    OpenTime = 8, 
+                    CloseTime = 20,
                     InteriorID = 22786,
                     DisableRegularInteract = true,
                     VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
                 },
-                new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","GenericClothesShop") { 
-                    OpenTime = 8, 
-                    CloseTime = 20, 
+                new ClothingShop(new Vector3(-817.3553f, -1079.649f, 11.13252f), 211.1177f, "Binco Vespucci Canals","Low-quality clothing at low prices.","GenericClothesShop")
+                {
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-822.8264f, -1071.879f, 11.32811f), 204.7833f) },
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 17154,
                     DisableRegularInteract = true,
-                    ScannerFilePath = "01_specific_location\\0x0092CBCB.mp3",
                     VendorPersonnelID = "TellerPeds",
-                },//rockford hills
-                new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","GenericClothesShop") { 
+                    PedClothingShopMenuID = "GenericClothesShop",
+                },
+
+
+                new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys Rockford Hills","Catering to the Elite","GenericClothesShop") { 
                     OpenTime = 8, 
                     CloseTime = 20, 
+                    InteriorID = 14338,
                     DisableRegularInteract = true,
                     ScannerFilePath = "01_specific_location\\0x0289F802.mp3",
                     VendorPersonnelID = "TellerPeds",
-                },//rockford hills
-                //END NOT DONE
+                    PedClothingShopMenuID = "GenericClothesShop",
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-708.7365f, -151.7497f, 37.41513f), 113.7162f) },
+                },
+                new ClothingShop(new Vector3(-156.4988f, -305.4473f, 39.73074f), 242.0752f, "Ponsonbys Burton","Catering to the Elite","GenericClothesShop") {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 6914,
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-165.118f, -302.685f, 39.73328f), 241.0345f) },
+                },
+                new ClothingShop(new Vector3(-1455.754f, -232.4616f, 49.7874f), 45.15975f, "Ponsonbys Morningwood","Catering to the Elite","GenericClothesShop") {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = 1282,
+                    DisableRegularInteract = true,
+                    VendorPersonnelID = "TellerPeds",
+                    PedClothingShopMenuID = "GenericClothesShop",
+                    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1449.349f, -238.932f, 49.81394f), 43.07481f) },
+                },
 
-        
+                new ClothingShop(new Vector3(-1336.679f, -1277.453f, 4.877134f), 100.7063f, "Vespucci Movie Masks","Space Monkey 3D Masks IN STOCK NOW","MaskShopMenu") {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = -9932,
+                    DisableRegularInteract = true,
+                    PedClothingShopMenuID = "MaskShopMenu",
+                },
+                new ClothingShop(new Vector3(268.8374f, -1155.124f, 29.29159f), 86.83341f, "Sanders Motorcycles Clothing","Dress for the slide, not ride","HelmetShopMenu") {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    InteriorID = -9931,
+                    DisableRegularInteract = true,
+                    PedClothingShopMenuID = "HelmetShopMenu",
+                },
+                //Doesnt Have actual CLothes yet!
                 new ClothingShop(new Vector3(-631.9899f, -237.9124f, 38.07326f),122.9966f, 
                 "Vangelico", "Retailer of high-end jewelry and blood diamonds", "") {
                     Name = "Vangelico",
@@ -1168,7 +1296,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                     InteriorID = 82690,
                     //IsOnSPMap = false,
 	                MenuID = "VangelicoMenu",
-	                PossiblePedSpawns = new List < ConditionalLocation > () {
+                    PedClothingShopMenuID = "GenericClothesShop",
+                    PossiblePedSpawns = new List < ConditionalLocation > () {
                         new SecurityConditionalLocation() {
                             Location = new Vector3(-624.932f, -237.095f, 38.05706f),//new Vector3( - 623.1132f, -225.5436f, 38.05704f),
                             Heading = 36.79928f,//166.1438f,
@@ -1202,6 +1331,17 @@ public class PlacesOfInterest : IPlacesOfInterest
                     },
                     VendorPersonnelID = "TellerPeds",
                 },
+
+
+                //NO DEFUALT INTERIOR
+                new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","GenericClothesShop") {
+                    OpenTime = 8,
+                    CloseTime = 20,
+                    DisableRegularInteract = true,
+                    IsTemporarilyClosed = true,
+                    ScannerFilePath = "01_specific_location\\0x0092CBCB.mp3",
+                    VendorPersonnelID = "TellerPeds",
+                },//rockford hills THIS DOES NOT HAVE AN INTERIOR!
 
         };
     }

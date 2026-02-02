@@ -33,6 +33,8 @@ public class PedClothingShopMenuItem
     public string SubCategory { get; set; }
     public ePedFocusZone PedFocusZone { get; set; } = ePedFocusZone.None;
     public bool RemoveTorsoDecals { get; set; } = false;
+    public bool IsHelmet { get; set; }
+
     public PedClothingShopMenuItem()
     {
 
@@ -55,6 +57,7 @@ public class PedClothingShopMenuItem
         SubMenu = menuPool.AddSubMenu(interactionMenu, Name);
         SubMenuItem = interactionMenu.MenuItems[interactionMenu.MenuItems.Count() - 1];
         SubMenuItem.Description = Description;
+        SubMenu.SetBannerType(EntryPoint.LSRedColor);
         SubMenu.OnMenuOpen += (sender) =>
         {
             //WorkingVariation = player.CurrentModelVariation.Copy();
@@ -213,11 +216,13 @@ public class PedClothingShopMenuItem
             {
                 pedVariation.Components.RemoveAll(x => x.ComponentID == pedClothingComponent.ComponentID);
             }
-            foreach (PedClothingComponent pedClothingComponent in ForceSetComponenets.Where(x => x.IsProp))
-            {
-                pedVariation.Props.RemoveAll(x => x.PropID == pedClothingComponent.ComponentID);
-            }
-
+            //if (!IsHelmet)
+            //{
+                foreach (PedClothingComponent pedClothingComponent in ForceSetComponenets.Where(x => x.IsProp))
+                {
+                    pedVariation.Props.RemoveAll(x => x.PropID == pedClothingComponent.ComponentID);
+                }
+            //}
             foreach (PedClothingComponent pedClothingComponent in ForceSetComponenets)
             {
                 int textureSelected = 0;// pedClothingComponent.PossibleTextures.FirstOrDefault();
@@ -255,7 +260,13 @@ public class PedClothingShopMenuItem
                     {
                         toAdd.IsDefaultNotApplied = isDefaultNotApplied.Checked;
                     }
-                    pedVariation.Props.Add(toAdd);
+                    if(IsHelmet)
+                    {
+                        pedVariation.Helmet = toAdd;
+                    }
+        
+                        pedVariation.Props.Add(toAdd);
+                    
                 }
 
             }

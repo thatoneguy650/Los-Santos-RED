@@ -49,7 +49,21 @@ public class Contacts : IContacts
             DefaultConfig_LC();
             DefaultConfig();
         }
-
+        //Load Additive
+        foreach (FileInfo fileInfo in taskDirectory.GetFiles("Contacts+_*.xml").OrderByDescending(x => x.Name))
+        {
+            EntryPoint.WriteToConsole($"Loaded ADDITIVE Contacts config  {fileInfo.FullName}", 0);
+            PossibleContacts additivePossibleItems = Serialization.DeserializeParam<PossibleContacts>(fileInfo.FullName);
+            foreach (PhoneContact phoneContact in additivePossibleItems.AllContacts())
+            {
+                if(phoneContact.Name == "Unknown")
+                {
+                    continue;
+                }
+                EntryPoint.WriteToConsole($"ADDITIVE CONTACT RAN FOR {phoneContact.Name}");
+                phoneContact.AddContacts(PossibleContacts);
+            }
+        }
     }
 
 
@@ -77,10 +91,7 @@ public class Contacts : IContacts
         gunDealerContact = new GunDealerContact(StaticStrings.UndergroundGunsContactName);
         corruptCopContact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
         vehicleExporterContact = new VehicleExporterContact(StaticStrings.VehicleExporterContactName);
-
         knowayContact = new TaxiServiceContact(StaticStrings.KnowayContactName, "CHAR_BLANK_ENTRY") { FullNumber = "3235552567", Number = "5552567", IsDefault = true };
-
-
         rydeMeContact = new TaxiServiceContact(StaticStrings.RydeMeContactName, "CHAR_BLANK_ENTRY") { FullNumber = "3235558295", Number = "5558295", IsDefault = true };
         schlechtContact = new TaxiServiceContact(StaticStrings.SchlechtContactName, "CHAR_BLANK_ENTRY") { FullNumber = "3235552356", Number = "5552356", IsDefault = true };
 
@@ -101,12 +112,14 @@ public class Contacts : IContacts
     private void DefaultConfig_FullExpanded()
     {
         PossibleContacts PossibleContacts_FullExpanded = new PossibleContacts();
-        PossibleContacts_FullExpanded.GunDealerContacts.Add(gunDealerContact);
-        PossibleContacts_FullExpanded.CorruptCopContact = corruptCopContact;
-        PossibleContacts_FullExpanded.VehicleExporterContacts.Add(vehicleExporterContact);
-        PossibleContacts_FullExpanded.EmergencyServicesContact = emergencyServicesContact;
-        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(downtownCabContact);
+        // PossibleContacts_FullExpanded.GunDealerContacts.Add(gunDealerContact);
+        // PossibleContacts_FullExpanded.CorruptCopContact = corruptCopContact;
+        // PossibleContacts_FullExpanded.VehicleExporterContacts.Add(vehicleExporterContact);
+        //PossibleContacts_FullExpanded.EmergencyServicesContact = emergencyServicesContact;
+        //PossibleContacts_FullExpanded.TaxiServiceContacts.Add(downtownCabContact);
 
+        PossibleContacts_FullExpanded.EmergencyServicesContact = null;
+        PossibleContacts_FullExpanded.CorruptCopContact = null;
 
 
         TaxiServiceContact hellCabContact = new TaxiServiceContact(StaticStrings.HellCabContactName, "CHAR_BLANK_ENTRY") { FullNumber = "8884355222", Number = "4355222" };
@@ -121,14 +134,14 @@ public class Contacts : IContacts
         TaxiServiceContact sunderedDependentCabContact = new TaxiServiceContact(StaticStrings.SunderedDependentCabContactName, "CHAR_BLANK_ENTRY") {Number = "5555050", FullNumber = "3235555050" };
         PossibleContacts_FullExpanded.TaxiServiceContacts.Add(sunderedDependentCabContact);
 
-        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(rydeMeContact);
-        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(schlechtContact);
+        //PossibleContacts_FullExpanded.TaxiServiceContacts.Add(rydeMeContact);
+        //PossibleContacts_FullExpanded.TaxiServiceContacts.Add(schlechtContact);
 
-        PossibleContacts_FullExpanded.TaxiServiceContacts.Add(knowayContact);
+        //PossibleContacts_FullExpanded.TaxiServiceContacts.Add(knowayContact);
 
         //Vanilla Peds
-        Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Contacts_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Contacts+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_LC()
     {

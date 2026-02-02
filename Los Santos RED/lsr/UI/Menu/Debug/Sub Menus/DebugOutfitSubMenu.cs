@@ -24,7 +24,7 @@ public class DebugOutfitSubMenu : DebugSubMenu
     }
     public override void Update()
     {
-        Player.OutfitManager.CreateOutfitMenu(MenuPool, SubMenu, false, false, true);
+        Player.OutfitManager.CreateOutfitMenu(MenuPool, SubMenu, false, false, true, false);
     }
 }
 

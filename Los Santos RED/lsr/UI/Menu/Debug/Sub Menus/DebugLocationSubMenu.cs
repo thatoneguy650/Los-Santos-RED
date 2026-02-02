@@ -53,6 +53,12 @@ public class DebugLocationSubMenu : DebugSubMenu
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various location items.";
 
 
+
+
+
+
+
+
         PossibleLocations PossibleLocations = new PossibleLocations();
         PropertyInfo[] properties = typeof(PossibleLocations).GetProperties();
 
@@ -188,7 +194,7 @@ public class DebugLocationSubMenu : DebugSubMenu
                         Function.Call((Hash)0x5E1460624D194A38, true);//SET_USE_ISLAND_MAP*/
 
 
-
+        LocationItemsMenu.AddItem(FreeCamMenu);
         LocationItemsMenu.AddItem(LogSpecificLocationType);
 
         LocationItemsMenu.AddItem(LogInteriorPositionMenu);
@@ -198,7 +204,7 @@ public class DebugLocationSubMenu : DebugSubMenu
         LocationItemsMenu.AddItem(logVector2);
         LocationItemsMenu.AddItem(LogInteriorMenu);
         LocationItemsMenu.AddItem(LogCameraPositionMenu);
-        LocationItemsMenu.AddItem(FreeCamMenu);
+        
         LocationItemsMenu.AddItem(AddAllBlips);
         LocationItemsMenu.AddItem(RemoveAllBlips);
         LocationItemsMenu.AddItem(TurnOffInterior);
@@ -474,10 +480,8 @@ public class DebugLocationSubMenu : DebugSubMenu
         IsWritingPosition = true;
         Vector3 pos = Game.LocalPlayer.Character.Position;
         float Heading = Game.LocalPlayer.Character.Heading;
-        string text1 = NativeHelper.GetKeyboardInput("LocationType");
-        string text2 = NativeHelper.GetKeyboardInput("Name");
-        string text3 = NativeHelper.GetKeyboardInput("Description");
-        WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, \"{text2}\", \"{text3}\"),  //{text1}");
+        string text1 = NativeHelper.GetKeyboardInput("Description");
+        WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f),  //{text1}");
         IsWritingPosition = false;
     }
 

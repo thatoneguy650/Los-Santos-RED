@@ -27,5 +27,10 @@ public class GunDealerContact : PhoneContact, IPhoneContact
     {
         return new GunDealerRelationship(Name, this);
     }
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.GunDealerContacts.RemoveAll(x => x.Name == Name);
+        possibleContacts.GunDealerContacts.Add(this);
+    }
 }
 

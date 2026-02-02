@@ -109,12 +109,12 @@ public class OrbitCamera
         //EntryPoint.WriteToConsole("ORBIT CAMERA UPDATE RAN");
         if (!OrbitingEntity.Exists())
         {
-            EntryPoint.WriteToConsole("NO ORIBITNG ENTITY");
+            //EntryPoint.WriteToConsole("NO ORIBITNG ENTITY");
             return;
         }
         if(!MainCamera.Exists())
         {
-            EntryPoint.WriteToConsole("NO MAIN CAMERA");
+            //EntryPoint.WriteToConsole("NO MAIN CAMERA");
             return;
         }
         entityLocation = OrbitingEntity.Position;

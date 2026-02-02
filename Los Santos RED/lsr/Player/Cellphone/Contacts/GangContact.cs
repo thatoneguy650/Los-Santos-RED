@@ -27,6 +27,11 @@ public class GangContact : PhoneContact, IPhoneContact
         MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world, settings, agencies, modItems, shopMenus);
         MenuInteraction.Start(this);
     }
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.GangContacts.RemoveAll(x=> x.Name == Name);
+        possibleContacts.GangContacts.Add(this);
+    }
 
 }
 

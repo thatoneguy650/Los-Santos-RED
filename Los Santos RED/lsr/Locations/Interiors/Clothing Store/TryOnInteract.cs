@@ -89,6 +89,10 @@ public class TryOnInteract : InteriorInteract
     }
     private void ShowClothingMenu()
     {   
+        if(ClothingShop== null || ClothingShop.PedClothingShopMenu == null)
+        {
+            return;
+        }
         UIMenu InteractionMenu = new UIMenu(ClothingShop.Name, ClothingShop.Description);
         if (ClothingShop.HasBannerImage)
         {
@@ -97,6 +101,10 @@ public class TryOnInteract : InteriorInteract
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
             //RemoveBanner = false;
             EntryPoint.WriteToConsole($"SET BANNER IMAGE FOR HAIRCUT MENU!");
+        }
+        else
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         MenuPool.Add(InteractionMenu);
         ClothingPurchaseMenu clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, ClothingShop, this, Settings);

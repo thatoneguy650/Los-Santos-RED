@@ -32,5 +32,9 @@ public class CorruptCopContact : PhoneContact
     {
         return new OfficerFriendlyRelationship(Name, this);
     }
+    public override void AddContacts(PossibleContacts possibleContacts)
+    {
+        possibleContacts.CorruptCopContact = this;
+    }
 }
 

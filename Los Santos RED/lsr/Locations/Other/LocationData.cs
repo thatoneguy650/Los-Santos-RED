@@ -541,6 +541,7 @@ namespace LosSantosRED.lsr.Locations
                 CurrentInterior = Interiors?.GetInteriorByInternalID(InteriorID);
                 if (CurrentInterior == null)
                 {
+                    EntryPoint.WriteToConsole($"CURRENT INTERIOR IS NULL InteriorID{InteriorID} InteriorsISNULL?{Interiors == null}");
                     CurrentInterior = new Interior(InteriorID, "");
                 }
             }

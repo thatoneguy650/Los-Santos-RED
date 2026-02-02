@@ -1601,8 +1601,8 @@ public class IssueableWeapons : IIssuableWeapons
 
         List<IssuableWeaponsGroup> IssuableWeaponsGroupLookup_Modern = new List<IssuableWeaponsGroup>
         {
-            new IssuableWeaponsGroup("Tasers", Tasers),
-            new IssuableWeaponsGroup("Nightsticks", Nightsticks),
+            //new IssuableWeaponsGroup("Tasers", Tasers),
+            //new IssuableWeaponsGroup("Nightsticks", Nightsticks),
             new IssuableWeaponsGroup("AllSidearms", AllSidearms_Modern),
             new IssuableWeaponsGroup("AllLongGuns", AllLongGuns_Modern),
             new IssuableWeaponsGroup("BestSidearms", BestSidearms_Modern),
@@ -1652,39 +1652,39 @@ public class IssueableWeapons : IIssuableWeapons
 
 
 
-            new IssuableWeaponsGroup("Minigun", Minigun),
-            new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher),
-            new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms),
-            new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
-            new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
-            new IssuableWeaponsGroup("VendorMeleeWeapons", VendorMeleeWeapons),
-            new IssuableWeaponsGroup("VendorSidearms", VendorSidearms),
-            new IssuableWeaponsGroup("VendorLongGuns", VendorLongGuns),
-            new IssuableWeaponsGroup("MeleeWeapons", GangMeleeWeapons),
-            new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms),
-            new IssuableWeaponsGroup("AllGangLongGuns", AllGangLongGuns),
-            new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms),
-            new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns),
-            new IssuableWeaponsGroup("LostSidearms", LostSidearms),
-            new IssuableWeaponsGroup("LostLongGuns", LostLongGuns),
-            new IssuableWeaponsGroup("VagosSidearms", VagosSidearms),
-            new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns),
-            new IssuableWeaponsGroup("BallasSidearms", BallasSidearms),
-            new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns),
-            new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms),
-            new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns),
-            new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms),
-            new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns),
-            new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms),
-            new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns),
-            new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms),
-            new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
-            new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms),
-            new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
-            new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
+            //new IssuableWeaponsGroup("Minigun", Minigun),
+            //new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher),
+            //new IssuableWeaponsGroup("ConcealableSidearms", ConcealableSidearms),
+            //new IssuableWeaponsGroup("TaxiSidearms", TaxiSidearms),
+            //new IssuableWeaponsGroup("TaxiLongGuns", TaxiLongGuns),
+            //new IssuableWeaponsGroup("VendorMeleeWeapons", VendorMeleeWeapons),
+            //new IssuableWeaponsGroup("VendorSidearms", VendorSidearms),
+            //new IssuableWeaponsGroup("VendorLongGuns", VendorLongGuns),
+            //new IssuableWeaponsGroup("MeleeWeapons", GangMeleeWeapons),
+            //new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms),
+            //new IssuableWeaponsGroup("AllGangLongGuns", AllGangLongGuns),
+            //new IssuableWeaponsGroup("FamiliesSidearms", FamiliesSidearms),
+            //new IssuableWeaponsGroup("FamiliesLongGuns", FamiliesLongGuns),
+            //new IssuableWeaponsGroup("LostSidearms", LostSidearms),
+            //new IssuableWeaponsGroup("LostLongGuns", LostLongGuns),
+            //new IssuableWeaponsGroup("VagosSidearms", VagosSidearms),
+            //new IssuableWeaponsGroup("VagosLongGuns", VagosLongGuns),
+            //new IssuableWeaponsGroup("BallasSidearms", BallasSidearms),
+            //new IssuableWeaponsGroup("BallasLongGuns", BallasLongGuns),
+            //new IssuableWeaponsGroup("MarabuntaSidearms", MarabuntaSidearms),
+            //new IssuableWeaponsGroup("MarabuntaLongGuns", MarabuntaLongGuns),
+            //new IssuableWeaponsGroup("VarriosSidearms", VarriosSidearms),
+            //new IssuableWeaponsGroup("VarriosLongGuns", VarriosLongGuns),
+            //new IssuableWeaponsGroup("TriadsSidearms", TriadsSidearms),
+            //new IssuableWeaponsGroup("TriadsLongGuns", TriadsLongGuns),
+            //new IssuableWeaponsGroup("KkangpaeSidearms", KkangpaeSidearms),
+            //new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns),
+            //new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms),
+            //new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
+            //new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
-        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons+_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons+_FullExpandedJurisdiction.xml");
     }
 
 

@@ -673,6 +673,7 @@ public class ShopMenus : IShopMenus
 
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.GenericClothesShopMenu);
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.MaskShopMenu);
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.HelmetShopMenu);
     }
 
     private void SetupPedVariationMenus()

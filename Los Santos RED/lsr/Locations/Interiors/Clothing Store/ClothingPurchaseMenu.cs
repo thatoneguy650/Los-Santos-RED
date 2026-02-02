@@ -98,8 +98,10 @@ public class ClothingPurchaseMenu
             if (createdCategory == null)
             {
                 createdCategory = MenuPool.AddSubMenu(InteractionMenu, categoryName);
+                createdCategory.SetBannerType(EntryPoint.LSRedColor);
             }
             UIMenu createdSubCategory = MenuPool.AddSubMenu(createdCategory, subCategoryName);
+            createdSubCategory.SetBannerType(EntryPoint.LSRedColor);
             categoryLooup = new CategoryLookup(categoryName, subCategoryName, createdCategory, createdSubCategory);
             CategoryLookups.Add(categoryLooup);
         }

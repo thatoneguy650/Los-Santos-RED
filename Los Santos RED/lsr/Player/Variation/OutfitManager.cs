@@ -1128,8 +1128,9 @@ public class OutfitManager
 
         
     }
-    public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner, bool AddPurchased)
+    public void CreateOutfitMenu(MenuPool menuPool, UIMenu subMenu, bool doAnimations, bool removeBanner, bool AddPurchased, bool MakeVisible)
     {
+        EntryPoint.WriteToConsole("CreateOutfitMenu RAN!");
         subMenu.Clear();
         UIMenu ModelSubMenu = menuPool.AddSubMenu(subMenu, "By Model");
         UIMenu CharacterSubMenu = menuPool.AddSubMenu(subMenu, "By Character");
@@ -1169,7 +1170,7 @@ public class OutfitManager
             EntryPoint.WriteToConsole($"DEBUG PURCHASED ITEMS RAN! AddPurchased{AddPurchased}");
             UIMenu PurchasedItemsSubMenu = menuPool.AddSubMenu(subMenu, "Purchased Items");
             clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, null, null, Settings);
-            clothingPurchaseMenuProcess.Start(menuPool, PurchasedItemsSubMenu, null, PurchasedPedClothingShopMenuItems, false, true);
+            clothingPurchaseMenuProcess.Start(menuPool, PurchasedItemsSubMenu, null, PurchasedPedClothingShopMenuItems, false, MakeVisible);
         }
         //clothingPurchaseMenuProcess.Dispose();
     }
