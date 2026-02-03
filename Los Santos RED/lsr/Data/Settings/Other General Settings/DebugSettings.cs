@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Rage;
+using System.Runtime.Serialization;
 using System.Security.Policy;
 
 public class DebugSettings : ISettingsDefaultable
@@ -58,6 +59,7 @@ public class DebugSettings : ISettingsDefaultable
     public int LockpickAnimFlags { get; set; }
     public float LockpickAnimAnimRate { get; set; }
     public float StraightLineDistanceChase { get; set; }
+
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -143,5 +145,6 @@ public class DebugSettings : ISettingsDefaultable
         LockpickAnimFlags = 0;
         LockpickAnimAnimRate = 1.0f;
         StraightLineDistanceChase = 20f;
+
     }
 }

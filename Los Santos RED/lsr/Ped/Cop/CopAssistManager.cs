@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 public class CopAssistManager
@@ -13,6 +14,7 @@ public class CopAssistManager
     private bool IsSetNoCollision = false;//this is new
     private Cop Cop;
     private bool IsCheatFiberRunning = false;
+    private bool IsRunningForceFiber;
 
     public CopAssistManager(Cop cop)
     {
@@ -154,5 +156,115 @@ public class CopAssistManager
             }
         }
     }
+    public void ForceApplier(bool isWanted, ISettingsProvideable settings)
+    {
+        if (!Cop.IsDriver || Cop.DistanceToPlayer > 300f || !isWanted || Cop.IsInAirVehicle || !Cop.Pedestrian.Exists())
+        {
+            IsRunningForceFiber = false;
+            return;
+        }
+        Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
+        if (!copCar.Exists())
+        {
+            IsRunningForceFiber = false;
+            return;
+        }
+        if(IsRunningForceFiber)
+        {
+            return;
+        }
+        ForceApplierCheck(settings);
+
+    }
+
+
+    private void ForceApplierCheck(ISettingsProvideable Settings)
+    {
+        IsRunningForceFiber = true;
+        GameFiber.StartNew(delegate
+        {
+            EntryPoint.WriteToConsole($"I AM COP {Cop.Handle} AND I STARTED A FORCE APPLIER");
+            float prevSpeed = 0.0f;
+            string CurrentSubtitle = "";
+            bool isAccelerating = false;
+            bool isBraking = false;
+            bool isTurning = false;
+            Vehicle coolVeh = Cop.Pedestrian.CurrentVehicle;
+            float CurrentSpeed = 0.0f;
+            float speedThreshold = Settings.SettingsManager.PoliceTaskSettings.ForceAssistSpeedChangeThreshold;
+            float turningRadius = Settings.SettingsManager.PoliceTaskSettings.ForceAssistTurningRadiusLimit;
+            while (IsRunningForceFiber)
+            {
+
+
+                if (coolVeh.Exists())
+                {
+
+                    CurrentSpeed = coolVeh.Speed;
+                    float speedDiff = CurrentSpeed - prevSpeed;
+                    if (speedDiff > speedThreshold)
+                    {
+                        isAccelerating = true;
+                    }
+                    else
+                    {
+                        isAccelerating = false;
+                    }
+
+                    
+                    if (speedDiff < -1.0f* speedThreshold)
+                    {
+                        isBraking = true;
+                    }
+                    else
+                    {
+                        isBraking = false;
+                    }
+
+
+
+                    prevSpeed = CurrentSpeed;
+                    if (coolVeh.SteeringAngle > turningRadius)
+                    {
+                        isTurning = true;
+                    }
+                    else
+                    {
+                        isTurning = false;
+                    }
+
+                    bool isApplyingForce = false;
+
+                    if (!isTurning && CurrentSpeed >= Settings.SettingsManager.PoliceTaskSettings.ForceAssistMinimumSpeedMetersPerSecond)
+                    {
+                        if (isAccelerating)
+                        {
+                            isApplyingForce = true;
+                            coolVeh.ApplyForce(new Vector3(0.0f, 1.0f, 0.0f) * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, Vector3.Zero, true, true);
+                        }
+                        else if (isBraking)
+                        {
+                            isApplyingForce = true;
+                            coolVeh.ApplyForce(new Vector3(0.0f, -1.0f * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, 0.0f), Vector3.Zero, true, true);
+                        }
+
+                    }
+                    //CurrentSubtitle = $" {Cop.Handle} isAccelerating{isAccelerating} isBraking{isBraking} CurrentSpeed:{Math.Round(CurrentSpeed, 2)} PrevSpeed:{Math.Round(prevSpeed, 2)} Diff:{Math.Round(speedDiff, 2)} isTurning {isTurning}  isApplyingForce{isApplyingForce}";
+
+                }
+
+
+
+
+                //EntryPoint.WriteToConsole(CurrentSubtitle);
+
+               //Game.DisplaySubtitle(CurrentSubtitle);
+                GameFiber.Yield();
+            }
+            IsRunningForceFiber = false;
+
+        }, "Run Debug Logic");
+    }
+
 }
 

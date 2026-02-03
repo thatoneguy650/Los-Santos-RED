@@ -108,6 +108,10 @@ namespace LosSantosRED.lsr
                             {
                                 Cop.AssistManager.PowerAssist(Player.WantedLevel, Player.VehicleSpeedMPH);
                             }
+                            if (Settings.SettingsManager.PoliceTaskSettings.AllowForceAssist)
+                            {
+                                Cop.AssistManager.ForceApplier(Player.IsWanted, Settings);
+                            }
                         }
                         if (Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {

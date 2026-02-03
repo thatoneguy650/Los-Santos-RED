@@ -531,16 +531,104 @@ public class Debug
     private void DebugNumpad4()
     {
 
-        Cop found = World.Pedestrians.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(found == null || !found.Pedestrian.Exists())
+
+        GameFiber.StartNew(delegate
         {
-            return;
-        }
-        EntryPoint.WriteToConsole($"TASK_COMBAT_PED {found.Handle} DefaultCombatFlag:{found.DefaultCombatFlag}");
+            float prevSpeed = 0.0f;
+            string CurrentSubtitle = "";
+            bool isAccelerating = false;
+            bool isBraking = false;
+            bool isTurning = false;
+            Vehicle coolVeh = Player.Character.CurrentVehicle;
+            float CurrentSpeed = 0.0f;
+            float speedThreshold = Settings.SettingsManager.PoliceTaskSettings.ForceAssistSpeedChangeThreshold;
+            float turningRadius = Settings.SettingsManager.PoliceTaskSettings.ForceAssistTurningRadiusLimit;
+            while (!Game.IsKeyDown(Keys.O))
+            {
 
-        found.Pedestrian.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
 
-        NativeFunction.Natives.TASK_COMBAT_PED(found.Pedestrian, Player.Character, found.DefaultCombatFlag, 16);
+                if(Player.Character.CurrentVehicle.Exists())
+                {
+                    
+                    CurrentSpeed = coolVeh.Speed;
+
+                    if (CurrentSpeed > prevSpeed)
+                    {
+                        isAccelerating = true;
+                    }
+                    else
+                    {
+                        isAccelerating = false;
+                    }
+
+                    float speedDiff = CurrentSpeed - prevSpeed;
+                    if (speedDiff < speedThreshold)
+                    {
+                        isBraking = true;
+                    }
+                    else
+                    {
+                        isBraking = false;
+                    }
+
+                    
+
+                    prevSpeed = CurrentSpeed;
+                    if(coolVeh.SteeringAngle > turningRadius)
+                    {
+                        isTurning = true;
+                    }
+                    else
+                    {
+                        isTurning = false;
+                    }
+                    
+                    bool isApplyingForce = false;
+
+                    if (!isTurning)
+                    {
+                        if (isAccelerating)
+                        {
+                            isApplyingForce = true;
+                            coolVeh.ApplyForce(new Vector3(0.0f,1.0f,0.0f) * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, Vector3.Zero, true, true);
+                        }
+                        else if (isBraking)
+                        {
+                            isApplyingForce = true;
+                            coolVeh.ApplyForce(new Vector3(0.0f, -1.0f* Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, 0.0f) , Vector3.Zero, true, true);
+                        }
+                        
+                    }
+                    CurrentSubtitle = $"isAccelerating{isAccelerating} isBraking{isBraking} CurrentSpeed:{Math.Round(CurrentSpeed,2)} PrevSpeed:{Math.Round(prevSpeed,2)} Diff:{Math.Round(speedDiff, 2)} isTurning {isTurning}  isApplyingForce{isApplyingForce}";
+
+                }
+
+
+
+
+
+
+                Game.DisplaySubtitle(CurrentSubtitle);
+                GameFiber.Yield();
+            }
+
+        }, "Run Debug Logic");
+        GameFiber.Sleep(500);
+
+
+
+
+
+        //Cop found = World.Pedestrians.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(found == null || !found.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
+        //EntryPoint.WriteToConsole($"TASK_COMBAT_PED {found.Handle} DefaultCombatFlag:{found.DefaultCombatFlag}");
+
+        //found.Pedestrian.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
+
+        //NativeFunction.Natives.TASK_COMBAT_PED(found.Pedestrian, Player.Character, found.DefaultCombatFlag, 16);
 
 
         //NativeFunction.Natives.SET_RADIO_TO_STATION_NAME("RADIO_23_INTEGRITY");

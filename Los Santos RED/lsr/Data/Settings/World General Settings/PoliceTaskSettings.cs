@@ -31,6 +31,22 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool AllowReducedCollisionPenaltyAssist { get; set; }
     [Description("Enable or disable increased power for police vehicles")]
     public bool AllowPowerAssist { get; set; }
+
+
+
+
+    [Description("Enable or disable applied force for police vehicles")]
+    public bool AllowForceAssist { get; set; }
+
+    public float ForceAssistAmount { get; set; }
+    public float ForceAssistSpeedChangeThreshold { get; set; }
+    public float ForceAssistTurningRadiusLimit { get; set; }
+
+    public float ForceAssistMinimumSpeedMetersPerSecond { get; set; }
+
+
+
+
     [Description("Enable or disable police vehicles being repaired when off screen")]
     public bool AllowFixOffScreenVehiclesAssist { get; set; }
 
@@ -144,6 +160,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public int ChaseRecklessMission { get; set; }
     public int ChaseVeryRecklessMission { get; set; }
     public float FlyThroughWindshieldPercentage { get; set; }
+
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -273,5 +290,13 @@ public class PoliceTaskSettings : ISettingsDefaultable
         ChaseDefaultMission = 7;
         ChaseVeryRecklessMission = 3;
         ChaseRecklessMission = 2;
+
+
+        AllowForceAssist = false;
+        ForceAssistAmount = 10.0f;
+        ForceAssistSpeedChangeThreshold = 0.2f;
+        ForceAssistTurningRadiusLimit = 10.0f;
+        ForceAssistMinimumSpeedMetersPerSecond = 15.0f;
+
     }
 }
