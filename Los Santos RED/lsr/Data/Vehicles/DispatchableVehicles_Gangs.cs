@@ -397,7 +397,7 @@ public class DispatchableVehicles_Gangs
             Create_GangTampa(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, -1, 0, 1, 3, false),
             Create_GangTulip(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 68, 15, 0, -1, 15, 0, 1, 3, true),
             // special
-            Create_GangBanshee2(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 0, 1, 3, true),
+            Create_GangBanshee2(35, 35, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 68, 15, 0, -1, 15, 0, 7, 3, true),
         };
         foreach (var vehicle in SpanishLordsVehicles)
         {

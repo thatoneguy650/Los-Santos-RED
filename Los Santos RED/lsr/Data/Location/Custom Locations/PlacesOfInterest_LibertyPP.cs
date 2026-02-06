@@ -431,7 +431,304 @@ public class PlacesOfInterest_LibertyPP
             CloseTime = 24,
         };
         LibertyCityLocations.ATMMachines.Add(EHbolatm1b);
+        // new ATM
+        //Industrial Bohan
+        ATMMachine bolindatm1 = new ATMMachine(new Vector3(6528.183f, -1603.513f, 16.66369f), 90.18976f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolindatm1);
+        //South Bohan
+        ATMMachine bolsbhatm1 = new ATMMachine(new Vector3(5761.799f, -1856.493f, 10.98622f), 92.07797f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolsbhatm1);
+        //Schlotter
+        ATMMachine bolschloatm1 = new ATMMachine(new Vector3(6366.115f, -3110.18f, 32.67359f), 92.925f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolschloatm1);
 
+        ATMMachine bolschloatm2 = new ATMMachine(new Vector3(6410.178f, -3083.919f, 32.54806f), 2.541067f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolschloatm2);
+        //Hove Beach
+        ATMMachine bolhovatm1 = new ATMMachine(new Vector3(6116.124f, -3545.634f, 18.39537f), 272.1055f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolhovatm1);
+
+        ATMMachine bolhovatm2 = new ATMMachine(new Vector3(6084.678f, -3564.782f, 18.08096f), 90.68962f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolhovatm2);
+        //Francis Intl Airport
+        ATMMachine bolfiaatm1 = new ATMMachine(new Vector3(7485.851f, -2802.756f, 6.080053f), 182.4761f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolfiaatm1);
+        //Meadows Park
+        ATMMachine bolmpatm1 = new ATMMachine(new Vector3(6978.09f, -2413.616f, 16.57648f), 255.403f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolmpatm1);
+
+        ATMMachine bolmpatm2 = new ATMMachine(new Vector3(6821.313f, -2818.596f, 29.16175f), 93.64418f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolmpatm2);
+        //Willis
+        ATMMachine bolwilatm1 = new ATMMachine(new Vector3(7008.509f, -2701.394f, 29.01446f), 271.7258f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolwilatm1);
+        //Westdyke
+        ATMMachine bolwdatm1 = new ATMMachine(new Vector3(4238.863f, -1773.525f, 24.81047f), 1.50039f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolwdatm1);
+
+        ATMMachine bolwdatm2 = new ATMMachine(new Vector3(4240.214f, -1773.478f, 24.81211f), 0.9098434f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolwdatm2);
+        //Aldereny City
+        ATMMachine bolacatm1 = new ATMMachine(new Vector3(3945.223f, -2130.129f, 19.57343f), 273.6835f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolacatm1);
+
+        ATMMachine bolacatm2 = new ATMMachine(new Vector3(3945.199f, -2131.613f, 19.57434f), 271.0225f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolacatm2);
+        //Leftwood
+        ATMMachine bolleftatm1 = new ATMMachine(new Vector3(4037.173f, -1974.955f, 24.54173f), 3.31251f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolleftatm1);
+
+        ATMMachine bolleftatm2 = new ATMMachine(new Vector3(4038.687f, -1975.003f, 24.54542f), 1.365778f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolleftatm2);
+
+        ATMMachine bolleftatm3 = new ATMMachine(new Vector3(3966.866f, -1908.623f, 22.04594f), 274.2297f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolleftatm3);
+
+        ATMMachine bolleftatm4 = new ATMMachine(new Vector3(3966.846f, -1909.995f, 22.04485f), 271.5901f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolleftatm4);
+        //Berchem
+        ATMMachine bolberatm1 = new ATMMachine(new Vector3(3710.905f, -2600.342f, 20.09755f), 332.2159f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolberatm1);
+
+        ATMMachine bolberatm2 = new ATMMachine(new Vector3(3711.865f, -2600.798f, 20.02299f), 331.751f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.AlderneyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolberatm2);
+        //The Exchange
+        ATMMachine bolexatm1 = new ATMMachine(new Vector3(5204.313f, -3863.895f, 14.7645f), 245.2363f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolexatm1);
+
+        ATMMachine bolexatm2 = new ATMMachine(new Vector3(5202.895f, -3866.981f, 14.75961f), 246.7551f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolexatm2);
+
+        ATMMachine bolexatm3 = new ATMMachine(new Vector3(5199.403f, -3876.125f, 14.75507f), 267.7145f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolexatm3);
+
+        ATMMachine bolexatm4 = new ATMMachine(new Vector3(5199.14f, -3879.11f, 14.76307f), 268.0949f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolexatm4);
+        //Fishmarket South
+        ATMMachine bolfsatm1 = new ATMMachine(new Vector3(5401.739f, -3776.117f, 9.079178f), 92.65475f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolfsatm1);
+
+        ATMMachine bolfsatm2 = new ATMMachine(new Vector3(5401.747f, -3775.057f, 9.079178f), 90.98385f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolfsatm2);
+        //Lancaster
+        ATMMachine sslanatm1 = new ATMMachine(new Vector3(5238.318f, -2144.101f, 14.66314f), 269.5134f, "Schlongberg Sachs", "The Firm You Feel in Your Wallet.", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(sslanatm1);
+
+        ATMMachine sslanatm2 = new ATMMachine(new Vector3(5238.318f, -2145.269f, 14.66314f), 269.8344f, "Schlongberg Sachs", "The Firm You Feel in Your Wallet.", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(sslanatm2);
+
+        ATMMachine sslanatm3 = new ATMMachine(new Vector3(5238.318f, -2146.424f, 14.66313f), 271.4885f, "Schlongberg Sachs", "The Firm You Feel in Your Wallet.", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(sslanatm3);
+        //Triangle
+        ATMMachine wanqtriatm1 = new ATMMachine(new Vector3(4904.718f, -3295.085f, 14.7632f), 5.010689f, "Whan-Q Bank", "Don't beat off, Come Inside!", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(wanqtriatm1);
+        //StarJunction
+        ATMMachine bolsjatm1 = new ATMMachine(new Vector3(4857.621f, -3011.995f, 14.81498f), 182.2679f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolsjatm1);
+
+        ATMMachine bolsjatm2 = new ATMMachine(new Vector3(4856.468f, -3012.038f, 14.81497f), 182.5003f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolsjatm2);
+
+        ATMMachine bolsjatm3 = new ATMMachine(new Vector3(4967.939f, -3038.245f, 14.77505f), 90.09225f, "Bank Of Liberty", "Bleeding you dry", "None", null, null)
+        {
+            BannerImagePath = null,
+            StateID = StaticStrings.LibertyStateID,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        LibertyCityLocations.ATMMachines.Add(bolsjatm3);
         // Banks
         // Bank of Liberty
         Bank BOL2 = new Bank(new Vector3(6338.047f, -3490.734f, 23.59051f), 0.02f, "Bank Of Liberty", "Bleeding you dry", "BOL")
@@ -781,7 +1078,7 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 VendorPersonnelID = "BarPeds",
                 ExtaVendorSpawnPercentage = 0f,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6654.771f, -3196.343f, 23.18558f), 272.2538f) },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6654.895f, -3196.68f, 23.18556f), 271.6191f) },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
                 StateID = StaticStrings.LibertyStateID,
@@ -936,6 +1233,7 @@ public class PlacesOfInterest_LibertyPP
             new Bar(new Vector3(6620.784f, -3236.558f, 26.07549f), 90.40106f, "The Bay Bar", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
             new Bar(new Vector3(6311.128f, -2585.644f, 38.03498f), 90.91409f, "8Ball Bar", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
             new Bar(new Vector3(5644.609f, -1735.917f, 14.8801f), 6.018074f, "Whiskers", "","BarMenu") { StateID = StaticStrings.LibertyStateID },
+            new Bar(new Vector3(6116.066f, -2963.57f, 27.30933f), 272.4401f, "Ming Inn", "Pure Minging","BarMenu") { StateID = StaticStrings.LibertyStateID },
         }
         );
     }
@@ -1193,11 +1491,7 @@ public class PlacesOfInterest_LibertyPP
     {
         LibertyCityLocations.ClothingShops.AddRange(new List<ClothingShop>()
         {
-            new ClothingShop(new Vector3(6081.239f, -3699.316f, 15.86007f), 274.2502f, "Russian Store", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 120834,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6077.284f, -3703.221f, 15.8473f), 20.45024f) },MinPriceRefreshHours= 0 ,MaxPriceRefreshHours = 0,MinRestockHours = 0 ,MaxRestockHours = 0,ActivateCells = 3, ActivateDistance = 75 },
             new ClothingShop(new Vector3(6116.508f, -3516.648f, 19.33661f), 89.94569f, "Jewelry Store", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
-            new ClothingShop(new Vector3(5198.929f, -3914.975f, 14.7644f), 4.162239f, "Perseus", "","") { IsTemporarilyClosed = true ,StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5200.377f, -3922.09f, 14.86155f), 48.44085f) },ActivateCells = 3, ActivateDistance = 75 },
-            new ClothingShop(new Vector3(5210.399f, -2446.067f, 14.71319f), 1.235396f, "Perseus", "","") { IsTemporarilyClosed = true , StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5212.094f, -2453.245f, 14.76183f), 24.39743f) },ActivateCells = 3, ActivateDistance = 75 },
-            new ClothingShop(new Vector3(4907.484f, -1901.719f, 25.63186f), 177.0755f, "Modo", "","") { IsTemporarilyClosed = true , StateID = StaticStrings.LibertyStateID,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4907.553f, -1891.094f, 25.63248f), 177.7734f) },ActivateCells = 3, ActivateDistance = 75 },
             new ClothingShop(new Vector3(6544.969f, -3128.492f, 31.28652f), 240.849f, "Street Clothes", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(6296.3f, -3810.494f, 13.52442f), 183.2335f, "Shirt World", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(6442.854f, -3332.284f, 28.2578f), 90.98743f, "Ladies Fashion", "Clothes for Ladies","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
@@ -1219,6 +1513,16 @@ public class PlacesOfInterest_LibertyPP
             new ClothingShop(new Vector3(5637.803f, -1566.641f, 16.20274f), 252.747f, "Discount Fashion", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(5661.025f, -1541.183f, 16.2991f), 139.2149f, "Ranch", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(5918.007f, -1691.954f, 22.26619f), 269.7938f, "El Pedro Jewelry", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
+
+            new ClothingShop(new Vector3(5198.929f, -3914.975f, 14.7644f), 4.162239f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 655617,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5201.53f, -3922.06f, 12.86154f), 27.87975f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
+            new ClothingShop(new Vector3(5210.399f, -2446.067f, 14.71319f), 1.235396f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 691969,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5212.623f, -2453.45f, 12.76182f), 24.78086f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop"},
+
+            new ClothingShop(new Vector3(6081.239f, -3699.316f, 15.86007f), 274.2502f, "Russian Store", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 120834,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6077.845f, -3703.128f, 13.84556f), 0.5565634f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
+            new ClothingShop(new Vector3(4907.484f, -1901.719f, 25.63186f), 177.0755f, "Modo", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 658177,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4907.666f, -1891.209f, 23.63243f), 177.4824f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
+
+            new ClothingShop(new Vector3(4098.759f, -1793.475f, 24.79053f), 265.7245f, "Westdyke Motorcycles Clothing", "","") { StateID = StaticStrings.AlderneyStateID,InteriorID = -99333, DisableRegularInteract = true, PedClothingShopMenuID = "HelmetShopMenu", },
+            new ClothingShop(new Vector3(5978.044f, -3789.333f, 7.536121f), 219.8516f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 638721, DisableRegularInteract = true, PedClothingShopMenuID = "MaskShopMenu", },//Hove Beach
+            new ClothingShop(new Vector3(5025.935f, -2893.428f, 12.85022f), 98.00107f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 694785, DisableRegularInteract = true, PedClothingShopMenuID = "FreakMaskShopMenu", },// Star Junction
         });
     }
     private void DefaultConfig_ConvenienceStores()
@@ -2782,6 +3086,7 @@ public class PlacesOfInterest_LibertyPP
 
             new HardwareStore(new Vector3(6056.661f, -3427.649f, 5.850422f), 316.6017f, "Builders Supplies", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
             new HardwareStore(new Vector3(5907.46f, -1521.614f, 36.96003f), 200.451f, "Hardware & Houseware", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
+            new HardwareStore(new Vector3(6118.402f, -2955.764f, 27.67285f), 266.6942f, "Hardware Store", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
             new HardwareStore(new Vector3(3813.605f, -2784.477f, 14.60903f), 178.2576f, "Hardware Store", "","ToolMenu"){ StateID = StaticStrings.LibertyStateID },
         });
     }
@@ -3552,6 +3857,7 @@ public class PlacesOfInterest_LibertyPP
             new LiquorStore(new Vector3(6328.519f, -2834.988f, 29.80314f), 70.64351f, "Oriental Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(6450f, -2857.426f, 22.20033f), 178.4071f, "Oriental Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
             new LiquorStore(new Vector3(5946.3f, -1703.553f, 22.02752f), 314.5961f, "N.O.N. Wines & Liquors", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
+            new LiquorStore(new Vector3(6148.459f, -2881.857f, 35.60814f), 285.4528f, "Deli Supreme", "","LiquorStoreMenu") { StateID = StaticStrings.LibertyStateID, },
         });
     }
     private void DefaultConfig_ModShops()
