@@ -27,6 +27,7 @@ public class Interiors_LibertyPP
         Bowling();
         Businesses();
         Cafes();
+        ClothingShops();
         Clubs();
         GangDens();
         GeneralInteriors();
@@ -646,6 +647,117 @@ public class Interiors_LibertyPP
             },
         });
     }
+
+    private void ClothingShops()
+    {
+
+        LibertyCityInteriors.ClothingShopInteriors.AddRange(new List<ClothingShopInterior>()
+        {
+            new ClothingShopInterior(655617,"Perseus The Exchange")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(58767393,new Vector3(5200.508f, -3915.525f, 15.13181f)) { InteractPostion = new Vector3(5198.995f, -3914.962f, 14.76307f), InteractHeader = 179.4054f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(422470524,new Vector3(5197.511f, -3915.525f, 15.13181f)) { InteractPostion = new Vector3(5198.995f, -3914.962f, 14.76307f), InteractHeader = 179.4054f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("perseus1TryOn1",new Vector3(5199.161f, -3924.175f, 14.86154f), 357.9842f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(691969,"Perseus Middle Park East")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() {
+                    new InteriorDoor(58767393,new Vector3(5211.958f, -2446.745f, 15.03208f)) { InteractPostion = new Vector3(5210.395f, -2445.915f, 14.71325f), InteractHeader = 175.4483f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(422470524,new Vector3(5208.961f, -2446.745f, 15.03208f)) { InteractPostion = new Vector3(5210.395f, -2445.915f, 14.71325f), InteractHeader = 175.4483f, CanBeForcedOpenByPlayer = true }, },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("perseus2TryOn1",new Vector3(5210.532f, -2456.42f, 14.7618f), 357.6641f,"Try On Clothes")
+                },
+            },
+
+            new ClothingShopInterior(120834,"Russian Store Hove Beach")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(377940039, new Vector3(6080.48f, -3700.686f, 16.11983f )) { InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f, CanBeForcedOpenByPlayer = true },
+                    new InteriorDoor(3762420618, new Vector3(6080.48f, -3697.683f, 16.11983f)) { InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f, CanBeForcedOpenByPlayer = true },
+                },
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister1",new Vector3(6077.243f, -3702.948f, 15.84804f), 7.241336f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("russianstoreTryOn1",new Vector3(6068.477f, -3696.113f, 15.85332f), 227.3951f,"Try On Clothes")
+                }
+            },
+            new ClothingShopInterior(658177,"Modo Store North/East Holland")
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(4134882193,new Vector3(4906.742f, -1901.305f, 25.88541f)) { InteractPostion = new Vector3(4908.055f, -1901.912f, 25.63067f), InteractHeader = 359.8869f, CanBeForcedOpenByPlayer = true }, // North Door
+                    new InteriorDoor(4134882193,new Vector3(4912.999f, -1896.705f, 25.88541f)) { InteractPostion = new Vector3(4913.635f, -1895.245f, 25.56041f), InteractHeader = 88.45834f, CanBeForcedOpenByPlayer = true }, // East Door
+                },
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                   new MoneyTheftInteract("CashRegister2",new Vector3(4906.967f, -1891.208f, 25.63268f), 181.3779f,"Rob")
+                   {
+                        CashMinAmount = 250,
+                        CashMaxAmount = 1000,
+                        IncrementGameTimeMin = 1500,
+                        IncrementGameTimeMax = 2000,
+                        CashGainedPerIncrement = 250,
+                        GameTimeBeforeInitialReward = 3500,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                   },
+                },
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("modoStoreStrawTryOn1",new Vector3(4903.563f, -1891.969f, 25.63241f), 222.6443f,"Try On Clothes")
+                }
+            },
+
+            new ClothingShopInterior(-99333,"Westdyke Motorcycles Clothing")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("westdykeHelmetTryOn1",new Vector3(4098.759f, -1793.475f, 24.79053f), 265.7245f,"Try On Helmets")
+                },
+            },
+            new ClothingShopInterior(638721,"The Peep Hole Hove Beach")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("peepholeMaskTryOn1",new Vector3(5978.044f, -3789.333f, 7.536121f), 219.8516f,"Try On Masks")
+                },
+            },
+            new ClothingShopInterior(694785,"The Peep Hole Star Junction")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("peepholeMaskTryOn2",new Vector3(5025.935f, -2893.428f, 12.85022f), 98.00107f,"Try On Masks")
+                },
+            },
+        });
+
+    }
+
     private void Clubs()
     {
         LibertyCityInteriors.GeneralInteriors.AddRange(new List<Interior>()
@@ -3069,27 +3181,27 @@ public class Interiors_LibertyPP
             },// GunStore -  Port Tudor, Alderney
 
             // Clothing Store
-            new Interior(120834, "Russian Store")
-            {
-                InteractPoints = new List < InteriorInteract > ()
-                {
-                   new MoneyTheftInteract("CashRegister1",new Vector3(6077.243f, -3702.948f, 15.84804f), 7.241336f,"Rob")
-                   {
-                        CashMinAmount = 250,
-                        CashMaxAmount = 1000,
-                        IncrementGameTimeMin = 1500,
-                        IncrementGameTimeMax = 2000,
-                        CashGainedPerIncrement = 250,
-                        GameTimeBeforeInitialReward = 3500,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                   },
-                },
-                Doors = new List<InteriorDoor>()
-                {
-                    new InteriorDoor(377940039, new Vector3(6080.48f, -3700.686f, 16.11983f )) { LockWhenClosed = true, InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f },
-                    new InteriorDoor(3762420618, new Vector3(6080.48f, -3697.683f, 16.11983f)) { LockWhenClosed = true, InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f },
-                },
-            },
+            //new Interior(120834, "Russian Store")
+            //{
+            //    InteractPoints = new List < InteriorInteract > ()
+            //    {
+            //       new MoneyTheftInteract("CashRegister1",new Vector3(6077.243f, -3702.948f, 15.84804f), 7.241336f,"Rob")
+            //       {
+            //            CashMinAmount = 250,
+            //            CashMaxAmount = 1000,
+            //            IncrementGameTimeMin = 1500,
+            //            IncrementGameTimeMax = 2000,
+            //            CashGainedPerIncrement = 250,
+            //            GameTimeBeforeInitialReward = 3500,
+            //            ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+            //       },
+            //    },
+            //    Doors = new List<InteriorDoor>()
+            //    {
+            //        new InteriorDoor(377940039, new Vector3(6080.48f, -3700.686f, 16.11983f )) { LockWhenClosed = true, InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f },
+            //        new InteriorDoor(3762420618, new Vector3(6080.48f, -3697.683f, 16.11983f)) { LockWhenClosed = true, InteractPostion = new Vector3(6081.085f, -3699.182f, 15.86015f), InteractHeader =  86.96169f },
+            //    },
+            //},
         });
     }
 

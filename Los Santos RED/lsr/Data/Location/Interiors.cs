@@ -9516,7 +9516,7 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
 
 
 
-
+            new Interior(19381,"Auto Shop",new List<string>() { "bkr_bi_id1_23_door" }), // Vagos Den Rear Garage door
 
             //.
 
@@ -9596,10 +9596,29 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading =  5.70763f,
                 InteriorSets = new List<string>() { "counterfeit_upgrade_equip_no_prod", "counterfeit_upgrade_equip", "counterfeit_security", "dryera_on", "dryerb_open", "dryerc_on", "dryerd_off", "counterfeit_cashpile10a", "counterfeit_cashpile20c", "counterfeit_cashpile100d", "special_chairs", "money_cutter", "counterfeit_setup"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_5_biker_dlc_int_ware04_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_cash_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("m24_1_prop_m41_radio_01a", new SpawnPlace(new Vector3(1130.2f, -3193.3f, -40.59289f), 0f)),
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("CounterfeitExit",new Vector3(1138.092f, -3199.069f, -39.66568f), 185.5803f,"Exit"),
                     new StandardInteriorInteract("CounterfeitStandard",new Vector3(1129.54f, -3194.124f, -40.39639f), 355.4791f,"Manage"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "CounterfeitRadio1",
+                        Position = new Vector3(1130.326f, -3194.299f, -40.39745f),
+                        Heading =  358.9831f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1132.12f, -3195.095f, -39.3692f),
+                        CameraDirection = new Vector3(-0.6912193f, 0.6331462f, -0.3483415f),
+                        CameraRotation = new Rotator(-20.38591f, 9.108204E-07f, 47.5108f),
+                    },
                 }
             },
             new BusinessInterior(247553, "Cocaine Lockup")
@@ -9609,6 +9628,14 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 181.0876f,
                 InteriorSets = new List<string>() { "set_up", "equipment_upgrade", "coke_press_upgrade", "production_upgrade", "table_equipment_upgrade", "coke_cut_04", "coke_cut_05", "coke_cut_01", "coke_cut_02", "coke_cut_03", "security_high"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_4_biker_dlc_int_ware03_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_crack_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("m24_1_prop_m41_radio_01a", new SpawnPlace(new Vector3(1086.3f, -3195.56f, -39.192215f), 91.99965f)){PlaceOnGround = true },
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("CocaineExit",new Vector3(1088.67f, -3187.556f, -38.99346f), 1.538507f,"Exit"),
@@ -9616,7 +9643,18 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                     new CraftInteriorInteract ("DrugLab",new Vector3(1092.968f, -3194.928f, -38.99347f), 279.6992f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
-                    }
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "CocaineRadio1",
+                        Position = new Vector3(1087.207f, -3195.511f, -38.99347f),
+                        Heading =  90.19034f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1088.283f, -3196.731f, -37.97078f),
+                        CameraDirection = new Vector3(-0.7004394f, 0.5336794f, -0.4738892f),
+                        CameraRotation = new Rotator(-28.28705f, 3.296481E-05f, 52.69547f),
+                    },
                 }
             },
             new BusinessInterior(246785, "Document forgery")
@@ -9626,10 +9664,29 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 91.33833f,
                 InteriorSets = new List<string>() { "interior_upgrade", "equipment_upgrade", "security_high", "table_equipment_upgrade", "chair01", "chair02", "chair03", "chair04", "chair05", "chair06", "chair07", "production", "set_up", "clutter"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_6_biker_dlc_int_ware05_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_fakeid_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("v_res_fh_speakerdock", new SpawnPlace(new Vector3(1156.13f, -3196.93f, -38.04f), 91.75924f)),
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("DocumentForgeryExit",new Vector3(1173.632f, -3196.689f, -39.00798f), 271.3391f,"Exit"),
                     new StandardInteriorInteract("DocumentForgeryStandard",new Vector3(1160.249f, -3192.299f, -39.00798f), 186.1683f,"Manage"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "DocumentForgeryRadio1",
+                        Position = new Vector3(1156.776f, -3196.856f, -39.00798f),
+                        Heading =  91.06123f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1157.675f, -3197.823f, -37.88883f),
+                        CameraDirection = new Vector3(-0.7669014f, 0.5397997f, -0.3471001f),
+                        CameraRotation = new Rotator(-20.31005f, -1.820747E-06f, 54.85939f),
+                    },
                 }
             },
             new BusinessInterior(247041, "Meth Lab")
@@ -9639,6 +9696,14 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 272.8723f,
                 InteriorSets = new List<string>() { "meth_lab_upgrade", "meth_lab_setup", "meth_lab_security_high", "meth_lab_production"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_2_biker_dlc_int_ware01_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_meth_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("m24_1_prop_m41_radio_01a", new SpawnPlace(new Vector3(1001.65f, -3193.79f, -39.19f), 17.5f)),
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("MethLabExit",new Vector3(996.9594f, -3200.593f, -36.39368f), 94.21133f,"Exit"),
@@ -9651,7 +9716,18 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                     new CraftInteriorInteract ("DrugLab",new Vector3(1005.692f, -3200.322f, -38.51932f), 190.0661f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
-                    }
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "MethLabRadio1",
+                        Position = new Vector3(1003.062f, -3194.952f, -38.99313f),
+                        Heading =  3.272231f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1001.739f, -3196.129f, -38.1144f),
+                        CameraDirection = new Vector3(0.5848997f, 0.7280532f, -0.3575346f),
+                        CameraRotation = new Rotator(-20.94887f, -9.142023E-07f, -38.77752f),
+                    },
                 }
             },
             new BusinessInterior(247297, "Weed Farm")
@@ -9661,9 +9737,14 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 89.46977f,
                 InteriorSets = new List<string>() { "weed_upgrade_equip", "weed_security_upgrade", "weed_growtha_stage3", "light_growtha_stage23_upgrade", "weed_hosea", "weed_growtha_stage3", "light_growthb_stage23_upgrade", "weed_hoseb", "weed_growthc_stage3", "light_growthc_stage23_upgrade", "weed_hosec", "weed_growthd_stage3", "light_growthd_stage23_upgrade", "weed_hosed", "weed_growthe_stage3", "light_growthe_stage23_upgrade", "weed_hosee", "weed_growthf_stage3", "light_growthf_stage23_upgrade", "weed_hosef", "weed_growthg_stage3", "light_growthg_stage23_upgrade", "weed_hoseg", "weed_growthh_stage3", "light_growthh_stage23_upgrade", "weed_hoseh", "weed_growthi_stage3", "light_growthi_stage23_upgrade", "weed_hosei", "weed_production", "weed_set_up", "weed_drying", "weed_chairs"},
                 RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_3_biker_dlc_int_ware02_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_weed_warehouse_radio","Radio"),
+                },
                 PropSpawns = new List<PropSpawn>()
                 {
                      new PropSpawn("bkr_prop_weed_table_01a", new SpawnPlace(new Vector3(1036.34f, -3202.96f, -39.12f), 0f)),
+                     new PropSpawn("prop_ghettoblast_02", new SpawnPlace(new Vector3(1030.7f, -3204.5f, -38.142086f), 89f)) {PlaceOnGround = true },
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -9672,7 +9753,18 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                     new CraftInteriorInteract ("DrugLab",new Vector3(1036.391f, -3203.718f, -38.17331f), 356.0549f, "DrugLab")
                     {
                          CraftingFlag = "DrugLab"
-                    }
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "WeedFarmRadio1",
+                        Position = new Vector3(1031.277f, -3204.524f, -38.19125f),
+                        Heading =  88.37627f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1032.336f, -3206.212f, -37.1574f),
+                        CameraDirection = new Vector3(-0.5777964f, 0.7016782f, -0.4168921f),
+                        CameraRotation = new Rotator(-24.63853f, -1.127148E-05f, 39.46973f),
+                    },
                 }
             },
             new BusinessInterior(252673, "Chop Shop")
@@ -9682,6 +9774,10 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorEgressHeading = 180.365f,
                 InteriorSets = new List<string>() { "basic_style_set", "door_blocker"},
                 RequestIPLs = new List<string>() { "imp_impexp_interior_placement_interior_1_impexp_intwaremedmilo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"dlc_ie_warehouse_radio_01","Radio"),
+                },
                 PropSpawns = new List<PropSpawn>()
                 {
                      new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(998.444031f, -3027.13477f, -37.8815155f), 1.99999857f)),
@@ -9701,6 +9797,17 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 {
                     new ExitInteriorInteract("ChopShopExit",new Vector3(970.9332f, -2987.278f, -39.64696f), 0.9743451f,"Exit"),
                     new StandardInteriorInteract("ChopShopStandard",new Vector3(965.5502f, -3003.387f, -39.63989f), 267.6558f,"Manage"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "ChopShopRadio1",
+                        Position = new Vector3(968.4355f, -3000.947f, -39.64696f),
+                        Heading =  91.22874f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(970.0283f, -3002.324f, -38.76684f),
+                        CameraDirection = new Vector3(-0.7414564f, 0.5899757f, -0.3196422f),
+                        CameraRotation = new Rotator(-18.64129f, 7.208352E-06f, 51.49079f),
+                    },
                 },
                 RestInteracts = new List<RestInteract>()
                 {
@@ -9742,16 +9849,32 @@ new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
                 InteriorSets = new List<string>() { "set_carwash_tints"},
                 RequestIPLs = new List<string>() { "m25_1_carwash"},
                 InteriorTintColor = 6,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_m25_1_int_tycoon_car_wash_gtamloroom003","Radio"),
+                },
                 PropSpawns = new List<PropSpawn>()
                 {
                      new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(24.0621262f, -1400.7699f, -74.9999f), -148.739349f)),
                      new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(22.9341831f, -1396.99707f, -74.99724f), 36.6240578f)),
-                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(15.0238409f, -1399.77136f, -72.99987f), -88.05887f)) {PlaceOnGround = true }
+                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(15.0238409f, -1399.77136f, -72.99987f), -88.05887f)) {PlaceOnGround = true },
+                     new PropSpawn("prop_ghettoblast_02", new SpawnPlace(new Vector3(19.56f, -1400f, -73.93f), -90.9999542f)),
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("CarWashExit",new Vector3(26.00592f, -1402.265f, -73.99987f), 170.6572f,"Exit"),
                     new StandardInteriorInteract("CarWashStandard",new Vector3(23.45037f, -1397.562f, -73.99987f), 185.7595f,"Manage"){AutoCamera = false},
+                    new AudioEmitterInteract()
+                    {
+                        Name = "CarWashRadio1",
+                        Position = new Vector3(18.86604f, -1400.047f, -73.98971f),
+                        Heading =  271.4521f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(17.99178f, -1398.559f, -73.0472f),
+                        CameraDirection = new Vector3(0.5267783f, -0.7415139f, -0.4155259f),
+                        CameraRotation = new Rotator(-24.55244f, -3.097527E-05f, -144.6097f),
+                    },
                 },
                 RestInteracts = new List<RestInteract>()
                 {
