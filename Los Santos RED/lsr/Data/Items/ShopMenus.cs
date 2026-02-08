@@ -362,7 +362,20 @@ public class ShopMenus : IShopMenus
     private void DefaultConfig_FullModernTraffic()
     {
         ShopMenuTypes fejPossibleShopMenus = PossibleShopMenus.Copy();
-        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => x.ID != "SandersMenu" && x.ID != "VapidMenu" && x.ID != "KarinMenu" && x.ID != "AlbanyMenu" && x.ID != "PremiumDeluxeMenu" && x.ID != "ElitasMenu" && x.ID != "SunshineMenu" && x.ID != "JDM-X");
+        fejPossibleShopMenus.ShopMenuList.RemoveAll(x => 
+        x.ID != "SandersMenu" 
+        && x.ID != "LuxuryAutosMenu" 
+        && x.ID != "VapidMenu" 
+        && x.ID != "KarinMenu" 
+        && x.ID != "AlbanyMenu" 
+        && x.ID != "PremiumDeluxeMenu"
+        && x.ID != "ElitasMenu" 
+        && x.ID != "SunshineMenu" 
+        && x.ID != "NationalMenu"
+        && x.ID != "PaletoExportMenu"
+
+        && x.ID != "JDM-X"
+        );
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
         if (vapidMenu != null)
         {
@@ -377,21 +390,33 @@ public class ShopMenus : IShopMenus
             vapidMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 12000, 4000));
 
 
-
+            vapidMenu.Items.Add(new MenuItem("Vapid Riata", 45000, 23000));
             vapidMenu.Items.Add(new MenuItem("Vapid Dominator 4th Gen", 25000, 5600));
             vapidMenu.Items.Add(new MenuItem("Vapid Firebolt Stock", 18000, 5000));
         }
-        //KarinMenu
+        //Shops
         ShopMenu karinMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "KarinMenu").FirstOrDefault();
         if (karinMenu != null)
         {
             karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
             karinMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
         }
+
         ShopMenu albanyMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "AlbanyMenu").FirstOrDefault();
         if (albanyMenu != null)
         {
             albanyMenu.Items.Add(new MenuItem("Albany Esperanto", 22000, 10000));
+            albanyMenu.Items.Add(new MenuItem("Albany Presidente", 26000, 12000));
+        }
+
+
+        ShopMenu luxuryAutosMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "LuxuryAutosMenu").FirstOrDefault();
+        if (luxuryAutosMenu != null)
+        {
+            luxuryAutosMenu.Items.Add(new MenuItem("Grotti Brioso AC", 25000, 10000));
+            luxuryAutosMenu.Items.Add(new MenuItem("Pfister Comet Retro", 45000, 13000));
+            luxuryAutosMenu.Items.Add(new MenuItem("Pfister Comet Stock", 75000, 23000));
+            luxuryAutosMenu.Items.Add(new MenuItem("Weeny Issi 2nd Gen", 35000, 12000));
         }
         ShopMenu premiumDeluxMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "PremiumDeluxeMenu").FirstOrDefault();
         if (premiumDeluxMenu != null)
@@ -399,11 +424,20 @@ public class ShopMenus : IShopMenus
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
-            premiumDeluxMenu.Items.Add(new MenuItem("Albany Presidente", 26000, 12000));
+            
             premiumDeluxMenu.Items.Add(new MenuItem("Schyster PMP 600", 36000, 17000));
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 76000, 24500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Bison XL", 31000, 14000));
+
+
+            premiumDeluxMenu.Items.Add(new MenuItem("Annis Hellion Stock", 19000, 3000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Canis Seminole Frontier Stock", 20000, 5000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Declasses Vigero 2nd Gen", 38000, 14000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Canis Kamacho Stock", 79000, 23000));
+
+            premiumDeluxMenu.Items.Add(new MenuItem("Karin S95", 34000, 16000));
+
         }
         ShopMenu sandersMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "SandersMenu").FirstOrDefault();
         if (sandersMenu != null)
@@ -431,6 +465,124 @@ public class ShopMenus : IShopMenus
             }
             menu.Items.RemoveAll(x => x.ModItemName == "Vapid Contender" || x.ModItemName == "Karin Kuruma");
         }
+
+        //Exports
+
+        /*
+         * RICH
+         * "tenf","raiden","schafter2","schafter3","schafter4","comet6","comet7","astron","baller2","baller4","baller7","baller8","cavalcade3","rhinehart","growler",
+                    "tailgater","tailgater2","landstalker2","coquette4","vstr","vectre","cypher","jester4","rebla","xls","drafter","iwagen","niobe","feltzer3","schwarzer",
+                    "sentinel2","serrano","superd","surano","rapidgt","rapidgt2","komoda","dubsta","furia","carbonizzare","paragon","jugular","italigto","jubilee","toros",
+                    "rocoto","voltic","jester","alpha","massacro","coquette2","cognoscenti","baller3","banshee2","bestiagts","cinquemila","deity","huntley","zion3","comet2",
+                    "comet5","corsita","elegy2","furoregt","imorgon","italigto","italirsx","khamelion","locust","lynx","neon","omnisegt","panthere","pariah","schlagen","specter",
+                    "seven70","stingertt","sentinel6","astrale","gauntlet4","novak","rapidgt4","sentinel5",
+                    //FMT
+                    "streiter","civcomet2"
+
+
+
+         * MID
+         * "chavosv6","minimus","sugoi","bison","bjxl","asterope","granger2","aleutian","vivanite","euros","r300","castigator","mesa","speedo","seminole","radi",
+                    "habanero","gresley","bjxl","fq2","surge","terminus","fr36","dominator3","dominator9","buffalo4","kuruma","vigero3","vigero2","blista","shinobi",
+                    "sentinel6","buffalo5",
+                    //FMT
+                    "civissi8","civinterceptor","civstanier2","civcaracarastock","contender","sandking2","riata","everon","civeveron3","civbisonxl","civpmp600","civpresidente",
+                    "civscoutgresk","civgauntletstock","civs95",
+         * 
+         * POOR
+         * "asea","blista","dilettante","minivan","fugitive","prairie","granger","yosemite1500","premier","stanier","washington","penumbra","fusilade","buffalo","buffalo2",
+                    "asterope2","impaler5","youga","woodlander","boor","kanjosj","kanjo","blista2","previon","remus","weevil","patriot","speedo","moonbeam","virgo","paradise",
+                    "stratum","primo","issi2","ingot","keitora",
+                    //FMT
+                    "civdominator7","civmerit","civbobcatoffroad","purge",
+         * 
+         * SUBURB
+         * "trash","streiter","granger2","schafter4","minivan","tailgater2","landstalker2","rhinehart","vivanite","radi","habanero","gresley","keitora",
+                    //work trucks
+                    "bison2","bison3",
+         * TUNERS
+         * "zr350","savestra","zion3","blista2","calico","elegy","elegy2","euros","feltzer2","futo","futo2","jester3","penumbra","rt3000","sentinel3","sentinel4","hardy",
+                    "uranus1","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
+         * SUPER
+         * "adder","cheetah","cyclone","emerus","fmj","furia","gp1","ignus","infernus","italigtb","italigtb2","nero","nero2","osiris","penetrator","pfister811","reaper",
+            "sc1","sheava","t20","tempesta","thrax","tigon","torero2","tyrant","vacca","zorrusso","luiva","fmj2","xtreme","turismor","infernus2","cheetah2","entityxf",
+
+            "champion","autarch","deveste","entity2","entity3","entityxf","krieger","prototipo","taipan","tezeract","turismo3","vagner","virtue","visione","xa21","zeno",
+            "zentorno",*/
+
+        //DID ALL NEW CARS + MID
+        ShopMenu sunshineExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "SunshineMenu").FirstOrDefault();
+        if (sunshineExportMenu != null)
+        {
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Scout", 0, 15000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara Utility", 0, 8000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara 2WD", 0, 9000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Dominator 4th Gen", 0, 3600));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Firebolt Stock", 0, 3000));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 20500));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 0, 20500));
+            sunshineExportMenu.Items.Add(new MenuItem("Albany Esperanto", 0, 5000));      
+            sunshineExportMenu.Items.Add(new MenuItem("Pfister Comet Stock", 0, 18000));        
+            sunshineExportMenu.Items.Add(new MenuItem("Bravado Bison XL", 0, 9000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Hellion Stock", 0, 1000));
+            sunshineExportMenu.Items.Add(new MenuItem("Declasse Vigero 2nd Gen", 0, 9000));
+            sunshineExportMenu.Items.Add(new MenuItem("Western Gargoyle Cruiser", 0, 2800));
+            sunshineExportMenu.Items.Add(new MenuItem("Dinka Chavos V6", 0, 12500));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Minimus", 0, 10500));
+            sunshineExportMenu.Items.Add(new MenuItem("Dinka Sugoi", 0, 8000));
+            sunshineExportMenu.Items.Add(new MenuItem("Declasse Granger 3600LX", 0, 19000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Aleutian", 0, 18000));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Vivanite", 0, 8000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Euros", 0, 7000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis 300R", 0, 7000));         
+        }
+
+        ShopMenu nationalExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "NationalMenu").FirstOrDefault();
+        if (nationalExportMenu != null)
+        {
+            nationalExportMenu.Items.Add(new MenuItem("Schyster PMP 600", 0, 12000));
+            nationalExportMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 0, 9500));
+            nationalExportMenu.Items.Add(new MenuItem("Canis Kamacho Stock", 0, 17000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Caracara SX3 4WD", 0, 9000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 0, 2000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 0, 2000));
+            nationalExportMenu.Items.Add(new MenuItem("Grotti Brioso AC", 0, 5000));
+            nationalExportMenu.Items.Add(new MenuItem("Pfister Comet Retro", 0, 8000));
+            nationalExportMenu.Items.Add(new MenuItem("Nagasaki Shinobi", 0, 3000));
+            nationalExportMenu.Items.Add(new MenuItem("Ubermacht Sentinel XS4", 0, 4500));
+            nationalExportMenu.Items.Add(new MenuItem("Bravado Buffalo STX", 0, 15000));
+            nationalExportMenu.Items.Add(new MenuItem("Weeny Issi 2nd Gen", 0, 5000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Riata", 0, 13000));
+            nationalExportMenu.Items.Add(new MenuItem("Karin S95", 0, 6000));
+        }
+
+        ShopMenu paletoExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "PaletoExportMenu").FirstOrDefault();
+        if (paletoExportMenu != null)
+        {
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Merit", 0, 4800));
+            paletoExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 20500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Seminole Frontier Stock", 0, 2000));
+            paletoExportMenu.Items.Add(new MenuItem("Western Sovereign Cruiser", 0, 6000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Gemini", 0, 10000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Sadler 4WD", 0, 7000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 0, 7000));
+            paletoExportMenu.Items.Add(new MenuItem("Albany Presidente", 0, 7000));
+            paletoExportMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 0, 19500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Castigator", 0, 6500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Terminus", 0, 9500));
+            paletoExportMenu.Items.Add(new MenuItem("Fathom FR36", 0, 12500));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Dominator GT", 0, 14000));
+            paletoExportMenu.Items.Add(new MenuItem("Bravado Buffalo EVX", 0, 19000));
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX Convertible", 0, 17000));
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX", 0, 18000));
+        }
+
+        ShopMenu jdmExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "JDM-X").FirstOrDefault();
+        if (jdmExportMenu != null)
+        {
+            jdmExportMenu.Items.Add(new MenuItem("Maibatsu Kuruma", 0, 9000));
+        }
+
         ShopMenuTypes final = new ShopMenuTypes();
         final.ShopMenuList.AddRange(fejPossibleShopMenus.ShopMenuList);
         Serialization.SerializeParam(final, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ShopMenus+_FullModernTraffic.xml");
@@ -665,7 +817,6 @@ public class ShopMenus : IShopMenus
         SetupClothingStoreMenus();
         Serialization.SerializeParam(PossibleShopMenus, ConfigFileName);
     }
-
     private void SetupClothingStoreMenus()
     {
         ShopMenus_Clothing shopMenus_Clothing = new ShopMenus_Clothing();
@@ -676,7 +827,6 @@ public class ShopMenus : IShopMenus
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.HelmetShopMenu);
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.FreakMaskShopMenu);
     }
-
     private void SetupPedVariationMenus()
     {
         PedVariationShopMenu pedVariationShopMenu = new PedVariationShopMenu();
@@ -2375,6 +2525,7 @@ public class ShopMenus : IShopMenus
         //Dinka
         new MenuItem("Dinka Jester RR Widebody",150000,45000),
         new MenuItem("Dinka Chavos V6",34000,19000),
+        new MenuItem("Dinka Sugoi",32000,13000),
 
         //Declasse
         new MenuItem("Declasse Asea",19000,8000),
@@ -2882,7 +3033,7 @@ public class ShopMenus : IShopMenus
     private void SpecificVehicleExporters()
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
-new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
+        new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
         new MenuItem("Vapid Dominator",55000,10000),
 
         new MenuItem("Albany Alpha",0,8500),
@@ -3194,7 +3345,6 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
 });
     }
-
     private void DrugDealerMenus()
     {
 

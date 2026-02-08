@@ -221,13 +221,14 @@ public class ModItems : IModItems
     {
         PossibleItems newPossibleItems = new PossibleItems();//PossibleItems.Copy();
 
-        //
+        //Service
         newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Headmaster", ItemType.Vehicles) { ModelName = "civsbus" });
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Moving Van", false, ItemType.Vehicles) { OverrideMakeName = "Brute", ModelName = "civmovingvan" });
         //Motorcycles
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Sovereign Cruiser", ItemType.Vehicles) { ModelName = "civsovereign2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Gargoyle Cruiser", ItemType.Vehicles) { ModelName = "civgargoylestock" });
         //Muscle
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasses Vigero 2nd Gen", ItemType.Vehicles) { ModelName = "civvigero2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Gauntlet R/T", ItemType.Vehicles) { ModelName = "civgauntletstock" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Dominator 4th Gen", ItemType.Vehicles) { ModelName = "civdominator7" });
         //Sedans
@@ -238,44 +239,36 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Maibatsu Kuruma", ItemType.Vehicles) { OverrideMakeName = "Maibatsu", OverrideClassName = "Sedan", ModelName = "kuruma", Description = "The perfect car to go with your flesh tunnel earrings, frosted spikes, and oversize jeans. Buy this and you'll never fail to be mistaken for a small town drug dealer again.", });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Merit", ItemType.Vehicles) { OverrideMakeName = "Declasse", OverrideClassName = "Sedan", ModelName = "civmerit" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Cheval Purge", ItemType.Vehicles) { OverrideMakeName = "Cheval", OverrideClassName = "Sedan", ModelName = "purge", Description = "After all the yuppies in Vinewood decided they wanted Karin and Coil electric vehicles, we stuck a small underpowered gasoline engine in our floundering SURGE to minimize the losses.", });
-
-
         newPossibleItems.VehicleItems.Add(new VehicleItem("Schyster PMP 600", ItemType.Vehicles) { OverrideMakeName = "Schyster", OverrideClassName = "Sedan", ModelName = "civpmp600" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin S95", ItemType.Vehicles) { OverrideMakeName = "Karin", OverrideClassName = "Sedan", ModelName = "civs95" });
-
+        //Compacts
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Grotti Brioso AC", ItemType.Vehicles) { ModelName = "civbrioso" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Weeny Issi 2nd Gen", ItemType.Vehicles) { ModelName = "civissi8" });
+        //Sport
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Pfister Comet Stock", ItemType.Vehicles) { ModelName = "civcomet2" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Pfister Comet Retro", ItemType.Vehicles) { ModelName = "civcomet4" });
         //Trucks
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Contender 4x4", ItemType.Vehicles) { ModelName = "civcontenderiv" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Firebolt Stock", ItemType.Vehicles) { ModelName = "civfireboltstock" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Sadler 4WD", ItemType.Vehicles) { ModelName = "civsadleroffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara Utility", ItemType.Vehicles) { ModelName = "civcaracarautil" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara 2WD", ItemType.Vehicles) { ModelName = "civcaracarawork" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Caracara SX3 4WD", ItemType.Vehicles) { ModelName = "civcaracarastock" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Bravado Bison XL", ItemType.Vehicles) { ModelName = "civbisonxl", OverrideLoadBodiesInBed = true, BedLoadOffsetOverride = new Vector3(0f, -1.5f, 1.25f) });
-            
-
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat 4x4", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatoffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat Regular Bed", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatwork" });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
-
-
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveron3" });
-
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Kamacho Stock", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "civkamacho" });
-
-
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });
-
         //SUV
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Scout", false, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "civscoutgresk" });
-
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Annis Hellion Stock", false, ItemType.Vehicles) { ModelName = "civhellion" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Seminole Frontier Stock", false, ItemType.Vehicles) { ModelName = "civseminole2" });
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
-
-
-        //Other
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Moving Van", false, ItemType.Vehicles) { OverrideMakeName = "Brute", ModelName = "civmovingvan" });
-
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\ModItems+_FullModernTraffic.xml");
     }
     private void DefaultConfig_LosSantos2008()
