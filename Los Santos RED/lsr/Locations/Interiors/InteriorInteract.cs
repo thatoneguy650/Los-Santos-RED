@@ -68,9 +68,8 @@ public class InteriorInteract
     public bool UseNavmesh { get; set; } = true;
     public bool WithWarp { get; set; } = false;
     public bool ForceIsntantCamera { get; set; } = false;
-
-
     public bool IsAutoInteract { get; set; } = false;
+    public virtual int MarkerType { get; set; } = 0;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
     
     public virtual bool ShouldHideMarker { get; set; } = false;

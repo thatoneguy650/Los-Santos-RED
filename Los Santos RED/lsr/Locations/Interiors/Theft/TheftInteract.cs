@@ -37,7 +37,7 @@ public class TheftInteract : InteriorInteract
     public virtual bool HasPreInteractRequirement { get; set; } = false;
     public virtual ItemUsePreInteract ItemUsePreInteract { get; set; }
 
-
+    public override int MarkerType { get; set; } = 29;
     public TheftInteract()
     {
 

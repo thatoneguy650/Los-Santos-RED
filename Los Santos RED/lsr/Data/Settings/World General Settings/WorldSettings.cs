@@ -83,7 +83,6 @@ public class WorldSettings : ISettingsDefaultable
     public bool SetVanillaTaxiSuppressed { get; set; }
     public bool CreateObjectLocationsFromScanning { get; set; }
     public bool ShowMarkersInInteriors { get; set; }
-    public int InteriorMarkerType { get; set; }
     public float InteriorMarkerZOffset { get; set; }
     public float InteriorMarkerScale { get; set; }
     [Description("If enabled, LSR will cancel a vehicle spawn if there is a mission entity within a certain radius")]
@@ -165,7 +164,6 @@ public class WorldSettings : ISettingsDefaultable
         // SetReducedPropsOnMap = true;
         CreateObjectLocationsFromScanning = false;
         ShowMarkersInInteriors = true;
-        InteriorMarkerType = 0;
         InteriorMarkerZOffset = 0.2f;
         InteriorMarkerScale = 0.25f;
 

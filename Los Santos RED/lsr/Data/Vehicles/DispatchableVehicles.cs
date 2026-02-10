@@ -26,6 +26,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private string SecurityTorrence = "lurcher";
     private string PoliceGauntlet = "polgauntlet";
     private string ServiceDilettante = "dilettante2";
+    private float ImportExportSpawnPercentage = 65f;
 
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchableVehicles.xml";
     private List<DispatchableVehicleGroup> VehicleGroupLookup = new List<DispatchableVehicleGroup>();
@@ -126,7 +127,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
     public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
-    public void ReadConfig(string configName)
+    public void ReadConfig(string configName, IShopMenus shopMenus)
     {
         string fileName = string.IsNullOrEmpty(configName) ? "DispatchableVehicles_*.xml" : $"DispatchableVehicles_{configName}.xml";
 
@@ -146,11 +147,15 @@ public class DispatchableVehicles : IDispatchableVehicles
         {
             EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
             BaseVehicleGroups();
+
+            //SyncExportSpawnsToShopMenus(shopMenus);
+
+            DefaultConfig();
             DefaultConfig_Simple();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_LosSantos_2008();
             DefaultConfig_FullModernTraffic();
-            DefaultConfig();
+            
             DefaultConfig_LibertyCity();
             DefaultConfig_LPP();
         }
@@ -164,13 +169,46 @@ public class DispatchableVehicles : IDispatchableVehicles
         }
     }
 
-    public void Setup(IPlateTypes plateTypes)
+    public void Setup(IPlateTypes plateTypes, IShopMenus shopMenus)
     {
-        foreach(DispatchableVehicleGroup dvg in VehicleGroupLookup)
+        foreach (DispatchableVehicleGroup dvg in VehicleGroupLookup)
         {
-            foreach(DispatchableVehicle dv in dvg.DispatchableVehicles)
+            foreach (DispatchableVehicle dv in dvg.DispatchableVehicles)
             {
                 dv.Setup(plateTypes);
+            }
+        }
+    }
+    private void SyncExportSpawnsToShopMenus(IShopMenus shopMenus)
+    {
+        DispatchableVehicleGroup exportDVG = VehicleGroupLookup.Where(x => x.DispatchableVehicleGroupID == "ImportExportVehicles").FirstOrDefault();
+        if (exportDVG == null)
+        {
+            return;
+        }
+        List<string> vehicleNames = new List<string>();
+        foreach (ShopMenu shopMenu in shopMenus.PossibleShopMenus.ShopMenuList.Where(x => x.ID == "SunshineMenu" || x.ID == "NationalMenu" || x.ID == "PaletoExportMenu"))
+        {
+            foreach (MenuItem menuItem in shopMenu.Items)
+            {
+                if (menuItem.ModItem.GetType() == typeof(VehicleItem))
+                {
+                    VehicleItem vehicle = (VehicleItem)menuItem.ModItem;
+
+                    if (!vehicleNames.Contains(vehicle.ModelName))
+                    {
+                        vehicleNames.Add(vehicle.ModelName);
+                    }
+
+                }
+            }
+        }
+        foreach (string vehicleName in vehicleNames)
+        {
+            if (!exportDVG.DispatchableVehicles.Where(x => x.ModelName.ToLower() == vehicleName.ToLower()).Any())
+            {
+                exportDVG.DispatchableVehicles.Add(new DispatchableVehicle(vehicleName, 10, 0) { SetRandomCustomization = true, RandomCustomizationPercentage = ImportExportSpawnPercentage });
+                EntryPoint.WriteToConsole($"ADDING TO EXPORT VEHICLES MENU {vehicleName}");
             }
         }
     }
@@ -614,7 +652,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         HigginsVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("maverick2", 100, 100) { },
         };
-        float ImportExportSpawnPercentage = 65f;
+        
         ImportExportVehicles = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("banshee2",10,0) { SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
@@ -638,6 +676,42 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("previon",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
             new DispatchableVehicle("sheava",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = ImportExportSpawnPercentage },
         };
+
+
+        List<string> additionalCarSpawns = new List<string>() {
+
+            //Super
+        "adder","cheetah","cyclone","emerus","fmj","furia","gp1","ignus","infernus","italigtb","italigtb2","nero","nero2","osiris","penetrator","pfister811","reaper",
+            "sc1","sheava","t20","tempesta","thrax","tigon","torero2","tyrant","vacca","zorrusso","luiva","fmj2","xtreme","turismor","infernus2","cheetah2","entityxf",
+
+            "champion","autarch","deveste","entity2","entity3","entityxf","krieger","prototipo","taipan","tezeract","turismo3","vagner","virtue","visione","xa21","zeno",
+            "zentorno",
+            //Tuners
+            "zr350","savestra","zion3","blista2","calico","elegy","elegy2","euros","feltzer2","futo","futo2","jester3","penumbra","rt3000","sentinel3","sentinel4","hardy",
+                    "uranus1","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
+            //RIch
+            "tenf","raiden","schafter2","schafter3","schafter4","comet6","comet7","astron","baller2","baller4","baller7","baller8","cavalcade3","rhinehart","growler",
+                    "tailgater","tailgater2","landstalker2","coquette4","vstr","vectre","cypher","jester4","rebla","xls","drafter","iwagen","niobe","feltzer3","schwarzer",
+                    "sentinel2","serrano","superd","surano","rapidgt","rapidgt2","komoda","dubsta","furia","carbonizzare","paragon","jugular","italigto","jubilee","toros",
+                    "rocoto","voltic","jester","alpha","massacro","coquette2","cognoscenti","baller3","banshee2","bestiagts","cinquemila","deity","huntley","zion3","comet2",
+                    "comet5","corsita","elegy2","furoregt","imorgon","italigto","italirsx","khamelion","locust","lynx","neon","omnisegt","panthere","pariah","schlagen","specter",
+                    "seven70","stingertt","sentinel6","astrale","gauntlet4","novak","rapidgt4","sentinel5",
+
+               
+
+        };
+
+        foreach(string fmtSuperCar in additionalCarSpawns)
+        {
+            if(ImportExportVehicles.Any(x=> x.ModelName.ToLower() == fmtSuperCar.ToLower()))
+            {
+                continue;
+            }
+            ImportExportVehicles.Add(new DispatchableVehicle(fmtSuperCar, 10, 0) { SetRandomCustomization = true, RandomCustomizationPercentage = ImportExportSpawnPercentage });
+        }
+
+
+
         float HighEndSpawnPercentage = 35f;
         HighEndVehicles = new List<DispatchableVehicle>()
         {
@@ -674,6 +748,33 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("cheetah3",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
             new DispatchableVehicle("coquette6",10,0){ SetRandomCustomization = true,RandomCustomizationPercentage = HighEndSpawnPercentage },
         };
+        List<string> highEndCarSpawns = new List<string>() {
+
+            //Super
+        "adder","cheetah","cyclone","emerus","fmj","furia","gp1","ignus","infernus","italigtb","italigtb2","nero","nero2","osiris","penetrator","pfister811","reaper",
+            "sc1","sheava","t20","tempesta","thrax","tigon","torero2","tyrant","vacca","zorrusso","luiva","fmj2","xtreme","turismor","infernus2","cheetah2","entityxf",
+
+            "champion","autarch","deveste","entity2","entity3","entityxf","krieger","prototipo","taipan","tezeract","turismo3","vagner","virtue","visione","xa21","zeno",
+            "zentorno",
+
+            //RIch
+            "tenf","raiden","schafter2","schafter3","schafter4","comet6","comet7","astron","baller2","baller4","baller7","baller8","cavalcade3","rhinehart","growler",
+                    "tailgater","tailgater2","landstalker2","coquette4","vstr","vectre","cypher","jester4","rebla","xls","drafter","iwagen","niobe","feltzer3","schwarzer",
+                    "sentinel2","serrano","superd","surano","rapidgt","rapidgt2","komoda","dubsta","furia","carbonizzare","paragon","jugular","italigto","jubilee","toros",
+                    "rocoto","voltic","jester","alpha","massacro","coquette2","cognoscenti","baller3","banshee2","bestiagts","cinquemila","deity","huntley","zion3","comet2",
+                    "comet5","corsita","elegy2","furoregt","imorgon","italigto","italirsx","khamelion","locust","lynx","neon","omnisegt","panthere","pariah","schlagen","specter",
+                    "seven70","stingertt","sentinel6","astrale","gauntlet4","novak","rapidgt4","sentinel5",
+
+
+        };
+        foreach (string fmtSuperCar in highEndCarSpawns)
+        {
+            if (ImportExportVehicles.Any(x => x.ModelName.ToLower() == fmtSuperCar.ToLower()))
+            {
+                continue;
+            }
+            ImportExportVehicles.Add(new DispatchableVehicle(fmtSuperCar, 10, 0) { SetRandomCustomization = true, RandomCustomizationPercentage = ImportExportSpawnPercentage });
+        }
 
         float OneOffVehiclesSpawnPercentage = 35f;
         OneOffVehicles = new List<DispatchableVehicle>()
@@ -1488,8 +1589,53 @@ public class DispatchableVehicles : IDispatchableVehicles
                 }
             },
         };
-        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("WeazelVehicles", WeazelVehicles_FMT));
+
         FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("HigginsVehicles", HigginsVehicles_FMT));
+
+
+        List<string> additionalCarSpawns = new List<string>() 
+        {
+            "civissi8","civinterceptor","civstanier2","civcaracarastock","contender","sandking2","riata","everon","civeveron3","civbisonxl","civpmp600","civpresidente",
+                    "civscoutgresk","civgauntletstock","civs95","streiter","civcomet2","civcomet4",
+        };
+        EntryPoint.WriteToConsole($"VehicleGroupLookup COUNT! {VehicleGroupLookup.Count()}");
+
+
+        DispatchableVehicleGroup importVehGroup = VehicleGroupLookup.Where(x => x.DispatchableVehicleGroupID == "ImportExportVehicles").FirstOrDefault();
+        if(importVehGroup != null)
+        {
+            DispatchableVehicleGroup importVehGroupFMT = ExtensionsMethods.Extensions.DeepCopy(importVehGroup);
+            foreach (string fmtSuperCar in additionalCarSpawns)
+            {
+                if (importVehGroupFMT.DispatchableVehicles.Any(x => x.ModelName.ToLower() == fmtSuperCar.ToLower()))
+                {
+                    continue;
+                }
+                importVehGroupFMT.DispatchableVehicles.Add(new DispatchableVehicle(fmtSuperCar, 10, 0) { SetRandomCustomization = true, RandomCustomizationPercentage = ImportExportSpawnPercentage });
+            }
+            FMTVehicleGroupLookup.Add(importVehGroupFMT);
+        }
+
+
+        List<string> highEndCarSpawns = new List<string>() 
+        {
+            "streiter","civcomet2","civcomet4",
+        };
+        DispatchableVehicleGroup highEndVehGroup = VehicleGroupLookup.Where(x => x.DispatchableVehicleGroupID == "HighEndVehicles").FirstOrDefault();
+        if (highEndVehGroup != null)
+        {
+            DispatchableVehicleGroup highEndVehGroupFMT = ExtensionsMethods.Extensions.DeepCopy(highEndVehGroup);
+            foreach (string fmtSuperCar in highEndCarSpawns)
+            {
+                if (highEndVehGroupFMT.DispatchableVehicles.Any(x => x.ModelName.ToLower() == fmtSuperCar.ToLower()))
+                {
+                    continue;
+                }
+                highEndVehGroupFMT.DispatchableVehicles.Add(new DispatchableVehicle(fmtSuperCar, 10, 0) { SetRandomCustomization = true, RandomCustomizationPercentage = ImportExportSpawnPercentage });
+            }
+            FMTVehicleGroupLookup.Add(highEndVehGroupFMT);
+        }
+
         Serialization.SerializeParam(FMTVehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\DispatchableVehicles+_FullModernTraffic.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()

@@ -74,6 +74,10 @@ public enum eCustomDrivingStyles : int
 
 	RacingNew2 = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int) VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
 
+
+    CopRacingNew2Based = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int)VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_SteerAroundPeds | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | (int)VehicleDrivingFlags.AllowWrongWay | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | (int)VanillaDrivingStyles.DF_UseSwitchedOffNodes,
+
+
     DrunkDriving = VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | VanillaDrivingStyles.DF_UseWanderFallbackInsteadOfStraightLine | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | VanillaDrivingStyles.DF_SwerveAroundAllCars,
     RecklessDriving = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
     SpeedingDriving = VanillaDrivingStyles.DF_SwerveAroundAllCars | VanillaDrivingStyles.DF_StopAtLights | VanillaDrivingStyles.DF_SteerAroundObjects | VanillaDrivingStyles.DF_UseShortCutLinks | VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,

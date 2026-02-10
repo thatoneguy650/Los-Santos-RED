@@ -160,7 +160,7 @@ public class InteriorManager
             }
             foreach(InteriorInteract interiorInteract in location.Interior.AllInteractPoints)
             {
-                interiorInteract.DisplayMarker(Settings.SettingsManager.WorldSettings.InteriorMarkerType, Settings.SettingsManager.WorldSettings.InteriorMarkerZOffset, Settings.SettingsManager.WorldSettings.InteriorMarkerScale);
+                interiorInteract.DisplayMarker(interiorInteract.MarkerType, Settings.SettingsManager.WorldSettings.InteriorMarkerZOffset, Settings.SettingsManager.WorldSettings.InteriorMarkerScale);
             }
         }
     }
