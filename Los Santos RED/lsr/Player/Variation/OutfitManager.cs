@@ -402,6 +402,10 @@ public class OutfitManager
 
         };
     }
+    public void Reset()
+    {
+
+    }
     public void Dispose()
     {
         clothingPurchaseMenuProcess?.Dispose();
@@ -568,7 +572,6 @@ public class OutfitManager
         }
         return TorsoLookup.MatchingTorsoComponenetID;
     }
-
     private bool GetIsHelmetOn()
     {
         if (Player.CurrentModelVariation.Helmet == null)
@@ -619,6 +622,10 @@ public class OutfitManager
         {
             int PropIndex = NativeFunction.Natives.GET_PED_PROP_INDEX<int>(Player.Character, 0);
             HasMaskOn = PropIndex == DefaultMaskDrawableID;
+        }
+        else
+        {
+            HasMaskOn = false;
         }
         EntryPoint.WriteToConsole($"UpdateMaskCheck HasMaskOn {HasMaskOn}");
     }

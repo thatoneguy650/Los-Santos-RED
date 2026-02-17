@@ -287,6 +287,9 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSPD-ELS","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
+            new ZoneJurisdiction("LSPD-ELS","CYPRE2", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","CYPRE2", 0, 100, 100),
+
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD-DP","DELBE", 0, 80, 100),
@@ -549,6 +552,9 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSPD-ELS","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
+            new ZoneJurisdiction("LSPD-ELS","CYPRE2", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","CYPRE2", 0, 100, 100),
+
             new ZoneJurisdiction("LSSD-DV","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DAVIS", 0, 100, 100),
 
@@ -799,6 +805,9 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("LSPD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
+
+            new ZoneJurisdiction("LSPD","CYPRE2", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","CYPRE2", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
 
@@ -1149,6 +1158,8 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("LSPD-ELS","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD-ELS","CYPRE2", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","CYPRE2", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
 
@@ -1505,6 +1516,8 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("LSPD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","CYPRE2", 0, 100, 100),
+            new ZoneJurisdiction("LSMC","CYPRE2", 0, 100, 100),
 
             new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
 

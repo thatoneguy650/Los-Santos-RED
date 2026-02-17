@@ -180,6 +180,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_ANCELOTTI","CHU", 0, 100),//Chumash
             //new GangTerritory("LSMC","CMSW", 0, 100),
             new GangTerritory("AMBIENT_GANG_MEXICAN","CYPRE", 0, 100),//Cypress Flats
+            new GangTerritory("AMBIENT_GANG_MEXICAN","CYPRE2", 0, 100),//Cypress Flats
             new GangTerritory("AMBIENT_GANG_BALLAS","DAVIS", 0, 100),
             // new GangTerritory("AMBIENT_GANG_FAMILY","DAVIS", 1, 50),
             //new GangTerritory("LSMC","DELBE", 0, 100),
@@ -447,6 +448,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_KKANGPAE", "KOREAT", 0, 100),//Little Seoul
 
             new GangTerritory("AMBIENT_GANG_MEXICAN", "CYPRE", 0, 100),//Cypress Flats
+            new GangTerritory("AMBIENT_GANG_MEXICAN", "CYPRE2", 0, 100),//Cypress Flats
             new GangTerritory("AMBIENT_GANG_MEXICAN", "RANCHO", 1, 50),//south rancho?
             new GangTerritory("AMBIENT_GANG_MEXICAN", "SANAND", 0, 100),//broken zone in east LS
 
@@ -498,6 +500,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_FAMILY","CHAMH", 0, 100),//chamberlain hills
             new GangTerritory("AMBIENT_GANG_MADRAZO","CHIL", 0, 100),//Vinewood Hills
             new GangTerritory("AMBIENT_GANG_MEXICAN","CYPRE", 0, 100),//Cypress Flats
+            new GangTerritory("AMBIENT_GANG_MEXICAN","CYPRE2", 0, 100),//Cypress Flats
             new GangTerritory("AMBIENT_GANG_BALLAS","DAVIS", 0, 100),
             new GangTerritory("AMBIENT_GANG_LOST","DESRT", 0, 100),//grande senora desert
             new GangTerritory("AMBIENT_GANG_LOST","EAST_V", 0, 100),//East Vinewood

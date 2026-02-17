@@ -12,6 +12,7 @@ public class OutfitInteract : InteriorInteract
 {
     [XmlIgnore]
     public IOutfitableLocation OutfitableLocation { get; set; }
+    public override int MarkerType { get; set; } = 24;
     public OutfitInteract()
     {
     }

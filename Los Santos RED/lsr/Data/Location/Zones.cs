@@ -218,6 +218,16 @@ public class Zones : IZones
             new Zone("TATAMO", "Tataviam Mountains", StaticStrings.LosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Wilderness),
             new Zone("WINDF", "Ron Alternates Wind Farm", StaticStrings.LosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
+            new Zone("CYPRE2", "Cypress Industrial", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial)
+            {
+                DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID,Boundaries =
+                new Vector2[] {
+                    new Vector2(935.9811f, -1902.274f),
+                    new Vector2(1120.571f, -1891.891f),
+                    new Vector2(1063.934f, -1708.617f),
+                    new Vector2(917.0331f, -1723.506f),
+                },
+            },
 
 
             //UNKNWON 
