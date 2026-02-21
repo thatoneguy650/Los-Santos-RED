@@ -1633,7 +1633,7 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("LSSD","RTRAK", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
+            //new ZoneJurisdiction("LSSD","SANAND", 0, 100, 100),
 
             new ZoneJurisdiction("SAPR","SANCHIA", 0, 51, 35),
             new ZoneJurisdiction("LSSD","SANCHIA", 1, 49, 65),

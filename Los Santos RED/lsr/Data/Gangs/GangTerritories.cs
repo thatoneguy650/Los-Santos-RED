@@ -241,7 +241,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_MESSINA","RICHM", 0, 100),//Richman
             //new GangTerritory("AMBIENT_GANG_MESSINA","ROCKF", 0, 100),//Rockford Hills
             //new GangTerritory("LSMC","RTRAK", 0, 100),
-            new GangTerritory("AMBIENT_GANG_MEXICAN","SANAND", 0, 100),//broken zone in east LS
+            //new GangTerritory("AMBIENT_GANG_MEXICAN","SANAND", 0, 100),//broken zone in east LS
             //new GangTerritory("LSMC","SANCHIA", 0, 100),
             new GangTerritory("AMBIENT_GANG_HILLBILLY","SANDY", 0, 100),//Sandy Shores
             new GangTerritory("AMBIENT_GANG_BALLAS","SKID", 0, 100),//Mission Row
@@ -450,7 +450,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_MEXICAN", "CYPRE", 0, 100),//Cypress Flats
             new GangTerritory("AMBIENT_GANG_MEXICAN", "CYPRE2", 0, 100),//Cypress Flats
             new GangTerritory("AMBIENT_GANG_MEXICAN", "RANCHO", 1, 50),//south rancho?
-            new GangTerritory("AMBIENT_GANG_MEXICAN", "SANAND", 0, 100),//broken zone in east LS
+            //new GangTerritory("AMBIENT_GANG_MEXICAN", "SANAND", 0, 100),//broken zone in east LS
 
             new GangTerritory("AMBIENT_GANG_ARMENIAN", "LOSPUER", 0, 100),//La Puerta
 
@@ -519,7 +519,7 @@ public class GangTerritories : IGangTerritories
             new GangTerritory("AMBIENT_GANG_SALVA","RANCHO", 0, 50),//north rancho?
 
             new GangTerritory("AMBIENT_GANG_MESSINA","RICHM", 0, 100),//Richman
-            new GangTerritory("AMBIENT_GANG_MEXICAN","SANAND", 0, 100),//broken zone in east LS
+            //new GangTerritory("AMBIENT_GANG_MEXICAN","SANAND", 0, 100),//broken zone in east LS
             new GangTerritory("AMBIENT_GANG_HILLBILLY","SANDY", 0, 100),//Sandy Shores
             new GangTerritory("AMBIENT_GANG_BALLAS","SKID", 0, 100),//Mission Row
             new GangTerritory("AMBIENT_GANG_LOST","SLAB", 0, 100),//stab city aka slab city
