@@ -95,7 +95,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeapon weaponNanoPistol = new IssuableWeapon("weapon_nanopistol",
             new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), new WeaponComponent("Suppressor"), }), 45);
 
-        IssuableWeapon weaponMustangeRevolver = new IssuableWeapon("weapon_mustangerev", new WeaponVariation(), 65);
+        IssuableWeapon weaponMustangRevolver = new IssuableWeapon("weapon_mustangrev", new WeaponVariation(), 65);
 
         //COPS
         List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
@@ -176,21 +176,21 @@ public class IssueableWeapons : IIssuableWeapons
 
 
         //NEW
-        weaponMustangeRevolver.SpawnChance = 45;
+        weaponMustangRevolver.SpawnChance = 45;
         List<IssuableWeapon> LSSDSidearms_Modern = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
-            weaponMustangeRevolver,
+            weaponMustangRevolver,
         };
-        weaponMustangeRevolver.SpawnChance = 10;
+        weaponMustangRevolver.SpawnChance = 10;
         List<IssuableWeapon> LSPDSidearms_Modern = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(), 65),
             new IssuableWeapon("weapon_combatpistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 65),
             new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(), 95),
             new IssuableWeapon("weapon_pistol_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )}), 95),
-            weaponMustangeRevolver,
+            weaponMustangRevolver,
         };
         List<IssuableWeapon> LSPDLongGuns_Modern = new List<IssuableWeapon>()
         {
@@ -255,13 +255,13 @@ public class IssueableWeapons : IIssuableWeapons
         List<IssuableWeapon> TriadsSidearms_Modern = ExtensionsMethods.Extensions.DeepCopy(TriadsSidearms);
 
 
-        weaponMustangeRevolver.SpawnChance = 65;
+        weaponMustangRevolver.SpawnChance = 65;
         weaponNanoPistol.SpawnChance = 45;
 
         FamiliesSidearms_Modern.Add(weaponNanoPistol);
 
         BallasSidearms_Modern.Add(weaponNanoPistol);
-        BallasSidearms_Modern.Add(weaponMustangeRevolver);
+        BallasSidearms_Modern.Add(weaponMustangRevolver);
 
         VagosSidearms_Modern.Add(weaponNanoPistol);
 
@@ -270,7 +270,7 @@ public class IssueableWeapons : IIssuableWeapons
         MarabuntaSidearms_Modern.Add(weaponNanoPistol);
 
         LostSidearms_Modern.Add(weaponNanoPistol);
-        LostSidearms_Modern.Add(weaponMustangeRevolver);
+        LostSidearms_Modern.Add(weaponMustangRevolver);
 
         KkangpaeSidearms_Modern.Add(weaponNanoPistol);
 

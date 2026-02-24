@@ -196,6 +196,43 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
         int payoutAmount = payout * daysSinceLastPayment / PayoutFrequency;
         return payoutAmount;
     }
+    //public void Payout(IPropertyOwnable player, ITimeReportable time)
+    //{
+    //    try
+    //    {
+    //        if (player == null)
+    //        {
+    //            return;
+    //        }
+    //        int daysSinceLastPayment = (time.CurrentDateTime - DatePayoutPaid).Days;
+    //        DatePayoutPaid = time.CurrentDateTime;
+    //        DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
+
+    //        if (IsPayoutInModItems)
+    //        {
+    //            ModItem itemToAdd = ModItems.Get(ModItemToPayout);
+    //            int payoutAmount = (daysSinceLastPayment / PayoutFrequency) * ModItemPayoutAmount;
+    //            if(payoutAmount>0)
+    //            {
+    //                SimpleInventory.Add(itemToAdd, payoutAmount);
+    //                UpdateSalesPrice();
+    //            }
+    //        }
+    //        else
+    //        {
+    //            int payoutAmount = CalculatePayoutAmount(daysSinceLastPayment);
+    //            CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
+    //            UpdateSalesPrice();
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
+    //        Game.DisplayNotification($"ERROR in Payout {ex.Message}");
+    //    }
+    //}
+
+
     public void Payout(IPropertyOwnable player, ITimeReportable time)
     {
         try
@@ -204,31 +241,33 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
             {
                 return;
             }
-            int daysSinceLastPayment = (time.CurrentDateTime - DatePayoutPaid).Days;
-            DatePayoutPaid = time.CurrentDateTime;
-            DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);
-
+            double daysElapsed = (time.CurrentDateTime - DatePayoutPaid).TotalDays;
+            if(daysElapsed < PayoutFrequency)
+            {
+                return;
+            }
+            int completedCycles = (int)(daysElapsed / PayoutFrequency);
             if (IsPayoutInModItems)
             {
                 ModItem itemToAdd = ModItems.Get(ModItemToPayout);
-                int payoutAmount = (daysSinceLastPayment / PayoutFrequency) * ModItemPayoutAmount;
-                if(payoutAmount>0)
+                int totalItems = completedCycles * ModItemPayoutAmount;
+                if (totalItems > 0)
                 {
-                    SimpleInventory.Add(itemToAdd, payoutAmount);
-                    UpdateSalesPrice();
+                    SimpleInventory.Add(itemToAdd, totalItems);
                 }
             }
             else
             {
-                int payoutAmount = CalculatePayoutAmount(daysSinceLastPayment);
-                CashStorage.StoredCash = CashStorage.StoredCash + payoutAmount;
-                UpdateSalesPrice();
+                int payoutAmount = CalculatePayoutAmount(completedCycles);
+                CashStorage.StoredCash += payoutAmount;
             }
+            UpdateSalesPrice();
+            DatePayoutPaid = DatePayoutPaid.AddDays(completedCycles * PayoutFrequency);
+            DatePayoutDue = DatePayoutPaid.AddDays(PayoutFrequency);       
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}", 0);
-            Game.DisplayNotification($"ERROR in Payout {ex.Message}");
         }
     }
     private void UpdateSalesPrice()
