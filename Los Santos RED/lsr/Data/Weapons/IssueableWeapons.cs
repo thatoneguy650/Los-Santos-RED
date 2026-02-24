@@ -95,7 +95,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeapon weaponNanoPistol = new IssuableWeapon("weapon_nanopistol",
             new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), new WeaponComponent("Suppressor"), }), 45);
 
-        IssuableWeapon weaponMustangRevolver = new IssuableWeapon("weapon_mustangrev", new WeaponVariation(), 65);
+        IssuableWeapon weaponMustangRevolver = new IssuableWeapon("weapon_mustangrev", new WeaponVariation(), 65); 
 
         //COPS
         List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
