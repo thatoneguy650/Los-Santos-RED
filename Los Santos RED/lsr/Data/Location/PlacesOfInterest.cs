@@ -2274,7 +2274,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1391.372f, -605.995f, 30.31955f), 116.404f) }, InteriorID = 107778, VendorPersonnelID = "BarPeds", },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
             new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorFightPercentage =  25f,VendorFightPolicePercentage = 10f, OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-561.9947f, 284.9062f, 82.17636f), 262.2369f) }, InteriorID = 72706, VendorPersonnelID = "BarPeds", },//need better coordinates
             new Bar(new Vector3(-2193.238f, 4290.112f, 49.17442f), 37.55579f, "Hookies", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
-            new Bar(new Vector3(-1486.966f,-909.6642f, 10.02359f), 321.7487f, "Cocaine Lockup","","BarMenu"){OpenTime = 0, CloseTime = 24, InteriorID = 247553,IsWalkup = false, IsOnMPMap = true, IsOnSPMap = false, TypeName = "Cocaine Lockup", ActivateCells = 4, ActivateDistance = 225, IgnoreEntranceInteract = false },
         };
     }
     private void DefaultConfig_GasStations()//VendorLocations = new List<SpawnPlace>() { new SpawnPlace() },
