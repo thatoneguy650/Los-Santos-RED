@@ -1927,8 +1927,11 @@ public class DispatchablePeople : IDispatchablePeople
         };
         BarPeds = new List<DispatchablePerson>()
         {
+            new DispatchablePerson("s_m_y_barman_01",100,100),
+            new DispatchablePerson("s_f_y_beachbarstaff_01",100,100),
             new DispatchablePerson("s_f_y_clubbar_01",100,100),
-            new DispatchablePerson("s_m_y_clubbar_01",100,100),
+            new DispatchablePerson("s_f_y_clubbar_02",100,100),
+            //new DispatchablePerson("s_m_y_clubbar_01",100,100), // Invisible Chest needs set variation.
             new DispatchablePerson("a_f_y_clubcust_01",100,100),
         };
         HaircutPeds = new List<DispatchablePerson>()
