@@ -40,11 +40,11 @@ public class Interiors_LibertyPP
 
         PossibleInteriors lppInteriors = LibertyCityInteriors.Copy();
 
-        foreach (Interior intloc in LSInteriors.PossibleInteriors.AllInteriors())
-        {
-            intloc.AddLocation(lppInteriors);
-        }
-        Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors_{StaticStrings.LPPConfigSuffix}.xml");
+        //foreach (Interior intloc in LSInteriors.PossibleInteriors.AllInteriors())
+        //{
+        //    intloc.AddLocation(lppInteriors);
+        //}
+        Serialization.SerializeParam(lppInteriors, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Interiors+_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
     private void Banks()

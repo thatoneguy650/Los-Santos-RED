@@ -35,7 +35,7 @@ public class ResidenceInterior : Interior
     {
 
     }
-
+    
     protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
     {
         if (isOpen && Residence != null && Residence.IsOwnedOrRented)

@@ -153,10 +153,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             DefaultConfig();
             DefaultConfig_Simple();
             DefaultConfig_FullExpandedJurisdiction();
-            DefaultConfig_LosSantos_2008();
+            //DefaultConfig_LosSantos_2008();
             DefaultConfig_FullModernTraffic();
             
-            DefaultConfig_LibertyCity();
+            DefaultConfig_LibertyCity_FEJ();
             DefaultConfig_LPP();
         }
         //Load Additive
@@ -1725,9 +1725,9 @@ public class DispatchableVehicles : IDispatchableVehicles
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
     }
-    private void DefaultConfig_LibertyCity()
+    private void DefaultConfig_LibertyCity_FEJ()
     {
-        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
+        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = new List<DispatchableVehicleGroup>();//ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ASPVehicles");
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "LCPDVehicles");
 
@@ -1774,14 +1774,15 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_LC.HMSVehicles_FEJ_LC));
 
         LibertyVehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
+        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Optional\\DispatchableVehicles+_{StaticStrings.LPPConfigSuffix}.xml");
+        //Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\DispatchableVehicles_{StaticStrings.LibertyConfigSuffix}.xml");
     }
     private void DefaultConfig_LPP()
     {
         DispatchableVehicles_LPP dispatchableVehicles_LPP = new DispatchableVehicles_LPP(this);
         dispatchableVehicles_LPP.DefaultConfig();
 
-        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
+        List<DispatchableVehicleGroup> LibertyVehicleGroupLookup = new List<DispatchableVehicleGroup>();//ExtensionsMethods.Extensions.DeepCopy(VehicleGroupLookup);
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "ASPVehicles");
         LibertyVehicleGroupLookup.RemoveAll(x => x.DispatchableVehicleGroupID == "LCPDVehicles");
 
@@ -1827,67 +1828,67 @@ public class DispatchableVehicles : IDispatchableVehicles
         LibertyVehicleGroupLookup.Add(new DispatchableVehicleGroup("HMSVehicles", dispatchableVehicles_LPP.HMSVehicles_FEJ_LC));
 
         LibertyVehicleGroupLookup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\DispatchableVehicles_{StaticStrings.LPPConfigSuffix}.xml");
+        Serialization.SerializeParams(LibertyVehicleGroupLookup, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\DispatchableVehicles+_{StaticStrings.LPPConfigSuffix}.xml");
     }
     private void DefaultConfig_Simple()
     {
-        List<DispatchableVehicleGroup> SimpleVehicleLoopupGroup = new List<DispatchableVehicleGroup>
-        {
-            //Police
-            new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
-            new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
-            new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles),
-            new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
-            new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
-            new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
-            new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles),
-            new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles),
-            new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles),
-            new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
-            new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
-            new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
-            new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
-            new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
-            new DispatchableVehicleGroup("Firetrucks", Firetrucks),
-            new DispatchableVehicleGroup("Amublance1", Amublance1),
-            new DispatchableVehicleGroup("Amublance2", Amublance2),
-            new DispatchableVehicleGroup("Amublance3", Amublance3),
-            new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
-            new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
-            new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
-            new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
-            new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
-            new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
-            new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
-            new DispatchableVehicleGroup("DOAVehicles", DOAVehicles),
-            new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
-            new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
+        //List<DispatchableVehicleGroup> SimpleVehicleLoopupGroup = new List<DispatchableVehicleGroup>
+        //{
+        //    //Police
+        //    new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles),
+        //    new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles),
+        //    new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles),
+        //    new DispatchableVehicleGroup("FIBVehicles", FIBVehicles),
+        //    new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles),
+        //    new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles),
+        //    new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles),
+        //    new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles),
+        //    new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles),
+        //    new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles),
+        //    new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles),
+        //    new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles),
+        //    new DispatchableVehicleGroup("USMCVehicles", USMCVehicles),
+        //    new DispatchableVehicleGroup("USAFVehicles", USAFVehicles),
+        //    new DispatchableVehicleGroup("Firetrucks", Firetrucks),
+        //    new DispatchableVehicleGroup("Amublance1", Amublance1),
+        //    new DispatchableVehicleGroup("Amublance2", Amublance2),
+        //    new DispatchableVehicleGroup("Amublance3", Amublance3),
+        //    new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles),
+        //    new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles),
+        //    new DispatchableVehicleGroup("BobcatSecurityVehicles", BobcatSecurityVehicles),
+        //    new DispatchableVehicleGroup("GroupSechsVehicles", GroupSechsVehicles),
+        //    new DispatchableVehicleGroup("SecuroservVehicles", SecuroservVehicles),
+        //    new DispatchableVehicleGroup("LCPDVehicles", LCPDVehicles),
+        //    new DispatchableVehicleGroup("MarshalsServiceVehicles", MarshalsServiceVehicles),
+        //    new DispatchableVehicleGroup("DOAVehicles", DOAVehicles),
+        //    new DispatchableVehicleGroup("OffDutyCopVehicles",OffDutyCopVehicles),
+        //    new DispatchableVehicleGroup("LSLifeguardVehicles",LSLifeguardVehicles),
 
-            //Gang
-            new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
-            new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
-            new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
-            new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
-            new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
-            new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
-            new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
-            new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
-            new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
-            new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
-            new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
+        //    //Gang
+        //    new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles),
+        //    new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles),
+        //    new DispatchableVehicleGroup("BallasVehicles", BallasVehicles),
+        //    new DispatchableVehicleGroup("VagosVehicles", VagosVehicles),
+        //    new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles),
+        //    new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles),
+        //    new DispatchableVehicleGroup("TriadVehicles", TriadVehicles),
+        //    new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles),
+        //    new DispatchableVehicleGroup("CartelVehicles", CartelVehicles),
+        //    new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles),
+        //    new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles),
 
-            //Other
-            new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
-            new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
-            new DispatchableVehicleGroup("knowayvehicles",KnowayVehicles),
-            new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
-            new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
-            new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
-            new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
-            new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
-        };
-        SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
+        //    //Other
+        //    new DispatchableVehicleGroup("TaxiVehicles", TaxiVehicles),
+        //    new DispatchableVehicleGroup("RideshareVehicles", RideshareVehicles),
+        //    new DispatchableVehicleGroup("knowayvehicles",KnowayVehicles),
+        //    new DispatchableVehicleGroup("WeazelVehicles",WeazelVehicles),
+        //    new DispatchableVehicleGroup("HigginsVehicles",HigginsVehicles),
+        //    new DispatchableVehicleGroup("ImportExportVehicles",ImportExportVehicles),
+        //    new DispatchableVehicleGroup("HighEndVehicles",HighEndVehicles),
+        //    new DispatchableVehicleGroup("OneOffVehicles",OneOffVehicles),
+        //};
+        //SimpleVehicleLoopupGroup.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
+        //Serialization.SerializeParams(SimpleVehicleLoopupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchableVehicles_Simple.xml");
     }
  
     private void DefaultConfig_LosSantos_2008()

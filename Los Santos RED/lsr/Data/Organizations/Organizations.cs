@@ -291,13 +291,13 @@ public class Organizations : IOrganizations
             SunderedCab,
         };
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Organizations+_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations+_LosSantos2008.xml");
+        //Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Organizations+_LosSantos2008.xml");
         Serialization.SerializeParam(PossibleOrganizations_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Organizations+_FullExpandedJurisdiction.xml");
         //
     }
     private void DefaultConfig_LibertyCity()
     {
-        PossibleOrganizations PossibleOrganizations_LibertyCity = new PossibleOrganizations();
+        //PossibleOrganizations PossibleOrganizations_LibertyCity = new PossibleOrganizations();
 
 
         TaxiFirm NYCTaxiCo = new TaxiFirm("~o~", "LCTAXI", "LC Taxi", "LC Taxi", "Orange", "TaxiDrivers", "LCTaxiVehicles", "LC ", "MeleeWeapons", "TaxiSidearms", "TaxiLongGuns", "Cabbie")
@@ -310,37 +310,37 @@ public class Organizations : IOrganizations
         };
 
 
-        PossibleOrganizations_LibertyCity.GeneralOrganizations = new List<Organization>
-        {
-            VehicleExports,
-            UndergroundGuns,
-            WezelNews,
-        };
-        PossibleOrganizations_LibertyCity.TaxiFirms = new List<TaxiFirm>
-        {
-            NYCTaxiCo,
-            RydeMe,
-            Schlecht,
-            KnoWay,
-        };
-        Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
+        //PossibleOrganizations_LibertyCity.GeneralOrganizations = new List<Organization>
+        //{
+        //    VehicleExports,
+        //    UndergroundGuns,
+        //    WezelNews,
+        //};
+        //PossibleOrganizations_LibertyCity.TaxiFirms = new List<TaxiFirm>
+        //{
+        //    NYCTaxiCo,
+        //    RydeMe,
+        //    Schlecht,
+        //    KnoWay,
+        //};
+        //Serialization.SerializeParam(PossibleOrganizations_LibertyCity, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Organizations_{StaticStrings.LibertyConfigSuffix}.xml");
         //
 
         PossibleOrganizations PossibleOrganizations_LibertyCityPP = new PossibleOrganizations();
-        PossibleOrganizations_LibertyCityPP.GeneralOrganizations = new List<Organization>()
-        {
-            VehicleExports,
-            UndergroundGuns,
-            WezelNews,
-        };
+        //PossibleOrganizations_LibertyCityPP.GeneralOrganizations = new List<Organization>()
+        //{
+        //    VehicleExports,
+        //    UndergroundGuns,
+        //    WezelNews,
+        //};
         PossibleOrganizations_LibertyCityPP.TaxiFirms = new List<TaxiFirm>
         {
-            DowntownCabCoOld,
+            //DowntownCabCoOld,
             NYCTaxiCo,
-            RydeMe,
-            Schlecht,
-            KnoWay,
+            //RydeMe,
+            //Schlecht,
+            //KnoWay,
         };
-        Serialization.SerializeParam(PossibleOrganizations_LibertyCityPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Organizations_{StaticStrings.LPPConfigSuffix}.xml");
+        Serialization.SerializeParam(PossibleOrganizations_LibertyCityPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Organizations+_{StaticStrings.LPPConfigSuffix}.xml");
     }
 }

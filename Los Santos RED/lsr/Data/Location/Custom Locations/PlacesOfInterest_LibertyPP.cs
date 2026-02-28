@@ -80,11 +80,11 @@ public class PlacesOfInterest_LibertyPP
 
         lppLC.PedCustomizerLocation = PlacesOfInterest.PossibleLocations.PedCustomizerLocation;
 
-        foreach (GameLocation gl in PlacesOfInterest.InteractableLocations())
-        {
-            gl.AddLocation(lppLC);
-        }
-        Serialization.SerializeParam(lppLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Locations_{StaticStrings.LPPConfigSuffix}.xml");
+        //foreach (GameLocation gl in PlacesOfInterest.InteractableLocations())
+        //{
+        //    gl.AddLocation(lppLC);
+        //}
+        Serialization.SerializeParam(lppLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Locations+_{StaticStrings.LPPConfigSuffix}.xml");
 
     }
 

@@ -33,7 +33,7 @@ public class Cellphones : ICellphones
         {
             EntryPoint.WriteToConsole($"No Cellphones config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
         }
         //Load Additive
         foreach (FileInfo fileInfo in LSRDirectory.GetFiles("Cellphones+_*.xml").OrderByDescending(x => x.Name))

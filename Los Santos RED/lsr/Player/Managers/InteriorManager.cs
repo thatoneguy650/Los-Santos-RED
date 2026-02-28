@@ -126,7 +126,10 @@ public class InteriorManager
                 while (IsActive && EntryPoint.ModController.IsRunning && InteriorUpdateLocations.Any())
                 {
                     UpdateClosestInteract();
-                    ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
+                    if (!ClosestLocation.AreMarkersDisabled)
+                    {
+                        ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
+                    }
                     HandleMarkers();
                     GameFiber.Yield();
                 }
@@ -155,6 +158,10 @@ public class InteriorManager
         foreach(GameLocation location in InteriorUpdateLocations)
         {
             if(location.Interior.IsMenuInteracting)
+            {
+                continue;
+            }
+            if(location.AreMarkersDisabled)
             {
                 continue;
             }

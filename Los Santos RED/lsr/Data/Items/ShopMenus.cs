@@ -40,7 +40,7 @@ public class ShopMenus : IShopMenus
         {
             EntryPoint.WriteToConsole($"No Shop Menus config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
             DefaultConfig_FullModernTraffic();
             DefaultConfig_FullExpandedExperience();
             DefaultConfig_FullExpandedWeapons();

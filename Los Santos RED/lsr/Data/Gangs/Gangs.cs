@@ -813,11 +813,11 @@ public class Gangs : IGangs
     }
     private void DefaultConfig_Simple()
     {
-        List<Gang>  SimpleGangsList = new List<Gang>
-        {
-            LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Cartel,Armenian
-        };
-        Serialization.SerializeParams(SimpleGangsList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Gangs_Simple.xml");
+        //List<Gang>  SimpleGangsList = new List<Gang>
+        //{
+        //    LOST,Vagos,Families,Ballas,Marabunte,Varrios,Triads,Redneck,Korean,Cartel,Armenian
+        //};
+        //Serialization.SerializeParams(SimpleGangsList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Gangs_Simple.xml");
     }
 
     private void DefaultConfig_LibertyCity()
@@ -1179,22 +1179,22 @@ public class Gangs : IGangs
             GangClassification = GangClassification.Biker,
         };//Meth
 
-        List<Gang> LCGangsList = new List<Gang>
-        {
-            LOST_LIB,
-            Triads_LIB,
-            Yardies_LIB,
-            Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
+        //List<Gang> LCGangsList = new List<Gang>
+        //{
+        //    LOST_LIB,
+        //    Triads_LIB,
+        //    Yardies_LIB,
+        //    Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
 
-            //New
-            PetrovicMafia,
-            NorthHollandHuslters,
-            SpanishLords,
-            KoreanMob,
-            AngelsOfDeath_LIB,
-            UptownRiders
-        };
-        Serialization.SerializeParams(LCGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
+        //    //New
+        //    PetrovicMafia,
+        //    NorthHollandHuslters,
+        //    SpanishLords,
+        //    KoreanMob,
+        //    AngelsOfDeath_LIB,
+        //    UptownRiders
+        //};
+        //Serialization.SerializeParams(LCGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Gangs_{StaticStrings.LibertyConfigSuffix}.xml");
 
         List<Gang> LPPGangsList = new List<Gang>
         {
@@ -1204,7 +1204,7 @@ public class Gangs : IGangs
             Gambetti_LIB,Pavano_LIB,Lupisella_LIB,Messina_LIB,Ancelotti_LIB,
 
 
-            Vagos,Families,Ballas,Marabunte,Varrios,Redneck,Korean,Cartel,Armenian,Diablos,
+            //Vagos,Families,Ballas,Marabunte,Varrios,Redneck,Korean,Cartel,Armenian,Diablos,
 
 
             //New
@@ -1215,7 +1215,7 @@ public class Gangs : IGangs
             AngelsOfDeath_LIB,
             UptownRiders
         };
-        Serialization.SerializeParams(LPPGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Gangs_{StaticStrings.LPPConfigSuffix}.xml");
+        Serialization.SerializeParams(LPPGangsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Gangs+_{StaticStrings.LPPConfigSuffix}.xml");
 
     }
     public void CheckTerritory(GangTerritories gangTerritories)

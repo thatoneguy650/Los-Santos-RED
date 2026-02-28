@@ -546,9 +546,8 @@ public class Streets : IStreets
             new Street("Hematite St", 40f, "MPH"),
             new Street("Iron St", 40f, "MPH"),
         };
-        Serialization.SerializeParams(LCStreetsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Streets_{StaticStrings.LibertyConfigSuffix}.xml");
-
-        Serialization.SerializeParams(LCStreetsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Streets_{StaticStrings.LPPConfigSuffix}.xml");
+        //Serialization.SerializeParams(LCStreetsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Streets_{StaticStrings.LibertyConfigSuffix}.xml");
+        Serialization.SerializeParams(LCStreetsList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Streets+_{StaticStrings.LPPConfigSuffix}.xml");
     }
    
 }

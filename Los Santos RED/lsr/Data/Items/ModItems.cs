@@ -94,7 +94,7 @@ public class ModItems : IModItems
             DefaultConfig_FullModernTraffic();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig_FullExpandedExperience();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
             DefaultConfig_FullExpandedWeapons();
         }
         //Load Additive
@@ -245,6 +245,8 @@ public class ModItems : IModItems
         //Compacts
         newPossibleItems.VehicleItems.Add(new VehicleItem("Grotti Brioso AC", ItemType.Vehicles) { ModelName = "civbrioso" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Weeny Issi 2nd Gen", ItemType.Vehicles) { ModelName = "civissi8" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Weeny Issi Sport", ItemType.Vehicles) { ModelName = "civissi7" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Dinka Blista Kanjo", ItemType.Vehicles) { ModelName = "civkanjo" });
         //Sport
         newPossibleItems.VehicleItems.Add(new VehicleItem("Pfister Comet Stock", ItemType.Vehicles) { ModelName = "civcomet2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Pfister Comet Retro", ItemType.Vehicles) { ModelName = "civcomet4" });
@@ -2786,7 +2788,7 @@ public class ModItems : IModItems
             new VehicleItem("Dinka Jester (Racecar)", true, ItemType.Vehicles) { ModelName = "jester2", Description = "A Japanese hybrid-electric sportscar with a front-end designed to look like an angry grin might be too whimsical for some, but with a 4-liter V6 engine and 420hp, the Dinka Jester still packs a serious punchline. Race tuned special edition.", },
             new VehicleItem("Dinka Jester Classic", true, ItemType.Vehicles) { ModelName = "jester3", Description = "Dinka are famous for their hyperbikes and other suicide machines, but their legacy only has one name on it: the Jester Classic. They may have set out to make a sports GT, but they accidentally made the most iconic street racer ever to do a quarter mile with plenty of change out of ten seconds flat. It's still as beautiful as it ever was, it'll still eat you alive if you so much as flinch while you're behind the wheel, and you still wouldn't change a damn thing.", },
             new VehicleItem("Dinka Jester RR", true, ItemType.Vehicles) { ModelName = "jester4", Description = "Experts agree that the world is ending. And other experts agree that the only thing you can do about it is get online and fine tune your consumer choices. Introducing the latest Dinka Jester: the car with the killer smile is back, and this time it's so deadpan we're pretty sure it's not even joking. So stop doomscrolling. You've found it.", },
-            new VehicleItem("Dinka Blista Kanjo", true, ItemType.Vehicles) { ModelName = "kanjo", Description = "Cheap ramen noodles, Princess Robot Bubblegum, tentacle porn - if you want to express your teenage love for Japanese culture in a car purchase, look no further. Sure, the hideous straight lines and cafeteria tray bumper might cause your date to turn and run, but under that vibe-destroying exterior you'll find a vehicle ready to prove its worth, even if you and your equally deluded mates are the only ones to see it. The Dinka Blista Kanjo - it's a fapper's delight.", },
+            new VehicleItem("Dinka Blista Kanjo Custom", true, ItemType.Vehicles) { ModelName = "kanjo", Description = "Cheap ramen noodles, Princess Robot Bubblegum, tentacle porn - if you want to express your teenage love for Japanese culture in a car purchase, look no further. Sure, the hideous straight lines and cafeteria tray bumper might cause your date to turn and run, but under that vibe-destroying exterior you'll find a vehicle ready to prove its worth, even if you and your equally deluded mates are the only ones to see it. The Dinka Blista Kanjo - it's a fapper's delight.", },
             new VehicleItem("Dinka RT3000", true, ItemType.Vehicles) { ModelName = "rt3000", Description = "There's more power behind the Dinka RT3000 than the Palmer-Taylor Power Station when they break out the party dust, start the rave, and let the reactor do its thing. It's not a complicated formula, but it works.", },
             new VehicleItem("Dinka Sugoi", true, ItemType.Vehicles) { ModelName = "sugoi", Description = "How do you let people know you're interesting and exciting without engaging in conversation, or even making eye contact? The Dinka Sugoi has as much finish and flash as the elaborate mating ritual of a bird of paradise. Just paint it bright, beam the lights and powerslide your way round town to lure the admiration and friendship that you alone could not.", },
             new VehicleItem("Dinka Thrust", true, ItemType.Vehicles) { ModelName = "thrust" },

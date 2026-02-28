@@ -33,7 +33,7 @@ public class VehicleRaces : IVehicleRaces
         {
             EntryPoint.WriteToConsole($"No VehicleRaces config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_Liberty();
+            //DefaultConfig_Liberty();
             DefaultConfig_LibertyPP();
         }
         foreach (FileInfo fileInfo in LSRDirectory.GetFiles("VehicleRaces+_*.xml").OrderByDescending(x => x.Name))

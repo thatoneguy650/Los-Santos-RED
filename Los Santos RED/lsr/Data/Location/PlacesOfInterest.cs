@@ -102,9 +102,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_LibertyCity();
+           // DefaultConfig_LibertyCity();
             DefaultConfig_LibertyCityPP();
-            DefaultConfig_2008();
+            //DefaultConfig_2008();
         }
 
         //Load Additive
@@ -405,49 +405,49 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "stores\\haironhawick.png",
             },
 
-            // Mansion Barbers
-            new BarberShop(new Vector3(-2595.303f, 1873.661f, 163.7214f), 314.3057f,"Tongva Barber","")
-            {
-                IsWalkup = true,
-                OpenTime = 0,
-                CloseTime = 24,
-                ShowsOnDirectory = false,
-                ShowsOnTaxi = false,
-                IsOnSPMap = false,
-                IsBlipEnabled = false,
-                DisableRegularInteract = true,
-                VendorPersonnelID = "HaircutPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-2595.303f, 1873.661f, 163.7214f), 314.3057f) },
-                InteriorID = -303617,
-            },
-            new BarberShop(new Vector3(-1628.94f, 476.6991f, 125.5676f), 36.51946f,"Richman Barber","")
-            {
-                IsWalkup = true,
-                OpenTime = 0,
-                CloseTime = 24,
-                ShowsOnDirectory = false,
-                ShowsOnTaxi = false,
-                IsOnSPMap = false,
-                IsBlipEnabled = false,
-                DisableRegularInteract = true,
-                VendorPersonnelID = "HaircutPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1628.94f, 476.6991f, 125.5676f), 36.51946f) },
-                InteriorID = -302593,
-            },
-            new BarberShop(new Vector3(551.2878f, 713.4327f, 198.7077f), 334.1761f,"Vinewood Barber","")
-            {
-                IsWalkup = true,
-                OpenTime = 0,
-                CloseTime = 24,
-                ShowsOnDirectory = false,
-                ShowsOnTaxi = false,
-                IsOnSPMap = false,
-                IsBlipEnabled = false,
-                DisableRegularInteract = true,
-                VendorPersonnelID = "HaircutPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(551.2878f, 713.4327f, 198.7077f), 334.1761f) },
-                InteriorID = -304385,
-            },
+            //// Mansion Barbers
+            //new BarberShop(new Vector3(-2595.303f, 1873.661f, 163.7214f), 314.3057f,"Tongva Barber","")
+            //{
+            //    IsWalkup = true,
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    ShowsOnDirectory = false,
+            //    ShowsOnTaxi = false,
+            //    IsOnSPMap = false,
+            //    IsBlipEnabled = false,
+            //    DisableRegularInteract = true,
+            //    VendorPersonnelID = "HaircutPeds",
+            //    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-2595.303f, 1873.661f, 163.7214f), 314.3057f) },
+            //    InteriorID = -303617,
+            //},
+            //new BarberShop(new Vector3(-1628.94f, 476.6991f, 125.5676f), 36.51946f,"Richman Barber","")
+            //{
+            //    IsWalkup = true,
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    ShowsOnDirectory = false,
+            //    ShowsOnTaxi = false,
+            //    IsOnSPMap = false,
+            //    IsBlipEnabled = false,
+            //    DisableRegularInteract = true,
+            //    VendorPersonnelID = "HaircutPeds",
+            //    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1628.94f, 476.6991f, 125.5676f), 36.51946f) },
+            //    InteriorID = -302593,
+            //},
+            //new BarberShop(new Vector3(551.2878f, 713.4327f, 198.7077f), 334.1761f,"Vinewood Barber","")
+            //{
+            //    IsWalkup = true,
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    ShowsOnDirectory = false,
+            //    ShowsOnTaxi = false,
+            //    IsOnSPMap = false,
+            //    IsBlipEnabled = false,
+            //    DisableRegularInteract = true,
+            //    VendorPersonnelID = "HaircutPeds",
+            //    VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(551.2878f, 713.4327f, 198.7077f), 334.1761f) },
+            //    InteriorID = -304385,
+            //},
         };
     }
     private void DefaultConfig_PlasticSurgeryClinics()
@@ -2319,10 +2319,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorFightPercentage =  25f,VendorFightPolicePercentage = 10f, OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-561.9947f, 284.9062f, 82.17636f), 262.2369f) }, InteriorID = 72706, VendorPersonnelID = "BarPeds", },//need better coordinates
             new Bar(new Vector3(-2193.238f, 4290.112f, 49.17442f), 37.55579f, "Hookies", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
 
-            // Mansion Bar
-            new Bar(new Vector3(-2586.541f, 1880.23f, 156.5184f), 219.217f, "Tongva Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-2586.541f, 1880.23f, 156.3184f), 219.217f) }, InteriorID = 303617, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
-            new Bar(new Vector3(-1637.092f, 484.3326f, 118.3645f), 321.4084f, "Richman Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1637.092f, 484.3326f, 118.1645f), 321.4084f) }, InteriorID = 302593, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
-            new Bar(new Vector3(555.3027f, 724.0519f, 191.5045f), 251.9232f, "Vinewood Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(555.3027f, 724.0519f, 191.3045f), 251.9232f) }, InteriorID = 304385, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
+            //// Mansion Bar
+            //new Bar(new Vector3(-2586.541f, 1880.23f, 156.5184f), 219.217f, "Tongva Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-2586.541f, 1880.23f, 156.3184f), 219.217f) }, InteriorID = 303617, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
+            //new Bar(new Vector3(-1637.092f, 484.3326f, 118.3645f), 321.4084f, "Richman Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1637.092f, 484.3326f, 118.1645f), 321.4084f) }, InteriorID = 302593, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
+            //new Bar(new Vector3(555.3027f, 724.0519f, 191.5045f), 251.9232f, "Vinewood Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(555.3027f, 724.0519f, 191.3045f), 251.9232f) }, InteriorID = 304385, VendorPersonnelID = "BarPeds", ShowsOnDirectory = false, ShowsOnTaxi = false, IsOnSPMap = false, IsBlipEnabled = false},
         };
     }
     private void DefaultConfig_GasStations()//VendorLocations = new List<SpawnPlace>() { new SpawnPlace() },

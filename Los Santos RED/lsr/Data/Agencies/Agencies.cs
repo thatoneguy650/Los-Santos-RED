@@ -76,7 +76,7 @@ public class Agencies : IAgencies
             SetupDefault();
             DefaultConfig_Simple();
             DefaultConfig_FullExpanded();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
             DefaultConfig_LibertyCity();
             DefaultConfig();
         }
@@ -376,44 +376,44 @@ public class Agencies : IAgencies
         Agency USNPS = new Agency("~g~", "USNPS", "USNPS", "US National Park Service", "Green", Classification.Federal, "ParkRangers", "USNPSParkRangersVehicles", "NPS ", "Tasers", "AllSidearms", "AllLongGuns", "US Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         Agency HMSEMT = new Agency("~w~", "HMS", "HMS", "Homeland Medical Services", "White", Classification.EMS, "BlueEMTs", "HMSVehicles", "SAMS ", null, null, null, "HMS EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
 
-        List<Agency> LCAgenicesList = new List<Agency>
-        {
+        //List<Agency> LCAgenicesList = new List<Agency>
+        //{
 
 
 
 
 
-            LCPD,
-            new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+        //    LCPD,
+        //    new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "LCPDPeds", "LCPDHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
 
-            new Agency("~b~", "ASP-ASD","ASP-ASD", "Alderney State Police - Air Support Division", "Blue", Classification.Police, "ASPPeds", "ASPHeliVehicles", "ASP ","Tasers","HeliSidearms","HeliLongGuns", "ASP Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
+        //    new Agency("~b~", "ASP-ASD","ASP-ASD", "Alderney State Police - Air Support Division", "Blue", Classification.Police, "ASPPeds", "ASPHeliVehicles", "ASP ","Tasers","HeliSidearms","HeliLongGuns", "ASP Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
 
-            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "ASPVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
-            NYSP,
-            BorderPatrol,NOOSEPIA,NOOSESEP,
-            USNPS,
-            FIB,DOA,ARMY,USMC,USAF,USMS,USCG,
-            new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "FDLCFirePeds", "FDNYFireVehicles", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
-            new Agency("~w~", "FDLC-EMS","FDLC-EMS", "Liberty City Fire Department EMS", "White", Classification.EMS, "GreenEMTs", "FDNYEMTVehicles", "LC ",null,null, null, "FDLC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
-            HMSEMT,
-            GRPSECHS,SECURO,MERRY,BOBCAT,
-            UNK,
-        };
-        Serialization.SerializeParams(LCAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Agencies_{StaticStrings.LibertyConfigSuffix}.xml");
+        //    new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "ASPPeds", "ASPVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1,OffDutyDispatchPercent = 1, OffDutyPersonnelID = "OffDutyCops", OffDutyVehiclesID = "OffDutyCopVehicles" },
+        //    NYSP,
+        //    BorderPatrol,NOOSEPIA,NOOSESEP,
+        //    USNPS,
+        //    FIB,DOA,ARMY,USMC,USAF,USMS,USCG,
+        //    new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "FDLCFirePeds", "FDNYFireVehicles", "FD ","FireExtinguisher",null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+        //    new Agency("~w~", "FDLC-EMS","FDLC-EMS", "Liberty City Fire Department EMS", "White", Classification.EMS, "GreenEMTs", "FDNYEMTVehicles", "LC ",null,null, null, "FDLC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+        //    HMSEMT,
+        //    GRPSECHS,SECURO,MERRY,BOBCAT,
+        //    UNK,
+        //};
+        //Serialization.SerializeParams(LCAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Agencies_{StaticStrings.LibertyConfigSuffix}.xml");
 
 
         List<Agency> LCPPAgenicesList = new List<Agency>
         {
 
 
-            LSPD,LSPDVW,LSPDELS,LSPDDP,LSPDRH,LSPDASD,
-            LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
-            SAHP,SASPA,SAPR,USCG,
-            NYSP,//LCPD,
-            LSLFG,
-            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
-            LSFDFire,LSMC,MRH,LSFD,
-            GRPSECHS,SECURO,MERRY,BOBCAT,
+            //LSPD,LSPDVW,LSPDELS,LSPDDP,LSPDRH,LSPDASD,
+            //LSSD,LSSDVW,LSSDDV,LSSDBC,LSSDMJ,LSSDASD,LSPP,LSIAPD,
+            //SAHP,SASPA,SAPR,USCG,
+            //NYSP,//LCPD,
+            //LSLFG,
+            //NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
+            //LSFDFire,LSMC,MRH,LSFD,
+            //GRPSECHS,SECURO,MERRY,BOBCAT,
 
 
             LCPD,
@@ -432,47 +432,47 @@ public class Agencies : IAgencies
 
             UNK,
         };
-        Serialization.SerializeParams(LCPPAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Agencies_{StaticStrings.LPPConfigSuffix}.xml");
+        Serialization.SerializeParams(LCPPAgenicesList, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Agencies+_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
     private void DefaultConfig_Simple()
     {
-        Agency LSMC_Simple = LSMC.Copy();
-        Agency MRH_Simple = MRH.Copy();
-        Agency LSFD_Simple = LSFD.Copy();
-        LSMC_Simple.PersonnelID = "EMTs";
-        MRH_Simple.PersonnelID = "EMTs";
-        LSFD_Simple.PersonnelID = "EMTs";
+        //Agency LSMC_Simple = LSMC.Copy();
+        //Agency MRH_Simple = MRH.Copy();
+        //Agency LSFD_Simple = LSFD.Copy();
+        //LSMC_Simple.PersonnelID = "EMTs";
+        //MRH_Simple.PersonnelID = "EMTs";
+        //LSFD_Simple.PersonnelID = "EMTs";
 
-        Agency GRPSECHS_Simple = GRPSECHS.Copy();
-        Agency SECURO_Simple = SECURO.Copy();
-        Agency MERRY_Simple = MERRY.Copy();
-        Agency BOBCAT_Simple = BOBCAT.Copy();
+        //Agency GRPSECHS_Simple = GRPSECHS.Copy();
+        //Agency SECURO_Simple = SECURO.Copy();
+        //Agency MERRY_Simple = MERRY.Copy();
+        //Agency BOBCAT_Simple = BOBCAT.Copy();
 
 
-        GRPSECHS_Simple.PersonnelID = "SecurityPeds";
-        SECURO_Simple.PersonnelID = "SecurityPeds";
-        MERRY_Simple.PersonnelID = "SecurityPeds";
-        BOBCAT_Simple.PersonnelID = "SecurityPeds";
+        //GRPSECHS_Simple.PersonnelID = "SecurityPeds";
+        //SECURO_Simple.PersonnelID = "SecurityPeds";
+        //MERRY_Simple.PersonnelID = "SecurityPeds";
+        //BOBCAT_Simple.PersonnelID = "SecurityPeds";
 
-        GRPSECHS_Simple.VehiclesID = "UnmarkedVehicles";
-        SECURO_Simple.VehiclesID = "UnmarkedVehicles";
-        MERRY_Simple.VehiclesID = "UnmarkedVehicles";
-        BOBCAT_Simple.VehiclesID = "UnmarkedVehicles";
+        //GRPSECHS_Simple.VehiclesID = "UnmarkedVehicles";
+        //SECURO_Simple.VehiclesID = "UnmarkedVehicles";
+        //MERRY_Simple.VehiclesID = "UnmarkedVehicles";
+        //BOBCAT_Simple.VehiclesID = "UnmarkedVehicles";
 
-        List<Agency> SimpleAgenicesList = new List<Agency>
-        {
-            LSPD,LSPDASD,
-            LSSD,LSSDASD,
-            SAHP,SASPA,SAPR,USCG,
-            NYSP,
-            LSLFG,
-            NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
-            LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,    
-            GRPSECHS_Simple,SECURO_Simple,MERRY_Simple,BOBCAT_Simple,
-            UNK,
-        };
-        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
+        //List<Agency> SimpleAgenicesList = new List<Agency>
+        //{
+        //    LSPD,LSPDASD,
+        //    LSSD,LSSDASD,
+        //    SAHP,SASPA,SAPR,USCG,
+        //    NYSP,
+        //    LSLFG,
+        //    NOOSE,FIB,DOA,ARMY,USMC,USAF,USMS,
+        //    LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,    
+        //    GRPSECHS_Simple,SECURO_Simple,MERRY_Simple,BOBCAT_Simple,
+        //    UNK,
+        //};
+        //Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
     }
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
     {

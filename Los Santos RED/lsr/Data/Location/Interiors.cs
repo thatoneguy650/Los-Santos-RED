@@ -43,7 +43,7 @@ public class Interiors : IInteriors
         {
             EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_LibertyCity();
+            //DefaultConfig_LibertyCity();
             DefaultConfig_LibertyCityPP();
         }
         //Load Additive
@@ -251,47 +251,47 @@ public class Interiors : IInteriors
                     }
                 },
 
-                //Mansion Barbers
+                ////Mansion Barbers
 
-                new BarberShopInterior(-303617,"Tongva Barber")
-                {
-                    HaircutInteracts = new List<SalonInteract>() {
-                        new SalonInteract("tongvabarbinteract1",new Vector3(-2594.096f, 1872.925f, 163.7214f), 0f,"Get Haircut") 
-                        {
-                            AnimEnterPosition = new Vector3(-2595.234f, 1871.887f, 162.8809f),
-                            AnimEnterRotation = new Vector3(0f, 0f, 273.2366f),
-                            CameraPosition = new Vector3(-2595.043f, 1870.634f, 164.4818f),
-                            CameraDirection = new Vector3(-0.0850094f, 0.9428065f, -0.3223186f),
-                            CameraRotation = new Rotator(-18.8032f, -2.254768E-07f, 5.152217f),
-                        }
-                    },
-                },
-                new BarberShopInterior(-302593,"Richman Barber")
-                {
-                    HaircutInteracts = new List<SalonInteract>() {
-                        new SalonInteract("richmanbarbinteract1",new Vector3(-1628.255f, 478.7032f, 125.5676f), 0f,"Get Haircut")  //-1627.189 Y:477.7808 Z:124.567
-                        {
-                            AnimEnterPosition = new Vector3(-1627.189f, 477.7808f, 124.707f),
-                            AnimEnterRotation = new Vector3(0f, 0f, 12.71191f),
-                            CameraPosition = new Vector3(-1625.825f, 478.3083f, 126.284f),
-                            CameraDirection = new Vector3(-0.9175177f, -0.2848633f, -0.2775143f),
-                            CameraRotation = new Rotator(-16.11191f, 3.421416E-05f, 107.2481f),
-                        }
-                    },
-                },
-                new BarberShopInterior(-304385,"Vinewood Barber")
-                {
-                    HaircutInteracts = new List<SalonInteract>() {
-                        new SalonInteract("vinewoodabarbinteract1",new Vector3(552.8044f, 713.3463f, 198.7077f), 0f,"Get Haircut") // 552.3773 Y:711.9999 Z:197.7071
-                        {
-                            AnimEnterPosition = new Vector3(552.3773f, 711.9999f, 197.8471f),
-                            AnimEnterRotation = new Vector3(0f, 0f, 304.1495f),
-                            CameraPosition = new Vector3(553.2754f, 710.8562f, 199.635f),
-                            CameraDirection = new Vector3(-0.5736591f, 0.7597603f, -0.3060711f),
-                            CameraRotation = new Rotator(-17.82262f, 8.071315E-06f, 37.05473f),
-                        }
-                    },
-                },
+                //new BarberShopInterior(-303617,"Tongva Barber")
+                //{
+                //    HaircutInteracts = new List<SalonInteract>() {
+                //        new SalonInteract("tongvabarbinteract1",new Vector3(-2594.096f, 1872.925f, 163.7214f), 0f,"Get Haircut") 
+                //        {
+                //            AnimEnterPosition = new Vector3(-2595.234f, 1871.887f, 162.8809f),
+                //            AnimEnterRotation = new Vector3(0f, 0f, 273.2366f),
+                //            CameraPosition = new Vector3(-2595.043f, 1870.634f, 164.4818f),
+                //            CameraDirection = new Vector3(-0.0850094f, 0.9428065f, -0.3223186f),
+                //            CameraRotation = new Rotator(-18.8032f, -2.254768E-07f, 5.152217f),
+                //        }
+                //    },
+                //},
+                //new BarberShopInterior(-302593,"Richman Barber")
+                //{
+                //    HaircutInteracts = new List<SalonInteract>() {
+                //        new SalonInteract("richmanbarbinteract1",new Vector3(-1628.255f, 478.7032f, 125.5676f), 0f,"Get Haircut")  //-1627.189 Y:477.7808 Z:124.567
+                //        {
+                //            AnimEnterPosition = new Vector3(-1627.189f, 477.7808f, 124.707f),
+                //            AnimEnterRotation = new Vector3(0f, 0f, 12.71191f),
+                //            CameraPosition = new Vector3(-1625.825f, 478.3083f, 126.284f),
+                //            CameraDirection = new Vector3(-0.9175177f, -0.2848633f, -0.2775143f),
+                //            CameraRotation = new Rotator(-16.11191f, 3.421416E-05f, 107.2481f),
+                //        }
+                //    },
+                //},
+                //new BarberShopInterior(-304385,"Vinewood Barber")
+                //{
+                //    HaircutInteracts = new List<SalonInteract>() {
+                //        new SalonInteract("vinewoodabarbinteract1",new Vector3(552.8044f, 713.3463f, 198.7077f), 0f,"Get Haircut") // 552.3773 Y:711.9999 Z:197.7071
+                //        {
+                //            AnimEnterPosition = new Vector3(552.3773f, 711.9999f, 197.8471f),
+                //            AnimEnterRotation = new Vector3(0f, 0f, 304.1495f),
+                //            CameraPosition = new Vector3(553.2754f, 710.8562f, 199.635f),
+                //            CameraDirection = new Vector3(-0.5736591f, 0.7597603f, -0.3060711f),
+                //            CameraRotation = new Rotator(-17.82262f, 8.071315E-06f, 37.05473f),
+                //        }
+                //    },
+                //},
             }
         ); ;
     }

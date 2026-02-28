@@ -77,7 +77,7 @@ public class IssueableWeapons : IIssuableWeapons
             DefaultConfig();
             DefaultConfig_FullModernJurisdiction();
             DefaultConfig_FullExpandedWeapons();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
         }
         //Load Additive
         foreach (FileInfo fileInfo in LSRDirectory.GetFiles("IssuableWeapons+_*.xml").OrderByDescending(x => x.Name))

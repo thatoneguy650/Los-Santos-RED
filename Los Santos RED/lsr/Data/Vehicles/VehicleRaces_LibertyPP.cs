@@ -33,7 +33,7 @@ public class VehicleRaces_LibertyPP
             BrokerTracks();
             DukesTracks();
 
-            Serialization.SerializeParam(VehicleRaceTypeManager, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\VehicleRaces_{StaticStrings.LPPConfigSuffix}.xml");
+            Serialization.SerializeParam(VehicleRaceTypeManager, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\VehicleRaces+_{StaticStrings.LPPConfigSuffix}.xml");
 
         }
     }

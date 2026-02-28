@@ -354,12 +354,12 @@ public class Zones : IZones
             new Zone("OCEANA", "Atlantic Ocean", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("SANAND", "Outskirts", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural), // Disables LS zone around Vagos den 
             };
-        Serialization.SerializeParams(LibertyCityZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Zones_{StaticStrings.LibertyConfigSuffix}.xml");
+        //Serialization.SerializeParams(LibertyCityZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Zones_{StaticStrings.LibertyConfigSuffix}.xml");
 
         List<Zone> LPPZones = new List<Zone>();
         LPPZones.AddRange(LibertyCityZones);
-        LPPZones.AddRange(ZoneList);
-        Serialization.SerializeParams(LPPZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Zones_{StaticStrings.LPPConfigSuffix}.xml");
+        //LPPZones.AddRange(ZoneList);
+        Serialization.SerializeParams(LPPZones, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Zones+_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
    

@@ -247,7 +247,7 @@ public class GameLocation : ILocationDispatchable
     public virtual int MaxRestockHours { get; set; }
 
     //public int MaxAssaultSpawns { get; set; } = 15;
-
+    public virtual bool AreMarkersDisabled => false;
     public float CloseRange { get; set; } = 10f;
 
 
@@ -353,6 +353,7 @@ public class GameLocation : ILocationDispatchable
     public DateTime DatePayoutPaid { get; set; }
     [XmlIgnore]
     public virtual bool IsOwned { get; set; } = false;
+
     #endregion
 
     [OnDeserialized()]

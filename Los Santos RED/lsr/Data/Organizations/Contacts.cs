@@ -148,28 +148,28 @@ public class Contacts : IContacts
 
         TaxiServiceContact LCTaxiContact = new TaxiServiceContact(StaticStrings.LCTaxiContactName, "CHAR_BLANK_ENTRY") { FullNumber = "5557854444", Number = "7854444", IsDefault = true };
 
-        PossibleContacts PossibleContacts_LC = new PossibleContacts();
-        PossibleContacts_LC.GunDealerContacts.Add(gunDealerContact);
-        PossibleContacts_LC.CorruptCopContact = corruptCopContact;
-        PossibleContacts_LC.VehicleExporterContacts.Add(vehicleExporterContact);
-        PossibleContacts_LC.EmergencyServicesContact = emergencyServicesContact;
-        PossibleContacts_LC.TaxiServiceContacts.Add(LCTaxiContact);
-        PossibleContacts_LC.TaxiServiceContacts.Add(rydeMeContact);
-        PossibleContacts_LC.TaxiServiceContacts.Add(schlechtContact);
-        PossibleContacts_LC.TaxiServiceContacts.Add(knowayContact);
-        Serialization.SerializeParam(PossibleContacts_LC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Contacts_{StaticStrings.LibertyConfigSuffix}.xml");
+        //PossibleContacts PossibleContacts_LC = new PossibleContacts();
+        //PossibleContacts_LC.GunDealerContacts.Add(gunDealerContact);
+        //PossibleContacts_LC.CorruptCopContact = corruptCopContact;
+        //PossibleContacts_LC.VehicleExporterContacts.Add(vehicleExporterContact);
+        //PossibleContacts_LC.EmergencyServicesContact = emergencyServicesContact;
+        //PossibleContacts_LC.TaxiServiceContacts.Add(LCTaxiContact);
+        //PossibleContacts_LC.TaxiServiceContacts.Add(rydeMeContact);
+        //PossibleContacts_LC.TaxiServiceContacts.Add(schlechtContact);
+        //PossibleContacts_LC.TaxiServiceContacts.Add(knowayContact);
+        //Serialization.SerializeParam(PossibleContacts_LC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\Contacts_{StaticStrings.LibertyConfigSuffix}.xml");
 
         PossibleContacts PossibleContacts_LCPP = new PossibleContacts();
-        PossibleContacts_LCPP.GunDealerContacts.Add(gunDealerContact);
-        PossibleContacts_LCPP.CorruptCopContact = corruptCopContact;
-        PossibleContacts_LCPP.VehicleExporterContacts.Add(vehicleExporterContact);
-        PossibleContacts_LCPP.EmergencyServicesContact = emergencyServicesContact;
-        PossibleContacts_LCPP.TaxiServiceContacts.Add(downtownCabContact);
+        //PossibleContacts_LCPP.GunDealerContacts.Add(gunDealerContact);
+        //PossibleContacts_LCPP.CorruptCopContact = corruptCopContact;
+        //PossibleContacts_LCPP.VehicleExporterContacts.Add(vehicleExporterContact);
+        //PossibleContacts_LCPP.EmergencyServicesContact = emergencyServicesContact;
+        //PossibleContacts_LCPP.TaxiServiceContacts.Add(downtownCabContact);
         PossibleContacts_LCPP.TaxiServiceContacts.Add(LCTaxiContact);
-        PossibleContacts_LCPP.TaxiServiceContacts.Add(rydeMeContact);
-        PossibleContacts_LCPP.TaxiServiceContacts.Add(schlechtContact);
-        PossibleContacts_LCPP.TaxiServiceContacts.Add(knowayContact);
-        Serialization.SerializeParam(PossibleContacts_LCPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Contacts_{StaticStrings.LPPConfigSuffix}.xml");
+        //PossibleContacts_LCPP.TaxiServiceContacts.Add(rydeMeContact);
+        //PossibleContacts_LCPP.TaxiServiceContacts.Add(schlechtContact);
+        //PossibleContacts_LCPP.TaxiServiceContacts.Add(knowayContact);
+        Serialization.SerializeParam(PossibleContacts_LCPP, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\Contacts+_{StaticStrings.LPPConfigSuffix}.xml");
     }
     public PhoneContact GetContactByNumber(string numpadString)
     {

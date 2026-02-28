@@ -43,8 +43,8 @@ public class SpawnBlocks : ISpawnBlocks
     private void DefaultConfig_LibertyCity()
     {
         PossibleSpawnBlocks spawnBlocksLC = new PossibleSpawnBlocks();
-        Serialization.SerializeParam(spawnBlocksLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\SpawnBlocks_{StaticStrings.LibertyConfigSuffix}.xml");
-        Serialization.SerializeParam(spawnBlocksLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\SpawnBlocks_{StaticStrings.LPPConfigSuffix}.xml");
+        //Serialization.SerializeParam(spawnBlocksLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LibertyConfigFolder}\\SpawnBlocks_{StaticStrings.LibertyConfigSuffix}.xml");
+        //Serialization.SerializeParam(spawnBlocksLC, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.LPPConfigFolder}\\SpawnBlocks_{StaticStrings.LPPConfigSuffix}.xml");
     }
 
     public void DefaultConfig()

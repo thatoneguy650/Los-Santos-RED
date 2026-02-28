@@ -61,6 +61,7 @@ public class Residence : GameLocation, ILocationSetupable, IRestableLocation, II
     [XmlIgnore]
     public List<DisplayPlacement> DisplayPlacements { get; set; } = new List<DisplayPlacement>();
 
+    public override bool AreMarkersDisabled => !IsOwnedOrRented;
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
