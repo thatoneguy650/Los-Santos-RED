@@ -105,7 +105,7 @@ namespace Mod
             EntryPoint.WriteToConsole($"FEW Installed: {IsFEWInstalled}", 0);
 
             IsFMLPInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmlp"));
-            EntryPoint.WriteToConsole($"FMLT Installed: {IsFMLPInstalled}", 0);
+            EntryPoint.WriteToConsole($"FMLP Installed: {IsFMLPInstalled}", 0);
 
             IsFERSInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfers"));
             EntryPoint.WriteToConsole($"FERS Installed: {IsFERSInstalled}", 0);
