@@ -126,7 +126,7 @@ public class InteriorManager
                 while (IsActive && EntryPoint.ModController.IsRunning && InteriorUpdateLocations.Any())
                 {
                     UpdateClosestInteract();
-                    if (!ClosestLocation.AreMarkersDisabled)
+                    if (ClosestLocation != null && !ClosestLocation.AreMarkersDisabled)
                     {
                         ClosestInteriorInteract?.UpdateActivated(Interactionable, Settings, ClosestLocation, ClosestInterior, LocationInteractable);
                     }
