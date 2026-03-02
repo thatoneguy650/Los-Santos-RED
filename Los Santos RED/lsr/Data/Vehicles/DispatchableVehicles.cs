@@ -1596,7 +1596,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         List<string> additionalCarSpawns = new List<string>() 
         {
             "civissi8","civinterceptor","civstanier2","civcaracarastock","contender","sandking2","riata","everon","civeveron3","civbisonxl","civpmp600","civpresidente",
-                    "civscoutgresk","civgauntletstock","civs95","streiter","civcomet2","civcomet4",
+                    "civscoutgresk","civgauntletstock","civs95","civstreiter","civcomet2","civcomet4",
         };
         EntryPoint.WriteToConsole($"VehicleGroupLookup COUNT! {VehicleGroupLookup.Count()}");
 
@@ -1619,7 +1619,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         List<string> highEndCarSpawns = new List<string>() 
         {
-            "streiter","civcomet2","civcomet4",
+            "civstreiter","civcomet2","civcomet4",
         };
         DispatchableVehicleGroup highEndVehGroup = VehicleGroupLookup.Where(x => x.DispatchableVehicleGroupID == "HighEndVehicles").FirstOrDefault();
         if (highEndVehGroup != null)

@@ -373,7 +373,7 @@ public class ShopMenus : IShopMenus
         && x.ID != "SunshineMenu" 
         && x.ID != "NationalMenu"
         && x.ID != "PaletoExportMenu"
-
+        && x.ID != "BenefactorGallavanterMenu"
         && x.ID != "JDM-X"
         );
         ShopMenu vapidMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "VapidMenu").FirstOrDefault();
@@ -408,7 +408,11 @@ public class ShopMenus : IShopMenus
             albanyMenu.Items.Add(new MenuItem("Albany Esperanto", 22000, 10000));
             albanyMenu.Items.Add(new MenuItem("Albany Presidente", 26000, 12000));
         }
-
+        ShopMenu BeneGalaMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "BenefactorGallavanterMenu").FirstOrDefault();
+        if (BeneGalaMenu != null)
+        {
+            BeneGalaMenu.Items.Add(new MenuItem("Benefactor Streiter Stock", 134000, 45000));
+        }
 
         ShopMenu luxuryAutosMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "LuxuryAutosMenu").FirstOrDefault();
         if (luxuryAutosMenu != null)
@@ -554,6 +558,7 @@ public class ShopMenus : IShopMenus
             nationalExportMenu.Items.Add(new MenuItem("Weeny Issi 2nd Gen", 0, 5000));
             nationalExportMenu.Items.Add(new MenuItem("Vapid Riata", 0, 13000));
             nationalExportMenu.Items.Add(new MenuItem("Karin S95", 0, 6000));
+            nationalExportMenu.Items.Add(new MenuItem("Benefactor Streiter Stock", 0, 23000));
         }
 
         ShopMenu paletoExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "PaletoExportMenu").FirstOrDefault();

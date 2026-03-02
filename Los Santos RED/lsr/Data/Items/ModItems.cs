@@ -242,6 +242,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Schyster PMP 600", ItemType.Vehicles) { OverrideMakeName = "Schyster", OverrideClassName = "Sedan", ModelName = "civpmp600" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin S95", ItemType.Vehicles) { OverrideMakeName = "Karin", OverrideClassName = "Sedan", ModelName = "civs95" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Benefactor Streiter Stock", true, ItemType.Vehicles) { ModelName = "civstreiter", Description = "Look in the mirror and what do you see? Is it a flabby, pallid investment manager with a solitary sex life and spiraling personal debts? It's OK, you don't need to answer that - you're only seeing this ad because we've datamined your Lifeinvader profile. And statistically, we know your next step is going to be the impulsive purchase of a 4x4 that you'll never take out of the city - which is where the Streiter comes in.", });
         //Compacts
         newPossibleItems.VehicleItems.Add(new VehicleItem("Grotti Brioso AC", ItemType.Vehicles) { ModelName = "civbrioso" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Weeny Issi 2nd Gen", ItemType.Vehicles) { ModelName = "civissi8" });
