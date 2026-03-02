@@ -125,6 +125,7 @@ public class DispatchableVehicles_Gangs
     public string GangSentinel6 = "sentinel6";
     public string GangStalion = "stalion"; // Wheels + Extra
     public string GangStreiter = "streiter";
+    public string GangStreiterStock = "civstreiter";
     public string GangSugoi = "sugoi";
     public string GangSultan = "sultan";
     public string GangSultan2 = "sultan2";
@@ -206,9 +207,11 @@ public class DispatchableVehicles_Gangs
     public List<DispatchableVehicle> AncelottiVehicles { get; private set; }
     public List<DispatchableVehicle> MessinaVehicles { get; private set; }
     public List<DispatchableVehicle> LupisellaVehicles { get; private set; }
+    public List<DispatchableVehicle> LupisellaVehicles_FMT { get; private set; }
     public List<DispatchableVehicle> PavanoVehicles { get; private set; }
     public List<DispatchableVehicle> GambettiVehicles { get; private set; }
     public List<DispatchableVehicle> ArmenianVehicles { get; private set; }
+    public List<DispatchableVehicle> ArmenianVehicles_FMT { get; private set; }
     public List<DispatchableVehicle> CartelVehicles { get; private set; }
     public List<DispatchableVehicle> RedneckVehicles { get; private set; }
     public List<DispatchableVehicle> TriadVehicles { get; private set; }
@@ -653,6 +656,31 @@ public class DispatchableVehicles_Gangs
         {
             vehicle.MaxRandomDirtLevel = 8f;
         }
+        LupisellaVehicles_FMT = new List<DispatchableVehicle>()
+        {
+            // 2 door
+            Create_GangSentinel(45, 45, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, -1, false), // base mod
+            Create_GangSentinel2(45, 45, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, false), // base mod
+            Create_GangCypher(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            Create_GangNiobe(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            Create_GangSchwarzer(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            //4 door
+            Create_GangKomoda(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            Create_GangRhinehart(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            Create_GangSentinel5(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangSentinel6(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangVstr(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, -1, true),
+            Create_GangStreiterStock(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 7, 3, true),
+            //SUV 
+            Create_GangBaller7(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangHuntley(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangRebla(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, true),
+            Create_GangWoodlander(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 96, 96, 95, -1, 16, 0, 3, 3, -1, true),
+        };
+        foreach (var vehicle in LupisellaVehicles_FMT)
+        {
+            vehicle.MaxRandomDirtLevel = 8f;
+        }
     }
     private void SetPavanoVehicles()
     {
@@ -736,6 +764,30 @@ public class DispatchableVehicles_Gangs
             Create_GangSchlagen(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
         };
         foreach (var vehicle in ArmenianVehicles)
+        {
+            vehicle.MaxRandomDirtLevel = 5f;
+        }
+        ArmenianVehicles_FMT = new List<DispatchableVehicle>()
+        {
+            // Suv
+            Create_GangDubsta2(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 3, 1, false),
+            Create_GangNovak(65, 65, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 3, 1, -1, true),
+            Create_GangRebla(65, 65, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 3, 1, true),
+            // 4 Door
+            Create_GangCheburek(25, 25, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 1, 1, true),
+            Create_GangSentinel5(65, 65, GangVehicleType.Gang2, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 0, 1, true),
+            Create_GangSentinel6(65, 65, GangVehicleType.Gang2, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 0, 1, true),
+            Create_GangSchafter2(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, false), // base mod
+            Create_GangSchafter3(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+            Create_GangSchafter4(75, 75, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+            Create_GangStreiterStock(55, 55, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+            Create_GangVorschlaghammer(35, 35, GangVehicleType.Gang1, -1, -1, -1, 4, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+            // 2 Door
+            Create_GangCypher(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+            Create_GangSchwarzer(75, 75, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, false),
+            Create_GangSchlagen(65, 65, GangVehicleType.Gang1, -1, -1, -1, -1, "", "", false, false, 147, 147, 0, -1, 16, 0, 7, 1, true),
+        };
+        foreach (var vehicle in ArmenianVehicles_FMT)
         {
             vehicle.MaxRandomDirtLevel = 5f;
         }
@@ -18128,6 +18180,47 @@ public class DispatchableVehicles_Gangs
                             new DispatchableVehicleModValue(7,25),
                         },
                     },
+                    new DispatchableVehicleMod(23,100) // wheels High End (7)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(4,8),
+                            new DispatchableVehicleModValue(5,9),
+                            new DispatchableVehicleModValue(6,8),
+                            new DispatchableVehicleModValue(7,8),
+                            new DispatchableVehicleModValue(8,8),
+                            new DispatchableVehicleModValue(9,9),
+                            new DispatchableVehicleModValue(10,8),
+                            new DispatchableVehicleModValue(11,8),
+                            new DispatchableVehicleModValue(12,8),
+                            new DispatchableVehicleModValue(13,8),
+                            new DispatchableVehicleModValue(16,9),
+                            new DispatchableVehicleModValue(17,9),
+                            new DispatchableVehicleModValue(18,8),
+                            new DispatchableVehicleModValue(19,8),
+                            new DispatchableVehicleModValue(24,9),
+                            new DispatchableVehicleModValue(25,9),
+                            new DispatchableVehicleModValue(26,8),
+                            new DispatchableVehicleModValue(27,8),
+                            new DispatchableVehicleModValue(29,8),
+                            new DispatchableVehicleModValue(30,8),
+                            new DispatchableVehicleModValue(32,8),
+                            new DispatchableVehicleModValue(33,8),
+                        },
+                    },
+            };
+        }
+        SetDefault(toReturn, minWantedLevel, maxWantedLevel, minOccupants, maxOccupants, requiredPedGroup, groupName, useOptionalColors, useOptionalColors2, requiredPrimaryColor, requiredSecondaryColor, requiredPearlescent, requiredDashColor, requiredInteriorColor, requiredWheelColor, wheelType, windowTint, requiresDLC);
+        return toReturn;
+    }
+    public DispatchableVehicle Create_GangStreiterStock(int ambientPercent, int wantedPercent, GangVehicleType gangVehicleType, int minWantedLevel, int maxWantedLevel, int minOccupants, int maxOccupants,
+    string requiredPedGroup, string groupName, bool useOptionalColors, bool useOptionalColors2, int requiredPrimaryColor, int requiredSecondaryColor, int requiredPearlescent, int requiredDashColor, int requiredInteriorColor, int requiredWheelColor, int wheelType, int windowTint, bool requiresDLC)
+    {
+        DispatchableVehicle toReturn = new DispatchableVehicle(GangStreiterStock, ambientPercent, wantedPercent);
+        if (gangVehicleType == GangVehicleType.Gang1)
+        {
+
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>() {
                     new DispatchableVehicleMod(23,100) // wheels High End (7)
                     {
                         DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()

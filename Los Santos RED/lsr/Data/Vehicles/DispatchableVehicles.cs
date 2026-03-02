@@ -61,6 +61,10 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> CartelVehicles;
     private List<DispatchableVehicle> RedneckVehicles;
     private List<DispatchableVehicle> FamiliesVehicles;
+
+    private List<DispatchableVehicle> AncelottiVehicles_FMT;
+    private List<DispatchableVehicle> ArmeniaVehicles_FMT;
+
     public List<DispatchableVehicle> UnmarkedVehicles;
     private List<DispatchableVehicle> CoastGuardVehicles;
     private List<DispatchableVehicle> ParkRangerVehicles;
@@ -1548,7 +1552,11 @@ public class DispatchableVehicles : IDispatchableVehicles
     private void DefaultConfig_FullModernTraffic()
     {
         List<DispatchableVehicleGroup> FMTVehicleGroupLookup = new List<DispatchableVehicleGroup>();
-        List<DispatchableVehicle> WeazelVehicles_FMT = new List<DispatchableVehicle>() {
+
+        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("ArmeniaVehicles", DispatchableVehicles_Gangs.ArmenianVehicles_FMT));
+        FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("LupisellaVehicles", DispatchableVehicles_Gangs.LupisellaVehicles_FMT));
+
+        List <DispatchableVehicle> WeazelVehicles_FMT = new List<DispatchableVehicle>() {
             new DispatchableVehicle("rumpo", 100, 100) { RequiredLiveries = new List<int>() { 0 } },
             new DispatchableVehicle("civmaverick2", 100, 100) { GroupName = "Helicopter",VehicleMods = new List<DispatchableVehicleMod>()
                 {
