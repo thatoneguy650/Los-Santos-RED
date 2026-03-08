@@ -262,7 +262,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat 4x4", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatoffroad" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Bobcat Regular Bed", ItemType.Vehicles) { OverrideMakeName = "Vapid", OverrideClassName = "Pickup", ModelName = "civbobcatwork" });
         newPossibleItems.VehicleItems.RemoveAll(x => x.ModelName == "contender");
-        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "contender" });//swapped from vaid to KARIN and renamed
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveronv8" });//swapped from vaid to KARIN and renamed
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveron3" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Kamacho Stock", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "civkamacho" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });

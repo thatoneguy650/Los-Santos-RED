@@ -83,8 +83,18 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem UnbuttonedCasual1_MPM;
     private PedClothingShopMenuItem LostSupported_MPM;
     private PedClothingShopMenuItem BaseballHatProLaps1_MPM;
+    private PedClothingShopMenuItem BaseballHatProLaps1Reverse_MPM;
     private PedClothingShopMenuItem BaseballHatRegular1_MPM;
     private PedClothingShopMenuItem BaseballHatRegular1Reverse_MPM;
+    private PedClothingShopMenuItem BrimmedHat1_MPM;
+    private PedClothingShopMenuItem BrimmedHat2_MPM;
+    private PedClothingShopMenuItem BrimmedHat3_MPM;
+    private PedClothingShopMenuItem BowlerHat1_MPM;
+    private PedClothingShopMenuItem StovetopHat1_MPM;
+    private PedClothingShopMenuItem CowboyHat1_MPM;
+    private PedClothingShopMenuItem Beanie1_MPM;
+    private PedClothingShopMenuItem Beanie2_MPM;
+    private PedClothingShopMenuItem Beanie3_MPM;
     private PedClothingShopMenuItem StrawHat1_MPM;
     private PedClothingShopMenuItem Aviators1_MPM;
     private PedClothingShopMenuItem Chucks1_MPM;
@@ -113,6 +123,19 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem FullHelmet5_MPM;
     private PedClothingShopMenuItem OpenFullHelmet1_MPM;
     private PedClothingShopMenuItem PilotHelmet1_MPM;
+    private PedClothingShopMenuItem BaseballHatBroker_MPM;
+    private PedClothingShopMenuItem BaseballHatBrokerReverse_MPM;
+    private PedClothingShopMenuItem BaseballHatEnus_MPM;
+    private PedClothingShopMenuItem BaseballHatEnusReverse_MPM;
+    private PedClothingShopMenuItem BaseballHatFastFood_MPM;
+    private PedClothingShopMenuItem BaseballHatFastFoodReverse_MPM;
+    private PedClothingShopMenuItem BaseballHatGuns_MPM;
+    private PedClothingShopMenuItem BaseballHatGunsReverse_MPM;
+    private PedClothingShopMenu SuburbanClothesMenu;
+    private PedClothingShopMenu BincoClothesMenu;
+    private PedClothingShopMenu DiscountStoreClothesMenu;
+    private PedClothingShopMenu PoisonbysClothesMenu;
+    private PedClothingShopMenu DidierSachsClothesMenu;
 
     public PedClothingShopMenu HelmetShopMenu { get; private set; }
     public PedClothingShopMenu GenericClothesShopMenu { get; private set; }
@@ -134,30 +157,105 @@ public class ShopMenus_Clothing
         //Discount Store
         //Poisonbys
         //Didier Sachs
-        GenericClothesShopMenu = new PedClothingShopMenu();
-        GenericClothesShopMenu.ID = "GenericClothesShop";
-        GenericClothesShopMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        DiscountStoreClothesMenu = new PedClothingShopMenu();
+        DiscountStoreClothesMenu.ID = "DiscountStoreClothesMenu";
+        DiscountStoreClothesMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
         {
-            Polo1_MPF,UnbuttonedCasual1_MPM,
-            FittedT_MPF,
+            //Male
+            StrawHat1_MPM,
+            UnbuttonedCasual1_MPM,
+            LostSupported_MPM,
+            Beanie1_MPM,
+            Beanie2_MPM,
+            Beanie3_MPM,
+            CowboyHat1_MPM,
+            BaseballHatFastFood_MPM,
+            BaseballHatFastFoodReverse_MPM,
+
+            //Female
             LooseButton_MPF,
-            LostSupported_MPF,LostSupported_MPM,
-            Aviators1_MPF,Aviators1_MPM,
-            Heels1_MPF,
-            Chucks1_MPF,Chucks1_MPM,
-            FlipFlops1_MPF,FlipFlops1_MPM,
-            GoldWatch1_MPF,Watch1_MPM,
-            GoldWatch2_MPF,Watch2_MPM,
+            StrawHat1_MPF,
+            LostSupported_MPF,
+        };
+        BincoClothesMenu = new PedClothingShopMenu();
+        BincoClothesMenu.ID = "BincoClothesMenu";
+        BincoClothesMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            //Male
+            FlipFlops1_MPM,
+            Aviators1_MPM,
+            BaseballHatGuns_MPM,
+            BaseballHatGunsReverse_MPM,
+            //Female
+            FlipFlops1_MPF,
+            Aviators1_MPF,
+            Polo1_MPF,
+            FittedT_MPF,
+        };
+        SuburbanClothesMenu = new PedClothingShopMenu();
+        SuburbanClothesMenu.ID = "SuburbanClothesMenu";
+        SuburbanClothesMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            //Male
+            //Hats
+            BaseballHatProLaps1_MPM,
+            BaseballHatProLaps1Reverse_MPM,
+            BaseballHatRegular1_MPM,
+            BaseballHatRegular1Reverse_MPM,   
+            BaseballHatBroker_MPM,
+            BaseballHatBrokerReverse_MPM,
+            BaseballHatEnus_MPM,
+            BaseballHatEnusReverse_MPM,
+
+
+            //Shoes
+            Chucks1_MPM,
+            
+
+            //Female
+            //Hats
+            BaseballHatProLaps1_MPF,
+            BaseballHatRegular1_MPF,
+            BaseballHatRegular1Reverse_MPF,
+
+            //Shoes
+            Chucks1_MPF,
+        };
+        
+
+        PoisonbysClothesMenu = new PedClothingShopMenu();
+        PoisonbysClothesMenu.ID = "PoisonbysClothesMenu";
+        PoisonbysClothesMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            //Male
+            Necklace1_MPM,
+            Watch2_MPM,
             Watch3_MPM,
-            DangleEarring1_MPF,DangleEarring1_MPM,
-            BaseballHatProLaps1_MPF,BaseballHatProLaps1_MPM,
-            BaseballHatRegular1Reverse_MPF,BaseballHatRegular1Reverse_MPM,
-            BaseballHatRegular1_MPF,BaseballHatRegular1_MPM,
-            StrawHat1_MPF,StrawHat1_MPM,
-            Necklace1_MPF,Necklace1_MPM,
-            BusinessOutfit1_MPF,BusinessOutfit1_MPM,
+            DangleEarring1_MPM,
+            //Female
+            Heels1_MPF,
+            Necklace1_MPF,
+            GoldWatch2_MPF,
             BusinessOutfit2_MPF,
         };
+        DidierSachsClothesMenu = new PedClothingShopMenu();
+        DidierSachsClothesMenu.ID = "DidierSachsClothesMenu";
+        DidierSachsClothesMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            //Male
+            BusinessOutfit1_MPM,
+            Watch1_MPM,
+            StovetopHat1_MPM,
+            BowlerHat1_MPM,
+            BrimmedHat1_MPM,
+            BrimmedHat2_MPM,
+            BrimmedHat3_MPM,
+            //Female
+            BusinessOutfit1_MPF,      
+            GoldWatch1_MPF,
+            DangleEarring1_MPF,
+        };
+
 
         MaskShopMenu = new PedClothingShopMenu();
         MaskShopMenu.ID = "MaskShopMenu";
@@ -251,6 +349,31 @@ public class ShopMenus_Clothing
             FullHelmet5_MPM,
             OpenFullHelmet1_MPM,
             PilotHelmet1_MPM,
+        };
+
+        GenericClothesShopMenu = new PedClothingShopMenu();
+        GenericClothesShopMenu.ID = "GenericClothesShop";
+        GenericClothesShopMenu.PedClothingShopMenuItems = new List<PedClothingShopMenuItem>()
+        {
+            Polo1_MPF,UnbuttonedCasual1_MPM,
+            FittedT_MPF,
+            LooseButton_MPF,
+            LostSupported_MPF,LostSupported_MPM,
+            Aviators1_MPF,Aviators1_MPM,
+            Heels1_MPF,
+            Chucks1_MPF,Chucks1_MPM,
+            FlipFlops1_MPF,FlipFlops1_MPM,
+            GoldWatch1_MPF,Watch1_MPM,
+            GoldWatch2_MPF,Watch2_MPM,
+            Watch3_MPM,
+            DangleEarring1_MPF,DangleEarring1_MPM,
+            BaseballHatProLaps1_MPF,BaseballHatProLaps1_MPM,
+            BaseballHatRegular1Reverse_MPF,BaseballHatRegular1Reverse_MPM,
+            BaseballHatRegular1_MPF,BaseballHatRegular1_MPM,
+            StrawHat1_MPF,StrawHat1_MPM,
+            Necklace1_MPF,Necklace1_MPM,
+            BusinessOutfit1_MPF,BusinessOutfit1_MPM,
+            BusinessOutfit2_MPF,
         };
 
     }
@@ -516,8 +639,190 @@ public class ShopMenus_Clothing
     }
     private void MPMale_Hats()
     {
+        //Formal
+        BrimmedHat1_MPM = new PedClothingShopMenuItem("Brimmed Hat 1", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 25, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BrimmedHat2_MPM = new PedClothingShopMenuItem("Brimmed Hat 2", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 30, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BrimmedHat3_MPM = new PedClothingShopMenuItem("Brimmed Hat 3", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 64, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BowlerHat1_MPM = new PedClothingShopMenuItem("Bowler 1", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 26, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        StovetopHat1_MPM = new PedClothingShopMenuItem("Stovetop Hat 1", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 27, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        //Cowboy
+        CowboyHat1_MPM = new PedClothingShopMenuItem("Cowboy Hat", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 13, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        //Bandana
+        Beanie1_MPM = new PedClothingShopMenuItem("Tied Bandana", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 14, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        //Beanies
+        Beanie1_MPM = new PedClothingShopMenuItem("Loose Beanie", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 2, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Beanie2_MPM = new PedClothingShopMenuItem("Tight Beanie", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 5, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Beanie3_MPM = new PedClothingShopMenuItem("Tight Beanie 2", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 28, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        //Brimmed
+        StrawHat1_MPM = new PedClothingShopMenuItem("Straw Hat", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(0, 21, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        //Baseball
+        BaseballHatGuns_MPM = new PedClothingShopMenuItem("Arms Dealer Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 109, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatGunsReverse_MPM = new PedClothingShopMenuItem("Backwards Arms Dealer", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 110, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatFastFood_MPM = new PedClothingShopMenuItem("Fast Food Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 130, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatFastFoodReverse_MPM = new PedClothingShopMenuItem("Backwards Fast Food Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 131, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatEnus_MPM = new PedClothingShopMenuItem("Bugstars Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 139, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatEnusReverse_MPM = new PedClothingShopMenuItem("Backwards Bugstars Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 140, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatEnus_MPM = new PedClothingShopMenuItem("Enus Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 151, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatEnusReverse_MPM = new PedClothingShopMenuItem("Backwards Enus Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 152, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatBroker_MPM = new PedClothingShopMenuItem("Broker Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 162, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatBrokerReverse_MPM = new PedClothingShopMenuItem("Backwards Broker Hat", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 163, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
         BaseballHatProLaps1_MPM = new PedClothingShopMenuItem("Prolaps Golf", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 159, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Hats",
+            SubCategory = "Baseball Caps",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BaseballHatProLaps1Reverse_MPM = new PedClothingShopMenuItem("Backwards Prolaps Golf", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(0, 161, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Hats",
             SubCategory = "Baseball Caps",
@@ -537,14 +842,6 @@ public class ShopMenus_Clothing
         {
             Category = "Hats",
             SubCategory = "Baseball Caps",
-            PedFocusZone = ePedFocusZone.Head,
-            IsAccessory = true,
-        };
-        StrawHat1_MPM = new PedClothingShopMenuItem("Straw Hat", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
-                new PedClothingComponent(0, 21, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
-        {
-            Category = "Hats",
-            SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
@@ -666,7 +963,6 @@ public class ShopMenus_Clothing
     {
 
     }
-
     private void MPFemale_Helmets()
     {
         DirtHelmet1_MPF = new PedClothingShopMenuItem("Dirt Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {

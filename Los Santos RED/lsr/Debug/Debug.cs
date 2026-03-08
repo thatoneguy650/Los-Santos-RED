@@ -1388,19 +1388,48 @@ public class Debug
 
     private void DebugNumpad5()
 {
-        if(IsTrafficDisabled)
-        {
-            World.SetTrafficEnabled();
-            EntryPoint.WriteToConsole("SET TRAFFIC ENABLED");
-        }
-        else
-        {
-            World.SetTrafficDisabled();
-            EntryPoint.WriteToConsole("SET TRAFFIC DISABLED");
-        }
-        
 
-        IsTrafficDisabled = !IsTrafficDisabled;
+
+        GenericMinigame genericMinigame = new GenericMinigame();
+        genericMinigame.Start(Player);
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (!Game.IsKeyDown(Keys.J))
+                {
+                    genericMinigame.Update();
+                    GameFiber.Yield();
+                }
+
+                NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, true, 0);
+
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "BurnerPhone");
+
+
+        GameFiber.Sleep(500);
+
+
+
+        //if(IsTrafficDisabled)
+        //{
+        //    World.SetTrafficEnabled();
+        //    EntryPoint.WriteToConsole("SET TRAFFIC ENABLED");
+        //}
+        //else
+        //{
+        //    World.SetTrafficDisabled();
+        //    EntryPoint.WriteToConsole("SET TRAFFIC DISABLED");
+        //}
+
+
+        //IsTrafficDisabled = !IsTrafficDisabled;
 
 
         //if(Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())

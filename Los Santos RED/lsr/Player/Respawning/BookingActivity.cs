@@ -34,6 +34,7 @@ public class BookingActivity
     private Vector3 CopTargetPosition;
     private float CopTargetHeading;
     private PedPlayerInteract PedPlayerInteract;
+    private BookingVehicleManager BookingVehicleManager;
 
     public bool CanContinueBooking => EntryPoint.ModController.IsRunning && (Player.IsBusted || Player.IsArrested) && !Player.IsIncapacitated && Player.IsAlive && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsDead && !Cop.IsInWrithe && !Cop.IsUnconscious;
     public bool IsActive { get; private set; }
@@ -73,7 +74,6 @@ public class BookingActivity
 
         if(Cop == null || !Cop.Pedestrian.Exists())
         {
-            ReleaseCop();
             EndBooking();
             return;
         }
@@ -88,27 +88,26 @@ public class BookingActivity
                 PedPlayerInteract = new PedPlayerInteract(Player, Cop, -0.9f);
                 PedPlayerInteract.CanUseEitherSide = false;
                 PedPlayerInteract.Start();
-                if(CanContinueBooking)
+                if (!CanContinueBooking)
                 {
-                    if (!PedPlayerInteract.IsInPosition)
-                    {
-                        PedPlayerInteract.SetPlayerInFront();
-                    }
-                    PlayCuffAnimation();
-                    if(!isPlayerCuffed)
-                    {
-                        ReleaseCop();
-                        EndBooking();
-                        return;
-                    }
-                    Player.CuffManager.SetPlayerHandcuffed();
-                    ReleaseCop();
-                    BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
-                    bookingVehicleManager.Setup();
-                    bookingVehicleManager.Start();
-                    FinishBooking();
+                    EndBooking();
+                    return;
                 }
+                if (!PedPlayerInteract.IsInPosition)
+                {
+                    PedPlayerInteract.SetPlayerInFront();
+                }
+                PlayCuffAnimation();
+                if(!isPlayerCuffed)
+                {
+                    EndBooking();
+                    return;
+                }
+                Player.CuffManager.SetPlayerHandcuffed();
                 ReleaseCop();
+                BookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
+                BookingVehicleManager.Setup();
+                BookingVehicleManager.Start();
                 EndBooking();
             }
             catch (Exception ex)
@@ -121,6 +120,7 @@ public class BookingActivity
    
     private void EndBooking()
     {
+        ReleaseCop();
         Player.IsBeingBooked = false;
         IsActive = false;
         EntryPoint.WriteToConsole("BOOKING ENDED!");
@@ -215,5 +215,10 @@ public class BookingActivity
             Player.IsBeingBooked = false;
             IsActive = false;//temp here
         }
+    }
+
+    public void OnSkipBookingPressed()
+    {
+
     }
 }
