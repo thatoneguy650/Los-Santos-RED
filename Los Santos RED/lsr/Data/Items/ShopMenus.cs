@@ -831,6 +831,13 @@ public class ShopMenus : IShopMenus
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.MaskShopMenu);
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.HelmetShopMenu);
         PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.FreakMaskShopMenu);
+
+
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.DiscountStoreClothesMenu);
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.SuburbanClothesMenu);
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.BincoClothesMenu);
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.PoisonbysClothesMenu);
+        PossibleShopMenus.PedClothingShopMenus.Add(shopMenus_Clothing.DidierSachsClothesMenu);
     }
     private void SetupPedVariationMenus()
     {

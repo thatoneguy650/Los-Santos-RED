@@ -9224,6 +9224,38 @@ public class Interiors : IInteriors
                 },
             },
 
+
+            new ClothingShopInterior(-19999,"Didier Sachs Del Perro")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("diderSachsDPTryOn1",new Vector3(-1216.509f, -764.6811f, 18.46337f), 125.2499f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(-20000,"Didier Sachs Pillbox Hill")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("diderSachsPBHTryOn1",new Vector3(-250.3629f, -954.3096f, 31.22f), 247.3126f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(-20001,"Didier Sachs IOU Building")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("diderSachsIOUTryOn1",new Vector3(-855.7509f, -364.0399f, 38.68024f), 203.7949f,"Try On Clothes")
+                },
+            },
+            new ClothingShopInterior(-20002,"Didier Sachs Portola Drive")
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("diderSachsRockfordTryOn1",new Vector3(-838.1293f, -161.4877f, 37.78422f), 77.91008f,"Try On Clothes")
+                },
+            },
+
+
+
             new ClothingShopInterior(82690, "Vangelico")
             {
                 LocalID = 82690,

@@ -108,7 +108,21 @@ public class TryOnInteract : InteriorInteract
         }
         MenuPool.Add(InteractionMenu);
         ClothingPurchaseMenu clothingPurchaseMenuProcess = new ClothingPurchaseMenu(LocationInteractable, ClothingShop, this, Settings);
-        clothingPurchaseMenuProcess.Start(MenuPool, InteractionMenu, OrbitCamera, ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x => x.ModelNames.Contains(Player.ModelName.ToLower())).ToList(),true, true);
+
+
+        List<PedClothingShopMenuItem> possibleItems = ClothingShop.PedClothingShopMenu.PedClothingShopMenuItems.Where(x => x.ModelNames.Contains(Player.ModelName.ToLower())).ToList();
+
+        if(possibleItems== null || !possibleItems.Any())
+        {
+            ClothingShop.DisplayMessage("No Available Styles","There are no style options here for some as... distinct as yourself.");
+            ClothingShop.PlayErrorSound();
+            Player.IsSetDisabledControls = false;
+            clothingPurchaseMenuProcess.Dispose();
+            return;
+        }
+
+
+        clothingPurchaseMenuProcess.Start(MenuPool, InteractionMenu, OrbitCamera, possibleItems, true, true);
 
         while (MenuPool.IsAnyMenuOpen() && Player.ActivityManager.CanPerformActivitiesExtended)
         {

@@ -140,7 +140,7 @@ public class ClothingPurchaseMenu
     public void Dispose()
     {
         Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
-        PlayerPoser.Dispose();
+        PlayerPoser?.Dispose();
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
         {
             Player.PedSwap.AddOffset();
