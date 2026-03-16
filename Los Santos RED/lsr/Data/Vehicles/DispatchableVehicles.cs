@@ -510,26 +510,26 @@ public class DispatchableVehicles : IDispatchableVehicles
         RedneckVehicles = new List<DispatchableVehicle>();
         FamiliesVehicles = new List<DispatchableVehicle>();
 
-        DispatchableVehicles_Gangs dispatchableVehiclesGangs = new DispatchableVehicles_Gangs();
-        dispatchableVehiclesGangs.DefaultConfig();
-        FamiliesVehicles.AddRange(dispatchableVehiclesGangs.FamiliesVehicles);
-        VarriosVehicles.AddRange(dispatchableVehiclesGangs.VarriosVehicles);
-        BallasVehicles.AddRange(dispatchableVehiclesGangs.BallasVehicles);
-        VagosVehicles.AddRange(dispatchableVehiclesGangs.VagosVehicles);
-        MarabuntaVehicles.AddRange(dispatchableVehiclesGangs.MarabuntaVehicles);
-        KoreanVehicles.AddRange(dispatchableVehiclesGangs.KoreanVehicles);
-        TriadVehicles.AddRange(dispatchableVehiclesGangs.TriadVehicles);
-        DiablosVehicles.AddRange(dispatchableVehiclesGangs.DiablosVehicles);
-        GambettiVehicles.AddRange(dispatchableVehiclesGangs.GambettiVehicles);
-        PavanoVehicles.AddRange(dispatchableVehiclesGangs.PavanoVehicles);
-        LupisellaVehicles.AddRange(dispatchableVehiclesGangs.LupisellaVehicles);
-        MessinaVehicles.AddRange(dispatchableVehiclesGangs.MessinaVehicles);
-        AncelottiVehicles.AddRange(dispatchableVehiclesGangs.AncelottiVehicles);
-        CartelVehicles.AddRange(dispatchableVehiclesGangs.CartelVehicles);
-        RedneckVehicles.AddRange(dispatchableVehiclesGangs.RedneckVehicles);
-        ArmeniaVehicles.AddRange(dispatchableVehiclesGangs.ArmenianVehicles);
-        YardieVehicles.AddRange(dispatchableVehiclesGangs.YardiesVehicles);
-        LostMCVehicles.AddRange(dispatchableVehiclesGangs.LostVehicles);
+        DispatchableVehicles_Gangs = new DispatchableVehicles_Gangs();
+        DispatchableVehicles_Gangs.DefaultConfig();
+        FamiliesVehicles.AddRange(DispatchableVehicles_Gangs.FamiliesVehicles);
+        VarriosVehicles.AddRange(DispatchableVehicles_Gangs.VarriosVehicles);
+        BallasVehicles.AddRange(DispatchableVehicles_Gangs.BallasVehicles);
+        VagosVehicles.AddRange(DispatchableVehicles_Gangs.VagosVehicles);
+        MarabuntaVehicles.AddRange(DispatchableVehicles_Gangs.MarabuntaVehicles);
+        KoreanVehicles.AddRange(DispatchableVehicles_Gangs.KoreanVehicles);
+        TriadVehicles.AddRange(DispatchableVehicles_Gangs.TriadVehicles);
+        DiablosVehicles.AddRange(DispatchableVehicles_Gangs.DiablosVehicles);
+        GambettiVehicles.AddRange(DispatchableVehicles_Gangs.GambettiVehicles);
+        PavanoVehicles.AddRange(DispatchableVehicles_Gangs.PavanoVehicles);
+        LupisellaVehicles.AddRange(DispatchableVehicles_Gangs.LupisellaVehicles);
+        MessinaVehicles.AddRange(DispatchableVehicles_Gangs.MessinaVehicles);
+        AncelottiVehicles.AddRange(DispatchableVehicles_Gangs.AncelottiVehicles);
+        CartelVehicles.AddRange(DispatchableVehicles_Gangs.CartelVehicles);
+        RedneckVehicles.AddRange(DispatchableVehicles_Gangs.RedneckVehicles);
+        ArmeniaVehicles.AddRange(DispatchableVehicles_Gangs.ArmenianVehicles);
+        YardieVehicles.AddRange(DispatchableVehicles_Gangs.YardiesVehicles);
+        LostMCVehicles.AddRange(DispatchableVehicles_Gangs.LostVehicles);
 
 
         NorthHollandVehicles = new List<DispatchableVehicle>();
@@ -538,11 +538,11 @@ public class DispatchableVehicles : IDispatchableVehicles
         UptownRidersVehicles = new List<DispatchableVehicle>();
         AngelsOfDeathVehicles = new List<DispatchableVehicle>();
 
-        NorthHollandVehicles.AddRange(dispatchableVehiclesGangs.NorthHollandVehicles);
-        PetrovicVehicles.AddRange(dispatchableVehiclesGangs.PetrovicVehicles);
-        SpanishLordsVehicles.AddRange(dispatchableVehiclesGangs.SpanishLordsVehicles);
-        UptownRidersVehicles.AddRange(dispatchableVehiclesGangs.UptownRidersVehicles);
-        AngelsOfDeathVehicles.AddRange(dispatchableVehiclesGangs.AngelsOfDeathVehicles);
+        NorthHollandVehicles.AddRange(DispatchableVehicles_Gangs.NorthHollandVehicles);
+        PetrovicVehicles.AddRange(DispatchableVehicles_Gangs.PetrovicVehicles);
+        SpanishLordsVehicles.AddRange(DispatchableVehicles_Gangs.SpanishLordsVehicles);
+        UptownRidersVehicles.AddRange(DispatchableVehicles_Gangs.UptownRidersVehicles);
+        AngelsOfDeathVehicles.AddRange(DispatchableVehicles_Gangs.AngelsOfDeathVehicles);
 
         //Other
         TaxiBroadWay = new DispatchableVehicle("broadway", 4, 4)
@@ -1552,6 +1552,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private void DefaultConfig_FullModernTraffic()
     {
         List<DispatchableVehicleGroup> FMTVehicleGroupLookup = new List<DispatchableVehicleGroup>();
+
 
         FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("ArmeniaVehicles", DispatchableVehicles_Gangs.ArmenianVehicles_FMT));
         FMTVehicleGroupLookup.Add(new DispatchableVehicleGroup("LupisellaVehicles", DispatchableVehicles_Gangs.LupisellaVehicles_FMT));

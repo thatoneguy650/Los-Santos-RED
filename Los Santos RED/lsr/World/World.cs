@@ -361,6 +361,9 @@ namespace Mod
         private void OnTotalWantedLevelAdded()
         {
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
+           
+
+
         }
         public void SetTrafficDisabled()
         {

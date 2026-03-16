@@ -3166,7 +3166,7 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Karin Sultan",0,11000),
         new MenuItem("Karin Futo",0,5000),
         new MenuItem("Karin Futo GTX",0,13000),
-        new MenuItem("Dinka Blista Kanjo",0,10000),
+        new MenuItem("Dinka Blista Kanjo Custom",0,10000),
         new MenuItem("Dinka Blista Compact",0,5500),
         new MenuItem("Karin 190z",0,25000),
         new MenuItem("Maibatsu Penumbra",0,5000),

@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class ShopMenus_Clothing
 {
-    private PedClothingShopMenuItem Polo1_MPF;
-    private PedClothingShopMenuItem FittedT_MPF;
-    private PedClothingShopMenuItem LooseButton_MPF;
-    private PedClothingShopMenuItem LostSupported_MPF;
-    private PedClothingShopMenuItem Aviators1_MPF;
     private PedClothingShopMenuItem MaskHockey_MPC;
     private PedClothingShopMenuItem MaskMonkey_MPC;
     private PedClothingShopMenuItem MaskLuchador_MPC;
@@ -47,11 +42,11 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem MaskUnicorn_MPC;
     private PedClothingShopMenuItem MaskVulture_MPC;
     private PedClothingShopMenuItem MaskClown_MPC;
-    private PedClothingShopMenuItem MaskDeathM_MPC;
-    private PedClothingShopMenuItem MaskDeathF_MPC;
+    private PedClothingShopMenuItem MaskDeath_MPM;
+    private PedClothingShopMenuItem MaskDeath_MPF;
     private PedClothingShopMenuItem MaskFalseFace_MPC;
-    private PedClothingShopMenuItem MaskFamineM_MPC;
-    private PedClothingShopMenuItem MaskFamineF_MPC;
+    private PedClothingShopMenuItem MaskFamine_MPM;
+    private PedClothingShopMenuItem MaskFamine_MPF;
     private PedClothingShopMenuItem MaskImpotentRage_MPC;
     private PedClothingShopMenuItem MaskMoorehead_MPC;
     private PedClothingShopMenuItem MaskPogo_MPC;
@@ -65,9 +60,21 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem MaskFaceBandana_MPC;
     private PedClothingShopMenuItem MaskTShirtMask_MPC;
 
+    private PedClothingShopMenuItem Polo1_MPF;
+    private PedClothingShopMenuItem FittedT_MPF;
+    private PedClothingShopMenuItem LooseButton_MPF;
+    private PedClothingShopMenuItem LostSupported_MPF;
+    private PedClothingShopMenuItem Aviators1_MPF;
     private PedClothingShopMenuItem Heels1_MPF;
+    private PedClothingShopMenuItem SkateShoes1_MPF;
+    private PedClothingShopMenuItem FUGGsShoes1_MPF;
+    private PedClothingShopMenuItem RunningShoes1_MPF;
     private PedClothingShopMenuItem Chucks1_MPF;
     private PedClothingShopMenuItem FlipFlops1_MPF;
+    private PedClothingShopMenuItem Heels2_MPF;
+    private PedClothingShopMenuItem HeelsBoots1_MPF;
+    private PedClothingShopMenuItem HeelsBoots2_MPF;
+    private PedClothingShopMenuItem RunningShoes2_MPF;
     private PedClothingShopMenuItem GoldWatch1_MPF;
     private PedClothingShopMenuItem GoldWatch2_MPF;
     private PedClothingShopMenuItem DangleEarring1_MPF;
@@ -136,12 +143,10 @@ public class ShopMenus_Clothing
     public PedClothingShopMenu DiscountStoreClothesMenu { get; private set; }
     public PedClothingShopMenu PoisonbysClothesMenu { get; private set; }
     public PedClothingShopMenu DidierSachsClothesMenu { get; private set; }
-
     public PedClothingShopMenu HelmetShopMenu { get; private set; }
     public PedClothingShopMenu GenericClothesShopMenu { get; private set; }
     public PedClothingShopMenu MaskShopMenu { get; private set; }
     public PedClothingShopMenu FreakMaskShopMenu { get; private set; }
-
     public void Setup()
     {
         MPFemale();
@@ -311,11 +316,11 @@ public class ShopMenus_Clothing
             MaskMouse_MPC,       
             MaskCrazedApe_MPC,            
             MaskTurtle_MPC,             
-            MaskDeathM_MPC,
-            MaskDeathF_MPC,
+            MaskDeath_MPM,
+            MaskDeath_MPF,
             MaskFalseFace_MPC,              
-            MaskFamineM_MPC,
-            MaskFamineF_MPC,
+            MaskFamine_MPM,
+            MaskFamine_MPF,
             MaskImpotentRage_MPC,            
             MaskMoorehead_MPC,                 
             MaskPogo_MPC,
@@ -397,9 +402,7 @@ public class ShopMenus_Clothing
         MPFemale_Bracelets();
 
         MPFemale_Outfits();
-        MPFemale_Helmets();
-
-        
+        MPFemale_Helmets();     
     }
     private void MPMale()
     {
@@ -414,9 +417,6 @@ public class ShopMenus_Clothing
         MPMale_Ears();
         MPMale_Helmets();
     }
-
-
-
     private void MPFemale_Accessories()
     {
         Necklace1_MPF = new PedClothingShopMenuItem("Necklace 1", "", 100, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
@@ -870,22 +870,71 @@ public class ShopMenus_Clothing
     }
     private void MPFemale_Shoes()
     {
-        Heels1_MPF = new PedClothingShopMenuItem("Heels", "", 75, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        Heels1_MPF = new PedClothingShopMenuItem("Rounder Toe Heels", "", 185, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 0, new List<int>() { 0 }) { AllowAllTextureVariations = true }, })
         {
             Category = "Shoes",
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Feet
         };
-        Chucks1_MPF = new PedClothingShopMenuItem("Blaines", "", 75, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() { 
+        SkateShoes1_MPF = new PedClothingShopMenuItem("Skaters", "", 155, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(6, 1, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        FUGGsShoes1_MPF = new PedClothingShopMenuItem("FUGGS", "Make sure your feet are FUGG-ly", 195, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(6, 2, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        Chucks1_MPF = new PedClothingShopMenuItem("Blaines", "", 125, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 3, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
         {
             Category = "Shoes",
             SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.Feet
         };
-        FlipFlops1_MPF = new PedClothingShopMenuItem("Flip Flops", "", 75, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() { 
+        RunningShoes1_MPF = new PedClothingShopMenuItem("Aeris Running", "", 175, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(6, 4, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Feet
+        };   
+        FlipFlops1_MPF = new PedClothingShopMenuItem("Flip Flops", "", 55, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() { 
             new PedClothingComponent(6, 5, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        Heels2_MPF = new PedClothingShopMenuItem("Pointed Toe Heels", "", 195, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 6, new List<int>() { 0 }) { AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        HeelsBoots1_MPF = new PedClothingShopMenuItem("Heel Boots", "", 225, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 7, new List<int>() { 0 }) { AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        HeelsBoots2_MPF = new PedClothingShopMenuItem("Low Heel Boots", "", 220, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 8, new List<int>() { 0 }) { AllowAllTextureVariations = true }, })
+        {
+            Category = "Shoes",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Feet
+        };
+        RunningShoes2_MPF = new PedClothingShopMenuItem("Aeris Hi-Top Running", "", 195, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(6, 11, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
         {
             Category = "Shoes",
             SubCategory = "Casual",
@@ -894,14 +943,14 @@ public class ShopMenus_Clothing
     }
     private void MPMale_Shoes()
     {
-        Chucks1_MPM = new PedClothingShopMenuItem("Blaines", "", 75, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        Chucks1_MPM = new PedClothingShopMenuItem("Blaines", "", 125, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 4, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
         {
             Category = "Shoes",
             SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.Feet
         };
-        FlipFlops1_MPM = new PedClothingShopMenuItem("Flip Flops", "", 75, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FlipFlops1_MPM = new PedClothingShopMenuItem("Flip Flops", "", 55, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 5, new List<int>() { 0 }){ AllowAllTextureVariations = true }, })
         {
             Category = "Shoes",
@@ -963,9 +1012,11 @@ public class ShopMenus_Clothing
     {
 
     }
+
+    //WHEW
     private void MPFemale_Helmets()
     {
-        DirtHelmet1_MPF = new PedClothingShopMenuItem("Dirt Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        DirtHelmet1_MPF = new PedClothingShopMenuItem("Dirt Bike Helmet", "", 245, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 16, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -974,7 +1025,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        DirtHelmet2_MPF = new PedClothingShopMenuItem("Dirt Helmet 2", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        DirtHelmet2_MPF = new PedClothingShopMenuItem("Blacked Out Dirt Bike Helmet", "", 350, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 48, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -983,7 +1034,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        HalfHelmet1_MPF = new PedClothingShopMenuItem("Half Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        HalfHelmet1_MPF = new PedClothingShopMenuItem("Half Helmet", "Look like a dork, I dare you", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 17, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -992,7 +1043,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet1_MPF = new PedClothingShopMenuItem("Full Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet1_MPF = new PedClothingShopMenuItem("Full Face Basic", "", 345, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 18, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1001,7 +1052,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet2_MPF = new PedClothingShopMenuItem("Full Helmet 2", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet2_MPF = new PedClothingShopMenuItem("Blacked Out Full Face", "", 385, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 49, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1010,7 +1061,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet3_MPF = new PedClothingShopMenuItem("Full Helmet 3", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet3_MPF = new PedClothingShopMenuItem("Mirror Finish Full Face", "", 425, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 50, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1019,7 +1070,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet4_MPF = new PedClothingShopMenuItem("Full Helmet 4", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet4_MPF = new PedClothingShopMenuItem("Backed Out Full Face Alt", "", 410, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 51, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1028,7 +1079,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet5_MPF = new PedClothingShopMenuItem("Full Helmet 5", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet5_MPF = new PedClothingShopMenuItem("Backed Out Full Face Alt 2", "", 410, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 52, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1037,7 +1088,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        OpenFullHelmet1_MPF = new PedClothingShopMenuItem("Open Full Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        OpenFullHelmet1_MPF = new PedClothingShopMenuItem("Lifted Full Face", "", 345, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 66, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1047,7 +1098,7 @@ public class ShopMenus_Clothing
             IsHelmet = true,
         };
 
-        PilotHelmet1_MPF = new PedClothingShopMenuItem("Pilot Helmet 1", "", 78, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        PilotHelmet1_MPF = new PedClothingShopMenuItem("Jet Pilot Helmet", "", 4500, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 37, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1059,7 +1110,7 @@ public class ShopMenus_Clothing
     }
     private void MPMale_Helmets()
     {
-        DirtHelmet1_MPM = new PedClothingShopMenuItem("Dirt Helmet 1", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        DirtHelmet1_MPM = new PedClothingShopMenuItem("Dirt Bike Helmet", "", 245, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 16, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1068,7 +1119,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        DirtHelmet2_MPM = new PedClothingShopMenuItem("Dirt Helmet 2", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        DirtHelmet2_MPM = new PedClothingShopMenuItem("Blacked Out Dirt Bike Helmet", "", 350, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 48, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1077,7 +1128,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        HalfHelmet1_MPM = new PedClothingShopMenuItem("Half Helmet 1", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        HalfHelmet1_MPM = new PedClothingShopMenuItem("Half Helmet", "Look like a dork, I dare you", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 17, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1086,7 +1137,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet1_MPM = new PedClothingShopMenuItem("Full Helmet 1", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet1_MPM = new PedClothingShopMenuItem("Full Face Basic", "", 345, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 18, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1095,7 +1146,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet2_MPM = new PedClothingShopMenuItem("Full Helmet 2", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet2_MPM = new PedClothingShopMenuItem("Blacked Out Full Face", "", 385, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 50, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1104,7 +1155,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet3_MPM = new PedClothingShopMenuItem("Full Helmet 3", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet3_MPM = new PedClothingShopMenuItem("Mirror Finish Full Face", "", 425, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 51, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1113,7 +1164,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet4_MPM = new PedClothingShopMenuItem("Full Helmet 4", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet4_MPM = new PedClothingShopMenuItem("Backed Out Full Face Alt", "", 410, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 52, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1122,7 +1173,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        FullHelmet5_MPM = new PedClothingShopMenuItem("Full Helmet 5", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        FullHelmet5_MPM = new PedClothingShopMenuItem("Backed Out Full Face Alt 2", "", 410, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 53, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1131,7 +1182,7 @@ public class ShopMenus_Clothing
             IsAccessory = true,
             IsHelmet = true,
         };
-        OpenFullHelmet1_MPM = new PedClothingShopMenuItem("Open Full Helmet 1", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        OpenFullHelmet1_MPM = new PedClothingShopMenuItem("Lifted Full Face", "", 345, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 67, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1141,7 +1192,7 @@ public class ShopMenus_Clothing
             IsHelmet = true,
         };
 
-        PilotHelmet1_MPM = new PedClothingShopMenuItem("Pilot Helmet 1", "", 78, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        PilotHelmet1_MPM = new PedClothingShopMenuItem("Jet Pilot Helmet", "", 4500, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(0, 38, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Helmets",
@@ -1153,7 +1204,7 @@ public class ShopMenus_Clothing
     }
     private void MPCombined_Masks()
     {
-        MaskHockey_MPC = new PedClothingShopMenuItem("Hockey Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskHockey_MPC = new PedClothingShopMenuItem("Hockey Mask", "", 175, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 4, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1161,7 +1212,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskMonkey_MPC = new PedClothingShopMenuItem("Monkey Mask", "No monkeying around!", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskMonkey_MPC = new PedClothingShopMenuItem("Monkey Mask", "No monkeying around!", 190, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 5, new List<int>() { 0 }){ AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1169,7 +1220,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskLuchador_MPC = new PedClothingShopMenuItem("Luchador Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskLuchador_MPC = new PedClothingShopMenuItem("Luchador Mask", "", 190, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 6, new List<int>() { 0 }){ AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1177,7 +1228,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskGargoyle1_MPC = new PedClothingShopMenuItem("Gargoyle Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskGargoyle1_MPC = new PedClothingShopMenuItem("Gargoyle Mask", "", 250, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 7, new List<int>() { 0 }){AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1185,7 +1236,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBallistic_MPC = new PedClothingShopMenuItem("Ballistic Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBallistic_MPC = new PedClothingShopMenuItem("Ballistic Mask", "", 950, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 125, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1193,7 +1244,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskCombatMask_MPC = new PedClothingShopMenuItem("Combat Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskCombatMask_MPC = new PedClothingShopMenuItem("Combat Mask", "", 450, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 28, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1201,7 +1252,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskPainted_MPC = new PedClothingShopMenuItem("Painted Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskPainted_MPC = new PedClothingShopMenuItem("Painted Mask", "", 190, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 188, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1209,7 +1260,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskNightVision_MPC = new PedClothingShopMenuItem("Night Vision", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskNightVision_MPC = new PedClothingShopMenuItem("Night Vision", "", 2500, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 132, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1217,7 +1268,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskSnakeSkull_MPC = new PedClothingShopMenuItem("Snake Skull", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskSnakeSkull_MPC = new PedClothingShopMenuItem("Snake Skull", "", 190, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 106, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1233,7 +1284,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskSkullScruffyBalaclava_MPC = new PedClothingShopMenuItem("Scruffy Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskSkullScruffyBalaclava_MPC = new PedClothingShopMenuItem("Scruffy Balaclava", "", 70, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 119, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1241,7 +1292,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskScruffyBalaclava_MPC = new PedClothingShopMenuItem("Black Scruffy Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskScruffyBalaclava_MPC = new PedClothingShopMenuItem("Black Scruffy Balaclava", "", 75, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 37, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1249,7 +1300,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBlackKnitBalaclava_MPC = new PedClothingShopMenuItem("Knit Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBlackKnitBalaclava_MPC = new PedClothingShopMenuItem("Knit Balaclava", "", 75, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 57, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1257,7 +1308,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBanditKnitBalaclava_MPC = new PedClothingShopMenuItem("Bandit Knit Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBanditKnitBalaclava_MPC = new PedClothingShopMenuItem("Bandit Knit Balaclava", "", 65, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 58, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1265,7 +1316,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBrightStripeKnitBalaclava_MPC = new PedClothingShopMenuItem("Bright Stripe Knit Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBrightStripeKnitBalaclava_MPC = new PedClothingShopMenuItem("Bright Stripe Knit Balaclava", "", 60, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 117, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1273,7 +1324,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskLooseBalaclava_MPC = new PedClothingShopMenuItem("Loose Balaclava", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskLooseBalaclava_MPC = new PedClothingShopMenuItem("Loose Balaclava", "", 45, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 56, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1281,7 +1332,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFilter_MPC = new PedClothingShopMenuItem("Filter Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFilter_MPC = new PedClothingShopMenuItem("Filter Mask", "", 400, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 90, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1289,7 +1340,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskVent_MPC = new PedClothingShopMenuItem("Vent Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskVent_MPC = new PedClothingShopMenuItem("Vent Mask", "", 345, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 107, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1297,7 +1348,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBear_MPC = new PedClothingShopMenuItem("Bear Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBear_MPC = new PedClothingShopMenuItem("Bear Mask", "", 120, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 21, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1305,7 +1356,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBison_MPC = new PedClothingShopMenuItem("Bison Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBison_MPC = new PedClothingShopMenuItem("Bison Mask", "", 200, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 22, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1313,7 +1364,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskBull_MPC = new PedClothingShopMenuItem("Bull Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskBull_MPC = new PedClothingShopMenuItem("Bull Mask", "", 130, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 23, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1321,7 +1372,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskCat_MPC = new PedClothingShopMenuItem("Cat Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskCat_MPC = new PedClothingShopMenuItem("Cat Mask", "", 245, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 17, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1329,7 +1380,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskCrazedApe_MPC = new PedClothingShopMenuItem("Crazed Ape Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskCrazedApe_MPC = new PedClothingShopMenuItem("Crazed Ape Mask", "", 260, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 96, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1337,7 +1388,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskDino_MPC = new PedClothingShopMenuItem("Dino Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskDino_MPC = new PedClothingShopMenuItem("Dino Mask", "", 160, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 17, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1345,7 +1396,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskEagle_MPC = new PedClothingShopMenuItem("Eagle Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskEagle_MPC = new PedClothingShopMenuItem("Eagle Mask", "", 130, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 24, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1353,7 +1404,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFox_MPC = new PedClothingShopMenuItem("Fox Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFox_MPC = new PedClothingShopMenuItem("Fox Mask", "", 120, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 18, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1361,7 +1412,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskHorse_MPC = new PedClothingShopMenuItem("Horse Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskHorse_MPC = new PedClothingShopMenuItem("Horse Mask", "", 125, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 97, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1369,7 +1420,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskHyena_MPC = new PedClothingShopMenuItem("Hyena Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskHyena_MPC = new PedClothingShopMenuItem("Hyena Mask", "", 75, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 184, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1377,7 +1428,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskMouse_MPC = new PedClothingShopMenuItem("Mouse Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskMouse_MPC = new PedClothingShopMenuItem("Mouse Mask", "", 85, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 182, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1385,7 +1436,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskOwl_MPC = new PedClothingShopMenuItem("Owl Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskOwl_MPC = new PedClothingShopMenuItem("Owl Mask", "", 90, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 19, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1393,7 +1444,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskPig_MPC = new PedClothingShopMenuItem("Pig Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskPig_MPC = new PedClothingShopMenuItem("Pig Mask", "", 95, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 1, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1401,7 +1452,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskPug_MPC = new PedClothingShopMenuItem("Pug Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskPug_MPC = new PedClothingShopMenuItem("Pug Mask", "", 75, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 100, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1409,7 +1460,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskRaccoon_MPC = new PedClothingShopMenuItem("Raccoon Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskRaccoon_MPC = new PedClothingShopMenuItem("Raccoon Mask", "", 90, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 20, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1417,7 +1468,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskTurtle_MPC = new PedClothingShopMenuItem("Turtle Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskTurtle_MPC = new PedClothingShopMenuItem("Turtle Mask", "", 80, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 181, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1425,7 +1476,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskWolf_MPC = new PedClothingShopMenuItem("Wolf Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskWolf_MPC = new PedClothingShopMenuItem("Wolf Mask", "", 120, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 26, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1433,7 +1484,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskUnicorn_MPC = new PedClothingShopMenuItem("Unicorn Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskUnicorn_MPC = new PedClothingShopMenuItem("Unicorn Mask", "", 110, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 98, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1441,7 +1492,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskVulture_MPC = new PedClothingShopMenuItem("Vulture Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskVulture_MPC = new PedClothingShopMenuItem("Vulture Mask", "", 110, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 24, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1449,7 +1500,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskClown_MPC = new PedClothingShopMenuItem("Clown Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskClown_MPC = new PedClothingShopMenuItem("Clown Mask", "", 120, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 95, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1457,7 +1508,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskDeathM_MPC = new PedClothingShopMenuItem("Death Mask", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskDeath_MPM = new PedClothingShopMenuItem("Death Mask", "", 175, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 202, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1465,7 +1516,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskDeathF_MPC = new PedClothingShopMenuItem("Death Mask", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        MaskDeath_MPF = new PedClothingShopMenuItem("Death Mask", "", 175, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 203, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1473,7 +1524,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFalseFace_MPC = new PedClothingShopMenuItem("False Face Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFalseFace_MPC = new PedClothingShopMenuItem("False Face Mask", "", 175, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 128, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1481,7 +1532,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFamineM_MPC = new PedClothingShopMenuItem("Famine Mask", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFamine_MPM = new PedClothingShopMenuItem("Famine Mask", "", 160, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 198, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1489,7 +1540,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFamineF_MPC = new PedClothingShopMenuItem("Famine Mask", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFamine_MPF = new PedClothingShopMenuItem("Famine Mask", "", 160, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 199, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1497,7 +1548,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskImpotentRage_MPC = new PedClothingShopMenuItem("Impotent Rage Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskImpotentRage_MPC = new PedClothingShopMenuItem("Impotent Rage Mask", "", 345, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 43, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1505,7 +1556,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskMoorehead_MPC = new PedClothingShopMenuItem("Moorehead Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskMoorehead_MPC = new PedClothingShopMenuItem("Moorehead Mask", "", 200, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 45, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1513,7 +1564,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskPogo_MPC = new PedClothingShopMenuItem("Pogo Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskPogo_MPC = new PedClothingShopMenuItem("Pogo Mask", "", 225, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 3, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1521,7 +1572,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskPrincessRobotBubblegum_MPC = new PedClothingShopMenuItem("Princess Robot Bubblegum Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskPrincessRobotBubblegum_MPC = new PedClothingShopMenuItem("Princess Robot Bubblegum Mask", "", 355, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 44, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1529,7 +1580,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskHockeyAlt_MPC = new PedClothingShopMenuItem("Hockey Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskHockeyAlt_MPC = new PedClothingShopMenuItem("Hockey Mask", "", 165, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 14, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1537,7 +1588,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskMandible_MPC = new PedClothingShopMenuItem("Mandible Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskMandible_MPC = new PedClothingShopMenuItem("Mandible Mask", "", 185, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 112, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1545,7 +1596,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskRobo_MPC = new PedClothingShopMenuItem("Robo Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskRobo_MPC = new PedClothingShopMenuItem("Robo Mask", "", 225, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 110, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1553,7 +1604,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskWarrior_MPC = new PedClothingShopMenuItem("Warrior Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskWarrior_MPC = new PedClothingShopMenuItem("Warrior Mask", "", 100, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 16, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1561,7 +1612,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskCrimeSceneTape_MPC = new PedClothingShopMenuItem("Crime Scene Tape Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskCrimeSceneTape_MPC = new PedClothingShopMenuItem("Crime Scene Tape Mask", "", 125, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 47, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1569,7 +1620,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskDuctTape_MPC = new PedClothingShopMenuItem("Duct Tape Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskDuctTape_MPC = new PedClothingShopMenuItem("Duct Tape Mask", "", 145, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 48, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1577,7 +1628,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskFaceBandana_MPC = new PedClothingShopMenuItem("Face Bandana", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskFaceBandana_MPC = new PedClothingShopMenuItem("Face Bandana", "", 160, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 51, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
@@ -1585,7 +1636,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
-        MaskTShirtMask_MPC = new PedClothingShopMenuItem("T-Shirt Mask", "", 150, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        MaskTShirtMask_MPC = new PedClothingShopMenuItem("T-Shirt Mask", "", 175, new List<string>() { "mp_f_freemode_01", "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(1, 54, new List<int>() { 0 }){  AllowAllTextureVariations = true, }, })
         {
             Category = "Masks",
