@@ -93,9 +93,12 @@ public class IssueableWeapons : IIssuableWeapons
     {
 
         IssuableWeapon weaponNanoPistol = new IssuableWeapon("weapon_nanopistol",
-            new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), new WeaponComponent("Suppressor"), }), 45);
+            new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), }), 100);
 
-        IssuableWeapon weaponMustangRevolver = new IssuableWeapon("weapon_mustangrev", new WeaponVariation(), 65); 
+        IssuableWeapon weaponNanoPistol_supp = new IssuableWeapon("weapon_nanopistol",
+        new WeaponVariation(new List<WeaponComponent> { new WeaponComponent("Extended Clip"), new WeaponComponent("Suppressor"), }), 45);
+
+        IssuableWeapon weaponMustangRevolver = new IssuableWeapon("weapon_mustangrev", new WeaponVariation(), 100); 
 
         //COPS
         List<IssuableWeapon> AllSidearms_Modern = new List<IssuableWeapon>()
@@ -259,8 +262,10 @@ public class IssueableWeapons : IIssuableWeapons
         weaponNanoPistol.SpawnChance = 45;
 
         FamiliesSidearms_Modern.Add(weaponNanoPistol);
+        FamiliesSidearms_Modern.Add(weaponNanoPistol_supp);
 
         BallasSidearms_Modern.Add(weaponNanoPistol);
+        BallasSidearms_Modern.Add(weaponNanoPistol_supp);
         BallasSidearms_Modern.Add(weaponMustangRevolver);
 
         VagosSidearms_Modern.Add(weaponNanoPistol);
@@ -268,8 +273,10 @@ public class IssueableWeapons : IIssuableWeapons
         VarriosSidearms_Modern.Add(weaponNanoPistol);
 
         MarabuntaSidearms_Modern.Add(weaponNanoPistol);
+        MarabuntaSidearms_Modern.Add(weaponNanoPistol_supp);
 
         LostSidearms_Modern.Add(weaponNanoPistol);
+        LostSidearms_Modern.Add(weaponNanoPistol_supp);
         LostSidearms_Modern.Add(weaponMustangRevolver);
 
         KkangpaeSidearms_Modern.Add(weaponNanoPistol);

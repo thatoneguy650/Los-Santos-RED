@@ -82,7 +82,7 @@ public class PedSwapSettings : ISettingsDefaultable
     {
 
 
-        AliasPedAsMainCharacter = true;
+        AliasPedAsMainCharacter = false;
 
         MainCharacterToAlias = "Michael";
         SetRandomMoney = true;

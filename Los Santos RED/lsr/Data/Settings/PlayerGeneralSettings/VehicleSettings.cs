@@ -97,12 +97,10 @@ public class VehicleSettings : ISettingsDefaultable
     public float VehicleCrashInjureRandomizePercentage { get; set; }
     public bool FuelUsesAnimationsAndProps { get; set; }
     public int PlayerEnteredPersistantVehicleLimit { get; set; }
+    public float PlayerEnteredPersistantVehicleDistanceLimit { get; set; }
 
 
 
-    public float DebugLastX { get; set; }
-    public float DebugLastY { get; set; }
-    public float DebugLastZ { get; set; }
 
 
     [OnDeserialized()]
@@ -178,5 +176,6 @@ public class VehicleSettings : ISettingsDefaultable
         FuelUsesAnimationsAndProps = true;
 
         PlayerEnteredPersistantVehicleLimit = 3;
+        PlayerEnteredPersistantVehicleDistanceLimit = 500f;
     }
 }

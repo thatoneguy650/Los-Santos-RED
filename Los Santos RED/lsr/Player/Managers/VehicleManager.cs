@@ -47,10 +47,10 @@ public class VehicleManager
             {
                 continue;
             }
-            if(sv.VehicleExt.DistanceChecker.DistanceToPlayer >= 500f)
+            if(sv.VehicleExt.DistanceChecker.DistanceToPlayer >= Settings.SettingsManager.VehicleSettings.PlayerEnteredPersistantVehicleDistanceLimit)//500f)
             {
                 sv.VehicleExt.Vehicle.IsPersistent = false;
-                EntryPoint.WriteToConsole("Removeing Persist Vehicle as you moved too far away");
+                EntryPoint.WriteToConsole("Removing Persist Vehicle as you moved too far away");
             }
         }
         PersistantVehicles.RemoveAll(x => x.VehicleExt != null && !x.VehicleExt.Vehicle.Exists());
