@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class CriminalHistorySettings : ISettingsDefaultable
 {
-    [Description("Game time in milliseconds required for the bolo/apb to expire for each wanted level. Ex a value of 60000 would take 120 seconds or real game time to expire a 2 star bolo/apb")]
+    [Description("Game time in milliseconds required for the bolo/apb to expire for each wanted level. Ex a value of 180000 would take 360 seconds or real game time to expire a 2 star bolo/apb")]
     public uint RealTimeExpireWantedMultiplier { get; set; }
     [Description("In-game calendar hours required for the bolo/apb to expire for each wanted level. Ex a value of 12 would take 24 hours of in-game calendar time expire a 2 star bolo/apb")]
     public int CalendarTimeExpireWantedMultiplier { get; set; }
@@ -23,7 +23,7 @@ public class CriminalHistorySettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        RealTimeExpireWantedMultiplier = 60000;
+        RealTimeExpireWantedMultiplier = 180000;// 60000;
         CalendarTimeExpireWantedMultiplier = 12;
         CreateBlip = true;
         MinimumSearchRadius = 400f;

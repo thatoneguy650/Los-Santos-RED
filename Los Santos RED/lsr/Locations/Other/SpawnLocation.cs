@@ -18,6 +18,11 @@ public class SpawnLocation
     {
         InitialPosition = initialPosition;
     }
+    public SpawnLocation(Vector3 initialPosition, float heading)
+    {
+        InitialPosition = initialPosition;
+        Heading = heading;
+    }
     public bool HasStreetPosition { get; private set; }
     public bool HasSideOfRoadPosition { get; private set; }
     public bool HasSpawns => InitialPosition != Vector3.Zero && (IsWater || StreetPosition != Vector3.Zero);

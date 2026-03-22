@@ -272,6 +272,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, -1, UnitPrice) {
                     ModItem = ModItem,
+                    IsIllicilt = true,
                     NumberOfItemsToPurchaseFromPlayer = Quantity,
                     NumberOfItemsToSellToPlayer = 0 } }), true);
                     PrimaryGangMember.Money = UnitPrice * Quantity;//make sure he has enough on him to buy it
@@ -280,6 +281,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     PrimaryGangMember.SetupTransactionItems(new ShopMenu("testmenu", "testmenu2", new List<MenuItem>() { new MenuItem(ModItem.Name, UnitPrice, -1) {
                     ModItem = ModItem,
+                    IsIllicilt = true,
                     NumberOfItemsToPurchaseFromPlayer = 0,
                     NumberOfItemsToSellToPlayer = Quantity } }), true);
                 }
@@ -290,6 +292,53 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 gm.IsHitSquad = false;
                 SpawnedMembers.Add(gm);
             }
+
+
+            List<SpawnLocation> OtherSpawnLocations = new List<SpawnLocation>();
+            foreach(SpawnPlace vendorLocation in DealingLocation.VendorLocations)
+            {
+                OtherSpawnLocations.Add(new SpawnLocation(vendorLocation.Position, vendorLocation.Heading));
+            }
+            foreach(ConditionalLocation conditionalLocation in DealingLocation.PossiblePedSpawns)
+            {
+                OtherSpawnLocations.Add(new SpawnLocation(conditionalLocation.Location, conditionalLocation.Heading));
+            }
+            foreach (ConditionalGroup conditionalGroup in DealingLocation.PossibleGroupSpawns)
+            {
+                foreach (ConditionalLocation conditionalLocation in conditionalGroup.PossiblePedSpawns)
+                {
+                    OtherSpawnLocations.Add(new SpawnLocation(conditionalLocation.Location, conditionalLocation.Heading));
+                }
+            }
+
+            if(!OtherSpawnLocations.Any() && IsAmbush)
+            {
+                SpawnLocation fallbackspawnLocation = new SpawnLocation(DealingLocation.EntrancePosition.Around2D(50f));
+                fallbackspawnLocation.GetClosestStreet(false);
+                fallbackspawnLocation.GetClosestSidewalk();
+                OtherSpawnLocations.Add(fallbackspawnLocation);
+            }
+
+            foreach (SpawnLocation otherspawnLocation in OtherSpawnLocations)
+            {
+                GangSpawnTask gangAdditionalSpawnTask = new GangSpawnTask(DealingGang, otherspawnLocation, null, DealingGang.GetRandomPed(0, ""), true, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, true, true, true);
+                gangAdditionalSpawnTask.PlacePedOnGround = true;
+                gangAdditionalSpawnTask.AllowAnySpawn = true;
+                gangAdditionalSpawnTask.AllowBuddySpawn = true;
+                gangAdditionalSpawnTask.IsHitSquad = IsAmbush;
+                gangAdditionalSpawnTask.SpawnRequirement = TaskRequirements.Guard;
+                gangAdditionalSpawnTask.AttemptSpawn();
+                foreach (GangMember gm in gangAdditionalSpawnTask.CreatedPeople)
+                {
+                    gm.IsHitSquad = false;
+                    SpawnedMembers.Add(gm);
+                }
+                EntryPoint.WriteToConsole("SPAWNED ADDITIONAL PED DUE TO AMBUSH");
+            }
+
+
+            
+
         }
         private void CleanupPeds()
         {

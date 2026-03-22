@@ -111,6 +111,7 @@ public class CellPhone
         phoneAudioPlayer = new NAudioPlayer(Settings);
         Cellphones = cellphones;
         CurrentCellphoneData = Cellphones.GetDefault();
+        EntryPoint.WriteToConsole($"Set Cellphone data as default ModItemName:{CurrentCellphoneData?.ModItemName}");
     }
     public void Setup()
     {
@@ -162,6 +163,7 @@ public class CellPhone
         CustomVolume = -1.0f;
         ContactIndex = 0;
         CurrentCellphoneData = Cellphones.GetDefault();
+        EntryPoint.WriteToConsole($"Set Cellphone data as default ModItemName:{CurrentCellphoneData?.ModItemName}");
         AddedTexts = new List<PhoneText>();
         AddedContacts = new List<PhoneContact>();
         PhoneResponses = new List<PhoneResponse>();
@@ -253,6 +255,7 @@ public class CellPhone
     }
     public void RandomizeSettings()
     {
+        
         var dir = new DirectoryInfo("Plugins\\LosSantosRED\\audio\\tones");
         List<FileInfo> files = dir.GetFiles().ToList();
         if (files != null)
@@ -280,6 +283,7 @@ public class CellPhone
             CustomPhoneType = RandomItems.GetRandomNumberInt(0, 3);
             CustomPhoneOS = CustomPhoneType == 0 ? "cellphone_ifruit" : CustomPhoneType == 1 ? "cellphone_facade" : CustomPhoneType == 2 ? "cellphone_badger" : "cellphone_ifruit";// new List<string>() { "cellphone_ifruit", "cellphone_facade", "cellphone_badger" }.PickRandom();
         }
+        EntryPoint.WriteToConsole($"Randomize Cellphone Ran CustomPhoneOS:{CustomPhoneOS}");
     }
     private void CheckScheduledItems()
     {

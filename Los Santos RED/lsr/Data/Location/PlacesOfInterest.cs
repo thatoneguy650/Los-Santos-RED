@@ -6573,7 +6573,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_ScrapYards()
     {
         ScrapYards = new List<ScrapYard>() {
-            new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f     ), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
+            new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
         };

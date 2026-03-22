@@ -64,6 +64,37 @@ namespace Mod
                 return false;
             }
         }
+        public void Setup()
+        {
+            try
+            {
+                CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+                CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+                CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
+                CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
+                CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
+
+
+                if(CurrentYear <= 2013 || CurrentMonth == 0 || CurrentDay == 0)
+                {
+                    EntryPoint.WriteToConsole("WARNING: Date Incorrect. Setting to Current System Time",0);
+                    SetDateToToday();
+                    CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                    CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+                    CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+                    CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
+                    CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
+                    CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
+                }
+                CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Game.DisplayNotification($"Error Starting Mod, Time Set Incorrect, Setting to Current {ex.Message}");
+                SetDateToToday();
+            }
+        }
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
@@ -249,24 +280,7 @@ namespace Mod
                 GameTimeLastSetClock = Game.GameTime;
             }
         }
-        public void Setup()
-        {
-            try
-            {
-                CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-                CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-                CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
-                CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
-                CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
-                CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
-                CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
-            }
-            catch(ArgumentOutOfRangeException ex)
-            {
-                Game.DisplayNotification($"Error Starting Mod, Time Set Incorrect, Setting to Current {ex.Message}");
-                SetDateToToday();
-            }
-        }
+
         private void GetIntervalAndMultiplier()
         {
             if (!IsFastForwarding)
