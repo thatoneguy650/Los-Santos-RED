@@ -136,6 +136,8 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem DiscoOutfit1_MPM;
     private PedClothingShopMenuItem DiscoOutfit2_MPM;
     private PedClothingShopMenuItem DiscoOutfit3_MPM;
+    private PedClothingShopMenuItem DiscoOutfit4_MPM;
+
     //SubUrban
     private PedClothingShopMenuItem SuburbOutfit1_MPM;
     private PedClothingShopMenuItem SuburbOutfit2_MPM;
@@ -411,10 +413,18 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem BusinessOutfit3_MPF;
     private PedClothingShopMenuItem BusinessOutfit4_MPF;
 
-
     //Suburban
     private PedClothingShopMenuItem SuburbOutfit1_MPF;
     private PedClothingShopMenuItem SuburbOutfit2_MPF;
+    //Discount
+    private PedClothingShopMenuItem DiscountOutfit1_MPF;
+    private PedClothingShopMenuItem DiscountOutfit2_MPF;
+    private PedClothingShopMenuItem DiscountOutfit3_MPF;
+    //Binco
+    private PedClothingShopMenuItem BincoOutfit1_MPF;
+    private PedClothingShopMenuItem BincoOutfit2_MPF;
+    private PedClothingShopMenuItem BincoOutfit3_MPF;
+
 
     //Accessories
     private PedClothingShopMenuItem RemoveAccessories1_MPF;
@@ -709,6 +719,7 @@ public class ShopMenus_Clothing
             DiscoOutfit1_MPM,
             DiscoOutfit2_MPM,
             DiscoOutfit3_MPM,
+            DiscoOutfit4_MPM,
 
             //Accessories
             RemoveAccessories1_MPM,
@@ -842,6 +853,12 @@ public class ShopMenus_Clothing
             //Female
             //////////
             
+            // OutFits
+            DiscountOutfit1_MPF,
+            DiscountOutfit2_MPF,
+            DiscountOutfit3_MPF,
+
+
             //Accessories
             RemoveAccessories1_MPF,
 
@@ -1078,6 +1095,12 @@ public class ShopMenus_Clothing
             //Female
             /////////
             
+            //Outfits
+            BincoOutfit1_MPF,
+            BincoOutfit2_MPF,
+            BincoOutfit3_MPF,
+
+
             //Accessories
             RemoveAccessories1_MPF,
 
@@ -2229,7 +2252,6 @@ public class ShopMenus_Clothing
         new PedClothingComponent(3, 1, new List<int>() { 0 }),
         new PedClothingComponent(4, 106, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         new PedClothingComponent(6, 97, new List<int>() { 0 }){ AllowAllTextureVariations = true },
-        new PedClothingComponent(7, 149, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         new PedClothingComponent(8, 28, new List<int>() { 0 }) { AllowAllTextureVariations = true },
         new PedClothingComponent(11, 10, new List<int>() { 0 ,1 ,2 ,7 ,10 ,11 ,13 ,15 }){ AllowAllTextureVariations = false },
         })
@@ -2248,6 +2270,81 @@ public class ShopMenus_Clothing
         {
             Category = "Outfits",
             SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        //Discount Casuals
+        DiscountOutfit1_MPF = new PedClothingShopMenuItem("Casual Outfit 1", "", 200, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 5, new List<int>() { 0 }),
+        new PedClothingComponent(4, 0, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 1, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 16, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 1, new List<int>() { 0, 1, 2, 4, 5, 6, 9, 11, 14 }) { AllowAllTextureVariations = false },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        DiscountOutfit2_MPF = new PedClothingShopMenuItem("Casual Outfit 2", "", 250, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 5, new List<int>() { 0 }),
+        new PedClothingComponent(4, 0, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 3, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 57, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 354, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        DiscountOutfit3_MPF = new PedClothingShopMenuItem("The Scruffy Applicant", "At least you tried. Good Job!", 280, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 0, new List<int>() { 0 }),
+        new PedClothingComponent(4, 41, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 57, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(7, 20, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 39, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 52, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        //Binco
+        BincoOutfit1_MPF = new PedClothingShopMenuItem("The Worker", "Work Outfit", 400, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 4, new List<int>() { 0 }),
+        new PedClothingComponent(4, 34, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 101, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 14, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 119, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Utility",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        BincoOutfit2_MPF = new PedClothingShopMenuItem("The Weekend Warrior", "Combat Ready!", 800, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 3, new List<int>() { 0 }),
+        new PedClothingComponent(4, 30, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 65, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 14, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 43, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Utility",
+            PedFocusZone = ePedFocusZone.Body,
+        };
+        BincoOutfit3_MPF = new PedClothingShopMenuItem("The Garbage Man", "Get Down and Dirty", 250, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 0, new List<int>() { 0 }),
+        new PedClothingComponent(4, 35, new List<int>() { 0 }),
+        new PedClothingComponent(6, 26, new List<int>() { 0 }),
+        new PedClothingComponent(8, 36, new List<int>() { 0 }),
+        new PedClothingComponent(11, 49, new List<int>() { 0 }),
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Utility",
             PedFocusZone = ePedFocusZone.Body,
         };
 
@@ -2357,7 +2454,7 @@ public class ShopMenus_Clothing
         BincoOutfit3_MPM = new PedClothingShopMenuItem("The Garbage Man", "Get Down and Dirty", 250, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 0, new List<int>() { 0 }),
         new PedClothingComponent(4, 36, new List<int>() { 0 }),
-        new PedClothingComponent(6, 27, new List<int>() { 0 }),
+        new PedClothingComponent(6, 145, new List<int>() { 0 }),
         new PedClothingComponent(8, 59, new List<int>() { 0 }),
         new PedClothingComponent(11, 56, new List<int>() { 0 }),
         })
@@ -2405,7 +2502,19 @@ public class ShopMenus_Clothing
             SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.Body,
         };
-
+        DiscoOutfit4_MPM = new PedClothingShopMenuItem("The Scruffy Applicant", "At least you tried. Good Job!", 280, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        new PedClothingComponent(3, 4, new List<int>() { 0 }),
+        new PedClothingComponent(4, 37, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 111, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(7, 37, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 11, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        new PedClothingComponent(11, 59, new List<int>() { 0 }) { AllowAllTextureVariations = true },
+        })
+        {
+            Category = "Outfits",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.Body,
+        };
         //Suburban
         SuburbOutfit1_MPM = new PedClothingShopMenuItem("Street Outfit 1", "", 300, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 6, new List<int>() { 0 }),
