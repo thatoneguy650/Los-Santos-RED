@@ -21,8 +21,6 @@ public class ActivitySettings : ISettingsDefaultable
     public float HoldUpDistance { get; set; }
     [Description("Allow the player to drag dead or unconscious peds.")]
     public bool AllowDraggingOtherPeds { get; set; }
-    [Description("Plays an animation the dragged ped.")]
-    public bool PlayDraggingPedAnimation { get; set; }
     [Description("Allow the player to hold a ped hostage at gunpoint.")]
     public bool AllowGrabbingPeds { get; set; }
     [Description("Allow the player to start random scenarios around the world.")]
@@ -137,7 +135,6 @@ public class ActivitySettings : ISettingsDefaultable
         AllowGrabbingPeds = true;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
-        PlayDraggingPedAnimation = true;
         CrouchingAdjustsMovementSpeed = true;
         CrouchMovementSpeedOverride = 5.0f;
         UseAltCameraWhenSitting = false;

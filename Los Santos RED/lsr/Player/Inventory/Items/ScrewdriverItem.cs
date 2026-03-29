@@ -95,8 +95,8 @@ public class ScrewdriverItem : ModItem
         float LockpickAnimRestartPercentage = 0.3f;
         float LockpickAnimIntroRate = 8.0f;
         float LockpickAnimOutroRate = -8.0f;
-        int LockpickAnimFlags = Settings.SettingsManager.DebugSettings.LockpickAnimFlags;
-        float LockpickAnimAnimRate = Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate;
+        int LockpickAnimFlags = 0;// Settings.SettingsManager.DebugSettings.LockpickAnimFlags;
+        float LockpickAnimAnimRate = 1.0f;// Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate;
 
 
 

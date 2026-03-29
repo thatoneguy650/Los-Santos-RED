@@ -2096,8 +2096,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
-                }
-
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(-367.4739f, 193.3855f, 83.65652f), 90.30809f,0f),
+                    new ConditionalLocation(new Vector3(-419.4157f, 155.2768f, 85.04705f), 344.3392f, 0f),
+                    new ConditionalLocation(new Vector3(-378.208f, 168.3972f, 85.04848f), 40.70549f, 0f),
+                    new ConditionalLocation(new Vector3(-433.6894f, 167.31f, 78.07529f), 44.99583f, 0f),
+                    new ConditionalLocation(new Vector3(-460.4812f, 168.7315f, 78.07529f), 351.9265f, 0f),
+                    new ConditionalLocation(new Vector3(-457.543f, 193.7121f, 75.23978f), 169.4222f, 0f), }
 
             },
 
@@ -2131,7 +2137,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
-                }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(-1580.404f, -451.6075f, 48.70359f), 319.8292f,0f),
+                    new ConditionalLocation(new Vector3(-1576.618f, -453.8674f, 48.70488f), 327.1202f, 0f),
+                    new ConditionalLocation(new Vector3(-1581.422f, -436.1399f, 43.90352f), 204.4699f, 0f),
+                    new ConditionalLocation(new Vector3(-1557.438f, -440.4233f, 47.37077f), 30.96553f, 0f),
+                    new ConditionalLocation(new Vector3(-1556.142f, -398.86f, 41.98772f), 216.0984f, 0f), }
 
 
             },
@@ -2165,7 +2177,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
-                }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(710.23f, -625.0277f, 27.47759f), 236.707f,0f),
+                    new ConditionalLocation(new Vector3(695.8276f, -643.2592f, 26.30715f), 292.372f, 0f),
+                    new ConditionalLocation(new Vector3(711.4447f, -674.2034f, 26.94142f), 314.6776f, 0f),
+                    new ConditionalLocation(new Vector3(707.0568f, -658.683f, 32.4765f), 253.2937f, 0f),
+                    new ConditionalLocation(new Vector3(732.6047f, -678.1924f, 37.2571f), 0f, 0f), }
 
 
             },
@@ -2199,7 +2217,15 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
-                }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(1553.044f, 3631.833f, 35.13237f), 96.83964f,0f),
+                    new ConditionalLocation(new Vector3(1567.646f, 3596.965f, 35.35622f), 132.0851f, 0f),
+                    new ConditionalLocation(new Vector3(1559.413f, 3609.653f, 38.80232f), 118.883f, 0f),
+                    new ConditionalLocation(new Vector3(1534.833f, 3591.404f, 38.7665f), 38.9276f, 0f),
+                    new ConditionalLocation(new Vector3(1537.266f, 3580.14f, 38.73154f), 205.6617f, 0f),
+                    new ConditionalLocation(new Vector3(1511.643f, 3574.67f, 38.73648f), 29.92882f, 0f),
+                    new ConditionalLocation(new Vector3(1505.031f, 3575.515f, 35.43495f), 16.3294f, 0f), }
 
 
             },
@@ -2232,7 +2258,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
-                }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(-50.55559f, 6438.076f, 40.37756f), 300.6061f,0f),
+                    new ConditionalLocation(new Vector3(-58.55237f, 6447.396f, 40.37756f), 274.0475f, 0f),
+                    new ConditionalLocation(new Vector3(-38.00097f, 6469.404f, 35.40913f), 228.3165f, 0f),
+                    new ConditionalLocation(new Vector3(-11.94416f, 6478.693f, 31.45957f), 188.2354f, 0f),
+                    new ConditionalLocation(new Vector3(14.13199f, 6503.866f, 31.49215f), 239.9304f, 0f), }
 
 
             },
@@ -6573,9 +6605,29 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_ScrapYards()
     {
         ScrapYards = new List<ScrapYard>() {
-            new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
-            new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance") { OpenTime = 0, CloseTime = 24 },
-            new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
+            new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(1519.222f, -2146.328f, 77.23196f), 325.0221f,0f),
+                    new ConditionalLocation(new Vector3(1505.636f, -2132.731f, 76.32128f), 307.6291f, 0f),
+                    new ConditionalLocation(new Vector3(1500.551f, -2094.395f, 76.80859f), 237.8205f, 0f),
+                    new ConditionalLocation(new Vector3(1495.011f, -2109.1f, 76.18463f), 298.1635f, 0f),
+                    new ConditionalLocation(new Vector3(1565.771f, -2111.351f, 82.0716f), 93.74275f, 0f),
+                    new ConditionalLocation(new Vector3(1571.84f, -2131.504f, 77.59312f), 113.5834f, 0f),
+                    new ConditionalLocation(new Vector3(1562.526f, -2163.027f, 77.52135f), 27.26428f, 0f), } },
+            new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance") { OpenTime = 0, CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(911.3051f, 3572.159f, 33.77966f), 90.72236f,0f),
+                    new ConditionalLocation(new Vector3(900.216f, 3571.254f, 33.66018f), 103.1787f, 0f),
+                    new ConditionalLocation(new Vector3(897.4851f, 3561.984f, 33.80343f), 186.2757f, 0f),
+                    new ConditionalLocation(new Vector3(981.8936f, 3575.572f, 33.53224f), 111.1363f, 0f), } },
+            new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24, 
+                PossiblePedSpawns = new List<ConditionalLocation>() { 
+                    new ConditionalLocation(new Vector3(-200.7719f, 6255.046f, 31.48945f), 39.31646f,0f),
+                    new ConditionalLocation(new Vector3(-159.6843f, 6289.166f, 31.48939f), 115.1323f,0f),
+                    new ConditionalLocation(new Vector3(-181.0547f, 6310.244f, 31.48939f), 158.7643f,0f),
+                    new ConditionalLocation(new Vector3(-221.1623f, 6283.701f, 31.48944f), 276.1004f,0f),
+                    new ConditionalLocation(new Vector3(-211.1523f, 6243.821f, 37.28856f), 355.7605f,0f),
+                    new ConditionalLocation(new Vector3(-225.2164f, 6273.531f, 31.6843f), 239.2869f,0f), } },
         };
     }
     private void DefaultConfig_BodyExports()
@@ -6593,7 +6645,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                 BannerImagePath = "stores\\crushinator.png",
                 CameraPosition = new Vector3(-527.7763f, -1704.601f, 27.12083f),
                 CameraDirection = new Vector3(0.005943439f, -0.9625598f, -0.2710043f),
-                CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f)
+                CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f),
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(-491.0561f, -1695.284f, 19.28301f), 146.4357f,0f),
+                    new ConditionalLocation(new Vector3(-509.989f, -1665.741f, 19.23609f), 197.5626f, 0f),
+                    new ConditionalLocation(new Vector3(-554.024f, -1692.894f, 19.26016f), 211.9953f, 0f),
+                    new ConditionalLocation(new Vector3(-568.3234f, -1686.579f, 19.26737f), 229.5074f, 0f),
+                    new ConditionalLocation(new Vector3(-548.8939f, -1691.405f, 25.65687f), 207.9379f, 0f),
+                    new ConditionalLocation(new Vector3(-557.852f, -1727.506f, 23.87237f), 312.2628f, 0f), }
             },
         };
     }

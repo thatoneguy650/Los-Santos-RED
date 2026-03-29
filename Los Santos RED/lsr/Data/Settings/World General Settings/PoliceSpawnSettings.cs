@@ -398,8 +398,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         VehicleSpawnLimit_Investigation = 9;// 6;
         VehicleSpawnLimit_Wanted1 = 8;// 7;// 8;
-        VehicleSpawnLimit_Wanted2 = 10;// 9;// 7;// 8;// 9;
-        VehicleSpawnLimit_Wanted3 = 12;// 10;// 9;// 10;// 13;
+        VehicleSpawnLimit_Wanted2 = 9;// 10;// 9;// 7;// 8;// 9;
+        VehicleSpawnLimit_Wanted3 = 11;// 12;// 10;// 9;// 10;// 13;
         VehicleSpawnLimit_Wanted4 = 14;// 12;// 14;// 15;
         VehicleSpawnLimit_Wanted5 = 14;// 13;// 15;// 16;
         VehicleSpawnLimit_Wanted6 = 15;// 16;// 18;

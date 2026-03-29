@@ -805,27 +805,13 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        if (!Settings.SettingsManager.DebugSettings.UseNewDrag)
+        Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
+        if (drag.CanPerform(Actionable))
         {
-            Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
-            if (drag.CanPerform(Actionable))
-            {
-                ForceCancelAllActive();
-                IsPerformingActivity = true;
-                LowerBodyActivity = drag;
-                LowerBodyActivity.Start();
-            }
-        }
-        else
-        {
-            NewDrag drag = new NewDrag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
-            if (drag.CanPerform(Actionable))
-            {
-                ForceCancelAllActive();
-                IsPerformingActivity = true;
-                LowerBodyActivity = drag;
-                LowerBodyActivity.Start();
-            }
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = drag;
+            LowerBodyActivity.Start();
         }
     }
     public void StartSleeping()

@@ -156,7 +156,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     CurrentTask.OnReadyForPayment(false);
                     break;
                 }
-                if(IsAmbush && !HasSetViolent && PrimaryGangMember != null && PrimaryGangMember.PlayerPerception.CanRecognizeTarget)
+                if(IsAmbush && !HasSetViolent && SpawnedMembers.Any(x=> x.PlayerPerception.CanRecognizeTarget || x.HasSeenPlayerCommitCrime)) // PrimaryGangMember != null && PrimaryGangMember.PlayerPerception.CanRecognizeTarget)
                 {
                     HasSetViolent = true;
                     OnSetGangMembersViolent();
@@ -180,7 +180,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 gm.WillFightPolice = true;
             }
             Player.Dispatcher.GangDispatcher.DispatchHitSquad(DealingGang, true);
-            Game.DisplaySubtitle("Ambush, take them out and get the drugs.");
+
+
+            if(IsPlayerSellingDrugs)
+            {
+                Game.DisplaySubtitle("Ambush, take them out and get the cash.");
+            }
+            else
+            {
+                Game.DisplaySubtitle("Ambush, take them out and get the drugs.");
+            }
             EntryPoint.WriteToConsole("DRUG MEETUP SET GANG MEMBERS VIOLENT! THEY RECOGNIZE YOU");
         }
 
