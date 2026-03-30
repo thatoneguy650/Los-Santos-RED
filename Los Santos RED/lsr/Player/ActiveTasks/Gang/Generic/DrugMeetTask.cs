@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CleanupPeds();
             if (DealingLocation != null)
             {
+               
                 DealingLocation.IsPlayerInterestedInLocation = false;
             }
             base.Dispose();
@@ -151,15 +152,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     CurrentTask.OnReadyForPayment(false);
                     break;
                 }
-                if(IsAmbush && HasArrivedNearMeetup && SpawnedMembers.All(x => x.IsDead || !x.Pedestrian.Exists()))
-                {
-                    CurrentTask.OnReadyForPayment(false);
-                    break;
-                }
-                if(IsAmbush && !HasSetViolent && SpawnedMembers.Any(x=> x.PlayerPerception.CanRecognizeTarget || x.HasSeenPlayerCommitCrime)) // PrimaryGangMember != null && PrimaryGangMember.PlayerPerception.CanRecognizeTarget)
+                if (IsAmbush && HasArrivedNearMeetup && !HasSetViolent && SpawnedMembers.Any(x=> x.PlayerPerception.CanRecognizeTarget || x.HasSeenPlayerCommitCrime || (x.CanSeePlayer && x.DistanceToPlayer <= 45f))) // PrimaryGangMember != null && PrimaryGangMember.PlayerPerception.CanRecognizeTarget)
                 {
                     HasSetViolent = true;
                     OnSetGangMembersViolent();
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
                 }
                 if(HasArrivedNearMeetup && SpawnedMembers.Any(x=> x.WasKilledByPlayer || x.HasBeenHurtByPlayer))
                 {
@@ -179,17 +177,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 gm.WillAlwaysFightPolice = true;
                 gm.WillFightPolice = true;
             }
-            Player.Dispatcher.GangDispatcher.DispatchHitSquad(DealingGang, true);
-
-
-            if(IsPlayerSellingDrugs)
-            {
-                Game.DisplaySubtitle("Ambush, take them out and get the cash.");
-            }
-            else
-            {
-                Game.DisplaySubtitle("Ambush, take them out and get the drugs.");
-            }
+            Player.Dispatcher.GangDispatcher.DispatchHitSquad(DealingGang, true);    
+            Game.DisplaySubtitle("Ambush, get out of there");      
             EntryPoint.WriteToConsole("DRUG MEETUP SET GANG MEMBERS VIOLENT! THEY RECOGNIZE YOU");
         }
 
@@ -259,8 +248,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             EntryPoint.WriteToConsole("DRUG MEETUP START SPAWN DEALERS");
             SpawnLocation spawnLocation = new SpawnLocation(DealingLocation.EntrancePosition);
-            spawnLocation.GetClosestStreet(false);
-            spawnLocation.GetClosestSidewalk(); ;
+            //spawnLocation.GetClosestStreet(false);
+            //spawnLocation.GetClosestSidewalk(); ;
+
+
+            spawnLocation.StreetPosition = DealingLocation.EntrancePosition;
+            spawnLocation.Heading = DealingLocation.EntranceHeading;
+
             GangSpawnTask gangSpawnTask = new GangSpawnTask(DealingGang, spawnLocation,null,DealingGang.GetRandomPed(0,""),true,Settings,Weapons,Names,false,Crimes,PedGroups,ShopMenus,World,ModItems,true,true,true);
             gangSpawnTask.PlacePedOnGround = true;
             gangSpawnTask.AllowAnySpawn = true;
@@ -304,10 +298,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
 
             List<SpawnLocation> OtherSpawnLocations = new List<SpawnLocation>();
-            foreach(SpawnPlace vendorLocation in DealingLocation.VendorLocations)
-            {
-                OtherSpawnLocations.Add(new SpawnLocation(vendorLocation.Position, vendorLocation.Heading));
-            }
+            //foreach(SpawnPlace vendorLocation in DealingLocation.VendorLocations)
+            //{
+            //    OtherSpawnLocations.Add(new SpawnLocation(vendorLocation.Position, vendorLocation.Heading));
+            //}
             foreach(ConditionalLocation conditionalLocation in DealingLocation.PossiblePedSpawns)
             {
                 OtherSpawnLocations.Add(new SpawnLocation(conditionalLocation.Location, conditionalLocation.Heading));

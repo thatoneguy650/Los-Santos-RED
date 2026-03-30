@@ -23,6 +23,7 @@ public class Interior
     protected int alarmSoundID;
     protected bool isAlarmActive;
     protected bool isOpen;
+    protected GameLocation gameLocation;
 
     public Interior()
     {
@@ -99,16 +100,19 @@ public class Interior
     public List<PropSpawn> PropSpawns { get; set; }
     public List<SpawnPlace> VendorLocations { get; set; } = new List<SpawnPlace>();
     public List<Vector3> SearchLocations { get; set; }
+    public bool IsNotAlarmed { get; set; }
+    public List<AudioEmitter> AudioEmitters { get; set; } = new List<AudioEmitter>();
+
+
+
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
+    [XmlIgnore]
     public InteriorInteract ClosestInteract => AllInteractPoints.Where(x => x.CanAddPrompt).OrderBy(x => x.DistanceTo).FirstOrDefault();
-
-    public GameLocation GameLocation { get; set; }
+    [XmlIgnore]
+    public GameLocation GameLocation => gameLocation;
+    [XmlIgnore]
     public bool IsAlarmActive => isAlarmActive;
-    public bool IsNotAlarmed { get; set; }
-
-
-    public List<AudioEmitter> AudioEmitters { get; set; } = new List<AudioEmitter>();
 
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames, IRadioStations radioStations)
     {
@@ -128,8 +132,6 @@ public class Interior
             interiorDoor.AddPairedDoors(Doors.Where(x => x.DoorGroupName == interiorDoor.DoorGroupName && x.Position != interiorDoor.Position).ToList());
         }
     }
-
-
     public virtual void Load(bool isOpen)
     {
         GameFiber.StartNew(delegate
@@ -156,6 +158,7 @@ public class Interior
                     {
                         NativeFunction.Natives.CAP_INTERIOR(InternalID, false);
                     }
+                    GameFiber.Yield();
                 }
                 foreach (string iplName in RequestIPLs)
                 {
@@ -198,6 +201,7 @@ public class Interior
                     NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, newEntitySetStyle);
                     GameFiber.Yield();
                 }
+                GameFiber.Yield();
                 LoadDoors(isOpen, true);
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
@@ -234,7 +238,6 @@ public class Interior
             }
         }, "Load Interior");
     }
-
     public virtual void Unload()
     {
         GameFiber.StartNew(delegate
@@ -253,6 +256,7 @@ public class Interior
                     {
                         NativeFunction.Natives.CAP_INTERIOR(InternalID, true);
                     }
+                    GameFiber.Yield();
                 }
                 foreach (string iplName in RequestIPLs)
                 {
@@ -696,5 +700,9 @@ public class Interior
             door.UnLockDoor();
             EntryPoint.WriteToConsole($"INTERIOR: {Name} {door.ModelHash} {door.Position} UNLOCKED");
         }
+    }
+    public void SetGameLocation(GameLocation gameLocationToSet)
+    {
+        gameLocation = gameLocationToSet;
     }
 }

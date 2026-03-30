@@ -538,7 +538,7 @@ public class GameLocation : ILocationDispatchable
             interior = interiors?.GetInteriorByLocalID(InteriorID);
             if (interior != null)
             {
-                interior.GameLocation = this;
+                interior.SetGameLocation(this);// interior.GameLocation = this;
             }
         }  
     }
@@ -1243,6 +1243,9 @@ public class GameLocation : ILocationDispatchable
         }
         
         HandleVariableItems();
+
+        GameFiber.Yield();
+
        // EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
        // Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };

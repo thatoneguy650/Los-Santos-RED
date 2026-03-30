@@ -4914,6 +4914,7 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
        new ShopMenu("FamiliesDenMenu","FamiliesDenMenu",new List<MenuItem>() {
             new MenuItem("Marijuana", 15, 9),
+            new MenuItem("Lean", 20),
             new MenuItem("Marijuana",12) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
             new MenuItem("Marijuana",10) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
             new MenuItem("Smoke Shop Rolling Papers",2),
@@ -5101,6 +5102,7 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu> {
        new ShopMenu("BallasDenMenu","BallasDenMenu",new List<MenuItem>() {
             new MenuItem("Crack",46, 39),
+            new MenuItem("Lean", 15),
             new MenuItem("Crack",42) { MinimumPurchaseAmount = 500, MaximumPurchaseAmount = 500, PurchaseIncrement = 100 },
             new MenuItem("Crack",40) { MinimumPurchaseAmount = 1000, MaximumPurchaseAmount = 1000, PurchaseIncrement = 100 },
             new MenuItem("Crack Pipe",5),

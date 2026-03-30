@@ -120,6 +120,7 @@ public class DisplayInteract : InteriorInteract
         {
             return;
         }
+        GameFiber.Yield();
         foreach (DisplayPlacement trophyPlacement in DisplayLocation.DisplayPlacements)
         {
             trophyPlacement.DespawnDisplay();

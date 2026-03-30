@@ -1084,13 +1084,14 @@ public class ModItems : IModItems
                 IntoxicationPerInterval = 0.1f,
                 ItemSubType = ItemSubType.Beer },
 
-            new DrinkItem("Lean", "Sippin' slow, movin' dreamy.", ItemType.Drugs){
+            new DrinkItem("Lean", "Sippin' slow, movin' dreamy.", ItemType.Drinks){
                 ModelItemID = "prop_plastic_cup_02", //Cluckin Bell cup
                 IntoxicantName = "Low Proof Alcohol",
                 HungerChangeAmount = TinyHungerRecover,
                 SleepChangeAmount= -1.0f * TinySleepRecover,
                 ItemSubType= ItemSubType.Narcotic,
                 IntoxicationPerInterval = 0.2f,
+                IsPublicUseIllegal = true,
                 FindPercentage = 1},
             //Bean Machine
             new DrinkItem("High Noon Coffee", "Drip coffee, carbonated water, fruit syrup and taurine.", ItemType.Drinks){

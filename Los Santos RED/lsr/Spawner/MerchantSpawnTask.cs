@@ -101,6 +101,12 @@ public class MerchantSpawnTask : SpawnTask
                 return null;
             }
             PedExt Person = SetupMerchantPed(createdPed);
+
+            GameFiber.Yield();
+            if (!createdPed.Exists())
+            {
+                return null;
+            }
             PersonType.SetPedVariation(createdPed, PossibleHeads, true);
             GameFiber.Yield();
             CreatedPeople.Add(Person);
