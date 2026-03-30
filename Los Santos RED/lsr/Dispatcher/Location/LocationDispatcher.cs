@@ -135,27 +135,30 @@ public class LocationDispatcher
     }
     private void HandleServiceWorkerSpawns()
     {
+
         foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && x.IsOpen(Time.CurrentHour) && !x.IsServiceFilled).ToList())
         {
             ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour),Interiors,Settings,Crimes,Weapons,Time,World, false);
             ps.IsServiceFilled = true;
-            //EntryPoint.WriteToConsole($"VENDOR SPAWN AT {ps.Name} ");
+            EntryPoint.WriteToConsole($"VENDOR SPAWN AT {ps.Name} IsServiceFilled:{ps.IsServiceFilled} HandleServiceWorkerSpawns");
             GameFiber.Yield();
         }
         GameFiber.Yield();
         foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && (!x.IsNearby || !x.IsOpen(Time.CurrentHour)) && x.IsServiceFilled).ToList())
         {
             ps.AttemptVendorDespawn();
-            //EntryPoint.WriteToConsole($"VENDOR DESPAWN AT {ps.Name} ");
+            EntryPoint.WriteToConsole($"VENDOR DESPAWN AT {ps.Name} HandleServiceWorkerSpawns");
             ps.IsServiceFilled = false;
         }
     }
     public void SpawnInteriorServiceWorker(GameLocation ps)
     {
+        
         if(ps == null)
         {
             return;
         }
+        EntryPoint.WriteToConsole($"SpawnInteriorServiceWorker RAN {ps.Name}");
         ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour), Interiors, Settings, Crimes, Weapons, Time, World, true);
     }
     public void ForceSpawnAllVehicles(GameLocation ps)

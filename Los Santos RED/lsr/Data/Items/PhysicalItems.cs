@@ -210,8 +210,9 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("ng_proc_sodacup_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.2f), new Rotator(0.0f, 0.0f, 0.0f)) }){ CleanupItemImmediately = true },
             new PhysicalItem("ng_proc_sodacup_01b", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.2f), new Rotator(0.0f, 0.0f, 0.0f)) }){ CleanupItemImmediately = true },
             new PhysicalItem("ng_proc_sodacup_01c", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.2f), new Rotator(0.0f, 0.0f, 0.0f)) }),
-
-
+            new PhysicalItem("prop_plastic_cup_02", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){  },
+            
+            //
 
              new PhysicalItem("prop_cs_milk_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
              

@@ -24,6 +24,7 @@ public class MerchantConditionalLocation : ConditionalLocation
     {
         try
         {
+            EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {GameLocation?.Name} {DispatchablePerson?.ModelName} - CONDITIONAL LOCATION");
             MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(SpawnLocation, null, DispatchablePerson, false, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus, GameLocation);//, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, ForceMelee, ForceSidearm, ForceLongGun);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             merchantSpawnTask.PossibleHeads = GameLocation.VendorPossibleHeads;
             merchantSpawnTask.AllowAnySpawn = true;

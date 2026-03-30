@@ -349,10 +349,10 @@ public class Interior
         {
             if (IsOpen)
             {      
-                if (GameLocation != null)
-                {
-                    GameLocation.IsServiceFilled = false;
-                }
+                //if (GameLocation != null)
+                //{
+                //    GameLocation.IsServiceFilled = false;
+                //}
                 EntryPoint.WriteToConsole($"Interior changed from closed to Open {Name}");
             }
             else

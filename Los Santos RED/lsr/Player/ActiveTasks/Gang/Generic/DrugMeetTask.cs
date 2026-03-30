@@ -139,15 +139,33 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     break;
                 }
-                if(!HasArrivedNearMeetup && DealingLocation.DistanceToPlayer<= 200f)
+                if(!HasArrivedNearMeetup && DealingLocation.DistanceToPlayer<= 200f && !HasSetViolent)
                 {
                     OnArrivedNearMeetup();
                 }
-                if(HasArrivedNearMeetup && DealingLocation.DistanceToPlayer >= 275f)
+                if(HasArrivedNearMeetup && DealingLocation.DistanceToPlayer >= 275f && !HasSetViolent)
                 {
                     OnWentAwayFromMeetup();
                 }
-                if(HasCompletedSale())
+
+
+
+
+                if (!IsAmbush && HasArrivedNearMeetup && SpawnedMembers.Any(x => x.WasKilledByPlayer || x.HasBeenHurtByPlayer))
+                {
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
+                }
+
+                if (!IsAmbush && HasCompletedSale())
+                {
+                    CurrentTask.OnReadyForPayment(false);
+                    break;
+                }
+
+
+
+                if(IsAmbush && HasSetViolent && (DealingLocation.DistanceToPlayer >= 275f || SpawnedMembers.All(x => x.IsDead || x.IsUnconscious || !x.Pedestrian.Exists())))
                 {
                     CurrentTask.OnReadyForPayment(false);
                     break;
@@ -156,14 +174,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     HasSetViolent = true;
                     OnSetGangMembersViolent();
-                    CurrentTask.OnReadyForPayment(false);
-                    break;
                 }
-                if(HasArrivedNearMeetup && SpawnedMembers.Any(x=> x.WasKilledByPlayer || x.HasBeenHurtByPlayer))
-                {
-                    CurrentTask.OnReadyForPayment(false);
-                    break;
-                }
+                
                 GameFiber.Sleep(1000);
             }
         }
@@ -255,7 +267,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             spawnLocation.StreetPosition = DealingLocation.EntrancePosition;
             spawnLocation.Heading = DealingLocation.EntranceHeading;
 
-            GangSpawnTask gangSpawnTask = new GangSpawnTask(DealingGang, spawnLocation,null,DealingGang.GetRandomPed(0,""),true,Settings,Weapons,Names,false,Crimes,PedGroups,ShopMenus,World,ModItems,true,true,true);
+            GangSpawnTask gangSpawnTask = new GangSpawnTask(DealingGang, spawnLocation,null,DealingGang.GetRandomPed(0,""), Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings,Weapons,Names,false,Crimes,PedGroups,ShopMenus,World,ModItems,true,true,true);
             gangSpawnTask.PlacePedOnGround = true;
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = true;
@@ -324,7 +336,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             foreach (SpawnLocation otherspawnLocation in OtherSpawnLocations)
             {
-                GangSpawnTask gangAdditionalSpawnTask = new GangSpawnTask(DealingGang, otherspawnLocation, null, DealingGang.GetRandomPed(0, ""), true, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, true, true, true);
+                GangSpawnTask gangAdditionalSpawnTask = new GangSpawnTask(DealingGang, otherspawnLocation, null, DealingGang.GetRandomPed(0, ""), Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, true, true, true);
                 gangAdditionalSpawnTask.PlacePedOnGround = true;
                 gangAdditionalSpawnTask.AllowAnySpawn = true;
                 gangAdditionalSpawnTask.AllowBuddySpawn = true;
@@ -347,7 +359,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             foreach(GangMember gm in SpawnedMembers)
             {
-                if(gm.Pedestrian.Exists())
+                if(gm.Pedestrian.Exists() && gm.DistanceToPlayer >= 200f)
                 {
                     gm.Pedestrian.IsPersistent = false;
                 }

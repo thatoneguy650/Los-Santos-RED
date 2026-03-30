@@ -403,7 +403,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
-        //EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name}");
+        EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} RAN");
         int VendorsSpawned = 0;
         List<SpawnPlace> spawns = new List<SpawnPlace>();
         if(isInterior)
@@ -430,7 +430,7 @@ public class GameLocation : ILocationDispatchable
             }
         }
     }
-    protected virtual bool ShouldSpawnVendor() => true;
+    protected virtual bool ShouldSpawnVendor() => !IsServiceFilled;
     protected virtual void LoadInterior(bool isOpen)
     {
         if (HasInterior && interior != null)
@@ -1246,7 +1246,7 @@ public class GameLocation : ILocationDispatchable
 
         GameFiber.Yield();
 
-       // EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
+        EntryPoint.WriteToConsole($"ATTEMPTING VENDOR AT {Name} {VendorPersonType.ModelName}");
        // Vendors = new List<Merchant>();
         SpawnLocation sl = new SpawnLocation(spawnPlace.Position) { Heading = spawnPlace.Heading };
         MerchantSpawnTask merchantSpawnTask = new MerchantSpawnTask(sl, null,VendorPersonType,false,false,true,Settings,Crimes,Weapons,Names,World,ModItems,ShopMenus,this);
