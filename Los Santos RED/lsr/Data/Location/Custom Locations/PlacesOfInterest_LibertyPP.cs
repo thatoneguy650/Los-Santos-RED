@@ -1514,15 +1514,17 @@ public class PlacesOfInterest_LibertyPP
             new ClothingShop(new Vector3(5661.025f, -1541.183f, 16.2991f), 139.2149f, "Ranch", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
             new ClothingShop(new Vector3(5918.007f, -1691.954f, 22.26619f), 269.7938f, "El Pedro Jewelry", "","") { StateID = StaticStrings.LibertyStateID,IsTemporarilyClosed = true },
 
-            new ClothingShop(new Vector3(5198.929f, -3914.975f, 14.7644f), 4.162239f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 655617,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5201.53f, -3922.06f, 12.86154f), 27.87975f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
-            new ClothingShop(new Vector3(5210.399f, -2446.067f, 14.71319f), 1.235396f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 691969,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5212.623f, -2453.45f, 12.76182f), 24.78086f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop"},
+            new ClothingShop(new Vector3(5198.929f, -3914.975f, 14.7644f), 4.162239f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 655617,OpenTime = 8, CloseTime = 20,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5201.53f, -3922.06f, 12.86154f), 27.87975f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "PoisonbysClothesMenu" },
+            new ClothingShop(new Vector3(5210.399f, -2446.067f, 14.71319f), 1.235396f, "Perseus", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 691969,OpenTime = 8, CloseTime = 20,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(5212.623f, -2453.45f, 12.76182f), 24.78086f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "DidierSachsClothesMenu"},
 
-            new ClothingShop(new Vector3(6081.239f, -3699.316f, 15.86007f), 274.2502f, "Russian Store", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 120834,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6077.845f, -3703.128f, 13.84556f), 0.5565634f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
-            new ClothingShop(new Vector3(4907.484f, -1901.719f, 25.63186f), 177.0755f, "Modo", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 658177,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4907.666f, -1891.209f, 23.63243f), 177.4824f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "GenericClothesShop" },
+            new ClothingShop(new Vector3(6081.239f, -3699.316f, 15.86007f), 274.2502f, "Russian Store", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 120834,OpenTime = 8, CloseTime = 20,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(6077.845f, -3703.128f, 13.84556f), 0.5565634f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "DiscountStoreClothesMenu" },
+            new ClothingShop(new Vector3(4907.484f, -1901.719f, 25.63186f), 177.0755f, "Modo", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = 658177,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(4907.666f, -1891.209f, 23.63243f), 177.4824f) },ActivateCells = 3, ActivateDistance = 75,VendorPersonnelID = "TellerPeds",PedClothingShopMenuID = "SuburbanClothesMenu" },
+            //No interier cloths shop
+            new ClothingShop(new Vector3(3776.428f, -2369.135f, 19.81198f), 175.3015f, "Clothing U.S.A", "","") { StateID = StaticStrings.LibertyStateID,InteriorID = -29999,OpenTime = 8, CloseTime = 20,DisableRegularInteract = true,PedClothingShopMenuID = "BincoClothesMenu" },// Koresh Sqaure - Alderney City
 
-            new ClothingShop(new Vector3(4098.759f, -1793.475f, 24.79053f), 265.7245f, "Westdyke Motorcycles Clothing", "","") { StateID = StaticStrings.AlderneyStateID,InteriorID = -99333, DisableRegularInteract = true, PedClothingShopMenuID = "HelmetShopMenu", },
-            new ClothingShop(new Vector3(5978.044f, -3789.333f, 7.536121f), 219.8516f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 638721, DisableRegularInteract = true, PedClothingShopMenuID = "MaskShopMenu", },//Hove Beach
-            new ClothingShop(new Vector3(5025.935f, -2893.428f, 12.85022f), 98.00107f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 694785, DisableRegularInteract = true, PedClothingShopMenuID = "FreakMaskShopMenu", },// Star Junction
+            new ClothingShop(new Vector3(4098.759f, -1793.475f, 24.79053f), 265.7245f, "Westdyke Motorcycles Clothing", "","") { StateID = StaticStrings.AlderneyStateID,InteriorID = -99333,OpenTime = 8, CloseTime = 20, DisableRegularInteract = true, PedClothingShopMenuID = "HelmetShopMenu", },
+            new ClothingShop(new Vector3(5978.044f, -3789.333f, 7.536121f), 219.8516f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 638721,OpenTime = 8, CloseTime = 20, DisableRegularInteract = true, PedClothingShopMenuID = "MaskShopMenu", },//Hove Beach
+            new ClothingShop(new Vector3(5025.935f, -2893.428f, 12.85022f), 98.00107f, "The Peep Hole", "Your Secret’s Safe","") { StateID = StaticStrings.LibertyStateID,InteriorID = 694785,OpenTime = 8, CloseTime = 20, DisableRegularInteract = true, PedClothingShopMenuID = "FreakMaskShopMenu", },// Star Junction
         });
     }
     private void DefaultConfig_ConvenienceStores()
@@ -3424,9 +3426,19 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    new ConditionalLocation(new Vector3(5888.237f, -2498.649f, 4.093357f), 38.42599f, 0f),
+                    new ConditionalLocation(new Vector3(5888.413f, -2473.099f, 4.093359f), 92.54746f, 0f),
+                    new ConditionalLocation(new Vector3(5877.615f, -2463.428f, 4.821155f), 140.0459f, 0f),
+                    new ConditionalLocation(new Vector3(5842.232f, -2456.547f, 2.712624f), 231.8045f, 0f),
+                    new ConditionalLocation(new Vector3(5865.926f, -2429.944f, 1.993654f), 178.7815f, 0f),
+                    new ConditionalLocation(new Vector3(5841.027f, -2511.243f, 1.947035f), 298.6909f, 0f),
+                },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
+
             },
             new IllicitMarketplace() {
 
@@ -3463,9 +3475,19 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(5453.27f, -3648.355f, 5.005822f), 166.5143f, 0f),
+                    new ConditionalLocation(new Vector3(5444.202f, -3648.373f, 5.005821f), 189.6547f, 0f),
+                    new ConditionalLocation(new Vector3(5448.325f, -3663.698f, 3.160042f), 180.7184f, 0f),
+                    new ConditionalLocation(new Vector3(5467.821f, -3678.564f, 5.001819f), 127.6627f, 0f),
+                    new ConditionalLocation(new Vector3(5435.336f, -3679.046f, 4.999116f), 229.8943f, 0f),
+                    new ConditionalLocation(new Vector3(5455.624f, -3693.755f, 4.96227f), 32.93924f, 0f),
+                    new ConditionalLocation(new Vector3(5443.625f, -3693.244f, 4.962269f), 326.4881f, 0f),
+                },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3502,9 +3524,17 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(4572.113f, -2558.833f, 4.741913f), 98.54929f, 75f),
+                    new ConditionalLocation(new Vector3(4590.205f, -2570.705f, 4.774668f), 95.46925f, 75f),
+                    new ConditionalLocation(new Vector3(4580.099f, -2610.609f, 4.782348f), 3.217992f, 75f),
+                    new ConditionalLocation(new Vector3(4570.699f, -2611.343f, 4.760249f), 355.4719f, 75f),
+                    new ConditionalLocation(new Vector3(4563.444f, -2560.369f, 4.686527f), 211.935f, 75f),
+                },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3541,9 +3571,21 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(6420.641f, -1804.674f, 16.71925f), 85.99001f, 0f),
+                    new ConditionalLocation(new Vector3(6401.74f, -1784.759f, 16.71683f), 105.8945f, 0f),
+                    new ConditionalLocation(new Vector3(6390.088f, -1789.763f, 16.71871f), 181.2575f, 0f),
+                    new ConditionalLocation(new Vector3(6383.359f, -1789.339f, 16.71831f), 188.8348f, 0f),
+                    new ConditionalLocation(new Vector3(6408.806f, -1792.476f, 21.6834f), 143.1975f, 0f),
+                    new ConditionalLocation(new Vector3(6400.952f, -1813.065f, 21.6834f), 358.7636f, 0f),
+                    new ConditionalLocation(new Vector3(6382.326f, -1811.344f, 21.68339f), 308.1535f, 0f),
+                    new ConditionalLocation(new Vector3(6379.712f, -1813.645f, 25.98054f), 302.4963f, 0f),
+                    new ConditionalLocation(new Vector3(6379.793f, -1790.435f, 25.98055f), 227.6688f, 0f),
+                },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3579,6 +3621,16 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(5876.343f, -3113.865f, 2.956689f), 211.4402f, 0f),
+                    new ConditionalLocation(new Vector3(5887.669f, -3129.035f, 5.969672f), 120.477f, 0f),
+                    new ConditionalLocation(new Vector3(5895.309f, -3154.448f, 6.017804f), 44.20914f, 0f),
+                    new ConditionalLocation(new Vector3(5895.808f, -3179.859f, 5.97209f), 18.08476f, 0f),
+                    new ConditionalLocation(new Vector3(5842.196f, -3194.373f, 5.970356f), 324.1057f, 0f),
+                    new ConditionalLocation(new Vector3(5926.738f, -3153.624f, 10.0201f), 102.0878f, 0f),
+                    new ConditionalLocation(new Vector3(5889.85f, -3086.707f, 5.903674f), 176.0103f, 0f),
                 },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
@@ -3619,6 +3671,14 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(6950.239f, -2608.751f, 28.52641f), 347.5565f, 0f),
+                    new ConditionalLocation(new Vector3(6969.473f, -2589.323f, 27.71099f), 69.28234f, 0f),
+                    new ConditionalLocation(new Vector3(6946.77f, -2573.05f, 27.01754f), 210.2295f, 0f),
+                    new ConditionalLocation(new Vector3(6951.739f, -2589.494f, 33.35486f), 320.0354f, 0f),
+                    new ConditionalLocation(new Vector3(6958.662f, -2574.738f, 34.88661f), 162.1078f, 0f),
+                },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
                 ActivateDistance = 75f,
@@ -3657,6 +3717,14 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(6456.381f, -3577.121f, 21.54637f), 138.3121f, 0f),
+                    new ConditionalLocation(new Vector3(6466.696f, -3585.702f, 18.83184f), 154.8016f, 0f),
+                    new ConditionalLocation(new Vector3(6446.831f, -3609.505f, 21.54639f), 307.3324f, 0f),
+                    new ConditionalLocation(new Vector3(6480.165f, -3610.571f, 18.71f), 88.68501f, 0f),
+                    new ConditionalLocation(new Vector3(6475.844f, -3578.57f, 22.44314f), 123.7134f, 0f),
                 },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
@@ -3697,6 +3765,15 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(4183.735f, -2061.103f, 23.41891f), 347.9437f, 0f),
+                    new ConditionalLocation(new Vector3(4229.208f, -2056.736f, 23.84033f), 17.32755f, 0f),
+                    new ConditionalLocation(new Vector3(4207.439f, -2060.444f, 28.37999f), 47.98401f, 0f),
+                    new ConditionalLocation(new Vector3(4202.836f, -2037.782f, 24.26284f), 114.0869f, 0f),
+                    new ConditionalLocation(new Vector3(4158.002f, -2043.162f, 25.3283f), 226.5066f, 0f),
+                    new ConditionalLocation(new Vector3(4206.713f, -2044.184f, 34.18639f), 96.20426f, 0f),
+                },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,
                 ActivateDistance = 75f,
@@ -3736,6 +3813,14 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(3666.152f, -3084.468f, 23.1192f), 195.9737f, 0f),
+                    new ConditionalLocation(new Vector3(3664.149f, -3116.116f, 23.10937f), 352.9614f, 0f),
+                    new ConditionalLocation(new Vector3(3639.115f, -3105.639f, 23.18224f), 187.6784f, 0f),
+                    new ConditionalLocation(new Vector3(3639.608f, -3115.403f, 19.4313f), 309.1914f, 0f),
+                    new ConditionalLocation(new Vector3(3657.914f, -3103.591f, 15.72923f), 117.0836f, 0f),
+                },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,
                 ActivateDistance = 75f,
@@ -3774,6 +3859,15 @@ public class PlacesOfInterest_LibertyPP
                     new AppearPercentage(21,75),
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new ConditionalLocation(new Vector3(3700.394f, -3530.95f, 2.838046f), 314.1984f, 0f),
+                    new ConditionalLocation(new Vector3(3681.534f, -3528.814f, 2.838045f), 225.4378f, 0f),
+                    new ConditionalLocation(new Vector3(3728.478f, -3510.681f, 4.289289f), 178.7354f, 0f),
+                    new ConditionalLocation(new Vector3(3678.316f, -3529.261f, 2.838044f), 124.7463f, 0f),
+                    new ConditionalLocation(new Vector3(3646.471f, -3511.191f, 4.288831f), 197.2248f, 0f),
+                    new ConditionalLocation(new Vector3(3690.858f, -3515.645f, 2.838046f), 177.3886f, 0f),
                 },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,

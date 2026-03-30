@@ -61,7 +61,6 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem MaskFaceBandana_MPC;
     private PedClothingShopMenuItem MaskTShirtMask_MPC;
 
-    private PedClothingShopMenuItem Aviators1_MPF;
     private PedClothingShopMenuItem GoldWatch1_MPF;
     private PedClothingShopMenuItem GoldWatch2_MPF;
     private PedClothingShopMenuItem DangleEarring1_MPF;
@@ -86,10 +85,6 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem Beanie2_MPM;
     private PedClothingShopMenuItem Beanie3_MPM;
     private PedClothingShopMenuItem StrawHat1_MPM;
-    private PedClothingShopMenuItem Aviators1_MPM;
-    private PedClothingShopMenuItem Watch1_MPM;
-    private PedClothingShopMenuItem Watch2_MPM;
-    private PedClothingShopMenuItem Watch3_MPM;
     private PedClothingShopMenuItem DirtHelmet1_MPF;
     private PedClothingShopMenuItem DirtHelmet2_MPF;
     private PedClothingShopMenuItem HalfHelmet1_MPF;
@@ -119,8 +114,102 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem BaseballHatGuns_MPM;
     private PedClothingShopMenuItem BaseballHatGunsReverse_MPM;
 
-    // MP Male Ped
+    //Props
 
+    //Mp Male Props
+    //Glasses
+    private PedClothingShopMenuItem Aviators1_MPM; 
+    private PedClothingShopMenuItem Aviators2_MPM;
+    private PedClothingShopMenuItem Aviators3_MPM;
+    private PedClothingShopMenuItem JanitorFrames1_MPM;
+    private PedClothingShopMenuItem SquaredGlasses1_MPM;
+    private PedClothingShopMenuItem SquaredGlasses2_MPM;
+    private PedClothingShopMenuItem SquaredGlasses3_MPM;
+    private PedClothingShopMenuItem SquaredGlasses4_MPM;
+    private PedClothingShopMenuItem ShootingGlasses1_MPM;
+    private PedClothingShopMenuItem WrapAround3_MPM;
+    private PedClothingShopMenuItem RectangledGlasses1_MPM;
+    private PedClothingShopMenuItem ShieldGlasses1_MPM;
+    private PedClothingShopMenuItem OversizedGlasses1_MPM;
+    private PedClothingShopMenuItem SquaredGlasses5_MPM;
+    private PedClothingShopMenuItem StarGlasses5_MPM;
+    private PedClothingShopMenuItem SquaredGlasses6_MPM;
+    private PedClothingShopMenuItem ShootingGlasses2_MPM;
+    private PedClothingShopMenuItem Aviators4_MPM;
+    private PedClothingShopMenuItem OversizedGlasses2_MPM;
+    private PedClothingShopMenuItem GlowGlasses1_MPM;
+    private PedClothingShopMenuItem OversizedGlasses3_MPM;
+    private PedClothingShopMenuItem RoundGlasses1_MPM;
+    private PedClothingShopMenuItem SquaredGlasses7_MPM;
+    private PedClothingShopMenuItem RoundGlasses2_MPM;
+    private PedClothingShopMenuItem SquaredGlasses8_MPM;
+    private PedClothingShopMenuItem CatEyeGlasses1_MPM;
+    private PedClothingShopMenuItem RectangledGlasses2_MPM;
+    private PedClothingShopMenuItem RectangledGlasses3_MPM;
+    private PedClothingShopMenuItem RoundGlasses3_MPM;
+    private PedClothingShopMenuItem CatEyeGlasses2_MPM;
+    private PedClothingShopMenuItem WrapAround4_MPM;
+    private PedClothingShopMenuItem WrapAround5_MPM;
+    private PedClothingShopMenuItem RoundGlasses4_MPM;
+    private PedClothingShopMenuItem GeoMetGlasses1_MPM;
+    private PedClothingShopMenuItem SquaredGlasses9_MPM;
+    private PedClothingShopMenuItem RoundGlasses5_MPM;
+    private PedClothingShopMenuItem WrapAround1_MPM;
+    private PedClothingShopMenuItem WrapAround2_MPM;
+    private PedClothingShopMenuItem WinterShades1_MPM;
+    //Mp Female Props
+    //Glasses
+    private PedClothingShopMenuItem SportsGlasses1_MPF;
+    private PedClothingShopMenuItem MarbleShades1_MPF;
+    private PedClothingShopMenuItem ButterflyShades1_MPF;
+    private PedClothingShopMenuItem ShieldGlasses1_MPF;
+    private PedClothingShopMenuItem RoundGlasses1_MPF;
+    private PedClothingShopMenuItem BugGlasses1_MPF;
+    private PedClothingShopMenuItem FigureGlasses1_MPF;
+    private PedClothingShopMenuItem SquaredGlasses1_MPF;
+    private PedClothingShopMenuItem ShootingGlasses1_MPF;
+    private PedClothingShopMenuItem SportsGlasses2_MPF;
+    private PedClothingShopMenuItem Aviators1_MPF;
+    private PedClothingShopMenuItem CatEyeGlasses1_MPF;
+    private PedClothingShopMenuItem BugGlasses2_MPF;
+    private PedClothingShopMenuItem SquaredGlasses2_MPF;
+    private PedClothingShopMenuItem SlimGlasses1_MPF;
+    private PedClothingShopMenuItem PlasticGlasses1_MPF;
+    private PedClothingShopMenuItem RetroGlasses1_MPF;
+    private PedClothingShopMenuItem SquaredGlasses3_MPF;
+    private PedClothingShopMenuItem StarGlasses1_MPF;
+    private PedClothingShopMenuItem SquaredGlasses4_MPF;
+    private PedClothingShopMenuItem SquaredGlasses5_MPF;
+    private PedClothingShopMenuItem ShootingGlasses2_MPF;
+    private PedClothingShopMenuItem Aviators2_MPF;
+    private PedClothingShopMenuItem OversizedGlasses1_MPF;
+    private PedClothingShopMenuItem GlowGlasses1_MPF;
+    private PedClothingShopMenuItem OversizedGlasses2_MPF;
+    private PedClothingShopMenuItem SquaredGlasses6_MPF;
+    private PedClothingShopMenuItem RoundGlasses3_MPF;
+    private PedClothingShopMenuItem SquaredGlasses7_MPF;
+    private PedClothingShopMenuItem RectangledGlasses2_MPF;
+    private PedClothingShopMenuItem RectangledGlasses3_MPF;
+    private PedClothingShopMenuItem RoundGlasses4_MPF;
+    private PedClothingShopMenuItem CatEyeGlasses2_MPF;
+    private PedClothingShopMenuItem WrapAround1_MPF;
+    private PedClothingShopMenuItem WrapAround2_MPF;
+    private PedClothingShopMenuItem RoundGlasses5_MPF;
+    private PedClothingShopMenuItem GeoMetGlasses1_MPF;
+    private PedClothingShopMenuItem SquaredGlasses9_MPF;
+    private PedClothingShopMenuItem RoundGlasses6_MPF;
+
+
+
+
+    //Watches
+    private PedClothingShopMenuItem Watch1_MPM;
+    private PedClothingShopMenuItem Watch2_MPM;
+    private PedClothingShopMenuItem Watch3_MPM;
+
+
+
+    // MP Male Ped
     // Outfits
     //Perseus & Deider
     private PedClothingShopMenuItem BusinessOutfit1_MPM;
@@ -724,9 +813,14 @@ public class ShopMenus_Clothing
             DiscoOutfit3_MPM,
             DiscoOutfit4_MPM,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
 
+            // Hats
             StrawHat1_MPM,
             UnbuttonedCasual1_MPM,
             LostSupported_MPM,
@@ -736,6 +830,31 @@ public class ShopMenus_Clothing
             CowboyHat1_MPM,
             BaseballHatFastFood_MPM,
             BaseballHatFastFoodReverse_MPM,
+
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            WrapAround1_MPM,
+            JanitorFrames1_MPM,
+            SquaredGlasses2_MPM,
+            ShootingGlasses1_MPM,
+            ShieldGlasses1_MPM,
+            SquaredGlasses5_MPM,
+            StarGlasses5_MPM,
+            SquaredGlasses6_MPM,
+            ShootingGlasses2_MPM,
+            GlowGlasses1_MPM,
+            RoundGlasses2_MPM,
+            SquaredGlasses8_MPM,
+            CatEyeGlasses1_MPM,
+            RectangledGlasses2_MPM,
+            RectangledGlasses3_MPM,
+            RoundGlasses3_MPM,
+            CatEyeGlasses2_MPM,
+            RoundGlasses5_MPM,
 
             /////////
             // Tops
@@ -852,6 +971,8 @@ public class ShopMenus_Clothing
 
 
 
+
+
             //////////
             //Female
             //////////
@@ -862,12 +983,41 @@ public class ShopMenus_Clothing
             DiscountOutfit3_MPF,
 
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPF,
 
             LooseButton_MPF,
             StrawHat1_MPF,
             LostSupported_MPF,
+
+
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            SportsGlasses1_MPF,
+            ShieldGlasses1_MPF,
+            SquaredGlasses1_MPF,
+            ShootingGlasses1_MPF,
+            Aviators1_MPF,
+            SquaredGlasses2_MPF,
+            PlasticGlasses1_MPF,
+            StarGlasses1_MPF,
+            SquaredGlasses4_MPF,
+            SquaredGlasses5_MPF,
+            GlowGlasses1_MPF,
+            CatEyeGlasses2_MPF,
+            WrapAround2_MPF,
+            GeoMetGlasses1_MPF,
+            SquaredGlasses9_MPF,
+            RoundGlasses6_MPF,
+            RoundGlasses4_MPF,
 
 
             /////////
@@ -1000,14 +1150,39 @@ public class ShopMenus_Clothing
             BincoOutfit3_MPM,
             BincoOutfit4_MPM,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
 
 
-            Aviators1_MPM,
             BaseballHatGuns_MPM,
             BaseballHatGunsReverse_MPM,
 
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            WrapAround1_MPM,
+            WinterShades1_MPM,
+            JanitorFrames1_MPM,
+            SquaredGlasses2_MPM,
+            Aviators2_MPM,
+            WrapAround2_MPM,
+            ShootingGlasses1_MPM,
+            ShootingGlasses2_MPM,
+            RoundGlasses2_MPM,
+            SquaredGlasses8_MPM,
+            CatEyeGlasses1_MPM,
+            RectangledGlasses2_MPM,
+            RectangledGlasses3_MPM,
+            RoundGlasses3_MPM,
+            CatEyeGlasses2_MPM,
+            RoundGlasses5_MPM,
 
 
             /////////
@@ -1105,12 +1280,34 @@ public class ShopMenus_Clothing
             BincoOutfit3_MPF,
             BincoOutfit4_MPF,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPF,
 
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            SportsGlasses1_MPF,
+            ShieldGlasses1_MPF,
+            SquaredGlasses1_MPF,
+            ShootingGlasses1_MPF,
             Aviators1_MPF,
-            Polo1_MPF,
-            FittedT_MPF,
+            SquaredGlasses2_MPF,
+            PlasticGlasses1_MPF,
+            SquaredGlasses5_MPF,
+            ShootingGlasses2_MPF,
+            CatEyeGlasses2_MPF,
+            WrapAround2_MPF,
+            GeoMetGlasses1_MPF,
+            SquaredGlasses9_MPF,
+            RoundGlasses6_MPF,
+
 
 
             ////////
@@ -1141,7 +1338,8 @@ public class ShopMenus_Clothing
             Tankshirt4_MPF,
             RolledTshirt1_MPF,
             RolledTshirt2_MPF,
-
+            Polo1_MPF,
+            FittedT_MPF,
             WorkShirt1_MPF,
 
             // Sportswear
@@ -1208,8 +1406,13 @@ public class ShopMenus_Clothing
             SuburbOutfit1_MPM,
             SuburbOutfit2_MPM,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
+
 
             //Hats
             BaseballHatProLaps1_MPM,
@@ -1221,6 +1424,39 @@ public class ShopMenus_Clothing
             BaseballHatEnus_MPM,
             BaseballHatEnusReverse_MPM,
 
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            WrapAround1_MPM,
+            WinterShades1_MPM,
+            JanitorFrames1_MPM,
+            SquaredGlasses2_MPM,
+            Aviators2_MPM,
+            WrapAround2_MPM,
+            SquaredGlasses4_MPM,
+            ShootingGlasses1_MPM,
+            WrapAround3_MPM,
+            ShieldGlasses1_MPM,
+            SquaredGlasses5_MPM,
+            ShootingGlasses2_MPM,
+            Aviators4_MPM,
+            OversizedGlasses2_MPM,
+            GlowGlasses1_MPM,
+            RoundGlasses1_MPM,
+            SquaredGlasses7_MPM,
+            RoundGlasses2_MPM,
+            SquaredGlasses8_MPM,
+            CatEyeGlasses1_MPM,
+            RectangledGlasses2_MPM,
+            RectangledGlasses3_MPM,
+            RoundGlasses3_MPM,
+            WrapAround4_MPM,
+            WrapAround5_MPM,
+            RoundGlasses4_MPM,
+            RoundGlasses5_MPM,
 
             /////////
             //Tops
@@ -1342,6 +1578,8 @@ public class ShopMenus_Clothing
             UniformBoots_MPM,
 
 
+
+
             //////////
             // Female
             //////////
@@ -1351,13 +1589,48 @@ public class ShopMenus_Clothing
             SuburbOutfit2_MPF,
 
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPF,
 
             //Hats
             BaseballHatProLaps1_MPF,
             BaseballHatRegular1_MPF,
             BaseballHatRegular1Reverse_MPF,
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            SportsGlasses1_MPF,
+            ButterflyShades1_MPF,
+            ShieldGlasses1_MPF,
+            RoundGlasses1_MPF,
+            SquaredGlasses1_MPF,
+            ShootingGlasses1_MPF,
+            SportsGlasses2_MPF,
+            Aviators1_MPF,
+            CatEyeGlasses1_MPF,
+            BugGlasses2_MPF,
+            SquaredGlasses2_MPF,
+            SlimGlasses1_MPF,
+            RetroGlasses1_MPF,
+            SquaredGlasses3_MPF,
+            SquaredGlasses5_MPF,
+            Aviators2_MPF,
+            OversizedGlasses1_MPF,
+            SquaredGlasses6_MPF,
+            RoundGlasses3_MPF,
+            SquaredGlasses7_MPF,
+            RectangledGlasses2_MPF,
+            RectangledGlasses3_MPF,
+            RoundGlasses3_MPF,
+            WrapAround1_MPF,
+            RoundGlasses5_MPF,
 
 
             ////////
@@ -1522,7 +1795,11 @@ public class ShopMenus_Clothing
             BusinessOutfit2_MPM,
             BusinessOutfit3_MPM,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
 
             Necklace1_MPM,
@@ -1530,6 +1807,34 @@ public class ShopMenus_Clothing
             Watch3_MPM,
             DangleEarring1_MPM,
 
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            JanitorFrames1_MPM,
+            SquaredGlasses1_MPM,
+            Aviators1_MPM,
+            SquaredGlasses2_MPM,
+            Aviators2_MPM,
+            SquaredGlasses3_MPM,
+            Aviators3_MPM,
+            WrapAround3_MPM,
+            RectangledGlasses1_MPM,
+            OversizedGlasses1_MPM,
+            Aviators4_MPM,
+            OversizedGlasses3_MPM,
+            SquaredGlasses7_MPM,
+            RoundGlasses2_MPM,
+            SquaredGlasses8_MPM,
+            CatEyeGlasses1_MPM,
+            RectangledGlasses2_MPM,
+            RectangledGlasses3_MPM,
+            RoundGlasses3_MPM,
+            GeoMetGlasses1_MPM,
+            SquaredGlasses9_MPM,
+            RoundGlasses5_MPM,
 
             /////////
             // Tops
@@ -1645,12 +1950,44 @@ public class ShopMenus_Clothing
             BusinessOutfit2_MPF,
             BusinessOutfit4_MPF,
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPF,
 
             Necklace1_MPF,
             GoldWatch2_MPF,
 
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            SportsGlasses1_MPF,
+            MarbleShades1_MPF,
+            ButterflyShades1_MPF,
+            BugGlasses1_MPF,
+            FigureGlasses1_MPF,
+            SquaredGlasses1_MPF,
+            SportsGlasses2_MPF,
+            Aviators1_MPF,
+            CatEyeGlasses1_MPF,
+            BugGlasses2_MPF,
+            SlimGlasses1_MPF,
+            SquaredGlasses3_MPF,
+            Aviators2_MPF,
+            OversizedGlasses1_MPF,
+            OversizedGlasses2_MPF,
+            SquaredGlasses6_MPF,
+            RoundGlasses3_MPF,
+            SquaredGlasses7_MPF,
+            RectangledGlasses2_MPF,
+            RectangledGlasses3_MPF,
+            RoundGlasses3_MPF,
+            GeoMetGlasses1_MPF,
 
             /////////
             // Tops
@@ -1764,7 +2101,11 @@ public class ShopMenus_Clothing
             BusinessOutfit5_MPM,
 
 
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
 
 
@@ -1778,7 +2119,35 @@ public class ShopMenus_Clothing
             BrimmedHat2_MPM,
             BrimmedHat3_MPM,
 
-            
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            JanitorFrames1_MPM,
+            SquaredGlasses1_MPM,
+            Aviators1_MPM,
+            SquaredGlasses2_MPM,
+            Aviators2_MPM,
+            SquaredGlasses3_MPM,
+            Aviators3_MPM,
+            WrapAround3_MPM,
+            RectangledGlasses1_MPM,
+            OversizedGlasses1_MPM,
+            Aviators4_MPM,
+            OversizedGlasses3_MPM,
+            SquaredGlasses7_MPM,
+            RoundGlasses2_MPM,
+            SquaredGlasses8_MPM,
+            CatEyeGlasses1_MPM,
+            RectangledGlasses2_MPM,
+            RectangledGlasses3_MPM,
+            RoundGlasses3_MPM,
+            GeoMetGlasses1_MPM,
+            SquaredGlasses9_MPM,
+            RoundGlasses5_MPM,
+
             /////////
             // Tops
             ////////
@@ -1898,11 +2267,46 @@ public class ShopMenus_Clothing
             BusinessOutfit1_MPF,
             BusinessOutfit3_MPF, 
             
+            //////////////
             //Accessories
+            /////////////
+
+            // Removal of Accessories added from Outfits
             RemoveAccessories1_MPF,
 
+
+            //Jewelry
             GoldWatch1_MPF,
             DangleEarring1_MPF,
+
+
+            /////////
+            //Props
+            ////////
+
+            //Glasses
+            SportsGlasses1_MPF,
+            MarbleShades1_MPF,
+            ButterflyShades1_MPF,
+            BugGlasses1_MPF,
+            FigureGlasses1_MPF,
+            SquaredGlasses1_MPF,
+            SportsGlasses2_MPF,
+            Aviators1_MPF,
+            CatEyeGlasses1_MPF,
+            BugGlasses2_MPF,
+            SlimGlasses1_MPF,
+            SquaredGlasses3_MPF,
+            Aviators2_MPF,
+            OversizedGlasses1_MPF,
+            OversizedGlasses2_MPF,
+            SquaredGlasses6_MPF,
+            RoundGlasses3_MPF,
+            SquaredGlasses7_MPF,
+            RectangledGlasses2_MPF,
+            RectangledGlasses3_MPF,
+            RoundGlasses3_MPF,
+            GeoMetGlasses1_MPF,
 
 
             ////////
@@ -2634,8 +3038,8 @@ public class ShopMenus_Clothing
                 new PedClothingComponent(8, 15, new List<int>() { 0 }), 
                 new PedClothingComponent(3, 14, new List<int>() { 0 }), })
         {
-            Category = "Shirts",
-            SubCategory = "Polo",
+            Category = "Tops",
+            SubCategory = "T-Shirts",
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
@@ -2645,7 +3049,7 @@ public class ShopMenus_Clothing
             new PedClothingComponent(8, 15, new List<int>() { 0 }), 
             new PedClothingComponent(3, 14, new List<int>() { 0 }), })
         {
-            Category = "Shirts",
+            Category = "Tops",
             SubCategory = "T-Shirts",
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
@@ -5884,8 +6288,313 @@ public class ShopMenus_Clothing
     }
     private void MPFemale_Glasses()
     {
-        Aviators1_MPF = new PedClothingShopMenuItem("Aviators 1", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        SportsGlasses1_MPF = new PedClothingShopMenuItem("Hornet Sports Shades", "", 45, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 0, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        MarbleShades1_MPF = new PedClothingShopMenuItem("Marbles Shades", "", 120, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 1, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ButterflyShades1_MPF = new PedClothingShopMenuItem("Mademoiselles", "", 90, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 2, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShieldGlasses1_MPF = new PedClothingShopMenuItem("Shield Sun Glasses", "", 60, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 3, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses1_MPF = new PedClothingShopMenuItem("Rounded Retro Glasses", "", 120, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 4, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BugGlasses1_MPF = new PedClothingShopMenuItem("Bug Glasses", "", 120, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 6, new List<int>() { 0, 8, 9, 10 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        FigureGlasses1_MPF = new PedClothingShopMenuItem("Figure 8 Glasses", "", 120, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 7, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses1_MPF = new PedClothingShopMenuItem("Square Tint Glasses", "", 100, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 8, new List<int>() {  0, 8, 9, 10 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShootingGlasses1_MPF = new PedClothingShopMenuItem("Hawk & Little Shooting Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 9, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SportsGlasses2_MPF = new PedClothingShopMenuItem("Luxury Sports Glasses", "", 155, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 10, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators1_MPF = new PedClothingShopMenuItem("Tinted Aviators", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(1, 11, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        CatEyeGlasses1_MPF = new PedClothingShopMenuItem("Cat Eye Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 14, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        BugGlasses2_MPF = new PedClothingShopMenuItem("DS Bug Glasses", "", 180, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 16, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses2_MPF = new PedClothingShopMenuItem("Tinted Squared Glasses", "", 80, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 17, new List<int>() { 0  }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SlimGlasses1_MPF = new PedClothingShopMenuItem("Slim Sun Glasses", "", 60, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 18, new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        PlasticGlasses1_MPF = new PedClothingShopMenuItem("Plastic Sun Glasses", "", 30, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 19, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RetroGlasses1_MPF = new PedClothingShopMenuItem("Retro Sun Glasses", "", 60, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 20, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses3_MPF = new PedClothingShopMenuItem("Hipster Wayfarer Glasses", "", 80, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 21, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        StarGlasses1_MPF = new PedClothingShopMenuItem("Patriotic Star Framed Glasses", "", 30, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 22, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses4_MPF = new PedClothingShopMenuItem("Star Spangled Wayfarer Glasses", "", 40, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 23, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses5_MPF = new PedClothingShopMenuItem("Casual Wayfarer Sun Glasses", "", 60, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 24, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShootingGlasses2_MPF = new PedClothingShopMenuItem("Vom Feuer Shooting Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 25, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators2_MPF = new PedClothingShopMenuItem("Designer Aviators", "", 180, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 30, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        OversizedGlasses1_MPF = new PedClothingShopMenuItem("Oversized Hipster Glasses", "", 120, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 31, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        GlowGlasses1_MPF = new PedClothingShopMenuItem("Glow Shades", "", 20, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 32, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        OversizedGlasses2_MPF = new PedClothingShopMenuItem("Oversized Shades", "", 135, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 33, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses6_MPF = new PedClothingShopMenuItem("Square Shades", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 35, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses3_MPF = new PedClothingShopMenuItem("Round Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 36, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses7_MPF = new PedClothingShopMenuItem("Squared Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 37, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RectangledGlasses2_MPF = new PedClothingShopMenuItem("Rectanguler Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 39, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RectangledGlasses3_MPF = new PedClothingShopMenuItem("Ergonomic Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 40, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses4_MPF = new PedClothingShopMenuItem("Retro Round Glasses", "", 50, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 41, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+
+        CatEyeGlasses2_MPF = new PedClothingShopMenuItem("Cat Eye Shades", "", 80, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 44, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround1_MPF = new PedClothingShopMenuItem("Designer Wraps", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 47, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround2_MPF = new PedClothingShopMenuItem("SC Coin Wraps", "", 100, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 48, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses5_MPF = new PedClothingShopMenuItem("Designer Round Glasses", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 49, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        GeoMetGlasses1_MPF = new PedClothingShopMenuItem("Geometric Sunglasses", "", 80, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 53, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses9_MPF = new PedClothingShopMenuItem("Squared Tinted Glasses", "", 40, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 56, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses6_MPF = new PedClothingShopMenuItem("Round Tinted Glasses", "", 35, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 58, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Glasses",
             SubCategory = "Sunglasses",
@@ -5895,8 +6604,312 @@ public class ShopMenus_Clothing
     }
     private void MPMale_Glasses()
     {
-        Aviators1_MPM = new PedClothingShopMenuItem("Aviators 1", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        WrapAround1_MPM = new PedClothingShopMenuItem("Black Wrap Arounds", "", 45, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 1, new List<int>() { 1 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WinterShades1_MPM = new PedClothingShopMenuItem("Winter Shades", "", 120, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 2, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        JanitorFrames1_MPM = new PedClothingShopMenuItem("Janitor Framed Glasses", "", 90, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 3, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses1_MPM = new PedClothingShopMenuItem("Squared Club Master Glasses", "", 180, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 4, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators1_MPM = new PedClothingShopMenuItem("Tinted Aviators", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 5, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses2_MPM = new PedClothingShopMenuItem("Casual Wayfarer Sun Glasses", "", 60, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 7, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators2_MPM = new PedClothingShopMenuItem("Cop Framed Aviators", "", 120, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 8, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround2_MPM = new PedClothingShopMenuItem("Hawaiian Snow Glasses", "", 100, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 9, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses3_MPM = new PedClothingShopMenuItem("Squared Bull Emic Glasses", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 10, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators3_MPM = new PedClothingShopMenuItem("Elvis Aviators", "", 80, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
                 new PedClothingComponent(1, 12, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses4_MPM = new PedClothingShopMenuItem("Hipster Wayfarer Glasses", "", 80, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 13, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShootingGlasses1_MPM = new PedClothingShopMenuItem("Hawk & Little Shooting Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 15, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround3_MPM = new PedClothingShopMenuItem("Broker Wrap Arounds", "", 45, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 16, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RectangledGlasses1_MPM = new PedClothingShopMenuItem("Rectanguler Refined Glasses", "", 95, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 17, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShieldGlasses1_MPM = new PedClothingShopMenuItem("Shield Sun Glasses", "", 60, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 18, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        OversizedGlasses1_MPM = new PedClothingShopMenuItem("Oversized Trend Sun Glasses", "", 160, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 19, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses5_MPM = new PedClothingShopMenuItem("Docks Wayfarer Glasses", "", 70, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 20, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        StarGlasses5_MPM = new PedClothingShopMenuItem("Patriotic Star Framed Glasses", "", 30, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 21, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses6_MPM = new PedClothingShopMenuItem("Star Spangled Wayfarer Glasses", "", 40, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 22, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        ShootingGlasses2_MPM = new PedClothingShopMenuItem("Vom Feuer Shooting Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 23, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        Aviators4_MPM = new PedClothingShopMenuItem("Designer Aviators", "", 180, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 28, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        OversizedGlasses2_MPM = new PedClothingShopMenuItem("Oversized Hipster Glasses", "", 120, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 29, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        GlowGlasses1_MPM = new PedClothingShopMenuItem("Glow Shades", "", 20, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 30, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        OversizedGlasses3_MPM = new PedClothingShopMenuItem("Oversized Shades", "", 135, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 31, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses1_MPM = new PedClothingShopMenuItem("Round Checkered Shades", "", 75, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 32, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses7_MPM = new PedClothingShopMenuItem("Square Shades", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 33, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses2_MPM = new PedClothingShopMenuItem("Round Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 34, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses8_MPM = new PedClothingShopMenuItem("Squared Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 35, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        CatEyeGlasses1_MPM = new PedClothingShopMenuItem("Cat Eye Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 36, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RectangledGlasses2_MPM = new PedClothingShopMenuItem("Rectanguler Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 37, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RectangledGlasses3_MPM = new PedClothingShopMenuItem("Ergonomic Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 38, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses3_MPM = new PedClothingShopMenuItem("Retro Round Glasses", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 39, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        CatEyeGlasses2_MPM = new PedClothingShopMenuItem("Cat Eye Shades", "", 80, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 42, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround4_MPM = new PedClothingShopMenuItem("Designer Wraps", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 45, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        WrapAround5_MPM = new PedClothingShopMenuItem("SC Coin Wraps", "", 100, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 46, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses4_MPM = new PedClothingShopMenuItem("Designer Round Glasses", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 47, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        GeoMetGlasses1_MPM = new PedClothingShopMenuItem("Geometric Sunglasses", "", 80, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 51, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        SquaredGlasses9_MPM = new PedClothingShopMenuItem("Squared Tinted Glasses", "", 40, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 54, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Glasses",
+            SubCategory = "Sunglasses",
+            PedFocusZone = ePedFocusZone.Head,
+            IsAccessory = true,
+        };
+        RoundGlasses5_MPM = new PedClothingShopMenuItem("Round Tinted Glasses", "", 35, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+                new PedClothingComponent(1, 56, new List<int>() { 0 }){ IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Glasses",
             SubCategory = "Sunglasses",
