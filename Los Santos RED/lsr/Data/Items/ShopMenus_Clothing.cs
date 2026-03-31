@@ -3117,7 +3117,7 @@ public class ShopMenus_Clothing
         DiscoOutfit3_MPM = new PedClothingShopMenuItem("Discount Outfit 3", "Beach Outfit", 80, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 5, new List<int>() { 0 }),
         new PedClothingComponent(4, 16, new List<int>() { 0 }){ AllowAllTextureVariations = true },
-        new PedClothingComponent(6, 1, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(6, 16, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         new PedClothingComponent(8, 17, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         new PedClothingComponent(11, 17, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         })
@@ -3157,9 +3157,9 @@ public class ShopMenus_Clothing
         };
         SuburbOutfit2_MPM = new PedClothingShopMenuItem("Street Outfit 2", "", 180, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 6, new List<int>() { 0 }),
-        new PedClothingComponent(4, 4, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(4, 4, new List<int>() { 0, 1, 2, 4 }){ AllowAllTextureVariations = false },
         new PedClothingComponent(6, 12, new List<int>() { 0 }){ AllowAllTextureVariations = true },
-        new PedClothingComponent(8, 15, new List<int>() { 0 }){ AllowAllTextureVariations = true },
+        new PedClothingComponent(8, 40, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         new PedClothingComponent(11, 7, new List<int>() { 0 }){ AllowAllTextureVariations = true },
         })
         {
@@ -4391,7 +4391,7 @@ public class ShopMenus_Clothing
         Hoodie6_MPM = new PedClothingShopMenuItem("Longline Hoodie", "", 75, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 187, new List<int>() { 0 }){ AllowAllTextureVariations = true },
-            new PedClothingComponent(8, 15, new List<int>() { 0 }),
+            new PedClothingComponent(8, 48, new List<int>() { 0 }){ AllowAllTextureVariations = true },
             new PedClothingComponent(3, 4, new List<int>() { 0 }), })
         {
             Category = "Tops",
@@ -4788,7 +4788,7 @@ public class ShopMenus_Clothing
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 84, new List<int>() { 0 }){ AllowAllTextureVariations = true },
             new PedClothingComponent(8, 15, new List<int>() { 0 }),
-            new PedClothingComponent(3, 0, new List<int>() { 0 }), })
+            new PedClothingComponent(3, 4, new List<int>() { 0 }), })
         {
             Category = "Tops",
             SubCategory = "Sportswear",
@@ -7932,7 +7932,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        LadiesWatch5_MPF = new PedClothingShopMenuItem("I-Fruit Link Watch", "", 270, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        LadiesWatch5_MPF = new PedClothingShopMenuItem("iFruit Link Watch", "", 270, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 5, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -7940,7 +7940,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        LadiesWatch6_MPF = new PedClothingShopMenuItem("I-Fruit Tech Watch", "", 320, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        LadiesWatch6_MPF = new PedClothingShopMenuItem("iFruit Tech Watch", "", 320, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 6, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -7972,7 +7972,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        LadiesWatch10_MPF = new PedClothingShopMenuItem("I-Fruit Snap Watch", "", 230, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        LadiesWatch10_MPF = new PedClothingShopMenuItem("iFruit Snap Watch", "", 230, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 10, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -8137,7 +8137,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        Watch12_MPM = new PedClothingShopMenuItem("I-Fruit Link Watch", "", 270, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        Watch12_MPM = new PedClothingShopMenuItem("iFruit Link Watch", "", 270, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 12, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -8145,7 +8145,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        Watch13_MPM = new PedClothingShopMenuItem("I-Fruit Tech Watch", "", 320, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        Watch13_MPM = new PedClothingShopMenuItem("iFruit Tech Watch", "", 320, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 13, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -8209,7 +8209,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        Watch21_MPM = new PedClothingShopMenuItem("I-Fruit Snap Watch", "", 230, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        Watch21_MPM = new PedClothingShopMenuItem("iFruit Snap Watch", "", 230, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 21, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
