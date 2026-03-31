@@ -61,8 +61,6 @@ public class ShopMenus_Clothing
     private PedClothingShopMenuItem MaskFaceBandana_MPC;
     private PedClothingShopMenuItem MaskTShirtMask_MPC;
 
-    private PedClothingShopMenuItem GoldWatch1_MPF;
-    private PedClothingShopMenuItem GoldWatch2_MPF;
     private PedClothingShopMenuItem DangleEarring1_MPF;
     private PedClothingShopMenuItem BaseballHatProLaps1_MPF;
     private PedClothingShopMenuItem BaseballHatRegular1_MPF;
@@ -201,11 +199,58 @@ public class ShopMenus_Clothing
 
 
 
-
+    //Mp Male Accessories
     //Watches
     private PedClothingShopMenuItem Watch1_MPM;
     private PedClothingShopMenuItem Watch2_MPM;
     private PedClothingShopMenuItem Watch3_MPM;
+    private PedClothingShopMenuItem Watch4_MPM;
+    private PedClothingShopMenuItem Watch5_MPM;
+    private PedClothingShopMenuItem Watch6_MPM;
+    private PedClothingShopMenuItem Watch7_MPM;
+    private PedClothingShopMenuItem Watch8_MPM;
+    private PedClothingShopMenuItem Watch9_MPM;
+    private PedClothingShopMenuItem Watch10_MPM;
+    private PedClothingShopMenuItem Watch11_MPM;
+    private PedClothingShopMenuItem Watch12_MPM;
+    private PedClothingShopMenuItem Watch13_MPM;
+    private PedClothingShopMenuItem Watch14_MPM;
+    private PedClothingShopMenuItem Watch15_MPM;
+    private PedClothingShopMenuItem Watch16_MPM;
+    private PedClothingShopMenuItem Watch17_MPM;
+    private PedClothingShopMenuItem Watch18_MPM;
+    private PedClothingShopMenuItem Watch19_MPM;
+    private PedClothingShopMenuItem Watch20_MPM;
+    private PedClothingShopMenuItem Watch21_MPM;
+    private PedClothingShopMenuItem Watch22_MPM;
+    private PedClothingShopMenuItem Watch23_MPM;
+    private PedClothingShopMenuItem Watch24_MPM;
+    private PedClothingShopMenuItem Watch25_MPM;
+    private PedClothingShopMenuItem Watch26_MPM;
+    private PedClothingShopMenuItem Watch27_MPM;
+    private PedClothingShopMenuItem Watch28_MPM;
+    private PedClothingShopMenuItem Watch29_MPM;
+
+    //MP Female Accessories
+    private PedClothingShopMenuItem LadiesWatch1_MPF;
+    private PedClothingShopMenuItem LadiesWatch2_MPF;
+    private PedClothingShopMenuItem LadiesWatch3_MPF;
+    private PedClothingShopMenuItem LadiesWatch4_MPF;
+    private PedClothingShopMenuItem LadiesWatch5_MPF;
+    private PedClothingShopMenuItem LadiesWatch6_MPF;
+    private PedClothingShopMenuItem LadiesWatch7_MPF;
+    private PedClothingShopMenuItem LadiesWatch8_MPF;
+    private PedClothingShopMenuItem LadiesWatch9_MPF;
+    private PedClothingShopMenuItem LadiesWatch10_MPF;
+    private PedClothingShopMenuItem LadiesWatch11_MPF;
+    private PedClothingShopMenuItem LadiesWatch12_MPF;
+    private PedClothingShopMenuItem LadiesWatch13_MPF;
+    private PedClothingShopMenuItem LadiesWatch14_MPF;
+    private PedClothingShopMenuItem LadiesWatch15_MPF;
+    private PedClothingShopMenuItem LadiesWatch16_MPF;
+    private PedClothingShopMenuItem LadiesWatch17_MPF;
+    private PedClothingShopMenuItem LadiesWatch18_MPF;
+
 
 
 
@@ -820,6 +865,8 @@ public class ShopMenus_Clothing
             // Removal of Accessories added from Outfits
             RemoveAccessories1_MPM,
 
+
+
             // Hats
             StrawHat1_MPM,
             UnbuttonedCasual1_MPM,
@@ -855,6 +902,20 @@ public class ShopMenus_Clothing
             RoundGlasses3_MPM,
             CatEyeGlasses2_MPM,
             RoundGlasses5_MPM,
+
+
+            //Watches
+            Watch2_MPM,
+            Watch10_MPM,
+            Watch12_MPM,
+            Watch14_MPM,
+            Watch16_MPM,
+            Watch18_MPM,
+            Watch19_MPM,
+            Watch20_MPM,
+            Watch26_MPM,
+            Watch29_MPM,
+
 
             /////////
             // Tops
@@ -1020,6 +1081,13 @@ public class ShopMenus_Clothing
             RoundGlasses4_MPF,
 
 
+            //Watches
+            LadiesWatch1_MPF,
+            LadiesWatch5_MPF,
+            LadiesWatch15_MPF,
+            LadiesWatch18_MPF,
+
+
             /////////
             // Tops
             /////////
@@ -1158,6 +1226,7 @@ public class ShopMenus_Clothing
             RemoveAccessories1_MPM,
 
 
+            //Hats
             BaseballHatGuns_MPM,
             BaseballHatGunsReverse_MPM,
 
@@ -1184,6 +1253,19 @@ public class ShopMenus_Clothing
             CatEyeGlasses2_MPM,
             RoundGlasses5_MPM,
 
+
+            // Watches 
+            Watch1_MPM,
+            Watch6_MPM,
+            Watch10_MPM,
+            Watch12_MPM,
+            Watch14_MPM,
+            Watch15_MPM,
+            Watch16_MPM,
+            Watch18_MPM,
+            Watch19_MPM,
+            Watch20_MPM,
+            Watch26_MPM,
 
             /////////
             // Tops
@@ -1307,6 +1389,13 @@ public class ShopMenus_Clothing
             GeoMetGlasses1_MPF,
             SquaredGlasses9_MPF,
             RoundGlasses6_MPF,
+
+
+            //Watches
+            LadiesWatch1_MPF,
+            LadiesWatch5_MPF,
+            LadiesWatch8_MPF,
+            LadiesWatch15_MPF,
 
 
 
@@ -1457,6 +1546,22 @@ public class ShopMenus_Clothing
             WrapAround5_MPM,
             RoundGlasses4_MPM,
             RoundGlasses5_MPM,
+
+
+            //Watches
+            Watch5_MPM,
+            Watch6_MPM,
+            Watch9_MPM,
+            Watch10_MPM,
+            Watch13_MPM,
+            Watch14_MPM,
+            Watch15_MPM,
+            Watch16_MPM,
+            Watch19_MPM,
+            Watch20_MPM,
+            Watch21_MPM,
+            Watch27_MPM,
+            Watch29_MPM,
 
             /////////
             //Tops
@@ -1633,6 +1738,14 @@ public class ShopMenus_Clothing
             RoundGlasses5_MPF,
 
 
+            //Watches
+            LadiesWatch6_MPF,
+            LadiesWatch8_MPF,
+            LadiesWatch10_MPF,
+            LadiesWatch16_MPF,
+            LadiesWatch18_MPF,
+
+
             ////////
             // Tops
             ////////
@@ -1803,8 +1916,6 @@ public class ShopMenus_Clothing
             RemoveAccessories1_MPM,
 
             Necklace1_MPM,
-            Watch2_MPM,
-            Watch3_MPM,
             DangleEarring1_MPM,
 
 
@@ -1835,6 +1946,19 @@ public class ShopMenus_Clothing
             GeoMetGlasses1_MPM,
             SquaredGlasses9_MPM,
             RoundGlasses5_MPM,
+
+            //Watches
+            Watch4_MPM,
+            Watch7_MPM,
+            Watch8_MPM,
+            Watch11_MPM,
+            Watch17_MPM,
+            Watch22_MPM,
+            Watch23_MPM,
+            Watch24_MPM,
+            Watch25_MPM,
+            Watch28_MPM,
+
 
             /////////
             // Tops
@@ -1958,7 +2082,6 @@ public class ShopMenus_Clothing
             RemoveAccessories1_MPF,
 
             Necklace1_MPF,
-            GoldWatch2_MPF,
 
 
             /////////
@@ -1988,6 +2111,18 @@ public class ShopMenus_Clothing
             RectangledGlasses3_MPF,
             RoundGlasses3_MPF,
             GeoMetGlasses1_MPF,
+
+
+            //Watches
+            LadiesWatch2_MPF,
+            LadiesWatch3_MPF,
+            LadiesWatch7_MPF,
+            LadiesWatch9_MPF,
+            LadiesWatch11_MPF,
+            LadiesWatch12_MPF,
+            LadiesWatch13_MPF,
+            LadiesWatch14_MPF,
+            LadiesWatch17_MPF,
 
             /////////
             // Tops
@@ -2109,9 +2244,6 @@ public class ShopMenus_Clothing
             RemoveAccessories1_MPM,
 
 
-            //Accessories
-            Watch1_MPM,
-
             //Hats
             StovetopHat1_MPM,
             BowlerHat1_MPM,
@@ -2147,6 +2279,21 @@ public class ShopMenus_Clothing
             GeoMetGlasses1_MPM,
             SquaredGlasses9_MPM,
             RoundGlasses5_MPM,
+
+
+            //Watches
+            Watch1_MPM,
+            Watch4_MPM,
+            Watch7_MPM,
+            Watch8_MPM,
+            Watch11_MPM,
+            Watch17_MPM,
+            Watch22_MPM,
+            Watch23_MPM,
+            Watch24_MPM,
+            Watch25_MPM,
+            Watch28_MPM,
+
 
             /////////
             // Tops
@@ -2276,7 +2423,6 @@ public class ShopMenus_Clothing
 
 
             //Jewelry
-            GoldWatch1_MPF,
             DangleEarring1_MPF,
 
 
@@ -2307,6 +2453,20 @@ public class ShopMenus_Clothing
             RectangledGlasses3_MPF,
             RoundGlasses3_MPF,
             GeoMetGlasses1_MPF,
+
+
+            //Watches
+            LadiesWatch2_MPF,
+            LadiesWatch3_MPF,
+            LadiesWatch4_MPF,
+            LadiesWatch7_MPF,
+            LadiesWatch9_MPF,
+            LadiesWatch11_MPF,
+            LadiesWatch12_MPF,
+            LadiesWatch13_MPF,
+            LadiesWatch14_MPF,
+            LadiesWatch17_MPF,
+
 
 
             ////////
@@ -2512,8 +2672,8 @@ public class ShopMenus_Clothing
             Heels1_MPF,
             Chucks1_MPF,Chucks1_MPM,
             FlipFlops1_MPF,FlipFlops1_MPM,
-            GoldWatch1_MPF,Watch1_MPM,
-            GoldWatch2_MPF,Watch2_MPM,
+            LadiesWatch1_MPF,Watch1_MPM,
+            LadiesWatch2_MPF,Watch2_MPM,
             Watch3_MPM,
             DangleEarring1_MPF,DangleEarring1_MPM,
             BaseballHatProLaps1_MPF,BaseballHatProLaps1_MPM,
@@ -7740,34 +7900,172 @@ public class ShopMenus_Clothing
     }
     private void MPFemale_Watches()
     {
-        GoldWatch1_MPF = new PedClothingShopMenuItem("Small Watch", "", 660, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() { 
-            new PedClothingComponent(6, 2, new List<int>() { 0 }) { IsProp = true, AllowAllTextureVariations = true, }, })
+        LadiesWatch1_MPF = new PedClothingShopMenuItem("Pewter Watch", "", 160, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() { 
+            new PedClothingComponent(6, 0, new List<int>() { 4 }) { IsProp = true, AllowAllTextureVariations = false, }, })
         {
             Category = "Watches",
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        GoldWatch2_MPF = new PedClothingShopMenuItem("Large Watch", "", 860, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+        LadiesWatch2_MPF = new PedClothingShopMenuItem("Fashion Watch", "", 460, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 2, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch3_MPF = new PedClothingShopMenuItem("CaCa Di Lusso Watch", "", 560, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 3, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch4_MPF = new PedClothingShopMenuItem("Didier Sachs Mignon Watch", "", 760, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 4, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch5_MPF = new PedClothingShopMenuItem("I-Fruit Link Watch", "", 270, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 5, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
-        {
-            Category = "Watches",
-            SubCategory = "Formal",
-            PedFocusZone = ePedFocusZone.LeftWrist,
-            IsAccessory = true,
-        };
-    }
-    private void MPMale_Watches()
-    {
-        Watch1_MPM = new PedClothingShopMenuItem("Watch 1", "", 85, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
-            new PedClothingComponent(6, 1, new List<int>() { 0 }) { IsProp = true, AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
             SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        Watch2_MPM = new PedClothingShopMenuItem("Watch 2", "", 65, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        LadiesWatch6_MPF = new PedClothingShopMenuItem("I-Fruit Tech Watch", "", 320, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 6, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch7_MPF = new PedClothingShopMenuItem("Le Chen Marquise Watch", "", 360, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 7, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch8_MPF = new PedClothingShopMenuItem("Fufu Jeunesse Watch", "", 250, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 8, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch9_MPF = new PedClothingShopMenuItem("Anna Rex Prestige Watch", "", 460, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 9, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch10_MPF = new PedClothingShopMenuItem("I-Fruit Snap Watch", "", 230, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 10, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch11_MPF = new PedClothingShopMenuItem("Enduring Watch", "", 465, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 19, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch12_MPF = new PedClothingShopMenuItem("Kronos Tempo Watch", "", 540, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 20, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch13_MPF = new PedClothingShopMenuItem("Kronos Pulse Watch", "", 550, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 21, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch14_MPF = new PedClothingShopMenuItem("Kronos Ara Watch", "", 480, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 22, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+    {
+        Category = "Watches",
+        SubCategory = "Formal",
+        PedFocusZone = ePedFocusZone.LeftWrist,
+        IsAccessory = true,
+    };
+        LadiesWatch15_MPF = new PedClothingShopMenuItem("Ceaseless Watch", "", 145, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 23, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch16_MPF = new PedClothingShopMenuItem("Crowex Epoque Watch", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 24, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch17_MPF = new PedClothingShopMenuItem("Kronos Quad Watch", "", 520, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 25, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        LadiesWatch18_MPF = new PedClothingShopMenuItem("Crowex Round Watch", "", 160, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 26, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+
+
+    }
+    private void MPMale_Watches()
+    {
+        Watch1_MPM = new PedClothingShopMenuItem("Deep Sea Watch", "", 135, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 0, new List<int>() { 0 }) { IsProp = true, AllowAllTextureVariations = false, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch2_MPM = new PedClothingShopMenuItem("LED Watch", "", 145, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 1, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = false, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch3_MPM = new PedClothingShopMenuItem("Pendulus Sports Watch", "", 155, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 3, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
@@ -7775,11 +8073,211 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };
-        Watch3_MPM = new PedClothingShopMenuItem("Watch 3", "", 65, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+        Watch4_MPM = new PedClothingShopMenuItem("Chronograph Watch", "", 325, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(6, 4, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
         {
             Category = "Watches",
             SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch5_MPM = new PedClothingShopMenuItem("LED Watch", "", 145, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 5, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch6_MPM = new PedClothingShopMenuItem("Kronos Quantum Watch", "", 375, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 6, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch7_MPM = new PedClothingShopMenuItem("Gualle Retro Hex Watch", "", 435, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 7, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch8_MPM = new PedClothingShopMenuItem("Covgari Supernova Watch", "", 355, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 8, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch9_MPM = new PedClothingShopMenuItem("Pendulus Galaxis Watch", "", 175, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 9, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch10_MPM = new PedClothingShopMenuItem("Crowex Chromosphere Watch", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 10, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch11_MPM = new PedClothingShopMenuItem("Vangelico Geomeister Watch", "", 255, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 11, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch12_MPM = new PedClothingShopMenuItem("I-Fruit Link Watch", "", 270, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 12, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch13_MPM = new PedClothingShopMenuItem("I-Fruit Tech Watch", "", 320, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 13, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch14_MPM = new PedClothingShopMenuItem("Covgari Explorer Watch", "", 265, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 14, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch15_MPM = new PedClothingShopMenuItem("Pendulus Gravity Watch", "", 190, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 15, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch16_MPM = new PedClothingShopMenuItem("Covgari Universe Watch", "", 370, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 16, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch17_MPM = new PedClothingShopMenuItem("Gualle Destiny Watch", "", 465, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 17, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch18_MPM = new PedClothingShopMenuItem("Medici Radial Watch", "", 145, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 18, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch19_MPM = new PedClothingShopMenuItem("Pendulus Timestar Watch", "", 180, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 19, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch20_MPM = new PedClothingShopMenuItem("Kronos Submariner Watch", "", 420, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 20, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch21_MPM = new PedClothingShopMenuItem("I-Fruit Snap Watch", "", 230, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 21, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch22_MPM = new PedClothingShopMenuItem("Enduring Watch", "", 465, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 30, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch23_MPM = new PedClothingShopMenuItem("Kronos Tempo Watch", "", 540, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 31, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch24_MPM = new PedClothingShopMenuItem("Kronos Pulse Watch", "", 550, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 32, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch25_MPM = new PedClothingShopMenuItem("Kronos Ara Watch", "", 480, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 33, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch26_MPM = new PedClothingShopMenuItem("Ceaseless Watch", "", 145, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 34, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch27_MPM = new PedClothingShopMenuItem("Crowex Epoque Watch", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 35, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch28_MPM = new PedClothingShopMenuItem("Kronos Quad Watch", "", 520, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 36, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Formal",
+            PedFocusZone = ePedFocusZone.LeftWrist,
+            IsAccessory = true,
+        };
+        Watch29_MPM = new PedClothingShopMenuItem("Crowex Round Watch", "", 160, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
+            new PedClothingComponent(6, 37, new List<int>() { 0 }) { IsProp = true,AllowAllTextureVariations = true, }, })
+        {
+            Category = "Watches",
+            SubCategory = "Casual",
             PedFocusZone = ePedFocusZone.LeftWrist,
             IsAccessory = true,
         };

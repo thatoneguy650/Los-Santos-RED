@@ -3634,7 +3634,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3681,7 +3681,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3728,7 +3728,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.LibertyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3776,7 +3776,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3823,7 +3823,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
             new IllicitMarketplace() {
 
@@ -3871,7 +3871,7 @@ public class PlacesOfInterest_LibertyPP
                 },
                 StateID = StaticStrings.AlderneyStateID,
                 ActivateCells= 3,
-                ActivateDistance = 75f,
+                ActivateDistance = 125f,
             },
         };
         LibertyCityLocations.IllicitMarketplaces.AddRange(IllicitMarketplaces);
