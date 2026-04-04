@@ -21,8 +21,8 @@ public class DragSettings : ISettingsDefaultable
     public void SetDefault()
     {
         FadeOut = true;
-        HeadingSpeedMultiplier = 1.0f;
+        HeadingSpeedMultiplier = 2.0f;
         DraggingSpeedMultiplier = 1.0f;
-        QuickAttachEnabled = false;
+        QuickAttachEnabled = true;
     }
 }
