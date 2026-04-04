@@ -733,6 +733,17 @@ public class Interiors_LibertyPP
                 }
             },
 
+            new ClothingShopInterior(-29999,"Clothing Shop USA") // Koresh Sqaure - Alderney City
+            {
+                TryOnInteracts = new List<TryOnInteract>()
+                {
+                    new TryOnInteract("ClothStoreTryOn1",new Vector3(3776.428f, -2369.135f, 19.81198f), 175.3015f,"Try On Clothes")
+                },
+            },
+
+
+
+
             new ClothingShopInterior(-99333,"Westdyke Motorcycles Clothing")
             {
                 TryOnInteracts = new List<TryOnInteract>()
