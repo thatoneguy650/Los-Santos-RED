@@ -310,23 +310,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
 
             List<SpawnLocation> OtherSpawnLocations = new List<SpawnLocation>();
-            //foreach(SpawnPlace vendorLocation in DealingLocation.VendorLocations)
-            //{
-            //    OtherSpawnLocations.Add(new SpawnLocation(vendorLocation.Position, vendorLocation.Heading));
-            //}
-            foreach(ConditionalLocation conditionalLocation in DealingLocation.PossiblePedSpawns)
+            foreach(ConditionalLocation conditionalLocation in DealingLocation?.PossiblePedSpawns)
             {
                 OtherSpawnLocations.Add(new SpawnLocation(conditionalLocation.Location, conditionalLocation.Heading));
             }
-            foreach (ConditionalGroup conditionalGroup in DealingLocation.PossibleGroupSpawns)
+            foreach (ConditionalGroup conditionalGroup in DealingLocation?.PossibleGroupSpawns)
             {
-                foreach (ConditionalLocation conditionalLocation in conditionalGroup.PossiblePedSpawns)
+                foreach (ConditionalLocation conditionalLocation in conditionalGroup?.PossiblePedSpawns)
                 {
                     OtherSpawnLocations.Add(new SpawnLocation(conditionalLocation.Location, conditionalLocation.Heading));
                 }
             }
-
-            if(!OtherSpawnLocations.Any() && IsAmbush)
+            if(!OtherSpawnLocations.Any())// && IsAmbush)
             {
                 SpawnLocation fallbackspawnLocation = new SpawnLocation(DealingLocation.EntrancePosition.Around2D(50f));
                 fallbackspawnLocation.GetClosestStreet(false);
@@ -336,6 +331,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             foreach (SpawnLocation otherspawnLocation in OtherSpawnLocations)
             {
+                if(!RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.DugMeetContactGangBackupSpawnPercentage))
+                {
+                    continue;
+                }
                 GangSpawnTask gangAdditionalSpawnTask = new GangSpawnTask(DealingGang, otherspawnLocation, null, DealingGang.GetRandomPed(0, ""), Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, true, true, true);
                 gangAdditionalSpawnTask.PlacePedOnGround = true;
                 gangAdditionalSpawnTask.AllowAnySpawn = true;
@@ -348,12 +347,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     gm.IsHitSquad = false;
                     SpawnedMembers.Add(gm);
                 }
-                EntryPoint.WriteToConsole("SPAWNED ADDITIONAL PED DUE TO AMBUSH");
+                EntryPoint.WriteToConsole("SPAWNED ADDITIONAL PEDS");
             }
-
-
-            
-
         }
         private void CleanupPeds()
         {
