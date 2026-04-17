@@ -595,6 +595,7 @@ namespace Mod
             if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, true);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, true);
             }
             if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
             {
@@ -842,6 +843,7 @@ namespace Mod
             if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, true);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, true);
             }
             if (Settings.SettingsManager.PlayerOtherSettings.AllowRunningInInteriors)
             {
@@ -898,6 +900,7 @@ namespace Mod
             RacingManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, false);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, false);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
