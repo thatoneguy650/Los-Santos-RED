@@ -996,11 +996,15 @@ public class NewChase : ComplexTask
             NativeFunction.Natives.TASK_VEHICLE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
             Game.LocalPlayer.Character.CurrentVehicle, MissionType,
             190f,
-            (int)eCustomDrivingStyles.CopRacingNew2Based,//(int)eCustomDrivingStyles.Code3,
-            
+            (int)eCustomDrivingStyles.RacingNew3, //(int)eCustomDrivingStyles.RacingNew3,//(int)eCustomDrivingStyles.CopRacingNew2Based,//(int)eCustomDrivingStyles.Code3,
+
             //1.0f, 20f,
-            -1.0f,-1.0f,
+            - 1.0f,-1.0f,
             true);
+
+
+
+
         }
 
 

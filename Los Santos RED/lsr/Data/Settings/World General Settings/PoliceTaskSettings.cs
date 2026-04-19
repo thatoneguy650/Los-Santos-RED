@@ -160,7 +160,10 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public int ChaseRecklessMission { get; set; }
     public int ChaseVeryRecklessMission { get; set; }
     public float FlyThroughWindshieldPercentage { get; set; }
-
+    public bool EnableHarderBikeKnockoff { get; set; }
+    public bool EnableOverrideVehicleAIHandling { get; set; }
+    public bool EnableOverrideVehicleMaxSpeed { get; set; }
+    public float OverrideVehicleMaxSpeed { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -179,7 +182,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowChaseAssists = true;
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
-        AllowPowerAssist = true;
+        AllowPowerAssist = false;// true;
         AllowFixOffScreenVehiclesAssist = true;
 
         AllowDriveBySightDuringChase = true;
@@ -297,6 +300,12 @@ public class PoliceTaskSettings : ISettingsDefaultable
         ForceAssistSpeedChangeThreshold = 0.2f;
         ForceAssistTurningRadiusLimit = 10.0f;
         ForceAssistMinimumSpeedMetersPerSecond = 15.0f;
+
+
+        EnableHarderBikeKnockoff = true;
+        EnableOverrideVehicleMaxSpeed = false;
+        EnableOverrideVehicleAIHandling = false;
+        OverrideVehicleMaxSpeed = 59f;
 
     }
 }

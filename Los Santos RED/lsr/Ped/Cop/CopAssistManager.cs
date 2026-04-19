@@ -237,7 +237,7 @@ public class CopAssistManager
 
                     if (!isTurning && CurrentSpeed >= Settings.SettingsManager.PoliceTaskSettings.ForceAssistMinimumSpeedMetersPerSecond)
                     {
-                        if (isAccelerating)
+                        if (isAccelerating && 1==0)
                         {
                             isApplyingForce = true;
                             coolVeh.ApplyForce(new Vector3(0.0f, 1.0f, 0.0f) * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, Vector3.Zero, true, true);

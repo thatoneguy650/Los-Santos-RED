@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static DispatchScannerFiles;
 
 namespace LSR.Vehicles
@@ -34,6 +35,7 @@ namespace LSR.Vehicles
         protected uint GameTimeLastAddedSonarBlip;
         private uint GameTimeLastDamagedByPlayer;
         private uint GameTimeLastUpdatedDamage;
+
         public bool HasHadPedsRappelOrParachute { get; private set; }
         public uint GameTimeLastHadPedsRappelOrParachute { get; private set; }
         //private List<int> EjectedSeats = new List<int>();
@@ -41,6 +43,8 @@ namespace LSR.Vehicles
         public List<RappelledSeat> RappelledSeats = new List<RappelledSeat>();
         private string storedMakeName;
         private string storedModelName;
+        private float OriginalTopSpeed;
+        private bool SetNewTopSpeed;
 
         public DispatchableVehicle DispatchableVehicle { get; set; }
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
@@ -769,7 +773,19 @@ namespace LSR.Vehicles
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 11) - 1, true);//Engine
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 12) - 1, true);//Brakes
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 13) - 1, true);//Tranny
-            //NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
+                                                                                                                                                           //NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
+            if (Settings.SettingsManager.PoliceTaskSettings.EnableOverrideVehicleMaxSpeed)
+            {
+                OriginalTopSpeed = Vehicle.TopSpeed;
+                SetNewTopSpeed = true;
+                NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(Vehicle, Settings.SettingsManager.PoliceTaskSettings.OverrideVehicleMaxSpeed);
+                EntryPoint.WriteToConsole($"SET Vehicle {Handle} Top Speed to {Settings.SettingsManager.PoliceTaskSettings.OverrideVehicleMaxSpeed} OriginalTopSpeed:{OriginalTopSpeed}");
+
+            }
+            if (Settings.SettingsManager.PoliceTaskSettings.EnableOverrideVehicleAIHandling)
+            {
+                NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(Vehicle, Game.GetHashKey("SPORTS_CAR"));
+            }
         }
         public void UpdatePlatePrefix(IPlatePrefixable AssignedAgency)
         {
@@ -1850,6 +1866,21 @@ namespace LSR.Vehicles
                 return true;
             }
             return false;
+        }
+
+        public void ResetTopSpeed()
+        {
+            if(!SetNewTopSpeed)
+            {
+                return;
+            }
+            if(!Vehicle.Exists())
+            {
+                return;
+            }
+            NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(Vehicle, OriginalTopSpeed);
+            EntryPoint.WriteToConsole($"Reset Vehicle {Handle} Top Speed to {OriginalTopSpeed}");
+
         }
     }
 }

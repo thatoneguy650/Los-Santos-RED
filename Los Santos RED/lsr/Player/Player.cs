@@ -1455,6 +1455,7 @@ namespace Mod
                 {
                     UpdateCurrentVehicle();
                     HandleVehicleEntry();
+                    
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
@@ -1624,11 +1625,21 @@ namespace Mod
                 {
                     Scanner.OnGotInVehicle();
                 }
+
+                if(CurrentVehicle == null)
+                {
+                    UpdateCurrentVehicle();
+                }
+
                 //RemoveOwnedVehicleBlip();
                 if (CurrentVehicle != null)
                 {
+                    
                     CurrentVehicle.HasAutoSetRadio = false;
+                    CurrentVehicle.ResetTopSpeed();
                 }
+
+
                 EntryPoint.WriteToConsole("OnIsInVehicleChanged CHANGED TO TRUE");
             }
             else
