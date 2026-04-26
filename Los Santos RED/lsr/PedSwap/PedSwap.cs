@@ -1131,7 +1131,8 @@ public class PedSwap : IPedSwap
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
         if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
-            Game.TimeScale = 1f;
+            //Game.TimeScale = 1f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
         }
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
@@ -1222,7 +1223,8 @@ public class PedSwap : IPedSwap
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
         if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
-            Game.TimeScale = 1f;
+            //Game.TimeScale = 1f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
         }
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();

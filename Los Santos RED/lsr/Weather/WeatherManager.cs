@@ -45,7 +45,9 @@ public class WeatherManager
     {
         try
         {
-
+            NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+            NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
+            NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
         }
         catch (ArgumentOutOfRangeException ex)
         {
@@ -67,6 +69,12 @@ public class WeatherManager
     }      
     public void Update()
     {
+        //if(Settings.SettingsManager.WeatherSettings.SetRandomWeather)
+        //{
+
+        //}
+
+
 
         if (!Settings.SettingsManager.WeatherSettings.ChangeWeatherByForecast)
         {

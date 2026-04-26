@@ -666,7 +666,8 @@ public class Respawning// : IRespawning
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING
         if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
-            Game.TimeScale = 1f;
+            //Game.TimeScale = 1f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
         }
         if(Settings.SettingsManager.PlayerOtherSettings.SetCutToBlackDeath && Game.IsScreenFadedOut)
         {
@@ -830,7 +831,8 @@ public class Respawning// : IRespawning
             Game.DisplayHelp("Search Failed");
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
-                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+                //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed);
             }
             menu?.Show();
             return;
@@ -854,7 +856,8 @@ public class Respawning// : IRespawning
                 {
                     if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
                     {
-                        Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+                        //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+                        NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed);
                     }
                     menu?.Show();
                 }

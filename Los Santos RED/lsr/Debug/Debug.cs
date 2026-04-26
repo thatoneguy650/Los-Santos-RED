@@ -530,7 +530,11 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-
+        NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+        NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
+        NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+        GameFiber.Sleep(500);
+        return;
 
         GameFiber.StartNew(delegate
         {

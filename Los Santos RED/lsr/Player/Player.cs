@@ -918,7 +918,8 @@ namespace Mod
             NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);      
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
-                Game.TimeScale = 1f;
+                //Game.TimeScale = 1f;
+                NativeFunction.Natives.SET_TIME_SCALE(1.0f);
             }
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
             NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
@@ -1678,7 +1679,8 @@ namespace Mod
             ActivityManager.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
-                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
+                //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed);
             }
             //NativeHelper.DisablePlayerControl();
             //Game.LocalPlayer.HasControl = false;
@@ -1704,7 +1706,8 @@ namespace Mod
 
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
-                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;
+                //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed);
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();

@@ -397,11 +397,13 @@ public class DebugLocationSubMenu : DebugSubMenu
                         {
                             if (!isSlowMode)
                             {
-                                Game.TimeScale = 0.1f;
+                                //Game.TimeScale = 0.1f;
+                                NativeFunction.Natives.SET_TIME_SCALE(0.1f);
                             }
                             else
                             {
-                                Game.TimeScale = 1.0f;
+                                //Game.TimeScale = 1.0f;
+                                NativeFunction.Natives.SET_TIME_SCALE(1.0f);
                             }
                             isSlowMode = !isSlowMode;
                             GameFiber.Sleep(200);

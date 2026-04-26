@@ -1778,11 +1778,11 @@ public class LEDispatcher
         {
             return agency;
         }
-        agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+        agency = PossibleAgencies.Where(x=> x.Personnel != null && x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         //EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 2 SELECTED {agency?.FullName}");
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel, spawnZone, spawnStreet).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel, spawnZone, spawnStreet).Where(x => x.Personnel != null && x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
             //EntryPoint.WriteToConsole($"LEDIS GetRandomAgency 3 SELECTED {agency?.FullName}");
         }
         if (agency == null)

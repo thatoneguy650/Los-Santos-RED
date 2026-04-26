@@ -240,21 +240,43 @@ public class UI : IMenuProvideable
                         InstructionalButton mybutt = new InstructionalButton(buttonPrompt.GameControl, buttonPrompt.Text);
                         instructional.Buttons.Add(mybutt);
                     }
+
+
+
+
+
+
                     else if (buttonPrompt.Key != Keys.None)
                     {
                         if (buttonPrompt.ModifierKey != Keys.None)
                         {
-                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.ModifierKey.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, NativeHelper.GetKeyBoxCode(buttonPrompt.ModifierKey)//buttonPrompt.ModifierKey.GetInstructionalKey()
+                                , InstructionalKey.SymbolPlus,
+                                NativeHelper.GetKeyBoxCode(buttonPrompt.Key)//buttonPrompt.Key.GetInstructionalKey()
+
+
+                                ));
                         }
                         else
                         {
-                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, NativeHelper.GetKeyBoxCode(buttonPrompt.Key)//buttonPrompt.Key.GetInstructionalKey()
+                                ));
                         }
                     }
                     else if (buttonPrompt.ModifierKey != Keys.None)
                     {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.ModifierKey.GetInstructionalKey()));
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, NativeHelper.GetKeyBoxCode(buttonPrompt.ModifierKey)//buttonPrompt.ModifierKey.GetInstructionalKey()
+                            ));
                     }
+
+
+
+
+
+
+
+
+
                 }
             }
             instructional.Update();
@@ -263,7 +285,25 @@ public class UI : IMenuProvideable
                 instructional.Draw();
             }
         }
-    }   
+    }
+    //private string GetKeyBoxCode(Keys key)
+    //{
+    //    switch (key)
+    //    {
+    //        // Special icons that look better as native icons
+    //        case Keys.LShiftKey: return "Shift"; // The Shift Arrow icon
+    //        case Keys.LMenu: return "Alt";     // The Alt icon
+    //        case Keys.LControlKey: return "Ctrl"; // The Ctrl icon
+    //        case Keys.Space: return "Space";     // The Spacebar icon
+
+    //        // Everything else (J, K, O, P, etc.) gets the "White Box" look
+    //        default:
+    //            // This creates "t_J", "t_K", etc., which GTA turns into the box keys
+    //            // dumb ai leaves "t_" remove t_ and leave "" and it doesn't show t_hotkey, who knew..
+    //            string keyName = key.ToString().Replace("Key", "");
+    //            return "" + keyName;
+    //    }
+    //}
     private void MenuUpdate()
     {
         TimerBarPool.Draw();

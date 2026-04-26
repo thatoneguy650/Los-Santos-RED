@@ -335,17 +335,23 @@ namespace LosSantosRED.lsr.Data
             try
             {
                 Game.FadeScreenOut(1000, true);
+                EntryPoint.WriteToConsole("Load 1");
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+                EntryPoint.WriteToConsole("Load 2");
                 LoadMoney(player);
+                EntryPoint.WriteToConsole("Load 2a");
                 LoadWeapons(weapons);
+                EntryPoint.WriteToConsole("Load 2b");
                 LoadInventory(player, modItems);
+                EntryPoint.WriteToConsole("Load 2c");
                 LoadLicenses(player);
+                EntryPoint.WriteToConsole("Load 3");
                 LoadVehicles(player, world,settings, modItems, placesOfInterest, time, weapons);
                 LoadPosition(player, placesOfInterest, world, interactionable);
                 LoadRelationships(player, gangs, contacts, time);
                 LoadContacts(player, gangs);
-
+                EntryPoint.WriteToConsole("Load 4");
 
 
                 LoadDebt(player);
@@ -353,6 +359,7 @@ namespace LosSantosRED.lsr.Data
                 LoadCellPhoneSettings(player);
                 LoadAgencies(agencies, player);
                 LoadHealth(player);
+                EntryPoint.WriteToConsole("Load 5");
 
                 ////LEGACY TO BE REMOVED
                 //LoadResidences(player, placesOfInterest, modItems, settings);//LEGACY TO BE REMOVED
@@ -360,6 +367,7 @@ namespace LosSantosRED.lsr.Data
 
                 LoadOwnedProperties(player, placesOfInterest, modItems, settings, world);
                 LoadSavedClothingItems(player, shopMenus);
+                EntryPoint.WriteToConsole("Load 6");
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -449,6 +457,7 @@ namespace LosSantosRED.lsr.Data
             //WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {
+                //EntryPoint.WriteToConsole($"Load WEapons for {MyOldGuns.WeaponHash}");
                 MyOldGuns.GiveToPlayer(weapons);
 
 

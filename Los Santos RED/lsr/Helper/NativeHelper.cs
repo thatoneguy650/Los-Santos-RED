@@ -16,6 +16,36 @@ namespace LosSantosRED.lsr.Helper
 {
     public static class NativeHelper
     {
+        public static string GetControlBoxCode(ControllerButtons key)
+        {
+            switch (key)
+            {
+                // Everything else (J, K, O, P, etc.) gets the "White Box" look
+                default:
+                    // This creates "t_J", "t_K", etc., which GTA turns into the box keys
+                    // dumb ai leaves "t_" remove t_ and leave "" and it doesn't show t_hotkey, who knew..
+                    string keyName = key.ToString().Replace("Key", "");
+                    return "" + keyName;
+            }
+        }
+        public static string GetKeyBoxCode(Keys key)
+        {
+            switch (key)
+            {
+                // Special icons that look better as native icons
+                case Keys.LShiftKey: return "Shift"; // The Shift Arrow icon
+                case Keys.LMenu: return "Alt";     // The Alt icon
+                case Keys.LControlKey: return "Ctrl"; // The Ctrl icon
+                case Keys.Space: return "Space";     // The Spacebar icon
+
+                // Everything else (J, K, O, P, etc.) gets the "White Box" look
+                default:
+                    // This creates "t_J", "t_K", etc., which GTA turns into the box keys
+                    // dumb ai leaves "t_" remove t_ and leave "" and it doesn't show t_hotkey, who knew..
+                    string keyName = key.ToString().Replace("Key", "");
+                    return "" + keyName;
+            }
+        }
         public static void AddLongString(string str)//https://github.com/alexguirre/RAGENativeUI/blob/fa32a06b84b3ff33f4988b7ba6fb4d3bb158b134/Source/Elements/ResText.cs
         {
             const int strLen = 99;

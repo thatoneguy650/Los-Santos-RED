@@ -447,7 +447,7 @@ namespace LosSantosRED.lsr
                 $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully.");
 
             string controlString =
-                $"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
+                $"Main Menu (Keyboard): ~{NativeHelper.GetKeyBoxCode(ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey)}~" + //$"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
                 $"~n~Action Wheel (Mouse): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
                 $"~n~Action Wheel (Keyboard): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
             controlString += $"~n~Action Wheel + Menu (Controller): ";
@@ -466,22 +466,22 @@ namespace LosSantosRED.lsr
         {
             if (modifier != ControllerButtons.None)
             {
-                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+                return $"~{NativeHelper.GetControlBoxCode(modifier)}~ + ~{NativeHelper.GetControlBoxCode(key)}~"; //$"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
             }
             else
             {
-                return $"~{key.GetInstructionalId()}~";
+                return $"~{NativeHelper.GetControlBoxCode(key)}~"; //$"~{key.GetInstructionalId()}~";
             }
         }
         public string FormatKeys(Keys modifier, Keys key)
         {
             if(modifier != Keys.None)
             {
-                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+                return $"~{NativeHelper.GetKeyBoxCode(modifier)}~ + ~{NativeHelper.GetKeyBoxCode(key)}~"; //$"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
             }
             else
             {
-                return $"~{key.GetInstructionalId()}~";
+                return $"~{NativeHelper.GetKeyBoxCode(key)}~"; //$"~{key.GetInstructionalId()}~";
             }
         }
         public string FormatControls(int modifier, int control)
