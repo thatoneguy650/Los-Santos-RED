@@ -602,5 +602,274 @@ public class DispatchablePeople_Cops
         }
         return toReturn;
     }
+
+    public DispatchablePerson GetGenericMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int maxWantedLevelSpawn, bool isMale, bool isShortSleeve)
+    {
+
+        DispatchablePerson ShortSleeveMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "NooseShortSleeveArmedMerryMale"
+                ,
+            RandomizeHead = true
+                ,
+            MaxWantedLevelSpawn = maxWantedLevelSpawn
+                ,
+            OverrideVoice = GeneralMaleCopVoices
+                ,
+            RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 319, 0, 0) },
+                    new List<PedPropComponent>() { })
+                ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9), new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), new PedPropComponent(6, 3, 0), }
+                ,
+            OptionalPropChance = optionalpropschance
+        };
+        DispatchablePerson LongSleeveMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "NooseLongSleeveArmedMerryMale",
+            RandomizeHead = true
+            ,
+            MaxWantedLevelSpawn = maxWantedLevelSpawn
+            ,
+            OverrideVoice = GeneralMaleCopVoices
+            ,
+            RequiredVariation = new PedVariation(
+                new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 122, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(11, 317, 0, 0) },
+                new List<PedPropComponent>() { })
+            ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 23, 9), new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), new PedPropComponent(6, 3, 0), }
+            ,
+            OptionalPropChance = optionalpropschance
+        };
+
+
+        DispatchablePerson ShortSleeveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "NooseShortSleeveArmedMerryFemale"
+            ,
+            RandomizeHead = true
+            ,
+            MaxWantedLevelSpawn = maxWantedLevelSpawn
+            ,
+            OverrideVoice = GeneralFemaleCopVoices
+            ,
+            RequiredVariation = new PedVariation(
+                new List<PedComponent>() { new PedComponent(3, 9, 0, 0), new PedComponent(4, 6, 0, 0), new PedComponent(6, 55, 0, 0), new PedComponent(8, 152, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 330, 0, 0) },
+                new List<PedPropComponent>() { })
+            ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+            ,
+            OptionalPropChance = optionalpropschance
+        };
+        DispatchablePerson LongSleeveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "NooseLongSleeveArmedMerryFemale",
+            RandomizeHead = true
+            ,
+            MaxWantedLevelSpawn = maxWantedLevelSpawn
+            ,
+            OverrideVoice = GeneralFemaleCopVoices
+            ,
+            RequiredVariation = new PedVariation(
+                new List<PedComponent>() { new PedComponent(3, 3, 0, 0), new PedComponent(4, 6, 0, 0), new PedComponent(6, 55, 0, 0), new PedComponent(8, 152, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 328, 0, 0) },
+                new List<PedPropComponent>() { })
+            ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 25, 9), new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+            ,
+            OptionalPropChance = optionalpropschance
+        };
+
+
+
+        if (isMale)
+        {
+            if (isShortSleeve)
+            {
+                return ShortSleeveMale;
+            }
+            return LongSleeveMale;
+        }
+        else
+        {
+            if (isShortSleeve)
+            {
+                return ShortSleeveFemale;
+            }
+            return LongSleeveFemale;
+        }
+    }
+    public DispatchablePerson GetGenericMPDetectivePed(int ambientSpawnChance, int wantedSpawnChance, int maxwantedLevelSpawn, bool isMale)
+    {
+        DispatchablePerson DetectiveMale = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "MPDetectiveMale"
+            ,
+            GroupName = "Detective"
+            ,
+            RandomizeHead = true
+            ,
+            MaxWantedLevelSpawn = maxwantedLevelSpawn
+            ,
+            OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02", "S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+            ,
+            RequiredVariation = new PedVariation(
+                new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 35, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 130, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 348, 0, 0) },
+                new List<PedPropComponent>() { })
+            ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), }
+            ,
+            OptionalPropChance = optionalpropschance
+        };
+
+        DispatchablePerson DetectiveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance)
+        {
+            DebugName = "MPDetectiveFemale"
+                ,
+            GroupName = "Detective"
+                ,
+            RandomizeHead = true
+                ,
+            MaxWantedLevelSpawn = maxwantedLevelSpawn
+                ,
+            OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,
+            RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0), new PedComponent(4, 34, 0, 0), new PedComponent(6, 29, 0, 0), new PedComponent(7, 0, 0, 0), new PedComponent(8, 160, 0, 0), new PedComponent(10, 0, 0, 0), new PedComponent(11, 366, 0, 0) },
+                    new List<PedPropComponent>() { })
+                ,
+            OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 39, 0), new PedPropComponent(1, 40, 0), new PedPropComponent(1, 11, 0), new PedPropComponent(1, 11, 1), new PedPropComponent(1, 11, 3), new PedPropComponent(1, 24, 0), new PedPropComponent(6, 20, 2), }
+                ,
+            OptionalPropChance = optionalpropschance
+        };
+        if (isMale)
+        {
+            return DetectiveMale;
+        }
+        else
+        {
+            return DetectiveFemale;
+        }
+    }
+
+
+
+    public DispatchablePerson GetGenericSWATMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int maxwantedLevelSpawn, bool isMale, int Style, string groupName)
+    {
+        DispatchablePerson male1 = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+            DebugName = "MPMaleSWAT1"
+                , MinWantedLevelSpawn = 3
+                , AccuracyMin = 25
+                , AccuracyMax = 40
+                , ShootRateMin = 400
+                , ShootRateMax = 500
+                , CombatAbilityMin = 1
+                , CombatAbilityMax = 2
+                , HealthMin = 100
+                , HealthMax = 100
+                , ArmorMin = 100
+                , ArmorMax = 100
+                ,GroupName = groupName
+                , MaxWantedLevelSpawn = maxwantedLevelSpawn
+                , RandomizeHead = true
+                , OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
+                , RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 17, 0, 0), new PedComponent(4, 121, 0, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 2, 0, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 320, 0, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 141, 0), new PedPropComponent(1, 23, 9) })
+        };
+        DispatchablePerson male2 = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+            DebugName = "MPMaleSWAT2"
+            , MinWantedLevelSpawn = 3
+            , AccuracyMin = 25
+            , AccuracyMax = 40
+            , ShootRateMin = 400
+            , ShootRateMax = 500
+            , CombatAbilityMin = 1
+            , CombatAbilityMax = 2
+            , HealthMin = 100
+            , HealthMax = 100
+            , ArmorMin = 100
+            , ArmorMax = 100
+                            ,
+            MaxWantedLevelSpawn = maxwantedLevelSpawn
+            ,
+            GroupName = groupName
+            , RandomizeHead = true
+            , OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
+            , RequiredVariation = new PedVariation(
+                new List<PedComponent>() { new PedComponent(3, 17, 0, 0), new PedComponent(4, 121, 0, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 2, 0, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 320, 0, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 141, 0) })
+        };
+
+        DispatchablePerson female1 = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+            DebugName = "MPFemaleSWAT1"
+                , MinWantedLevelSpawn = 3
+                , AccuracyMin = 25
+                , AccuracyMax = 40
+                , ShootRateMin = 400
+                , ShootRateMax = 500
+                , CombatAbilityMin = 1
+                , CombatAbilityMax = 2
+                , HealthMin = 100
+                , HealthMax = 100
+                , ArmorMin = 100
+                , ArmorMax = 100
+                                ,
+            MaxWantedLevelSpawn = maxwantedLevelSpawn
+                , RandomizeHead = true
+                ,
+            GroupName = groupName
+                , OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
+                , RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 18, 0, 0), new PedComponent(4, 127, 0, 0), new PedComponent(6, 24, 0, 0), new PedComponent(8, 9, 0, 0), new PedComponent(10, 79, 0, 0), new PedComponent(11, 331, 0, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 140, 0), new PedPropComponent(1, 25, 9) })
+        };
+        DispatchablePerson female2 = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
+                DebugName = "MPFemaleSWAT2"
+                ,MinWantedLevelSpawn = 3
+                ,AccuracyMin = 25
+                ,AccuracyMax = 40
+                ,ShootRateMin = 400
+                ,ShootRateMax = 500
+                ,CombatAbilityMin = 1
+                ,CombatAbilityMax = 2
+                ,HealthMin = 100
+                ,HealthMax = 100
+                ,ArmorMin = 100
+                ,ArmorMax = 100
+                                ,
+            MaxWantedLevelSpawn = maxwantedLevelSpawn
+                ,
+            
+            GroupName = groupName
+            ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 18, 0, 0),new PedComponent(4, 127, 0, 0),new PedComponent(6, 24, 0, 0),new PedComponent(8, 9, 0, 0),new PedComponent(10, 79, 0, 0), new PedComponent(11, 331, 0, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 140, 0)})
+            };
+        if(isMale)
+        {
+            if(Style == 1)
+            {
+                return male1;
+            }
+            else
+            {
+                return male2;
+            }
+        }
+        else
+        {
+            if (Style == 1)
+            {
+                return female1;
+            }
+            else
+            {
+                return female2;
+            }
+        }
+    }
+
 }
 

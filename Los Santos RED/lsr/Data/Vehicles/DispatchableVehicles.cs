@@ -275,10 +275,20 @@ public class DispatchableVehicles : IDispatchableVehicles
             Create_PoliceBuffaloSTXVanilla(80,80,"LSPD"),
             Create_PoliceBuffaloSVanilla(20,20,"LSPD"),
             new DispatchableVehicle("policeb", 10, 5) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
-            new DispatchableVehicle("police2", 48, 35),
+            new DispatchableVehicle("police2", 10, 15),
             new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives", GroupName = "Unmarked" },
             new DispatchableVehicle("fbi2", 1,1),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
+
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3,CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 20) } }};
+        
+        
+        
         SAHPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop", GroupName = "Motorcycle" },
             GauntletUndercoverSAHP,
@@ -292,7 +302,14 @@ public class DispatchableVehicles : IDispatchableVehicles
             Create_PoliceTerminusVanilla(5,5,"SAHP"),
             Create_PoliceCaracaraVanilla(1,1,"SAHP"),
             Create_PoliceBuffaloSTXVanilla(100,100,"SAHP"),
-            Create_PoliceBuffaloSVanilla(30,30,"SAHP"),
+            Create_PoliceBuffaloSVanilla(50,50,"SAHP"),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
+
         };
         LSPPVehicles = new List<DispatchableVehicle>() {
             LSPPStanierNew,
@@ -314,6 +331,13 @@ public class DispatchableVehicles : IDispatchableVehicles
             Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             Create_PoliceBuffaloSTXVanilla(80,80,"LSSD"),
             Create_PoliceBuffaloSVanilla(20,20,"LSSD"),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
+
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         BCSOVehicles = new List<DispatchableVehicle>() {
@@ -324,6 +348,13 @@ public class DispatchableVehicles : IDispatchableVehicles
             Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             Create_PoliceBuffaloSTXVanilla(80,80,"LSSD"),
             Create_PoliceBuffaloSVanilla(20,20,"LSSD"),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
+
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
@@ -333,21 +364,37 @@ public class DispatchableVehicles : IDispatchableVehicles
             Create_PoliceCaracaraVanilla(5,5,"LSSD"),
             Create_PoliceBuffaloSTXVanilla(80,80,"LSSD"),
             Create_PoliceBuffaloSVanilla(20,20,"LSSD"),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
             new DispatchableVehicle("dinghy5", 0, 0) { RequiredPrimaryColorID = 0, RequiredSecondaryColorID = 0,FirstPassengerIndex = 3, ForceStayInSeats = new List<int>() { 3 }, MinOccupants = 2,MaxOccupants = 4 },
         };
         DavisLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 30, 30) { CaninePossibleSeats = new List<int>{ 1,2 }, SpawnAdjustmentAmounts = new List<SpawnAdjustmentAmount>() { new SpawnAdjustmentAmount(eSpawnAdjustment.K9, 20) } },
             SheriffStanierNew,
             Create_PoliceBuffaloSVanilla(20,20,"LSSD"),
+
+            //SWAT
+            new DispatchableVehicle("police4", 0, 25) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT" },
+            new DispatchableVehicle("fbi", 0, 25){ MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+            new DispatchableVehicle("fbi2", 0, 100) { MinWantedLevelSpawn =3, RequiredPedGroup ="SWAT",OptionalColors = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,37,38,54,61,62,63,64,65,66,67,68,69,94,95,96,97,98,99,100,101,201,103,104,105,106,107,111,112 }, },
+
         };
         RHPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
+
+            Create_PoliceBuffaloSTXVanilla(100,100,"RHPD"),
+            Create_PoliceBuffaloSVanilla(35,35,"RHPD"),
+            //LSPDStanierNew,
+            //new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         DPPDVehicles = new List<DispatchableVehicle>() {
             Create_PoliceBuffaloSVanilla(20,20,"DPPD"),
             Create_PoliceTerminusVanilla(15,15,"DPPD"),
             Create_PoliceBuffaloSTXVanilla(80,80,"DPPD"),
-            new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
+            //new DispatchableVehicle("police2", 100, 85){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 15) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3} };
         EastLSPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 100,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
@@ -2154,6 +2201,16 @@ public class DispatchableVehicles : IDispatchableVehicles
                         },
             });
         }
+        else if (agencyID == "RHPD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(10,100),
+                        },
+            });
+        }
         return policeTerminus;
     }
     private DispatchableVehicle Create_PoliceBuffaloSTXVanilla(int ambientSpawnChance, int wantedSpawnChance, string agencyID)
@@ -2251,6 +2308,16 @@ public class DispatchableVehicles : IDispatchableVehicles
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
                             new DispatchableVehicleModValue(11,100),
+                        },
+            });
+        }
+        else if (agencyID == "RHPD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(10,100),
                         },
             });
         }

@@ -305,7 +305,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         EnableHarderBikeKnockoff = true;
         EnableOverrideVehicleMaxSpeed = false;
         EnableOverrideVehicleAIHandling = false;
-        OverrideVehicleMaxSpeed = 59f;
+        OverrideVehicleMaxSpeed = 45f;
 
     }
 }

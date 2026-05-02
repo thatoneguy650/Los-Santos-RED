@@ -23,8 +23,8 @@ public class CriminalHistorySettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        RealTimeExpireWantedMultiplier = 180000;// 60000;
-        CalendarTimeExpireWantedMultiplier = 12;
+        RealTimeExpireWantedMultiplier = 420000;// 180000;// 60000;
+        CalendarTimeExpireWantedMultiplier = 24;//12;
         CreateBlip = true;
         MinimumSearchRadius = 400f;
         SearchRadiusIncrement = 400f;

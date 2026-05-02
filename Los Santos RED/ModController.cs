@@ -446,10 +446,33 @@ namespace LosSantosRED.lsr
                 $"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} " +
                 $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully.");
 
+            if (EntryPoint.IsEnhancedVersion)
+            {
+                DisplayControlStringsEnhanced();
+            }
+            else
+            {
+                DisplayControlStrings();
+            }
+            EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
+        }
+        private void DisplayControlStringsEnhanced()
+        {
+
             string controlString =
-                $"Main Menu (Keyboard): ~{NativeHelper.GetKeyBoxCode(ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey)}~" + //$"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
-                $"~n~Action Wheel (Mouse): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
-                $"~n~Action Wheel (Keyboard): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
+                            $"Main Menu (Keyboard): [F10]" +
+                            $"~n~Action Wheel (Mouse): [Mouse-4]" +
+                            $"~n~Action Wheel (Keyboard): [Alt + N]" +
+                            $"~n~Action Wheel + Menu (Controller): [Controller Button Back]";
+            Game.DisplayHelp(controlString);
+        }
+        private void DisplayControlStrings()
+        {
+
+            string controlString =
+    $"Main Menu (Keyboard): ~{NativeHelper.GetKeyBoxCode(ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey)}~" + //$"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
+    $"~n~Action Wheel (Mouse): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
+    $"~n~Action Wheel (Keyboard): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
             controlString += $"~n~Action Wheel + Menu (Controller): ";
             if (ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionModifier == -1 && ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerAction == 236)
             {
@@ -460,28 +483,27 @@ namespace LosSantosRED.lsr
                 controlString += FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerAction);
             }
             Game.DisplayHelp(controlString);
-            EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
         }
         public string FormatButtons(ControllerButtons modifier, ControllerButtons key)
         {
             if (modifier != ControllerButtons.None)
             {
-                return $"~{NativeHelper.GetControlBoxCode(modifier)}~ + ~{NativeHelper.GetControlBoxCode(key)}~"; //$"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
             }
             else
             {
-                return $"~{NativeHelper.GetControlBoxCode(key)}~"; //$"~{key.GetInstructionalId()}~";
+                return $"~{key.GetInstructionalId()}~";
             }
         }
         public string FormatKeys(Keys modifier, Keys key)
         {
             if(modifier != Keys.None)
             {
-                return $"~{NativeHelper.GetKeyBoxCode(modifier)}~ + ~{NativeHelper.GetKeyBoxCode(key)}~"; //$"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
             }
             else
             {
-                return $"~{NativeHelper.GetKeyBoxCode(key)}~"; //$"~{key.GetInstructionalId()}~";
+                return $"~{key.GetInstructionalId()}~";
             }
         }
         public string FormatControls(int modifier, int control)

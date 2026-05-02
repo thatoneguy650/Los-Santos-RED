@@ -953,26 +953,26 @@ public class NewChase : ComplexTask
             //if (Player.WantedLevel >= 2)
             //{
 
-            //    if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
-            //    {
-            //        if (!isSetCode3Close)
-            //        {
-            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-            //            isSetCode3Close = true;
-            //            isSetRegularCode3 = false;
-            //            EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (isSetRegularCode3)
-            //        {
-            //            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-            //            isSetRegularCode3 = true;
-            //            isSetCode3Close = false;
-            //            EntryPoint.WriteToConsole("SET CODE 3 REG");
-            //        }
-            //    }
+            if (Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
+            {
+                if (!isSetCode3Close)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                    isSetCode3Close = true;
+                    isSetRegularCode3 = false;
+                    EntryPoint.WriteToConsole("SET CODE 3 CLOSE");
+                }
+            }
+            else
+            {
+                if (isSetRegularCode3)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                    isSetRegularCode3 = true;
+                    isSetCode3Close = false;
+                    EntryPoint.WriteToConsole("SET CODE 3 REG");
+                }
+            }
             //}
 
         }
@@ -996,7 +996,7 @@ public class NewChase : ComplexTask
             NativeFunction.Natives.TASK_VEHICLE_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,
             Game.LocalPlayer.Character.CurrentVehicle, MissionType,
             190f,
-            (int)eCustomDrivingStyles.RacingNew3, //(int)eCustomDrivingStyles.RacingNew3,//(int)eCustomDrivingStyles.CopRacingNew2Based,//(int)eCustomDrivingStyles.Code3,
+            (int)eCustomDrivingStyles.Code3,//(int)eCustomDrivingStyles.RacingNew3, //(int)eCustomDrivingStyles.RacingNew3,//(int)eCustomDrivingStyles.CopRacingNew2Based,//(int)eCustomDrivingStyles.Code3,
 
             //1.0f, 20f,
             - 1.0f,-1.0f,

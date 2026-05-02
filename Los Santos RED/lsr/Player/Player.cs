@@ -2161,6 +2161,11 @@ namespace Mod
                     OnCurrentVehicleChanged();
                     prevCurrentVehicleHandle = CurrentVehicle.Handle;
                 }
+
+                if(CurrentVehicle.SetNewTopSpeed)
+                {
+                    CurrentVehicle.ResetTopSpeed();
+                }
             }
             else
             {

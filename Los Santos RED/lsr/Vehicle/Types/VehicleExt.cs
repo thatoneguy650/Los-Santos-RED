@@ -44,7 +44,7 @@ namespace LSR.Vehicles
         private string storedMakeName;
         private string storedModelName;
         private float OriginalTopSpeed;
-        private bool SetNewTopSpeed;
+        public bool SetNewTopSpeed { get; private set; }
 
         public DispatchableVehicle DispatchableVehicle { get; set; }
         public VehicleInteractionMenu VehicleInteractionMenu { get; set; }
@@ -784,6 +784,7 @@ namespace LSR.Vehicles
             }
             if (Settings.SettingsManager.PoliceTaskSettings.EnableOverrideVehicleAIHandling)
             {
+                SetVehicleHandlingOverride = true;
                 NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(Vehicle, Game.GetHashKey("SPORTS_CAR"));
             }
         }
@@ -842,6 +843,7 @@ namespace LSR.Vehicles
         public virtual bool CanNeverUpdatePlate => false;
 
         public bool HasBeenSeenByPoliceDuringWanted { get; set; }
+        public bool SetVehicleHandlingOverride { get; private set; }
 
         private int ClosestColor(List<Color> colors, Color target)
         {
@@ -1870,7 +1872,8 @@ namespace LSR.Vehicles
 
         public void ResetTopSpeed()
         {
-            if(!SetNewTopSpeed)
+            EntryPoint.WriteToConsole($"ResetTopSpeed START Reset Vehicle {Handle} Top Speed to {OriginalTopSpeed}");
+            if (!SetNewTopSpeed)
             {
                 return;
             }
@@ -1880,7 +1883,7 @@ namespace LSR.Vehicles
             }
             NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(Vehicle, OriginalTopSpeed);
             EntryPoint.WriteToConsole($"Reset Vehicle {Handle} Top Speed to {OriginalTopSpeed}");
-
+            SetNewTopSpeed = false;
         }
     }
 }

@@ -48,8 +48,7 @@ public class InvestigationSettings : ISettingsDefaultable
         MaxDistance = 1000f;// 1500f;
         SuspiciousDistance = 250f;
         CreateBlip = true;
-        ExtraTimeAfterReachingInvestigationCenterBeforeExpiring = 15000;
-
+        ExtraTimeAfterReachingInvestigationCenterBeforeExpiring = 25000;// 15000;
         AdditionalTimeLimitScalar = 20000;
     }
 
