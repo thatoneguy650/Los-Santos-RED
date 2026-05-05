@@ -8783,6 +8783,8 @@ public class Interiors : IInteriors
                     new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
                     new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
 
+
+                    // First Gate to Teller Area SP = 3048744503 Mp = 4072696575
                     //new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.3379f, 219.594f, 106.2863f), InteractHeader =  340.1839f },// First gate to Teller area
                     new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.3234f, 221.3495f, 106.2831f), InteractHeader =  251.4932f }, // Second gate to Vault within teller area
                     new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door

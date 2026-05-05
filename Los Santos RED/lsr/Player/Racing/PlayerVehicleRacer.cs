@@ -71,7 +71,7 @@ public class PlayerVehicleRacer : VehicleRacer
 
     private void DrawRacingHUD()
     {
-        var hudSettings = Settings.SettingsManager.LSRHUDSettings;
+        LSRHUDSettings hudSettings = Settings.SettingsManager.LSRHUDSettings;
         Color hudColor = Color.FromName(hudSettings.RacingPositionColor);
         GTAFont font = (GTAFont)hudSettings.RacingPositionFont;
         GTATextJustification justify = (GTATextJustification)hudSettings.RacingPositionJustificationID;
@@ -209,9 +209,6 @@ public class PlayerVehicleRacer : VehicleRacer
         PlayCheckpointSound();
     }
 
-    /// <summary>
-    /// The simple version for "GO!" or general alerts (Fixes CS7036)
-    /// </summary>
     public void ShowMessage(string msg, string sub)
     {
         // Redirects to the main method with default "Success" colors (Black & Green)

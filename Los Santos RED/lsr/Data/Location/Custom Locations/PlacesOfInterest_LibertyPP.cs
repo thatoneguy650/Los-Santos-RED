@@ -5094,7 +5094,7 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
                 HasHeaderApartmentBuilding = true,
-                ResidenceID = 1
+                ResidenceID = 1001
             },
             new Residence(new Vector3(5066.864f, -1744.737f, 22.8021f), 225.988f, "GGJ Projects B2, Apt 1b","")
             {
@@ -5108,7 +5108,7 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
                 HasHeaderApartmentBuilding = true,
-                ResidenceID = 2
+                ResidenceID = 1002
             },
             new Residence(new Vector3(5097.293f, -1787.802f, 22.77364f), 227.7625f, "GGJ Projects B3, Apt 1a","")
             {
@@ -5123,7 +5123,7 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
                 HasHeaderApartmentBuilding = true,
-                ResidenceID = 3
+                ResidenceID = 1003
             },
             new Residence(new Vector3(5108.095f, -1792.676f, 22.79658f), 135.2123f, "GGJ Projects B3, Apt 1b","")
             {
@@ -5138,7 +5138,7 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
                 HasHeaderApartmentBuilding = true,
-                ResidenceID = 4
+                ResidenceID = 1004
             },
             new Residence(new Vector3(5109.609f, -1800.067f, 22.77368f), 46.51126f, "GGJ Projects B3, Apt 1c","")
             {
@@ -5153,14 +5153,14 @@ public class PlacesOfInterest_LibertyPP
                 IsWalkup = true,
                 DisableInteractAfterPurchase = true,
                 HasHeaderApartmentBuilding = true,
-                ResidenceID = 5
+                ResidenceID = 1005
             },
         });
         LibertyCityLocations.ApartmentBuildings.AddRange(new List<ApartmentBuilding>()
         {
             new ApartmentBuilding(new Vector3(5067.693f, -1756.976f, 19.02137f), 223.7912f, "Gov G Johnson Projects Tower 2","")
                 {
-                ResidenceIDs = new List<int>() { 1, 2 },
+                ResidenceIDs = new List<int>() { 1001, 1002 },
                 OpenTime = 0,CloseTime = 24,
                 MapIcon = 476,
                 StateID = StaticStrings.LibertyStateID,
@@ -5170,7 +5170,7 @@ public class PlacesOfInterest_LibertyPP
                 },
             new ApartmentBuilding(new Vector3(5095.904f, -1793.49f, 19.0215f), 134.8743f, "Gov G Johnson Projects Tower 3","")
                 {
-                ResidenceIDs = new List<int>() { 3, 4, 5 },
+                ResidenceIDs = new List<int>() { 1003, 1004, 1005 },
                 OpenTime = 0,CloseTime = 24,
                 MapIcon = 476,
                 StateID = StaticStrings.LibertyStateID,
