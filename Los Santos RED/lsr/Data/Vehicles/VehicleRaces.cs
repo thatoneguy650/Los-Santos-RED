@@ -1382,7 +1382,6 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceStartingPosition(6, new Vector3(688.998f, -2051.597f, 28.340f), 85.073f),
             new VehicleRaceStartingPosition(7, new Vector3(689.385f, -2047.114f, 28.288f), 85.073f),
         };
-
         List<VehicleRaceCheckpoint> cypressflatcheckpoints = new List<VehicleRaceCheckpoint>()
         {
             new VehicleRaceCheckpoint(0, new Vector3(567.000f, -2038.500f, 28.313f)),
@@ -1403,10 +1402,8 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(15, new Vector3(716.000f, -2051.500f, 28.313f)),
             new VehicleRaceCheckpoint(16, new Vector3(644.750f, -2045.250f, 28.313f)),
         };
-
         VehicleRaceTrack cypressflat1 = new VehicleRaceTrack("cypressflat1", "Circuit - Cypress Flats", "Race around Cypress Flats", cypressflatcheckpoints, cypressflatstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(cypressflat1);
-
 
         List<VehicleRaceStartingPosition> delperroloopstart = new List<VehicleRaceStartingPosition>()
         {
@@ -1540,6 +1537,39 @@ public class VehicleRaces : IVehicleRaces
         };
         VehicleRaceTrack delperroloop = new VehicleRaceTrack("delperroloop", "Circuit - Del Perro", "Race around the Upper Class area of LS", delperroloopcheckpoints, delperroloopstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(delperroloop);
+
+        List<VehicleRaceStartingPosition> downtownstart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-564.620f, -662.780f, 32.276f), 270.199f),
+            new VehicleRaceStartingPosition(1, new Vector3(-564.608f, -666.280f, 32.220f), 270.199f),
+            new VehicleRaceStartingPosition(2, new Vector3(-572.620f, -662.807f, 32.152f), 270.199f),
+            new VehicleRaceStartingPosition(3, new Vector3(-572.608f, -666.307f, 32.086f), 270.199f),
+            new VehicleRaceStartingPosition(4, new Vector3(-580.620f, -662.835f, 31.821f), 270.199f),
+            new VehicleRaceStartingPosition(5, new Vector3(-580.608f, -666.335f, 31.763f), 270.199f),
+            new VehicleRaceStartingPosition(6, new Vector3(-588.620f, -662.863f, 31.458f), 270.199f),
+            new VehicleRaceStartingPosition(7, new Vector3(-588.608f, -666.363f, 31.410f), 270.199f),
+        };
+        List<VehicleRaceCheckpoint> downtowncheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-362.454f, -664.050f, 30.637f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-93.750f, -731.750f, 33.531f)),
+            new VehicleRaceCheckpoint(2, new Vector3(105.000f, -802.250f, 30.438f)),
+            new VehicleRaceCheckpoint(3, new Vector3(145.500f, -868.000f, 29.688f)),
+            new VehicleRaceCheckpoint(4, new Vector3(57.912f, -1109.039f, 28.410f)),
+            new VehicleRaceCheckpoint(5, new Vector3(68.250f, -1344.250f, 28.281f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-62.250f, -1364.250f, 28.375f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-253.250f, -1422.500f, 30.313f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-479.750f, -1406.500f, 28.469f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-495.558f, -1282.375f, 25.658f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-516.500f, -1137.500f, 19.188f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-531.355f, -1037.748f, 21.758f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-495.024f, -805.616f, 29.569f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-539.761f, -712.444f, 32.251f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-493.333f, -663.556f, 31.960f)),
+        };
+        VehicleRaceTrack downtown = new VehicleRaceTrack("Downtown1", "Circuit - Downtown", "Race Downtown", downtowncheckpoints, downtownstart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(downtown);
+
 
         List<VehicleRaceStartingPosition> eastsidecircuitstart = new List<VehicleRaceStartingPosition>()
         {

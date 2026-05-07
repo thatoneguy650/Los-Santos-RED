@@ -50,8 +50,8 @@ public class AIVehicleRacer : VehicleRacer
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         // Personality Initialization
-        SpeedOffset = (float)(rnd.NextDouble() * 8.0 - 4.0);
-        PowerOffset = (float)(rnd.NextDouble() * 0.4 - 0.2);
+        SpeedOffset = (float)(rnd.NextDouble() * 7.0 - 1.0); 
+        PowerOffset = (float)(rnd.NextDouble() * 0.4 - 0.05); 
         DriverAbility = (float)(rnd.NextDouble() * 0.20 + 0.80);
         DriverAggressiveness = (float)(rnd.NextDouble() * 0.20 + 0.80);
 
@@ -98,7 +98,7 @@ public class AIVehicleRacer : VehicleRacer
         base.Update(vehicleRace);
 
         // Persistence and Failure Checks
-        NativeFunction.Natives.SET_ENTITY_LOD_DIST(raceCar, 1000);
+        //NativeFunction.Natives.SET_ENTITY_LOD_DIST(raceCar, 1000);
         NativeFunction.Natives.SET_PED_KEEP_TASK(driver, true);
 
         if (driver.IsDead || !raceCar.IsDriveable)
@@ -108,7 +108,7 @@ public class AIVehicleRacer : VehicleRacer
         }
 
         // PROGRESSION & STUCK RECOVERY
-        HandleStuckDetection(raceCar, driver);
+        HandleStuckDetection(raceCar, driver, vehicleRace);
 
         // BEHAVIOR TUNING
         ApplyRubberBanding(vehicleRace, raceCar, driver);
@@ -152,12 +152,19 @@ public class AIVehicleRacer : VehicleRacer
         else burnoutFinished = true;
     }
 
-    private void HandleStuckDetection(Vehicle raceCar, Ped driver)
+    private void HandleStuckDetection(Vehicle raceCar, Ped driver, VehicleRace vehicleRace)
     {
+        // Only run stuck detection if the race has at least two checkpoints 
+        if (vehicleRace.VehicleRaceTrack.RaceCheckpoints.Count <= 1)
+        {
+            return;
+        }
+
         float currentDist = DistanceToCheckpoint;
         bool isDriverInSeat = driver.IsInVehicle(raceCar, false);
 
-        // must be in seat, on wheels, and moving
+        // 1. Progress Check
+        // Progressing = In seat, on wheels, and either moving or closing distance to target
         bool isProgressing = isDriverInSeat && raceCar.IsOnAllWheels &&
                              (raceCar.Speed > StuckSpeedThreshold || Math.Abs(LastDistanceToTarget - currentDist) > 0.5f);
 
@@ -165,19 +172,19 @@ public class AIVehicleRacer : VehicleRacer
         {
             GameTimeLastMoved = Game.GameTime;
             LastDistanceToTarget = currentDist;
+            return;
         }
-        else if (Game.GameTime - GameTimeLastMoved > StuckTimeThreshold)
+
+        // 2. Recovery Logic
+        // If they aren't progressing, check if the 8-second threshold has passed
+        if (Game.GameTime - GameTimeLastMoved > StuckTimeThreshold)
         {
-            // Only try to reverse if the driver is actually IN the vehicle
-            // If it's a fallen motorcyclist (isDriverInSeat == false), skip straight to teleport
-            if (isDriverInSeat && Game.GameTime - GameTimeLastMoved < StuckTimeThreshold + 1500)
-            {
-                NativeFunction.Natives.TASK_VEHICLE_TEMP_ACTION(driver, raceCar, 21, 1000);
-            }
-            else if (TargetCheckpoint != null && Game.LocalPlayer.Character.DistanceTo(TargetCheckpoint.Position) > 60f)
+            // Check if there is a valid target and if the player is far enough away (60f)
+            if (TargetCheckpoint != null && Game.LocalPlayer.Character.DistanceTo(TargetCheckpoint.Position) > 60f)
             {
                 TeleportToTargetCheckpoint(raceCar);
 
+                // Reset timers after teleport to prevent looping
                 GameTimeLastMoved = Game.GameTime;
                 LastDistanceToTarget = DistanceToCheckpoint;
             }
@@ -229,24 +236,30 @@ public class AIVehicleRacer : VehicleRacer
         float rb_distance = raceCar.DistanceTo(playerRacer.VehicleExt.Vehicle);
         bool isBehind = CheckIfBehind(playerRacer);
 
-        float rb_base_speed = 56.0f + SpeedOffset;
+        float rb_base_speed = 62.0f + SpeedOffset; // Increased base speed from 56.0f (~125 mph) to 62.0f (~138 mph)
 
         // Native Aggression Formula: Highly aggressive drivers get a 20% speed boost
-        if (DriverAggressiveness >= 0.90f) rb_base_speed *= 1.2f;
+        if (DriverAggressiveness >= 0.85f) rb_base_speed *= 1.25f; // Lowered the requirement to 0.85 so more drivers qualify, and bumped the multiplier to 25%
 
         float rb_new_speed = rb_base_speed;
         float rb_cheat_power = 1.0f + PowerOffset;
 
         if (isBehind)
         {
-            if (rb_distance > 60f) { rb_new_speed *= 1.6f; rb_cheat_power += 0.7f; }
-            else if (rb_distance > 30f) { rb_new_speed *= 1.3f; rb_cheat_power += 0.4f; }
+            if (rb_distance > 100f) { rb_new_speed *= 1.6f; rb_cheat_power += 0.7f; }
+            else if (rb_distance > 50f) { rb_new_speed *= 1.3f; rb_cheat_power += 0.4f; }
+            else if (rb_distance < 15f) // Overtake/Drafting logic
+            {
+                rb_new_speed *= 1.25f;
+                rb_cheat_power += 0.5f;
+            }
             else { rb_new_speed *= 1.15f; rb_cheat_power += 0.2f; }
         }
-        else if (rb_distance > 80f)
+
+        // Corner Exit Assist: Ensure they don't bog down after slow turns
+        if (raceCar.Speed < 20f)
         {
-            rb_new_speed *= 0.85f;
-            rb_cheat_power -= 0.1f;
+            rb_cheat_power += 0.25f;
         }
 
         // Native Cornering Modifier: Scaling cornering efficiency (0.6 to 1.0) based on aggressiveness
@@ -261,7 +274,7 @@ public class AIVehicleRacer : VehicleRacer
 
     private void ApplyStabilityForce(Vehicle raceCar)
     {
-        if (raceCar.Model.IsBicycle || raceCar.Model.IsBike || raceCar.Model.IsQuadBike) return; // remove raceCar.Model.IsBike || raceCar.Model.IsQuadBike to cut down on air time for these vehicles.
+        if (raceCar.Model.IsBike || raceCar.Model.IsQuadBike) return; // remove raceCar.Model.IsBike || raceCar.Model.IsQuadBike to cut down on air time for these vehicles.
 
         float speedFactor = raceCar.Speed * 0.0028f; // Scales the force based on current speed (tuning parameter) - 0.0028f allows for some natural air time
         NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(raceCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);

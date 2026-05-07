@@ -2374,7 +2374,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 //Central Tracks
                     "lsairport","cypressflat1", "hoodrun", "delperroloop", "eastsideCircuit", "ely_freeloop", "centralRace3", "freeway", "mirrorpark", "mirrorparkrev", "southlossantos", "vespCanals", "welcometols", "welcometolsshort",
                     "centralRace2", "ely_freeway", "freewaydrag", "popDrag",
-                    "fleecarun", "ElBurroPoint", "centralRace1", "sustanciasprint", "greatoceanhighway", "roadtoHarmony", "richman_road",
+                    "fleecarun", "ElBurroPoint", "centralRace1", "sustanciasprint", "greatoceanhighway", "roadtoHarmony", "richman_road","Downtown1",
                     "observatorySprint", "kortzSprint", "stabCitySprint", "vinewoodSprint", "elysianSprint", "powerStationSprint", "lsiaSprint", "mazeBankSprint", "PuertoDelSolSprint" , "delPerroSprint",
                   
 

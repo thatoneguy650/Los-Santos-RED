@@ -78,7 +78,7 @@ public class GeneralRace : ComplexTask, ILocationReachable
             NativeFunction.Natives.SET_DRIVE_TASK_MAX_CRUISE_SPEED(racePed, 500f, true);
 
             //NativeFunction.Natives.SET_PED_HIGHLY_PERCEPTIVE(racePed, true);  //test
-            NativeFunction.Natives.SET_PED_SEEING_RANGE(racePed, 10000f);
+            //NativeFunction.Natives.SET_PED_SEEING_RANGE(racePed, 10000f);
             //NativeFunction.Natives.SET_PED_VISUAL_FIELD_PERIPHERAL_RANGE(racePed, 400f); //test
             //NativeFunction.Natives.SET_PED_INCREASED_AVOIDANCE_RADIUS(racePed); // test
         }

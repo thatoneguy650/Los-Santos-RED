@@ -73,11 +73,11 @@ public enum eCustomDrivingStyles : int
     Vanilla_Alerted = (int)786469,
 
     //RacingNew2 = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int) VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions, // original
-    //RacingNew2 = 9175076,//       786468, //  I am race control!
+    RacingNew2 = 786468, //  I am race control!
     //RacingNew2 = 262144, // the careful racer preset // slows down for junctions = 34341412
     //RacingNew2 = 787004, // works same as race control ai ,seem slightly slower but need more testing, driver ability/aggressiveness included now has more impact. really hard to tell between both ids.
 	//RacingNew2 = 4 | 8 | 32 | 262144, // 262284
-	RacingNew2 = 262144 | 512 | 32 | 8 | 4,
+	//RacingNew2 = 262144 | 512 | 32 | 8 | 4,
 
 
     CopRacingNew2Based = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int)VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_SteerAroundPeds | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | (int)VehicleDrivingFlags.AllowWrongWay | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | (int)VanillaDrivingStyles.DF_UseSwitchedOffNodes,
