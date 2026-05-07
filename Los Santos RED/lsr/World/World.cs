@@ -291,6 +291,7 @@ namespace Mod
                     {
                         while (CurrentSpawnMultiplier != 1.0f && EntryPoint.ModController?.IsRunning == true)
                         {
+                            NativeFunction.Natives.SET_AMBIENT_VEHICLE_RANGE_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
                             NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
                             NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
                             NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);

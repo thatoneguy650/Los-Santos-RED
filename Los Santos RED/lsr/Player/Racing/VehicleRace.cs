@@ -257,19 +257,17 @@ public class VehicleRace
 
         foreach (AIVehicleRacer airacer in AIVehicleRacers)
         {
-            if (airacer.VehicleExt == null) continue;
+            if (airacer == null || airacer.VehicleExt == null) continue;
 
-            // Reset Vehicle Overrides before ownership transfer
             Vehicle losingVehicle = airacer.VehicleExt.Vehicle;
-            if (losingVehicle != null && losingVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(losingVehicle, 0);
-                NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(losingVehicle, -1.0f);
-                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(losingVehicle, 1.0f);
-                NativeFunction.Natives.SET_VEHICLE_IS_RACING(losingVehicle, false);
-                NativeFunction.Natives.SET_VEHICLE_STRONG(losingVehicle, false);
-                NativeFunction.Natives.SET_ENTITY_ONLY_DAMAGED_BY_PLAYER(losingVehicle, false);
-            }
+            if (losingVehicle == null || !losingVehicle.Exists()) continue;
+
+            NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(losingVehicle, 0);
+            NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(losingVehicle, -1.0f);
+            NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(losingVehicle, 1.0f);
+            NativeFunction.Natives.SET_VEHICLE_IS_RACING(losingVehicle, false);
+            NativeFunction.Natives.SET_VEHICLE_STRONG(losingVehicle, false);
+            NativeFunction.Natives.SET_ENTITY_ONLY_DAMAGED_BY_PLAYER(losingVehicle, false);
 
             Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
 
@@ -277,50 +275,65 @@ public class VehicleRace
             {
                 airacer.IsManualDispose = true;
 
-
                 if (airacer.PedExt.Pedestrian.IsAlive)
                 {
-                    if (airacer.VehicleExt.Vehicle.Exists())
-                    {
-                        airacer.VehicleExt.Vehicle.Velocity = Vector3.Zero;
-                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, airacer.VehicleExt.Vehicle, 16);
-                        airacer.PedExt.Pedestrian.Position = airacer.PedExt.Pedestrian.GetOffsetPositionRight(-2f);
-                        SpawnLocation spawnLocation = new SpawnLocation(airacer.VehicleExt.Vehicle.Position);
-                        spawnLocation.GetClosestStreet(false);
-                        spawnLocation.GetClosestSideOfRoad();
-                        spawnLocation.GetClosestSidewalk();
-                    if(spawnLocation.HasSideOfRoadPosition)
-                        {
-                            airacer.VehicleExt.Vehicle.Position = spawnLocation.StreetPosition;
-                            airacer.VehicleExt.Vehicle.Heading = spawnLocation.Heading;
-                        }
-                        else if (spawnLocation.HasSidewalk)
-                        {
-                            airacer.VehicleExt.Vehicle.Position = spawnLocation.SidewalkPosition;
-                            airacer.VehicleExt.Vehicle.Heading = spawnLocation.Heading;
-                        }
+                    losingVehicle.Velocity = Vector3.Zero;
 
-                        NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(airacer.VehicleExt.Vehicle, true);
-                        airacer.PedExt.Pedestrian.ClearLastVehicle();
-                        airacer.PedExt.AssignedVehicle = null;
-                    }
-                    airacer.PedExt.SetNonPersistent();
-                    airacer.PedExt.DeleteBlip();
-                    if (airacer.WasSpawnedForRace)
+                    if (airacer.PedExt.Pedestrian.IsInAnyVehicle(false))
                     {
-                        airacer.PedExt.Pedestrian.IsPersistent = false;
+                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, losingVehicle, 16);
                     }
+
+                    SpawnLocation spawnLocation = new SpawnLocation(losingVehicle.Position);
+                    spawnLocation.GetClosestStreet(false);
+                    spawnLocation.GetClosestSideOfRoad();
+                    spawnLocation.GetClosestSidewalk();
+
+                    if (spawnLocation.HasSideOfRoadPosition)
+                    {
+                        losingVehicle.Position = spawnLocation.StreetPosition;
+                        losingVehicle.Heading = spawnLocation.Heading;
+                    }
+                    else if (spawnLocation.HasSidewalk)
+                    {
+                        losingVehicle.Position = spawnLocation.SidewalkPosition;
+                        losingVehicle.Heading = spawnLocation.Heading;
+                    }
+
+                    airacer.PedExt.Pedestrian.Position = losingVehicle.GetOffsetPositionRight(-2f);
+                    NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(losingVehicle, true);
+
+                    airacer.PedExt.Pedestrian.ClearLastVehicle();
+                    airacer.PedExt.AssignedVehicle = null;
+
                     airacer.PedExt.ClearTasks(true);
                     airacer.PedExt.CanBeAmbientTasked = true;
                     airacer.PedExt.CanBeTasked = true;
                     airacer.PedExt.CanBeIdleTasked = true;
-                    airacer.PedExt.PedBrain.AssignIdleTask();
+
+                    try
+                    {
+                        airacer.PedExt.PedBrain?.AssignIdleTask();
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole($"Non-Fatal: PedBrain failed for {airacer.RacerName}: {ex.Message}");
+                    }
+                }
+
+                airacer.PedExt.SetNonPersistent();
+                airacer.PedExt.DeleteBlip();
+
+                if (airacer.WasSpawnedForRace)
+                {
+                    airacer.PedExt.Pedestrian.IsPersistent = false;
                 }
             }
-            GameFiber.Sleep(2000);
-            Game.FadeScreenIn(2000, false);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", $"You have acquired the losing vehicles.");
         }
+
+        GameFiber.Sleep(2000);
+        Game.FadeScreenIn(2000, false);
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", $"You have acquired the losing vehicles.");
     }
     private void RacePrelimiary(IEntityProvideable world)
     {
