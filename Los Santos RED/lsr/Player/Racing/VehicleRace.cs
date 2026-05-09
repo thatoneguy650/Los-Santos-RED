@@ -182,7 +182,7 @@ public class VehicleRace
     }
     public void OnPlayerFinishedRace()
     {
-        Player.RacingManager.StopRacing();
+        Player.VehicleRaceManager.StopRacing();
         EntryPoint.WriteToConsole($"OnPlayerFinishedRace IsPlayerWinner: {IsPlayerWinner} GameTimePlayerFinishedRace{GameTimePlayerFinishedRace}");
         GameTimePlayerFinishedRace = Game.GameTime;
         if (IsPinkSlipRace)

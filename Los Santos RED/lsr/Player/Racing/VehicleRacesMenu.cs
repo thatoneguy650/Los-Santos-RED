@@ -104,7 +104,7 @@ public class VehicleRacesMenu
     {
         raceSettingsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Settings");
         raceSettingsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
-        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", true, "If enabled, ambient traffic will not spawn when racing.");
+        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", !IsPointRace, "If enabled, ambient traffic will not spawn when racing.");
         raceSettingsSubMenu.AddItem(clearTrafficMenuItem);
         slipstreamingMenuItem = new UIMenuCheckboxItem("Slipstreaming", false, "Enable or disable the slipstreaming effect during the race.");
         raceSettingsSubMenu.AddItem(slipstreamingMenuItem);
@@ -285,6 +285,25 @@ public class VehicleRacesMenu
         {
             finalDescription = $"Track: {SelectedTrack?.Name}";
         }
+
+        if(totalSelectedOpponents == 1)
+        {
+            if (RaceForPinksCheckbox != null)
+            {
+                RaceForPinksCheckbox.Enabled = true;
+                //RaceForPinksCheckbox.Checked = false;
+            }
+        }
+        else
+        {
+            if (RaceForPinksCheckbox != null)
+            {
+                RaceForPinksCheckbox.Enabled = false;
+                RaceForPinksCheckbox.Checked = false;
+            }
+        }
+
+
         if(selectedPlayerVehicle == null || !selectedPlayerVehicle.IsOwnedByPlayer)
         {
             if (RaceForPinksCheckbox != null)
@@ -372,7 +391,7 @@ public class VehicleRacesMenu
             description += $"~n~Max Bet: ${MaxBet}";
         }
         MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", description, 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
-        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false,"Only one-on-one races allow pink slips");
+        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false,"Only one-on-one races with an owned vehicle allow pink slip racing");
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
         {
@@ -437,7 +456,7 @@ public class VehicleRacesMenu
 
                  
 
-                if(!Player.RacingManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles, 
+                if(!Player.VehicleRaceManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles, 
                     DispatchablePeople.AllPeople.Where(x => x.DispatchablePersonGroupID == "VehicleRacePeds").FirstOrDefault(), 
                     totalSelectedOpponents))
                 {
@@ -477,7 +496,7 @@ public class VehicleRacesMenu
         uIMenu.Visible = false;
         AdvancedConversation?.DisposeConversation();
         GameFiber.Yield();
-        if(!Player.RacingManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked))
+        if(!Player.VehicleRaceManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked))
         {
             Game.DisplayHelp("Error Starting Race");
             return false;

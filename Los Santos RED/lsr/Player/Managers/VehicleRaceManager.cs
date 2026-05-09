@@ -31,6 +31,7 @@ public class VehicleRaceManager
     public bool IsRacing { get; private set; }
     public TextTimerBar RaceTimer { get; private set; }
     public bool IsShowingRaceMenu { get; private set; }
+    public bool IsStreetRacing => IsRacing && CurrentRace != null && !CurrentRace.ClearTraffic;
     public VehicleRaceManager(IRaceable player, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IModItems modItems, IShopMenus shopMenus, ITargetable targetable)
     {
         Player = player;

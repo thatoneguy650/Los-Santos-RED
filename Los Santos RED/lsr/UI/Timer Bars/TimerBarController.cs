@@ -50,7 +50,7 @@ public class TimerBarController
       //  BlankBar = new TextTimerBar("TEST", "HELLO");
 
         RaceTimer = new TextTimerBar("Time","00:00.000");
-        Player.RacingManager.SetRaceTimer(RaceTimer);
+        Player.VehicleRaceManager.SetRaceTimer(RaceTimer);
 
         //if (TimerBarPool != null)
         //{
@@ -78,7 +78,7 @@ public class TimerBarController
     }
     private void UpdateRaceTimer()
     {
-        if(!Player.RacingManager.IsRacing)
+        if(!Player.VehicleRaceManager.IsRacing)
         {
             SafeRemove(RaceTimer);
         }

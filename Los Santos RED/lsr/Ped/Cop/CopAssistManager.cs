@@ -155,7 +155,31 @@ public class CopAssistManager
               
             }
         }
+
     }
+    public void OtherAssists(int wantedLevel, float vehicleSpeedMPH)
+    {
+        Vehicle copCar2 = Cop.Pedestrian.CurrentVehicle;
+        if (copCar2.Exists())
+        {
+            NativeFunction.Natives.SET_VEHICLE_STEERING_BIAS_SCALAR(copCar2, 1.0f);
+
+
+
+            ApplyStabilityForce(copCar2);
+
+
+        }
+    }
+    private void ApplyStabilityForce(Vehicle copCar)
+    {
+        if (copCar.Model.IsBike || copCar.Model.IsQuadBike) return; // remove raceCar.Model.IsBike || raceCar.Model.IsQuadBike to cut down on air time for these vehicles.
+
+        float speedFactor = copCar.Speed * 0.0028f; // Scales the force based on current speed (tuning parameter) - 0.0028f allows for some natural air time
+        NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(copCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);
+    }
+
+
     public void ForceApplier(bool isWanted, ISettingsProvideable settings)
     {
         if (!Cop.IsDriver || Cop.DistanceToPlayer > 300f || !isWanted || Cop.IsInAirVehicle || !Cop.Pedestrian.Exists())

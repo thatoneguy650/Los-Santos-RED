@@ -186,7 +186,7 @@ namespace Mod
             GamblingManager = new GamblingManager(this, Settings, TimeControllable);
             VehicleManager = new VehicleManager(this, World, Settings);
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
-            RacingManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
+            VehicleRaceManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -236,7 +236,7 @@ namespace Mod
         public InteriorManager InteriorManager { get; private set; }
         public WeatherReporting Weather { get; set; }
         public StealthManager StealthManager { get; private set; }
-        public VehicleRaceManager RacingManager { get; private set; }
+        public VehicleRaceManager VehicleRaceManager { get; private set; }
 
 
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
@@ -557,7 +557,7 @@ namespace Mod
             CuffManager.Setup();
             RadarDetector.Setup();
             GamblingManager.Setup();
-            RacingManager.Setup();
+            VehicleRaceManager.Setup();
             VehicleManager.Setup();
             StealthManager.Setup();
             OutfitManager.Setup();
@@ -672,7 +672,7 @@ namespace Mod
             IntimidationManager.Update();
             VehicleManager.Update();
             StealthManager.Update();
-            RacingManager.Update();
+            VehicleRaceManager.Update();
             //UpdateHiding();
         }
 
@@ -897,7 +897,7 @@ namespace Mod
             GamblingManager.Dipsose();
             VehicleManager.Dispose();
             StealthManager.Dispose();
-            RacingManager.Dispose();
+            VehicleRaceManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, false);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, false);

@@ -32,7 +32,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     [Description("Enable or disable increased power for police vehicles")]
     public bool AllowPowerAssist { get; set; }
 
-
+    public bool AllowOtherAssist { get; set; }
 
 
     [Description("Enable or disable applied force for police vehicles")]
@@ -164,6 +164,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool EnableOverrideVehicleAIHandling { get; set; }
     public bool EnableOverrideVehicleMaxSpeed { get; set; }
     public float OverrideVehicleMaxSpeed { get; set; }
+
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
