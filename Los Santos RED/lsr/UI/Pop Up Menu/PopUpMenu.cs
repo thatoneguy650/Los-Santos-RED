@@ -135,7 +135,8 @@ public class PopUpMenu
     public void Dispose()
     {
         IsActive = false;
-        Game.TimeScale = 1.0f;
+        //Game.TimeScale = 1.0f;
+        NativeFunction.Natives.SET_TIME_SCALE(1.0f);
         Game.RawFrameRender -= DrawSprites;
     }
     public void CloseMenu()
@@ -151,7 +152,8 @@ public class PopUpMenu
         }
         if (SetSlowMo)
         {
-            Game.TimeScale = 1.0f;
+            //Game.TimeScale = 1.0f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
         }
         if (SetPaused)
         {
@@ -199,7 +201,8 @@ public class PopUpMenu
             if(Game.TimeScale == 1.0f)
             {
                 SetSlowMo = true;
-                Game.TimeScale = Settings.SettingsManager.ActionWheelSettings.SlowMoScale;
+                //Game.TimeScale = Settings.SettingsManager.ActionWheelSettings.SlowMoScale;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.ActionWheelSettings.SlowMoScale);
             }
         }   
 

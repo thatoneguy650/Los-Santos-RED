@@ -349,7 +349,8 @@ public class Drag : DynamicActivity
         if (Settings.SettingsManager.DragSettings.QuickAttachEnabled)
         {
 
-
+            AttachPeds();
+            GameFiber.Yield();
             NeedRunAnim = true;
 
 

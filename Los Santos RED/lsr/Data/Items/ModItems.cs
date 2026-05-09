@@ -108,7 +108,6 @@ public class ModItems : IModItems
             }
         }
     }
-
     private void DefaultConfig_FullExpandedWeapons()
     {
         PossibleItems newPossibleItems = new PossibleItems();
@@ -161,7 +160,6 @@ public class ModItems : IModItems
 
         Serialization.SerializeParam(newPossibleItems, $"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\ModItems+_{StaticStrings.FEWConfigSuffix}.xml");
     }
-
     private void DefaultConfig_FullExpandedJurisdiction()
     {
         PossibleItems newPossibleItems = new PossibleItems(); //PossibleItems.Copy();
@@ -345,7 +343,6 @@ public class ModItems : IModItems
         });
         //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedExperience\\ModItems_FullExpandedExperience.xml");
     }
-
     public void WriteToFile()
     {
         Serialization.SerializeParam(PossibleItems, ConfigFileName);

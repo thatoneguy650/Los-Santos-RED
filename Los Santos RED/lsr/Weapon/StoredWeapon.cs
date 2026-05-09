@@ -40,6 +40,11 @@ public class StoredWeapon
 
     public void GiveToPlayer(IWeapons weapons)
     {
+        //bool isValid = NativeFunction.Natives.IS_WEAPON_VALID<bool>(WeaponHash);
+        //EntryPoint.WriteToConsole($"GiveToPlayer a isValid{isValid}");
+
+        
+
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(WeaponHash, 0, false);
         if (Game.LocalPlayer.Character.Inventory.Weapons.Contains(WeaponHash))
         {
@@ -48,9 +53,11 @@ public class StoredWeapon
             {
                 Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, Variation);
             }
+            //EntryPoint.WriteToConsole("GiveToPlayer b");
         }
         NativeFunction.Natives.SET_PED_AMMO(Game.LocalPlayer.Character, (uint)WeaponHash, 0, false);
         NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash, Ammo);
+        //EntryPoint.WriteToConsole("GiveToPlayer c");
     }
 
     public virtual void CreateManagementMenu(IInteractionable player, MenuPool menuPool, WeaponStorage weaponStorage, UIMenu headerMenu, IWeapons weapons, IModItems modItems, bool withAnimations, bool removeBanner)

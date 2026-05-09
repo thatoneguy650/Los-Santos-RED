@@ -144,6 +144,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         RadioStations = new RadioStations();
         RadioStations.ReadConfig(); // no config file
+        RadioStations.Setup();
         GameFiber.Yield();
         RelationshipGroups = new PedGroups();
         RelationshipGroups.ReadConfig("");

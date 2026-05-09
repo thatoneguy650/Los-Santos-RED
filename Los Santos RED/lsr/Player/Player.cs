@@ -594,7 +594,8 @@ namespace Mod
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
             {
-                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, true);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, true);
             }
             if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
             {
@@ -841,7 +842,8 @@ namespace Mod
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
             {
-                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, true);
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, true);
             }
             if (Settings.SettingsManager.PlayerOtherSettings.AllowRunningInInteriors)
             {
@@ -897,7 +899,8 @@ namespace Mod
             StealthManager.Dispose();
             RacingManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, false);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, false);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
@@ -915,7 +918,8 @@ namespace Mod
             NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);      
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
-                Game.TimeScale = 1f;
+                //Game.TimeScale = 1f;
+                NativeFunction.Natives.SET_TIME_SCALE(1.0f);
             }
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
             NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
@@ -1452,6 +1456,7 @@ namespace Mod
                 {
                     UpdateCurrentVehicle();
                     HandleVehicleEntry();
+                    
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
@@ -1621,11 +1626,21 @@ namespace Mod
                 {
                     Scanner.OnGotInVehicle();
                 }
+
+                if(CurrentVehicle == null)
+                {
+                    UpdateCurrentVehicle();
+                }
+
                 //RemoveOwnedVehicleBlip();
                 if (CurrentVehicle != null)
                 {
+                    
                     CurrentVehicle.HasAutoSetRadio = false;
+                    CurrentVehicle.ResetTopSpeed();
                 }
+
+
                 EntryPoint.WriteToConsole("OnIsInVehicleChanged CHANGED TO TRUE");
             }
             else
@@ -1664,7 +1679,8 @@ namespace Mod
             ActivityManager.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
-                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
+                //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed);
             }
             //NativeHelper.DisablePlayerControl();
             //Game.LocalPlayer.HasControl = false;
@@ -1690,7 +1706,8 @@ namespace Mod
 
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
-                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;
+                //Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;
+                NativeFunction.Natives.SET_TIME_SCALE(Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed);
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();
@@ -2143,6 +2160,11 @@ namespace Mod
                     EntryPoint.WriteToConsole($"PLAYER EVENT OnCurrentVehicleChanged to {CurrentVehicle.Handle}");
                     OnCurrentVehicleChanged();
                     prevCurrentVehicleHandle = CurrentVehicle.Handle;
+                }
+
+                if(CurrentVehicle.SetNewTopSpeed)
+                {
+                    CurrentVehicle.ResetTopSpeed();
                 }
             }
             else

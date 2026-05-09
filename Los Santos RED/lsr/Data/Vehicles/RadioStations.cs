@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,10 +47,23 @@ public class RadioStations : IRadioStations
             new RadioStation("RADIO_21_DLC_XM17","Blonded Los Santos 97.8 FM",0),
             new RadioStation("RADIO_22_DLC_BATTLE_MIX1_RADIO","Los Santos Underground Radio",0),
             new RadioStation("RADIO_23_DLC_XM19_RADIO","iFruit Radio",0),
-            //new RadioStation("RADIO_27_DLC_PRHEI4","RADIO_27_DLC_PRHEI4",0),
-            //new RadioStation("RADIO_34_DLC_HEI4_KULT","RADIO_34_DLC_HEI4_KULT",0),
-            //new RadioStation("RADIO_35_DLC_HEI4_MLR","RADIO_35_DLC_HEI4_MLR",0),
+
+
+            new RadioStation("RADIO_27_DLC_PRHEI4","Still Slipping Los Santos",0) { MustBeEnabled = true },
+            new RadioStation("RADIO_34_DLC_HEI4_KULT","Kult FM",0) { MustBeEnabled = true },
+            new RadioStation("RADIO_37_MOTOMAMI","MOTOMAMI Los Santos",0) { MustBeEnabled = true },
+            new RadioStation("RADIO_35_DLC_HEI4_MLR","The Music Locker",0) { MustBeEnabled = true },
         };
+    }
+    public void Setup()
+    {
+        //foreach(RadioStation radioStation in RadioStationList)
+        //{
+        //    if(radioStation.MustBeEnabled)
+        //    {
+        //        NativeFunction.Natives.SET_FRONTEND_RADIO_ACTIVE(radioStation.InternalName);
+        //    }
+        //}
     }
     public RadioStation GetDanceStation()
     {

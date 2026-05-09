@@ -334,6 +334,12 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, sightDistance);
         }
+
+        if(Settings.SettingsManager.PoliceTaskSettings.EnableHarderBikeKnockoff)
+        {
+            NativeFunction.Natives.SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(Pedestrian, 3);
+        }
+        
     }
     private void UpdateCombatFlags()
     {
