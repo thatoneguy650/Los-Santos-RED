@@ -25,6 +25,9 @@ public class DispatchableVehicles_RaceCars
     public List<DispatchableVehicle> SportsMotorcycleRegular_Group { get; private set; }
     public List<DispatchableVehicle> OtherMotorcycleRegular_Group { get; private set; }
     public List<DispatchableVehicle> RegularOffRoad_Group { get; private set; }
+    public List<DispatchableVehicle> Regular4x4OffRoad_Group { get; private set; }
+    public List<DispatchableVehicle> ATVOffRoad_Group { get; private set; }
+    public List<DispatchableVehicle> TrophyTruckOffRoad_Group { get; private set; }
     public List<DispatchableVehicle> HotringTruck_Group { get; private set; }
     public List<DispatchableVehicle> Hotring_Group { get; private set; }
     public List<DispatchableVehicle> LowRider_Group { get; private set; }
@@ -33,6 +36,11 @@ public class DispatchableVehicles_RaceCars
     public List<DispatchableVehicle> EuroSports_Group { get; private set; }
     public List<DispatchableVehicle> UsSports_Group { get; private set; }
     public List<DispatchableVehicle> ClassicSports_Group { get; private set; }
+    public List<DispatchableVehicle> MotoXOffRoad_Group { get; private set; }
+    public List<DispatchableVehicle> BuggyOffRoad_Group { get; private set; }
+    public List<DispatchableVehicle> BoatsWater_Group { get; private set; }
+    public List<DispatchableVehicle> JetskiWater_Group { get; private set; }
+
     public DispatchableVehicles_RaceCars(DispatchableVehicles dispatchableVehicles)
     {
         DispatchableVehicles = dispatchableVehicles;
@@ -47,6 +55,7 @@ public class DispatchableVehicles_RaceCars
         Rally();
         SuperCars();
         SportsCars();
+        WaterSports();
 
         //General Groups
         GroupsToAdd.Add(new DispatchableVehicleGroup("SportsCars_Racing", "Sports Cars", "Collection of sports cars", RegularSports_Group, DispatchbleVehicleGroupType.Racing));
@@ -62,6 +71,13 @@ public class DispatchableVehicles_RaceCars
 
         //LowRiders
         GroupsToAdd.Add(new DispatchableVehicleGroup("LowRiders_Racing", "LowRider Racing", "Collection of LowRiders's with customizations", LowRider_Group, DispatchbleVehicleGroupType.Racing));
+
+        //Offroad
+        GroupsToAdd.Add(new DispatchableVehicleGroup("ATV_Racing", "ATVs", "Collection of ATV vehicles", ATVOffRoad_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Buggy_Racing", "Buggies", "Collection of Offroad Buggies vehicles", BuggyOffRoad_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("MotoX_Racing", "Moto X", "Collection of Moto X vehicles", MotoXOffRoad_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("TrophyTruck_Racing", "Trophy Trucks", "Collection of trophy trucks", TrophyTruckOffRoad_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("4x4OffRoad_Racing", "4x4 Off-Road", "Collection of off-road vehicles", Regular4x4OffRoad_Group, DispatchbleVehicleGroupType.Racing));
 
         //specialized muscle
         GroupsToAdd.Add(new DispatchableVehicleGroup("Buffalo_Racing", "Bravado Buffalos", "Collection of different generations of Bravado Buffalo", BuffaloRegular_Group, DispatchbleVehicleGroupType.Racing));
@@ -86,6 +102,10 @@ public class DispatchableVehicles_RaceCars
 
         //specialized super 
 
+
+        //Water Sports
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Boats_Racing", "Boats", "Collection of boats", BoatsWater_Group, DispatchbleVehicleGroupType.Racing));
+        GroupsToAdd.Add(new DispatchableVehicleGroup("Jetskis_Racing", "Jetskis", "Collection of jetskis", JetskiWater_Group, DispatchbleVehicleGroupType.Racing));
 
     }
     private void Motorcycle()
@@ -157,16 +177,65 @@ public class DispatchableVehicles_RaceCars
     {
         RegularOffRoad_Group = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("trophytruck2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("draugur",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("hellion",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("trophytruck",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("ratel",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("patriot3",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("outlaw",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
-            new DispatchableVehicle("vagrant",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 65f },
+
         };
+
+        Regular4x4OffRoad_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("Bodhi2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("caracara2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f  },
+            new DispatchableVehicle("contender",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("draugur",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("dubsta3",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("everon",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("freecrawler",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("hellion",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("mesa3",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("monstrociti",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("patriot3",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("rebel2",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("riata",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("seminole2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("terminus",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("yosemite3",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("yosemite1500",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+        };
+
+        ATVOffRoad_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("blazer",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 85f },
+            new DispatchableVehicle("blazer4",100,100) {SetRandomCustomization = true, RandomCustomizationPercentage = 85f},
+        };
+
+
+        BuggyOffRoad_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("dune",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("outlaw",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("ratel",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("vagrant",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+        };
+
+        MotoXOffRoad_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("manchez",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 85f,RequiredPedGroup = "MotoX"},// RequiredGroupIsDriverOnly = true is needed/required to make 
+            new DispatchableVehicle("sanchez",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 85f,RequiredPedGroup = "MotoX" }, //  Sure these guys get put on the moto x vehicle group
+            new DispatchableVehicle("sanchez2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 85f,RequiredPedGroup = "MotoX" }, //  and not the regular race peds 
+        };
+
+        TrophyTruckOffRoad_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("trophytruck",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 75f },
+            new DispatchableVehicle("trophytruck2",100,100) { SetRandomCustomization = true, RandomCustomizationPercentage = 75f },
+        };
+
+        RegularOffRoad_Group = new List<DispatchableVehicle>() { };
+        RegularOffRoad_Group.AddRange(BuggyOffRoad_Group);
+        RegularOffRoad_Group.AddRange(Regular4x4OffRoad_Group);
+        RegularOffRoad_Group.AddRange(TrophyTruckOffRoad_Group);
+
     }
+
     private void SportsCars()
     {
 
@@ -578,6 +647,36 @@ public class DispatchableVehicles_RaceCars
                },
            },
        };
+    }
+
+    private void WaterSports()
+    {
+        BoatsWater_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("dinghy",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("dinghy2",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("dinghy3",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("dinghy4",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("jetmax",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("marquis",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("predator",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("revo",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("speeder",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("squalo",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("suntrap",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("toro",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("toro2",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("tropic",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("tropic2",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+        };
+
+        JetskiWater_Group = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("seashark",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("seashark2",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+            new DispatchableVehicle("seashark3",100,100){ SetRandomCustomization = true,RandomCustomizationPercentage = 65f },
+        };
+
     }
 }
 

@@ -1906,22 +1906,41 @@ public class DispatchablePeople : IDispatchablePeople
 
         VehicleRacePeds = new List<DispatchablePerson>()
         {
-            new DispatchablePerson("ig_car3guy2",100,100),
-            new DispatchablePerson("a_m_m_bevhills_02",100,100),
-            new DispatchablePerson("a_m_m_genfat_02",100,100),
-            new DispatchablePerson("a_m_m_eastsa_02",100,100),
-            new DispatchablePerson("a_m_m_afriamer_01",100,100),
-            new DispatchablePerson("a_m_m_stlat_02",100,100),
-            new DispatchablePerson("a_m_y_beachvesp_01",100,100),
-            new DispatchablePerson("a_m_y_beachvesp_02",100,100),
-            new DispatchablePerson("a_m_y_bevhills_01",100,100),
-            new DispatchablePerson("a_m_y_eastsa_02",100,100),
-            new DispatchablePerson("a_f_m_salton_01",100,100),
-            new DispatchablePerson("a_f_y_business_03",100,100),
-            new DispatchablePerson("a_f_m_tourist_01",100,100),
-            new DispatchablePerson("a_f_o_genstreet_01",100,100),
-            new DispatchablePerson("a_f_y_femaleagent",100,100),
-            new DispatchablePerson("a_f_y_fitness_02",100,100),
+            //Sunday Drivers Club
+            //new DispatchablePerson("a_m_m_bevhills_02",100,100),
+            //new DispatchablePerson("a_m_m_genfat_02",100,100),
+            //new DispatchablePerson("a_m_m_eastsa_02",100,100),
+            //new DispatchablePerson("a_m_m_afriamer_01",100,100),
+            //new DispatchablePerson("a_m_m_stlat_02",100,100),
+            //new DispatchablePerson("a_m_y_beachvesp_01",100,100),
+            //new DispatchablePerson("a_m_y_beachvesp_02",100,100),
+            //new DispatchablePerson("a_m_y_bevhills_01",100,100),
+            //new DispatchablePerson("a_m_y_eastsa_02",100,100),
+            //new DispatchablePerson("a_f_m_salton_01",100,100),
+            //new DispatchablePerson("a_f_y_business_03",100,100),
+            //new DispatchablePerson("a_f_m_tourist_01",100,100),
+            //new DispatchablePerson("a_f_o_genstreet_01",100,100),
+            //new DispatchablePerson("a_f_y_femaleagent",100,100),
+            //new DispatchablePerson("a_f_y_fitness_02",100,100),
+
+
+            new DispatchablePerson("A_F_Y_CarClub_01",100,100),
+            new DispatchablePerson("A_M_Y_CarClub_01",100,100),
+            new DispatchablePerson("A_M_Y_CarClub_02",100,100),
+            new DispatchablePerson("A_F_Y_CarClub_02",100,100),
+            new DispatchablePerson("IG_Car3guy1",100,100),
+            new DispatchablePerson("IG_Car3guy2",100,100),
+            new DispatchablePerson("IG_Sessanta",100,100),
+            new DispatchablePerson("IG_Mimi",100,100),
+            new DispatchablePerson("IG_Moodyman_02",100,100),
+            new DispatchablePerson("S_M_M_RaceOrg_01",100,100),
+            new DispatchablePerson("S_M_M_Tattoo_01",100,100),
+            new DispatchablePerson("U_F_Y_Lauren",100,100),
+            new DispatchablePerson("U_F_Y_Taylor",100,100),
+
+            new DispatchablePerson("a_m_y_motox_01",100,100){GroupName = "MotoX" },
+            new DispatchablePerson("a_m_y_motox_02",100,100){GroupName = "MotoX" },
+
         };
 
         ServicePeds();

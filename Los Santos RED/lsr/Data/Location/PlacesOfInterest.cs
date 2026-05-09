@@ -2341,8 +2341,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(1559.219f, 3781.481f, 40.93672f),
                 CameraDirection = new Vector3(-0.9409853f, 0.2641553f, -0.2115861f),
                 CameraRotation = new Rotator(-12.21532f, 1.222972E-05f, 74.3194f),
-                SupportedTracks = new List<string>() { "sandyloop1", "sandyloop2" },
-                MaxBax = 3000,
+                SupportedTracks = new List<string>() 
+                { 
+                    "alamo_sea1","sandyloop1", "sandyloop2","shadya2btrack1","grapeseed_loop", "grapeseed_loop2", "prisonrun","prisonrun2", "sandymile", "hookiespipeline",
+                    "sandyobservatorySprint", "sandykortzSprint", "sandystabCitySprint", "sandyvinewoodSprint", "sandyelysianSprint", "sandypowerStationSprint", "sandylsiaSprint", "sandymazeBankSprint", "sandyPuertoDelSolSprint", "sandyDelPerroSprint",                  
+                },
+                MaxBax = 2000,
                 OpenTime = 0,
                 CloseTime = 24,
                 AllowedOpponentGroups = new List<string>() {"MuscleCars_Racing","Buffalo_Racing","Gauntlet_Racing","Vigero_Racing","Dominator_Racing","OtherMuscle_Racing" },
@@ -2352,16 +2356,53 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(142.2736f, 6626.222f, 39.35808f),
                 CameraDirection = new Vector3(-0.9640946f, 0.09018292f, -0.2497771f),
                 CameraRotation = new Rotator(-14.46432f, 4.959682E-06f, 84.65601f),
-                SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1" },
+                SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1", "paletoobservatorySprint", "paletokortzSprint", "paletostabCitySprint", "paletovinewoodSprint", "paletoelysianSprint", "paletopowerStationSprint", "paletolsiaSprint", "paletomazeBankSprint", "paletoPuertoDelSolSprint" },
                 OpenTime = 0,
                 CloseTime = 24,
-                MaxBax = 5000,
+                MaxBax = 2000,
             },
             new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all the tracks","")
             {
                 OpenTime = 0,
                 CloseTime = 24,
-                MaxBax = 7000,
+                MaxBax = 2000,
+                SupportedTracks = new List<string>() 
+                { 
+                //Vinewood Tracks
+                    "citycircuit1", "observortyminiloop", "lakevinewood", "Vinewoodhills2", "vinewoodquarter", "vinewoodRace1", "vinewoodRace2", "vinewoodRace3", "Vinewoodhills2","vinewoodguantlet",
+
+                //Central Tracks
+                    "lsairport","cypressflat1", "hoodrun", "delperroloop", "eastsideCircuit", "ely_freeloop", "centralRace3", "freeway", "mirrorpark", "mirrorparkrev", "southlossantos", "vespCanals", "welcometols", "welcometolsshort",
+                    "centralRace2", "ely_freeway", "freewaydrag", "popDrag",
+                    "fleecarun", "ElBurroPoint", "centralRace1", "sustanciasprint", "greatoceanhighway", "roadtoHarmony", "richman_road","Downtown1",
+                    "observatorySprint", "kortzSprint", "stabCitySprint", "vinewoodSprint", "elysianSprint", "powerStationSprint", "lsiaSprint", "mazeBankSprint", "PuertoDelSolSprint" , "delPerroSprint",
+                  
+
+                },
+            },
+
+            new RaceMeetup(new Vector3(-702.4859f, 5790.059f, 17.52181f), 68.87421f, "Off-Road World", "Take on Off-Road Challenges","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                BannerImagePath = "stores\\paletooffroader.png",
+                MaxBax = 2000,
+                AllowedOpponentGroups = new List<string>() { "Buggy_Racing", "MotoX_Racing", "OffRoad_Racing", "4x4OffRoad_Racing", "RallyCars_Racing", "TrophyTruck_Racing", },
+                SupportedTracks = new List<string>() 
+                {
+                    "chillstatewildernessloop", "landactresoviorcircuit", "paletocove", "procopio_beach", "sandyoffroaddrag", "canyon_cliffs", "canyoncliffs2", "chiliad_trail1", "grandsenoratrail1", "landactresoviorroute1", "landactresoviorroute2",
+                    "minewardspiral", "minewardspiral2", "raton_canyon", "raton_canyon2", "ratontolumbermill", "ridge_run", "ridge_run2", "ronswindfarm1", "ronswindfarm2", "valley_trail", "valley_trail2", "zancudotrailshort", "zancudorivertrail1"
+                },
+            },
+            //Redwood Lights Track
+            new RaceMeetup(new Vector3(1129.083f, 2125.018f, 55.5462f), 269.9457f, "RedWood Lights Moto X", "Test Your Skills","")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                BannerImagePath = "stores\\redlmotox.png",
+                MaxBax = 850,
+                AllowedOpponentGroups = new List<string>() {"MotoX_Racing" },
+                SupportedTracks = new List<string>() { "redwoodlights" },
             },
         };
     }

@@ -52,6 +52,7 @@ public class VehicleRacesMenu
     private UIMenuItem raceSettingsSubMenuItem;
     private UIMenuCheckboxItem clearTrafficMenuItem;
     private UIMenuNumericScrollerItem<int> LapsMenuItem;
+    private UIMenuCheckboxItem slipstreamingMenuItem;
 
     public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world,
         IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation, IDispatchableVehicles dispatchableVehicles, List<string> supportedTracks,
@@ -103,8 +104,10 @@ public class VehicleRacesMenu
     {
         raceSettingsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Settings");
         raceSettingsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
-        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", false, "If enabled, ambient traffic will not spawn when racing.");
+        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", true, "If enabled, ambient traffic will not spawn when racing.");
         raceSettingsSubMenu.AddItem(clearTrafficMenuItem);
+        slipstreamingMenuItem = new UIMenuCheckboxItem("Slipstreaming", false, "Enable or disable the slipstreaming effect during the race.");
+        raceSettingsSubMenu.AddItem(slipstreamingMenuItem);
         LapsMenuItem = new UIMenuNumericScrollerItem<int>("Laps", "Set number of laps to complete", 1, 10, 1);
         LapsMenuItem.Value = 1;
 
@@ -191,7 +194,7 @@ public class VehicleRacesMenu
         }
         opponentsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Opponents");
         opponentsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
-        UIMenuNumericScrollerItem<int> totalOpponentsMenuItem = new UIMenuNumericScrollerItem<int>("Racers:","Set the number of opponents",1,10,1);
+        UIMenuNumericScrollerItem<int> totalOpponentsMenuItem = new UIMenuNumericScrollerItem<int>("Racers:","Set the number of opponents",1,7,1);
         totalOpponentsMenuItem.Value = 3;
         totalSelectedOpponents = 3;
         totalOpponentsMenuItem.Activated += (menu, item) =>
@@ -419,7 +422,7 @@ public class VehicleRacesMenu
         {
             return false;
         }
-        VehicleRace newRace = new VehicleRace(SelectedTrack.Name, SelectedTrack, selectedPlayerVehicle, World,LapsMenuItem.Value,clearTrafficMenuItem.Checked);
+        VehicleRace newRace = new VehicleRace(SelectedTrack.Name, SelectedTrack, selectedPlayerVehicle, World,LapsMenuItem.Value,clearTrafficMenuItem.Checked, slipstreamingMenuItem.Checked);
         uIMenu.Visible = false;
         GameFiber.StartNew(delegate
         {
@@ -470,7 +473,7 @@ public class VehicleRacesMenu
         {
             FinishPosition = SelectedPointDestination.EntrancePosition;
         }
-        VehicleRace newRace = new VehicleRace("PointToPointRace", new VehicleRaceTrack("ptp1", "PointToPointRace", "", new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0, FinishPosition) }, null), Player.CurrentVehicle, World,1,clearTrafficMenuItem.Checked);
+        VehicleRace newRace = new VehicleRace("PointToPointRace", new VehicleRaceTrack("ptp1", "PointToPointRace", "", new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0, FinishPosition) }, null), Player.CurrentVehicle, World,1,clearTrafficMenuItem.Checked, slipstreamingMenuItem.Checked);
         uIMenu.Visible = false;
         AdvancedConversation?.DisposeConversation();
         GameFiber.Yield();

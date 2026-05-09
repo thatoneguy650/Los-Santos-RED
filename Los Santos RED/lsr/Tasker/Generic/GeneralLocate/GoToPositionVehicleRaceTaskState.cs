@@ -124,7 +124,6 @@ class GoToPositionVehicleRaceTaskState : TaskState
 
 
 
-
             NativeFunction.Natives.TASK_VEHICLE_MISSION_COORS_TARGET(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z,
                 14,
                 999f,
@@ -133,9 +132,22 @@ class GoToPositionVehicleRaceTaskState : TaskState
                 -1,
                 true);
 
+            //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD(
+            //    PedGeneral.Pedestrian,
+            //    PedGeneral.Pedestrian.CurrentVehicle,
+            //    PlaceToDriveTo.X,
+            //    PlaceToDriveTo.Y,
+            //    PlaceToDriveTo.Z,
+            //    500f, // Speed (m/s). 999f can sometimes break pathfinding; 60f is ~135mph.
+            //    14, // Driving Style (The 'Style' argument)
+            //    PedGeneral.Pedestrian.CurrentVehicle, // Vehicle Model
+            //    (int)eCustomDrivingStyles.RacingNew2, // Driving Mode (1025 = AvoidCars + Reckless)
+            //    3.0f, // Stop range
+            //    -1.0f // Straight line distance (-1.0f disables the forced straight line)
+            //);
 
 
- 
+
 
 
 
