@@ -276,7 +276,7 @@ public class AIVehicleRacer : VehicleRacer
     {
         if (raceCar.Model.IsBike || raceCar.Model.IsQuadBike) return; // remove raceCar.Model.IsBike || raceCar.Model.IsQuadBike to cut down on air time for these vehicles.
 
-        float speedFactor = raceCar.Speed * 0.0028f; // Scales the force based on current speed (tuning parameter) - 0.0028f allows for some natural air time
+        float speedFactor = raceCar.Speed * 0.0018f; // Scales the force based on current speed (tuning parameter) - 0.0018f allows for some natural air time / Reduce "Super" Scrub
         NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(raceCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);
     }
 

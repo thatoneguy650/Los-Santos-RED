@@ -1079,6 +1079,65 @@ public class VehicleRaces : IVehicleRaces
         VehicleRaceTrack vinewoodhills2 = new VehicleRaceTrack("Vinewoodhills2", "Circuit - Highline Run", "Race around the scenic Vinewood Hills", vinewoodhill2scheckpoints, vinewoodhills2start);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodhills2);
 
+        List<VehicleRaceStartingPosition> roadrunner1start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(181.964f, 197.748f, 104.682f), 249.500f),
+            new VehicleRaceStartingPosition(1, new Vector3(180.561f, 194.002f, 104.646f), 249.500f),
+            new VehicleRaceStartingPosition(2, new Vector3(172.599f, 201.255f, 105.107f), 249.500f),
+            new VehicleRaceStartingPosition(3, new Vector3(171.196f, 197.509f, 105.074f), 249.500f),
+            new VehicleRaceStartingPosition(4, new Vector3(163.234f, 204.761f, 105.374f), 249.500f),
+            new VehicleRaceStartingPosition(5, new Vector3(161.831f, 201.015f, 105.356f), 249.500f),
+            new VehicleRaceStartingPosition(6, new Vector3(153.869f, 208.268f, 105.651f), 249.500f),
+            new VehicleRaceStartingPosition(7, new Vector3(152.466f, 204.522f, 105.627f), 249.500f),
+        };
+        List<VehicleRaceCheckpoint> roadrunner1checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(322.201f, 144.015f, 102.570f)),
+            new VehicleRaceCheckpoint(1, new Vector3(545.657f, 65.718f, 94.935f)),
+            new VehicleRaceCheckpoint(2, new Vector3(742.844f, -30.362f, 81.279f)),
+            new VehicleRaceCheckpoint(3, new Vector3(974.995f, -176.604f, 71.892f)),
+            new VehicleRaceCheckpoint(4, new Vector3(1124.051f, -245.459f, 68.140f)),
+            new VehicleRaceCheckpoint(5, new Vector3(1191.750f, -436.500f, 66.094f)),
+            new VehicleRaceCheckpoint(6, new Vector3(1189.750f, -677.750f, 60.063f)),
+            new VehicleRaceCheckpoint(7, new Vector3(1151.000f, -910.500f, 50.219f)),
+            new VehicleRaceCheckpoint(8, new Vector3(1212.000f, -1140.500f, 36.531f)),
+            new VehicleRaceCheckpoint(9, new Vector3(1239.500f, -1410.000f, 34.063f)),
+            new VehicleRaceCheckpoint(10, new Vector3(1370.500f, -1670.000f, 56.063f)),
+            new VehicleRaceCheckpoint(11, new Vector3(1419.500f, -1889.750f, 69.844f)),
+            new VehicleRaceCheckpoint(12, new Vector3(1217.250f, -2060.250f, 43.344f)),
+            new VehicleRaceCheckpoint(13, new Vector3(1023.250f, -2082.000f, 30.031f)),
+            new VehicleRaceCheckpoint(14, new Vector3(716.000f, -2051.500f, 28.313f)),
+            new VehicleRaceCheckpoint(15, new Vector3(487.250f, -2059.500f, 24.094f)),
+            new VehicleRaceCheckpoint(16, new Vector3(367.500f, -2157.250f, 13.594f)),
+            new VehicleRaceCheckpoint(17, new Vector3(255.750f, -2088.000f, 16.063f)),
+            new VehicleRaceCheckpoint(18, new Vector3(60.750f, -2034.000f, 17.313f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-198.000f, -2114.000f, 22.719f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-397.250f, -2069.750f, 25.531f)),
+            new VehicleRaceCheckpoint(21, new Vector3(-750.250f, -1730.250f, 28.313f)),
+            new VehicleRaceCheckpoint(22, new Vector3(-669.750f, -1555.750f, 14.719f)),
+            new VehicleRaceCheckpoint(23, new Vector3(-648.500f, -1401.000f, 9.656f)),
+            new VehicleRaceCheckpoint(24, new Vector3(-636.250f, -1281.500f, 9.625f)),
+            new VehicleRaceCheckpoint(25, new Vector3(-700.000f, -1199.000f, 9.656f)),
+            new VehicleRaceCheckpoint(26, new Vector3(-844.250f, -977.750f, 13.844f)),
+            new VehicleRaceCheckpoint(27, new Vector3(-1021.250f, -795.750f, 16.031f)),
+            new VehicleRaceCheckpoint(28, new Vector3(-1150.500f, -669.000f, 21.313f)),
+            new VehicleRaceCheckpoint(29, new Vector3(-1325.000f, -463.500f, 32.438f)),
+            new VehicleRaceCheckpoint(30, new Vector3(-1471.750f, -274.250f, 47.438f)),
+            new VehicleRaceCheckpoint(31, new Vector3(-1526.750f, -178.750f, 53.750f)),
+            new VehicleRaceCheckpoint(32, new Vector3(-1489.000f, -130.750f, 50.625f)),
+            new VehicleRaceCheckpoint(33, new Vector3(-1435.500f, -80.750f, 51.156f)),
+            new VehicleRaceCheckpoint(34, new Vector3(-1419.500f, 18.250f, 51.563f)),
+            new VehicleRaceCheckpoint(35, new Vector3(-1323.500f, 208.250f, 57.594f)),
+            new VehicleRaceCheckpoint(36, new Vector3(-1029.000f, 255.250f, 64.219f)),
+            new VehicleRaceCheckpoint(37, new Vector3(-820.250f, 208.250f, 73.781f)),
+            new VehicleRaceCheckpoint(38, new Vector3(-623.000f, 263.750f, 80.688f)),
+            new VehicleRaceCheckpoint(39, new Vector3(-462.750f, 240.750f, 82.063f)),
+            new VehicleRaceCheckpoint(40, new Vector3(-177.750f, 249.750f, 91.906f)),
+            new VehicleRaceCheckpoint(41, new Vector3(46.750f, 244.750f, 108.563f)),
+        };
+        VehicleRaceTrack roadrunner1 = new VehicleRaceTrack("roadrunner1", "Circuit - Road Runner", "Race though the streets of LS", roadrunner1checkpoints, roadrunner1start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(roadrunner1);
+
         // Drag
 
         List<VehicleRaceStartingPosition> vinewoodquarterstart = new List<VehicleRaceStartingPosition>()
@@ -1101,6 +1160,124 @@ public class VehicleRaces : IVehicleRaces
 
         // Point to Point
 
+        List<VehicleRaceStartingPosition> tongvahillsstart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-2509.602f, 2287.917f, 31.556f), 276.917f),
+            new VehicleRaceStartingPosition(1, new Vector3(-2509.903f, 2290.399f, 31.566f), 276.917f),
+            new VehicleRaceStartingPosition(2, new Vector3(-2519.032f, 2286.772f, 31.821f), 276.917f),
+            new VehicleRaceStartingPosition(3, new Vector3(-2519.333f, 2289.254f, 31.832f), 276.917f),
+            new VehicleRaceStartingPosition(4, new Vector3(-2528.463f, 2285.627f, 31.957f), 276.917f),
+            new VehicleRaceStartingPosition(5, new Vector3(-2528.764f, 2288.109f, 31.969f), 276.917f),
+            new VehicleRaceStartingPosition(6, new Vector3(-2537.894f, 2284.483f, 31.896f), 276.917f),
+            new VehicleRaceStartingPosition(7, new Vector3(-2538.195f, 2286.965f, 31.907f), 276.917f),
+        };
+        List<VehicleRaceCheckpoint> tongvahillscheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-2385.750f, 2264.250f, 32.094f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-2141.750f, 2307.500f, 35.563f)),
+            new VehicleRaceCheckpoint(2, new Vector3(-2021.466f, 2277.203f, 45.494f)),
+            new VehicleRaceCheckpoint(3, new Vector3(-1810.250f, 2303.500f, 69.000f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-1669.000f, 2223.250f, 86.000f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-1742.250f, 2089.000f, 116.000f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-1843.796f, 2033.744f, 134.068f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-1831.000f, 1931.500f, 144.875f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-1836.000f, 1837.750f, 158.531f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-1978.000f, 1832.500f, 181.656f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-2021.500f, 1916.500f, 185.688f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-2093.250f, 2001.500f, 189.281f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-2220.250f, 1919.500f, 186.906f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-2407.750f, 1945.500f, 178.063f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-2508.250f, 1835.750f, 163.656f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-2546.000f, 1670.500f, 145.250f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-2642.250f, 1562.250f, 120.063f)),
+            new VehicleRaceCheckpoint(17, new Vector3(-2712.750f, 1486.000f, 102.781f)),
+            new VehicleRaceCheckpoint(18, new Vector3(-2791.000f, 1321.250f, 74.281f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-2978.750f, 1322.500f, 36.594f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-3063.500f, 1191.500f, 21.031f)),
+        };
+        VehicleRaceTrack tongvahills = new VehicleRaceTrack("tongva_hills", "P2P - Tongva Hills (Short)", "Race through Tongva Hills", tongvahillscheckpoints, tongvahillsstart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(tongvahills);
+
+        List<VehicleRaceCheckpoint> tongvahillslongcheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-2385.750f, 2264.250f, 32.094f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-2141.750f, 2307.500f, 35.563f)),
+            new VehicleRaceCheckpoint(2, new Vector3(-2021.466f, 2277.203f, 45.494f)),
+            new VehicleRaceCheckpoint(3, new Vector3(-1810.250f, 2303.500f, 69.000f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-1669.000f, 2223.250f, 86.000f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-1742.250f, 2089.000f, 116.000f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-1843.796f, 2033.744f, 134.068f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-1831.000f, 1931.500f, 144.875f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-1836.000f, 1837.750f, 158.531f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-1978.000f, 1832.500f, 181.656f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-2021.500f, 1916.500f, 185.688f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-2093.250f, 2001.500f, 189.281f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-2220.250f, 1919.500f, 186.906f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-2407.750f, 1945.500f, 178.063f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-2508.250f, 1835.750f, 163.656f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-2546.000f, 1670.500f, 145.250f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-2642.250f, 1562.250f, 120.063f)),
+            new VehicleRaceCheckpoint(17, new Vector3(-2627.250f, 1438.000f, 129.750f)),
+            new VehicleRaceCheckpoint(18, new Vector3(-2628.000f, 1164.250f, 157.375f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-2446.000f, 1039.000f, 192.938f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-2279.750f, 1056.250f, 196.531f)),
+            new VehicleRaceCheckpoint(21, new Vector3(-2180.750f, 1026.750f, 190.000f)),
+            new VehicleRaceCheckpoint(22, new Vector3(-2017.250f, 839.500f, 163.406f)),
+            new VehicleRaceCheckpoint(23, new Vector3(-1921.000f, 737.750f, 140.281f)),
+            new VehicleRaceCheckpoint(24, new Vector3(-1764.250f, 824.000f, 140.313f)),
+        };
+        VehicleRaceTrack tongvahillslong = new VehicleRaceTrack("tongva_hills_long", "P2P - Tongva Hills (Long)", "Race through Tongva Hills", tongvahillslongcheckpoints, tongvahillsstart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(tongvahillslong);
+
+        List<VehicleRaceStartingPosition> tongvahillsrevstart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-1857.759f, 798.735f, 138.902f), 132.780f),
+            new VehicleRaceStartingPosition(1, new Vector3(-1855.721f, 796.534f, 138.926f), 132.780f),
+            new VehicleRaceStartingPosition(2, new Vector3(-1851.888f, 804.169f, 138.685f), 132.780f),
+            new VehicleRaceStartingPosition(3, new Vector3(-1849.849f, 801.968f, 138.711f), 132.780f),
+            new VehicleRaceStartingPosition(4, new Vector3(-1846.016f, 809.603f, 138.455f), 132.780f),
+            new VehicleRaceStartingPosition(5, new Vector3(-1843.978f, 807.402f, 138.480f), 132.780f),
+            new VehicleRaceStartingPosition(6, new Vector3(-1840.145f, 815.037f, 138.298f), 132.780f),
+            new VehicleRaceStartingPosition(7, new Vector3(-1838.107f, 812.835f, 138.323f), 132.780f),
+        };
+        List<VehicleRaceCheckpoint> tongvahillsrevcheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-1965.000f, 708.500f, 140.969f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-2017.250f, 839.500f, 163.406f)),
+            new VehicleRaceCheckpoint(2, new Vector3(-2103.000f, 954.250f, 183.656f)),
+            new VehicleRaceCheckpoint(3, new Vector3(-2199.750f, 1048.000f, 192.594f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-2289.000f, 1045.000f, 195.750f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-2367.500f, 1028.500f, 194.844f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-2510.500f, 1052.250f, 184.969f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-2628.000f, 1164.250f, 157.375f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-2625.603f, 1405.004f, 133.957f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-2644.500f, 1527.750f, 117.719f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-2624.000f, 1635.000f, 132.063f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-2504.500f, 1693.000f, 152.344f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-2483.500f, 1810.000f, 160.219f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-2541.250f, 1877.750f, 165.906f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-2467.000f, 1952.250f, 172.906f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-2350.000f, 1893.500f, 182.344f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-2209.000f, 1923.750f, 187.313f)),
+            new VehicleRaceCheckpoint(17, new Vector3(-2093.250f, 2001.500f, 189.281f)),
+            new VehicleRaceCheckpoint(18, new Vector3(-2050.500f, 1960.750f, 187.969f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-1997.750f, 1913.250f, 185.219f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-1991.250f, 1809.000f, 180.875f)),
+            new VehicleRaceCheckpoint(21, new Vector3(-1881.000f, 1802.000f, 165.719f)),
+            new VehicleRaceCheckpoint(22, new Vector3(-1824.000f, 1838.000f, 157.281f)),
+            new VehicleRaceCheckpoint(23, new Vector3(-1823.250f, 1922.250f, 145.375f)),
+            new VehicleRaceCheckpoint(24, new Vector3(-1864.750f, 1965.500f, 143.094f)),
+            new VehicleRaceCheckpoint(25, new Vector3(-1823.250f, 2034.750f, 130.875f)),
+            new VehicleRaceCheckpoint(26, new Vector3(-1759.000f, 2072.000f, 119.375f)),
+            new VehicleRaceCheckpoint(27, new Vector3(-1681.000f, 2135.250f, 104.375f)),
+            new VehicleRaceCheckpoint(28, new Vector3(-1678.506f, 2227.518f, 84.966f)),
+            new VehicleRaceCheckpoint(29, new Vector3(-1792.500f, 2302.750f, 70.531f)),
+            new VehicleRaceCheckpoint(30, new Vector3(-1917.000f, 2300.750f, 58.063f)),
+            new VehicleRaceCheckpoint(31, new Vector3(-2068.250f, 2279.250f, 39.844f)),
+        };
+        VehicleRaceTrack tongvahillsrev = new VehicleRaceTrack("tongva_hills_rev", "P2P - Tongva Hills Reverse", "Race through Tongva Hills", tongvahillsrevcheckpoints, tongvahillsrevstart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(tongvahillsrev);
+
         List<VehicleRaceStartingPosition> vehicleRaceStartingPositions2 = new List<VehicleRaceStartingPosition>()
         {
             //new VehicleRaceStartingPosition(0,new Vector3(594.9255f, 237.1765f, 102.4954f), 69.08444f),
@@ -1109,14 +1286,14 @@ public class VehicleRaces : IVehicleRaces
             //new VehicleRaceStartingPosition(3,new Vector3(601.6921f, 235.5364f, 102.1932f), 76.84195f),
 
 
-            new VehicleRaceStartingPosition(0, new Vector3(593.364f, 239.539f, 102.158f), 72.820f),
-            new VehicleRaceStartingPosition(1, new Vector3(592.478f, 236.673f, 102.131f), 72.820f),
-            new VehicleRaceStartingPosition(2, new Vector3(602.918f, 236.586f, 101.692f), 72.820f),
-            new VehicleRaceStartingPosition(3, new Vector3(602.032f, 233.720f, 101.729f), 72.820f),
-            new VehicleRaceStartingPosition(4, new Vector3(612.472f, 233.632f, 100.845f), 72.820f),
-            new VehicleRaceStartingPosition(5, new Vector3(611.586f, 230.766f, 100.917f), 72.820f),
-            new VehicleRaceStartingPosition(6, new Vector3(622.026f, 230.678f, 99.832f), 72.820f),
-            new VehicleRaceStartingPosition(7, new Vector3(621.140f, 227.812f, 99.946f), 72.820f),
+            new VehicleRaceStartingPosition(0, new Vector3(592.511f, 239.268f, 102.164f), 74.301f),
+            new VehicleRaceStartingPosition(1, new Vector3(591.834f, 236.861f, 102.143f), 74.301f),
+            new VehicleRaceStartingPosition(2, new Vector3(600.213f, 237.103f, 101.866f), 74.301f),
+            new VehicleRaceStartingPosition(3, new Vector3(599.536f, 234.697f, 101.882f), 74.301f),
+            new VehicleRaceStartingPosition(4, new Vector3(607.914f, 234.939f, 101.285f), 74.301f),
+            new VehicleRaceStartingPosition(5, new Vector3(607.237f, 232.532f, 101.326f), 74.301f),
+            new VehicleRaceStartingPosition(6, new Vector3(615.616f, 232.774f, 100.511f), 74.301f),
+            new VehicleRaceStartingPosition(7, new Vector3(614.939f, 230.367f, 100.570f), 74.301f),
 
         };
         List<VehicleRaceCheckpoint> vehicleRaceCheckpoints2 = new List<VehicleRaceCheckpoint>()
@@ -1134,6 +1311,22 @@ public class VehicleRaces : IVehicleRaces
             //new VehicleRaceCheckpoint(10,new Vector3(-996.1489f, 71.36115f, 51.30039f)),
 
 
+            //new VehicleRaceCheckpoint(0, new Vector3(467.806f, 279.618f, 102.451f)),
+            //new VehicleRaceCheckpoint(1, new Vector3(385.774f, 213.875f, 102.448f)),
+            //new VehicleRaceCheckpoint(2, new Vector3(348.032f, 111.168f, 102.110f)),
+            //new VehicleRaceCheckpoint(3, new Vector3(312.919f, 14.082f, 82.591f)),
+            //new VehicleRaceCheckpoint(4, new Vector3(222.850f, -61.809f, 68.711f)),
+            //new VehicleRaceCheckpoint(5, new Vector3(18.952f, 11.798f, 69.847f)),
+            //new VehicleRaceCheckpoint(6, new Vector3(-91.485f, -127.899f, 57.197f)),
+            //new VehicleRaceCheckpoint(7, new Vector3(-128.882f, -215.658f, 44.191f)),
+            //new VehicleRaceCheckpoint(8, new Vector3(-330.207f, -184.122f, 38.348f)),
+            //new VehicleRaceCheckpoint(9, new Vector3(-418.537f, -70.090f, 42.420f)),
+            //new VehicleRaceCheckpoint(10, new Vector3(-390.899f, 70.795f, 58.081f)),
+            //new VehicleRaceCheckpoint(11, new Vector3(-453.634f, 128.309f, 63.866f)),
+            //new VehicleRaceCheckpoint(12, new Vector3(-692.969f, 120.730f, 55.783f)),
+            //new VehicleRaceCheckpoint(13, new Vector3(-878.130f, 79.802f, 51.369f)),
+            //new VehicleRaceCheckpoint(14, new Vector3(-984.524f, 78.406f, 51.258f)),
+
             new VehicleRaceCheckpoint(0, new Vector3(467.806f, 279.618f, 102.451f)),
             new VehicleRaceCheckpoint(1, new Vector3(385.774f, 213.875f, 102.448f)),
             new VehicleRaceCheckpoint(2, new Vector3(348.032f, 111.168f, 102.110f)),
@@ -1145,14 +1338,32 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(8, new Vector3(-330.207f, -184.122f, 38.348f)),
             new VehicleRaceCheckpoint(9, new Vector3(-418.537f, -70.090f, 42.420f)),
             new VehicleRaceCheckpoint(10, new Vector3(-390.899f, 70.795f, 58.081f)),
-            new VehicleRaceCheckpoint(11, new Vector3(-453.634f, 128.309f, 63.866f)),
-            new VehicleRaceCheckpoint(12, new Vector3(-692.969f, 120.730f, 55.783f)),
-            new VehicleRaceCheckpoint(13, new Vector3(-878.130f, 79.802f, 51.369f)),
-            new VehicleRaceCheckpoint(14, new Vector3(-984.524f, 78.406f, 51.258f)),
-
-
+            new VehicleRaceCheckpoint(11, new Vector3(-422.250f, 126.500f, 64.094f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-507.250f, 129.000f, 62.438f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-548.250f, 73.250f, 54.156f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-597.500f, 4.500f, 42.281f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-652.250f, 45.250f, 40.031f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-649.000f, 198.500f, 69.844f)),
+            new VehicleRaceCheckpoint(17, new Vector3(-685.000f, 259.500f, 80.219f)),
+            new VehicleRaceCheckpoint(18, new Vector3(-733.250f, 228.750f, 75.813f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-755.000f, 193.500f, 74.031f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-746.500f, 81.500f, 54.594f)),
+            new VehicleRaceCheckpoint(21, new Vector3(-729.250f, 5.750f, 36.875f)),
+            new VehicleRaceCheckpoint(22, new Vector3(-747.000f, -38.250f, 36.875f)),
+            new VehicleRaceCheckpoint(23, new Vector3(-799.500f, -45.250f, 36.906f)),
+            new VehicleRaceCheckpoint(24, new Vector3(-852.250f, 52.750f, 49.281f)),
+            new VehicleRaceCheckpoint(25, new Vector3(-862.000f, 167.000f, 65.938f)),
+            new VehicleRaceCheckpoint(26, new Vector3(-876.250f, 233.250f, 72.125f)),
+            new VehicleRaceCheckpoint(27, new Vector3(-1041.250f, 264.750f, 63.594f)),
+            new VehicleRaceCheckpoint(28, new Vector3(-1080.750f, 203.000f, 60.375f)),
+            new VehicleRaceCheckpoint(29, new Vector3(-984.750f, 37.750f, 49.781f)),
+            new VehicleRaceCheckpoint(30, new Vector3(-915.500f, -65.000f, 37.531f)),
+            new VehicleRaceCheckpoint(31, new Vector3(-927.750f, -132.500f, 36.750f)),
+            new VehicleRaceCheckpoint(32, new Vector3(-1012.750f, -160.000f, 36.813f)),
+            new VehicleRaceCheckpoint(33, new Vector3(-1091.750f, -157.000f, 36.969f)),
+            new VehicleRaceCheckpoint(34, new Vector3(-1302.250f, -52.250f, 46.781f)),
         };
-        VehicleRaceTrack vinewoodDebug = new VehicleRaceTrack("vinewoodRace1", "P2P - Vinewood Twisted", "Long race through Vinewood to the Golf Course", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
+        VehicleRaceTrack vinewoodDebug = new VehicleRaceTrack("vinewoodRace1", "P2P - Vinewood Twisted", "Race through Vinewood to the Golf Course", vehicleRaceCheckpoints2, vehicleRaceStartingPositions2);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodDebug);
 
         List<VehicleRaceStartingPosition> vehicleRaceStartingPositions3 = new List<VehicleRaceStartingPosition>()
@@ -1199,7 +1410,7 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(17, new Vector3(-1952.897f, -166.781f, 32.557f)),
             new VehicleRaceCheckpoint(18, new Vector3(-2172.460f, -326.146f, 12.480f)),
         };
-        VehicleRaceTrack vinewoodLONGDebug = new VehicleRaceTrack("vinewoodRace2", "P2P - Vinewood Cross Town", "Long race through Vinewood to the coast", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
+        VehicleRaceTrack vinewoodLONGDebug = new VehicleRaceTrack("vinewoodRace2", "P2P - Vinewood Cross Town", "Race through Vinewood to the coast", vehicleRaceCheckpoints3, vehicleRaceStartingPositions3);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(vinewoodLONGDebug);
 
         List<VehicleRaceStartingPosition> vinewood3start = new List<VehicleRaceStartingPosition>()
@@ -1370,6 +1581,37 @@ public class VehicleRaces : IVehicleRaces
         };
         VehicleRaceTrack grooving = new VehicleRaceTrack("hoodrun", "Circuit - Around the Hood", "Race Around the Hood", groovingcheckpoints, groovingstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(grooving);
+
+        List<VehicleRaceStartingPosition> mesabridgesstart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(264.817f, -857.453f, 28.336f), 249.948f),
+            new VehicleRaceStartingPosition(1, new Vector3(266.360f, -853.226f, 28.336f), 249.948f),
+            new VehicleRaceStartingPosition(2, new Vector3(257.302f, -854.710f, 28.490f), 249.948f),
+            new VehicleRaceStartingPosition(3, new Vector3(258.845f, -850.483f, 28.466f), 249.948f),
+            new VehicleRaceStartingPosition(4, new Vector3(249.787f, -851.967f, 28.687f), 249.948f),
+            new VehicleRaceStartingPosition(5, new Vector3(251.330f, -847.740f, 28.654f), 249.948f),
+            new VehicleRaceStartingPosition(6, new Vector3(242.272f, -849.224f, 28.862f), 249.948f),
+            new VehicleRaceStartingPosition(7, new Vector3(243.815f, -844.997f, 28.824f), 249.948f),
+        };
+        List<VehicleRaceCheckpoint> mesabridgescheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(355.250f, -857.250f, 28.313f)),
+            new VehicleRaceCheckpoint(1, new Vector3(555.319f, -856.695f, 39.882f)),
+            new VehicleRaceCheckpoint(2, new Vector3(847.181f, -853.567f, 42.662f)),
+            new VehicleRaceCheckpoint(3, new Vector3(951.250f, -880.500f, 42.563f)),
+            new VehicleRaceCheckpoint(4, new Vector3(995.750f, -1028.500f, 41.188f)),
+            new VehicleRaceCheckpoint(5, new Vector3(847.750f, -1086.250f, 27.031f)),
+            new VehicleRaceCheckpoint(6, new Vector3(781.750f, -1032.500f, 25.406f)),
+            new VehicleRaceCheckpoint(7, new Vector3(711.393f, -1006.208f, 29.873f)),
+            new VehicleRaceCheckpoint(8, new Vector3(513.335f, -1030.500f, 35.886f)),
+            new VehicleRaceCheckpoint(9, new Vector3(313.987f, -1041.185f, 28.254f)),
+            new VehicleRaceCheckpoint(10, new Vector3(159.163f, -1012.428f, 28.392f)),
+            new VehicleRaceCheckpoint(11, new Vector3(127.750f, -963.500f, 28.531f)),
+            new VehicleRaceCheckpoint(12, new Vector3(165.000f, -868.500f, 29.719f)),
+            new VehicleRaceCheckpoint(13, new Vector3(222.250f, -844.750f, 29.313f)),
+        };
+        VehicleRaceTrack mesabridges = new VehicleRaceTrack("mesabridges", "Circuit - Bridge Work", "Race around La Mesa", mesabridgescheckpoints, mesabridgesstart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(mesabridges);
 
         List<VehicleRaceStartingPosition> cypressflatstart = new List<VehicleRaceStartingPosition>()
         {
@@ -1567,9 +1809,124 @@ public class VehicleRaces : IVehicleRaces
             new VehicleRaceCheckpoint(13, new Vector3(-539.761f, -712.444f, 32.251f)),
             new VehicleRaceCheckpoint(14, new Vector3(-493.333f, -663.556f, 31.960f)),
         };
-        VehicleRaceTrack downtown = new VehicleRaceTrack("Downtown1", "Circuit - Downtown", "Race Downtown", downtowncheckpoints, downtownstart);
+        VehicleRaceTrack downtown = new VehicleRaceTrack("Downtown1", "Circuit - Little Seoul", "Race Downtown", downtowncheckpoints, downtownstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(downtown);
 
+        List<VehicleRaceStartingPosition> strawberrylsiastart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(84.541f, -1132.721f, 28.213f), 89.109f),
+            new VehicleRaceStartingPosition(1, new Vector3(84.580f, -1130.221f, 28.309f), 89.109f),
+            new VehicleRaceStartingPosition(2, new Vector3(92.540f, -1132.845f, 28.214f), 89.109f),
+            new VehicleRaceStartingPosition(3, new Vector3(92.579f, -1130.345f, 28.315f), 89.109f),
+            new VehicleRaceStartingPosition(4, new Vector3(100.539f, -1132.969f, 28.209f), 89.109f),
+            new VehicleRaceStartingPosition(5, new Vector3(100.578f, -1130.470f, 28.318f), 89.109f),
+            new VehicleRaceStartingPosition(6, new Vector3(108.538f, -1133.094f, 28.207f), 89.109f),
+            new VehicleRaceStartingPosition(7, new Vector3(108.577f, -1130.594f, 28.306f), 89.109f),
+        };
+        List<VehicleRaceCheckpoint> strawberrylsiacheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-139.750f, -1132.250f, 23.781f)),
+            new VehicleRaceCheckpoint(1, new Vector3(-337.257f, -1131.688f, 25.849f)),
+            new VehicleRaceCheckpoint(2, new Vector3(-541.935f, -1117.725f, 20.643f)),
+            new VehicleRaceCheckpoint(3, new Vector3(-617.392f, -1271.998f, 9.870f)),
+            new VehicleRaceCheckpoint(4, new Vector3(-696.267f, -1484.278f, 10.034f)),
+            new VehicleRaceCheckpoint(5, new Vector3(-827.499f, -1681.603f, 16.996f)),
+            new VehicleRaceCheckpoint(6, new Vector3(-1008.313f, -1865.555f, 15.586f)),
+            new VehicleRaceCheckpoint(7, new Vector3(-1048.276f, -2069.163f, 12.195f)),
+            new VehicleRaceCheckpoint(8, new Vector3(-925.549f, -2121.981f, 8.323f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-793.958f, -1990.534f, 8.136f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-615.262f, -2018.648f, 5.209f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-410.487f, -2157.834f, 9.297f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-185.775f, -2190.961f, 9.277f)),
+            new VehicleRaceCheckpoint(13, new Vector3(-46.559f, -2141.294f, 9.311f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-73.196f, -1965.030f, 17.036f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-205.026f, -1807.645f, 28.939f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-54.753f, -1723.677f, 28.225f)),
+            new VehicleRaceCheckpoint(17, new Vector3(119.513f, -1633.511f, 28.355f)),
+            new VehicleRaceCheckpoint(18, new Vector3(140.672f, -1567.116f, 28.329f)),
+            new VehicleRaceCheckpoint(19, new Vector3(105.114f, -1537.763f, 28.336f)),
+            new VehicleRaceCheckpoint(20, new Vector3(104.782f, -1469.419f, 28.272f)),
+            new VehicleRaceCheckpoint(21, new Vector3(137.743f, -1413.071f, 28.305f)),
+            new VehicleRaceCheckpoint(22, new Vector3(77.381f, -1303.238f, 28.342f)),
+            new VehicleRaceCheckpoint(23, new Vector3(69.326f, -1170.917f, 28.317f)),
+            new VehicleRaceCheckpoint(24, new Vector3(-70.000f, -1134.105f, 24.823f)),
+        };
+        VehicleRaceTrack strawberrylsia = new VehicleRaceTrack("strawberrylsia", "Circuit - Downtown", "Race Downtown", strawberrylsiacheckpoints, strawberrylsiastart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(strawberrylsia);
+
+        List<VehicleRaceStartingPosition> midtown1start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(310.991f, -488.568f, 42.320f), 339.459f),
+            new VehicleRaceStartingPosition(1, new Vector3(306.309f, -486.812f, 42.373f), 339.459f),
+            new VehicleRaceStartingPosition(2, new Vector3(308.182f, -496.058f, 42.303f), 339.459f),
+            new VehicleRaceStartingPosition(3, new Vector3(303.500f, -494.303f, 42.357f), 339.459f),
+            new VehicleRaceStartingPosition(4, new Vector3(305.374f, -503.549f, 42.286f), 339.459f),
+            new VehicleRaceStartingPosition(5, new Vector3(300.692f, -501.794f, 42.340f), 339.459f),
+            new VehicleRaceStartingPosition(6, new Vector3(302.565f, -511.040f, 42.269f), 339.459f),
+            new VehicleRaceStartingPosition(7, new Vector3(297.883f, -509.285f, 42.324f), 339.459f),
+        };
+        List<VehicleRaceCheckpoint> midtown1checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(406.000f, -398.250f, 45.875f)),
+            new VehicleRaceCheckpoint(1, new Vector3(521.750f, -254.000f, 47.281f)),
+            new VehicleRaceCheckpoint(2, new Vector3(584.451f, -82.793f, 68.989f)),
+            new VehicleRaceCheckpoint(3, new Vector3(716.196f, 36.983f, 83.255f)),
+            new VehicleRaceCheckpoint(4, new Vector3(764.750f, 156.750f, 80.094f)),
+            new VehicleRaceCheckpoint(5, new Vector3(713.250f, 196.750f, 87.563f)),
+            new VehicleRaceCheckpoint(6, new Vector3(629.250f, 225.250f, 99.031f)),
+            new VehicleRaceCheckpoint(7, new Vector3(474.500f, 276.750f, 102.063f)),
+            new VehicleRaceCheckpoint(8, new Vector3(388.500f, 212.750f, 102.063f)),
+            new VehicleRaceCheckpoint(9, new Vector3(467.250f, 88.750f, 96.906f)),
+            new VehicleRaceCheckpoint(10, new Vector3(471.250f, 8.500f, 85.688f)),
+            new VehicleRaceCheckpoint(11, new Vector3(391.500f, -97.000f, 65.875f)),
+            new VehicleRaceCheckpoint(12, new Vector3(244.250f, -70.000f, 68.781f)),
+            new VehicleRaceCheckpoint(13, new Vector3(21.000f, 11.000f, 69.406f)),
+            new VehicleRaceCheckpoint(14, new Vector3(-58.500f, -4.250f, 69.625f)),
+            new VehicleRaceCheckpoint(15, new Vector3(-91.250f, -127.250f, 56.875f)),
+            new VehicleRaceCheckpoint(16, new Vector3(-95.250f, -184.500f, 47.625f)),
+            new VehicleRaceCheckpoint(17, new Vector3(-66.878f, -250.313f, 44.294f)),
+            new VehicleRaceCheckpoint(18, new Vector3(5.000f, -290.250f, 46.344f)),
+            new VehicleRaceCheckpoint(19, new Vector3(-33.500f, -431.750f, 39.344f)),
+            new VehicleRaceCheckpoint(20, new Vector3(-79.250f, -571.500f, 36.125f)),
+            new VehicleRaceCheckpoint(21, new Vector3(-99.000f, -653.500f, 35.094f)),
+            new VehicleRaceCheckpoint(22, new Vector3(-103.500f, -729.000f, 33.750f)),
+            new VehicleRaceCheckpoint(23, new Vector3(54.750f, -783.750f, 30.781f)),
+            new VehicleRaceCheckpoint(24, new Vector3(127.000f, -801.750f, 30.313f)),
+            new VehicleRaceCheckpoint(25, new Vector3(188.750f, -772.250f, 31.313f)),
+            new VehicleRaceCheckpoint(26, new Vector3(271.071f, -584.932f, 42.210f)),
+        };
+        VehicleRaceTrack midtown1 = new VehicleRaceTrack("midtown1", "Circuit - Midtown Madness", "Race around Midtown", midtown1checkpoints, midtown1start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(midtown1);
+
+        List<VehicleRaceStartingPosition> midtown2start = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-169.187f, -447.739f, 32.988f), 340.737f),
+            new VehicleRaceStartingPosition(1, new Vector3(-173.434f, -446.253f, 33.051f), 340.737f),
+            new VehicleRaceStartingPosition(2, new Vector3(-172.486f, -457.179f, 33.066f), 340.737f),
+            new VehicleRaceStartingPosition(3, new Vector3(-176.733f, -455.693f, 33.135f), 340.737f),
+            new VehicleRaceStartingPosition(4, new Vector3(-175.785f, -466.619f, 33.162f), 340.737f),
+            new VehicleRaceStartingPosition(5, new Vector3(-180.032f, -465.134f, 33.234f), 340.737f),
+            new VehicleRaceStartingPosition(6, new Vector3(-179.084f, -476.059f, 33.277f), 340.737f),
+            new VehicleRaceStartingPosition(7, new Vector3(-183.331f, -474.574f, 33.356f), 340.737f),
+        };
+        List<VehicleRaceCheckpoint> midtown2checkpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(-98.500f, -267.500f, 42.375f)),
+            new VehicleRaceCheckpoint(1, new Vector3(69.000f, -303.500f, 45.969f)),
+            new VehicleRaceCheckpoint(2, new Vector3(240.053f, -363.937f, 43.388f)),
+            new VehicleRaceCheckpoint(3, new Vector3(298.497f, -449.597f, 42.553f)),
+            new VehicleRaceCheckpoint(4, new Vector3(255.123f, -577.066f, 42.344f)),
+            new VehicleRaceCheckpoint(5, new Vector3(214.250f, -612.250f, 40.656f)),
+            new VehicleRaceCheckpoint(6, new Vector3(146.750f, -587.500f, 43.063f)),
+            new VehicleRaceCheckpoint(7, new Vector3(83.750f, -605.000f, 43.250f)),
+            new VehicleRaceCheckpoint(8, new Vector3(44.750f, -712.000f, 43.250f)),
+            new VehicleRaceCheckpoint(9, new Vector3(-5.500f, -747.250f, 43.281f)),
+            new VehicleRaceCheckpoint(10, new Vector3(-202.500f, -682.750f, 32.875f)),
+            new VehicleRaceCheckpoint(11, new Vector3(-237.364f, -624.807f, 32.814f)),
+            new VehicleRaceCheckpoint(12, new Vector3(-169.492f, -441.357f, 33.011f)),
+        };
+        VehicleRaceTrack midtown2 = new VehicleRaceTrack("midtown2", "Circuit - Midtown Madness 2", "Race around Midtown", midtown2checkpoints, midtown2start);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(midtown2);
 
         List<VehicleRaceStartingPosition> eastsidecircuitstart = new List<VehicleRaceStartingPosition>()
         {
@@ -1879,6 +2236,37 @@ public class VehicleRaces : IVehicleRaces
         VehicleRaceTrack southlossantos = new VehicleRaceTrack("southlossantos", "Circuit - South Los Santos", "Race Around South Los Santos", southlossantoscheckpoints, southlossantosstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(southlossantos); // R Conversion
 
+        List<VehicleRaceStartingPosition> southshamblesststart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(1041.074f, -2303.690f, 29.484f), 175.475f),
+            new VehicleRaceStartingPosition(1, new Vector3(1043.566f, -2303.888f, 29.524f), 175.475f),
+            new VehicleRaceStartingPosition(2, new Vector3(1041.704f, -2295.715f, 29.484f), 175.475f),
+            new VehicleRaceStartingPosition(3, new Vector3(1044.197f, -2295.913f, 29.527f), 175.475f),
+            new VehicleRaceStartingPosition(4, new Vector3(1042.335f, -2287.740f, 29.485f), 175.475f),
+            new VehicleRaceStartingPosition(5, new Vector3(1044.827f, -2287.938f, 29.530f), 175.475f),
+            new VehicleRaceStartingPosition(6, new Vector3(1042.965f, -2279.765f, 29.491f), 175.475f),
+            new VehicleRaceStartingPosition(7, new Vector3(1045.458f, -2279.962f, 29.529f), 175.475f),
+        };
+        List<VehicleRaceCheckpoint> southshamblesstcheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(1034.750f, -2422.750f, 28.000f)),
+            new VehicleRaceCheckpoint(1, new Vector3(940.000f, -2463.250f, 27.594f)),
+            new VehicleRaceCheckpoint(2, new Vector3(905.250f, -2390.500f, 29.219f)),
+            new VehicleRaceCheckpoint(3, new Vector3(923.500f, -2159.000f, 29.250f)),
+            new VehicleRaceCheckpoint(4, new Vector3(936.000f, -2033.500f, 29.281f)),
+            new VehicleRaceCheckpoint(5, new Vector3(954.000f, -1815.250f, 30.313f)),
+            new VehicleRaceCheckpoint(6, new Vector3(906.500f, -1759.500f, 29.594f)),
+            new VehicleRaceCheckpoint(7, new Vector3(810.500f, -1787.000f, 28.344f)),
+            new VehicleRaceCheckpoint(8, new Vector3(772.250f, -1988.000f, 28.344f)),
+            new VehicleRaceCheckpoint(9, new Vector3(834.250f, -2078.500f, 28.844f)),
+            new VehicleRaceCheckpoint(10, new Vector3(1051.250f, -2097.000f, 30.969f)),
+            new VehicleRaceCheckpoint(11, new Vector3(1048.750f, -2261.250f, 29.531f)),
+        };
+        VehicleRaceTrack southshamblesst = new VehicleRaceTrack("south_shambles_st", "Circuit - South Shambles St", "Watch out for the crossover", southshamblesstcheckpoints, southshamblesststart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(southshamblesst);
+
+
+
         List<VehicleRaceStartingPosition> canalsstart = new List<VehicleRaceStartingPosition>()
         {
             new VehicleRaceStartingPosition(0, new Vector3(-1289.399f, -990.018f, 1.206f), 269.536f),
@@ -2166,6 +2554,24 @@ public class VehicleRaces : IVehicleRaces
         };
         VehicleRaceTrack lsfreewaydrag = new VehicleRaceTrack("freewaydrag", "Drag - LS Freeway", "Drag from El Burro to Pacific Bluffs", lsfreewaydragcheckpoints, lsfreewaydragstart);
         VehicleRaceTypeManager.VehicleRaceTracks.Add(lsfreewaydrag);
+
+        List<VehicleRaceStartingPosition> occupationavequartermulestart = new List<VehicleRaceStartingPosition>()
+        {
+            new VehicleRaceStartingPosition(0, new Vector3(-137.183f, -227.581f, 43.841f), 252.262f),
+            new VehicleRaceStartingPosition(1, new Vector3(-136.113f, -224.248f, 43.867f), 252.262f),
+            new VehicleRaceStartingPosition(2, new Vector3(-144.803f, -225.145f, 44.149f), 252.262f),
+            new VehicleRaceStartingPosition(3, new Vector3(-143.733f, -221.813f, 44.157f), 252.262f),
+            new VehicleRaceStartingPosition(4, new Vector3(-152.423f, -222.710f, 44.731f), 252.262f),
+            new VehicleRaceStartingPosition(5, new Vector3(-151.353f, -219.377f, 44.689f), 252.262f),
+            new VehicleRaceStartingPosition(6, new Vector3(-160.044f, -220.274f, 45.410f), 252.262f),
+            new VehicleRaceStartingPosition(7, new Vector3(-158.974f, -216.942f, 45.311f), 252.262f),
+        };
+        List<VehicleRaceCheckpoint> occupationavequartermulecheckpoints = new List<VehicleRaceCheckpoint>()
+        {
+            new VehicleRaceCheckpoint(0, new Vector3(240.856f, -364.254f, 43.397f)),
+        };
+        VehicleRaceTrack occupationavequartermule = new VehicleRaceTrack("occupaveQuartermile", "Drag - Occupation Ave", "Occupation Ave Quarter Mile Drag Race", occupationavequartermulecheckpoints, occupationavequartermulestart);
+        VehicleRaceTypeManager.VehicleRaceTracks.Add(occupationavequartermule);
 
         List<VehicleRaceStartingPosition> popdragstart = new List<VehicleRaceStartingPosition>()
         {
