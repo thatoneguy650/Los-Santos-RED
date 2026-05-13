@@ -3590,6 +3590,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Neck,
             IsAccessory = true,
         };
+
+        // EUP Change - prop change - vest tie///
         NeckTie3_MPM = new PedClothingShopMenuItem("Plain Vest Tie", "", 50, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(7, 20, new List<int>() { 0 }){ AllowAllTextureVariations = true } })
         {
@@ -3598,6 +3600,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Neck,
             IsAccessory = true,
         };
+        ////////////
+
         NeckTie4_MPM = new PedClothingShopMenuItem("Designer Tie", "Shirt or Open Jacket", 75, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(7, 21, new List<int>() { 0 }){ AllowAllTextureVariations = true } })
         {
@@ -3795,6 +3799,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - Trouser Issue ///
         DiscountOutfit4_MPF = new PedClothingShopMenuItem("The Scruffy Applicant", "At least you tried. Good Job!", 280, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 0, new List<int>() { 0 }),
         new PedClothingComponent(4, 41, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -3810,6 +3816,8 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
         //Binco
+
+        // EUP Change - Full Outfit Issue ///
         BincoOutfit1_MPF = new PedClothingShopMenuItem("The Worker", "Work Outfit", 400, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 4, new List<int>() { 0 }),
         new PedClothingComponent(4, 34, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -3823,6 +3831,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - trousers ///
         BincoOutfit2_MPF = new PedClothingShopMenuItem("The Weekend Warrior", "Combat Ready!", 800, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 3, new List<int>() { 0 }),
         new PedClothingComponent(4, 30, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -3870,6 +3880,7 @@ public class ShopMenus_Clothing
     }
     private void MPMale_Outfits()
     {
+        // EUP Change - Shirt Change ///
         BusinessOutfit1_MPM = new PedClothingShopMenuItem("The Business Man", "", 1200, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 4, new List<int>() { 0 }),
         new PedClothingComponent(4, 10, new List<int>() { 0, 1, 2 }){ AllowAllTextureVariations = false },
@@ -3893,6 +3904,8 @@ public class ShopMenus_Clothing
                 new PedComponent(11, 4, 0, 0)*/
 
         //Perseus & Deidier
+
+        // EUP Change - prop change - vest tie ///
         BusinessOutfit2_MPM = new PedClothingShopMenuItem("The Vested Capo", "", 1000, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 4, new List<int>() { 0 }),
         new PedClothingComponent(4, 22, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -3921,6 +3934,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - Jacket Change ///
         BusinessOutfit4_MPM = new PedClothingShopMenuItem("The Classic Gangster", "", 1500, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 4, new List<int>() { 0 }),
         new PedClothingComponent(4, 20, new List<int>() { 0, 1 ,2 }){ AllowAllTextureVariations = false },
@@ -3964,6 +3979,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - Trousers ///
         BincoOutfit2_MPM = new PedClothingShopMenuItem("The Weekend Warrior", "Combat Ready!", 800, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 15, new List<int>() { 0 }),
         new PedClothingComponent(4, 31, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4023,6 +4040,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - Tracksuit top replaced with Shirt ///
         DiscoOutfit2_MPM = new PedClothingShopMenuItem("Discount Outfit 2", "Full Tracksuit", 120, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 6, new List<int>() { 0 }),
         new PedClothingComponent(4, 3, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4049,6 +4068,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Body,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Change - Trouser Issue  changes to army combat pants ///
         DiscoOutfit4_MPM = new PedClothingShopMenuItem("The Scruffy Applicant", "At least you tried. Good Job!", 280, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(3, 4, new List<int>() { 0 }),
         new PedClothingComponent(4, 37, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4212,6 +4233,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes /////
         DesignJumper2_MPF = new PedClothingShopMenuItem("Designer Sweater 2", "", 125, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 192, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4234,6 +4257,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////
+
         DesignJumper4_MPF = new PedClothingShopMenuItem("Designer Sweater 4", "", 130, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 376, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4302,6 +4327,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ///
         Hoodie6_MPF = new PedClothingShopMenuItem("Longline Hoodie", "", 75, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 189, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4313,6 +4340,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////
+
         Hoodie7_MPF = new PedClothingShopMenuItem("Sleeveless Hoodie", "", 35, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 207, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4324,6 +4353,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ////
         Hoodie8_MPF = new PedClothingShopMenuItem("Guffy Hoodie", "", 120, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 202, new List<int>() { 5, 6, 7, 8, 16, 17 }){ AllowAllTextureVariations = false },
@@ -4346,7 +4377,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
+        /////////////////
+        
         //Jackets
 
         // Denim Jacket
@@ -4491,6 +4523,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        /// EUP Changes  - Undershirt change///
         FlightJacket2a_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with Over Shoulder Top", "", 320, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4502,6 +4536,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket2b_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with T-Shirt", "", 310, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4513,6 +4548,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////////
         FlightJacket2c_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with Designer Rolled T-Shirt", "", 360, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4524,6 +4560,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - Undershirt change///
         FlightJacket2d_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with Designer T-Shirt", "", 350, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4535,6 +4573,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket2e_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with Designer T-Shirt 2", "", 380, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4546,6 +4585,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////////
         FlightJacket2f_MPF = new PedClothingShopMenuItem("BIGNESS Flight Jacket with Designer T-Shirt 3", "", 340, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },            
@@ -4584,6 +4624,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket4a_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with Over Shoulder Top", "", 420, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4595,6 +4636,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket4b_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with T-Shirt", "", 410, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4606,6 +4648,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        ///////////////////
         FlightJacket4c_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with Designer Rolled T-Shirt", "", 460, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4617,6 +4660,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket4d_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with Designer T-Shirt", "", 450, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4628,6 +4672,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket4e_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with Designer T-Shirt 2", "", 430, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4639,6 +4684,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        //////////////////////
         FlightJacket4f_MPF = new PedClothingShopMenuItem("Designer Flight Jacket with Designer T-Shirt 3", "", 480, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 270, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4665,7 +4711,6 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
         FlightJacket6_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Loose Tank", "", 530, new List<string>() { "mp_f_freemode_01" },
              new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4677,6 +4722,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - Undershirt change///
         FlightJacket6a_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Over Shoulder Top", "", 550, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4688,6 +4735,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket6b_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with T-Shirt", "", 640, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4699,6 +4747,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////////////
         FlightJacket6c_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket with Designer Rolled T-Shirt", "", 590, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4710,6 +4759,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket6d_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Designer T-Shirt", "", 630, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4721,6 +4771,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         FlightJacket6e_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Designer T-Shirt 2", "", 620, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4732,6 +4783,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////
         FlightJacket6f_MPF = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Designer T-Shirt 3", "", 600, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 363, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -4743,9 +4795,6 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
-
-
 
 
         // Formal
@@ -5053,6 +5102,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         Cropped1Jacket4_MPF = new PedClothingShopMenuItem("Cropped Biker with Over-Should T-Shirt", "", 175, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 8, new List<int>() { 0, 1, 2, 12 }){ AllowAllTextureVariations = false },
@@ -5075,6 +5125,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - Jacket change/// Designer Crop Block
         Cropped2Jacket1_MPF = new PedClothingShopMenuItem("Designer Cropped Biker with Tank Top", "", 175, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 35, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5119,6 +5171,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes  - Undershirt change///
         Cropped2Jacket5_MPF = new PedClothingShopMenuItem("Designer Cropped Biker with Over-Should T-Shirt", "", 185, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 35, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5152,6 +5205,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        ///////////////
+
 
         // Leather Jackets 
         LeatherJacket1_MPF = new PedClothingShopMenuItem("Leather Fur Jacket with Low Neck T-Shirt", "", 340, new List<string>() { "mp_f_freemode_01" },
@@ -5417,7 +5472,7 @@ public class ShopMenus_Clothing
         };
 
 
-
+        // EUP Changes - Jacket///
         LeatherJacket6_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket (Closed)", "", 180, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 274, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5430,7 +5485,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - Jacket///
         LeatherJacket7_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Loose Tank", "", 430, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5442,6 +5497,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket and undershirt ///
         LeatherJacket7a_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Over Shoulder Top", "", 450, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5453,6 +5509,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket and undershirt ///
         LeatherJacket7b_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with T-Shirt", "", 440, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5464,6 +5521,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket ///
         LeatherJacket7c_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Designer Rolled T-Shirt", "", 470, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5475,6 +5533,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket and undershirt ///
         LeatherJacket7d_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Designer T-Shirt", "", 490, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5486,6 +5545,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket and undershirt ///
         LeatherJacket7e_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Designer T-Shirt 2", "", 520, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5497,6 +5557,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Jacket ///
         LeatherJacket7f_MPF = new PedClothingShopMenuItem("Designer Leather Bomber Jacket with Designer T-Shirt 3", "", 500, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 275, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5508,8 +5569,6 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
-
 
         LeatherJacket8_MPF = new PedClothingShopMenuItem(" Leather Bomber Jacket (Closed)", "", 100, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
@@ -5629,6 +5688,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket1d_MPF = new PedClothingShopMenuItem("Plain Puffer Jacket with Love Fist T-Shirt", "", 130, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 164, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5664,6 +5725,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket2b_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket with Designer T-Shirt", "", 390, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 193, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5675,6 +5738,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Undershirt ///
         PufferJacket2c_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket with Designer T-Shirt 2", "", 420, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 193, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5686,6 +5750,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////
         PufferJacket2d_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket with Designer T-Shirt 3", "", 400, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 193, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5697,6 +5762,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket2e_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket with T-Shirt", "", 330, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 193, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5732,6 +5799,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Undershirt ///
         PufferJacket3b_MPF = new PedClothingShopMenuItem("Vibrant Puffer Jacket with Designer T-Shirt", "", 260, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 278, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5743,6 +5811,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Undershirt ///
         PufferJacket3c_MPF = new PedClothingShopMenuItem("Vibrant Puffer Jacket with Designer T-Shirt 2", "", 280, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 278, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5754,6 +5823,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        ////////////////////
         PufferJacket3d_MPF = new PedClothingShopMenuItem("Vibrant Puffer Jacket with Designer T-Shirt 3", "", 260, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 278, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5765,6 +5835,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket3e_MPF = new PedClothingShopMenuItem("Vibrant Puffer Jacket with T-Shirt", "", 220, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 278, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5800,6 +5872,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket4b_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket 2with Designer T-Shirt", "", 460, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 320, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5811,6 +5885,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - Undershirt ///
         PufferJacket4c_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket 2 with Designer T-Shirt 2", "", 480, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 320, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5822,6 +5897,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        ////////////////////////
         PufferJacket4d_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket 2 with Designer T-Shirt 3", "", 440, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 320, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5833,6 +5909,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - Undershirt ///
         PufferJacket4e_MPF = new PedClothingShopMenuItem("Designer Puffer Jacket 2 with T-Shirt", "", 420, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 320, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5940,6 +6018,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - Switches to  Lifeguard T-shirt ///
         PlainTshirt2_MPF = new PedClothingShopMenuItem("Plain T-Shirt 2", "", 15, new List<string>() { "mp_f_freemode_01" }, // Less texture options
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 23, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5951,6 +6031,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ///
         OffShoulderTshirt1_MPF = new PedClothingShopMenuItem("Off-Shoulder T-Shirt", "", 25, new List<string>() { "mp_f_freemode_01" }, // Less texture options
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 30, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5962,6 +6044,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes ///
         OffShoulderTshirt2_MPF = new PedClothingShopMenuItem("Vibrant Off-Shoulder T-Shirt", "", 30, new List<string>() { "mp_f_freemode_01" }, // alt texture options
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 38, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -5973,6 +6056,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////
+
         DesignerTshirt1_MPF = new PedClothingShopMenuItem("Designer T-Shirt", "", 45, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 68, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6061,6 +6146,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ///
         WorkShirt1_MPF = new PedClothingShopMenuItem("Hinterland Work Shirt", "", 35, new List<string>() { "mp_f_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 119, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6241,6 +6328,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes ///
         DesignJumper2_MPM = new PedClothingShopMenuItem("Designer Sweater 2", "", 125, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 190, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6252,6 +6340,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ///
         DesignJumper3_MPM = new PedClothingShopMenuItem("Designer Sweater 3", "", 95, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 307, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6343,6 +6433,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - changed to open leather jacket///
         TeeTshirt1_MPM = new PedClothingShopMenuItem("Tee-Shirt", "", 25, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 38, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6354,6 +6446,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - changes to police shirt///
         DesignerTshirt1_MPM = new PedClothingShopMenuItem("Designer T-Shirt", "", 45, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 73, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6365,6 +6459,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - changed to police shirt/armor///
         BaggyTshirt1_MPM = new PedClothingShopMenuItem("Baggy T-Shirt", "", 25, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 80, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6387,6 +6483,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - police shirt///
         DesignerTshirt2_MPM = new PedClothingShopMenuItem("Designer Long T-Shirt", "", 50, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 193, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6492,6 +6590,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - jacket///
         Hoodie6_MPM = new PedClothingShopMenuItem("Longline Hoodie with T-Shirt", "", 75, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 187, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6514,6 +6614,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes ///
         Hoodie8_MPM = new PedClothingShopMenuItem("Guffy Hoodie", "", 120, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 200, new List<int>() { 5, 6, 7, 8, 16, 17 }){ AllowAllTextureVariations = false },
@@ -6525,6 +6627,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes ///
         Hoodie9_MPM = new PedClothingShopMenuItem("Bigness Hoodie", "", 120, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 200, new List<int>() { 9, 10, 11, 12, 13, 21 }){ AllowAllTextureVariations = false },
@@ -6582,6 +6685,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         DenimJacket1d_MPM = new PedClothingShopMenuItem("Denim Jacket with Tee Shirt", "", 120, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 169, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6641,6 +6746,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         DenimJacket2d_MPM = new PedClothingShopMenuItem("Patched Denim Jacket with Tee Shirt", "", 140, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 172, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6734,6 +6841,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - changed to t-shirt ot waist med pack///
         FieldJacket2d_MPM = new PedClothingShopMenuItem("Field Jacket with Tee Shirt", "", 170, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 233, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6879,6 +6988,8 @@ public class ShopMenus_Clothing
             },
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         FlightJacket2a_MPM = new PedClothingShopMenuItem("BIGNESS Bomber Jacket with Designer T-Shirt", "", 350, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 230, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6943,6 +7054,8 @@ public class ShopMenus_Clothing
             },
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         FlightJacket4a_MPM = new PedClothingShopMenuItem("Designer Flight Jacket with Designer T-Shirt", "", 450, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 261, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6978,6 +7091,8 @@ public class ShopMenus_Clothing
         };
 
 
+
+        // EUP Changes - changes to police bomber jacket - full Leather Flight Jacket Block ///
         FlightJacket5_MPM = new PedClothingShopMenuItem("Leather Flight Jacket (Closed)", "", 620, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 265, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -6989,8 +7104,6 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
-
 
         FlightJacket6_MPM = new PedClothingShopMenuItem("Leather Flight Jacket with BIGNESS T-Shirt", "", 600, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
@@ -7007,6 +7120,8 @@ public class ShopMenus_Clothing
             },
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         FlightJacket6a_MPM = new PedClothingShopMenuItem("Leather Flight Jacket with Designer T-Shirt", "", 580, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 266, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7040,7 +7155,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
+        ////////////////////////
 
 
         FlightJacket7_MPM = new PedClothingShopMenuItem("Designer Bomber Jacket 2 (Closed)", "", 500, new List<string>() { "mp_m_freemode_01" },
@@ -7085,6 +7200,8 @@ public class ShopMenus_Clothing
             },
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         FlightJacket8b_MPM = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Designer T-Shirt", "", 580, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 344, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7096,6 +7213,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        //////////////////////
+
         FlightJacket8c_MPM = new PedClothingShopMenuItem("Designer Bomber Jacket 2 with Designer T-Shirt 2", "", 560, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 344, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7184,6 +7303,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes  - shirt changes to pol shirt ///
         LeatherJacket2b_MPM = new PedClothingShopMenuItem("Suede Jacket with Designer T-Shirt", "", 425, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 6, new List<int>() { 11 }){ AllowAllTextureVariations = false },
@@ -7243,6 +7364,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         LeatherJacket3c_MPM = new PedClothingShopMenuItem("Black Fitted Leather Jacket with Tee Shirt", "", 320, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 62, new List<int>() { 0 }),
@@ -7296,7 +7419,7 @@ public class ShopMenus_Clothing
 
 
 
-
+        // EUP Changes - changes to t-shirt to police shirt ///
         LeatherJacket5_MPM = new PedClothingShopMenuItem("Leather Fur Jacket with T-Shirt", "", 350, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 70, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7330,6 +7453,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = false,
         };
+
+        // EUP Changes - shirt change to oen chest with badge ///
         LeatherJacket5c_MPM = new PedClothingShopMenuItem("Leather Fur Jacket with Untucked Shirt", "", 380, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 70, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7398,6 +7523,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = false,
         };
+
+        // EUP Changes - shirt change to open chest with badge ///
         LeatherJacket6c_MPM = new PedClothingShopMenuItem("Bright Leather Fur Jacket with Untucked Shirt", "", 580, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 240, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7479,6 +7606,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt changes to police shirt ///
         LeatherJacket8c_MPM = new PedClothingShopMenuItem("Fitted Leather Jacket with Tee Shirt", "", 320, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 163, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7491,6 +7620,9 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
+
+
+        // EUP Changes - changes jacket - full block ///
         LeatherJacket9_MPM = new PedClothingShopMenuItem("Leather Blouson Jacket with T-Shirt", "", 150, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 166, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7524,6 +7656,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        // EUP Changes - t-shirt changes to police shirt ///
         LeatherJacket9c_MPM = new PedClothingShopMenuItem("Leather Blouson Jacket with Tee Shirt", "", 160, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 166, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7535,7 +7668,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
+        ////////
 
         LeatherJacket10_MPM = new PedClothingShopMenuItem("Popped Leather Jacket with T-Shirt", "", 530, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
@@ -7559,6 +7692,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt to police shirt ///
         LeatherJacket10b_MPM = new PedClothingShopMenuItem("Popped Leather Jacket with Designer T-Shirt", "", 555, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 338, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7570,6 +7705,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        /////////////////
+
         LeatherJacket10c_MPM = new PedClothingShopMenuItem("Popped Leather Jacket with Designer T-Shirt 2", "", 590, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 338, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -7637,7 +7774,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - t-shirt to police shirt ///
         LeatherJacket12_MPM = new PedClothingShopMenuItem("Leather Bomber Jacket with Designer T-Shirt", "", 475, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 381, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -8424,6 +8561,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+
+        // EUP Changes - t-shirt to police shirt ///
         PufferJacket1d_MPM = new PedClothingShopMenuItem("Plain Puffer Jacket with Tee Shirt", "", 165, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 167, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -8436,7 +8575,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - t-shirt to police shirt ///
         PufferJacket2_MPM = new PedClothingShopMenuItem("Designer Puffer Jacket with T-Shirt 1", "", 460, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 191, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -8448,6 +8587,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
+        ////
         PufferJacket2a_MPM = new PedClothingShopMenuItem("Designer Puffer Jacket with T-Shirt 2", "", 460, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 191, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -8476,7 +8616,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - t-shirt to police shirt ///
         PufferJacket3_MPM = new PedClothingShopMenuItem("Vibrant Puffer Jacket with T-Shirt 1", "", 300, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 269, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -8516,7 +8656,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - t-shirt to police shirt ///
         PufferJacket4_MPM = new PedClothingShopMenuItem("Designer Puffer Jacket 2 with T-Shirt 1", "", 480, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 309, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -9066,6 +9206,8 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
+
+        // EUP Changes - jacket change -  full block
         SuitJacket5_MPM = new PedClothingShopMenuItem("Classic Ivory Jacket with Vest (Un-Buttoned)", "", 1350, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 20, new List<int>() { 0 }){ AllowAllTextureVariations = false },
@@ -9316,6 +9458,8 @@ public class ShopMenus_Clothing
 
 
         //Sportswear Jerseys and Jackets
+
+        // EUP Changes tshirt ///
         PounderJersey1_MPM = new PedClothingShopMenuItem("LS Pounders Jersey", "", 85, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 2, new List<int>() { 9 }){ AllowAllTextureVariations = false },
@@ -9332,6 +9476,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
+        // EUP Changes  - track jacket to shirt  - whole track jacket block///
         TrackJacket1_MPM = new PedClothingShopMenuItem("Track Jacket with T-Shirt", "", 65, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 3, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -9390,6 +9535,8 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = false,
         };
+
+        // EUP Changes - track jacket to shirt - tshirt changes to police shirt  ///
         TrackJacket1e_MPM = new PedClothingShopMenuItem("Track Jacket with Designer T-Shirt", "", 90, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 3, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -9413,7 +9560,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = false,
         };
-
+        ////////////////////////
 
         LeatherJersey1_MPM = new PedClothingShopMenuItem("Leather Sports Jersey", "", 85, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
@@ -9677,7 +9824,7 @@ public class ShopMenus_Clothing
             RemoveTorsoDecals = true,
         };
 
-
+        // EUP Changes - Pocket Watch Vest to Cop Jacket - whole block //
         WatchVest1_MPM = new PedClothingShopMenuItem("Pocket-Watch Vest with Short Sleeve Shirt", "", 100, new List<string>() { "mp_m_freemode_01" },
             new List<PedClothingComponent>() {
             new PedClothingComponent(11, 21, new List<int>() { 0 }){ AllowAllTextureVariations = true },
@@ -9733,7 +9880,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Chest,
             RemoveTorsoDecals = true,
         };
-
+        /////////////////////
 
 
     }
@@ -9893,6 +10040,8 @@ public class ShopMenus_Clothing
             SubCategory = "Sports",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes ///
         TrackPants3_MPM = new PedClothingShopMenuItem("ProLaps 2 Stripe Tracksuit Pants", "", 55, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 64, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -9972,6 +10121,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes - Regular Suit Trousers to Cop Pants ///
         RegularSuitPants_MPM = new PedClothingShopMenuItem("Regular Suit Trousers", "Casual trousers for a relaxed look.", 95, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 25, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -9979,6 +10130,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes - Slim Fit Suit Trousers to tucked combat Pants ///
         SlimFitTrousers_MPM = new PedClothingShopMenuItem("Slim Fit  Trousers", "", 150, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 28, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -9993,6 +10146,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes  - changes to army combat pants///
         ScruffySuitPants_MPM = new PedClothingShopMenuItem("Scruffy Suit Pants", "", 120, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 37, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10000,6 +10155,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+
         ContinentalPants_MPM = new PedClothingShopMenuItem("Continental Pants", "", 280, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 48, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10179,6 +10336,8 @@ public class ShopMenus_Clothing
             SubCategory = "Underwear",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes - changes to cop motorcycle pants ///
         LongJohnsUnderwear1_MPM = new PedClothingShopMenuItem("Long Johns", "", 55, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 32, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10186,6 +10345,8 @@ public class ShopMenus_Clothing
             SubCategory = "Underwear",
             PedFocusZone = ePedFocusZone.Legs,
         };
+        /////////
+
         BoxersUnderwear1_MPM = new PedClothingShopMenuItem("Boxers", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 61, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10216,6 +10377,7 @@ public class ShopMenus_Clothing
             SubCategory = "Utility",
             PedFocusZone = ePedFocusZone.Legs,
         };
+        // EUP Changes - changes to swat pants ///
         CombatPants1_MPM = new PedClothingShopMenuItem("Combat Pants", "", 265, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 31, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10223,6 +10385,8 @@ public class ShopMenus_Clothing
             SubCategory = "Utility",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Changes ///
         UtilityPants1_MPM = new PedClothingShopMenuItem("Utility Pants", "", 125, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 47, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10279,6 +10443,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Change ///
         SuitPants4_MPF = new PedClothingShopMenuItem("Scruffy Suit Pants", "", 75, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 41, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10286,6 +10452,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+
         ContinentalPants_MPF = new PedClothingShopMenuItem("Continental Pants", "", 280, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 50, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10300,6 +10468,7 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+        // EUP Change  - changes to track pants///
         ShinyPants_MPF = new PedClothingShopMenuItem("Shiny Pants", "", 350, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 52, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10307,6 +10476,7 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
         GoldPrintPants_MPF = new PedClothingShopMenuItem("Gold Print Pants", "", 350, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 53, new List<int>() { 0 }){ AllowAllTextureVariations = false },})
         {
@@ -10314,6 +10484,7 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+        // EUP Change  -  changes to combat pants///
         ShinyFittedPants_MPF = new PedClothingShopMenuItem("Shiny Slim Pants", "", 400, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 54, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10321,6 +10492,8 @@ public class ShopMenus_Clothing
             SubCategory = "Formal",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Change  - changes to garbage outfit trousers///
         GoldPrintFittedPants_MPF = new PedClothingShopMenuItem("Gold Print Slim Pants", "", 400, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 55, new List<int>() { 0 }){ AllowAllTextureVariations = false },})
         {
@@ -10632,6 +10805,8 @@ public class ShopMenus_Clothing
             SubCategory = "Skirts",
             PedFocusZone = ePedFocusZone.Legs,
         };
+
+        // EUP Change  ///
         PencilSkirt3_MPF = new PedClothingShopMenuItem("Cheap Pencil Skirt", "", 70, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 36, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10676,6 +10851,7 @@ public class ShopMenus_Clothing
             SubCategory = "Sports",
             PedFocusZone = ePedFocusZone.Legs,
         };
+        // EUP Change ///
         TrackPants2_MPF = new PedClothingShopMenuItem("Colorful Tracksuit Pants", "", 55, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 66, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10778,6 +10954,8 @@ public class ShopMenus_Clothing
         };
 
         //Utility Pants
+
+        // EUP Change ///
         CombatPants1_MPF = new PedClothingShopMenuItem("Combat Pants", "", 150, new List<string>() { "mp_f_freemode_01" }, new List<PedClothingComponent>() {
             new PedClothingComponent(4, 30, new List<int>() { 0 }){ AllowAllTextureVariations = true },})
         {
@@ -10860,6 +11038,8 @@ public class ShopMenus_Clothing
     private void MPMale_Hats()
     {
         //Formal
+
+        // EUP - Changes to fireman hat ///
         BrimmedHat1_MPM = new PedClothingShopMenuItem("Brimmed Hat 1", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {
         new PedClothingComponent(0, 25, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
         {
@@ -10935,6 +11115,7 @@ public class ShopMenus_Clothing
             PedFocusZone = ePedFocusZone.Head,
             IsAccessory = true,
         };
+        // EUP Change ///
         Beanie3_MPM = new PedClothingShopMenuItem("Tight Beanie 2", "", 25, new List<string>() { "mp_m_freemode_01" }, new List<PedClothingComponent>() {//EUP OVERWRITE
         new PedClothingComponent(0, 28, new List<int>() { 0 }){ IsProp = true, AllowAllTextureVariations = true, }, })
         {
