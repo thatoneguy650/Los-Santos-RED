@@ -2362,7 +2362,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 MaxBax = 2000,
             },
-            new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all the tracks","")
+            new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all city tracks","")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -2391,7 +2391,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 BannerImagePath = "stores\\paletooffroader.png",
                 MaxBax = 2000,
-                AllowedOpponentGroups = new List<string>() { "Buggy_Racing", "MotoX_Racing", "OffRoad_Racing", "4x4OffRoad_Racing", "RallyCars_Racing", "TrophyTruck_Racing", },
+                AllowedOpponentGroups = new List<string>() { "OffRoad_Racing",  "4x4OffRoad_Racing", "OffRoadMotorcycles_Racing", "ATV_Racing", "ATVvsMOTO_Racing", "Buggy_Racing", "MotoX_Racing", "RallyCars_Racing", "TrophyTruck_Racing" },
                 SupportedTracks = new List<string>() 
                 {
                     "chillstatewildernessloop", "landactresoviorcircuit", "paletocove", "procopio_beach", "sandyoffroaddrag", "canyon_cliffs", "canyoncliffs2", "chiliad_trail1", "grandsenoratrail1", "landactresoviorroute1", "landactresoviorroute2",
