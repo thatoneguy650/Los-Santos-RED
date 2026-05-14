@@ -2343,7 +2343,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-12.21532f, 1.222972E-05f, 74.3194f),
                 SupportedTracks = new List<string>() 
                 { 
-                    "alamo_sea1","sandyloop1", "sandyloop2","shadya2btrack1","grapeseed_loop", "grapeseed_loop2", "prisonrun","prisonrun2", "sandymile", "hookiespipeline",
+                    "alamo_sea1","sandyloop1", "sandyloop2","shadya2btrack1","grapeseed_loop","grapseedrev", "grapeseed_loop2", "prisonrun","prisonrun2", "sandymile", "hookiespipeline","grapep2ptwo","grapeseed_p2p","grapestab",
                     "sandyobservatorySprint", "sandykortzSprint", "sandystabCitySprint", "sandyvinewoodSprint", "sandyelysianSprint", "sandypowerStationSprint", "sandylsiaSprint", "sandymazeBankSprint", "sandyPuertoDelSolSprint", "sandyDelPerroSprint",                  
                 },
                 MaxBax = 2000,
@@ -2356,12 +2356,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraPosition = new Vector3(142.2736f, 6626.222f, 39.35808f),
                 CameraDirection = new Vector3(-0.9640946f, 0.09018292f, -0.2497771f),
                 CameraRotation = new Rotator(-14.46432f, 4.959682E-06f, 84.65601f),
-                SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1", "paletoobservatorySprint", "paletokortzSprint", "paletostabCitySprint", "paletovinewoodSprint", "paletoelysianSprint", "paletopowerStationSprint", "paletolsiaSprint", "paletomazeBankSprint", "paletoPuertoDelSolSprint" },
+                SupportedTracks = new List<string>() { "paletoloop1", "paletoloop2","paletodrag1", "paletop2p","paletoquarter",
+                    "paletoobservatorySprint", "paletokortzSprint", "paletostabCitySprint", "paletovinewoodSprint", "paletoelysianSprint", "paletopowerStationSprint", "paletolsiaSprint", "paletomazeBankSprint", "paletoPuertoDelSolSprint" },
                 OpenTime = 0,
                 CloseTime = 24,
                 MaxBax = 2000,
             },
-            new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all the tracks","")
+            new RaceMeetup(new Vector3(722.977f, -1069.407f, 23.0624f), 90.35049f, "La Mesa Race Meetup", "Largest meetup group in LS. Access to all city tracks","")
             {
                 OpenTime = 0,
                 CloseTime = 24,
@@ -2373,8 +2374,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
                 //Central Tracks
                     "lsairport","cypressflat1", "hoodrun", "delperroloop", "eastsideCircuit", "ely_freeloop", "centralRace3", "freeway", "mirrorpark", "mirrorparkrev", "southlossantos", "vespCanals", "welcometols", "welcometolsshort",
-                    "centralRace2", "ely_freeway", "freewaydrag", "popDrag",
-                    "fleecarun", "ElBurroPoint", "centralRace1", "sustanciasprint", "greatoceanhighway", "roadtoHarmony", "richman_road","Downtown1",
+                    "centralRace2", "ely_freeway", "freewaydrag", "popDrag","south_shambles_st","mesabridges","missionrow","rockydelperro","lsia_loop",
+                    "fleecarun", "ElBurroPoint", "centralRace1", "sustanciasprint", "greatoceanhighway", "roadtoHarmony", "richman_road","Downtown1","strawberrylsia","midtown1","midtown2","occupaveQuartermile","roadrunner1",
+                    "tongva_hills","tongva_hills_long","tongva_hills_rev",
+
+
                     "observatorySprint", "kortzSprint", "stabCitySprint", "vinewoodSprint", "elysianSprint", "powerStationSprint", "lsiaSprint", "mazeBankSprint", "PuertoDelSolSprint" , "delPerroSprint",
                   
 
@@ -2387,7 +2391,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CloseTime = 24,
                 BannerImagePath = "stores\\paletooffroader.png",
                 MaxBax = 2000,
-                AllowedOpponentGroups = new List<string>() { "Buggy_Racing", "MotoX_Racing", "OffRoad_Racing", "4x4OffRoad_Racing", "RallyCars_Racing", "TrophyTruck_Racing", },
+                AllowedOpponentGroups = new List<string>() { "OffRoad_Racing",  "4x4OffRoad_Racing", "OffRoadMotorcycles_Racing", "ATV_Racing", "ATVvsMOTO_Racing", "Buggy_Racing", "MotoX_Racing", "RallyCars_Racing", "TrophyTruck_Racing" },
                 SupportedTracks = new List<string>() 
                 {
                     "chillstatewildernessloop", "landactresoviorcircuit", "paletocove", "procopio_beach", "sandyoffroaddrag", "canyon_cliffs", "canyoncliffs2", "chiliad_trail1", "grandsenoratrail1", "landactresoviorroute1", "landactresoviorroute2",
