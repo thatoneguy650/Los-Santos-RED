@@ -213,7 +213,7 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany STR Obstructor", true, ItemType.Vehicles) { OverrideMakeName = "Albany", ModelName = "polvstrliv" });
         
         Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\ModItems+_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\ModItems+_FullExpandedJurisdiction.xml");
+        //Serialization.SerializeParam(newPossibleItems, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\ModItems+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_FullModernTraffic()
     {

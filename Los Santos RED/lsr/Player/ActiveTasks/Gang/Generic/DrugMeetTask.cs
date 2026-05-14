@@ -62,11 +62,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             if(IsPlayerSellingDrugs)
             {
-                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}. Should be ${UnitPrice * Quantity} to you.");
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with ${UnitPrice * Quantity} to buy {Quantity} {ModItem.MeasurementName} of {ModItem.Name}.");
+
             }
             else
             {
-                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with ${UnitPrice * Quantity} to buy {Quantity} {ModItem.MeasurementName} of {ModItem.Name}.");
+                Replies.Add($"Meet set with {DealingGang.ColorPrefix}{DealingGang.ShortName}~s~. They will be around {DealingLocation.FullStreetAddress} with {Quantity} {ModItem.MeasurementName} of {ModItem.Name}. Should be ${UnitPrice * Quantity} to you.");
             }
             Player.CellPhone.AddPhoneResponse(HiringGang.Contact.Name, HiringGang.Contact.IconName, Replies.PickRandom());
         }

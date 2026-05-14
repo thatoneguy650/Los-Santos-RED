@@ -1690,7 +1690,7 @@ public class IssueableWeapons : IIssuableWeapons
             //new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns),
             //new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns),
         };
-        Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons+_FullExpandedJurisdiction.xml");
+        //Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\IssuableWeapons+_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(IssuableWeaponsGroupLookup_Modern, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\IssuableWeapons+_FullExpandedJurisdiction.xml");
     }
 

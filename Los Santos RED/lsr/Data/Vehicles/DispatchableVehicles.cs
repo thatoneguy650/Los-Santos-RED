@@ -1778,7 +1778,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicleGroup("SunderedTaxiVehicles",DispatchableVehicles_FEJ.DispatchableVehicles_FEJ_Modern.SunderedTaxiVehicles_FEJ_Modern),
         };
         VehicleGroupLookupFEJ.AddRange(DispatchableVehicles_RaceCars.GroupsToAdd);
-        Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
+        //Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(VehicleGroupLookupFEJ, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\DispatchableVehicles+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_LibertyCity_FEJ()

@@ -774,15 +774,15 @@ namespace LSR.Vehicles
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 12) - 1, true);//Brakes
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 13) - 1, true);//Tranny
                                                                                                                                                            //NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
-            if (Settings.SettingsManager.PoliceTaskSettings.EnableOverrideVehicleMaxSpeed)
+            if (Settings.SettingsManager.PoliceTaskSettings.AllowOverrideMaxSpeedAssist)
             {
                 OriginalTopSpeed = Vehicle.TopSpeed;
                 SetNewTopSpeed = true;
-                NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(Vehicle, Settings.SettingsManager.PoliceTaskSettings.OverrideVehicleMaxSpeed);
-                EntryPoint.WriteToConsole($"SET Vehicle {Handle} Top Speed to {Settings.SettingsManager.PoliceTaskSettings.OverrideVehicleMaxSpeed} OriginalTopSpeed:{OriginalTopSpeed}");
+                NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(Vehicle, Settings.SettingsManager.PoliceTaskSettings.OverrideMaxSpeedAssistSpeed);
+                EntryPoint.WriteToConsole($"SET Vehicle {Handle} Top Speed to {Settings.SettingsManager.PoliceTaskSettings.OverrideMaxSpeedAssistSpeed} OriginalTopSpeed:{OriginalTopSpeed}");
 
             }
-            if (Settings.SettingsManager.PoliceTaskSettings.EnableOverrideVehicleAIHandling)
+            if (Settings.SettingsManager.PoliceTaskSettings.AllowOverrideAIHandlingAssist)
             {
                 SetVehicleHandlingOverride = true;
                 NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(Vehicle, Game.GetHashKey("SPORTS_CAR"));
