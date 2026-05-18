@@ -190,12 +190,13 @@ public class CopAssistManager
     }
     private void ApplyStabilityForce(Vehicle copCar)
     {
-        if (copCar.Model.IsBike || copCar.Model.IsQuadBike)
+        if (copCar.Model.IsBike || copCar.Model.IsQuadBike || copCar.Model.IsHelicopter || copCar.Model.IsPlane)
         {
             return;
         }
         float speedFactor = copCar.Speed * 0.0018f;
         NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(copCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);
+        NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 2.0f);
     }
 
 

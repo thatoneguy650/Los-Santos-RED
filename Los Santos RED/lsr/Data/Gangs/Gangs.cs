@@ -457,6 +457,7 @@ public class Gangs : IGangs
             DealerMemberMoneyMin = 650,
             DealerMemberMoneyMax = 2000,
             EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST" },
+            FriendlyGangs = new List<string>() { "AMBIENT_GANG_MESSINA" },
             DealerMenuGroup = "CokeDealerMenu",
             HeadDataGroupID = "MafiaHeads",
 
@@ -565,6 +566,7 @@ public class Gangs : IGangs
             DealerMemberMoneyMin = 650,
             DealerMemberMoneyMax = 2000,
             EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG", "AMBIENT_GANG_SALVA" },
+            FriendlyGangs = new List<string>() { "AMBIENT_GANG_GAMBETTI" },
             DealerMenuGroup = "CokeDealerMenu",
             HeadDataGroupID = "MafiaHeads",
 

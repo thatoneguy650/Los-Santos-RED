@@ -38,6 +38,10 @@ public class AIVehicleRacer : VehicleRacer
     private const float StuckSpeedThreshold = 1.0f;
     private const int StuckTimeThreshold = 8000;
 
+
+    private bool isManuallyDeleted;
+    private bool isManualCleanup;
+
     public PedExt PedExt { get; set; }
     public bool WasSpawnedForRace { get; set; }
     public override string RacerName => PedExt == null ? base.RacerName : PedExt.Name;
@@ -222,7 +226,14 @@ public class AIVehicleRacer : VehicleRacer
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(racePed, 118, false); // PCF_RunFromFiresAndExplosions
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(racePed, 398, true);  // PCF_DontAllowToBeDraggedOutOfVehicle (PlayersDontDragMeOutOfCar)
 
+        isManuallyDeleted = PedExt.IsManuallyDeleted;
+        PedExt.IsManuallyDeleted = true;
 
+        if (VehicleExt != null)
+        {
+            isManualCleanup = VehicleExt.IsManualCleanup;
+            VehicleExt.IsManualCleanup = true;
+        }
 
         PedExt.CurrentTask = new GeneralRace(PedExt, PedExt, Targetable, World, new List<VehicleExt>() { VehicleExt }, null, Settings, vehicleRace, this);
         PedExt.CurrentTask.Start();
@@ -398,6 +409,7 @@ public class AIVehicleRacer : VehicleRacer
                 PedExt.CanBeIdleTasked = true;
                 PedExt.IsManuallyDeleted = false;
             }
+            PedExt.IsManuallyDeleted = isManuallyDeleted;
             PedExt.CanBeAmbientTasked = true;
             PedExt.CanBeTasked = true;
             PedExt.CurrentTask?.Stop();
@@ -413,6 +425,7 @@ public class AIVehicleRacer : VehicleRacer
                     VehicleExt.Vehicle.IsPersistent = false;
                 }
             }
+            VehicleExt.IsManualCleanup = isManualCleanup;
         }
         base.Dispose();
     }

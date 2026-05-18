@@ -190,6 +190,7 @@ public class VehicleRacesMenu
     {
         if(IsPointRace)
         {
+            totalSelectedOpponents = 1;
             return;
         }
         opponentsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Opponents");
@@ -286,7 +287,7 @@ public class VehicleRacesMenu
             finalDescription = $"Track: {SelectedTrack?.Name}";
         }
 
-        if(totalSelectedOpponents == 1)
+        if(totalSelectedOpponents == 1 || IsPointRace)
         {
             if (RaceForPinksCheckbox != null)
             {

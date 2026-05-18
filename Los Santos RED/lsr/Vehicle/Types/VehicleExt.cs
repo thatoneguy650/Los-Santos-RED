@@ -1752,7 +1752,7 @@ namespace LSR.Vehicles
             string vehicleText = $"{Handle}";
             if (Vehicle.Exists())
             {
-                vehicleText += $" {Vehicle.Model.Name} WasModSpawned: {WasModSpawned}";
+                vehicleText += $" {Vehicle.Model.Name} WasModSpawned: {WasModSpawned} IsPersistent: {Vehicle.IsPersistent}";
             }
             return vehicleText;
         }

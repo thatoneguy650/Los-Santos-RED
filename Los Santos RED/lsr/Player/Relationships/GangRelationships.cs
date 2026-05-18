@@ -367,6 +367,11 @@ public class GangRelationships
                     rg.IsEnemy = true;
                     rg.SetReputation(rg.RepMinimum, false);
                 }
+                else if (CurrentGang.FriendlyGangs?.Any(x => x == rg.Gang?.ID) == true)
+                {
+                    rg.Reset(false);
+                    rg.SetReputation(rg.RepMaximum, false);
+                }
                 else
                 {
                     rg.IsEnemy = false;

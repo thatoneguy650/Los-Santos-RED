@@ -214,6 +214,12 @@ public class Pedestrians : ITaskerReportable
                         otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Dislike);
                         thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Dislike);
                     }
+                    else if (gang.FriendlyGangs.Contains(otherGang.ID))
+                    {
+                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Respect);//was like
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Respect);//was like
+                    }
                     else
                     {
                         RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
@@ -542,7 +548,8 @@ public class Pedestrians : ITaskerReportable
         {
             if (civies.Pedestrian.Exists() && civies.Pedestrian.Handle != Game.LocalPlayer.Character.Handle && civies.WasModSpawned)
             {
-                civies.Pedestrian.IsPersistent = false;
+                civies.Pedestrian.Delete();
+                
             }
         }
         DeadPeds.Clear();
@@ -710,19 +717,31 @@ public class Pedestrians : ITaskerReportable
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
             {
                 Civilian.Pedestrian.IsPersistent = false;
+                if (Civilian.Pedestrian.CurrentVehicle.Exists() && Civilian.Pedestrian.CurrentVehicle.IsPersistent)
+                {
+                    Civilian.Pedestrian.CurrentVehicle.IsPersistent = false;
+                }
                 EntryPoint.PersistentPedsNonPersistent++;
                 EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 1");
             }
             else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
             {
                 Civilian.Pedestrian.IsPersistent = false;
+                if (Civilian.Pedestrian.CurrentVehicle.Exists() && Civilian.Pedestrian.CurrentVehicle.IsPersistent)
+                {
+                    Civilian.Pedestrian.CurrentVehicle.IsPersistent = false;
+                }
                 EntryPoint.PersistentPedsNonPersistent++;
                 EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 2");
             }
 
-            if(Civilian.DistanceToPlayer >= 200f && Civilian.WasModSpawned && !Civilian.IsManuallyDeleted && (!Civilian.DistanceChecker.IsMovingTowards || Civilian.DistanceToPlayer >= 350f))
+            if(Civilian.DistanceToPlayer >= 200f && Civilian.WasModSpawned && !Civilian.IsManuallyDeleted && (Civilian.DistanceChecker.IsMovingAway || Civilian.DistanceToPlayer >= 350f))
             {
                 Civilian.Pedestrian.IsPersistent = false;
+                if(Civilian.Pedestrian.CurrentVehicle.Exists() && Civilian.Pedestrian.CurrentVehicle.IsPersistent)
+                {
+                    Civilian.Pedestrian.CurrentVehicle.IsPersistent = false;
+                }
                 EntryPoint.PersistentPedsNonPersistent++;
                 EntryPoint.WriteToConsole($"CIV {Civilian.Handle} SET NON PERSIST 3");
             }
