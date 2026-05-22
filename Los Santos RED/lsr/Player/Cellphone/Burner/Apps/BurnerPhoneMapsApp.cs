@@ -1,4 +1,4 @@
-﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Mod;
@@ -28,6 +28,7 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
 
+    private Texture MapsMenuBanner;
     // Filter Strings
     private string AddressFilterString = "";
     private string NameFilterString = "";
@@ -46,11 +47,13 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
 
         PlacesOfInterest = placesOfInterest;
         World = world;
+
+        MenuPool = new MenuPool();
+        MapsMenuBanner = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Settings.SettingsManager.PlayerOtherSettings.BurnerPhoneMapsAppBannerLocation}");
+        SetupInteraction();
     }
     public override void Open(bool Reset)
     {
-        MenuPool = new MenuPool();
-        SetupInteraction();
         StartLoop();
     }
     private void SetupInteraction()
@@ -64,10 +67,11 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
         // Quick GPS
         // Remove GPS
         AddRemoveGPS(MapsMenu);
-        MapsMenu.Visible = true;
     }
     private void StartLoop()
     {
+        MapsMenu.Visible = true;
+
         GameFiber.StartNew(delegate
         {
             try
@@ -94,14 +98,13 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
     }
     public void OnLeftMaps()
     {
-        _destinationsBuilt = false;
+
     }
     private void SetMenuBanner(UIMenu menu)
     {
-        Texture texture = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Settings.SettingsManager.PlayerOtherSettings.BurnerPhoneMapsAppBannerLocation}");
-        if (texture != null)
+        if (MapsMenuBanner != null)
         {
-            menu.SetBannerType(texture);
+            menu.SetBannerType(MapsMenuBanner);
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
         }
         else
@@ -170,13 +173,18 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
 
                     if (currentItem == setGPSLocation)
                     {
-                        if (gameLocation.BannerImage == null) 
+                        if (gameLocation.BannerImage == null)
                             gameLocation.BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{gameLocation.BannerImagePath}");
 
                         if (gameLocation.BannerImage != null)
+                        {
                             categoryToAdd.SetBannerType(gameLocation.BannerImage);
+                        }
                         else
-                            SetMenuBanner(categoryToAdd);
+                        {
+                            categoryToAdd.TitleText = gameLocation.Name;
+                            categoryToAdd.SetBannerType(EntryPoint.LSRedColor);
+                        }
                     }
                 };
 
@@ -190,9 +198,14 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
                             gameLocation.BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{gameLocation.BannerImagePath}");
 
                         if (gameLocation.BannerImage != null)
+                        {
                             categoryToAdd.SetBannerType(gameLocation.BannerImage);
+                        }
                         else
-                            SetMenuBanner(categoryToAdd);
+                        {
+                            categoryToAdd.TitleText = gameLocation.Name;
+                            categoryToAdd.SetBannerType(EntryPoint.LSRedColor);
+                        }
                     }
                 };
                 categoryToAdd.AddItem(setGPSLocation);
