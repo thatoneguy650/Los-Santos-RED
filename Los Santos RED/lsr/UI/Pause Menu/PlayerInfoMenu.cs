@@ -68,7 +68,7 @@ public class PlayerInfoMenu
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
 
 
-        LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView, World);
+        //LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView, World);
         VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView, Settings);
         LicensesTab = new LicensesTab(Player, Time, tabView, LocationTypes);
         CrimesTab = new CrimesTab(Player, tabView);
@@ -120,7 +120,7 @@ public class PlayerInfoMenu
         CrimesTab.AddItems();
         GangTab.AddItems();
         ZonesTab.AddItems();
-        LocationsTab.AddItems();
+        //LocationsTab.AddItems();
 
         tabView.RefreshIndex();
         tabView.ShowInstructionalButtons();

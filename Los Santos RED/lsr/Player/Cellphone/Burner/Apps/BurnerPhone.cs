@@ -36,6 +36,8 @@ public class BurnerPhone
     private int prevCurrentIndex;
     private ISettingsProvideable Settings;
     private IContacts Contacts;
+    private IPlacesOfInterest PlacesOfInterest;
+    private IEntityProvideable World;
     //private bool IsDisplayingCall;
 
     private IModItems ModItems;
@@ -44,6 +46,7 @@ public class BurnerPhone
     public BurnerPhoneMessagesApp MessagesApp { get; private set; }
     public BurnerPhoneContactsApp ContactsApp { get; private set; }
     public BurnerPhoneFlashlightApp FlashlightApp { get; private set; }
+    public BurnerPhoneMapsApp MapsApp { get; private set; }
     public BurnerPhoneSettingsApp SettingsApp { get; private set; }
     private BurnerPhoneApp CurrentBurnerApp;
     private bool pressedDirection;
@@ -53,13 +56,15 @@ public class BurnerPhone
     public int GlobalScaleformID => globalScaleformID;
     public bool IsActive => isPhoneActive;
     private int CurrentIndex => (3 * CurrentRow) + CurrentColumn;
-    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems, IContacts contacts)
+    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems, IContacts contacts, IPlacesOfInterest placesOfInterest, IEntityProvideable world)
     {
         Player = player;
         Time = time;
         Settings = settings;
         ModItems = modItems;
         Contacts = contacts;
+        PlacesOfInterest = placesOfInterest;
+        World = world;
     }
     public void Setup()
     {
@@ -68,7 +73,8 @@ public class BurnerPhone
         MessagesApp = new BurnerPhoneMessagesApp(this, Player, Time, Settings, 0);
         ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1, Contacts);
         FlashlightApp = new BurnerPhoneFlashlightApp(this, Player, Time, Settings, 2, ModItems);
-        SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 3);
+        MapsApp = new BurnerPhoneMapsApp(this, Player, Time, Settings, 3, PlacesOfInterest, World);
+        SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 4);
 
         PhoneApps.Add(MessagesApp);
         PhoneApps.Add(ContactsApp);
@@ -76,6 +82,7 @@ public class BurnerPhone
         {
             PhoneApps.Add(FlashlightApp);
         }
+        PhoneApps.Add(MapsApp);
         PhoneApps.Add(SettingsApp);
 
         MaxColumns = 3;//hardcoded to the phone
@@ -113,6 +120,7 @@ public class BurnerPhone
             PlayPutAwaySound();
         }
         ContactsApp.OnLeftCall();
+        MapsApp.OnLeftMaps();
         isPhoneActive = false;
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         Game.DisableControlAction(0, GameControl.Sprint, false);
@@ -288,8 +296,8 @@ public class BurnerPhone
         {
             PressedRight();
         }
-    
-        if(pressedDirection)
+
+        if (pressedDirection)
         {
             //EntryPoint.WriteToConsoleTestLong($"Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         }
@@ -314,7 +322,7 @@ public class BurnerPhone
         {
             CurrentRow = 0;
         }
-        if(!PhoneApps.Any(x=> x.Index == CurrentIndex))
+        if (!PhoneApps.Any(x => x.Index == CurrentIndex))
         {
             CurrentRow = prevRow;
             //EntryPoint.WriteToConsoleTestLong("NO APP, RESETTING");

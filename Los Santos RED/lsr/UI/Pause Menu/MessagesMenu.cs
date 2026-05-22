@@ -60,14 +60,14 @@ public class MessagesMenu
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
 
 
-        LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView, World);
+        //LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView, World);
         ContactsTab = new ContactsTab(Player, Gangs, tabView);
         MessagesTab = new MessagesTab(Player, tabView);
         PhoneRepliesTab = new PhoneRepliesTab(Player, tabView);
         TextMessagesTab = new TextMessagesTab(Player, tabView);
         ContactAddTab = new ContactsAddTab(Player, PlacesOfInterest, Time, Settings, tabView, Contacts, this);
 
-        Tabs.Add(LocationsTab);
+        //Tabs.Add(LocationsTab);
         Tabs.Add(ContactsTab);
         Tabs.Add(MessagesTab);
         Tabs.Add(PhoneRepliesTab);

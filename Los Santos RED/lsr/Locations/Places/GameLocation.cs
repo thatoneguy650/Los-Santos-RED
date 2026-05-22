@@ -478,6 +478,17 @@ public class GameLocation : ILocationDispatchable
         return toreturn;
 
     }
+    public virtual string MapsInfo(int currentHour, float distanceTo)
+    {
+        string toReturn = Description;
+        toReturn += "~n~Currently: " + (IsTemporarilyClosed ? "~r~Temporarily Closed~s~" : IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~");
+        toReturn += "~n~Hours: " + (Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}");
+        toReturn += "~n~Address: " + StreetAddress;
+        toReturn += "~n~Location: " + "~p~" + ZoneName + "~s~";
+        toReturn += "~n~Distance: " + Math.Round(distanceTo * 0.000621371f, 2).ToString() + " Miles away";
+
+        return toReturn;
+    }
     public virtual string TaxiInfo(int currentHour, float distanceTo, TaxiFirm taxiFirm)
     {
         string toReturn = Description;
