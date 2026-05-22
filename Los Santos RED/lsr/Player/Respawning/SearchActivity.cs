@@ -344,7 +344,8 @@ public class SearchActivity
     }
     private void SetupWorld()
     {
-        Game.TimeScale = 1.0f;
+        //Game.TimeScale = 1.0f;
+        NativeFunction.Natives.SET_TIME_SCALE(1.0f);
     }
     private void SetupPlayer()
     {

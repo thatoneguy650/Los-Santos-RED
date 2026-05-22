@@ -66,15 +66,17 @@ public enum eCustomDrivingStyles : int
 		(int)VanillaDrivingStyles.DF_SteerAroundObjects  | (int)VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | 
 		(int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | (int)VanillaDrivingStyles.DF_UseSwitchedOffNodes,
 
-
-
+   
     //Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
 
     Vanilla_Alerted = (int)786469,
 
-	RacingNew2 = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int) VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+	RacingNew2 = 786468,//(int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int) VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions,
+    RacingNew2Close = 4980772,
 
 
+    RacingNew3 = 786468,
+    RacingNew3Close = 786468 | (int)VehicleDrivingFlags.DriveBySight,
     CopRacingNew2Based = (int)VanillaDrivingStyles.DF_SwerveAroundAllCars | (int)VanillaDrivingStyles.DF_SteerAroundObjects | (int)VanillaDrivingStyles.DF_SteerAroundPeds | (int)VanillaDrivingStyles.DF_UseShortCutLinks | (int)VanillaDrivingStyles.DF_ChangeLanesAroundObstructions | (int)VehicleDrivingFlags.AllowWrongWay | VanillaDrivingStyles.DF_DriveIntoOncomingTraffic | (int)VanillaDrivingStyles.DF_UseSwitchedOffNodes,
 
 

@@ -181,6 +181,9 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
 
     public GangClassification GangClassification { get; set; } = GangClassification.Generic;
     public List<string> EnemyGangs { get; set; } = new List<string>();
+
+    public List<string> FriendlyGangs { get; set; } = new List<string>();
+
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     [XmlIgnore]

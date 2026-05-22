@@ -280,4 +280,3 @@ public class CustomizeAncestryMenu
         PedCustomizer.WorkingVariation.HeadBlendData.skinMix = Parent2MixMenu.Value;
     }
 }
-

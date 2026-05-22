@@ -30,13 +30,14 @@ public class VehicleRace
     private List<VehicleRacer> Finishers = new List<VehicleRacer>();
     private dynamic raceSpeedZoneID1;
 
-    public VehicleRace(string name, VehicleRaceTrack vehicleRaceTrack, VehicleExt playerVehicle, IEntityProvideable world, int numberOfLaps, bool clearTraffic)
+    public VehicleRace(string name, VehicleRaceTrack vehicleRaceTrack, VehicleExt playerVehicle, IEntityProvideable world, int numberOfLaps, bool clearTraffic, bool slipstreamingEnabled)
     {
         Name = name;
         VehicleRaceTrack = vehicleRaceTrack;
         PlayerVehicle = playerVehicle;
         World = world;
         ClearTraffic = clearTraffic;
+        SlipstreamingEnabled = slipstreamingEnabled;
         NumberOfLaps = numberOfLaps;
     }
     public VehicleRace()
@@ -52,6 +53,7 @@ public class VehicleRace
     public bool IsPinkSlipRace { get ; private set; }
     public bool ClearTraffic { get; private set;}
     public int NumberOfLaps { get; private set; }
+    public bool SlipstreamingEnabled { get; set;}
     public VehicleExt PlayerVehicle { get; private set; }
     [XmlIgnore]
     public bool IsActive { get; set; }
@@ -142,6 +144,7 @@ public class VehicleRace
         }
         UnclearStartingArea();
         World.SetTrafficEnabled();
+        SetSlipstreaming(false);
     }
     public void AddBlip(Blip checkpointBlip)
     {
@@ -179,7 +182,7 @@ public class VehicleRace
     }
     public void OnPlayerFinishedRace()
     {
-        Player.RacingManager.StopRacing();
+        Player.VehicleRaceManager.StopRacing();
         EntryPoint.WriteToConsole($"OnPlayerFinishedRace IsPlayerWinner: {IsPlayerWinner} GameTimePlayerFinishedRace{GameTimePlayerFinishedRace}");
         GameTimePlayerFinishedRace = Game.GameTime;
         if (IsPinkSlipRace)
@@ -251,54 +254,83 @@ public class VehicleRace
     {
         EntryPoint.WriteToConsole("PINK SLIP WINNER");
         Game.FadeScreenOut(2000, true);
+
         foreach (AIVehicleRacer airacer in AIVehicleRacers)
         {
-            if(airacer.VehicleExt == null)
-            {
-                continue;
-            }
+            if (airacer == null || airacer.VehicleExt == null) continue;
+
+            Vehicle losingVehicle = airacer.VehicleExt.Vehicle;
+            if (losingVehicle == null || !losingVehicle.Exists()) continue;
+
+            NativeFunction.Natives.SET_VEHICLE_HANDLING_OVERRIDE(losingVehicle, 0);
+            NativeFunction.Natives.MODIFY_VEHICLE_TOP_SPEED(losingVehicle, -1.0f);
+            NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(losingVehicle, 1.0f);
+            NativeFunction.Natives.SET_VEHICLE_IS_RACING(losingVehicle, false);
+            NativeFunction.Natives.SET_VEHICLE_STRONG(losingVehicle, false);
+            NativeFunction.Natives.SET_ENTITY_ONLY_DAMAGED_BY_PLAYER(losingVehicle, false);
+
             Player.VehicleOwnership.TakeOwnershipOfVehicle(airacer.VehicleExt, false);
+
             if (airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists())
             {
                 airacer.IsManualDispose = true;
-                if (airacer.VehicleExt.Vehicle.Exists())
+
+                if (airacer.PedExt.Pedestrian.IsAlive)
                 {
-                    airacer.VehicleExt.Vehicle.Velocity = Vector3.Zero;
-                    NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, airacer.VehicleExt.Vehicle, 16);
-                    airacer.PedExt.Pedestrian.Position = airacer.PedExt.Pedestrian.GetOffsetPositionRight(-2f);
-                    SpawnLocation spawnLocation = new SpawnLocation(airacer.VehicleExt.Vehicle.Position);
+                    losingVehicle.Velocity = Vector3.Zero;
+
+                    if (airacer.PedExt.Pedestrian.IsInAnyVehicle(false))
+                    {
+                        NativeFunction.Natives.TASK_LEAVE_VEHICLE(airacer.PedExt.Pedestrian, losingVehicle, 16);
+                    }
+
+                    SpawnLocation spawnLocation = new SpawnLocation(losingVehicle.Position);
                     spawnLocation.GetClosestStreet(false);
                     spawnLocation.GetClosestSideOfRoad();
                     spawnLocation.GetClosestSidewalk();
-                    if(spawnLocation.HasSideOfRoadPosition)
+
+                    if (spawnLocation.HasSideOfRoadPosition)
                     {
-                        airacer.VehicleExt.Vehicle.Position = spawnLocation.StreetPosition;
-                        airacer.VehicleExt.Vehicle.Heading = spawnLocation.Heading;
+                        losingVehicle.Position = spawnLocation.StreetPosition;
+                        losingVehicle.Heading = spawnLocation.Heading;
                     }
                     else if (spawnLocation.HasSidewalk)
                     {
-                        airacer.VehicleExt.Vehicle.Position = spawnLocation.SidewalkPosition;
-                        airacer.VehicleExt.Vehicle.Heading = spawnLocation.Heading;
+                        losingVehicle.Position = spawnLocation.SidewalkPosition;
+                        losingVehicle.Heading = spawnLocation.Heading;
                     }
 
+                    airacer.PedExt.Pedestrian.Position = losingVehicle.GetOffsetPositionRight(-2f);
+                    NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(losingVehicle, true);
 
-                    NativeFunction.Natives.SET_VEHICLE_DOORS_SHUT(airacer.VehicleExt.Vehicle, true);
                     airacer.PedExt.Pedestrian.ClearLastVehicle();
                     airacer.PedExt.AssignedVehicle = null;
+
+                    airacer.PedExt.ClearTasks(true);
+                    airacer.PedExt.CanBeAmbientTasked = true;
+                    airacer.PedExt.CanBeTasked = true;
+                    airacer.PedExt.CanBeIdleTasked = true;
+
+                    try
+                    {
+                        airacer.PedExt.PedBrain?.AssignIdleTask();
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole($"Non-Fatal: PedBrain failed for {airacer.RacerName}: {ex.Message}");
+                    }
                 }
+
                 airacer.PedExt.SetNonPersistent();
                 airacer.PedExt.DeleteBlip();
+
                 if (airacer.WasSpawnedForRace)
-                {            
+                {
                     airacer.PedExt.Pedestrian.IsPersistent = false;
                 }
-                airacer.PedExt.ClearTasks(true);
-                airacer.PedExt.CanBeAmbientTasked = true;
-                airacer.PedExt.CanBeTasked = true;
-                airacer.PedExt.CanBeIdleTasked = true;
-                airacer.PedExt.PedBrain.AssignIdleTask();
             }
         }
+
         GameFiber.Sleep(2000);
         Game.FadeScreenIn(2000, false);
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Race Wins", "Race Outcome", $"You have acquired the losing vehicles.");
@@ -310,7 +342,11 @@ public class VehicleRace
         {
             world.SetTrafficDisabled();
         }
-        if(IsCountdownEnabled)
+        if (SlipstreamingEnabled)
+        {
+            SetSlipstreaming(true);
+        }
+        if (IsCountdownEnabled)
         {
             DoCountdown();
         }     
@@ -319,35 +355,27 @@ public class VehicleRace
     }
     private void DoCountdown()
     {
-       //EntryPoint.WriteToConsole($"COUNTDOWN START {Game.GameTime - GameTimeStartedCountdown}");
         GameTimeStartedCountdown = Game.GameTime;
-        string toShow = "";
         string showing = "";
-        HudColor toShowColor = HudColor.RedDark;
+
         while (Game.GameTime - GameTimeStartedCountdown <= 3000)
         {
-            //NativeHelper.DisablePlayerMovementControl();
-            if (Game.GameTime - GameTimeStartedCountdown < 1000)
-            {
-                toShow = "3";
-                toShowColor = HudColor.RedDark;
-            }
-            else if (Game.GameTime - GameTimeStartedCountdown < 2000)
-            {
-                toShow = "2";
-                toShowColor = HudColor.Red;
-            }
-            else if (Game.GameTime - GameTimeStartedCountdown < 3000)
-            {
-                toShow = "1";
-                toShowColor = HudColor.OrangeDark;
-            }
-            if(toShow != showing)
+            string toShow = "";
+            HudColor toShowColor = HudColor.RedDark;
+
+            long elapsed = Game.GameTime - GameTimeStartedCountdown;
+
+            if (elapsed < 1000) { toShow = "3"; toShowColor = HudColor.RedDark; }
+            else if (elapsed < 2000) { toShow = "2"; toShowColor = HudColor.Red; }
+            else { toShow = "1"; toShowColor = HudColor.OrangeDark; }
+
+            if (toShow != showing)
             {
                 PlayerRacer.ShowMessage(toShow, "", HudColor.Black, toShowColor, 1000);
                 showing = toShow;
             }
-            GameFiber.Yield();
+
+            GameFiber.Yield(); // CRITICAL: Keeps the game from freezing
         }
     }
     private void HandleBetting()
@@ -415,6 +443,11 @@ public class VehicleRace
         }
         EntryPoint.WriteToConsole("UnclearStartingArea RAN");
     }
-
+    public void SetSlipstreaming(bool toggle)
+    {
+        // Since this is a global native, we only need to call it once per race
+        NativeFunction.Natives.SET_ENABLE_VEHICLE_SLIPSTREAMING(toggle);
+        EntryPoint.WriteToConsole($"Slipstreaming Globally Set To: {toggle}");
+    }
 }
 

@@ -52,6 +52,7 @@ public class VehicleRacesMenu
     private UIMenuItem raceSettingsSubMenuItem;
     private UIMenuCheckboxItem clearTrafficMenuItem;
     private UIMenuNumericScrollerItem<int> LapsMenuItem;
+    private UIMenuCheckboxItem slipstreamingMenuItem;
 
     public VehicleRacesMenu(MenuPool menuPool, UIMenu raceSubMenu, PedExt conversingPed, IVehicleRaces vehicleRaces, IPlacesOfInterest placesOfInterest, IEntityProvideable world,
         IInteractionable player, bool isPointRace, AdvancedConversation advancedConversation, IDispatchableVehicles dispatchableVehicles, List<string> supportedTracks,
@@ -103,8 +104,10 @@ public class VehicleRacesMenu
     {
         raceSettingsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Settings");
         raceSettingsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
-        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", false, "If enabled, ambient traffic will not spawn when racing.");
+        clearTrafficMenuItem = new UIMenuCheckboxItem("Disable Traffic", !IsPointRace, "If enabled, ambient traffic will not spawn when racing.");
         raceSettingsSubMenu.AddItem(clearTrafficMenuItem);
+        slipstreamingMenuItem = new UIMenuCheckboxItem("Slipstreaming", false, "Enable or disable the slipstreaming effect during the race.");
+        raceSettingsSubMenu.AddItem(slipstreamingMenuItem);
         LapsMenuItem = new UIMenuNumericScrollerItem<int>("Laps", "Set number of laps to complete", 1, 10, 1);
         LapsMenuItem.Value = 1;
 
@@ -187,11 +190,12 @@ public class VehicleRacesMenu
     {
         if(IsPointRace)
         {
+            totalSelectedOpponents = 1;
             return;
         }
         opponentsSubMenu = MenuPool.AddSubMenu(RaceMenu, "Opponents");
         opponentsSubMenuItem = RaceMenu.MenuItems[RaceMenu.MenuItems.Count() - 1];
-        UIMenuNumericScrollerItem<int> totalOpponentsMenuItem = new UIMenuNumericScrollerItem<int>("Racers:","Set the number of opponents",1,10,1);
+        UIMenuNumericScrollerItem<int> totalOpponentsMenuItem = new UIMenuNumericScrollerItem<int>("Racers:","Set the number of opponents",1,7,1);
         totalOpponentsMenuItem.Value = 3;
         totalSelectedOpponents = 3;
         totalOpponentsMenuItem.Activated += (menu, item) =>
@@ -282,6 +286,25 @@ public class VehicleRacesMenu
         {
             finalDescription = $"Track: {SelectedTrack?.Name}";
         }
+
+        if(totalSelectedOpponents == 1 || IsPointRace)
+        {
+            if (RaceForPinksCheckbox != null)
+            {
+                RaceForPinksCheckbox.Enabled = true;
+                //RaceForPinksCheckbox.Checked = false;
+            }
+        }
+        else
+        {
+            if (RaceForPinksCheckbox != null)
+            {
+                RaceForPinksCheckbox.Enabled = false;
+                RaceForPinksCheckbox.Checked = false;
+            }
+        }
+
+
         if(selectedPlayerVehicle == null || !selectedPlayerVehicle.IsOwnedByPlayer)
         {
             if (RaceForPinksCheckbox != null)
@@ -369,7 +392,7 @@ public class VehicleRacesMenu
             description += $"~n~Max Bet: ${MaxBet}";
         }
         MoneyBetScoller = new UIMenuNumericScrollerItem<int>("Cash Bet", description, 0, scrollerUpperLimit, 100) { Formatter = v => "$" + v + "" };
-        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false,"Only one-on-one races allow pink slips");
+        RaceForPinksCheckbox = new UIMenuCheckboxItem("Pink Slip Race", false,"Only one-on-one races with an owned vehicle allow pink slip racing");
         MoneyBetScoller.Value = 0;
         MoneyBetScoller.Activated += (sender, e) =>
         {
@@ -419,7 +442,7 @@ public class VehicleRacesMenu
         {
             return false;
         }
-        VehicleRace newRace = new VehicleRace(SelectedTrack.Name, SelectedTrack, selectedPlayerVehicle, World,LapsMenuItem.Value,clearTrafficMenuItem.Checked);
+        VehicleRace newRace = new VehicleRace(SelectedTrack.Name, SelectedTrack, selectedPlayerVehicle, World,LapsMenuItem.Value,clearTrafficMenuItem.Checked, slipstreamingMenuItem.Checked);
         uIMenu.Visible = false;
         GameFiber.StartNew(delegate
         {
@@ -434,7 +457,7 @@ public class VehicleRacesMenu
 
                  
 
-                if(!Player.RacingManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles, 
+                if(!Player.VehicleRaceManager.StartRegularRace(newRace, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked, selectedOpponentVehicles, 
                     DispatchablePeople.AllPeople.Where(x => x.DispatchablePersonGroupID == "VehicleRacePeds").FirstOrDefault(), 
                     totalSelectedOpponents))
                 {
@@ -470,11 +493,11 @@ public class VehicleRacesMenu
         {
             FinishPosition = SelectedPointDestination.EntrancePosition;
         }
-        VehicleRace newRace = new VehicleRace("PointToPointRace", new VehicleRaceTrack("ptp1", "PointToPointRace", "", new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0, FinishPosition) }, null), Player.CurrentVehicle, World,1,clearTrafficMenuItem.Checked);
+        VehicleRace newRace = new VehicleRace("PointToPointRace", new VehicleRaceTrack("ptp1", "PointToPointRace", "", new List<VehicleRaceCheckpoint>() { new VehicleRaceCheckpoint(0, FinishPosition) }, null), Player.CurrentVehicle, World,1,clearTrafficMenuItem.Checked, slipstreamingMenuItem.Checked);
         uIMenu.Visible = false;
         AdvancedConversation?.DisposeConversation();
         GameFiber.Yield();
-        if(!Player.RacingManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked))
+        if(!Player.VehicleRaceManager.StartPointToPointRace(newRace, PedExt, MoneyBetScoller.Value, RaceForPinksCheckbox.Checked))
         {
             Game.DisplayHelp("Error Starting Race");
             return false;

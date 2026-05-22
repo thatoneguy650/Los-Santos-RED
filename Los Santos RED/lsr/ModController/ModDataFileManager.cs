@@ -144,6 +144,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         RadioStations = new RadioStations();
         RadioStations.ReadConfig(); // no config file
+        RadioStations.Setup();
         GameFiber.Yield();
         RelationshipGroups = new PedGroups();
         RelationshipGroups.ReadConfig("");
@@ -246,7 +247,7 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}");
         string Description = "" +
-            "Adds some lore friendly weapon replacements." + Environment.NewLine + Environment.NewLine +
+            "Adds some lore friendly weapon replacements. GTA V ENHANCED ONLY" + Environment.NewLine + Environment.NewLine +
             "Installation:" + Environment.NewLine +
             "Install the greskfewinstaller.oiv and move the .xml files into the main directory." + Environment.NewLine + Environment.NewLine +
             "Credits" + Environment.NewLine + Environment.NewLine +
@@ -270,9 +271,9 @@ public class ModDataFileManager
 
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\");
         string Description2 = "" +
-            "Adds DLC vehicles to the vanilla traffic." +
+            "Adds DLC vehicles to the vanilla traffic. GTA V ENHANCED ONLY" +
             "Also adds some new vehicles and includes some edits to DLC vehicles to allow them to blend in better with traffic." + Environment.NewLine +
-            "Incompatible with Los Santos 2008 config and the Liberty City Preservation Project." + Environment.NewLine +
+            //"Incompatible with Los Santos 2008 config and the Liberty City Preservation Project." + Environment.NewLine +
             "Install the greskfullmoderntraffic_novanillagang_addon.oiv after greskfullmoderntraffic.oiv to remove all vanilla gang spawns." + Environment.NewLine +
             "Scout - Gabriele Cappellano - original sketch       Da7k - 3D model      Nacho - 3D model - porting, assets, mapping, bugfixes     Dani02 - bugfixes, glass shards     11john11 - model improvements, dlcpack, police rims, interior assets        Eddlm - custom handling" + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
@@ -288,14 +289,14 @@ public class ModDataFileManager
         //    "Incompatible with Los Santos 2008 config.";
         //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Variations\\Modern Traffic Base\\readme.txt", Description3);
 
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\");
-        string Description4 = "Uninstaller OIV for any version.";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\readme.txt", Description4);
+       // Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\");
+        //string Description4 = "Uninstaller OIV for any version.";
+        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\Uninstaller\\readme.txt", Description4);
     }
     private void SetupAddonPlatesConfig()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates");
-        string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly versions of ALL states and select state/government agencies. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly versions of ALL states and select state/government agencies. GTA V ENHANCED ONLY" + Environment.NewLine + Environment.NewLine + Environment.NewLine +
            "Installation: "
            + Environment.NewLine +
            "1. Install greskfullmodernlicenseplates.oiv using OpenIV"
@@ -305,6 +306,33 @@ public class ModDataFileManager
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\readme.txt", Description);
     }
     private void SetupFullExpandedJurisdiction()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
+        string Description =
+            "The preferred way to play LSR. This alternate config is made to include add on vehicle models to completely flesh out the Emergency Services, Military, and Service part of GTA 5. GTA V ENHANCED ONLY" +
+            "Most lore friendly departments are included and have their own marked units and uniforms. " +
+            "Vehicle models are from myself " +
+            "The default FEJ config includes only modern vehicles and is mostly DLC vehicles. (buffalo stx, granger 3600, caracara, aleutian, riata, etc.)" +
+            "Open the dlc.rpf file to see modelnames"
+            + Environment.NewLine + Environment.NewLine +
+            "Vehicle Installation: "
+            + Environment.NewLine +
+            "1. Install the greskfejinstaller.oiv with OpenIV"
+            + Environment.NewLine +
+            "2. Copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            ""
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            "Model Credits:"
+            + Environment.NewLine +
+            "Scout - Gabriele Cappellano - original sketch       Da7k - 3D model      Nacho - 3D model - porting, assets, mapping, bugfixes     Dani02 - bugfixes, glass shards     11john11 - model improvements, dlcpack, police rims, interior assets        Eddlm - custom handling" + Environment.NewLine +
+            "BeaverRam - Original Model by Stan." + Environment.NewLine +
+            "Modern Police Steel Wheel - Adapted from Megarobloxfr";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
+        //string Description2 = "Want to use the built in peds along with the FEJ vehicles? This is the config for you. Be sure to install the FEJ OIV without EUP. Copys over the xmls to the main directory.";
+        //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\readme.txt", Description2);
+    }
+    private void SetupFullExpandedJurisdiction_Legacy()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations");

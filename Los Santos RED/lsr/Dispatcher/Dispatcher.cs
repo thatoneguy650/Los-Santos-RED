@@ -206,9 +206,44 @@ public class Dispatcher
         GameFiber.Yield();
         GangDispatcher.Recall();
         TaxiDispatcher.Recall();
-        RecallCivilians();
+        //RecallCivilianPeds();
+        RecallCivilianVehicles();
     }
-    private void RecallCivilians()
+    //private void RecallCivilianPeds()
+    //{
+    //    try
+    //    {
+    //        foreach (PedExt civilianPedExt in World.Pedestrians.CivilianList.Where(x => !x.IsManuallyDeleted && x.WasModSpawned && x.HasExistedFor >= 12000 && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent).ToList())//NonServiceVehicles//&& !x.WasSpawnedEmpty//15000
+    //        {
+    //            if (!civilianPedExt.Pedestrian.Exists())
+    //            {
+    //                continue;
+    //            }
+    //            float distanceTo = civilianPedExt.DistanceToPlayer;//Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
+    //            civilianPedExt.DistanceChecker.UpdateMovement(distanceTo);
+    //            if (civilianPedExt.DistanceChecker.IsMovingAway && distanceTo >= 275f)//325f)//275f)//250f)
+    //            {
+    //                if(civilianPedExt.Pedestrian.CurrentVehicle.Exists())
+    //                {
+    //                    civilianPedExt.Pedestrian.CurrentVehicle.IsPersistent = false;
+    //                }
+
+    //                if (civilianPedExt.Pedestrian.IsPersistent)
+    //                {
+    //                    EntryPoint.PersistentPedsNonPersistent++;
+    //                }
+    //                EntryPoint.WriteToConsole($"GENERAL DISPATCHER NON PERSIST 1 FAR PED distanceTo{distanceTo} {civilianPedExt.Handle}");
+    //                civilianPedExt.Pedestrian.IsPersistent = false;
+    //            }
+    //            GameFiber.Yield();
+    //        }
+    //    }
+    //    catch (InvalidOperationException ex)
+    //    {
+    //        EntryPoint.WriteToConsole($"Remove Far Peds, Collection Modified Error: {ex.Message} {ex.StackTrace}", 0);
+    //    }
+    //}
+    private void RecallCivilianVehicles()
     {
         if (!Settings.SettingsManager.WorldSettings.CleanupVehicles)
         {
@@ -218,7 +253,7 @@ public class Dispatcher
         {
             foreach (VehicleExt civilianCar in World.Vehicles.NonPoliceList.Where(x => !x.IsOwnedByPlayer && !x.IsManualCleanup && x.WasModSpawned  && x.HasExistedFor >= 12000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent).ToList())//NonServiceVehicles//&& !x.WasSpawnedEmpty//15000
             {
-                if (!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                if (!civilianCar.Vehicle.Exists())// || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                 {
                     continue;
                 }

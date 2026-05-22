@@ -61,6 +61,10 @@ public class OtherViolations
         {
             Violations.AddViolating(StaticStrings.PublicIntoxicationCrimeID);
         }
+        if (Player.IsInVehicle && Player.VehicleRaceManager.IsStreetRacing)
+        {
+            Violations.AddViolating(StaticStrings.StreetRacingCrimeID);
+        }
         if (Player.RecentlyFedUpCop)
         {
             Violations.AddViolating(StaticStrings.InsultingOfficerCrimeID);

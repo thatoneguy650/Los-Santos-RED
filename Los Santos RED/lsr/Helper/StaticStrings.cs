@@ -116,6 +116,7 @@ public static class StaticStrings
     public static readonly string InsultingOfficerCrimeID = "InsultingOfficer";
     public static readonly string HarassmentCrimeID = "Harassment";
     public static readonly string SpeedingCrimeID = "Speeding";
+    public static readonly string StreetRacingCrimeID = "StreetRacing";
     public static readonly string PublicNuisanceCrimeID = "PublicNuisance";
     public static readonly string PublicVagrancyCrimeID = "PublicVagrancy";
     public static readonly string OfficersNeededCrimeID = "OfficersNeeded";

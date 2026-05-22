@@ -1662,6 +1662,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(StaticStrings.FicticiousLicensePlateCrimeID,SDI.FicticiousPlates),
             new CrimeDispatch(StaticStrings.FiringWeaponCrimeID,SDI.ShotsFired),
             new CrimeDispatch(StaticStrings.FiringSilencedWeaponCrimeID,SDI.ShotsFired),
+            new CrimeDispatch(StaticStrings.StreetRacingCrimeID,SDI.StreetRacing),
             new CrimeDispatch("FiringWeaponNearPolice",SDI.ShotsFiredAtAnOfficer),
             new CrimeDispatch("GotInAirVehicleDuringChase",SDI.StealingAirVehicle),
             new CrimeDispatch("GrandTheftAuto",SDI.GrandTheftAuto),
@@ -1818,6 +1819,7 @@ namespace LosSantosRED.lsr
             ,SDI.Shoplifting
             ,SDI.FicticiousPlates
             ,SDI.PickPocketing
+            ,SDI.StreetRacing
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)

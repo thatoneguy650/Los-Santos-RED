@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -37,7 +38,8 @@ public class DebugOtherSubMenu : DebugSubMenu
         {
             bool stayStanding = SetArrested.SelectedItem == "Stay Standing";
             Player.Arrest();
-            Game.TimeScale = 1.0f;
+            //Game.TimeScale = 1.0f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
             Player.Surrendering.SetArrestedAnimation(stayStanding);
             menu.Visible = false;
         };
@@ -45,7 +47,8 @@ public class DebugOtherSubMenu : DebugSubMenu
         UIMenuItem UnSetArrested = new UIMenuItem("UnSet Arrested", "Release the player from an arrest.");
         UnSetArrested.Activated += (menu, item) =>
         {
-            Game.TimeScale = 1.0f;
+            //Game.TimeScale = 1.0f;
+            NativeFunction.Natives.SET_TIME_SCALE(1.0f);
             Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
             Player.Surrendering.UnSetArrestedAnimation();
             menu.Visible = false;

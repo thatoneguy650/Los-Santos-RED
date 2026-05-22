@@ -31,7 +31,7 @@ public class VehicleRacer
     public VehicleExt VehicleExt { get; set; }
     public virtual string RacerName => "Racer";
     public bool HasFinishedRace => GameTimeFinishedRace > 0;
-    public virtual bool IsPlayer => false;
+    public virtual bool IsPlayer => false; 
     public virtual void Dispose()
     {
 
@@ -51,12 +51,16 @@ public class VehicleRacer
         AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == 1).FirstOrDefault();
     }
     public virtual void Update(VehicleRace vehicleRace)
-    { 
-        if(TargetCheckpoint == null || VehicleExt == null || !VehicleExt.Vehicle.Exists() || GameTimeFinishedRace > 0)
+    {
+        if (TargetCheckpoint == null || VehicleExt == null || !VehicleExt.Vehicle.Exists() || GameTimeFinishedRace > 0)
         {
             return;
         }
-        DistanceToCheckpoint = TargetCheckpoint.Position.DistanceTo(VehicleExt.Vehicle);
+
+        // Use DistanceTo2D to completely ignore Z-axis (height) differences
+        DistanceToCheckpoint = TargetCheckpoint.Position.DistanceTo2D(VehicleExt.Vehicle);
+
+        // Increase the detection radius slightly (e.g., 20f -> 30f) to account for high speeds
         if (DistanceToCheckpoint <= 20f)
         {
             if (TargetCheckpoint.IsFinish)
@@ -83,21 +87,17 @@ public class VehicleRacer
                 AfterTargetCheckpoint = vehicleRace.VehicleRaceTrack.RaceCheckpoints.Where(x => x.Order == nextOrder + 1).FirstOrDefault();
                 OnReachedCheckpoint(vehicleRace);
             }
-        }        
+        }
     }
     public string GetTotalTimeAsString()
     {
         return ConvertMSToTime(GameTimeFinishedRace - GameTimeStartedRace);
     }
-    private string ConvertMSToTime(uint TotalGameTime)
+    private string ConvertMSToTime(uint totalMS)
     {
-        TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
-        string answer = string.Format("{0:00}:{1:00}.{2:000}",
-                                t.Minutes,
-                                t.Seconds,
-                                t.Milliseconds);
-
-        return answer;
+        TimeSpan t = TimeSpan.FromMilliseconds(totalMS);
+        // Correctly pads Minutes to 2 digits, Seconds to 2 digits, and Milliseconds to 3 digits
+        return $"{t.Minutes:00}:{t.Seconds:00}.{t.Milliseconds:000}";
     }
     public virtual void OnReachedCheckpoint(VehicleRace vehicleRace)
     {

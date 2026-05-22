@@ -23,32 +23,31 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public float DriveBySightDuringChaseDistance { get; set; }
 
 
-    [Description("Enable or disable chase assists to allow the police to better keep up with the player")]
-    public bool AllowChaseAssists { get; set; }
+    //[Description("Enable or disable chase assists to allow the police to better keep up with the player")]
+    //public bool AllowChaseAssists { get; set; }
+
     [Description("Enable or disable clearing or offscreen non-mission vehicles that are blocking police vehicles")]
     public bool AllowFrontVehicleClearAssist { get; set; }
-    [Description("Enable or disable collision proffing for police vehicles")]
+    [Description("Enable or disable collision proofing for police vehicles")]
     public bool AllowReducedCollisionPenaltyAssist { get; set; }
-    [Description("Enable or disable increased power for police vehicles")]
-    public bool AllowPowerAssist { get; set; }
-
-
-
-
-    [Description("Enable or disable applied force for police vehicles")]
-    public bool AllowForceAssist { get; set; }
-
-    public float ForceAssistAmount { get; set; }
-    public float ForceAssistSpeedChangeThreshold { get; set; }
-    public float ForceAssistTurningRadiusLimit { get; set; }
-
-    public float ForceAssistMinimumSpeedMetersPerSecond { get; set; }
-
-
-
-
     [Description("Enable or disable police vehicles being repaired when off screen")]
     public bool AllowFixOffScreenVehiclesAssist { get; set; }
+    //[Description("Enable or disable increased power for police vehicles")]
+    //public bool AllowPowerAssist { get; set; }
+    public bool AllowStabilityForceAssist { get; set; }
+    public bool AllowHarderBikeKnockoffAssist { get; set; }
+    public bool AllowOverrideAIHandlingAssist { get; set; }
+    public bool AllowOverrideMaxSpeedAssist { get; set; }
+    public float OverrideMaxSpeedAssistSpeed { get; set; }
+
+
+
+
+
+
+
+
+
 
     [Description("Maximum amount of police that can respawn to an investigation when the most serious crime reported is 1 star.")]
     public int InvestigationRespondingOfficers_Wanted1 { get; set; }
@@ -162,6 +161,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public float FlyThroughWindshieldPercentage { get; set; }
 
 
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -176,11 +176,19 @@ public class PoliceTaskSettings : ISettingsDefaultable
     {
         ManageTasking = true;
 
-        AllowChaseAssists = true;
+        //AllowChaseAssists = true;
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
-        AllowPowerAssist = true;
+        //AllowPowerAssist = false;// true;
         AllowFixOffScreenVehiclesAssist = true;
+        AllowHarderBikeKnockoffAssist = true;
+        AllowStabilityForceAssist = true;
+        AllowOverrideAIHandlingAssist = false;
+        AllowOverrideMaxSpeedAssist = false;
+        OverrideMaxSpeedAssistSpeed = 45f;
+
+
+        
 
         AllowDriveBySightDuringChase = true;
         DriveBySightDuringChaseDistance = 100f;//150f;
@@ -292,11 +300,14 @@ public class PoliceTaskSettings : ISettingsDefaultable
         ChaseRecklessMission = 2;
 
 
-        AllowForceAssist = false;
-        ForceAssistAmount = 10.0f;
-        ForceAssistSpeedChangeThreshold = 0.2f;
-        ForceAssistTurningRadiusLimit = 10.0f;
-        ForceAssistMinimumSpeedMetersPerSecond = 15.0f;
+        //AllowForceAssist = false;
+        //ForceAssistAmount = 10.0f;
+        //ForceAssistSpeedChangeThreshold = 0.2f;
+        //ForceAssistTurningRadiusLimit = 10.0f;
+        //ForceAssistMinimumSpeedMetersPerSecond = 15.0f;
+
+
+
 
     }
 }

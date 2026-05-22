@@ -461,6 +461,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public bool WasModSpawned { get; set; } = false;
+    public bool EnableAutoCleanup { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }
     public bool IsPlayerControlled { get; set; } = false;
@@ -1095,7 +1096,16 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
         WillCower = RandomItems.RandomPercent(CivilianCowerPercentage());
 
-        WillRacePlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageWillRacePlayer);
+        if(dispatchablePerson != null && dispatchablePerson.OverrideRacePlayerPercentage != -1)
+        {
+            WillRacePlayer = RandomItems.RandomPercent(dispatchablePerson.OverrideRacePlayerPercentage);
+            EntryPoint.WriteToConsole($"SET OVERRIDE RACE PLAYER PERCENTAGE FOR PED NEW PERCENTAGE {dispatchablePerson.OverrideRacePlayerPercentage}");
+        }
+        else
+        {
+            WillRacePlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageWillRacePlayer);
+        }
+        
 
 
         CanSurrender = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PossibleSurrenderPercentage);

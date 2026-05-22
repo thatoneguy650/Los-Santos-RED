@@ -35,13 +35,14 @@ public class CivilianConditionalLocation : ConditionalLocation
             civilianSpawnTask.SpawnRequirement = TaskRequirements;
             civilianSpawnTask.AttemptSpawn();
             civilianSpawnTask.PostRun(this, GameLocation);
-            //merchantSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
+            civilianSpawnTask.CreatedPeople.ForEach(x => { x.EnableAutoCleanup = true; });
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"Civilian Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
+  
     public override bool DetermineRun(bool force)
     {
         if (!Settings.SettingsManager.CivilianSettings.ManageDispatching)

@@ -127,6 +127,12 @@ public static class EntryPoint
         string receivedData = string.Empty;
         try
         {
+            string token = "";
+            //webClient.Headers.Add("Authorization", $"Bearer {token}");
+            //receivedData = webClient.DownloadString("https://api-prod.lcpdfr.com/api/downloadsng/files/36665/version").Trim();
+           // EntryPoint.WriteToConsole(receivedData, 0);
+
+
             receivedData = webClient.DownloadString("https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=36665&textOnly=1").Trim();
             string WebLatestVersionFixed = FixWebVersionString(receivedData);
             if (WebLatestVersionFixed != LSRInstalledVersionInfo.FileVersion)
@@ -142,6 +148,7 @@ public static class EntryPoint
         {
             PreStartMessage = $"{PreStartMessage} ~n~~n~~r~UPDATE CHECK FAILED~s~";
             WriteToConsole($"Failed to check for updates", 0);
+            WriteToConsole($"{ex.Message}", 0);
         }
     }
     private static string FixWebVersionString(string webVersionString)

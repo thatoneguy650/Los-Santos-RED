@@ -66,6 +66,10 @@ public class DispatchablePerson
     public string OverrideLessLethalWeaponsID { get; set; }
     public string OverrideSideArmsID { get; set; }
     public string OverrideLongGunsID { get; set; }
+
+
+    public int OverrideRacePlayerPercentage { get; set; } = -1;
+
     [XmlIgnore]
     public List<IssuableWeapon> OverrideSideArms { get; set; } = new List<IssuableWeapon>();
     [XmlIgnore]

@@ -307,11 +307,12 @@ public class Drag : DynamicActivity
     {
         if (Ped.Pedestrian.Exists())
         {
-            if(Ped.IsDead)
+            Ped.Pedestrian.Detach();
+            if (Ped.IsDead)
             {
                 Ped.Pedestrian.Kill();
             }
-            Ped.Pedestrian.Detach();
+            
             NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
         }
         IsAttached = false;
@@ -349,7 +350,8 @@ public class Drag : DynamicActivity
         if (Settings.SettingsManager.DragSettings.QuickAttachEnabled)
         {
 
-
+            AttachPeds();
+            GameFiber.Yield();
             NeedRunAnim = true;
 
 

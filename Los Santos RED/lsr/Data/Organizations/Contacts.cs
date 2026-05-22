@@ -141,7 +141,7 @@ public class Contacts : IContacts
 
         //Vanilla Peds
         Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\Contacts+_FullExpandedJurisdiction.xml");
-        Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Contacts+_FullExpandedJurisdiction.xml");
+        //Serialization.SerializeParam(PossibleContacts_FullExpanded, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Full\\Contacts+_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig_LC()
     {

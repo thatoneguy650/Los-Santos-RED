@@ -111,8 +111,33 @@ public class ScannerDispatchInformation
     public Dispatch PickPocketing { get; private set; }
 
     public Dispatch FicticiousPlates { get; private set; }
+
+    public Dispatch StreetRacing { get; private set; }
     public void Setup()
     {
+
+
+
+        //
+
+        //crime_5_10
+        StreetRacing = new Dispatch()
+        {
+            Name = "Street Racing",
+            IncludeDrivingVehicle = true,
+            VehicleIncludesIn = true,
+            IncludeDrivingSpeed = true,
+            LocationDescription = LocationSpecificity.Street,
+            CanAlwaysBeInterrupted = true,
+            MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_10.Vehiclesracing.FileName },"vehicles racing"),
+                new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
+            },
+        };
+
+
+
         OfficerDown = new Dispatch()
         {
             Name = "Officer Down",

@@ -159,7 +159,7 @@ public class PlayerVehicleRacer : VehicleRacer
         {
             BigMessage.MessageInstance.Dispose();
         }
-        Player.RacingManager.StopRacing();
+        Player.VehicleRaceManager.StopRacing();
     }
     public override void OnReachedCheckpoint(VehicleRace vehicleRace)
     {
@@ -234,7 +234,7 @@ public class PlayerVehicleRacer : VehicleRacer
     public override void SetRaceStart(VehicleRace vehicleRace)
     {
         Player.IsSetDisabledControlsWithCamera = false;
-        Player.RacingManager.StartRacing(vehicleRace);
+        Player.VehicleRaceManager.StartRacing(vehicleRace);
         base.SetRaceStart(vehicleRace);
     }
 

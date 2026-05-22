@@ -179,6 +179,464 @@ public class BlankLocationsData
                 },
         };
         BlankLocationPlaces.Add(ChopShopSpawn);
+
+
+
+
+        //Rivals Spawn Test
+        BlankLocation RivalSpawn1 = new BlankLocation(new Vector3(137.4143f, 6649.704f, 30.82911f), 224.813f, "RivalSpawn1", "Paleto Bay")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(137.4143f, 6649.704f, 30.82911f), 224.813f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn1);
+        BlankLocation RivalSpawn2 = new BlankLocation(new Vector3(1652.684f, 6418.776f, 28.14097f), 72.37399f, "RivalSpawn2", "Mount Chiliad")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1652.684f, 6418.776f, 28.14097f), 72.37399f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn2);
+        BlankLocation RivalSpawn3 = new BlankLocation(new Vector3(1713.726f, 4940.264f, 41.36482f), 57.22369f, "RivalSpawn3", "Grapeseed")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1713.726f, 4940.264f, 41.36482f), 57.22369f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn3);
+        BlankLocation RivalSpawn4 = new BlankLocation(new Vector3(2009.984f, 3791.645f, 31.4666f), 304.8076f, "RivalSpawn4", "Sandy Shores")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(2009.984f, 3791.645f, 31.4666f), 304.8076f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn4);
+        BlankLocation RivalSpawn5 = new BlankLocation(new Vector3(1764.111f, 3339.005f, 40.51173f), 303.1112f, "RivalSpawn5", "Sandy Shores - Grand Senora Desert - Next to Airfield")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1764.111f, 3339.005f, 40.51173f), 303.1112f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn5);
+        BlankLocation RivalSpawn6 = new BlankLocation(new Vector3(1181.352f, 2651.572f, 37.09864f), 299.1061f, "RivalSpawn6", "Grand Senora Desert - Across from Fleeca")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1181.352f, 2651.572f, 37.09864f), 299.1061f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn6);
+        BlankLocation RivalSpawn7 = new BlankLocation(new Vector3(1057.286f, 2656.394f, 38.83929f), 357.3093f, "RivalSpawn7", "Grand Senora Desert - Truck Stop")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1057.286f, 2656.394f, 38.83929f), 357.3093f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn7);
+        BlankLocation RivalSpawn8 = new BlankLocation(new Vector3(259.7416f, 2577.777f, 44.408f), 99.74284f, "RivalSpawn8", "Harmony")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(259.7416f, 2577.777f, 44.408f), 99.74284f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn8);
+        BlankLocation RivalSpawn9 = new BlankLocation(new Vector3(-2568.003f, 2345.274f, 32.35818f), 154.4576f, "RivalSpawn9", "Lago Zancudo")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-2568.003f, 2345.274f, 32.35818f), 154.4576f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn9);
+        BlankLocation RivalSpawn10 = new BlankLocation(new Vector3(-2079.111f, -335.4148f, 12.42219f), 85.96442f, "RivalSpawn10", "Pacific Bluffs")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-2079.111f, -335.4148f, 12.42219f), 85.96442f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn10);
+        BlankLocation RivalSpawn11 = new BlankLocation(new Vector3(-1409.549f, -276.8666f, 45.65573f), 131.2771f, "RivalSpawn11", "Morning Wood")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1409.549f, -276.8666f, 45.65573f), 131.2771f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn11);
+        BlankLocation RivalSpawn12 = new BlankLocation(new Vector3(-730.619f, -909.249f, 18.32507f), 178.6969f, "RivalSpawn12", "Little Seoul - Near Gang Steps")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-730.619f, -909.249f, 18.32507f), 178.6969f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn12);
+        BlankLocation RivalSpawn13 = new BlankLocation(new Vector3(-545.9062f, -1223.285f, 17.56532f), 334.6616f, "RivalSpawn13", "Little Seoul 2 - Near Highway")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-545.9062f, -1223.285f, 17.56532f), 334.6616f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn13);
+        BlankLocation RivalSpawn14 = new BlankLocation(new Vector3(-1822.418f, 783.5225f, 137.2784f), 222.004f, "RivalSpawn14", "Richman Glen")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1822.418f, 783.5225f, 137.2784f), 222.004f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn14);
+        BlankLocation RivalSpawn15 = new BlankLocation(new Vector3(647.2967f, 280.8318f, 102.4465f), 151.2755f, "RivalSpawn15", "Downtown Vinewood")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(647.2967f, 280.8318f, 102.4465f), 151.2755f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn15);
+        BlankLocation RivalSpawn16 = new BlankLocation(new Vector3(1153.686f, -331.9336f, 68.12624f), 190.49f, "RivalSpawn16", "Mirror Park")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1153.686f, -331.9336f, 68.12624f), 190.49f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn16);
+        BlankLocation RivalSpawn17 = new BlankLocation(new Vector3(2570.84f, 327.7289f, 107.7383f), 358.1566f, "RivalSpawn17", "Tataviam Mountains")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(2570.84f, 327.7289f, 107.7383f), 358.1566f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn17);
+        BlankLocation RivalSpawn18 = new BlankLocation(new Vector3(1197.4f, -1383.255f, 34.51193f), 180.6461f, "RivalSpawn18", "Murrieta Heights")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1197.4f, -1383.255f, 34.51193f), 180.6461f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn18);
+        BlankLocation RivalSpawn19 = new BlankLocation(new Vector3(824.7582f, -1061.39f, 27.23414f), 180.2325f, "RivalSpawn19", "La Mesa")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(824.7582f, -1061.39f, 27.23414f), 180.2325f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn19);
+        BlankLocation RivalSpawn20 = new BlankLocation(new Vector3(180.7177f, -1546.61f, 28.43903f), 132.8885f, "RivalSpawn20", "Davis")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(180.7177f, -1546.61f, 28.43903f), 132.8885f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+
+                    },
+                },
+        };
+        BlankLocationPlaces.Add(RivalSpawn20);
+        BlankLocation RivalSpawn21 = new BlankLocation(new Vector3(-336.7354f, -1495.114f, 29.90599f), 2.656341f, "RivalSpawn21", "LA Puerta")
+        {
+            OpenTime = 20,
+            CloseTime = 4,
+            ActivateCells = 2,
+            ActivateDistance = 100f,
+            //PossiblePedSpawns = new List<ConditionalLocation>()
+            //{
+            //new CivilianConditionalLocation(new Vector3(-342.6227f, -1495.767f, 29.35998f), 272.8359f, 75f)
+            //{
+            //            OverrideDispatchableVehicleGroupID = "RivalsVehicles",
+            //            OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+            //            MinHourSpawn = 20,
+            //            MaxHourSpawn = 4,
+            //            TaskRequirements = TaskRequirements.Guard,
+            //            ForcedScenarios = new List<string>()
+            //            {
+            //                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+            //                "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+            //            },
+            //},
+            //new CivilianConditionalLocation(new Vector3(-342.7641f, -1494.45f, 29.35643f), 264.6273f, 75f)
+            //        {
+            //            OverrideDispatchableVehicleGroupID = "RivalsVehicles",
+            //            OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+            //            MinHourSpawn = 20,
+            //            MaxHourSpawn = 4,
+            //            TaskRequirements = TaskRequirements.Guard,
+            //            ForcedScenarios = new List<string>()
+            //            {
+            //                "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+            //                "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE",
+            //            },
+            //},
+
+            //},
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-336.7354f, -1495.114f, 29.90599f), 2.656341f, 75f)
+                    {
+                        OverrideDispatchableVehicleGroupID = "TunerSports_Racing",
+                        OverrideDispatchablePersonGroupID = "VehicleRacePeds",
+                        MinHourSpawn = 20,
+                        MaxHourSpawn = 4,
+                        IsEmpty = false
+                    },
+            },
+        };
+        BlankLocationPlaces.Add(RivalSpawn21);
+
+
+
+
     }
 
     private void RooftopSnipers()

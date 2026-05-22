@@ -94,25 +94,28 @@ namespace LosSantosRED.lsr
                         {
                             Cop.UpdateSpeech(Player);
                         }
-                        if (Settings.SettingsManager.PoliceTaskSettings.AllowChaseAssists)
+
+                        if (Settings.SettingsManager.PoliceTaskSettings.AllowReducedCollisionPenaltyAssist)
                         {
-                            if (Settings.SettingsManager.PoliceTaskSettings.AllowReducedCollisionPenaltyAssist)
-                            {
-                                Cop.AssistManager.UpdateCollision(Player.IsWanted);
-                            }
-                            if (Settings.SettingsManager.PoliceTaskSettings.AllowFrontVehicleClearAssist)
-                            {
-                                Cop.AssistManager.ClearFront(Player.IsWanted);
-                            }
-                            if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
-                            {
-                                Cop.AssistManager.PowerAssist(Player.WantedLevel, Player.VehicleSpeedMPH);
-                            }
-                            if (Settings.SettingsManager.PoliceTaskSettings.AllowForceAssist)
-                            {
-                                Cop.AssistManager.ForceApplier(Player.IsWanted, Settings);
-                            }
+                            Cop.AssistManager.UpdateCollision(Player.IsWanted);
                         }
+                        if (Settings.SettingsManager.PoliceTaskSettings.AllowFrontVehicleClearAssist)
+                        {
+                            Cop.AssistManager.ClearFront(Player.IsWanted);
+                        }
+                        //if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
+                        //{
+                        //    Cop.AssistManager.PowerAssist(Player.WantedLevel, Player.VehicleSpeedMPH);
+                        //}
+                        //if (Settings.SettingsManager.PoliceTaskSettings.AllowForceAssist)
+                        //{
+                        //    Cop.AssistManager.ForceApplier(Player.IsWanted, Settings);
+                        //}
+                        if (Settings.SettingsManager.PoliceTaskSettings.AllowStabilityForceAssist)
+                        {
+                            Cop.AssistManager.StabilityForceApplier(Player.WantedLevel, Player.VehicleSpeedMPH);
+                        }
+                        
                         if (Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;

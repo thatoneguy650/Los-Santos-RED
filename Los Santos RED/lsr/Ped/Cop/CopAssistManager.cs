@@ -16,6 +16,8 @@ public class CopAssistManager
     private bool IsCheatFiberRunning = false;
     private bool IsRunningForceFiber;
 
+    public bool IsRunningOtherFiber { get; private set; }
+
     public CopAssistManager(Cop cop)
     {
         Cop = cop;
@@ -155,7 +157,49 @@ public class CopAssistManager
               
             }
         }
+
     }
+    public void StabilityForceApplier(int wantedLevel, float vehicleSpeedMPH)
+    {
+        if (!Cop.IsInVehicle || wantedLevel == 0)
+        {
+            IsRunningOtherFiber = false;
+            return;
+        }
+        if (!IsRunningOtherFiber)
+        {
+            StartOtherApplier();
+        }
+
+    }
+    private void StartOtherApplier()
+    {
+        IsRunningOtherFiber = true;
+        GameFiber.StartNew(delegate
+        {
+            EntryPoint.WriteToConsole($"I AM COP {Cop?.Handle} AND I STARTED AN OTHER APPLIER");
+
+            while (EntryPoint.ModController.IsRunning && IsRunningOtherFiber && Cop != null && Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists())
+            {
+                ApplyStabilityForce(Cop.Pedestrian.CurrentVehicle);
+                GameFiber.Yield();
+            }
+            IsRunningOtherFiber = false;
+            EntryPoint.WriteToConsole($"I AM COP {Cop?.Handle} AND I STOPPED AN OTHER APPLIER");
+        }, "Run Debug Logic");
+    }
+    private void ApplyStabilityForce(Vehicle copCar)
+    {
+        if (copCar.Model.IsBike || copCar.Model.IsQuadBike || copCar.Model.IsHelicopter || copCar.Model.IsPlane)
+        {
+            return;
+        }
+        float speedFactor = copCar.Speed * 0.0018f;
+        NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(copCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);
+        NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 2.0f);
+    }
+
+
     public void ForceApplier(bool isWanted, ISettingsProvideable settings)
     {
         if (!Cop.IsDriver || Cop.DistanceToPlayer > 300f || !isWanted || Cop.IsInAirVehicle || !Cop.Pedestrian.Exists())
@@ -181,6 +225,21 @@ public class CopAssistManager
     private void ForceApplierCheck(ISettingsProvideable Settings)
     {
         IsRunningForceFiber = true;
+
+        //[Description("Enable or disable applied force for police vehicles")]
+        bool AllowForceAssist;
+        float ForceAssistAmount;
+        float ForceAssistSpeedChangeThreshold;
+        float ForceAssistTurningRadiusLimit;
+        float ForceAssistMinimumSpeedMetersPerSecond;
+
+        AllowForceAssist = false;
+        ForceAssistAmount = 10.0f;
+        ForceAssistSpeedChangeThreshold = 0.2f;
+        ForceAssistTurningRadiusLimit = 10.0f;
+        ForceAssistMinimumSpeedMetersPerSecond = 15.0f;
+
+
         GameFiber.StartNew(delegate
         {
             EntryPoint.WriteToConsole($"I AM COP {Cop.Handle} AND I STARTED A FORCE APPLIER");
@@ -191,8 +250,8 @@ public class CopAssistManager
             bool isTurning = false;
             Vehicle coolVeh = Cop.Pedestrian.CurrentVehicle;
             float CurrentSpeed = 0.0f;
-            float speedThreshold = Settings.SettingsManager.PoliceTaskSettings.ForceAssistSpeedChangeThreshold;
-            float turningRadius = Settings.SettingsManager.PoliceTaskSettings.ForceAssistTurningRadiusLimit;
+            float speedThreshold = ForceAssistSpeedChangeThreshold;
+            float turningRadius = ForceAssistTurningRadiusLimit;
             while (IsRunningForceFiber)
             {
 
@@ -235,17 +294,17 @@ public class CopAssistManager
 
                     bool isApplyingForce = false;
 
-                    if (!isTurning && CurrentSpeed >= Settings.SettingsManager.PoliceTaskSettings.ForceAssistMinimumSpeedMetersPerSecond)
+                    if (!isTurning && CurrentSpeed >= ForceAssistMinimumSpeedMetersPerSecond)
                     {
-                        if (isAccelerating)
+                        if (isAccelerating && 1==0)
                         {
                             isApplyingForce = true;
-                            coolVeh.ApplyForce(new Vector3(0.0f, 1.0f, 0.0f) * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, Vector3.Zero, true, true);
+                            coolVeh.ApplyForce(new Vector3(0.0f, 1.0f, 0.0f) * ForceAssistAmount, Vector3.Zero, true, true);
                         }
                         else if (isBraking)
                         {
                             isApplyingForce = true;
-                            coolVeh.ApplyForce(new Vector3(0.0f, -1.0f * Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, 0.0f), Vector3.Zero, true, true);
+                            coolVeh.ApplyForce(new Vector3(0.0f, -1.0f * ForceAssistAmount, 0.0f), Vector3.Zero, true, true);
                         }
 
                     }

@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
         bool IsInWantedActiveMode { get; }
-        VehicleRaceManager RacingManager { get; }
+        VehicleRaceManager VehicleRaceManager { get; }
         Violations Violations { get; }
         bool IsSetDisabledControls { get; set; }
 
