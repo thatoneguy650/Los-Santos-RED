@@ -292,10 +292,10 @@ public class DispatchablePeople : IDispatchablePeople
             DispatchablePeople_Cops.CreateLSPDMotorcycleMPPed(0,0,0,2,false, false),
 
             //SWAT
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,2,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,2,"SWAT"),
 
 
             //new DispatchablePerson("mp_f_freemode_01",40,40) {
@@ -412,10 +412,10 @@ public class DispatchablePeople : IDispatchablePeople
             DispatchablePeople_Cops.GetGenericMPDetectivePed(2,2,2,true),
             DispatchablePeople_Cops.GetGenericMPDetectivePed(2,2,2,false),
 
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,2,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,2,"SWAT"),
 
             new DispatchablePerson("s_m_y_sheriff_01",60,60) {
                 DebugName = "LSSDDefaultNoArmorMale"
@@ -484,10 +484,10 @@ public class DispatchablePeople : IDispatchablePeople
             DispatchablePeople_Cops.GetGenericMPDetectivePed(5,1,2,true),
             DispatchablePeople_Cops.GetGenericMPDetectivePed(5,1,2,false),
 
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,1,""),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,2,""),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,1,""),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,2,""),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,1,""),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,2,""),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,1,""),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,2,""),
 
             //new DispatchablePerson("mp_m_freemode_01", 0,100) {
             //    DebugName = "NOOSEMPMaleSWAT1"
@@ -770,10 +770,10 @@ public class DispatchablePeople : IDispatchablePeople
 
 
             //SWAT
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,true,2,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,1,"SWAT"),
-            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,false,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,100,4,4,true,2,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,1,"SWAT"),
+            DispatchablePeople_Cops.GetGenericSWATMPCopPed(0,50,4,4,false,2,"SWAT"),
 
             new DispatchablePerson("s_m_m_pilot_02",0,0){ DebugName = "Generic Pilot", GroupName = "Pilot", RequiredVariation = new PedVariation() { Props = new List<PedPropComponent>() { new PedPropComponent(0,0,0) } } },
         };

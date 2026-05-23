@@ -294,8 +294,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         OrbitCameraInitialVerticalOffset = 100f;
         OrbitCameraInitialHorizontalOffset = 65f;
 
-        BurnerPhoneMapsAppName = "Nudle Maps";
-        BurnerPhoneMapsAppBannerLocation = "stores\\nudlemaps.png";
+        BurnerPhoneMapsAppName = "Eyefind Maps";
+        BurnerPhoneMapsAppBannerLocation = "stores\\eyefind.png";
     }
 
 }

@@ -549,7 +549,7 @@ namespace LosSantosRED.lsr
         }
         public void OnNooseDeployed()
         {
-            if (Player.IsWanted && Player.WantedLevel >= 4 && !SDI.RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !SDI.RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.Pedestrians.AnyNooseUnitsSpawned)
+            if (Player.IsWanted && Player.WantedLevel >= 4 && !SDI.RequestSWATUnits.HasBeenPlayedThisWanted && !SDI.RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !SDI.RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.Pedestrians.AnyNooseUnitsSpawned)
             {
                 if (RandomItems.RandomPercent(50))
                 {
@@ -563,7 +563,7 @@ namespace LosSantosRED.lsr
         }
         public void OnSWATDeployed()
         {
-            if (Player.IsWanted && Player.WantedLevel >= 4 && !SDI.RequestSWATUnits.HasBeenPlayedThisWanted )
+            if (Player.IsWanted && Player.WantedLevel >= 4 && !SDI.RequestSWATUnits.HasBeenPlayedThisWanted && !SDI.RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !SDI.RequestNooseUnitsAlt2.HasBeenPlayedThisWanted)
             {
                 AddToQueue(SDI.RequestSWATUnits);
                

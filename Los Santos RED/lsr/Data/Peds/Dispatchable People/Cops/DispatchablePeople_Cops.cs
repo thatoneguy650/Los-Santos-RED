@@ -719,6 +719,7 @@ public class DispatchablePeople_Cops
             OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 37, 0), new PedPropComponent(1, 38, 0), new PedPropComponent(1, 8, 3), new PedPropComponent(1, 8, 5), new PedPropComponent(1, 8, 6), new PedPropComponent(1, 7, 0), new PedPropComponent(1, 2, 3), }
             ,
             OptionalPropChance = optionalpropschance
+            ,
         };
 
         DispatchablePerson DetectiveFemale = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance)
@@ -753,11 +754,11 @@ public class DispatchablePeople_Cops
 
 
 
-    public DispatchablePerson GetGenericSWATMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int maxwantedLevelSpawn, bool isMale, int Style, string groupName)
+    public DispatchablePerson GetGenericSWATMPCopPed(int ambientSpawnChance, int wantedSpawnChance, int minwantedLevelSpawn, int maxwantedLevelSpawn, bool isMale, int Style, string groupName)
     {
         DispatchablePerson male1 = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
             DebugName = "MPMaleSWAT1"
-                , MinWantedLevelSpawn = 3
+                , MinWantedLevelSpawn = minwantedLevelSpawn
                 , AccuracyMin = 25
                 , AccuracyMax = 40
                 , ShootRateMin = 400
@@ -778,7 +779,7 @@ public class DispatchablePeople_Cops
         };
         DispatchablePerson male2 = new DispatchablePerson("mp_m_freemode_01", ambientSpawnChance, wantedSpawnChance) {
             DebugName = "MPMaleSWAT2"
-            , MinWantedLevelSpawn = 3
+            , MinWantedLevelSpawn = minwantedLevelSpawn
             , AccuracyMin = 25
             , AccuracyMax = 40
             , ShootRateMin = 400
@@ -802,7 +803,7 @@ public class DispatchablePeople_Cops
 
         DispatchablePerson female1 = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
             DebugName = "MPFemaleSWAT1"
-                , MinWantedLevelSpawn = 3
+                , MinWantedLevelSpawn = minwantedLevelSpawn
                 , AccuracyMin = 25
                 , AccuracyMax = 40
                 , ShootRateMin = 400
@@ -825,7 +826,7 @@ public class DispatchablePeople_Cops
         };
         DispatchablePerson female2 = new DispatchablePerson("mp_f_freemode_01", ambientSpawnChance, wantedSpawnChance) {
                 DebugName = "MPFemaleSWAT2"
-                ,MinWantedLevelSpawn = 3
+                ,MinWantedLevelSpawn = minwantedLevelSpawn
                 ,AccuracyMin = 25
                 ,AccuracyMax = 40
                 ,ShootRateMin = 400
