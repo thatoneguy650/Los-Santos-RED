@@ -80,6 +80,7 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
                 {
                     GameFiber.Yield();
                 }
+                Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
                 Player.CellPhone.Close(250);
             }
             catch (Exception ex)
