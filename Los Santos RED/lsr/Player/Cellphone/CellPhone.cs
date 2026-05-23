@@ -107,7 +107,7 @@ public class CellPhone
         ShopMenus = shopMenus;
         Contacts = contacts;
         Agencies = agencies;
-        BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems, Contacts);
+        BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems, Contacts, placesOfInterest, world);
         phoneAudioPlayer = new NAudioPlayer(Settings);
         Cellphones = cellphones;
         CurrentCellphoneData = Cellphones.GetDefault();

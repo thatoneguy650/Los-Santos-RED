@@ -158,6 +158,14 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float OrbitCameraInitialVerticalOffset { get; set; }
     public float OrbitCameraInitialHorizontalOffset { get; set; }
 
+
+
+    [Description("Sets Maps app name. If empty, will default to \"Maps\"")]
+    public string BurnerPhoneMapsAppName { get; set; }
+
+    [Description("Sets Maps app banner. If empty, there'll be no banner")]
+    public string BurnerPhoneMapsAppBannerLocation { get; set; }
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -285,6 +293,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
         OrbitCameraSensitivity = 1.0f;
         OrbitCameraInitialVerticalOffset = 100f;
         OrbitCameraInitialHorizontalOffset = 65f;
+
+        BurnerPhoneMapsAppName = "Nudle Maps";
+        BurnerPhoneMapsAppBannerLocation = "stores\\nudlemaps.png";
     }
 
 }
