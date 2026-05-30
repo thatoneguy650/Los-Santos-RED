@@ -273,13 +273,25 @@ public class Interior
                     NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
                     GameFiber.Yield();
                 }
-                // Deactivate the current entity set style if active
-                if (InteriorSetStyleID != -1)
+                //// Deactivate the current entity set style if active
+                //if (InteriorSetStyleID != -1)
+                //{
+                //    string entitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
+                //    EntryPoint.WriteToConsole($"Deactivating entity set style on unload: {entitySetStyle}");
+                //    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entitySetStyle);
+                //    GameFiber.Yield();
+                //}
+                if (InteriorSetStyleID >= -1)
                 {
-                    string entitySetStyle = $"entity_set_style_{InteriorSetStyleID}";
-                    EntryPoint.WriteToConsole($"Deactivating entity set style on unload: {entitySetStyle}");
-                    NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, entitySetStyle);
-                    GameFiber.Yield();
+                    for (int i = 0; i <= 9; i++)
+                    {
+                        string previousEntitySetStyle = $"entity_set_style_{i}";
+                        if (NativeFunction.Natives.IS_INTERIOR_ENTITY_SET_ACTIVE<bool>(InternalID, previousEntitySetStyle))
+                        {
+                            NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, previousEntitySetStyle);
+                            GameFiber.Yield();
+                        }
+                    }
                 }
                 foreach (InteriorDoor door in Doors)
                 {

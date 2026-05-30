@@ -461,7 +461,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public bool WasModSpawned { get; set; } = false;
-    public bool EnableAutoCleanup { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }
     public bool IsPlayerControlled { get; set; } = false;

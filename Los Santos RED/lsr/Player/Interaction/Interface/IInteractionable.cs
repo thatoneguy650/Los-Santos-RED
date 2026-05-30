@@ -51,6 +51,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsPrimaryCharacter { get; }
         bool IsSetDisabledControls { get; set; }
         string ModelName { get; }
+        bool IsUsingController { get; }
 
         void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);

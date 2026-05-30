@@ -320,6 +320,7 @@
     <Compile Include="lsr\Player\Activity\Items\IngestActivityNew.cs" />
     <Compile Include="lsr\Player\Activity\Pickpocket.cs" />
     <Compile Include="lsr\Player\Button Prompts\GenericMinigame.cs" />
+    <Compile Include="lsr\Player\Button Prompts\LockpickMiniGame.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneMapsApp.cs" />
     <Compile Include="lsr\Player\Crafting\Craft.cs" />
     <Compile Include="lsr\Player\Gambling\Blackjack Games\BlackJackGame.cs" />

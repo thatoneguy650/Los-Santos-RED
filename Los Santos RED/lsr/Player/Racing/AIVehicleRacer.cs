@@ -45,7 +45,7 @@ public class AIVehicleRacer : VehicleRacer
     public PedExt PedExt { get; set; }
     public bool WasSpawnedForRace { get; set; }
     public override string RacerName => PedExt == null ? base.RacerName : PedExt.Name;
-    public bool IsManualDispose { get; set; } = false;
+    //public bool IsManualDispose { get; set; } = false;
     public bool IsDisqualified { get; set; }
 
     public AIVehicleRacer(PedExt pedExt, VehicleExt vehicleExt) : base(vehicleExt)
@@ -392,10 +392,10 @@ public class AIVehicleRacer : VehicleRacer
 
     public override void Dispose()
     {
-        if (IsManualDispose)
-        {
-            return;
-        }
+        //if (IsManualDispose)
+        //{
+        //    return;
+        //}
         if (PedExt != null)
         {
             PedExt.SetNonPersistent();

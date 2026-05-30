@@ -2062,10 +2062,32 @@ public class ActivityManager
         {
             return;
         }
-        Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
-        Player.CurrentVehicle.Engine.SetState(true);
-        //GameFiber.Sleep(2500);
-        //Player.CurrentVehicle?.Engine.Synchronize();
+
+
+        if(Settings.SettingsManager.ActivitySettings.UseMinigameForHotwire)
+        {
+            Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+            LockpickMiniGame lockpickMiniGame = new LockpickMiniGame(Interactionable);
+            lockpickMiniGame.Start();
+            while(lockpickMiniGame.IsActive)
+            {
+                Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+                GameFiber.Yield();
+            }
+            if(lockpickMiniGame.HasPickedLock)
+            {
+                Player.CurrentVehicle.Engine.SetState(true);
+            }
+            lockpickMiniGame.Dispose();
+        }
+        else
+        {
+            Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+            Player.CurrentVehicle.Engine.SetState(true);
+            //GameFiber.Sleep(2500);
+            //Player.CurrentVehicle?.Engine.Synchronize();
+        }
+
     }
 
     public void OnLookedAtObject(Rage.Object currentLookedAtObject)

@@ -221,70 +221,7 @@ public class VehicleColorMenu
             ,new VehicleColorLookup(158,"Pure Gold","Metals","Pure Gold",203) { RGBColor = System.Drawing.Color.FromArgb(122, 100, 64) }
             ,new VehicleColorLookup(159,"Brushed Gold","Metals","Brushed Gold",204) { RGBColor = System.Drawing.Color.FromArgb(127, 106, 72) }
 
-             //Chameleon Colors - Enhanced Only  - defaults to a shit brown color on Legacy
-            ,new VehicleColorLookup(161,"Anodized Red Pearl","Chameleon","Anodized Red Pearl",161) { RGBColor = System.Drawing.Color.FromArgb(185, 20, 35) }
-            ,new VehicleColorLookup(162,"Anodized Wine Pearl","Chameleon","Anodized Wine Pearl",162) { RGBColor = System.Drawing.Color.FromArgb(90, 15, 35) }
-            ,new VehicleColorLookup(163,"Anodized Purple Pearl","Chameleon","Anodized Purple Pearl",163) { RGBColor = System.Drawing.Color.FromArgb(80, 20, 120) }
-            ,new VehicleColorLookup(164,"Anodized Blue Pearl","Chameleon","Anodized Blue Pearl",164) { RGBColor = System.Drawing.Color.FromArgb(30, 80, 170) }
-            ,new VehicleColorLookup(165,"Anodized Green Pearl","Chameleon","Anodized Green Pearl",165) { RGBColor = System.Drawing.Color.FromArgb(20, 120, 60) }
-            ,new VehicleColorLookup(166,"Anodized Lime Pearl","Chameleon","Anodized Lime Pearl",166) { RGBColor = System.Drawing.Color.FromArgb(115, 205, 30) }
-            ,new VehicleColorLookup(167,"Anodized Copper Pearl","Chameleon","Anodized Copper Pearl",167) { RGBColor = System.Drawing.Color.FromArgb(180, 105, 60) }
-            ,new VehicleColorLookup(168,"Anodized Bronze Pearl","Chameleon","Anodized Bronze Pearl",168) { RGBColor = System.Drawing.Color.FromArgb(130, 90, 50) }
-            ,new VehicleColorLookup(169,"Anodized Champagne Pearl","Chameleon","Anodized Champagne Pearl",169) { RGBColor = System.Drawing.Color.FromArgb(160, 140, 110) }
-            ,new VehicleColorLookup(170,"Anodized Gold Pearl","Chameleon","Anodized Gold Pearl",170) { RGBColor = System.Drawing.Color.FromArgb(215, 165, 55) }
-            ,new VehicleColorLookup(171,"Green/Blue Flip","Chameleon","Green/Blue Flip",171) { RGBColor = System.Drawing.Color.FromArgb(20, 145, 130) }
-            ,new VehicleColorLookup(172,"Green/Red Flip","Chameleon","Green/Red Flip",172) { RGBColor = System.Drawing.Color.FromArgb(85, 110, 45) }
-            ,new VehicleColorLookup(173,"Green/Brown Flip","Chameleon","Green/Brown Flip",173) { RGBColor = System.Drawing.Color.FromArgb(75, 80, 40) }
-            ,new VehicleColorLookup(174,"Green/Turquoise Flip","Chameleon","Green/Turquoise Flip",174) { RGBColor = System.Drawing.Color.FromArgb(30, 150, 105) }
-            ,new VehicleColorLookup(175,"Green/Purple Flip","Chameleon","Green/Purple Flip",175) { RGBColor = System.Drawing.Color.FromArgb(60, 100, 110) }
-            ,new VehicleColorLookup(176,"Teal/Purple Flip","Chameleon","Teal/Purple Flip",176) { RGBColor = System.Drawing.Color.FromArgb(40, 120, 140) }
-            ,new VehicleColorLookup(177,"Turquoise/Red Flip","Chameleon","Turquoise/Red Flip",177) { RGBColor = System.Drawing.Color.FromArgb(50, 130, 110) }
-            ,new VehicleColorLookup(178,"Turquoise/Purple Flip","Chameleon","Turquoise/Purple Flip",178) { RGBColor = System.Drawing.Color.FromArgb(45, 115, 135) }
-            ,new VehicleColorLookup(179,"Cyan/Purple Flip","Chameleon","Cyan/Purple Flip",179) { RGBColor = System.Drawing.Color.FromArgb(35, 140, 175) }
-            ,new VehicleColorLookup(180,"Blue/Pink Flip","Chameleon","Blue/Pink Flip",180) { RGBColor = System.Drawing.Color.FromArgb(55, 100, 190) }
-            ,new VehicleColorLookup(181,"Blue/Green Flip","Chameleon","Blue/Green Flip",181) { RGBColor = System.Drawing.Color.FromArgb(25, 95, 150) }
-            ,new VehicleColorLookup(182,"Purple/Red Flip","Chameleon","Purple/Red Flip",182) { RGBColor = System.Drawing.Color.FromArgb(110, 35, 115) }
-            ,new VehicleColorLookup(183,"Purple/Green Flip","Chameleon","Purple/Green Flip",183) { RGBColor = System.Drawing.Color.FromArgb(90, 40, 125) }
-            ,new VehicleColorLookup(184,"Magenta/Green Flip","Chameleon","Magenta/Green Flip",184) { RGBColor = System.Drawing.Color.FromArgb(150, 30, 110) }
-            ,new VehicleColorLookup(185,"Magenta/Yellow Flip","Chameleon","Magenta/Yellow Flip",185) { RGBColor = System.Drawing.Color.FromArgb(170, 50, 95) }
-            ,new VehicleColorLookup(186,"Burgundy/Green Flip","Chameleon","Burgundy/Green Flip",186) { RGBColor = System.Drawing.Color.FromArgb(100, 20, 50) }
-            ,new VehicleColorLookup(187,"Magenta/Cyan Flip","Chameleon","Magenta/Cyan Flip",187) { RGBColor = System.Drawing.Color.FromArgb(160, 40, 140) }
-            ,new VehicleColorLookup(188,"Copper/Purple Flip","Chameleon","Copper/Purple Flip",188) { RGBColor = System.Drawing.Color.FromArgb(150, 80, 65) }
-            ,new VehicleColorLookup(189,"Magenta/Orange Flip","Chameleon","Magenta/Orange Flip",189) { RGBColor = System.Drawing.Color.FromArgb(210, 40, 120) }
-            ,new VehicleColorLookup(190,"Red/Orange Flip","Chameleon","Red/Orange Flip",190) { RGBColor = System.Drawing.Color.FromArgb(195, 45, 30) }
-            ,new VehicleColorLookup(191,"Orange/Purple Flip","Chameleon","Orange/Purple Flip",191) { RGBColor = System.Drawing.Color.FromArgb(200, 90, 40) }
-            ,new VehicleColorLookup(192,"Orange/Blue Flip","Chameleon","Orange/Blue Flip",192) { RGBColor = System.Drawing.Color.FromArgb(180, 110, 50) }
-            ,new VehicleColorLookup(193,"White/Purple Flip","Chameleon","White/Purple Flip",193) { RGBColor = System.Drawing.Color.FromArgb(220, 215, 230) }
-            ,new VehicleColorLookup(194,"Red Rainbow Flip","Chameleon","Red Rainbow Flip",194) { RGBColor = System.Drawing.Color.FromArgb(190, 35, 50) }
-            ,new VehicleColorLookup(195,"Blue Rainbow Flip","Chameleon","Blue Rainbow Flip",195) { RGBColor = System.Drawing.Color.FromArgb(40, 75, 185) }
-            ,new VehicleColorLookup(196,"Dark Green Pearl","Chameleon","Dark Green Pearl",196) { RGBColor = System.Drawing.Color.FromArgb(15, 45, 25) }
-            ,new VehicleColorLookup(197,"Dark Teal Pearl","Chameleon","Dark Teal Pearl",197) { RGBColor = System.Drawing.Color.FromArgb(15, 50, 55) }
-            ,new VehicleColorLookup(198,"Dark Blue Pearl","Chameleon","Dark Blue Pearl",198) { RGBColor = System.Drawing.Color.FromArgb(20, 35, 75) }
-            ,new VehicleColorLookup(199,"Dark Purple Pearl","Chameleon","Dark Purple Pearl",199) { RGBColor = System.Drawing.Color.FromArgb(45, 15, 65) }
-            ,new VehicleColorLookup(200,"Oil Slick Pearl","Chameleon","Oil Slick Pearl",200) { RGBColor = System.Drawing.Color.FromArgb(40, 45, 45) }
-            ,new VehicleColorLookup(201,"Light Green Pearl","Chameleon","Light Green Pearl",201) { RGBColor = System.Drawing.Color.FromArgb(140, 210, 150) }
-            ,new VehicleColorLookup(202,"Light Blue Pearl","Chameleon","Light Blue Pearl",202) { RGBColor = System.Drawing.Color.FromArgb(135, 180, 220) }
-            ,new VehicleColorLookup(203,"Light Purple Pearl","Chameleon","Light Purple Pearl",203) { RGBColor = System.Drawing.Color.FromArgb(165, 140, 210) }
-            ,new VehicleColorLookup(204,"Light Pink Pearl","Chameleon","Light Pink Pearl",204) { RGBColor = System.Drawing.Color.FromArgb(230, 160, 190) }
-            ,new VehicleColorLookup(205,"Off-White Prismatic","Chameleon","Off-White Prismatic",205) { RGBColor = System.Drawing.Color.FromArgb(235, 235, 225) }
-            ,new VehicleColorLookup(206,"Soft Pink Pearl","Chameleon","Soft Pink Pearl",206) { RGBColor = System.Drawing.Color.FromArgb(245, 185, 205) }
-            ,new VehicleColorLookup(207,"Pastel Yellow Pearl","Chameleon","Pastel Yellow Pearl",207) { RGBColor = System.Drawing.Color.FromArgb(240, 230, 160) }
-            ,new VehicleColorLookup(208,"Pastel Green Pearl","Chameleon","Pastel Green Pearl",208) { RGBColor = System.Drawing.Color.FromArgb(170, 230, 180) }
-            ,new VehicleColorLookup(209,"Baby Blue Pearl","Chameleon","Baby Blue Pearl",209) { RGBColor = System.Drawing.Color.FromArgb(140, 190, 230) }
-            ,new VehicleColorLookup(210,"Cream Pearl","Chameleon","Cream Pearl",210) { RGBColor = System.Drawing.Color.FromArgb(240, 225, 195) }
-            ,new VehicleColorLookup(211,"White Prismatic Pearl","Chameleon","White Prismatic Pearl",211) { RGBColor = System.Drawing.Color.FromArgb(245, 245, 250) }
-            ,new VehicleColorLookup(212,"Graphite Prismatic Pearl","Chameleon","Graphite Prismatic Pearl",212) { RGBColor = System.Drawing.Color.FromArgb(45, 45, 50) }
-            ,new VehicleColorLookup(213,"Dark Blue Prismatic","Chameleon","Dark Blue Prismatic",213) { RGBColor = System.Drawing.Color.FromArgb(25, 45, 95) }
-            ,new VehicleColorLookup(214,"Dark Purple Prismatic","Chameleon","Dark Purple Prismatic",214) { RGBColor = System.Drawing.Color.FromArgb(55, 25, 85) }
-            ,new VehicleColorLookup(215,"Hot Pink Prismatic","Chameleon","Hot Pink Prismatic",215) { RGBColor = System.Drawing.Color.FromArgb(230, 30, 130) }
-            ,new VehicleColorLookup(216,"Red Prismatic Pearl","Chameleon","Red Prismatic Pearl",216) { RGBColor = System.Drawing.Color.FromArgb(210, 30, 60) }
-            ,new VehicleColorLookup(217,"Green Prismatic","Chameleon","Green Prismatic",217) { RGBColor = System.Drawing.Color.FromArgb(40, 170, 75) }
-            ,new VehicleColorLookup(218,"Black Prismatic Pearl","Chameleon","Black Prismatic Pearl",218) { RGBColor = System.Drawing.Color.FromArgb(20, 20, 25) }
-            ,new VehicleColorLookup(219,"Oil Spill Prismatic","Chameleon","Oil Spill Prismatic",219) { RGBColor = System.Drawing.Color.FromArgb(35, 40, 35) }
-            ,new VehicleColorLookup(220,"Black Rainbow Prismatic","Chameleon","Black Rainbow Prismatic",220) { RGBColor = System.Drawing.Color.FromArgb(15, 15, 20) }
-            ,new VehicleColorLookup(221,"Black Holographic","Chameleon","Black Holographic",221) { RGBColor = System.Drawing.Color.FromArgb(30, 35, 40) }
-            ,new VehicleColorLookup(222,"White Holographic","Chameleon","White Holographic",222) { RGBColor = System.Drawing.Color.FromArgb(235, 240, 245) }
-
+   
             //,new ColorLookup(127,"police car blue","Unknown","police car blue",205)
             //,new ColorLookup(156,"DEFAULT ALLOY COLOR","Unknown","DEFAULT ALLOY COLOR",206)
             //,new ColorLookup(157,"Epsilon Blue","Unknown","Epsilon Blue",207)
@@ -292,6 +229,79 @@ public class VehicleColorMenu
             //,new ColorLookup(147,"MODSHOP BLACK1","Unknown","MODSHOP BLACK1",209)
 
         };
+
+
+        if(EntryPoint.IsEnhancedVersion)
+        {
+            VehicleColors.AddRange(new List<VehicleColorLookup>()
+            {
+                //Chameleon Colors - Enhanced Only  - defaults to a shit brown color on Legacy
+                new VehicleColorLookup(161,"Anodized Red Pearl","Chameleon","Anodized Red Pearl",161) { RGBColor = System.Drawing.Color.FromArgb(185, 20, 35) }
+                ,new VehicleColorLookup(162,"Anodized Wine Pearl","Chameleon","Anodized Wine Pearl",162) { RGBColor = System.Drawing.Color.FromArgb(90, 15, 35) }
+                ,new VehicleColorLookup(163,"Anodized Purple Pearl","Chameleon","Anodized Purple Pearl",163) { RGBColor = System.Drawing.Color.FromArgb(80, 20, 120) }
+                ,new VehicleColorLookup(164,"Anodized Blue Pearl","Chameleon","Anodized Blue Pearl",164) { RGBColor = System.Drawing.Color.FromArgb(30, 80, 170) }
+                ,new VehicleColorLookup(165,"Anodized Green Pearl","Chameleon","Anodized Green Pearl",165) { RGBColor = System.Drawing.Color.FromArgb(20, 120, 60) }
+                ,new VehicleColorLookup(166,"Anodized Lime Pearl","Chameleon","Anodized Lime Pearl",166) { RGBColor = System.Drawing.Color.FromArgb(115, 205, 30) }
+                ,new VehicleColorLookup(167,"Anodized Copper Pearl","Chameleon","Anodized Copper Pearl",167) { RGBColor = System.Drawing.Color.FromArgb(180, 105, 60) }
+                ,new VehicleColorLookup(168,"Anodized Bronze Pearl","Chameleon","Anodized Bronze Pearl",168) { RGBColor = System.Drawing.Color.FromArgb(130, 90, 50) }
+                ,new VehicleColorLookup(169,"Anodized Champagne Pearl","Chameleon","Anodized Champagne Pearl",169) { RGBColor = System.Drawing.Color.FromArgb(160, 140, 110) }
+                ,new VehicleColorLookup(170,"Anodized Gold Pearl","Chameleon","Anodized Gold Pearl",170) { RGBColor = System.Drawing.Color.FromArgb(215, 165, 55) }
+                ,new VehicleColorLookup(171,"Green/Blue Flip","Chameleon","Green/Blue Flip",171) { RGBColor = System.Drawing.Color.FromArgb(20, 145, 130) }
+                ,new VehicleColorLookup(172,"Green/Red Flip","Chameleon","Green/Red Flip",172) { RGBColor = System.Drawing.Color.FromArgb(85, 110, 45) }
+                ,new VehicleColorLookup(173,"Green/Brown Flip","Chameleon","Green/Brown Flip",173) { RGBColor = System.Drawing.Color.FromArgb(75, 80, 40) }
+                ,new VehicleColorLookup(174,"Green/Turquoise Flip","Chameleon","Green/Turquoise Flip",174) { RGBColor = System.Drawing.Color.FromArgb(30, 150, 105) }
+                ,new VehicleColorLookup(175,"Green/Purple Flip","Chameleon","Green/Purple Flip",175) { RGBColor = System.Drawing.Color.FromArgb(60, 100, 110) }
+                ,new VehicleColorLookup(176,"Teal/Purple Flip","Chameleon","Teal/Purple Flip",176) { RGBColor = System.Drawing.Color.FromArgb(40, 120, 140) }
+                ,new VehicleColorLookup(177,"Turquoise/Red Flip","Chameleon","Turquoise/Red Flip",177) { RGBColor = System.Drawing.Color.FromArgb(50, 130, 110) }
+                ,new VehicleColorLookup(178,"Turquoise/Purple Flip","Chameleon","Turquoise/Purple Flip",178) { RGBColor = System.Drawing.Color.FromArgb(45, 115, 135) }
+                ,new VehicleColorLookup(179,"Cyan/Purple Flip","Chameleon","Cyan/Purple Flip",179) { RGBColor = System.Drawing.Color.FromArgb(35, 140, 175) }
+                ,new VehicleColorLookup(180,"Blue/Pink Flip","Chameleon","Blue/Pink Flip",180) { RGBColor = System.Drawing.Color.FromArgb(55, 100, 190) }
+                ,new VehicleColorLookup(181,"Blue/Green Flip","Chameleon","Blue/Green Flip",181) { RGBColor = System.Drawing.Color.FromArgb(25, 95, 150) }
+                ,new VehicleColorLookup(182,"Purple/Red Flip","Chameleon","Purple/Red Flip",182) { RGBColor = System.Drawing.Color.FromArgb(110, 35, 115) }
+                ,new VehicleColorLookup(183,"Purple/Green Flip","Chameleon","Purple/Green Flip",183) { RGBColor = System.Drawing.Color.FromArgb(90, 40, 125) }
+                ,new VehicleColorLookup(184,"Magenta/Green Flip","Chameleon","Magenta/Green Flip",184) { RGBColor = System.Drawing.Color.FromArgb(150, 30, 110) }
+                ,new VehicleColorLookup(185,"Magenta/Yellow Flip","Chameleon","Magenta/Yellow Flip",185) { RGBColor = System.Drawing.Color.FromArgb(170, 50, 95) }
+                ,new VehicleColorLookup(186,"Burgundy/Green Flip","Chameleon","Burgundy/Green Flip",186) { RGBColor = System.Drawing.Color.FromArgb(100, 20, 50) }
+                ,new VehicleColorLookup(187,"Magenta/Cyan Flip","Chameleon","Magenta/Cyan Flip",187) { RGBColor = System.Drawing.Color.FromArgb(160, 40, 140) }
+                ,new VehicleColorLookup(188,"Copper/Purple Flip","Chameleon","Copper/Purple Flip",188) { RGBColor = System.Drawing.Color.FromArgb(150, 80, 65) }
+                ,new VehicleColorLookup(189,"Magenta/Orange Flip","Chameleon","Magenta/Orange Flip",189) { RGBColor = System.Drawing.Color.FromArgb(210, 40, 120) }
+                ,new VehicleColorLookup(190,"Red/Orange Flip","Chameleon","Red/Orange Flip",190) { RGBColor = System.Drawing.Color.FromArgb(195, 45, 30) }
+                ,new VehicleColorLookup(191,"Orange/Purple Flip","Chameleon","Orange/Purple Flip",191) { RGBColor = System.Drawing.Color.FromArgb(200, 90, 40) }
+                ,new VehicleColorLookup(192,"Orange/Blue Flip","Chameleon","Orange/Blue Flip",192) { RGBColor = System.Drawing.Color.FromArgb(180, 110, 50) }
+                ,new VehicleColorLookup(193,"White/Purple Flip","Chameleon","White/Purple Flip",193) { RGBColor = System.Drawing.Color.FromArgb(220, 215, 230) }
+                ,new VehicleColorLookup(194,"Red Rainbow Flip","Chameleon","Red Rainbow Flip",194) { RGBColor = System.Drawing.Color.FromArgb(190, 35, 50) }
+                ,new VehicleColorLookup(195,"Blue Rainbow Flip","Chameleon","Blue Rainbow Flip",195) { RGBColor = System.Drawing.Color.FromArgb(40, 75, 185) }
+                ,new VehicleColorLookup(196,"Dark Green Pearl","Chameleon","Dark Green Pearl",196) { RGBColor = System.Drawing.Color.FromArgb(15, 45, 25) }
+                ,new VehicleColorLookup(197,"Dark Teal Pearl","Chameleon","Dark Teal Pearl",197) { RGBColor = System.Drawing.Color.FromArgb(15, 50, 55) }
+                ,new VehicleColorLookup(198,"Dark Blue Pearl","Chameleon","Dark Blue Pearl",198) { RGBColor = System.Drawing.Color.FromArgb(20, 35, 75) }
+                ,new VehicleColorLookup(199,"Dark Purple Pearl","Chameleon","Dark Purple Pearl",199) { RGBColor = System.Drawing.Color.FromArgb(45, 15, 65) }
+                ,new VehicleColorLookup(200,"Oil Slick Pearl","Chameleon","Oil Slick Pearl",200) { RGBColor = System.Drawing.Color.FromArgb(40, 45, 45) }
+                ,new VehicleColorLookup(201,"Light Green Pearl","Chameleon","Light Green Pearl",201) { RGBColor = System.Drawing.Color.FromArgb(140, 210, 150) }
+                ,new VehicleColorLookup(202,"Light Blue Pearl","Chameleon","Light Blue Pearl",202) { RGBColor = System.Drawing.Color.FromArgb(135, 180, 220) }
+                ,new VehicleColorLookup(203,"Light Purple Pearl","Chameleon","Light Purple Pearl",203) { RGBColor = System.Drawing.Color.FromArgb(165, 140, 210) }
+                ,new VehicleColorLookup(204,"Light Pink Pearl","Chameleon","Light Pink Pearl",204) { RGBColor = System.Drawing.Color.FromArgb(230, 160, 190) }
+                ,new VehicleColorLookup(205,"Off-White Prismatic","Chameleon","Off-White Prismatic",205) { RGBColor = System.Drawing.Color.FromArgb(235, 235, 225) }
+                ,new VehicleColorLookup(206,"Soft Pink Pearl","Chameleon","Soft Pink Pearl",206) { RGBColor = System.Drawing.Color.FromArgb(245, 185, 205) }
+                ,new VehicleColorLookup(207,"Pastel Yellow Pearl","Chameleon","Pastel Yellow Pearl",207) { RGBColor = System.Drawing.Color.FromArgb(240, 230, 160) }
+                ,new VehicleColorLookup(208,"Pastel Green Pearl","Chameleon","Pastel Green Pearl",208) { RGBColor = System.Drawing.Color.FromArgb(170, 230, 180) }
+                ,new VehicleColorLookup(209,"Baby Blue Pearl","Chameleon","Baby Blue Pearl",209) { RGBColor = System.Drawing.Color.FromArgb(140, 190, 230) }
+                ,new VehicleColorLookup(210,"Cream Pearl","Chameleon","Cream Pearl",210) { RGBColor = System.Drawing.Color.FromArgb(240, 225, 195) }
+                ,new VehicleColorLookup(211,"White Prismatic Pearl","Chameleon","White Prismatic Pearl",211) { RGBColor = System.Drawing.Color.FromArgb(245, 245, 250) }
+                ,new VehicleColorLookup(212,"Graphite Prismatic Pearl","Chameleon","Graphite Prismatic Pearl",212) { RGBColor = System.Drawing.Color.FromArgb(45, 45, 50) }
+                ,new VehicleColorLookup(213,"Dark Blue Prismatic","Chameleon","Dark Blue Prismatic",213) { RGBColor = System.Drawing.Color.FromArgb(25, 45, 95) }
+                ,new VehicleColorLookup(214,"Dark Purple Prismatic","Chameleon","Dark Purple Prismatic",214) { RGBColor = System.Drawing.Color.FromArgb(55, 25, 85) }
+                ,new VehicleColorLookup(215,"Hot Pink Prismatic","Chameleon","Hot Pink Prismatic",215) { RGBColor = System.Drawing.Color.FromArgb(230, 30, 130) }
+                ,new VehicleColorLookup(216,"Red Prismatic Pearl","Chameleon","Red Prismatic Pearl",216) { RGBColor = System.Drawing.Color.FromArgb(210, 30, 60) }
+                ,new VehicleColorLookup(217,"Green Prismatic","Chameleon","Green Prismatic",217) { RGBColor = System.Drawing.Color.FromArgb(40, 170, 75) }
+                ,new VehicleColorLookup(218,"Black Prismatic Pearl","Chameleon","Black Prismatic Pearl",218) { RGBColor = System.Drawing.Color.FromArgb(20, 20, 25) }
+                ,new VehicleColorLookup(219,"Oil Spill Prismatic","Chameleon","Oil Spill Prismatic",219) { RGBColor = System.Drawing.Color.FromArgb(35, 40, 35) }
+                ,new VehicleColorLookup(220,"Black Rainbow Prismatic","Chameleon","Black Rainbow Prismatic",220) { RGBColor = System.Drawing.Color.FromArgb(15, 15, 20) }
+                ,new VehicleColorLookup(221,"Black Holographic","Chameleon","Black Holographic",221) { RGBColor = System.Drawing.Color.FromArgb(30, 35, 40) }
+                ,new VehicleColorLookup(222,"White Holographic","Chameleon","White Holographic",222) { RGBColor = System.Drawing.Color.FromArgb(235, 240, 245) }
+
+            });
+        }
+
         PrimaryColorMenuItems = new List<ColorMenuItem>();
         CreateBetterColorMenu();
         SetupNeonColorMenu();

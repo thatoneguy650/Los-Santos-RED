@@ -201,9 +201,9 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideHealth = true;
 
         WantedLevelIncreasesByKillingPolice = true;
-        KillLimit_Wanted4 = 6;// 5;// 3;// 5;
-        KillLimit_Wanted5 = 9;// 7;// 5;// 10;
-        KillLimit_Wanted6 = 15;// 10;// 20;
+        KillLimit_Wanted4 = 7;// 6;// 5;// 3;// 5;
+        KillLimit_Wanted5 = 12;//9;// 7;// 5;// 10;
+        KillLimit_Wanted6 = 20;// 15;// 10;// 20;
         KillLimit_Wanted7 = 30;
         KillLimit_Wanted8 = 40;
         KillLimit_Wanted9 = 50;

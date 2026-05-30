@@ -273,7 +273,7 @@ public class VehicleRace
 
             if (airacer.PedExt != null && airacer.PedExt.Pedestrian.Exists())
             {
-                airacer.IsManualDispose = true;
+                //airacer.IsManualDispose = true;
 
                 if (airacer.PedExt.Pedestrian.IsAlive)
                 {

@@ -36,6 +36,12 @@ namespace LSR.Vehicles
         private uint GameTimeLastDamagedByPlayer;
         private uint GameTimeLastUpdatedDamage;
 
+        private int TotalLockpickPins = 2;
+        private int TotalLockpickPinSteps = 3;
+        private float LockpickZoneWidth = 20f;
+        private float LockpickFillSpeed = 1.0f;
+        private bool HasGottenLockpickStats;
+
         public bool HasHadPedsRappelOrParachute { get; private set; }
         public uint GameTimeLastHadPedsRappelOrParachute { get; private set; }
         //private List<int> EjectedSeats = new List<int>();
@@ -258,7 +264,53 @@ namespace LSR.Vehicles
                 return false;
             }
         }
-            
+
+        public virtual void GetLockpickStats(out int TotalPins, out int TotalPinSteps, out float ZoneWidth, out float FillSpeed)
+        {
+            if(!HasGottenLockpickStats)
+            {
+                int totalPinsMin = 1;
+                int totalPinsMax = 4;
+                int totalPinStepsMin = 2;
+                int totalPinStepsMax = 4;
+                float zoneWidthMin = 10f;
+                float zoneWidthMax = 30f;
+                float fillSpeedMin = 0.75f;
+                float fillSpeedMax = 1.25f;
+
+                if (vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.Sport)
+                {
+                    totalPinsMin = 3;
+                    totalPinsMax = 6;
+                    totalPinStepsMin = 3;
+                    totalPinStepsMax = 5;
+                    zoneWidthMin = 5f;
+                    zoneWidthMax = 15f;
+                    fillSpeedMin = 0.5f;
+                    fillSpeedMax = 0.75f;
+                }
+                else if (vehicleClass == VehicleClass.Emergency || IsPolice)
+                {
+                    totalPinsMin = 4;
+                    totalPinsMax = 6;
+                    totalPinStepsMin = 4;
+                    totalPinStepsMax = 6;
+                }
+
+                TotalLockpickPins = RandomItems.GetRandomNumberInt(totalPinsMin, totalPinsMax);
+                TotalLockpickPinSteps = RandomItems.GetRandomNumberInt(totalPinStepsMin, totalPinStepsMax);
+                LockpickZoneWidth = RandomItems.GetRandomNumber(zoneWidthMin, zoneWidthMax);
+                LockpickFillSpeed = RandomItems.GetRandomNumber(fillSpeedMin, fillSpeedMax);
+                HasGottenLockpickStats = true;
+            }
+
+
+            TotalPins = TotalLockpickPins;
+            TotalPinSteps = TotalLockpickPinSteps; 
+            ZoneWidth = LockpickZoneWidth;
+            FillSpeed = LockpickFillSpeed;
+        }
+
 
         public bool CanBeHotwired => !IsMotorcycle && !IsBicycle && !IsAircraft && !IsBoat && !IsJetSki && !IsQuad;
         public bool IsFreeEntry => IsMotorcycle || IsBicycle || IsAircraft || IsBoat || IsJetSki || IsQuad;
@@ -1885,5 +1937,7 @@ namespace LSR.Vehicles
             EntryPoint.WriteToConsole($"Reset Vehicle {Handle} Top Speed to {OriginalTopSpeed}");
             SetNewTopSpeed = false;
         }
+
+
     }
 }
