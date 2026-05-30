@@ -58,7 +58,7 @@ public class Properties
     }
     public void RemoveOwnedLocation(GameLocation toRemove)
     {
-        if (!PropertyList.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition && x.IsCorrectMap(World.IsMPMapLoaded)))
+        if (PropertyList.Any(x => x.Name == toRemove.Name && x.EntrancePosition == toRemove.EntrancePosition && x.IsCorrectMap(World.IsMPMapLoaded)))
         {
             PropertyList.Remove(toRemove);
         }
