@@ -208,6 +208,6 @@ public class ActivitySettings : ISettingsDefaultable
         AllowSkippingCrafting = false;
 
         UseMinigameForLockpick = true;
-
+        UseMinigameForHotwire = true;
     }
 }

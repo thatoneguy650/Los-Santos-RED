@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LosSantosRED.lsr;
+using Rage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -103,6 +105,64 @@ public class VehicleSettings : ISettingsDefaultable
 
 
 
+    public int LockpickRegularTotalPinsMin { get; set; }
+    public int LockpickRegularTotalPinsMax { get; set; }
+    public int LockpickRegularTotalPinStepsMin { get; set; }
+    public int LockpickRegularTotalPinStepsMax { get; set; }
+    public float LockpickRegularZoneWidthMin { get; set; }
+    public float LockpickRegularZoneWidthMax { get; set; }
+    public float LockpickRegularFillSpeedMin { get; set; }
+    public float LockpickRegularFillSpeedMax { get; set; }
+
+
+    public int LockpickHighEndTotalPinsMin { get; set; }
+    public int LockpickHighEndTotalPinsMax { get; set; }
+    public int LockpickHighEndTotalPinStepsMin { get; set; }
+    public int LockpickHighEndTotalPinStepsMax { get; set; }
+    public float LockpickHighEndZoneWidthMin { get; set; }
+    public float LockpickHighEndZoneWidthMax { get; set; }
+    public float LockpickHighEndFillSpeedMin { get; set; }
+    public float LockpickHighEndFillSpeedMax { get; set; }
+
+    public int LockpickPoliceTotalPinsMin { get; set; }
+    public int LockpickPoliceTotalPinsMax { get; set; }
+    public int LockpickPoliceTotalPinStepsMin { get; set; }
+    public int LockpickPoliceTotalPinStepsMax { get; set; }
+    public float LockpickPoliceZoneWidthMin { get; set; }
+    public float LockpickPoliceZoneWidthMax { get; set; }
+    public float LockpickPoliceFillSpeedMin { get; set; }
+    public float LockpickPoliceFillSpeedMax { get; set; }
+
+
+    public int HotwireRegularTotalPinsMin { get; set; }
+    public int HotwireRegularTotalPinsMax { get; set; }
+    public int HotwireRegularTotalPinStepsMin { get; set; }
+    public int HotwireRegularTotalPinStepsMax { get; set; }
+    public float HotwireRegularZoneWidthMin { get; set; }
+    public float HotwireRegularZoneWidthMax { get; set; }
+    public float HotwireRegularFillSpeedMin { get; set; }
+    public float HotwireRegularFillSpeedMax { get; set; }
+
+
+    public int HotwireHighEndTotalPinsMin { get; set; }
+    public int HotwireHighEndTotalPinsMax { get; set; }
+    public int HotwireHighEndTotalPinStepsMin { get; set; }
+    public int HotwireHighEndTotalPinStepsMax { get; set; }
+    public float HotwireHighEndZoneWidthMin { get; set; }
+    public float HotwireHighEndZoneWidthMax { get; set; }
+    public float HotwireHighEndFillSpeedMin { get; set; }
+    public float HotwireHighEndFillSpeedMax { get; set; }
+
+    public int HotwirePoliceTotalPinsMin { get; set; }
+    public int HotwirePoliceTotalPinsMax { get; set; }
+    public int HotwirePoliceTotalPinStepsMin { get; set; }
+    public int HotwirePoliceTotalPinStepsMax { get; set; }
+    public float HotwirePoliceZoneWidthMin { get; set; }
+    public float HotwirePoliceZoneWidthMax { get; set; }
+    public float HotwirePoliceFillSpeedMin { get; set; }
+    public float HotwirePoliceFillSpeedMax { get; set; }
+
+
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
     {
@@ -177,5 +237,71 @@ public class VehicleSettings : ISettingsDefaultable
 
         PlayerEnteredPersistantVehicleLimit = 3;
         PlayerEnteredPersistantVehicleDistanceLimit = 500f;
+
+
+
+
+        LockpickRegularTotalPinsMin = 1;
+        LockpickRegularTotalPinsMax = 4;
+        LockpickRegularTotalPinStepsMin = 2;
+        LockpickRegularTotalPinStepsMax = 4;
+        LockpickRegularZoneWidthMin = 10f;
+        LockpickRegularZoneWidthMax = 30f;
+        LockpickRegularFillSpeedMin = 0.75f;
+        LockpickRegularFillSpeedMax = 1.25f;
+
+
+        LockpickHighEndTotalPinsMin = 3;
+        LockpickHighEndTotalPinsMax = 6;
+        LockpickHighEndTotalPinStepsMin = 3;
+        LockpickHighEndTotalPinStepsMax = 5;
+        LockpickHighEndZoneWidthMin = 5f;
+        LockpickHighEndZoneWidthMax = 15f;
+        LockpickHighEndFillSpeedMin = 0.5f;
+        LockpickHighEndFillSpeedMax = 0.75f;
+       
+
+        LockpickPoliceTotalPinsMin = 4;
+        LockpickPoliceTotalPinsMax = 6;
+        LockpickPoliceTotalPinStepsMin = 4;
+        LockpickPoliceTotalPinStepsMax = 6;
+        LockpickPoliceZoneWidthMin = 10f;
+        LockpickPoliceZoneWidthMax = 30f;
+        LockpickPoliceFillSpeedMin = 0.75f;
+        LockpickPoliceFillSpeedMax = 1.25f;
+
+
+
+
+        HotwireRegularTotalPinsMin = 1;
+        HotwireRegularTotalPinsMax = 2;
+        HotwireRegularTotalPinStepsMin = 2;
+        HotwireRegularTotalPinStepsMax = 3;
+        HotwireRegularZoneWidthMin = 20f;
+        HotwireRegularZoneWidthMax = 30f;
+        HotwireRegularFillSpeedMin = 0.75f;
+        HotwireRegularFillSpeedMax = 1.25f;
+
+
+        HotwireHighEndTotalPinsMin = 3;
+        HotwireHighEndTotalPinsMax = 4;
+        HotwireHighEndTotalPinStepsMin = 2;
+        HotwireHighEndTotalPinStepsMax = 4;
+        HotwireHighEndZoneWidthMin = 10f;
+        HotwireHighEndZoneWidthMax = 15f;
+        HotwireHighEndFillSpeedMin = 0.75f;
+        HotwireHighEndFillSpeedMax = 1.00f;
+
+
+        HotwirePoliceTotalPinsMin = 3;
+        HotwirePoliceTotalPinsMax = 5;
+        HotwirePoliceTotalPinStepsMin = 3;
+        HotwirePoliceTotalPinStepsMax = 5;
+        HotwirePoliceZoneWidthMin = 10f;
+        HotwirePoliceZoneWidthMax = 30f;
+        HotwirePoliceFillSpeedMin = 0.75f;
+        HotwirePoliceFillSpeedMax = 1.25f;
+
+
     }
 }
