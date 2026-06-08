@@ -16,7 +16,8 @@ public class LockpickMiniGame
 {
     private int scaleformHandle;
     private IInteractionable Player;
-    private string AudioSoundSet;
+    private bool IsHotwire;
+    //private string AudioSoundSet;
     
     // --- Game State Variables ---
 
@@ -38,13 +39,15 @@ public class LockpickMiniGame
 
     private int TotalPinSteps = 3;
     private int TotalPins = 2;
-    public LockpickMiniGame(IInteractionable player)
+    public LockpickMiniGame(IInteractionable player, bool isHotwire)
     {
         Player = player;
+        IsHotwire = isHotwire;
     }
-    public LockpickMiniGame(IInteractionable player, int totalPins, int totalPinSteps, float zoneWidth, float fillSpeed)
+    public LockpickMiniGame(IInteractionable player, bool isHotwire, int totalPins, int totalPinSteps, float zoneWidth, float fillSpeed)
     {
         Player = player;
+        IsHotwire = isHotwire;
         TotalPinSteps = totalPinSteps;
         TotalPins = totalPins;
         ZoneWidth = zoneWidth;
@@ -70,11 +73,11 @@ public class LockpickMiniGame
         yogaScaleform = new Scaleform(scaleformHandle);
         ResetPin();
 
-        AudioSoundSet = "SAFE_CRACK";
-        if (Player.IsInVehicle)
-        {
-            AudioSoundSet = "DLC_HALLOWEEN_FVJ_Sounds";
-        }
+        //AudioSoundSet = "SAFE_CRACK";
+        //if (Player.IsInVehicle)
+        //{
+        //    AudioSoundSet = "DLC_HALLOWEEN_FVJ_Sounds";
+        //}
 
         NativeFunction.CallByName<bool>("REQUEST_AMBIENT_AUDIO_BANK", "SAFE_CRACK", true);
 
@@ -126,8 +129,8 @@ public class LockpickMiniGame
                     pinStep++;
                     progress = 0f;
                     if (pinStep <= TotalPinSteps)
-                    {
-                        PlayLockpickSound("TUMBLER_TURN", "SAFE_CRACK_SOUNDSET");
+                    {       
+                        PlayNextPinStepSound();
                         targetR = (float)rnd.NextDouble() * 360f;
                         //Game.DisplayNotification($"Pin {currentPin} - Step {pinStep}/{TotalPinSteps}");
                     }
@@ -137,13 +140,13 @@ public class LockpickMiniGame
                         pinStep = 1;
                         if (currentPin <= TotalPins)
                         {
-                            PlayLockpickSound("TUMBLER_PIN_FALL", "SAFE_CRACK_SOUNDSET");
+                            PlayNextPinSound();                     
                             ResetPin();
                             //Game.DisplayNotification($"Moving to Pin {currentPin}/{TotalPins}");
                         }
                         else
                         {
-                            PlayLockpickSound("TUMBLER_RESET", "SAFE_CRACK_SOUNDSET");
+                            PlayFinishedSound();                       
                             IsActive = false;
                             HasPickedLock = true;
                             //Game.DisplayNotification("Lock Picked!");
@@ -158,6 +161,43 @@ public class LockpickMiniGame
         }
         Dispose();
     }
+
+    private void PlayNextPinStepSound()
+    {
+        if (IsHotwire)
+        {
+            PlaySound("TUMBLER_TURN", "SAFE_CRACK_SOUNDSET");
+        }
+        else
+        { 
+            PlaySound("TUMBLER_TURN", "SAFE_CRACK_SOUNDSET"); //PlaySound("TUMBLER_TURN", "SAFE_CRACK_SOUNDSET");
+        }
+    }
+
+    private void PlayFinishedSound()
+    {
+        if (IsHotwire)
+        {
+            PlaySound("TUMBLER_PIN_FALL_FINAL", "SAFE_CRACK_SOUNDSET");
+        }
+        else
+        {
+            PlaySound("TUMBLER_PIN_FALL_FINAL", "SAFE_CRACK_SOUNDSET"); //PlaySound("TUMBLER_RESET", "SAFE_CRACK_SOUNDSET");
+        }
+    }
+
+    private void PlayNextPinSound()
+    {
+        if (IsHotwire)
+        {
+            PlaySound("TUMBLER_PIN_FALL", "SAFE_CRACK_SOUNDSET");
+        }
+        else
+        {
+            PlaySound("TUMBLER_PIN_FALL", "SAFE_CRACK_SOUNDSET"); //PlaySound("TUMBLER_PIN_FALL", "SAFE_CRACK_SOUNDSET");
+        }
+    }
+
     private void UpdateScaleforms()
     {
 
@@ -187,16 +227,38 @@ public class LockpickMiniGame
         yogaScaleform.CallFunction("SET_STICK_POINTER_RGB", 1, alignedR ? 0 : 255, alignedR ? 255 : 0, 0);
 
 
-        //if (progress > 0.0f)
+        //if (!(progress > 0.0f))
         //{
-        //    yogaScaleform.CallFunction("SET_OUT_RING_TIMER", 0, progress);
-        //    yogaScaleform.CallFunction("SET_OUT_RING_TIMER", 1, progress);
+        //    AddOuterRings();
+        //    //yogaScaleform.CallFunction("SET_OUT_RING_TIMER", 0, progress);
+        //    //yogaScaleform.CallFunction("SET_OUT_RING_TIMER", 1, progress);
+        //}
+        //else
+        //{
+        //    RemoveOuterRings();
         //}
 
         ////SET_INFO_TIMER
         //yogaScaleform.CallFunction("TOGGLE_INPUT_FILL", true);
         NativeFunction.CallByName<int>("DRAW_SCALEFORM_MOVIE", yogaScaleform.Handle, 0.5f, 0.88f, 0.75125f, 0.32f, 255, 255, 255, 255, 0);
     }
+
+    private void AddOuterRings()
+    {
+        yogaScaleform.CallFunction("ADD_BUTTON_TO_LIST", 4);
+        yogaScaleform.CallFunction("ADD_BUTTON_TO_LIST", 5);
+        yogaScaleform.CallFunction("DRAW_BUTTONS");
+
+        yogaScaleform.CallFunction("SET_BUTTON_TARGET", 4, 100.0f, 1, 0, 0, 0, 50);
+        yogaScaleform.CallFunction("SET_BUTTON_TARGET", 5, 100.0f, 1, 0, 0, 0, 50);
+    }
+
+    private void RemoveOuterRings()
+    {
+        yogaScaleform.CallFunction("REMOVE_BUTTONS", 4);
+        yogaScaleform.CallFunction("REMOVE_BUTTONS", 5);
+    }
+
     private void OnRawFrameRender(object sender, Rage.GraphicsEventArgs e)
     {
         if (!IsActive)
@@ -208,7 +270,7 @@ public class LockpickMiniGame
         e.Graphics.DrawRectangle(new RectangleF(cx - 100, Game.Resolution.Height * 0.86f, progress * 2, 10), Color.Green);
     }
     // --- Helper Methods ---
-    private void PlayLockpickSound(string soundName, string soundSet)
+    private void PlaySound(string soundName, string soundSet)
     {
         NativeFunction.CallByName<int>("PLAY_SOUND_FRONTEND", -1, soundName, soundSet, 1);
     }

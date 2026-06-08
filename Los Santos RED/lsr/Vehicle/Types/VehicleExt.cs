@@ -1860,7 +1860,7 @@ namespace LSR.Vehicles
         }
         public void UpdateHotwirePrompt(IButtonPromptable player)
         {
-            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || !IsHotWireLocked || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
+            if (!Vehicle.Exists() || (!HasBeenEnteredByPlayer && !IsOwnedByPlayer) || player.ActivityManager.IsManuallyHotwiringVehicle || !IsHotWireLocked || VehicleInteractionMenu.IsShowingMenu || Vehicle.Speed >= 0.5f)
             {
                 player.ButtonPrompts.RemovePrompts("VehicleHotwire");
                  EntryPoint.WriteToConsole("UpdateHotwirePrompt BASE REMOVE 1");

@@ -16,6 +16,7 @@ using System.Reflection;
 using NAudio.Wave;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Collections;
+using Mod;
 
 public class ActivityManager
 {
@@ -2082,11 +2083,16 @@ public class ActivityManager
     private void StartInteractiveHotwire()
     {
         EntryPoint.WriteToConsole("StartInteractiveHotwire");
+        Player.ButtonPrompts.RemovePrompts("VehicleHotwire");
         string dictionary = "veh@std@ds@base";
         string anim = "hotwire";
 
         IsManuallyHotwiringVehicle = true;
         IsPerformingActivity = true;
+
+        StopDynamicActivity();
+        Player.ButtonPrompts.AttemptAddPrompt("hotwire", "Cancel Hotwire", "cancelhotwire", GameControl.Aim, 0);
+
 
         AnimationDictionary.RequestAnimationDictionay(dictionary);
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, anim, 4.0f, -4.0f, -1, (int)(eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY | eAnimationFlags.AF_LOOPING), 0, false, false, false);//-1
@@ -2097,22 +2103,55 @@ public class ActivityManager
         float FillSpeed = 1.0f;
         Player.CurrentVehicle.GetHotwireStats(out TotalPins, out TotalPinSteps, out ZoneWidth, out FillSpeed);
 
-        LockpickMiniGame lockpickMiniGame = new LockpickMiniGame(Interactionable, TotalPins, TotalPinSteps, ZoneWidth, FillSpeed);
+        LockpickMiniGame lockpickMiniGame = new LockpickMiniGame(Interactionable,true, TotalPins, TotalPinSteps, ZoneWidth, FillSpeed);
         lockpickMiniGame.Start();
+
+        bool isLooping = false;
+        float LockpickAnimStopPercentage = 0.6f;
+        float LockpickAnimRestartPercentage = 0.5f;
+        float LockpickAnimAnimRate = 1.0f;// Settings.SettingsManager.DebugSettings.LockpickAnimAnimRate;
+        
+
         while (lockpickMiniGame.IsActive && Player.IsAliveAndFree)
         {
+
+            float pedAnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, dictionary, anim);
+            if (pedAnimTime >= LockpickAnimStopPercentage)
+            {
+                isLooping = true;
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, -1.0f * LockpickAnimAnimRate, 0, false);
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, -1.0f * LockpickAnimAnimRate, 1, false);
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, -1.0f * LockpickAnimAnimRate, 2, false);
+            }
+            else if (isLooping && pedAnimTime <= LockpickAnimRestartPercentage)
+            {
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, LockpickAnimAnimRate, 0, false);
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, LockpickAnimAnimRate, 1, false);
+                NativeFunction.Natives.SET_ANIM_RATE(Player.Character, LockpickAnimAnimRate, 2, false);
+            }
+            Player.WeaponEquipment.SetUnarmed();
+
+            if(Player.ButtonPrompts.IsPressed("cancelhotwire"))
+            {
+                break;
+            }
+
+
+
+
             GameFiber.Yield();
         }
         IsManuallyHotwiringVehicle = false;
         IsPerformingActivity = false;
         EntryPoint.WriteToConsole("StartInteractiveHotwire END LOOP!!!");
         lockpickMiniGame.Dispose();
+        Player.ButtonPrompts.RemovePrompts("hotwire");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         if (lockpickMiniGame.HasPickedLock)
         {
             Player.CurrentVehicle.IsHotWireLocked = false;
-            Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
-            Player.CurrentVehicle.Engine.SetState(true);
+            ///Player.CurrentVehicle.Vehicle.MustBeHotwired = true;
+            ToggleVehicleEngine();
         }
     }
 

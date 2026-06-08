@@ -105,7 +105,7 @@ public class ScrewdriverItem : ModItem
         string animDictionary = "veh@break_in@0h@p_m_one@";
         string animName = "std_force_entry_ds";
 
-        LockpickMiniGame lockpickMiniGame = new LockpickMiniGame(Player);
+        LockpickMiniGame lockpickMiniGame = new LockpickMiniGame(Player, false);
 
         if(targetVhielcExt != null)
         {
@@ -115,7 +115,7 @@ public class ScrewdriverItem : ModItem
             float FillSpeed = 1.0f;
             targetVhielcExt.GetLockpickStats(out TotalPins, out TotalPinSteps, out ZoneWidth, out FillSpeed);
 
-            lockpickMiniGame = new LockpickMiniGame(Player, TotalPins, TotalPinSteps, ZoneWidth, FillSpeed);
+            lockpickMiniGame = new LockpickMiniGame(Player,false, TotalPins, TotalPinSteps, ZoneWidth, FillSpeed);
         }
 
         if(!string.IsNullOrEmpty(dictionary))
