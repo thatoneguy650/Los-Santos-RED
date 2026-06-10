@@ -2214,7 +2214,7 @@ public class ActivityManager
     public void CheckDoorButtonPrompts(ButtonPrompts buttonPrompts, Rage.Object currentLookedAtObject)
     {
         //EntryPoint.WriteToConsole($"CheckDoorButtonPrompts ActiveDoor == null:{ActiveDoor == null}  IsPerformingActivity:{IsPerformingActivity}");
-        if (ActiveDoor == null || IsPerformingActivity)
+        if (ActiveDoor == null || IsPerformingActivity || !ActiveDoor.IsLocked || !ActiveDoor.CanBeForcedOpenByPlayer)
         {
             buttonPrompts.RemovePrompts("DoorInteract");
             return;

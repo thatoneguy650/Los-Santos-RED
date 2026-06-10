@@ -50,6 +50,7 @@ public class GameLocation : ILocationDispatchable
     protected DateTime NextPriceRefreshTime;
     protected DateTime LastInteractTime;
 
+
     protected uint DistanceUpdateIntervalTime
     {
         get
@@ -273,6 +274,10 @@ public class GameLocation : ILocationDispatchable
     public string StreetAddress { get; set; }
     [XmlIgnore]
     public string ZoneName { get; set; }
+
+    [XmlIgnore]
+    public string ZoneID { get; set; }
+
     [XmlIgnore]
     public GameState GameState { get; set; }
     [XmlIgnore]
@@ -919,6 +924,7 @@ public class GameLocation : ILocationDispatchable
                 betweener = $"in";
             }
             zoneString = $"~p~{placeZone.DisplayName}~s~";
+            ZoneID = placeZone.InternalGameName;
             //stateString = placeZone.GameState?.StateName;
         }
         string streetName = streets.GetStreetNames(EntrancePosition, false);

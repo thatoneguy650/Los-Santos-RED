@@ -216,7 +216,7 @@ public class ForceDoorActivity : DynamicActivity
             return;
         }
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
-        drillItem.PerformDrillingAnimation(LocationInteractable, InteriorDoor.ForceOpenDoor, false, Interior);
+        drillItem.PerformDrillingAnimation(LocationInteractable, InteriorDoor.ForceOpenDoor, false, Interior, Settings);
         Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringAudibleCrimeID);
     }
     private void BashDoor()

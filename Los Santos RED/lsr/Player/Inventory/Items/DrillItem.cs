@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Player;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.Elements;
 using System;
 using System.Xml.Serialization;
 
@@ -10,6 +11,7 @@ public class DrillItem : ModItem
 {
     private Rage.Object CreatedDrillProp;
     private string mainDict;
+    private Scaleform DrillScaleform;
 
     public uint MinSafeDrillTime { get; set; } = 9000;
     public uint MaxSafeDrillTime { get; set; } = 18000;
@@ -52,11 +54,11 @@ public class DrillItem : ModItem
         possibleItems?.DrillItems.Add(this);
     }
 
-    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior)
+    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings)
     {
         SetupDrillingAnimation();
         CreateAndAttachItem(Player);
-        PerformAnimation(Player, OnCompletedDrilling, isSafe, interior);
+        PerformAnimation(Player, OnCompletedDrilling, isSafe, interior, settings);
     }
     private void SetupDrillingAnimation()
     {
@@ -102,7 +104,7 @@ public class DrillItem : ModItem
         CreatedDrillProp = SpawnAndAttachItem(Player, true, true);
         
     }
-    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior)
+    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings)
     {
         Player.ActivityManager.StopDynamicActivity();
         Player.ActivityManager.IsPerformingActivity = true;
@@ -129,6 +131,19 @@ public class DrillItem : ModItem
         }
         uint GameTimeBetweenAlarmChecks = RandomItems.GetRandomNumber(GameTimeBetweenAlarmChecksMin,GameTimeBetweenAlarmChecksMax);
         uint GameTimeLastCheckedAlarm = Game.GameTime;
+
+
+        if(settings.SettingsManager.ActivitySettings.ShowDrillScaleform)
+        {
+            int drillscaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("drilling");
+            while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(drillscaleformID))
+            {
+                GameFiber.Yield();
+            }
+            DrillScaleform = new Scaleform(drillscaleformID);
+        }
+
+
         while (Player.ActivityManager.CanPerformActivitiesExtended)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -136,6 +151,12 @@ public class DrillItem : ModItem
             {
                 break;
             }
+
+            if(settings.SettingsManager.ActivitySettings.ShowDrillScaleform)
+            {
+                UpdateDrillScaleform((float)(Game.GameTime - GameTimeStarted) / DrillingTime);
+            }
+
             if (!hasStartedSound && Game.GameTime - GameTimeStarted >= 500 && CreatedDrillProp.Exists())
             {
                 EntryPoint.WriteToConsole("START PLAYING SOUND");
@@ -181,6 +202,13 @@ public class DrillItem : ModItem
         Dispose();
     }
 
-
+    private void UpdateDrillScaleform(float percentageDone)
+    {
+        DrillScaleform.CallFunction("SET_TEMPERATURE", 0.0f);
+        DrillScaleform.CallFunction("SET_HOLE_DEPTH", 0.0f);
+        DrillScaleform.CallFunction("SET_DRILL_POSITION", percentageDone);
+        //Game.DisplaySubtitle($"Drill Percentage Done {percentageDone}");
+        NativeFunction.CallByName<int>("DRAW_SCALEFORM_MOVIE", DrillScaleform.Handle, 0.5f, 0.5f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+    }
 }
 

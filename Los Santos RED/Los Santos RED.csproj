@@ -598,6 +598,7 @@
     <Compile Include="lsr\Player\Gambling\Roulette\RouletteWheel.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Bet Types\SingleBet.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\SingleBetMenu.cs" />
+    <Compile Include="lsr\Player\Gang\GangTerritoryManager.cs" />
     <Compile Include="lsr\Player\HumanState\ArmorManager.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
@@ -613,6 +614,7 @@
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\ICuffable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
+    <Compile Include="lsr\Player\Interface\IGangTerritoryManageable.cs" />
     <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />
     <Compile Include="lsr\Player\Interface\IIntimidationManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />

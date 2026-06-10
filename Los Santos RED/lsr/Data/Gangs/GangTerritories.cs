@@ -155,6 +155,21 @@ public class GangTerritories : IGangTerritories
             return null;
         }
     }
+    public bool UpdateTerritory(string gangID, Zone zone)
+    {
+        if(string.IsNullOrEmpty(gangID) || zone == null)
+        {
+            return false;
+        }
+        if(zone.DisableGangTakeover)
+        {
+            return false;
+        }
+        GangTerritoriesList.RemoveAll(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower());
+        GangTerritoriesList.Add(new GangTerritory(gangID, zone.InternalGameName, 0,100));
+        return true;
+
+    }
     private void DefaultConfig()
     {
         GangTerritoriesList = new List<GangTerritory>()

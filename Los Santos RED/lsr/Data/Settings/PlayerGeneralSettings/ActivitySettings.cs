@@ -116,6 +116,7 @@ public class ActivitySettings : ISettingsDefaultable
     public bool AllowSkippingCrafting { get; set; }
     public bool UseMinigameForLockpick { get; set; }
     public bool UseMinigameForHotwire { get; set; }
+    public bool ShowDrillScaleform { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -209,5 +210,6 @@ public class ActivitySettings : ISettingsDefaultable
 
         UseMinigameForLockpick = true;
         UseMinigameForHotwire = true;
+        ShowDrillScaleform = true;
     }
 }

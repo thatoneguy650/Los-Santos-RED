@@ -47,7 +47,7 @@ public class DrillUsePreInteract : ItemUsePreInteract
             }
         }
 
-        DrillItem.PerformDrillingAnimation(Player, TheftInteract.SetUnlocked, true, Player.ActivityManager.ActiveDoorInterior);
+        DrillItem.PerformDrillingAnimation(Player, TheftInteract.SetUnlocked, true, Player.ActivityManager.ActiveDoorInterior, Settings);
 
 
         //Setup();
