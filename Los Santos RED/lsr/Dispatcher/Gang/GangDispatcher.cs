@@ -418,6 +418,7 @@ public class GangDispatcher
 
     private void HandleHitSquadSpawns()
     {
+        bool isGangWarActive = Player.GangTerritoryManager.IsAtWarWithAnyGang();
         if (!Settings.SettingsManager.GangSettings.AllowHitSquads || !IsTimeToDispatchHitSquad)
         {
             return;
@@ -434,6 +435,14 @@ public class GangDispatcher
         else
         {
             EnemyGang = Player.RelationshipManager.GangRelationships.HitSquadGangs?.PickRandom();
+        }
+        if(isGangWarActive)
+        {
+            Gang WarGang = Player.GangTerritoryManager.GangWars.FirstOrDefault(x => !x.IsWarEnded && x.TargetGang != null)?.TargetGang;
+            if(WarGang != null)
+            {
+                EnemyGang = WarGang;
+            }
         }
         DispatchHitSquad(EnemyGang, false);
         TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);

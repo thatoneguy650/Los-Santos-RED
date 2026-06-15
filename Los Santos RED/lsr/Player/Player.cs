@@ -707,7 +707,7 @@ namespace Mod
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, 
             bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod, 
-            bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors, bool resetGambling, bool resetPersistVehicle)
+            bool resetBankAccounts, bool resetSavedGame, bool resetMessages, bool resetInteriors, bool resetGambling, bool resetPersistVehicle, bool resetGangTerritory)
         {
             IsDead = false;
             IsBusted = false;
@@ -837,6 +837,11 @@ namespace Mod
             if(resetPersistVehicle)
             {
                 VehicleManager.Reset();
+            }
+
+            if(resetGangTerritory)
+            {
+                GangTerritoryManager.Reset();
             }
 
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
@@ -1232,6 +1237,7 @@ namespace Mod
             PlayerVoice.OnKilledCivilian();
             EntryPoint.WriteToConsole($"PLAYER EVENT: Player killed civilian");
         }
+
         public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
         {
             GameFiber.Yield();

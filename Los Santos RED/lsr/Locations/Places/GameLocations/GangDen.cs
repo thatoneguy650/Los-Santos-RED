@@ -24,6 +24,8 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     private UIMenuItem LayLowMenuItem;
     private UIMenuItem dropoffKick;
     private UIMenu LoanSubMenu;
+    private Gang OriginalGang;
+
 
     public GangDen() : base()
     {
@@ -76,6 +78,7 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
         //Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
+        OriginalGang = AssociatedGang;
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
         if (HasInterior)
         {
@@ -557,6 +560,23 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     {
         possibleLocations.GangDens.Add(this);
         base.AddLocation(possibleLocations);
+    }
+
+    public void SetTakeoverGang(Gang currentGang)
+    {
+        AssociatedGang = currentGang;
+        AssignedAssociationID = currentGang.ID;
+        IsAvailableForPlayer = false;
+        DeactivateBlip();
+        ActivateBlip(Time, World);
+    }
+    public void ResetGang()
+    {
+        AssociatedGang = OriginalGang;
+        AssignedAssociationID = OriginalGang.ID;
+        IsAvailableForPlayer = true;
+        DeactivateBlip();
+        ActivateBlip(Time, World);
     }
 }
 

@@ -9,5 +9,6 @@ namespace LosSantosRED.lsr.Interface
     public interface IGangTerritoryManageable
     {
         Gang CurrentGang { get; }
+        bool RecentlyRespawned { get; }
     }
 }

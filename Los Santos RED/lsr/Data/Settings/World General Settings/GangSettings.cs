@@ -196,18 +196,18 @@ public class GangSettings : ISettingsDefaultable
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
 
-        TimeBetweenSpawn = 10000;//10000;
+        TimeBetweenSpawn = 8000;// 10000;//10000;
 
-        TimeBetweenSpawn_DowntownAdditional = 10000;
+        TimeBetweenSpawn_DowntownAdditional = 8000;// 10000;
         TimeBetweenSpawn_WildernessAdditional = 80000;
-        TimeBetweenSpawn_RuralAdditional = 50000;
-        TimeBetweenSpawn_SuburbAdditional = 20000;
-        TimeBetweenSpawn_IndustrialAdditional = 20000;
+        TimeBetweenSpawn_RuralAdditional = 35000;// 50000;
+        TimeBetweenSpawn_SuburbAdditional = 15000;// 20000;
+        TimeBetweenSpawn_IndustrialAdditional = 16000;// 20000;
 
 
 
 
-        MinDistanceToSpawnOnFoot = 125f;//75f// 50f;
+        MinDistanceToSpawnOnFoot = 95f;// 125f;//75f// 50f;
         MaxDistanceToSpawnOnFoot = 225f;//200f// 150f;
 
 
@@ -221,15 +221,15 @@ public class GangSettings : ISettingsDefaultable
 
         TotalSpawnedAmbientMembersLimit_Downtown = 12;// 8;// 6;// 4;// 5;
         TotalSpawnedAmbientMembersLimit_Wilderness = 3;// 2;
-        TotalSpawnedAmbientMembersLimit_Rural = 5;// 3;
-        TotalSpawnedAmbientMembersLimit_Suburb = 7;// 5;// 4;
-        TotalSpawnedAmbientMembersLimit_Industrial = 5;// 4;// 3;// 4;
+        TotalSpawnedAmbientMembersLimit_Rural = 6;// 5;// 3;
+        TotalSpawnedAmbientMembersLimit_Suburb = 8;// 7;// 5;// 4;
+        TotalSpawnedAmbientMembersLimit_Industrial = 6;// 5;// 4;// 3;// 4;
 
         AmbientSpawnPercentage = 80;// 60;
         AmbientSpawnPercentage_Wilderness = 35;
-        AmbientSpawnPercentage_Rural = 45;
-        AmbientSpawnPercentage_Suburb = 60;// 55;
-        AmbientSpawnPercentage_Industrial = 55;
+        AmbientSpawnPercentage_Rural = 65;// 45;
+        AmbientSpawnPercentage_Suburb = 70;// 60;// 55;
+        AmbientSpawnPercentage_Industrial = 65;// 55;
         AmbientSpawnPercentage_Downtown = 85;// 75;
 
 
@@ -257,7 +257,7 @@ public class GangSettings : ISettingsDefaultable
         EscortSpeedNormal = 30f;
         DenSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawningWhenPlayerWantedMaxWanted = 4;
-        AmbientSpawnPedestrianAttemptPercentage = 20f;
+        AmbientSpawnPedestrianAttemptPercentage = 40f;// 20f;
 
         DistanceToReportRepChanges = 75f;
         GameTimeToReportRepChanges = 45000;

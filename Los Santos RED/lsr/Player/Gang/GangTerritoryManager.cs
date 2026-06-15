@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Mod;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,10 @@ public class GangTerritoryManager
     private IGangTerritories GangTerritories;
     private IPlacesOfInterest PlacesOfInterest;
     private ITimeReportable Time;
-
+    private List<Zone> ChangedZones = new List<Zone>();
+    public List<GangWar> GangWars { get; set; } = new List<GangWar>();
+    public bool IsAtWarWith(Gang gang) => GangWars.Any(x=> !x.IsWarEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
+    public bool IsAtWarWithAnyGang() => GangWars.Any(x => !x.IsWarEnded);
     public GangTerritoryManager(IGangTerritoryManageable player, ISettingsProvideable settings, IEntityProvideable world, IGangTerritories gangTerritories, IPlacesOfInterest placesOfInterest, ITimeReportable time)
     {
         Player = player;
@@ -27,7 +31,8 @@ public class GangTerritoryManager
 
     public void Dispose()
     {
-        
+        GangWars.Clear();
+        ChangedZones.Clear();
     }
 
     public void Setup()
@@ -37,7 +42,66 @@ public class GangTerritoryManager
 
     public void Update()
     {
+        foreach(GangWar w in GangWars)
+        {
+            if (Player.RecentlyRespawned)
+            {
+                EndGangWar(w.TargetGang, false);
+            }
+            else
+            {
+                w.Update();
+            }
+        }
+
+    }
+    public void Reset()
+    {
+        foreach(Zone zone in ChangedZones.ToList())
+        {
+            SetRestoreZone(zone);
+        }
+        GangWars.Clear();
+        ChangedZones.Clear();
+    }
+    public bool StartGangWar(Gang gangToBattle, Zone zone)
+    {
+        if(gangToBattle == null)
+        {
+            return false;
+        }
+        GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gangToBattle.ID.ToLower()).FirstOrDefault();
+        if(existingWar == null)
+        {
+            existingWar = new GangWar(gangToBattle, new List<Zone>() { zone }, gangToBattle.GangWarCasualtyLimit);
+            GangWars.Add(existingWar);
+            existingWar.Start();
+            Game.DisplayHelp($"Gang War Started with {gangToBattle.ShortName} in {zone.DisplayName}");
+        }
         
+        return true;
+    }
+    public bool EndGangWar(Gang gangToBattle, bool IsPlayerVictory)
+    {
+        if (gangToBattle == null)
+        {
+            return false;
+        }
+        GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gangToBattle.ID.ToLower()).FirstOrDefault();
+        if (existingWar == null)
+        {
+            return false;
+        }
+        existingWar.SetOutcome(IsPlayerVictory);
+        if(IsPlayerVictory)
+        {
+            foreach(Zone zone in existingWar.ZonesToAttack)
+            {
+                SetTookOverZone(zone);
+            }
+        }
+        Game.DisplayHelp($"Gang War ENDED with {gangToBattle.ShortName} in {existingWar.ZonesToAttack.FirstOrDefault()} IsPlayerVictory:{IsPlayerVictory}");
+        return true;
     }
     public bool SetTookOverZone(Zone zone)
     {
@@ -53,20 +117,44 @@ public class GangTerritoryManager
         if(updated)
         {
             zone.UpdateGangItems(GangTerritories);
-
             List<GangDen> densToUpdate = PlacesOfInterest.PossibleLocations.GangDens.Where(x=> x.ZoneID == zone.InternalGameName).ToList();
             foreach(GangDen dens in densToUpdate)
             {
-                dens.AssociatedGang = Player.CurrentGang;
-                dens.AssignedAssociationID = Player.CurrentGang.ID;
-                dens.IsAvailableForPlayer = false;
-                dens.IsDispatchFilled = false;
-                dens.DeactivateBlip();
-                dens.ActivateBlip(Time, World);
+                dens.SetTakeoverGang(Player.CurrentGang);
             }
-
+            ChangedZones.Add(zone);
         }
         return updated;
+    }
+    public bool SetRestoreZone(Zone zone)
+    {
+        if (zone == null)
+        {
+            return false;
+        }
+        bool restored = GangTerritories.RestoreTerritory(zone);
+        if(restored)
+        {
+            zone.UpdateGangItems(GangTerritories);
+            List<GangDen> densToUpdate = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.ZoneID == zone.InternalGameName).ToList();
+            foreach (GangDen dens in densToUpdate)
+            {
+                dens.ResetGang();
+            }
+            ChangedZones.Remove(zone);
+        }
+        return restored;
+    }
+
+    public void AddCasuality(Gang gang)
+    {
+        GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower()).FirstOrDefault();
+        if (existingWar == null)
+        {
+            return;
+        }
+        existingWar.AddCasuality();
+        EntryPoint.WriteToConsole("ADDED CASUALTY TO GANG WAR");
     }
 }
 

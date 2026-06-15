@@ -13,6 +13,7 @@ public class GangTerritories : IGangTerritories
     private IGangs GangProvider;
     private readonly string GangTurfConfigFileName = "Plugins\\LosSantosRED\\GangTerritories.xml";
     private List<GangTerritory> GangTerritoriesList = new List<GangTerritory>();
+    private List<GangTerritory> OriginalGangTerritoriesList = new List<GangTerritory>();
     public GangTerritories(IGangs gangProvider)
     {
         GangProvider = gangProvider;
@@ -51,6 +52,7 @@ public class GangTerritories : IGangTerritories
             GangTerritoriesList.RemoveAll(x => additivePossibleItems.Any(y => y.ZoneInternalGameName == x.ZoneInternalGameName));
             GangTerritoriesList.AddRange(additivePossibleItems);
         }
+        OriginalGangTerritoriesList = GangTerritoriesList.Copy();
     }
     public void Setup()
     {
@@ -166,9 +168,22 @@ public class GangTerritories : IGangTerritories
             return false;
         }
         GangTerritoriesList.RemoveAll(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower());
-        GangTerritoriesList.Add(new GangTerritory(gangID, zone.InternalGameName, 0,100));
+        GangTerritoriesList.Add(new GangTerritory(gangID, zone.InternalGameName, 0, 100) { HasChangedGang = true });
         return true;
-
+    }
+    public bool RestoreTerritory(Zone zone)
+    {
+        if (zone == null)
+        {
+            return false;
+        }
+        if (zone.DisableGangTakeover)
+        {
+            return false;
+        }
+        GangTerritoriesList.RemoveAll(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower());
+        GangTerritoriesList.AddRange(OriginalGangTerritoriesList.Where(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower()));
+        return true;
     }
     private void DefaultConfig()
     {

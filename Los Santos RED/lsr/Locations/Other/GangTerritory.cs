@@ -30,6 +30,9 @@ public class GangTerritory
     public float FightPolicePercentage { get; set; } = -1f;
     [XmlIgnore]
     public float AlwaysFightPolicePercentage { get; set; } = -1f;
+
+    [XmlIgnore]
+    public bool HasChangedGang { get;set; }
     public GangTerritory()
     {
 

@@ -17,6 +17,7 @@ using System.Windows.Forms;
 public class GangInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
+    private IGangTerritories GangTerritories;
     private UIMenu GangMenu;
     private IAgencies Agencies;
     private MenuPool MenuPool;
@@ -57,11 +58,16 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu DrugMeetSubMenu;
     private UIMenu ReferencesSubMenu;
     private IShopMenus ShopMenus;
+    private UIMenu WarfareSubmenu;
+    private UIMenu GangWarSubMenu;
+    private IZones Zones;
+    private UIMenuListScrollerItem<GangDisplay> GangWarTargetMenu;
+    private UIMenuListScrollerItem<Zone> ZoneMenu;
 
     private string TargetGangDescription => $"Choose a target gang~n~~n~~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     private string GangDescription => $"~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world, ISettingsProvideable settings, 
-        IAgencies agencies, IModItems modItems, IShopMenus shopMenus)
+        IAgencies agencies, IModItems modItems, IShopMenus shopMenus, IGangTerritories gangTerritories, IZones zones)
     {
         Player = player;
         Gangs = gangs;
@@ -73,6 +79,7 @@ public class GangInteraction : IContactMenuInteraction
         Agencies = agencies;
         ModItems = modItems;
         ShopMenus = shopMenus;
+        Zones = zones;
     }
     public void Start(PhoneContact phoneContact)
     {
@@ -297,6 +304,64 @@ public class GangInteraction : IContactMenuInteraction
         AddDrugBuySubMenu();
 
 
+        if (ActiveGangReputation.IsMember)
+        {
+            WarfareSubmenu = MenuPool.AddSubMenu(GangMenu, "Warfare");
+            WarfareSubmenu.RemoveBanner();
+            AddGangWarSubMenu();
+        }
+
+
+    }
+    private void AddGangWarSubMenu()
+    {
+        GangWarSubMenu = MenuPool.AddSubMenu(WarfareSubmenu, "Gang War");
+        WarfareSubmenu.MenuItems[WarfareSubmenu.MenuItems.Count() - 1].Description = $"Takeover territory from a gang.";
+        GangWarSubMenu.RemoveBanner();
+
+
+
+        GangWarTargetMenu = new UIMenuListScrollerItem<GangDisplay>("Target Gang", TargetGangDescription, GetGangDisplay());    
+        ZoneMenu = new UIMenuListScrollerItem<Zone>("Zone", "Select the zone to takeover", new List<Zone> { });
+
+        UpdateGangWarZoneSelectorMenu();
+
+
+        UIMenuItem GangWarStart = new UIMenuItem("Start", $"Start the war.");
+        GangWarStart.Activated += (sender, selectedItem) =>
+        {
+            Player.GangTerritoryManager.StartGangWar(GangWarTargetMenu.SelectedItem?.Gang, ZoneMenu.SelectedItem);
+            sender.Visible = false;
+        };
+        GangWarTargetMenu.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            UpdateGangWarZoneSelectorMenu();
+        };
+
+        DrugMeetSubMenu.AddItem(GangWarTargetMenu);
+        DrugMeetSubMenu.AddItem(ZoneMenu);
+        DrugMeetSubMenu.AddItem(GangWarStart);
+
+    }
+    private void UpdateGangWarZoneSelectorMenu()
+    {
+        List<Zone> zonesToSelect = new List<Zone>();
+        List<GangTerritory> existingTerritory = GangTerritories.GetGangTerritory(GangWarTargetMenu.SelectedItem?.Gang?.ID);
+        if (existingTerritory == null)
+        {
+            existingTerritory = new List<GangTerritory>();
+        }
+        foreach (GangTerritory gt in existingTerritory)
+        {
+            Zone toAdded = Zones.GetZone(gt.ZoneInternalGameName);
+            if (toAdded != null)
+            {
+                zonesToSelect.Add(toAdded);
+            }
+
+        }
+        ZoneMenu.Items.Clear();
+        ZoneMenu.Items = zonesToSelect;
     }
     private void AddDrugMeetSubMenu()
     {

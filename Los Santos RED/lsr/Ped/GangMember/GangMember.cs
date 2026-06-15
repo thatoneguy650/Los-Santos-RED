@@ -295,6 +295,7 @@ public class GangMember : PedExt, IWeaponIssuable
     {
         int RepToRemove = -Settings.SettingsManager.GangSettings.RepDeductedKilled; 
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+
         if (gr != null)
         {
             gr.MembersKilled++;
@@ -320,8 +321,8 @@ public class GangMember : PedExt, IWeaponIssuable
                 }
             }
         }
-
-       // ReputationReport.WasKilledByPlayer = true;
+        Player.GangTerritoryManager.AddCasuality(Gang);
+        // ReputationReport.WasKilledByPlayer = true;
         ReputationReport.AddReputation(RepToRemove);
 
         EntryPoint.WriteToConsole($"KILLED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove}) MembersKilled:{gr?.MembersKilled} {Gang.ShortName}");
