@@ -16,17 +16,21 @@ public class GangTerritoryManager
     private IGangTerritories GangTerritories;
     private IPlacesOfInterest PlacesOfInterest;
     private ITimeReportable Time;
+    private IZones Zones;
     private List<Zone> ChangedZones = new List<Zone>();
     public List<GangWar> GangWars { get; set; } = new List<GangWar>();
     public bool IsAtWarWith(Gang gang) => GangWars.Any(x=> !x.IsWarEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
     public bool IsAtWarWithAnyGang() => GangWars.Any(x => !x.IsWarEnded);
-    public GangTerritoryManager(IGangTerritoryManageable player, ISettingsProvideable settings, IEntityProvideable world, IGangTerritories gangTerritories, IPlacesOfInterest placesOfInterest, ITimeReportable time)
+    public GangTerritoryManager(IGangTerritoryManageable player, ISettingsProvideable settings, IEntityProvideable world, IGangTerritories gangTerritories, 
+        IPlacesOfInterest placesOfInterest, ITimeReportable time, IZones zones)
     {
         Player = player;
         Settings = settings;
         World = world;
         GangTerritories = gangTerritories;
         PlacesOfInterest = placesOfInterest;
+        Time = time;
+        Zones = zones;
     }
 
     public void Dispose()
@@ -146,15 +150,24 @@ public class GangTerritoryManager
         return restored;
     }
 
-    public void AddCasuality(Gang gang)
+    public void AddCasuality(GangMember gangMember)
     {
-        GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower()).FirstOrDefault();
-        if (existingWar == null)
+        if(gangMember == null)
         {
             return;
         }
+        Zone deathZone = Zones.GetZone(gangMember.Position);
+        GangWar existingWar = GangWars.Where(x => x.TargetGang != null 
+        && x.TargetGang.ID.ToLower() == gangMember.Gang.ID.ToLower() 
+        && x.ZonesToAttack.Any(y=> y.InternalGameName.ToLower() == deathZone.InternalGameName.ToLower())
+        ).FirstOrDefault();
+        if (existingWar == null)
+        {
+            EntryPoint.WriteToConsole($"NO MATCHING GANG WAR FOUND FOR {gangMember.Gang.ShortName} IN {deathZone.DisplayName}");
+            return;
+        }
         existingWar.AddCasuality();
-        EntryPoint.WriteToConsole("ADDED CASUALTY TO GANG WAR");
+        EntryPoint.WriteToConsole($"ADDED CASUALTY TO GANG WAR {gangMember.Gang.ShortName} IN {deathZone.DisplayName}");
     }
 }
 

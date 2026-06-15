@@ -187,7 +187,7 @@ namespace Mod
             VehicleManager = new VehicleManager(this, World, Settings);
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
             VehicleRaceManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
-            GangTerritoryManager = new GangTerritoryManager(this, Settings, World, GangTerritories, PlacesOfInterest, TimeControllable);
+            GangTerritoryManager = new GangTerritoryManager(this, Settings, World, GangTerritories, PlacesOfInterest, TimeControllable, Zones);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
