@@ -212,6 +212,9 @@ public class Zone
 
 
         string toDisplay = $"{CurrentDefaultTextColor}" + FullZoneName(settings);
+
+
+
         if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
@@ -228,6 +231,10 @@ public class Zone
         else if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && AssignedSecondLEAgeny != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} - " + AssignedSecondLEAgeny.ColorInitials;
+        }
+        if (IsContestedTerritory)
+        {
+            toDisplay +=" (Contested)";
         }
         return toDisplay;
     }
