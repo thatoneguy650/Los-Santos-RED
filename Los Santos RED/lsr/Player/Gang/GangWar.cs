@@ -40,7 +40,7 @@ public class GangWar
         }
         else
         {
-            SendWarLostMessage();
+            SendWarLostMessage(); 
         }
     }
     public void Start()
