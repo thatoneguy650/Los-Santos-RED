@@ -167,6 +167,7 @@ public class GangTerritories : IGangTerritories
         {
             return false;
         }
+        zone.IsContestedTerritory = true;
         GangTerritoriesList.RemoveAll(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower());
         GangTerritoriesList.Add(new GangTerritory(gangID, zone.InternalGameName, 0, 100) { HasChangedGang = true });
         return true;
@@ -181,6 +182,7 @@ public class GangTerritories : IGangTerritories
         {
             return false;
         }
+        zone.IsContestedTerritory = false;
         GangTerritoriesList.RemoveAll(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower());
         GangTerritoriesList.AddRange(OriginalGangTerritoriesList.Where(x => x.ZoneInternalGameName.ToLower() == zone.InternalGameName.ToLower()));
         return true;

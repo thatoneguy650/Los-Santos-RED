@@ -376,7 +376,10 @@ public class LowerRightDisplay
                 StreetDisplay += $" at {UI.CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.ProperStreetName} {UI.CurrentDefaultTextColor}";
             }
         }
-        
+        if(DisplayablePlayer.CurrentLocation.CurrentZone!= null && DisplayablePlayer.CurrentLocation.CurrentZone.IsContestedTerritory)
+        {
+            StreetDisplay = $"~r~ !!! ~s~{StreetDisplay}";
+        }
         return StreetDisplay;
     }
     private string GetVehicleStatusDisplay()

@@ -62,7 +62,7 @@ public class GangInteraction : IContactMenuInteraction
     private UIMenu GangWarSubMenu;
     private IZones Zones;
     private UIMenuListScrollerItem<GangDisplay> GangWarTargetMenu;
-    private UIMenuListScrollerItem<Zone> ZoneMenu;
+    private UIMenuListScrollerItem<ZoneDisplay> ZoneMenu;
 
     private string TargetGangDescription => $"Choose a target gang~n~~n~~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
     private string GangDescription => $"~r~RED~s~ Gangs are enemies~n~~o~ORANGE~s~ Gangs are hostile~n~~g~GREEN~s~ Gangs are friendly";
@@ -80,6 +80,7 @@ public class GangInteraction : IContactMenuInteraction
         ModItems = modItems;
         ShopMenus = shopMenus;
         Zones = zones;
+        GangTerritories = gangTerritories;
     }
     public void Start(PhoneContact phoneContact)
     {
@@ -322,7 +323,7 @@ public class GangInteraction : IContactMenuInteraction
 
 
         GangWarTargetMenu = new UIMenuListScrollerItem<GangDisplay>("Target Gang", TargetGangDescription, GetGangDisplay());    
-        ZoneMenu = new UIMenuListScrollerItem<Zone>("Zone", "Select the zone to takeover", new List<Zone> { });
+        ZoneMenu = new UIMenuListScrollerItem<ZoneDisplay>("Zone", "Select the zone to takeover", new List<ZoneDisplay> { });
 
         UpdateGangWarZoneSelectorMenu();
 
@@ -330,7 +331,7 @@ public class GangInteraction : IContactMenuInteraction
         UIMenuItem GangWarStart = new UIMenuItem("Start", $"Start the war.");
         GangWarStart.Activated += (sender, selectedItem) =>
         {
-            Player.GangTerritoryManager.StartGangWar(GangWarTargetMenu.SelectedItem?.Gang, ZoneMenu.SelectedItem);
+            Player.GangTerritoryManager.StartGangWar(GangWarTargetMenu.SelectedItem?.Gang, ZoneMenu.SelectedItem?.Zone);
             sender.Visible = false;
         };
         GangWarTargetMenu.IndexChanged += (sender, oldIndex, newIndex) =>
@@ -338,14 +339,20 @@ public class GangInteraction : IContactMenuInteraction
             UpdateGangWarZoneSelectorMenu();
         };
 
-        DrugMeetSubMenu.AddItem(GangWarTargetMenu);
-        DrugMeetSubMenu.AddItem(ZoneMenu);
-        DrugMeetSubMenu.AddItem(GangWarStart);
+        GangWarSubMenu.AddItem(GangWarTargetMenu);
+        GangWarSubMenu.AddItem(ZoneMenu);
+        GangWarSubMenu.AddItem(GangWarStart);
 
     }
     private void UpdateGangWarZoneSelectorMenu()
     {
-        List<Zone> zonesToSelect = new List<Zone>();
+        List<ZoneDisplay> zonesToSelect = new List<ZoneDisplay>();
+
+        if(GangWarTargetMenu == null || GangWarTargetMenu.SelectedItem == null || GangWarTargetMenu.SelectedItem.Gang == null)
+        {
+            return;
+        }
+
         List<GangTerritory> existingTerritory = GangTerritories.GetGangTerritory(GangWarTargetMenu.SelectedItem?.Gang?.ID);
         if (existingTerritory == null)
         {
@@ -356,7 +363,12 @@ public class GangInteraction : IContactMenuInteraction
             Zone toAdded = Zones.GetZone(gt.ZoneInternalGameName);
             if (toAdded != null)
             {
-                zonesToSelect.Add(toAdded);
+                ZoneDisplay zed = new ZoneDisplay(toAdded);
+                if (PlacesOfInterest.PossibleLocations.GangDens.Any(x=> x.ZoneID.ToLower() == toAdded.InternalGameName.ToLower()))
+                {
+                    zed.HasDen = true;
+                }
+                zonesToSelect.Add(zed);
             }
 
         }
@@ -861,6 +873,28 @@ public class GangInteraction : IContactMenuInteraction
             return CurrentFormattedName;
         }
     }
+    private class ZoneDisplay
+    {
+        public ZoneDisplay()
+        {
 
+        }
+
+        public ZoneDisplay(Zone zone)
+        {
+            Zone = zone;
+        }
+
+        public Zone Zone { get; set; }
+        public bool HasDen { get; set; }
+        public override string ToString()
+        {
+            if(HasDen)
+            {
+                return $"~r~{Zone.DisplayName}~s~";
+            }
+            return Zone.DisplayName;
+        }
     }
+}
 

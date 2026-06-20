@@ -46,7 +46,7 @@ public class GangTerritoryManager
 
     public void Update()
     {
-        foreach(GangWar w in GangWars)
+        foreach(GangWar w in GangWars.ToList())
         {
             if (Player.RecentlyRespawned)
             {
@@ -54,7 +54,7 @@ public class GangTerritoryManager
             }
             else
             {
-                w.Update();
+                w.Update(Player);
             }
         }
 
@@ -77,10 +77,14 @@ public class GangTerritoryManager
         GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gangToBattle.ID.ToLower()).FirstOrDefault();
         if(existingWar == null)
         {
-            existingWar = new GangWar(gangToBattle, new List<Zone>() { zone }, gangToBattle.GangWarCasualtyLimit);
+            existingWar = new GangWar(Player,gangToBattle, new List<Zone>() { zone }, 5, this);// gangToBattle.GangWarCasualtyLimit);
             GangWars.Add(existingWar);
             existingWar.Start();
-            Game.DisplayHelp($"Gang War Started with {gangToBattle.ShortName} in {zone.DisplayName}");
+
+
+
+
+            EntryPoint.WriteToConsole($"Gang War Started with {gangToBattle.ShortName} in {zone.DisplayName}");
         }
         
         return true;
@@ -96,7 +100,7 @@ public class GangTerritoryManager
         {
             return false;
         }
-        existingWar.SetOutcome(IsPlayerVictory);
+        //existingWar.SetOutcome(IsPlayerVictory);
         if(IsPlayerVictory)
         {
             foreach(Zone zone in existingWar.ZonesToAttack)
@@ -104,7 +108,8 @@ public class GangTerritoryManager
                 SetTookOverZone(zone);
             }
         }
-        Game.DisplayHelp($"Gang War ENDED with {gangToBattle.ShortName} in {existingWar.ZonesToAttack.FirstOrDefault()} IsPlayerVictory:{IsPlayerVictory}");
+        EntryPoint.WriteToConsole($"Gang War ENDED with {gangToBattle.ShortName} in {existingWar.ZonesToAttack.FirstOrDefault().DisplayName} IsPlayerVictory:{IsPlayerVictory}");
+        GangWars.Remove(existingWar);
         return true;
     }
     public bool SetTookOverZone(Zone zone)
@@ -167,7 +172,7 @@ public class GangTerritoryManager
             return;
         }
         existingWar.AddCasuality();
-        EntryPoint.WriteToConsole($"ADDED CASUALTY TO GANG WAR {gangMember.Gang.ShortName} IN {deathZone.DisplayName}");
+        EntryPoint.WriteToConsole($"ADDED CASUALTY TO GANG WAR {gangMember.Gang.ShortName} IN {deathZone.DisplayName} Casualites:{existingWar.Casualites} CasualityLimit:{existingWar.CasualityLimit} GangWarCasualtyLimit:{gangMember.Gang.GangWarCasualtyLimit}");
     }
 }
 

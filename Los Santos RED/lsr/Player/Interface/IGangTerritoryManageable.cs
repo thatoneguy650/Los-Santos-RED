@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         Gang CurrentGang { get; }
         bool RecentlyRespawned { get; }
+        CellPhone CellPhone { get; }
     }
 }

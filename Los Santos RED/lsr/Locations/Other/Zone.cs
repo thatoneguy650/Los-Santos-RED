@@ -59,7 +59,8 @@ public class Zone
     [XmlIgnore]
     public Gang AssignedGang { get; set; }
 
-
+    [XmlIgnore]
+    public bool IsContestedTerritory { get; set; }
 
     [XmlIgnore]
     public Agency AssignedEMSAgency { get; set; }

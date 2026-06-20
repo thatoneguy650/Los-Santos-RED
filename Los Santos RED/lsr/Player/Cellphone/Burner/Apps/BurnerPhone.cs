@@ -73,8 +73,9 @@ public class BurnerPhone
         MessagesApp = new BurnerPhoneMessagesApp(this, Player, Time, Settings, 0);
         ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1, Contacts);
         FlashlightApp = new BurnerPhoneFlashlightApp(this, Player, Time, Settings, 2, ModItems);
-        MapsApp = new BurnerPhoneMapsApp(this, Player, Time, Settings, 3, PlacesOfInterest, World);
-        SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 4);
+        SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 3);
+        MapsApp = new BurnerPhoneMapsApp(this, Player, Time, Settings, 4, PlacesOfInterest, World);
+        
 
         PhoneApps.Add(MessagesApp);
         PhoneApps.Add(ContactsApp);
@@ -82,8 +83,9 @@ public class BurnerPhone
         {
             PhoneApps.Add(FlashlightApp);
         }
-        PhoneApps.Add(MapsApp);
         PhoneApps.Add(SettingsApp);
+        PhoneApps.Add(MapsApp);
+        
 
         MaxColumns = 3;//hardcoded to the phone
         MaxRows = 1 + (PhoneApps.Count() / 3);
@@ -143,6 +145,7 @@ public class BurnerPhone
         foreach (BurnerPhoneApp bpa in PhoneApps)
         {
             bpa.SetHomeMenu();
+            EntryPoint.WriteToConsole($"{bpa.Name} SET HOME MENU {Index}");
             Index++;
         }
         isPhoneActive = true;
@@ -385,7 +388,7 @@ public class BurnerPhone
     }
     private void PressedSelect()
     {
-        //EntryPoint.WriteToConsoleTestLong($"Burner Phone: Pressed SELECT Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
+        EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         MoveFinger(5);
         PlayAcceptedSound();
         OpenApp(CurrentIndex);
@@ -414,6 +417,11 @@ public class BurnerPhone
     private void OpenApp(int Index)
     {
         CurrentBurnerApp = PhoneApps.FirstOrDefault(x => x.Index == Index);
+
+        if(CurrentBurnerApp != null)
+        {
+            EntryPoint.WriteToConsole($"{CurrentBurnerApp.Name} {CurrentBurnerApp.Index} SELECTED INDEX {Index}");
+        }
         CurrentBurnerApp?.Open(true);
     }
     public void NavigateMenu(int index)

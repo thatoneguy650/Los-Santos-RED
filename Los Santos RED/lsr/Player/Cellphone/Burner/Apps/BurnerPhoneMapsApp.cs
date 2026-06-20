@@ -47,6 +47,7 @@ public class BurnerPhoneMapsApp : BurnerPhoneApp
 
         PlacesOfInterest = placesOfInterest;
         World = world;
+        EntryPoint.WriteToConsole("BurnerPhoneMapsApp BULLSHIT RAN");
 
         MenuPool = new MenuPool();
         MapsMenuBanner = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Settings.SettingsManager.PlayerOtherSettings.BurnerPhoneMapsAppBannerLocation}");

@@ -207,7 +207,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public string ColorInitials => ColorPrefix + ShortName;
 
     public float PercentageWillRacePlayer { get; set; } = 55f;
-    public int GangWarCasualtyLimit { get; set; } = 25;
+    public int GangWarCasualtyLimit { get; set; } = 10;//25;
 
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
