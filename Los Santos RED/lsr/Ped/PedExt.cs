@@ -56,7 +56,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         GameTimeCreated = Game.GameTime;
         GroupName = groupName;
         Crimes = crimes;
-        CurrentHealthState = new HealthState(this, settings, false);
+        CurrentHealthState = new HealthState(this, settings, false, null);
         Settings = settings;
 
         //if (WasModSpawned)

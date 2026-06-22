@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using System.Security.Principal;
@@ -530,11 +531,19 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
-        NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
-        NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
-        GameFiber.Sleep(500);
-        return;
+        int Flags = 0;
+        if (int.TryParse(NativeHelper.GetKeyboardInput("4096"), out Flags))
+        {
+
+
+            NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(Player.Character, 0, Flags);
+        }
+
+        //NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+        //NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
+        //NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+        //GameFiber.Sleep(500);
+        //return;
 
         //GameFiber.StartNew(delegate
         //{
@@ -553,7 +562,7 @@ public class Debug
 
         //        if(Player.Character.CurrentVehicle.Exists())
         //        {
-                    
+
         //            CurrentSpeed = coolVeh.Speed;
 
         //            if (CurrentSpeed > prevSpeed)
@@ -575,7 +584,7 @@ public class Debug
         //                isBraking = false;
         //            }
 
-                    
+
 
         //            prevSpeed = CurrentSpeed;
         //            if(coolVeh.SteeringAngle > turningRadius)
@@ -586,7 +595,7 @@ public class Debug
         //            {
         //                isTurning = false;
         //            }
-                    
+
         //            bool isApplyingForce = false;
 
         //            if (!isTurning)
@@ -601,7 +610,7 @@ public class Debug
         //                    isApplyingForce = true;
         //                    coolVeh.ApplyForce(new Vector3(0.0f, -1.0f* Settings.SettingsManager.PoliceTaskSettings.ForceAssistAmount, 0.0f) , Vector3.Zero, true, true);
         //                }
-                        
+
         //            }
         //            CurrentSubtitle = $"isAccelerating{isAccelerating} isBraking{isBraking} CurrentSpeed:{Math.Round(CurrentSpeed,2)} PrevSpeed:{Math.Round(prevSpeed,2)} Diff:{Math.Round(speedDiff, 2)} isTurning {isTurning}  isApplyingForce{isApplyingForce}";
 

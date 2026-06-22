@@ -133,7 +133,7 @@ namespace Mod
             DispatchableVehicles = dispatchableVehicles;
             DispatchablePeople = dispatchablePeople;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true, this);
             if (CharacterModelIsFreeMode)
             {
                 HealthState.MyPed.VoiceName = FreeModeVoice;
@@ -715,6 +715,9 @@ namespace Mod
             IsBeingBooked = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
+
+
+            HealthState.UpdateCharacterPed(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World));
             HealthState.Reset();
             if (resetActivites)
             {

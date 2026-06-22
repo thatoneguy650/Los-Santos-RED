@@ -117,7 +117,7 @@ public class TopRightMenu
             && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
-        bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
+        bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthState.IsBleeding || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
         willShowCustomStars =  (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu) 
             && ((DisplayablePlayer.IsWanted && Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars) || (DisplayablePlayer.Investigation.IsActive && DisplayablePlayer.Investigation.RequiresPolice && Settings.SettingsManager.UIGeneralSettings.UseCustomInvestigationMarks));
         willShowGroup = DisplayablePlayer.GroupManager.MemberCount > 0 && DisplayablePlayer.IsAliveAndFree;
@@ -223,6 +223,11 @@ public class TopRightMenu
             else if (DisplayablePlayer.HealthManager.RecentlyRegenedHealth)
             {
                 NeedsString += " ~g~+HP~s~";
+            }
+
+            if(DisplayablePlayer.HealthState.IsBleeding)
+            {
+                NeedsString = "~r~-Bleeding~s~";
             }
             DisplayTextOnScreen(NeedsString, NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }

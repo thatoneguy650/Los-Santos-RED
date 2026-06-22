@@ -67,5 +67,6 @@ namespace LosSantosRED.lsr.Interface
         VehicleRaceManager VehicleRaceManager { get; }
         uint TimeInCurrentVehicle { get; }
         bool IsCop { get; }
+        HealthState HealthState { get; }
     }
 }

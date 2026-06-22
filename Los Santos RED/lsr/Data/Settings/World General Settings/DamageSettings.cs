@@ -106,10 +106,41 @@ public class DamageSettings : ISettingsDefaultable
 
 
 
-    [Description("Allow additional ragdoll on critical and fatal hits. (Currently Unusued)")]
+    [Description("Allow additional ragdoll on critical and fatal hits.")]
     public bool AllowRagdoll { get; set; }
 
+    [Description("Allow bleeding damage on some hits.")]
+    public bool AllowBleeding { get; set; }
 
+    public int BleedingPercentage { get; set; }
+    public int BleedingMinDamageRequirement { get; set; }
+    public int HealthLostEachBleed { get; set; }
+    public uint MinGameTimeBetweenBleeds { get; set; }
+    public uint MaxGameTimeBetweenBleeds { get; set; }
+    public int BleedingStopPercentage { get; set; }
+    public int AlwaysRagdollDamageMinimum { get; set; }
+    public int MediumRagdollDamageMinimum { get; set; }
+    public int MediumRagdollDamagePercentage { get; set; }
+
+    public int LowRagdollDamageMinimum { get; set; }
+    public int LowRagdollDamagePercentage { get; set; }
+    public int TinyRagdollDamageMinimum { get; set; }
+    public int TinyRagdollDamagePercentage { get; set; }
+    public uint AlwaysRagdollMinTime { get; set; }
+    public uint AlwaysRagdollMaxTime { get; set; }
+
+    public uint MediumRagdollMinTime { get; set; }
+    public uint MediumRagdollMaxTime { get; set; }
+
+
+    public uint LowRagdollMinTime { get; set; }
+    public uint LowRagdollMaxTime { get; set; }
+
+
+    public uint TinyRagdollMinTime { get; set; }
+    public uint TinyRagdollMaxTime { get; set; }
+    public bool EjectPedFromVehicleOnRagdoll { get; set; }
+    public int EjectPedFromVehicleOnRagdollPercentage { get; set; }
     public DamageSettings()
     {
         SetDefault();
@@ -181,10 +212,37 @@ public class DamageSettings : ISettingsDefaultable
 
 
         AllowRagdoll = true;
+        AllowBleeding = true;
+
+        BleedingPercentage = 40;
+        BleedingMinDamageRequirement = 8;
+        HealthLostEachBleed = 1;
+
+        MinGameTimeBetweenBleeds = 20000;// 1200;
+        MaxGameTimeBetweenBleeds = 90000;// 3500;
+        BleedingStopPercentage = 15;
+
+        AlwaysRagdollDamageMinimum = 55;
+        AlwaysRagdollMinTime = 5000;
+        AlwaysRagdollMaxTime = 15000;
 
 
+        MediumRagdollDamageMinimum = 25;
+        MediumRagdollDamagePercentage = 55;
+        MediumRagdollMinTime = 4000;
+        MediumRagdollMaxTime = 10000;
 
+        LowRagdollDamageMinimum = 15;
+        LowRagdollDamagePercentage = 40;
+        LowRagdollMinTime = 2000;
+        LowRagdollMaxTime = 7000;
 
+        TinyRagdollDamageMinimum = 10;
+        TinyRagdollDamagePercentage = 2;
+        TinyRagdollMinTime = 1000;
+        TinyRagdollMaxTime = 3000;
+        EjectPedFromVehicleOnRagdoll = true;
+        EjectPedFromVehicleOnRagdollPercentage = 40;
     }
 
 }

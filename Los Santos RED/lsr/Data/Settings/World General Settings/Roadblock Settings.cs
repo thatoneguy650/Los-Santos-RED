@@ -152,7 +152,7 @@ public class RoadblockSettings : ISettingsDefaultable
 
 
         RoadblockCarBlockSpawnPercentage_Wanted1 = 0;
-        RoadblockCarBlockSpawnPercentage_Wanted2 = 100;
+        RoadblockCarBlockSpawnPercentage_Wanted2 = 75;
         RoadblockCarBlockSpawnPercentage_Wanted3 = 65;
         RoadblockCarBlockSpawnPercentage_Wanted4 = 100;
         RoadblockCarBlockSpawnPercentage_Wanted5 = 100;
@@ -160,8 +160,8 @@ public class RoadblockSettings : ISettingsDefaultable
 
         RoadblockOtherBarrierSpawnPercentage_Wanted1 = 0;
         RoadblockOtherBarrierSpawnPercentage_Wanted2 = 0;
-        RoadblockOtherBarrierSpawnPercentage_Wanted3 = 95;
-        RoadblockOtherBarrierSpawnPercentage_Wanted4 = 75;
+        RoadblockOtherBarrierSpawnPercentage_Wanted3 = 80;
+        RoadblockOtherBarrierSpawnPercentage_Wanted4 = 70;
         RoadblockOtherBarrierSpawnPercentage_Wanted5 = 25;
         RoadblockOtherBarrierSpawnPercentage_Wanted6 = 0;
 

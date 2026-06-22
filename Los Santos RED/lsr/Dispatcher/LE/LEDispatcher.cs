@@ -58,6 +58,100 @@ public class LEDispatcher
     private uint GameTimeLastSpawnedOrRecalledCanineUnit;
 
 
+    private int SpikeStripPercentageCurrentWantedLevel(int wantedLevel)
+    {
+        if (wantedLevel == 1)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted1;
+        }
+        else if (wantedLevel == 2)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted2;
+        }
+        else if (wantedLevel == 3)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted3;
+        }
+        else if (wantedLevel == 4)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted4;
+        }
+        else if (wantedLevel == 5)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted5;
+        }
+        else if (wantedLevel >= 6)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripSpawnPercentage_Wanted6;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    private int CarBlocksPercentageCurrentWantedLevel(int wantedLevel)
+    {
+        if (wantedLevel == 1)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted1;
+        }
+        else if (wantedLevel == 2)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted2;
+        }
+        else if (wantedLevel == 3)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted3;
+        }
+        else if (wantedLevel == 4)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted4;
+        }
+        else if (wantedLevel == 5)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted5;
+        }
+        else if (wantedLevel >= 6)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockCarBlockSpawnPercentage_Wanted6;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    private int OtherRoadblockBarriersPercentageCurrentWantedLevel(int wantedLevel)
+    {
+        if (wantedLevel == 1)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted1;
+        }
+        else if (wantedLevel == 2)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted2;
+        }
+        else if (wantedLevel == 3)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted3;
+        }
+        else if (wantedLevel == 4)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted4;
+        }
+        else if (wantedLevel == 5)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted5;
+        }
+        else if (wantedLevel >= 6)
+        {
+            return Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarrierSpawnPercentage_Wanted6;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     private uint DelayBetweenHeliSpawnAfterSpawnOrRecall
     {
         get
@@ -1348,27 +1442,9 @@ public class LEDispatcher
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
             GameFiber.Yield();
-            bool enableCarBlocks = true;
-            if(!Settings.SettingsManager.RoadblockSettings.RoadblockCarBlocksEnabled)
-            {
-                enableCarBlocks = false;
-            }
-            bool enableSpikeStrips = true;
-            if(!Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
-            {
-                enableSpikeStrips = false;
-            }
-            bool enableOtherBarriers = true;
-            if (!Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarriersEnabled)
-            {
-                enableOtherBarriers = false;
-            }
-
-            if(Player.WantedLevel <= 2)
-            {
-                enableCarBlocks = false;
-            }
-
+            bool enableCarBlocks = Settings.SettingsManager.RoadblockSettings.RoadblockCarBlocksEnabled && RandomItems.RandomPercent(CarBlocksPercentageCurrentWantedLevel(World.TotalWantedLevel));
+            bool enableSpikeStrips = Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled && RandomItems.RandomPercent(SpikeStripPercentageCurrentWantedLevel(World.TotalWantedLevel));
+            bool enableOtherBarriers = Settings.SettingsManager.RoadblockSettings.RoadblockOtherBarriersEnabled && RandomItems.RandomPercent(OtherRoadblockBarriersPercentageCurrentWantedLevel(World.TotalWantedLevel));
             if (RandomItems.RandomPercent(CurrentRoadblockSpawnChance()))
             {
                 SpawnRoadblock(false, enableCarBlocks, enableSpikeStrips, enableOtherBarriers, Settings.SettingsManager.RoadblockSettings.RoadblockSpawnDistance);// 225f);//300f
