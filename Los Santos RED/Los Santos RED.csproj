@@ -215,6 +215,8 @@
     <Compile Include="lsr\Data\Peds\Dispatchable People\OptionalAppliedOverlayLogic.cs" />
     <Compile Include="lsr\Data\Peds\Dispatchable People\Service\DispatchablePeople_Service.cs" />
     <Compile Include="lsr\Data\Peds\PedOverlayNames.cs" />
+    <Compile Include="lsr\Data\Saves\GangRetaliationSave.cs" />
+    <Compile Include="lsr\Data\Saves\GangWarSave.cs" />
     <Compile Include="lsr\Data\Saves\SavedGameLocation.cs" />
     <Compile Include="lsr\Data\Saves\SavedBusiness.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\GroupSettings.cs" />
@@ -598,6 +600,7 @@
     <Compile Include="lsr\Player\Gambling\Roulette\RouletteWheel.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Bet Types\SingleBet.cs" />
     <Compile Include="lsr\Player\Gambling\Roulette\Betting\Menus\SingleBetMenu.cs" />
+    <Compile Include="lsr\Player\Gang\GangRetaliation.cs" />
     <Compile Include="lsr\Player\Gang\GangTerritoryManager.cs" />
     <Compile Include="lsr\Player\Gang\GangWar.cs" />
     <Compile Include="lsr\Player\HumanState\ArmorManager.cs" />

@@ -268,7 +268,8 @@ public class GangDispatcher
         }
         // EntryPoint.WriteToConsole($"Assault Spawn Picked {closestDen.AssociatedGang.ShortName}");
 
-        bool isAtWarWithGang = Player.GangTerritoryManager.IsAtWarWith(closestDen.AssociatedGang);
+        bool isAtWarWithGang = Player.GangTerritoryManager.IsAtWarWith(closestDen.AssociatedGang) || Player.GangTerritoryManager.IsDoingRetaliation(closestDen.AssociatedGang);
+
         if (!isAtWarWithGang)//could only spawn till you win? meh just end the war and let it ride
         {
             if (closestDen.TotalAssaultSpawns >= closestDen.MaxAssaultSpawns)
@@ -423,12 +424,12 @@ public class GangDispatcher
 
     private void HandleHitSquadSpawns()
     {
-        bool isGangWarActive = Player.GangTerritoryManager.IsAtWarWithAnyGang();
+        bool isGangWarActive = Player.GangTerritoryManager.IsAtWarWithAnyGang() || Player.GangTerritoryManager.IsAnyGangRetaliating();
         if (!Settings.SettingsManager.GangSettings.AllowHitSquads || !IsTimeToDispatchHitSquad)
         {
             return;
         }
-        if(Player.IsWanted)
+        if(Player.IsWanted && !isGangWarActive)
         {
             return;
         }
@@ -444,6 +445,10 @@ public class GangDispatcher
         if(isGangWarActive)
         {
             Gang WarGang = Player.GangTerritoryManager.GangWars.FirstOrDefault(x => !x.IsWarEnded && x.TargetGang != null)?.TargetGang;
+            if(WarGang == null)
+            {
+                WarGang = Player.GangTerritoryManager.Retaliations.FirstOrDefault(x => !x.IsEnded && x.TargetGang != null)?.TargetGang;
+            }
             if(WarGang != null)
             {
                 EnemyGang = WarGang;

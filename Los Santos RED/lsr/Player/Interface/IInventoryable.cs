@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         bool IsCop { get; set; }
         OutfitManager OutfitManager { get; }
+        GangTerritoryManager GangTerritoryManager { get; }
 
         void DisplayPlayerNotification();
         void RemoveAgencyStatus();

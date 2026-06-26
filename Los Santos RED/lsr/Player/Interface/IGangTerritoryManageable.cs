@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Locations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace LosSantosRED.lsr.Interface
         Gang CurrentGang { get; }
         bool RecentlyRespawned { get; }
         CellPhone CellPhone { get; }
+        LocationData CurrentLocation { get; }
+        bool IsAliveAndFree { get; }
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 public class GangWar
 {
     private uint GameTimeStarted;
+    
     private GangTerritoryManager GangTerritoryManager;
     private IGangTerritoryManageable Player;
 
@@ -23,15 +24,18 @@ public class GangWar
         GangTerritoryManager = gangTerritoryManager;
     }
 
+
     public Gang TargetGang { get; set; }
     public int Casualites { get; set; }
     public bool IsPlayerVictorius { get; private set; }
     public bool IsWarEnded { get; private set; }
     public int CasualityLimit { get; private set; }
+    public uint GameTimeEnded { get; private set; }
     public List<Zone> ZonesToAttack { get; set; }
     public void SetOutcome(bool isPlayerVictory)
     {
         IsWarEnded = true;
+        GameTimeEnded = Game.GameTime;
         IsPlayerVictorius = isPlayerVictory;
         GangTerritoryManager.EndGangWar(TargetGang, IsPlayerVictorius);
         if(isPlayerVictory)

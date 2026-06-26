@@ -37,5 +37,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsSecurityGuard { get; }
         InteriorManager InteriorManager { get; }
         OutfitManager OutfitManager { get; }
+        GangTerritoryManager GangTerritoryManager { get; }
     }
 }
