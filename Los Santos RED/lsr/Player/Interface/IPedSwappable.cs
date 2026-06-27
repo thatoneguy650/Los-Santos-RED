@@ -54,5 +54,6 @@ namespace LosSantosRED.lsr.Interface
         void SetAgencyStatus(Agency assignedAgency);
         void SetVoice(string voiceName);
         void OnBecamePedFromCustomzer();
+        void ChangeName(string fullName);
     }
 }

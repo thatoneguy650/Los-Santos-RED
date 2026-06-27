@@ -78,6 +78,11 @@ namespace LosSantosRED.lsr.Player
             Player.WeaponEquipment.SetUnarmed();
             AttachEquipmentItemToHand();
             Player.ActivityManager.IsPerformingActivity = true;
+
+            if(EquipmentItem.StopsBleeding)
+            {
+                Player.HealthState.StopBleeding();
+            }
             Idle();
         }
         private void Idle()

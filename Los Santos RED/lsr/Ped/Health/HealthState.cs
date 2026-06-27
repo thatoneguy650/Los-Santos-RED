@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -8,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 public class HealthState
 {
@@ -29,6 +32,7 @@ public class HealthState
     private bool HasSetup = false;
     private uint GameTimeBetweenBleeds = 2000;
     private IHealthManageable Player;
+    private List<int> BloodDecals = new List<int>();
     public HealthState()
     {
 
@@ -90,6 +94,8 @@ public class HealthState
     public bool WasHitByVehicle { get; private set; }
     public bool IsBleeding { get; private set; }
 
+    private float BleedPercentage;
+    private BleedSeverity CurrentBleedSeverity;
     public void Setup()
     {
         if (!MyPed.Pedestrian.Exists())
@@ -606,6 +612,22 @@ public class HealthState
         if (HealthDamage >= Settings.SettingsManager.DamageSettings.BleedingMinDamageRequirement && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.BleedingPercentage))
         {
             IsBleeding = true;
+            if(HealthDamage <= Settings.SettingsManager.DamageSettings.BleedingLightDamageAmount)// 10)
+            {
+                CurrentBleedSeverity = BleedSeverity.Light;
+            }
+            else if (HealthDamage <= Settings.SettingsManager.DamageSettings.BleedingMediumDamageAmount) //20)
+            {
+                CurrentBleedSeverity = BleedSeverity.Medium;
+            }
+            else if (HealthDamage <= Settings.SettingsManager.DamageSettings.BleedingHeavyDamageAmount) //50)
+            {
+                CurrentBleedSeverity = BleedSeverity.Heavy;
+            }
+            else
+            {
+                CurrentBleedSeverity = BleedSeverity.Full;
+            }
             GameTimeBetweenBleeds = RandomItems.GetRandomNumber(Settings.SettingsManager.DamageSettings.MinGameTimeBetweenBleeds, Settings.SettingsManager.DamageSettings.MaxGameTimeBetweenBleeds);
             //EntryPoint.WriteToConsole($"{IsPlayer} {MyPed.Handle} STARTED BLEEDING {GameTimeBetweenBleeds}");
         }
@@ -623,13 +645,73 @@ public class HealthState
         if(RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.BleedingStopPercentage))
         {
             IsBleeding = false;
-            EntryPoint.WriteToConsole($"{IsPlayer} {MyPed.Handle} STOPPED BLEEDING ");
+            EntryPoint.WriteToConsole($"{IsPlayer} {MyPed.Handle} STOPPED BLEEDING RANDOMLY< WE GOT A CLOTTER");
             return;
           
         }
         GameTimeLastBled = Game.GameTime;
         MyPed.Pedestrian.Health -= Settings.SettingsManager.DamageSettings.HealthLostEachBleed;
+        if(IsPlayer || Settings.SettingsManager.DamageSettings.AllowAIBloodTrails)
+        {
+            AddBloodDrip();
+        }
         EntryPoint.WriteToConsole($"{IsPlayer} {MyPed.Handle} STOPPED BLEEDING ");
+    }
+
+    private void AddBloodDrip()
+    {
+        float amount;
+
+        if(CurrentBleedSeverity == BleedSeverity.Light)
+        {
+            amount = RandomItems.GetRandomNumber(5f, 20f);
+        }
+        else if (CurrentBleedSeverity == BleedSeverity.Medium)
+        {
+            amount = RandomItems.GetRandomNumber(20f, 40f);
+        }
+        else if (CurrentBleedSeverity == BleedSeverity.Heavy)
+        {
+            amount = RandomItems.GetRandomNumber(30f, 60f);
+        }
+        else
+        {
+            amount = RandomItems.GetRandomNumber(50f, 100f);
+        }
+        float width = 0.25f + (amount / 100f);//Change this formula to adjust the size of the decal
+        float height = 0.25f + (amount / 100f);// Change this formula to adjust the size of the decal
+
+        int decalType = 1110;
+        if(RandomItems.RandomPercent(40f) && (CurrentBleedSeverity == BleedSeverity.Light || CurrentBleedSeverity == BleedSeverity.Medium))
+        {
+            decalType = 1015;
+        }
+        NativeHelper.AddDecal(MyPed.Position, decalType, width, height, 0.3f, 0.0f, 0.0f, 1.0f, 20f);
+
+
+        //uint RemovalTime = 60000;
+        //int decalID = NativeFunction.Natives.ADD_DECAL<int>(
+        //    1110,
+        //    coords, 
+        //    0.0f, 0.0f, -1.0f,
+        //    0.0f, 1.0f, 0.0f, 
+        //    width, height, 
+        //    0.3f, 0.0f, 0.0f, 1.0f, 
+        //    RemovalTime, 
+        //    false, false, false);
+        //ADD_DECAL (DECAL_RENDERSETTING_ID
+        //renderSettingsId,
+        //VECTOR pos,
+        //VECTOR dir,
+        //VECTOR side,
+        //FLOAT width, FLOAT height,
+        //FLOAT colR, FLOAT colG, FLOAT colB, FLOAT colA,
+        //FLOAT life,
+        //BOOL isLongRange=false,
+        //BOOL isDynamic=false,
+        //BOOL useComplexColn=false) = "0x20f895e512ec5db6"
+
+        //BloodDecals.Add(decalID);
     }
 
     private InjuryType RandomType(bool CanBeFatal)
@@ -786,5 +868,21 @@ public class HealthState
         return PedBones.FirstOrDefault(x => x.Tag == ID);
     }
 
-
+    public void StopBleeding()
+    {
+        if(!IsBleeding)
+        {
+            return;
+        }
+        IsBleeding = false;
+        EntryPoint.WriteToConsole($"{IsPlayer} {MyPed.Handle} STOPPED BLEEDING FROM SOMETHING");
+    }
+    private enum BleedSeverity
+    {
+        None,
+        Light,
+        Medium,
+        Heavy,
+        Full,
+    }
 }

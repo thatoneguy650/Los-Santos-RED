@@ -85,6 +85,7 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         bool IsSetDisabledControls { get; set; }
         GangTerritoryManager GangTerritoryManager { get; }
+        HealthState HealthState { get; }
 
         void DisplayPlayerNotification();
         void SetWantedLevel(int selectedItem, string v1, bool v2);

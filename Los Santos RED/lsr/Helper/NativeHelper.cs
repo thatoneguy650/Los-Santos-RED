@@ -1023,7 +1023,30 @@ namespace LosSantosRED.lsr.Helper
             }
         }
 
+        public static void AddDecal(Vector3 pos, int decalType, float width = 1f, float height = 1f, float rCoef = 0.1f, float gCoef = 0.1f, float bCoef = 0.1f, float opacity = 1f, float timeout = 20f)
+        {
+            NativeFunction.Natives.ADD_DECAL<int>((int)decalType,
+                pos.X, pos.Y, GetGroundZ(pos),
+                0, 0, -1f,
+                0, 1f, 0,
+                width, height,
+                rCoef, gCoef, bCoef, opacity,
+                timeout, 0, 0, 0);
+            // ADD_DECAL (DECAL_RENDERSETTING_ID renderSettingsId,
+            // VECTOR pos, VECTOR dir, VECTOR side, FLOAT width, FLOAT height,
+            // FLOAT colR, FLOAT colG, FLOAT colB, FLOAT colA,
+            //
+            //
+            // FLOAT life, BOOL isLongRange=false, BOOL isDynamic=false, BOOL useComplexColn=false) = "0x20f895e512ec5db6"
 
+
+        }
+
+        private static float GetGroundZ(Vector3 pos)
+        {
+            NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(pos.X, pos.Y, pos.Z, out float result, false);
+            return result;
+        }
 
         public static MaterialHash GroundMaterialAtPosition(Vector3 position, Entity ignoredEntity)
         {

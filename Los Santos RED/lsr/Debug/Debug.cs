@@ -529,15 +529,44 @@ public class Debug
         }
         return ret;
     }
+
+
+
+
     private void DebugNumpad4()
     {
-        int Flags = 0;
-        if (int.TryParse(NativeHelper.GetKeyboardInput("4096"), out Flags))
-        {
+        
+        /*Vector3 coords = Player.Character.Position;
+
+        coords = new Vector3(coords.X, coords.Y, GetGroundZ(coords)); 
+        float amount = 75f;
+        float width = 0.25f + (amount / 100f);//Change this formula to adjust the size of the decal
+        float height = 0.25f + (amount / 100f);// Change this formula to adjust the size of the decal
+        uint RemovalTime = 60000;
+        int decalID = NativeFunction.Natives.ADD_DECAL<int>(
+            1110,
+            coords,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 1.0f, 0.0f,
+            width, height,
+            0.3f, 0.0f, 0.0f, 1.0f,
+            RemovalTime,
+            false, false, false);
+
+        */
+
+        NativeHelper.AddDecal(Player.Character.Position, 1110,1.0f,1.0f,0.3f,0.0f,0.0f,1.0f,20f);
+        EntryPoint.WriteToConsole("DEBUG ADDED DRIP");
+        GameFiber.Sleep(500);
 
 
-            NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(Player.Character, 0, Flags);
-        }
+        //int Flags = 0;
+        //if (int.TryParse(NativeHelper.GetKeyboardInput("4096"), out Flags))
+        //{
+
+
+        //    NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(Player.Character, 0, Flags);
+        //}
 
         //NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
         //NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();

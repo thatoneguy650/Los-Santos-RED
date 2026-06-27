@@ -948,7 +948,18 @@ namespace Mod
         public void ChangeName(string newName)
         {
             PlayerName = newName;
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}");
+
+            SetBlipName();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}");
+        }
+        private void SetBlipName()
+        {
+            int PlayerBlipID = NativeFunction.Natives.GET_MAIN_PLAYER_BLIP_ID<int>();
+            if(NativeFunction.Natives.DOES_BLIP_EXIST<bool>(PlayerBlipID))
+            {
+                NativeFunction.Natives.SET_BLIP_NAME_FROM_TEXT_FILE(PlayerBlipID, PlayerName);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName AND SET BLIP {PlayerName}");
+            }
         }
         public void DisplayPlayerNotification()
         {
@@ -974,7 +985,10 @@ namespace Mod
         public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill, string voiceName)
         {
             ModelName = modelName;
-            PlayerName = playerName;
+
+            ChangeName(playerName);
+
+            //PlayerName = playerName;
             IsMale = isMale;
             BankAccounts.SetCash(money);
             SpeechSkill = speechSkill;// 

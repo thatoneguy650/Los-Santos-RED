@@ -644,7 +644,7 @@ public class ModItems : IModItems
         PossibleItems.EquipmentItems.AddRange(new List<EquipmentItem>
         {
             new EquipmentItem("Health Pack","Is this real life or a video game?", ItemType.Equipment) {
-                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack" },
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack", StopsBleeding = true },
         });
     }
     private void DefaultConfig_Valuables()

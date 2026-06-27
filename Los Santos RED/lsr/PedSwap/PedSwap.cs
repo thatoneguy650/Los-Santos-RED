@@ -686,7 +686,8 @@ public class PedSwap : IPedSwap
             //Player.RemoveAgencyStatus();
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
-            Player.PlayerName = fullName;
+
+            Player.ChangeName(fullName);
             Player.BankAccounts.SetCash(money);
             if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
             {

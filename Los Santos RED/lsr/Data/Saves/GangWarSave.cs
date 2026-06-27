@@ -11,7 +11,7 @@ public class GangWarSave
     {
     }
 
-    public string TargetGangID { get; internal set; }
-    public List<string> ZoneIds { get; internal set; }
+    public string TargetGangID { get; set; }
+    public List<string> ZoneIds { get; set; }
 }
 

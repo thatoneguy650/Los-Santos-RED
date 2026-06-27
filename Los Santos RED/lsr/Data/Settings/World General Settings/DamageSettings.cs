@@ -141,6 +141,11 @@ public class DamageSettings : ISettingsDefaultable
     public uint TinyRagdollMaxTime { get; set; }
     public bool EjectPedFromVehicleOnRagdoll { get; set; }
     public int EjectPedFromVehicleOnRagdollPercentage { get; set; }
+    public int BleedingLightDamageAmount { get; set; }
+    public int BleedingMediumDamageAmount { get; set; }
+    public int BleedingHeavyDamageAmount { get; set; }
+    public bool AllowAIBloodTrails { get; set; }
+
     public DamageSettings()
     {
         SetDefault();
@@ -216,11 +221,11 @@ public class DamageSettings : ISettingsDefaultable
 
         BleedingPercentage = 40;
         BleedingMinDamageRequirement = 8;
-        HealthLostEachBleed = 1;
+        HealthLostEachBleed = 2;
 
-        MinGameTimeBetweenBleeds = 20000;// 1200;
-        MaxGameTimeBetweenBleeds = 90000;// 3500;
-        BleedingStopPercentage = 15;
+        MinGameTimeBetweenBleeds = 2000;// 1200;
+        MaxGameTimeBetweenBleeds = 9000;// 3500;
+        BleedingStopPercentage = 2;
 
         AlwaysRagdollDamageMinimum = 55;
         AlwaysRagdollMinTime = 5000;
@@ -243,6 +248,11 @@ public class DamageSettings : ISettingsDefaultable
         TinyRagdollMaxTime = 3000;
         EjectPedFromVehicleOnRagdoll = true;
         EjectPedFromVehicleOnRagdollPercentage = 40;
+
+        BleedingLightDamageAmount = 10;
+        BleedingMediumDamageAmount = 20;
+        BleedingHeavyDamageAmount = 50;
+        AllowAIBloodTrails = true;
     }
 
 }

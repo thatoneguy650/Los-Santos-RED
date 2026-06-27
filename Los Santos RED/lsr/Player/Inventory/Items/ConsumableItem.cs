@@ -36,6 +36,8 @@ public abstract class ConsumableItem : ModItem
     public float ThirstChangeAmount { get; set; }
     public float SleepChangeAmount { get; set; }
     public bool AlwaysChangesHealth { get; set; } = false;
+
+    public bool StopsBleeding { get; set; }
     public bool ChangesHealth => HealthChangeAmount != 0;
     public bool ChangesArmor => ArmorChangeAmount != 0;
     public string HealthChangeDescription => HealthChangeAmount > 0 ? $"~g~+{HealthChangeAmount} ~s~HP" : $"~r~{HealthChangeAmount} ~s~HP";
