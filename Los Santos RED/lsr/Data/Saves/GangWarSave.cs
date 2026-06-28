@@ -13,5 +13,6 @@ public class GangWarSave
 
     public string TargetGangID { get; set; }
     public List<string> ZoneIds { get; set; }
+    public int CasualityLimit { get; set; }
 }
 

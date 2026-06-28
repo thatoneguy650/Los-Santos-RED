@@ -106,45 +106,85 @@ public class DamageSettings : ISettingsDefaultable
 
 
 
-    [Description("Allow additional ragdoll on critical and fatal hits.")]
-    public bool AllowRagdoll { get; set; }
+
+
+
+
+
 
     [Description("Allow bleeding damage on some hits.")]
-    public bool AllowBleeding { get; set; }
-
-    public int BleedingPercentage { get; set; }
-    public int BleedingMinDamageRequirement { get; set; }
-    public int HealthLostEachBleed { get; set; }
-    public uint MinGameTimeBetweenBleeds { get; set; }
-    public uint MaxGameTimeBetweenBleeds { get; set; }
-    public int BleedingStopPercentage { get; set; }
-    public int AlwaysRagdollDamageMinimum { get; set; }
-    public int MediumRagdollDamageMinimum { get; set; }
-    public int MediumRagdollDamagePercentage { get; set; }
-
-    public int LowRagdollDamageMinimum { get; set; }
-    public int LowRagdollDamagePercentage { get; set; }
-    public int TinyRagdollDamageMinimum { get; set; }
-    public int TinyRagdollDamagePercentage { get; set; }
-    public uint AlwaysRagdollMinTime { get; set; }
-    public uint AlwaysRagdollMaxTime { get; set; }
-
-    public uint MediumRagdollMinTime { get; set; }
-    public uint MediumRagdollMaxTime { get; set; }
+    public bool AllowBleedingPlayer { get; set; }
+    public int BleedingPercentagePlayer { get; set; }
+    public int BleedingMinDamageRequirementPlayer { get; set; }
+    public int HealthLostEachBleedPlayer { get; set; }
+    public uint MinGameTimeBetweenBleedsPlayer { get; set; }
+    public uint MaxGameTimeBetweenBleedsPlayer { get; set; }
+    public int BleedingStopPercentagePlayer { get; set; }  
+    public int BleedingLightDamageAmountPlayer { get; set; }
+    public int BleedingMediumDamageAmountPlayer { get; set; }
+    public int BleedingHeavyDamageAmountPlayer { get; set; }
+    public bool AllowBloodTrailsPlayer { get; set; }
 
 
-    public uint LowRagdollMinTime { get; set; }
-    public uint LowRagdollMaxTime { get; set; }
 
 
-    public uint TinyRagdollMinTime { get; set; }
-    public uint TinyRagdollMaxTime { get; set; }
-    public bool EjectPedFromVehicleOnRagdoll { get; set; }
-    public int EjectPedFromVehicleOnRagdollPercentage { get; set; }
-    public int BleedingLightDamageAmount { get; set; }
-    public int BleedingMediumDamageAmount { get; set; }
-    public int BleedingHeavyDamageAmount { get; set; }
-    public bool AllowAIBloodTrails { get; set; }
+
+    public bool AllowBleedingAI { get; set; }
+    public int BleedingPercentageAI { get; set; }
+    public int BleedingMinDamageRequirementAI { get; set; }
+    public int HealthLostEachBleedAI { get; set; }
+    public uint MinGameTimeBetweenBleedsAI { get; set; }
+    public uint MaxGameTimeBetweenBleedsAI { get; set; }
+    public int BleedingStopPercentageAI { get; set; }
+    public int BleedingLightDamageAmountAI { get; set; }
+    public int BleedingMediumDamageAmountAI { get; set; }
+    public int BleedingHeavyDamageAmountAI { get; set; }
+    public bool AllowBloodTrailsAI { get; set; }
+
+
+
+
+
+    [Description("Allow additional ragdoll on critical and fatal hits.")]
+    public bool AllowRagdollPlayer { get; set; }
+    public int AlwaysRagdollDamageMinimumPlayer { get; set; }
+    public int MediumRagdollDamageMinimumPlayer { get; set; }
+    public int MediumRagdollDamagePercentagePlayer { get; set; }
+    public int LowRagdollDamageMinimumPlayer { get; set; }
+    public int LowRagdollDamagePercentagePlayer { get; set; }
+    public int TinyRagdollDamageMinimumPlayer { get; set; }
+    public int TinyRagdollDamagePercentagePlayer { get; set; }
+    public uint AlwaysRagdollMinTimePlayer { get; set; }
+    public uint AlwaysRagdollMaxTimePlayer { get; set; }
+    public uint MediumRagdollMinTimePlayer { get; set; }
+    public uint MediumRagdollMaxTimePlayer { get; set; }
+    public uint LowRagdollMinTimePlayer { get; set; }
+    public uint LowRagdollMaxTimePlayer { get; set; }
+    public uint TinyRagdollMinTimePlayer { get; set; }
+    public uint TinyRagdollMaxTimePlayer { get; set; }
+    public bool EjectPedFromVehicleOnRagdollPlayer { get; set; }
+    public int EjectPedFromVehicleOnRagdollPercentagePlayer { get; set; }
+
+
+
+    public bool AllowRagdollAI { get; set; }
+    public int AlwaysRagdollDamageMinimumAI { get; set; }
+    public int MediumRagdollDamageMinimumAI { get; set; }
+    public int MediumRagdollDamagePercentageAI { get; set; }
+    public int LowRagdollDamageMinimumAI { get; set; }
+    public int LowRagdollDamagePercentageAI { get; set; }
+    public int TinyRagdollDamageMinimumAI { get; set; }
+    public int TinyRagdollDamagePercentageAI { get; set; }
+    public uint AlwaysRagdollMinTimeAI { get; set; }
+    public uint AlwaysRagdollMaxTimeAI { get; set; }
+    public uint MediumRagdollMinTimeAI { get; set; }
+    public uint MediumRagdollMaxTimeAI { get; set; }
+    public uint LowRagdollMinTimeAI { get; set; }
+    public uint LowRagdollMaxTimeAI { get; set; }
+    public uint TinyRagdollMinTimeAI { get; set; }
+    public uint TinyRagdollMaxTimeAI { get; set; }
+    public bool EjectPedFromVehicleOnRagdollAI { get; set; }
+    public int EjectPedFromVehicleOnRagdollPercentageAI { get; set; }
 
     public DamageSettings()
     {
@@ -155,36 +195,30 @@ public class DamageSettings : ISettingsDefaultable
         ModifyDamage = true;
         ClearDamage = true;
 
+        //Player UI
         AllowInjuryEffects = true;
         InjuryEffectHealthLostStart = 60;
         InjuryEffectIntensityModifier = 0.6f;
 
 
-
+        //Player Damage
         ModifyPlayerDamage = true;
-
         AllowPlayerPainYells = true;
         PlayerPainYellsDamageNeeded = 15;
-
         Armor_NormalDamageModifierPlayer = 1.0f;
         Armor_GrazeDamageModifierPlayer = 0.25f;
         Armor_CriticalDamageModifierPlayer = 2.0f;
         Health_FatalDamageModifierPlayer = 10.0f;
         Health_NormalDamageModifierPlayer = 1.5f;
         Health_GrazeDamageModifierPlayer = 0.5f;
-        Health_CriticalDamageModifierPlayer = 2.0f;
-        
+        Health_CriticalDamageModifierPlayer = 2.0f;    
         NormalDamagePercentPlayer = 70f;
         GrazeDamagePercentPlayer = 10f;
         CriticalDamagePercentPlayer = 15;
         FatalDamagePercentPlayer = 5f;
 
-
-
-
-
+        //AI Damage
         ModifyAIDamage = true;
-
         Armor_NormalDamageModifierAI = 1.0f;
         Armor_GrazeDamageModifierAI = 0.25f;
         Armor_CriticalDamageModifierAI = 2.0f;
@@ -192,21 +226,17 @@ public class DamageSettings : ISettingsDefaultable
         Health_NormalDamageModifierAI = 1.5f;
         Health_GrazeDamageModifierAI = 0.5f;
         Health_CriticalDamageModifierAI = 2.0f;
-
         NormalDamagePercentAI = 70f;
         GrazeDamagePercentAI = 10f;
         CriticalDamagePercentAI = 15;
         FatalDamagePercentAI = 5f;
 
-
+        //AI Other
         AllowAIUnconsciousOnStun = true;
         AIUnconsciousOnStunPercentage = 30f;
-
         AllowAIUnconsciousOnDamage = true;
         AIUnconsciousOnDamagePercentage = 30f;
-
         AIUnconsciousOnDamageAliveHealth = 100;
-
         AIUnconsciousOnDamageMinimumHealth = 130;
         AIUnconsciousOnDamageMinimumHealthChange = 20;
 
@@ -214,45 +244,71 @@ public class DamageSettings : ISettingsDefaultable
         AIPainYellsDamageNeeded = 15;
 
 
+        //Bleeding Player
+        AllowBleedingPlayer = true;
+        BleedingPercentagePlayer = 40;
+        BleedingMinDamageRequirementPlayer = 8;
+        HealthLostEachBleedPlayer = 2;
+        MinGameTimeBetweenBleedsPlayer = 2000;// 1200;
+        MaxGameTimeBetweenBleedsPlayer = 9000;// 3500;
+        BleedingStopPercentagePlayer = 2;
+        BleedingLightDamageAmountPlayer = 10;
+        BleedingMediumDamageAmountPlayer = 20;
+        BleedingHeavyDamageAmountPlayer = 50;
+        AllowBloodTrailsPlayer = true;
 
+        //Bleeding AI
+        AllowBleedingAI = true;
+        BleedingPercentageAI = 15;
+        BleedingMinDamageRequirementAI = 8;
+        HealthLostEachBleedAI = 2;
+        MinGameTimeBetweenBleedsAI = 2000;// 1200;
+        MaxGameTimeBetweenBleedsAI = 9000;// 3500;
+        BleedingStopPercentageAI = 15;
+        BleedingLightDamageAmountAI = 10;
+        BleedingMediumDamageAmountAI = 20;
+        BleedingHeavyDamageAmountAI = 50;
+        AllowBloodTrailsAI = true;
 
-        AllowRagdoll = true;
-        AllowBleeding = true;
+        //Ragdoll Player
+        AllowRagdollPlayer = true;
+        AlwaysRagdollDamageMinimumPlayer = 55;
+        AlwaysRagdollMinTimePlayer = 5000;
+        AlwaysRagdollMaxTimePlayer = 15000;
+        MediumRagdollDamageMinimumPlayer = 25;
+        MediumRagdollDamagePercentagePlayer = 55;
+        MediumRagdollMinTimePlayer = 4000;
+        MediumRagdollMaxTimePlayer = 10000;
+        LowRagdollDamageMinimumPlayer = 15;
+        LowRagdollDamagePercentagePlayer = 40;
+        LowRagdollMinTimePlayer = 2000;
+        LowRagdollMaxTimePlayer = 7000;
+        TinyRagdollDamageMinimumPlayer = 10;
+        TinyRagdollDamagePercentagePlayer = 2;
+        TinyRagdollMinTimePlayer = 1000;
+        TinyRagdollMaxTimePlayer = 3000;
+        EjectPedFromVehicleOnRagdollPlayer = true;
+        EjectPedFromVehicleOnRagdollPercentagePlayer = 20;
 
-        BleedingPercentage = 40;
-        BleedingMinDamageRequirement = 8;
-        HealthLostEachBleed = 2;
-
-        MinGameTimeBetweenBleeds = 2000;// 1200;
-        MaxGameTimeBetweenBleeds = 9000;// 3500;
-        BleedingStopPercentage = 2;
-
-        AlwaysRagdollDamageMinimum = 55;
-        AlwaysRagdollMinTime = 5000;
-        AlwaysRagdollMaxTime = 15000;
-
-
-        MediumRagdollDamageMinimum = 25;
-        MediumRagdollDamagePercentage = 55;
-        MediumRagdollMinTime = 4000;
-        MediumRagdollMaxTime = 10000;
-
-        LowRagdollDamageMinimum = 15;
-        LowRagdollDamagePercentage = 40;
-        LowRagdollMinTime = 2000;
-        LowRagdollMaxTime = 7000;
-
-        TinyRagdollDamageMinimum = 10;
-        TinyRagdollDamagePercentage = 2;
-        TinyRagdollMinTime = 1000;
-        TinyRagdollMaxTime = 3000;
-        EjectPedFromVehicleOnRagdoll = true;
-        EjectPedFromVehicleOnRagdollPercentage = 40;
-
-        BleedingLightDamageAmount = 10;
-        BleedingMediumDamageAmount = 20;
-        BleedingHeavyDamageAmount = 50;
-        AllowAIBloodTrails = true;
+        //Ragdoll AI
+        AllowRagdollAI = true;
+        AlwaysRagdollDamageMinimumAI = 55;
+        AlwaysRagdollMinTimeAI = 5000;
+        AlwaysRagdollMaxTimeAI = 15000;
+        MediumRagdollDamageMinimumAI = 25;
+        MediumRagdollDamagePercentageAI = 25;
+        MediumRagdollMinTimeAI = 4000;
+        MediumRagdollMaxTimeAI = 10000;
+        LowRagdollDamageMinimumAI = 15;
+        LowRagdollDamagePercentageAI = 15;
+        LowRagdollMinTimeAI = 2000;
+        LowRagdollMaxTimeAI = 7000;
+        TinyRagdollDamageMinimumAI = 10;
+        TinyRagdollDamagePercentageAI = 1;
+        TinyRagdollMinTimeAI = 1000;
+        TinyRagdollMaxTimeAI = 3000;
+        EjectPedFromVehicleOnRagdollAI = true;
+        EjectPedFromVehicleOnRagdollPercentageAI = 15;
     }
 
 }

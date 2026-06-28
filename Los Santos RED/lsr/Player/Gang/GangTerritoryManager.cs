@@ -18,14 +18,11 @@ public class GangTerritoryManager
     private ITimeReportable Time;
     private IZones Zones;
 
-    private int CasualityLimit = 5;
     private List<Zone> ChangedZones = new List<Zone>();
     public List<GangWar> GangWars { get; set; } = new List<GangWar>();
     public List<GangRetaliation> Retaliations { get; set; } = new List<GangRetaliation>();
     public bool IsAtWarWith(Gang gang) => GangWars.Any(x=> !x.IsWarEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
-
     public bool IsDoingRetaliation(Gang gang) => Retaliations.Any(x => !x.IsEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
-
     public bool IsAtWarWithAnyGang() => GangWars.Any(x => !x.IsWarEnded);
     public bool IsAnyGangRetaliating() => Retaliations.Any(x => !x.IsEnded);
     public GangTerritoryManager(IGangTerritoryManageable player, ISettingsProvideable settings, IEntityProvideable world, IGangTerritories gangTerritories, 
@@ -86,6 +83,9 @@ public class GangTerritoryManager
         GangWar existingWar = GangWars.Where(x => x.TargetGang != null && x.TargetGang.ID.ToLower() == gangToBattle.ID.ToLower()).FirstOrDefault();
         if(existingWar == null)
         {
+            int CasualityLimit = RandomItems.GetRandomNumberInt(gangToBattle.TakeoverTerritoryCasualtyLimitMin, gangToBattle.TakeoverTerritoryCasualtyLimitMax);
+
+
             existingWar = new GangWar(Player,gangToBattle, new List<Zone>() { zone }, CasualityLimit, this);// gangToBattle.GangWarCasualtyLimit);
             GangWars.Add(existingWar);
             existingWar.Start();
@@ -111,7 +111,7 @@ public class GangTerritoryManager
             {
                 SetTookOverZone(zone);
             }
-            GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, existingWar.TargetGang, existingWar.ZonesToAttack);
+            GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, existingWar.TargetGang, existingWar.ZonesToAttack, Settings);
             gr.Setup();
             Retaliations.Add(gr);
 
@@ -194,19 +194,17 @@ public class GangTerritoryManager
 
 
 
-    public void LoadWar(Gang targetGang, List<Zone> zonesToAttack)
+    public void LoadWar(Gang targetGang, List<Zone> zonesToAttack, int casualityLimit)
     {
-        GangWar existingWar = new GangWar(Player, targetGang, zonesToAttack, CasualityLimit, this);// gangToBattle.GangWarCasualtyLimit);
-        //GangWars.Add(existingWar);
+        GangWar existingWar = new GangWar(Player, targetGang, zonesToAttack, casualityLimit, this);// gangToBattle.GangWarCasualtyLimit);
+        GangWars.Add(existingWar);
     }
 
     public void LoadRetaliation(Gang targetGang, List<Zone> zonesToAttack)
     {
-        GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, targetGang, zonesToAttack);
-
-        //gr.LoadFromSave();
-
-        //Retaliations.Add(gr);
+        GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, targetGang, zonesToAttack, Settings);
+        gr.Setup();  
+        Retaliations.Add(gr);
     }
 }
 

@@ -81,22 +81,28 @@ public class GangWar
     {
         List<string> Replies = new List<string>() {
                 $"Get your ass to {ZonesToAttack.FirstOrDefault()?.DisplayName} and take out ~r~{CasualityLimit}~s~ of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ motherfuckers. They will know you're coming",
-               
+                $"We are going to hit {ZonesToAttack.FirstOrDefault()?.DisplayName} and waste ~r~{CasualityLimit}~s~ of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ fuckers. Be careful, they will be on alert",
+                $"Gonna takeover {ZonesToAttack.FirstOrDefault()?.DisplayName}. First we need to get rid of ~r~{CasualityLimit}~s~ of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ pussies. Keep your guard up",
+
             };
         Player.CellPhone.AddPhoneResponse(Player.CurrentGang.Contact.Name, Player.CurrentGang.Contact.IconName, Replies.PickRandom());
     }
     private void SendWarWonMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Looks like those {TargetGang.ShortName} fucks have been put in their place. We now own {ZonesToAttack.FirstOrDefault()?.DisplayName}",
+                                $"Looks like those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ fucks have been put in their place. We now own ~p~{ZonesToAttack.FirstOrDefault()?.DisplayName}~s~",
+                                $"So many bodies in ~p~{ZonesToAttack.FirstOrDefault()?.DisplayName}~s~. Too bad those fucks at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ couldn't hold onto it. What pussies.",
+                                $"Those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ fucks have been wiped. Can';'t wait to kick my feet up in ~p~{ZonesToAttack.FirstOrDefault()?.DisplayName}~s~",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
     private void SendWarLostMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"How did you fuck that up? {TargetGang.ShortName} still own {ZonesToAttack.FirstOrDefault()?.DisplayName} and we look like pussies",
-                                };
+                                $"How did you fuck that up? {TargetGang.ShortName} still own {ZonesToAttack.FirstOrDefault()?.DisplayName} and we look like pussies.",
+                                $"Is fucking up what you do best? {TargetGang.ShortName} have made a fool of us. If you can't takeover {ZonesToAttack.FirstOrDefault()?.DisplayName} don't fucking try",
+                                $"Good work shit for brains. {TargetGang.ShortName} are still in charge of {ZonesToAttack.FirstOrDefault()?.DisplayName}. Don't say you're gonna do shit you can't.",
+        };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
 }

@@ -13,21 +13,24 @@ public class GangRetaliation
     private uint GameTimeStarted;
     private uint GameTimeEnded;
     private uint GameTimeReturnedToZone;
-    private uint GameTimeWarEnded;
+    private uint GameTimeRetaliationStarted;
     private GangTerritoryManager GangTerritoryManager;
     private IGangTerritoryManageable Player;
     private uint TimeToStartRetaliation;
     private float RetaliationPercentAtIncrement;
     private uint RetaliationTime;
     private uint TimeToReturnToZone;
+    private ISettingsProvideable Settings;
+    private bool HasPlayerBeenWarnedNotToLeaveZone;
 
-    public GangRetaliation(IGangTerritoryManageable player, GangTerritoryManager gangTerritoryManager, uint gameTimeWarEnded, Gang targetGang, List<Zone> zonesToAttack)
+    public GangRetaliation(IGangTerritoryManageable player, GangTerritoryManager gangTerritoryManager, uint gameTimeWarEnded, Gang targetGang, List<Zone> zonesToAttack, ISettingsProvideable settings)
     {
         Player = player;
-        GameTimeWarEnded = gameTimeWarEnded;
+        GameTimeRetaliationStarted = gameTimeWarEnded;
         TargetGang = targetGang;
         ZonesToAttack = zonesToAttack;
         GangTerritoryManager = gangTerritoryManager;
+        Settings = settings;
     }
     public bool HasRetaliationStarted { get; private set; }
     public bool IsEnded { get; private set; }
@@ -54,10 +57,10 @@ public class GangRetaliation
     }
     public void Setup()
     {
-        TimeToStartRetaliation = RandomItems.GetRandomNumber(60000, 120000);
-        RetaliationPercentAtIncrement = RandomItems.GetRandomNumber(20f, 50f);
-        RetaliationTime = RandomItems.GetRandomNumber(120000, 180000);
-        TimeToReturnToZone = RandomItems.GetRandomNumber(120000, 180000);
+        TimeToStartRetaliation = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMax); //60000, 120000);
+        RetaliationPercentAtIncrement = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMax); //20f, 50f);
+        RetaliationTime = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMax); //120000, 180000);
+        TimeToReturnToZone = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMax); //120000, 180000); //Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin
         EntryPoint.WriteToConsole($"GANG RETALIATION SETUP: TimeToStartRetaliation:{TimeToStartRetaliation} RetaliationPercentAtIncrement:{RetaliationPercentAtIncrement} RetaliationTime:{RetaliationTime} TimeToReturnToZone:{TimeToReturnToZone}");
     }
     private void CheckRetaliationStart()
@@ -66,12 +69,13 @@ public class GangRetaliation
         {
             return;
         }
-        if (Game.GameTime - GameTimeWarEnded < TimeToStartRetaliation)//what should this be?
+        if (Game.GameTime - GameTimeRetaliationStarted < TimeToStartRetaliation)//what should this be?
         {
             return;
         }
         if (!RandomItems.RandomPercent(RetaliationPercentAtIncrement))
         {
+            GameTimeRetaliationStarted = Game.GameTime;
             return;
         }
         OnRetaliationStarted();
@@ -147,7 +151,12 @@ public class GangRetaliation
     private void OnPlayerLeftZone()
     {
         GameTimeReturnedToZone = 0;
-        SendLeftZoneMessage();
+        if(!HasPlayerBeenWarnedNotToLeaveZone)
+        {
+            SendLeftZoneMessage();
+            HasPlayerBeenWarnedNotToLeaveZone = true;
+        }
+        
         EntryPoint.WriteToConsole("GANG RETALIATION EVENT: PLAYER LKEFT ZONE AFTER ARRIVING");
     }
     private void OnPlayerLost()
@@ -177,54 +186,63 @@ public class GangRetaliation
     private void SendReturnedMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Returned.",
+                                $"Took you long enough, {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is running rampant. Waste those fucks!",
+                                $"Did you stop for gas on the way back? We are getting fucked by {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~",
+                                $"We're you in Lemoyne? The fuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are all over us!",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
     private void SendStartMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Started.",
-                                };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+                                $"The fucks at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are making moves on {ZonesToAttack.FirstOrDefault()?.DisplayName}. Get your ass here NOW!",
+        $"{TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is moving on {ZonesToAttack.FirstOrDefault()?.DisplayName}. We need backup ASAP",
+        $"Word on the street is {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are going to make a move on {ZonesToAttack.FirstOrDefault()?.DisplayName}. You need to be here yesterday.",
+        };
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
     private void SendLostMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Lost.",
+                                $"Good work losing {ZonesToAttack.FirstOrDefault()?.DisplayName} to {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ aka the biggest pussies in town.",
+                                $"Do you enjoy making us look bad? We just lost {ZonesToAttack.FirstOrDefault()?.DisplayName} to {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~.",
+                                $"So much for {ZonesToAttack.FirstOrDefault()?.DisplayName} the motherfuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are back to running it.",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
     private void SendWonMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Won.",
+                                $"Good work holding off those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ fucks. Was worried we were gonna lose {ZonesToAttack.FirstOrDefault()?.DisplayName}.",
+
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
     private void SendLeftZoneMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Left Zone.",
+                                $"Get your ass back to {ZonesToAttack.FirstOrDefault()?.DisplayName}. These colors don't run.",
+                                $"You need to stay in {ZonesToAttack.FirstOrDefault()?.DisplayName} or we are going to get fucked.",
+                                $"GET BACK TO {ZonesToAttack.FirstOrDefault()?.DisplayName} NOW.",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }
 
-    internal void LoadFromSave(uint timeToStartRetaliation, float retaliationPercentAtIncrement, uint retaliationTime, uint timeToReturnToZone, bool hasRetaliationStarted, bool isEnded, bool hasPlayerReturnedToZone)
-    {
-        TimeToStartRetaliation = timeToStartRetaliation;
-        RetaliationPercentAtIncrement = retaliationPercentAtIncrement;
-        RetaliationTime = retaliationTime;
-        TimeToReturnToZone = timeToReturnToZone;
-        HasRetaliationStarted = hasRetaliationStarted;
-        IsEnded = isEnded;
-        HasPlayerReturnedToZone = hasPlayerReturnedToZone;
-        GameTimeStarted = Game.GameTime;
-        if(HasPlayerReturnedToZone)
-        {
-            GameTimeReturnedToZone = Game.GameTime;
-        }
+    //public void LoadFromSave(uint timeToStartRetaliation, float retaliationPercentAtIncrement, uint retaliationTime, uint timeToReturnToZone, bool hasRetaliationStarted, bool isEnded, bool hasPlayerReturnedToZone)
+    //{
+    //    TimeToStartRetaliation = timeToStartRetaliation;
+    //    RetaliationPercentAtIncrement = retaliationPercentAtIncrement;
+    //    RetaliationTime = retaliationTime;
+    //    TimeToReturnToZone = timeToReturnToZone;
+    //    HasRetaliationStarted = hasRetaliationStarted;
+    //    IsEnded = isEnded;
+    //    HasPlayerReturnedToZone = hasPlayerReturnedToZone;
+    //    GameTimeStarted = Game.GameTime;
+    //    if(HasPlayerReturnedToZone)
+    //    {
+    //        GameTimeReturnedToZone = Game.GameTime;
+    //    }
 
-    }
+    //}
 }
 

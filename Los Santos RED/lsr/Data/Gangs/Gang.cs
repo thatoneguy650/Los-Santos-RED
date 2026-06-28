@@ -176,9 +176,9 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public LoanParameters LoanParameters { get; set; } = new LoanParameters();
 
 
+    public int TakeoverTerritoryCasualtyLimitMin { get; set; }
 
-
-
+    public int TakeoverTerritoryCasualtyLimitMax{ get; set; }
     public GangClassification GangClassification { get; set; } = GangClassification.Generic;
     public List<string> EnemyGangs { get; set; } = new List<string>();
 
@@ -505,6 +505,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         HostileRepLevel = -200;
         PercentageWillRacePlayer = 55f;
         GangWarCasualtyLimit = 25;
+        TakeoverTerritoryCasualtyLimitMin = 15;
+        TakeoverTerritoryCasualtyLimitMax = 25;
     }
 
 }

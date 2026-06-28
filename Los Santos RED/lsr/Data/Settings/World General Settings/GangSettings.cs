@@ -176,6 +176,17 @@ public class GangSettings : ISettingsDefaultable
     public bool AllowFlyThroughWindshield { get; set; }
     public float FlyThroughWindshieldPercent { get; set; }
 
+
+
+    public uint TerritoryRetaliationTimeToReturnMin { get; set; }
+    public uint TerritoryRetaliationTimeToReturnMax { get; set; }
+    public uint TerritoryRetaliationStartTimeMin { get; set; }
+    public uint TerritoryRetaliationStartTimeMax { get; set; }
+    public float TerritoryRetaliationPercentageMin { get; set; }
+    public float TerritoryRetaliationPercentageMax { get; set; }
+    public uint TerritoryRetaliationTimeMin { get; set; }
+    public uint TerritoryRetaliationTimeMax { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -331,6 +342,17 @@ public class GangSettings : ISettingsDefaultable
         AllowFlyThroughWindshield = true;
 
 
+
+
+        TerritoryRetaliationStartTimeMin  = 60000 * 3;
+        TerritoryRetaliationStartTimeMax = 60000 * 10;
+        TerritoryRetaliationPercentageMin = 20f;
+        TerritoryRetaliationPercentageMax = 50f;
+        TerritoryRetaliationTimeMin = 60000 * 5;
+        TerritoryRetaliationTimeMax = 60000 * 10;
+        TerritoryRetaliationTimeToReturnMin = 60000 * 8;
+        TerritoryRetaliationTimeToReturnMax = 60000 * 10;
+       
     }
 
 }

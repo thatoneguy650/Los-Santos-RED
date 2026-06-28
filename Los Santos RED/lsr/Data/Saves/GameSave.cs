@@ -680,7 +680,7 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
 
-                player.GangTerritoryManager.LoadWar(targetGang, toAttackZones);
+                player.GangTerritoryManager.LoadWar(targetGang, toAttackZones, gws.CasualityLimit);
             }
             foreach (GangRetaliationSave grs in GangRetaliationSaves)
             {
