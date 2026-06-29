@@ -22,6 +22,8 @@ public class GangRetaliation
     private uint TimeToReturnToZone;
     private ISettingsProvideable Settings;
     private bool HasPlayerBeenWarnedNotToLeaveZone;
+    private int TimesWon;
+    private int WinsNeeded = 1;
 
     public GangRetaliation(IGangTerritoryManageable player, GangTerritoryManager gangTerritoryManager, uint gameTimeWarEnded, Gang targetGang, List<Zone> zonesToAttack, ISettingsProvideable settings)
     {
@@ -57,11 +59,18 @@ public class GangRetaliation
     }
     public void Setup()
     {
+        WinsNeeded = RandomItems.GetRandomNumberInt(TargetGang.TakeoverTerritoryRetaliationTimesMin, TargetGang.TakeoverTerritoryRetaliationTimesMax);
+        ResetTimedItems();
+        EntryPoint.WriteToConsole($"GANG RETALIATION SETUP: TimeToStartRetaliation:{TimeToStartRetaliation} RetaliationPercentAtIncrement:{RetaliationPercentAtIncrement} RetaliationTime:{RetaliationTime} TimeToReturnToZone:{TimeToReturnToZone}");
+    }
+
+
+    private void ResetTimedItems()
+    {
         TimeToStartRetaliation = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMax); //60000, 120000);
         RetaliationPercentAtIncrement = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMax); //20f, 50f);
         RetaliationTime = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMax); //120000, 180000);
         TimeToReturnToZone = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMax); //120000, 180000); //Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin
-        EntryPoint.WriteToConsole($"GANG RETALIATION SETUP: TimeToStartRetaliation:{TimeToStartRetaliation} RetaliationPercentAtIncrement:{RetaliationPercentAtIncrement} RetaliationTime:{RetaliationTime} TimeToReturnToZone:{TimeToReturnToZone}");
     }
     private void CheckRetaliationStart()
     {
@@ -169,12 +178,26 @@ public class GangRetaliation
     }
     private void OnPlayerWon()
     {
-        GameTimeEnded = Game.GameTime;
-        IsEnded = true;
+        //GameTimeEnded = Game.GameTime;
+        //IsEnded = true;
         SendWonMessage();
-        GangTerritoryManager.EndRetaliation(this, true);
-        EntryPoint.WriteToConsole("GANG RETALIATION EVENT: PLAYER WON");
+        //GangTerritoryManager.EndRetaliation(this, true);
+        TimesWon++;
+
+        if(TimesWon >= WinsNeeded)
+        {
+            GangTerritoryManager.EndRetaliation(this, false);
+        }
+        else
+        {
+            GameTimeRetaliationStarted = Game.GameTime;
+            ResetTimedItems();
+        }
+
+        
+        EntryPoint.WriteToConsole($"GANG RETALIATION EVENT: PLAYER WON TimesWon{TimesWon} WinsNeeded{WinsNeeded}");
     }
+
     private void OnPlayerReturnedToZoneFirstTime()
     {
         HasPlayerReturnedToZone = true;
@@ -214,7 +237,9 @@ public class GangRetaliation
     {
         List<string> Replies = new List<string>() {
                                 $"Good work holding off those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ fucks. Was worried we were gonna lose {ZonesToAttack.FirstOrDefault()?.DisplayName}.",
+            $"{TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ has been beaten back. We still control {ZonesToAttack.FirstOrDefault()?.DisplayName}.",
 
+            $"So many {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ bodies in {ZonesToAttack.FirstOrDefault()?.DisplayName}. They've got their tail between their legs.",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
     }

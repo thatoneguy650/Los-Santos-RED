@@ -703,6 +703,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\FireGeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\EMSGeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GangGeneralLocate.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\DrivePlayerInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToPositionVehicleRaceTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\MarshalGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\RegularGoToInVehicleTaskState.cs" />

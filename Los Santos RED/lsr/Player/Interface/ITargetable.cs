@@ -69,6 +69,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInWantedActiveMode { get; }
         float VehicleSpeedMPH { get; }
         bool IsMovingSlowly { get; }
+        GPSManager GPSManager { get;  }
         //bool IsHostile(Gang gang);
     }
 }

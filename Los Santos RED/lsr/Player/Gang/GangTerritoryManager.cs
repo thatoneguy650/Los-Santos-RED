@@ -128,6 +128,7 @@ public class GangTerritoryManager
             SetRestoreZone(gr.ZonesToAttack.FirstOrDefault());
         }
         Retaliations.Remove(gr);
+        EntryPoint.WriteToConsole("END RETALIATION RAN REMOVING ");
     }
     public bool SetTookOverZone(Zone zone)
     {

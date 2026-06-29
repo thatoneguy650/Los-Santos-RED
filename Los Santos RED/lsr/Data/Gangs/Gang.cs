@@ -179,6 +179,11 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int TakeoverTerritoryCasualtyLimitMin { get; set; }
 
     public int TakeoverTerritoryCasualtyLimitMax{ get; set; }
+
+
+    public int TakeoverTerritoryRetaliationTimesMin { get; set; }
+    public int TakeoverTerritoryRetaliationTimesMax { get; set; }
+
     public GangClassification GangClassification { get; set; } = GangClassification.Generic;
     public List<string> EnemyGangs { get; set; } = new List<string>();
 
@@ -507,6 +512,8 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
         GangWarCasualtyLimit = 25;
         TakeoverTerritoryCasualtyLimitMin = 15;
         TakeoverTerritoryCasualtyLimitMax = 25;
+        TakeoverTerritoryRetaliationTimesMin = 2;
+        TakeoverTerritoryRetaliationTimesMax = 5;
     }
 
 }

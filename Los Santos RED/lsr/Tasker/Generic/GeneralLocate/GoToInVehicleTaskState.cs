@@ -57,6 +57,9 @@ class GoToInVehicleTaskState : TaskState
         {
             return;
         }
+
+
+
         CheckTasks();
         CheckGoToDistances();
         SetGoToDrivingStyle();
@@ -77,7 +80,11 @@ class GoToInVehicleTaskState : TaskState
             EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} RETASKED");
         }
     }
-
+    public void UpdateDriveLocation(Vector3 newLocation)
+    {
+        PlaceToDriveTo = newLocation;
+        Start();
+    }
     private void TaskEntry()
     {
         if (!PedGeneral.Pedestrian.Exists())

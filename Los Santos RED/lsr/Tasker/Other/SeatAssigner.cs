@@ -346,11 +346,14 @@ public class SeatAssigner
             EntryPoint.WriteToConsole("AssignPlayerPassenger player vehicle does not exists, returning");
             return;
         }
-        int passengerCapacity = playerVehicle.Vehicle.PassengerCapacity;
+        int passengerCapacity = playerVehicle.Vehicle.PassengerCapacity + 1;
 
 
 
-        for (int testSeatIndex = 0;testSeatIndex < passengerCapacity; testSeatIndex++)
+        for (int testSeatIndex = -1;// 0;
+            
+            
+            testSeatIndex < passengerCapacity; testSeatIndex++)
         {
             if(IsSeatAvailable(playerVehicle, testSeatIndex))
             {

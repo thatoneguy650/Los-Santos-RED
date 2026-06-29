@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GeneralFollow : ComplexTask
+public class GeneralFollow : ComplexTask, ILocationReachable
 {
     private PedExt PedGeneral;
     private IEntityProvideable World;
     private IPlacesOfInterest PlacesOfInterest;
     private SeatAssigner SeatAssigner;
+    private Vector3 AssignedDriveLocation;
     private TaskState CurrentTaskState;
     private ISettingsProvideable Settings;
     private GroupManager GroupManager;
@@ -27,6 +28,9 @@ public class GeneralFollow : ComplexTask
     public bool SetFollow { get; private set; } = true;
     public bool SetCombat { get; private set; } = false;
     public float RunSpeed { get; private set; } = 1.0f;
+
+    public bool HasReachedLocatePosition => false;
+
     public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager, IWeaponIssuable weaponIssuable) : 
         base(player, ped, 1000)//1500
     {
@@ -114,6 +118,10 @@ public class GeneralFollow : ComplexTask
                     if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                     {
                         CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, Player.GroupManager.BlockPermanentEvents);
+                    }
+                    else if (Player.CurrentVehicle != null && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle.Handle == Ped.Pedestrian.CurrentVehicle.Handle)
+                    {
+                        CurrentTaskState = new DrivePlayerInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, true, this, this);
                     }
                     else
                     {
@@ -220,6 +228,16 @@ public class GeneralFollow : ComplexTask
                 WeaponIssuable.WeaponInventory.SetSimpleUnarmed();
             }
         }
+    }
+
+    public void OnFinalSearchLocationReached()
+    {
+        
+    }
+
+    public void OnLocationReached()
+    {
+        
     }
 }
 
