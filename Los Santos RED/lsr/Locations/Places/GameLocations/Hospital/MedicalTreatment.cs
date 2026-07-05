@@ -42,6 +42,7 @@ public class MedicalTreatment
             hospital.DisplayPurchaseMessage();
             player.BankAccounts.GiveMoney(-1 * Price, true);
             player.HealthManager.ChangeHealth(HealthGained);
+            player.HealthState.StopBleeding();
             sender.Visible = false;
         };
         rageMenu.AddItem(uIMenuItem);

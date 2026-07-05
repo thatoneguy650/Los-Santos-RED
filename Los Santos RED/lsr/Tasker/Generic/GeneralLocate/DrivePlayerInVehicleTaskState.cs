@@ -25,10 +25,14 @@ class DrivePlayerInVehicleTaskState : TaskState
     private bool isSetCode3Close;
     private ILocationReachable LocationReachable;
     private uint GametimeLastRetasked;
+    private float drivingSpeed;
     private Vector3 AssignedDrivePlace;
     private bool IsSetAggressive;
     private GeneralFollow GeneralFollow;
-    private bool SetWander;
+    private bool ReachedLocation;
+    private bool IsParking;
+    private Vector3 ParkingSpace;
+    private float ParkingHeading;
 
     public DrivePlayerInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, 
         bool blockPermanentEvents, ILocationReachable locationReachable, GeneralFollow generalFollow)
@@ -43,7 +47,7 @@ class DrivePlayerInVehicleTaskState : TaskState
         GeneralFollow = generalFollow;
     }
     public bool IsValid => PedGeneral != null && PedGeneral.IsInVehicle && !LocationReachable.HasReachedLocatePosition && Player.CurrentVehicle != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle.Handle == PedGeneral.Pedestrian.CurrentVehicle.Handle;
-    public string DebugName => $"GoToBlipInVehicleTaskState";
+    public string DebugName => $"DrivePlayerInVehicleTaskState";
     public void Dispose()
     {
         Stop();
@@ -64,24 +68,110 @@ class DrivePlayerInVehicleTaskState : TaskState
             return;
         }
 
+
+        
+
+
         Vector3 NewDrivePlace = Player.GPSManager.GetGPSRoutePosition();
-        if (NewDrivePlace != AssignedDrivePlace)
+
+
+        float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo(AssignedDrivePlace);
+        if (NewDrivePlace == Vector3.Zero && DistanceToCoordinates <= 50f)
+        {
+            ReachedLocation = true;
+            EntryPoint.WriteToConsole($"NewDrivePlace Update REACHED THE LOCATION");
+        }
+        else if(!IsParking)
+        {
+            ReachedLocation = false;
+            EntryPoint.WriteToConsole($"NewDrivePlace Update DID NOT REACHED THE LOCATION");
+        }
+
+        //
+        //if (DistanceToCoordinates <= 50f)
+        //{
+        //    ReachedLocation = true;
+        //}
+        //else
+        //{
+        //    ReachedLocation = false;
+        //}
+
+
+        //if (NewDrivePlace == Vector3.Zero || AssignedDrivePlace == Vector3.Zero)
+        //{
+        //    //IsBlipGone = true;
+        //    EntryPoint.WriteToConsole($"NewDrivePlace BLIP IS GONE, DONT DO ANYTHING");
+        //}
+        //else if(NewDrivePlace == AssignedDrivePlace)
+        //{
+        //   // IsBlipGone = false;
+
+
+        //    if(DistanceToCoordinates <= 50f)
+        //    {
+        //        ReachedLocation = true;
+        //        EntryPoint.WriteToConsole($"NewDrivePlace YOU ARE STILL DRIVING TO THE SAME SPOT AND YOU REACHED THE LOCATION");
+        //    }
+
+        //    EntryPoint.WriteToConsole($"NewDrivePlace YOU ARE STILL DRIVING TO THE SAME SPOT");
+        //}
+        //else if(NewDrivePlace != AssignedDrivePlace)
+        //{
+        //    ReachedLocation = false;
+        //    EntryPoint.WriteToConsole($"NewDrivePlace YOU GOT A NEW POSITION TO DRIVE TO RESETTING REACHED LOCATION");
+        //}
+
+        if(NewDrivePlace != AssignedDrivePlace && NewDrivePlace != Vector3.Zero)
+        {
+            IsParking = false;
+            EntryPoint.WriteToConsole($"NewDrivePlace STOPPED PARKING SINCE YOU SET A NEW THINGO");
+        }
+
+
+        if (NewDrivePlace != AssignedDrivePlace && !IsParking)
         {
             EntryPoint.WriteToConsole($"GoToBlipInVehicleTaskState SET NEW BLIP OR NOT NewDrivePlace{NewDrivePlace}");
-            TaskEntry();
+            //if(NewDrivePlace != Vector3.Zero)
+            //{
+            //    ReachedLocation = false;
+            //}
+
+            //if(!ReachedLocation || NewDrivePlace != Vector3.Zero)
+            //{
+
+
+
+                TaskEntry();
+            //}
+
+            
         }
+
 
 
 
 
         //CheckTasks();
         //CheckGoToDistances();
+
+
+        //if (ReachedLocation)
+        //{
+            
+        //}
+
+
+
         //SetGoToDrivingStyle();
         if (PedGeneral.IsDriver && (PedGeneral.IsInHelicopter || PedGeneral.IsInPlane))
         {
             PedGeneral.ControlLandingGear();
         }
 
+
+
+        float newDrivingSpeed = GeneralFollow.SetCombat ? 100f : Player.CurrentLocation != null && Player.CurrentLocation.CurrentStreet != null ? Player.CurrentLocation.CurrentStreet.SpeedLimitMS : 10f;
 
 
         if (GeneralFollow.SetCombat && !IsSetAggressive)
@@ -97,8 +187,18 @@ class DrivePlayerInVehicleTaskState : TaskState
             TaskEntry();
         }
 
+        if (!GeneralFollow.SetCombat && newDrivingSpeed != drivingSpeed)
+        {
+            IsSetAggressive = false;
+            SetPassiveDriving();
+            TaskEntry();
+        }
+
+
+
     }
 
+   
     private void SetPassiveDriving()
     {
         //NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 10f);
@@ -138,11 +238,16 @@ class DrivePlayerInVehicleTaskState : TaskState
         }
         PlaceToDriveTo = Player.GPSManager.GetGPSRoutePosition();
 
+        //if(PlaceToDriveTo != Vector3.Zero)
+        //{
+        //    ReachedLocation = false;
+        //}
+        //ReachedLocation = false;
 
         int DrivingStyle = GeneralFollow.SetCombat ? (int)eCustomDrivingStyles.RecklessDriving : (int)eCustomDrivingStyles.RegularDriving;
-        float drivingSpeed = GeneralFollow.SetCombat ? 100f : 10f;
+        drivingSpeed = GeneralFollow.SetCombat ? 100f : Player.CurrentLocation != null && Player.CurrentLocation.CurrentStreet != null ? Player.CurrentLocation.CurrentStreet.SpeedLimitMS : 10f;
 
-        AssignedDrivePlace = PlaceToDriveTo;
+        
         bool pedExists = PedGeneral != null && PedGeneral.Pedestrian.Exists();
         bool pedVehicleExists = PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists();
         bool locationEror = PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero;
@@ -151,7 +256,8 @@ class DrivePlayerInVehicleTaskState : TaskState
         EntryPoint.WriteToConsole($"GoToBlipInVehicleTaskState TaskEntry PlaceToDriveTo{PlaceToDriveTo} locationEror{locationEror}");
         if (locationEror && PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
-            if(SetWander)
+            
+            if(Player.GroupManager.PlayerDriverWander)
             {
 
            
@@ -166,26 +272,29 @@ class DrivePlayerInVehicleTaskState : TaskState
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
+                IsParking = false;
+            }
+            else if (ReachedLocation)
+            {
+                if (!IsParking)
+                {
+                    ParkVehicle();
+                }
             }
             else
             {
+                
                 //PedGeneral.ClearTasks(true);
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 6, 9999);
-                //unsafe
-                //{
-                //    int lol = 0;
-                //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                //    NativeFunction.CallByName<bool>("TASK_PAUSE", 0, -1);
-                //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
-                //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                //}
+                IsParking = false;
             }
             GametimeLastRetasked = Game.GameTime;
             return;
         }
 
+        EntryPoint.WriteToConsole("THE TASKS ARE BEING ASSIGNED TO DRIVE THE PLAYER");
+        IsParking = false;
+        AssignedDrivePlace = PlaceToDriveTo;
 
         if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || !PedGeneral.Pedestrian.CurrentVehicle.Exists() || PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero || !PedGeneral.IsDriver)
         {
@@ -225,7 +334,7 @@ class DrivePlayerInVehicleTaskState : TaskState
 
     private void CheckGoToDistances()
     {
-        float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo(PlaceToDriveTo); //PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
+        float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo(AssignedDrivePlace); //PedGeneral.Pedestrian.DistanceTo2D(PlaceToDriveTo);
         //if (PedGeneral.Pedestrian.IsInAirVehicle)
         //{
         //    //if (DistanceToCoordinates <= 150f)
@@ -252,12 +361,92 @@ class DrivePlayerInVehicleTaskState : TaskState
         //        NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(PedGeneral.Pedestrian, 10f);
         //    }
         //}
-        if (DistanceToCoordinates <= 20f)
+        if (DistanceToCoordinates <= 50f && AssignedDrivePlace != Vector3.Zero)
         {
+            //if (!ReachedLocation)
+            //{
+
+            //    //LastReachedLocation = AssignedDrivePlace;
+            //    ParkVehicle();
+            //}
+            ReachedLocation = true;
             LocationReachable.OnLocationReached();
+
+
+
+
+
             //LocationReachable.HasReachedLocatePosition = true;
-            // EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HAS REACHED POSITION");
+            EntryPoint.WriteToConsole($"LOCATE TASK: DRIVER {PedGeneral?.Handle} HAS REACHED POSITION");
         }
+  
+        EntryPoint.WriteToConsole($"            DRIVE PLAYER: DRIVER {PedGeneral?.Handle} DistanceToCoordinates{DistanceToCoordinates}");
     }
+
+
+    private void ParkVehicle()
+    {
+        IsParking = true;
+        EntryPoint.WriteToConsole("PLAYER DRIVER ON LOCATION RECHED TRANSITION TO PARKING");
+
+        ParkingSpace = Vector3.Zero;
+        ParkingHeading = 0f;
+        SpawnLocation DestinationLocation = new SpawnLocation(AssignedDrivePlace);
+        DestinationLocation.Heading = PedGeneral.Pedestrian.Heading-180f;
+        DestinationLocation.GetClosestStreet(false);
+
+
+
+            DestinationLocation.GetClosestSideOfRoadForward();
+       // }
+        //DestinationLocation.GetRoadBoundaryPosition();
+        if (DestinationLocation.HasStreetPosition)
+        {
+            //DestinationLocation.StreetPosition = DestinationLocation.RoadBoundaryPosition;
+            ParkingSpace = DestinationLocation.StreetPosition;
+            ParkingHeading = DestinationLocation.Heading;
+        }
+
+        if (ParkingSpace == Vector3.Zero)
+        {
+            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 6, 9999);
+            EntryPoint.WriteToConsole("NO PARKING SPACE FOUND");
+        }
+        else
+        {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                //NativeFunction.CallByName<bool>("TASK_VEHICLE_TEMP_ACTION", 0, PedGeneral.Pedestrian.CurrentVehicle, 6, 9999);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_PARK", 0, PedGeneral.Pedestrian.CurrentVehicle, ParkingSpace.X, ParkingSpace.Y, ParkingSpace.Z, ParkingHeading, 0, 20f, false);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+            //AssignedDrivePlace = ParkingSpace;
+            EntryPoint.WriteToConsole("SET PARK RAN");
+        }
+
+        GameFiber.StartNew(MarkParkingSpace);
+
+    }
+    private void MarkParkingSpace()
+    {
+#if DEBUG
+        while(IsParking && EntryPoint.ModController.IsRunning)
+        {
+
+         
+            Rage.Debug.DrawArrowDebug(ParkingSpace + new Vector3(0f, 0f, 1f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+            GameFiber.Yield();
+        }
+#endif 
+    }
+
+
+
+
 }
 

@@ -70,7 +70,9 @@ public class HealthState
     public int EjectPedFromVehicleOnRagdollPercentage => IsPlayer ? Settings.SettingsManager.DamageSettings.EjectPedFromVehicleOnRagdollPercentagePlayer : Settings.SettingsManager.DamageSettings.EjectPedFromVehicleOnRagdollPercentageAI;
 
 
+    public float StaggerPercentage => IsPlayer ? Settings.SettingsManager.DamageSettings.StaggerOnHitPercentagePlayer : Settings.SettingsManager.DamageSettings.StaggerOnHitPercentageAI;
 
+    public float StaggerWindmillPercentage => IsPlayer ? Settings.SettingsManager.DamageSettings.StaggerWindmillOnHitPercentagePlayer : Settings.SettingsManager.DamageSettings.StaggerWindmillOnHitPercentageAI;
 
 
 
@@ -757,7 +759,10 @@ public class HealthState
     }
 
 
-
+    public void DebugSetRagdoll(int HealthDamage)
+    {
+        SetRagdoll(HealthDamage);
+    }
     private void SetRagdoll(int HealthDamage)
     {
         if (!AllowRagdoll)
@@ -767,8 +772,12 @@ public class HealthState
         EntryPoint.WriteToConsole($"SetRagdoll HealthDifference: {HealthDamage} IsPlayer{IsPlayer}");
         bool isInVehicle = IsPlayer && Player != null ? Player.IsInVehicle : MyPed.IsInVehicle;
         bool CanBeEjectedOnDamage = isInVehicle && EjectPedFromVehicleOnRagdoll && RandomItems.RandomPercent(EjectPedFromVehicleOnRagdollPercentage);
+
+        bool CanRunStagger = false;
+
         if (HealthDamage >= AlwaysRagdollDamageMinimum)
         {
+            CanRunStagger = true;
             if (CanBeEjectedOnDamage)
             {
                 NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(MyPed.Pedestrian, 0, 4096);
@@ -778,6 +787,7 @@ public class HealthState
         }
         else if (HealthDamage >= MediumRagdollDamageMinimum && RandomItems.RandomPercent(MediumRagdollDamagePercentage))
         {
+            CanRunStagger = true;
             if (CanBeEjectedOnDamage)
             {
                 NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(MyPed.Pedestrian, 0, 4096);
@@ -787,6 +797,7 @@ public class HealthState
         }
         else if (HealthDamage >= LowRagdollDamageMinimum && RandomItems.RandomPercent(LowRagdollDamagePercentage)) //15 && RandomItems.RandomPercent(30))
         {
+            CanRunStagger = true;
             if (CanBeEjectedOnDamage)
             {
                 NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(MyPed.Pedestrian, 0, 4096);
@@ -796,6 +807,7 @@ public class HealthState
         }
         else if (HealthDamage >= TinyRagdollDamageMinimum && RandomItems.RandomPercent(TinyRagdollDamagePercentage)) //10 && RandomItems.RandomPercent(1))
         {
+            CanRunStagger = true;
             if (CanBeEjectedOnDamage)
             {
                 NativeFunction.Natives.TASK_LEAVE_ANY_VEHICLE(MyPed.Pedestrian, 0, 4096);
@@ -803,7 +815,34 @@ public class HealthState
             EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 4 {MyPed.Pedestrian.Handle} Health - NewHealth = {HealthDamage} NewHealth {HealthDamage} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);
             NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, TinyRagdollMinTime, TinyRagdollMaxTime, 1, false, false, false);
         }
+        //NativeFunction.Natives.SET_PED_TO_RAGDOLL(Player.Character, 4000, 5000, 1, 1, 1, 1);
 
+
+        if (!CanBeEjectedOnDamage && CanRunStagger && RandomItems.RandomPercent(StaggerPercentage))
+        {
+            NativeFunction.Natives.CREATE_NM_MESSAGE(1, 0);
+            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(MyPed.Pedestrian);
+
+
+            if(RandomItems.RandomPercent(40f))
+            {
+                NativeFunction.Natives.CREATE_NM_MESSAGE(1, (int)NM_STR.NM_INJURED_ON_GROUND_MSG);         
+            }
+            else
+            {
+                NativeFunction.Natives.CREATE_NM_MESSAGE(1, (int)NM_STR.NM_STAGGERFALL_MSG);
+            }
+            
+            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(MyPed.Pedestrian);
+            EntryPoint.WriteToConsole("NM STAGGER RAN");
+
+            if(RandomItems.RandomPercent(StaggerWindmillPercentage))
+            {
+                NativeFunction.Natives.CREATE_NM_MESSAGE(1, (int)NM_STR.NM_WINDMILL_MSG);
+                NativeFunction.Natives.GIVE_PED_NM_MESSAGE(MyPed.Pedestrian);
+                EntryPoint.WriteToConsole("NM WINDMILL RAN");
+            }
+        }
 
     }
 

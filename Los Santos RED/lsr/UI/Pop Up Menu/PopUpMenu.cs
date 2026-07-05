@@ -379,7 +379,17 @@ public class PopUpMenu
             new Action(() =>
             {
                 Player.GroupManager.OnSetNeverArmed();
-            }), $"Set never armed. Currently {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}")
+            }), $"Set never armed. Currently {(Player.GroupManager.NeverArmed ? "Enabled" : "Disabled")}"),
+
+
+            new PopUpBox(8, "Set Driver Wander",
+            new Action(() =>
+            {
+                Player.GroupManager.OnToggledPlayerDriverWander();
+            }), $"If enabled, the players driver will randomly dreive around unless there is a waypoint marked. If disabled, they will park once they reach any waypoint. Currently {(Player.GroupManager.PlayerDriverWander ? "Enabled" : "Disabled")}")
+
+
+
         };
         PopUpMenuGroups.Add(new PopUpBoxGroup($"AllTaskingSubMenu", AllTaskingSubMenu) { IsChild = true, Group = "Group" });
 

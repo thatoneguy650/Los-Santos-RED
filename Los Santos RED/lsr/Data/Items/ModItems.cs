@@ -644,7 +644,20 @@ public class ModItems : IModItems
         PossibleItems.EquipmentItems.AddRange(new List<EquipmentItem>
         {
             new EquipmentItem("Health Pack","Is this real life or a video game?", ItemType.Equipment) {
-                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack", StopsBleeding = true },
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 60,PackageItemID = "prop_ld_health_pack", StopsBleeding = true },
+
+            new EquipmentItem("Large Health Pack","A big bag for a big emergency", ItemType.Equipment) {
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 100,PackageItemID = "xm_prop_x17_bag_med_01a", StopsBleeding = true },
+
+            new EquipmentItem("Bandage","Sprung a leak? This should help", ItemType.Equipment) {
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 5,PackageItemID = "prop_gaffer_leg_bind", StopsBleeding = true },
+
+            new EquipmentItem("Adrenaline Shot","Straight to the heart it goes. Hope you aren't afraid of needles.", ItemType.Equipment) {
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 25,PackageItemID = "m25_1_prop_m51_adrenalineshot_01a", },
+            //m25_1_prop_m51_adrenalineshot_01a
+
+
+            //prop_gaffer_leg_bind
         });
     }
     private void DefaultConfig_Valuables()

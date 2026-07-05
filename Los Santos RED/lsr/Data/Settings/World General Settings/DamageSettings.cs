@@ -185,6 +185,10 @@ public class DamageSettings : ISettingsDefaultable
     public uint TinyRagdollMaxTimeAI { get; set; }
     public bool EjectPedFromVehicleOnRagdollAI { get; set; }
     public int EjectPedFromVehicleOnRagdollPercentageAI { get; set; }
+    public float StaggerOnHitPercentagePlayer { get; set; }
+    public float StaggerOnHitPercentageAI { get; set; }
+    public float StaggerWindmillOnHitPercentagePlayer { get; set; }
+    public float StaggerWindmillOnHitPercentageAI { get; set; }
 
     public DamageSettings()
     {
@@ -309,6 +313,12 @@ public class DamageSettings : ISettingsDefaultable
         TinyRagdollMaxTimeAI = 3000;
         EjectPedFromVehicleOnRagdollAI = true;
         EjectPedFromVehicleOnRagdollPercentageAI = 15;
+
+        StaggerOnHitPercentagePlayer = 70f;
+        StaggerOnHitPercentageAI = 60f;
+
+        StaggerWindmillOnHitPercentagePlayer = 40f;
+        StaggerWindmillOnHitPercentageAI = 20f;
     }
 
 }

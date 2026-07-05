@@ -131,7 +131,12 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_bodyarmour_05", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
             new PhysicalItem("prop_bodyarmour_06", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
             new PhysicalItem("prop_ld_health_pack", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("prop_gaffer_leg_bind", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("xm_prop_x17_bag_med_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
+            new PhysicalItem("m25_1_prop_m51_adrenalineshot_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
+            
             //prop_ld_health_pack
+            //m25_1_prop_m51_adrenalineshot_01a
         });
         //prop_armour_pickup
     }

@@ -42,6 +42,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     protected bool HasGivenTooCloseWarning;
     protected uint GameTimePlayerLastDamagedCarOnFoot;
     protected uint GameTimePlayerLastStoodOnCar;
+    private bool IsRunningOtherFiber;
+
     //private Vehicle CurrentVehicle;
 
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
@@ -1884,4 +1886,57 @@ ENDENUM
         AddWitnessedPlayerCrime(Crimes.GetCrime(StaticStrings.PickPocketingCrimeID),player.Character.Position);
         //EntryPoint.WriteToConsole($"Pickpocket: {Pedestrian.Handle:X8} reacted to pickpocket, IsCop={IsCop}, IsGangMember={IsGangMember}, HatesPlayer={HatesPlayer}, WillCallPolice={WillCallPolice}, WillCallPoliceIntense={WillCallPoliceIntense}, HasCellPhone={HasCellPhone}");
     }
+
+
+
+
+
+    public void StabilityForceApplier()
+    {
+        if (!IsInVehicle || !IsDriver)
+        {
+            IsRunningOtherFiber = false;
+            return;
+        }
+        if (!IsRunningOtherFiber)
+        {
+            StartOtherApplier();
+        }
+
+    }
+    private void StartOtherApplier()
+    {
+        IsRunningOtherFiber = true;
+        GameFiber.StartNew(delegate
+        {
+            EntryPoint.WriteToConsole($"I AM PED {Handle} AND I STARTED AN OTHER APPLIER");
+
+            while (EntryPoint.ModController.IsRunning && IsRunningOtherFiber && Pedestrian.Exists() && Pedestrian.CurrentVehicle.Exists() && IsDriver)
+            {
+                ApplyStabilityForce(Pedestrian.CurrentVehicle);
+                GameFiber.Yield();
+            }
+            IsRunningOtherFiber = false;
+            EntryPoint.WriteToConsole($"I AM PED {Handle} AND I STOPPED AN OTHER APPLIER");
+        }, "Run Debug Logic");
+    }
+    private void ApplyStabilityForce(Vehicle copCar)
+    {
+
+        if (!IsInVehicle || !IsDriver || IsInAirVehicle || IsInBoat || IsInPlane || IsOnBike)
+        {
+            return;
+        }
+
+        if (copCar.Model.IsBike || copCar.Model.IsQuadBike || copCar.Model.IsHelicopter || copCar.Model.IsPlane)
+        {
+            return;
+        }
+        float speedFactor = copCar.Speed * 0.0018f;
+        NativeFunction.Natives.APPLY_FORCE_TO_ENTITY(copCar, 3, 0f, 0f, -speedFactor, 0f, 0f, 0f, 0, false, true, true, false, true);
+        NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.5f);
+    }
+
+
+
 }

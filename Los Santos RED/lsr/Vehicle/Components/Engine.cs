@@ -37,7 +37,12 @@ public class Engine
     public void Update(IDriveable driver)
     {
         UpdateDamage(driver);
-        UpdateState();
+
+        if(driver.IsDriver)
+        {
+            UpdateState();
+        }
+        
     }
     public void Toggle()
     {

@@ -27,6 +27,8 @@ using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
+//using System.Windows.Media;
+
 
 
 //using System.Windows.Media;
@@ -535,7 +537,25 @@ public class Debug
 
     private void DebugNumpad4()
     {
-        
+
+
+
+        int Flags = 0;
+        if (int.TryParse(NativeHelper.GetKeyboardInput("1024"), out Flags))
+        {
+
+            NativeFunction.Natives.SET_PED_TO_RAGDOLL(Player.Character, 4000, 5000, 1, 1, 1, 1);
+            NativeFunction.Natives.CREATE_NM_MESSAGE(1, 0);
+            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
+            NativeFunction.Natives.CREATE_NM_MESSAGE(1, Flags);
+            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
+            GameFiber.Sleep(1000);
+            Game.DisplaySubtitle("RAN NM MESSAGE");
+        }
+
+
+
+
         /*Vector3 coords = Player.Character.Position;
 
         coords = new Vector3(coords.X, coords.Y, GetGroundZ(coords)); 
@@ -555,9 +575,9 @@ public class Debug
 
         */
 
-        NativeHelper.AddDecal(Player.Character.Position, 1110,1.0f,1.0f,0.3f,0.0f,0.0f,1.0f,20f);
-        EntryPoint.WriteToConsole("DEBUG ADDED DRIP");
-        GameFiber.Sleep(500);
+        //NativeHelper.AddDecal(Player.Character.Position, 1110,1.0f,1.0f,0.3f,0.0f,0.0f,1.0f,20f);
+        //EntryPoint.WriteToConsole("DEBUG ADDED DRIP");
+        //GameFiber.Sleep(500);
 
 
         //int Flags = 0;
@@ -1431,31 +1451,42 @@ public class Debug
     private void DebugNumpad5()
 {
 
-
-        GenericMinigame genericMinigame = new GenericMinigame();
-        genericMinigame.Start(Player);
-        GameFiber.StartNew(delegate
+        int Flags = 0;
+        if (int.TryParse(NativeHelper.GetKeyboardInput("20"), out Flags))
         {
-            try
-            {
-                while (!Game.IsKeyDown(Keys.J))
-                {
-                    genericMinigame.Update();
-                    GameFiber.Yield();
-                }
 
-                NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, true, 0);
-
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
-        }, "BurnerPhone");
+            Player.HealthState.DebugSetRagdoll(Flags);
+            GameFiber.Sleep(500);
+            //Game.DisplaySubtitle("RAN NM MESSAGE");
+        }
 
 
-        GameFiber.Sleep(500);
+        
+
+        //GenericMinigame genericMinigame = new GenericMinigame();
+        //genericMinigame.Start(Player);
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (!Game.IsKeyDown(Keys.J))
+        //        {
+        //            genericMinigame.Update();
+        //            GameFiber.Yield();
+        //        }
+
+        //        NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, true, 0);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+        //        EntryPoint.ModController.CrashUnload();
+        //    }
+        //}, "BurnerPhone");
+
+
+        //GameFiber.Sleep(500);
 
 
 

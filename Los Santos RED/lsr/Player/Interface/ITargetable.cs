@@ -70,6 +70,8 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedMPH { get; }
         bool IsMovingSlowly { get; }
         GPSManager GPSManager { get;  }
+        float VehicleSpeed { get; }
+        Violations Violations { get; }
         //bool IsHostile(Gang gang);
     }
 }

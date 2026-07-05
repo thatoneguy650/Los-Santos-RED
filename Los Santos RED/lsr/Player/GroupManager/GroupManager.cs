@@ -29,7 +29,7 @@ public class GroupManager
     public bool AlwaysArmed { get; set; } = false;
     public bool NeverArmed { get; set; } = false;
     public bool AutoArmed { get; set; } = true;
-
+    public bool PlayerDriverWander { get; set; } = false;
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
     {
         Player = player;
@@ -54,6 +54,10 @@ public class GroupManager
                 Remove(sc.PedExt);
                 //EntryPoint.WriteToConsoleTestLong("Remove Group Member (Busted)");
             }
+        }
+        foreach(GroupMember gm in CurrentGroupMembers)
+        {
+            gm.PedExt.StabilityForceApplier();
         }
     }
     public GroupMember GetMember(PedExt toget)
@@ -234,6 +238,13 @@ public class GroupManager
     private void PlayToggleSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+    }
+
+    public void OnToggledPlayerDriverWander()
+    {
+        PlayerDriverWander = !PlayerDriverWander;
+        UpdateAllTasking();
+        Game.DisplaySubtitle($"Player Driver Wander {(PlayerDriverWander ? "Enabled" : "Disabled")}");
     }
 }
 

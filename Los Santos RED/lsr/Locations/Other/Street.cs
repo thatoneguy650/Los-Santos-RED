@@ -17,7 +17,7 @@ public class Street
 
     public float SpeedLimitKMH => SpeedLimitUnits == "KM/H" ? SpeedLimit : SpeedLimit * 1.60933f;
     public float SpeedLimitMPH => SpeedLimitUnits == "MPH" ? SpeedLimit : SpeedLimit * 0.621371f;
-
+    public float SpeedLimitMS => SpeedLimitUnits == "MPH" ? SpeedLimit * 0.44704f : SpeedLimit * 0.277778f;
     public List<int> Nodes { get; set; }
     public Street()
     {

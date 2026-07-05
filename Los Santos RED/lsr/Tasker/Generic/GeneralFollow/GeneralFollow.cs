@@ -31,6 +31,9 @@ public class GeneralFollow : ComplexTask, ILocationReachable
 
     public bool HasReachedLocatePosition => false;
 
+
+    public bool SetDriverWander { get; set; }
+
     public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, GroupManager groupManager, IWeaponIssuable weaponIssuable) : 
         base(player, ped, 1000)//1500
     {
@@ -125,7 +128,7 @@ public class GeneralFollow : ComplexTask, ILocationReachable
                     }
                     else
                     {
-                        CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player);
+                        CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player, this);
                     }
                 }
                 else

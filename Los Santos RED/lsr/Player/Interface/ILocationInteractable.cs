@@ -71,5 +71,6 @@ namespace LosSantosRED.lsr.Interface
 
         bool IsInWantedActiveMode { get; }
         bool IsSetDisabledControls { get; set; }
+        HealthState HealthState { get; }
     }
 }

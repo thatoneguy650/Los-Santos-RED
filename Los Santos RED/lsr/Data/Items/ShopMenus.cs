@@ -1620,6 +1620,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Dippo Lighter", 20),
+                new MenuItem("Bandage",50),
 
             }),
             new ShopMenu("DepartmentStoreMenu","DepartmentStore",new List<MenuItem>() {
@@ -1988,7 +1989,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
                 new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Bandage",50),
                 new MenuItem("Baking Soda", 3),}),
+
             new ShopMenu("GrainOfTruthMenu","Grain Of Truth",new List<MenuItem>() {
                 new MenuItem("White Bread", 3),
                 new MenuItem("Carton of Milk", 4),
@@ -2066,6 +2069,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
                 new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Bandage",50),
                 new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("XeroMenu","Xero",new List<MenuItem>() {
                 new MenuItem("Sticky Rib Phat Chips", 2),
@@ -2099,6 +2103,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
                 new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Bandage",50),
                 new MenuItem("Flow Water ZERO", 3)}),
             new ShopMenu("LTDMenu","LTD",new List<MenuItem>() {
                 new MenuItem("White Bread", 3),
@@ -2130,6 +2135,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
                 new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Bandage",50),
                 new MenuItem("Flow Water ZERO", 3)}),
         });
     }
@@ -6551,7 +6557,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Medium Body Armor",1250),
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
+        new MenuItem("Health Pack",1000),
+        new MenuItem("Large Health Pack",2000),
+        new MenuItem("Bandage",200),
+        new MenuItem("Adrenaline Shot",750),
 
         //Pistola
         new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
@@ -6721,7 +6730,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Medium Body Armor",1250),
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
+        new MenuItem("Health Pack",1000),
+        new MenuItem("Large Health Pack",2000),
+        new MenuItem("Bandage",200),
+        new MenuItem("Adrenaline Shot",750),
         //Pistola
         new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
             new MenuItemExtra("Default Clip",0),
@@ -6924,7 +6936,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Medium Body Armor",1250),
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
+        new MenuItem("Health Pack",1000),
+        new MenuItem("Large Health Pack",2000),
+        new MenuItem("Bandage",200),
+        new MenuItem("Adrenaline Shot",750),
 
         //Pistola
         new MenuItem("Hawk & Little Combat Pistol",950, 700) { Extras = new List<MenuItemExtra>() {
@@ -7080,7 +7095,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Medium Body Armor",1250),
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
+        new MenuItem("Health Pack",1000),
+        new MenuItem("Large Health Pack",2000),
+        new MenuItem("Bandage",200),
+        new MenuItem("Adrenaline Shot",750),
 
         //Pistola
 
@@ -7331,6 +7349,10 @@ new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
         new MenuItem("Health Pack",1550),
+        new MenuItem("Health Pack",1000),
+        new MenuItem("Large Health Pack",2000),
+        new MenuItem("Bandage",200),
+        new MenuItem("Adrenaline Shot",750),
         //Pistola
         new MenuItem("Vom Feuer SCRAMP",990, 770) { Extras = new List<MenuItemExtra>() {
             new MenuItemExtra("Default Clip", 0),
