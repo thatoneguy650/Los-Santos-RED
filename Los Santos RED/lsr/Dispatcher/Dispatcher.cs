@@ -344,6 +344,27 @@ public class Dispatcher
     {
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
+
+    public PedExt SpawnCivilian(SpawnLocation SpawnLocation, DispatchableVehicle DispatchableVehicle, DispatchablePerson DispatchablePerson, GameLocation GameLocation)
+    {
+        EntryPoint.WriteToConsole("CIVILIAN CONDITIONAL SPAWN TASK RUN START");
+        try
+        {
+            CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(SpawnLocation, DispatchableVehicle, DispatchablePerson, false, false, true, Settings, Crimes, Weapons, Names, World, ModItems, ShopMenus);//, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, ForceMelee, ForceSidearm, ForceLongGun);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+            //civilianSpawnTask.PossibleHeads = GameLocation.VendorPossibleHeads;
+            civilianSpawnTask.AllowAnySpawn = true;
+            civilianSpawnTask.AllowBuddySpawn = false;
+            civilianSpawnTask.AttemptSpawn();
+            civilianSpawnTask.PostRun(null, GameLocation);
+            return civilianSpawnTask.CreatedPeople.FirstOrDefault() ;
+            //civilianSpawnTask.CreatedPeople.ForEach(x => { x.EnableAutoCleanup = true; });
+        }
+        catch (Exception ex)
+        {       
+            EntryPoint.WriteToConsole($"Civilian Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return null;
+        }
+    }
     public bool DispatchGangBackup(Gang requestedGang, int membersToSpawn, string requiredVehicleModel)
     {
         return GangDispatcher.DispatchGangBackup(requestedGang, membersToSpawn, requiredVehicleModel);

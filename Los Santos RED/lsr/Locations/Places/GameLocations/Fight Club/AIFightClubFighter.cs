@@ -1,0 +1,112 @@
+﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
+using Rage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public class AIFightClubFighter : FightClubFighter
+{
+    
+    private ITargetable Targetable;
+    public override bool IsPlayer => false;
+    public PedExt PedExt { get; private set; }
+    public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnLocation spawnLocation, FightClub fightClub, DispatchablePerson dispatchablePerson,
+        ITargetable targetable, int spawnedOrder)
+    {
+        FightClubArena = fightClubArena;
+        Player = player;
+        Targetable = targetable;
+        PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation,null, dispatchablePerson, fightClub);
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        PedExt.CanBeAmbientTasked = false;
+        PedExt.CanBeTasked = false;
+        PedExt.CanBeIdleTasked = false;
+        PedExt.WillFight = true;
+        PedExt.WillCallPolice = false;
+        PedExt.WillCower = false;
+        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{spawnedOrder}");
+    }
+    public override void Setup()
+    {
+        
+    }
+
+    public override void StartFight()
+    {
+        PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable);
+        PedExt.CurrentTask.Start();
+    }
+    public override void Update()
+    {
+        if(PedExt == null || HasLost)
+        {
+            return;
+        }
+        if(!PedExt.Pedestrian.Exists())
+        {
+            HasLost = true;
+            return;
+        }
+        PedExt.CurrentTask?.Update();
+        CheckLoseConditions(PedExt.Pedestrian.DistanceTo(FightClubArena.ArenaCenter));
+        base.Update();
+    }
+    public void CheckLoseConditions(float distance)
+    {
+        if(HasLost)
+        {
+            return;
+        }
+        if(!PedExt.Pedestrian.Exists() || PedExt.IsDead || PedExt.IsUnconscious)
+        {
+            HasLost = true;
+            EntryPoint.WriteToConsole("FIGHTER LOST SINCE THEY ARE DEAD GONE OR UNCONSCIOUS");
+            return;
+        }
+        if (distance >= 20f)
+        {
+            if (!IsOutsideRing)
+            {
+                IsOutsideRing = true;
+                GameTimeLeftRing = Game.GameTime;
+                EntryPoint.WriteToConsole("FIGHTER LEFT THE RING");
+            }
+        }
+        else
+        {
+            if (IsOutsideRing)
+            {
+                IsOutsideRing = false;
+                GameTimeLeftRing = 0;
+                EntryPoint.WriteToConsole("FIGHTER WENT BACK INTO THE RING");
+            }
+        }
+        if (GameTimeOutsideRing >= 5000 && !HasLost)
+        {
+            HasLost = true;
+            EntryPoint.WriteToConsole("FIGHTER LEFT THE RING TOO LONG, FAIL");
+        }
+    }
+    public override void Dispose()
+    {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        PedExt.Pedestrian.IsPersistent = false;
+        PedExt.CanBeAmbientTasked = true;
+        PedExt.CanBeTasked = true;
+        PedExt.CanBeIdleTasked = true;
+        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+        PedExt.PedBrain.AssignIdleTask();
+        base.Dispose();
+        EntryPoint.WriteToConsole("AI FIGHTER DISPOSE RAN");
+    }
+}
+

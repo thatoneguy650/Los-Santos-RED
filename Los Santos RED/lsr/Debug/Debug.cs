@@ -29,6 +29,8 @@ using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
 
+//using System.Windows.Media;
+
 
 
 //using System.Windows.Media;
@@ -1450,15 +1452,15 @@ public class Debug
 
     private void DebugNumpad5()
 {
+        StartDebugFightClub(true);
+        //int Flags = 0;
+        //if (int.TryParse(NativeHelper.GetKeyboardInput("20"), out Flags))
+        //{
 
-        int Flags = 0;
-        if (int.TryParse(NativeHelper.GetKeyboardInput("20"), out Flags))
-        {
-
-            Player.HealthState.DebugSetRagdoll(Flags);
-            GameFiber.Sleep(500);
-            //Game.DisplaySubtitle("RAN NM MESSAGE");
-        }
+        //    Player.HealthState.DebugSetRagdoll(Flags);
+        //    GameFiber.Sleep(500);
+        //    //Game.DisplaySubtitle("RAN NM MESSAGE");
+        //}
 
 
         
@@ -2001,6 +2003,47 @@ public class Debug
         //SpawnGunAttackers();
     }
 
+    private void StartDebugFightClub(bool isPlayer)
+    {
+        Vector3 ArenaCenter = new Vector3(1155.039f,3102.574f, 40.41409f);
+
+        SpawnLocation firstSpawn = new SpawnLocation(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f);
+        SpawnLocation secondSpawn = new SpawnLocation(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f);
+        SpawnLocation thirdSpawn = new SpawnLocation(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f);
+        SpawnLocation fourthSpawn = new SpawnLocation(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f);
+
+
+        List<SpawnLocation> spectatorPlaces = new List<SpawnLocation>() { 
+            new SpawnLocation(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
+            new SpawnLocation(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
+            new SpawnLocation(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+        };
+
+
+        FightClubArena fightClubArena = new FightClubArena(ArenaCenter,new List<SpawnLocation>() { firstSpawn, secondSpawn, thirdSpawn, fourthSpawn }, spectatorPlaces);
+
+        int Flags = 2;
+        if (!int.TryParse(NativeHelper.GetKeyboardInput("2"), out Flags))
+        {
+            return;
+        }
+        FightClubFight fightClubFight = new FightClubFight(fightClubArena,null, isPlayer, Flags, World, Player, Player);
+        fightClubFight.Setup();
+        fightClubFight.StartFight();
+        GameFiber FightClubDebug = GameFiber.StartNew(delegate
+        {
+            while (!fightClubFight.IsEnded || EntryPoint.ModController.IsRunning)
+            {
+                fightClubFight.Update();
+                GameFiber.Yield();
+            }
+            //fightClubFight.Dispose();
+        }, "FightClubDebug");
+        GameFiber.Sleep(500);
+
+
+    }
+
     private void OffsetGarbage()
 {
 
@@ -2054,6 +2097,7 @@ GameFiber.StartNew(delegate
 
     private void DebugNumpad6()
     {
+        StartDebugFightClub(false);
 
 
 
@@ -2061,7 +2105,6 @@ GameFiber.StartNew(delegate
 
 
 
-        
         //World.Places.StaticPlaces.DebugDeactivateAllLocations();
         //Game.DisplaySubtitle("DeactivatedLocations");
         //GameFiber.Sleep(2000);
@@ -4710,83 +4753,83 @@ private void contacttest()
 //        _iFruit.RightButtonIcon = SoftKeyIcon.Website;
 //        */
 
-            //        // New contact (wait 4 seconds (4000ms) before picking up the phone)
-            //        iFruitContact contactA = new iFruitContact("Unknown Gang Boss", 40);
-            //        contactA.Answered += ContactAnswered;   // Linking the Answered event with our function
-            //        contactA.DialTimeout = 4000;            // Delay before answering
-            //        contactA.Active = true;                 // true = the contact is available and will answer the phone
-            //        contactA.Icon = ContactIcon.MP_MexBoss;      // Contact's icon
-            //        _iFruit.Contacts.Add(contactA);         // Add the contact to the phone
+        //        // New contact (wait 4 seconds (4000ms) before picking up the phone)
+        //        iFruitContact contactA = new iFruitContact("Unknown Gang Boss", 40);
+        //        contactA.Answered += ContactAnswered;   // Linking the Answered event with our function
+        //        contactA.DialTimeout = 4000;            // Delay before answering
+        //        contactA.Active = true;                 // true = the contact is available and will answer the phone
+        //        contactA.Icon = ContactIcon.MP_MexBoss;      // Contact's icon
+        //        _iFruit.Contacts.Add(contactA);         // Add the contact to the phone
 
-            //        // New contact (wait 4 seconds before displaying "Busy...")
-            //        iFruitContact contactB = new iFruitContact("Families Boss", 41);
-            //        contactB.DialTimeout = 4000;
-            //        contactB.Active = false;                // false = the contact is busy
-            //        contactB.Icon = ContactIcon.Blocked;
-            //        contactB.Bold = true;                   // Set the contact name in bold
-            //        _iFruit.Contacts.Add(contactB);
-
-
-
-            //        while (!Game.IsKeyDownRightNow(Keys.P))
-            //        {
-            //            Game.DisplayHelp($"Press P to Stop");
-            //            _iFruit.Update();
-
-            //            GameFiber.Yield();
-            //        }
-
-            //    }, "Run Debug Logic");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Game.DisplayNotification("Shit CRASHES!!!");
-            //}
+        //        // New contact (wait 4 seconds before displaying "Busy...")
+        //        iFruitContact contactB = new iFruitContact("Families Boss", 41);
+        //        contactB.DialTimeout = 4000;
+        //        contactB.Active = false;                // false = the contact is busy
+        //        contactB.Icon = ContactIcon.Blocked;
+        //        contactB.Bold = true;                   // Set the contact name in bold
+        //        _iFruit.Contacts.Add(contactB);
 
 
 
-
-
-        }
-
-        //private void ContactAnswered(iFruitContact contact)
-        //{
-        //    // The contact has answered, we can execute our code
-        //    Game.DisplayNotification("The contact has answered.");
-
-        //    // We need to close the phone at a moment.
-        //    // We can close it as soon as the contact pick up calling _iFruit.Close().
-        //    // Here, we will close the phone in 5 seconds (5000ms).
-        //    _iFruit.Close(5000);
-        //}
-
-        //private void CreatePointChecker()
-        //{
-
-        //    Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
-        //    Color coolColor = Color.Yellow;
-        //    GameFiber.StartNew(delegate
-        //    {
-        //        while (!Game.IsKeyDown(Keys.O))
+        //        while (!Game.IsKeyDownRightNow(Keys.P))
         //        {
-        //            if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
-        //            {
-        //                coolColor = Color.Red;
-        //            }
-        //            else
-        //            {
-        //                coolColor = Color.Yellow;
-        //            }
-        //            float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
-        //            Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
-        //            Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
+        //            Game.DisplayHelp($"Press P to Stop");
+        //            _iFruit.Update();
 
         //            GameFiber.Yield();
         //        }
 
         //    }, "Run Debug Logic");
         //}
-        private void BrowseTimecycles()
+        //catch (Exception ex)
+        //{
+        //    Game.DisplayNotification("Shit CRASHES!!!");
+        //}
+
+
+
+
+
+    }
+
+    //private void ContactAnswered(iFruitContact contact)
+    //{
+    //    // The contact has answered, we can execute our code
+    //    Game.DisplayNotification("The contact has answered.");
+
+    //    // We need to close the phone at a moment.
+    //    // We can close it as soon as the contact pick up calling _iFruit.Close().
+    //    // Here, we will close the phone in 5 seconds (5000ms).
+    //    _iFruit.Close(5000);
+    //}
+
+    //private void CreatePointChecker()
+    //{
+
+    //    Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
+    //    Color coolColor = Color.Yellow;
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        while (!Game.IsKeyDown(Keys.O))
+    //        {
+    //            if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
+    //            {
+    //                coolColor = Color.Red;
+    //            }
+    //            else
+    //            {
+    //                coolColor = Color.Yellow;
+    //            }
+    //            float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
+    //            Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
+    //            Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
+
+    //            GameFiber.Yield();
+    //        }
+
+    //    }, "Run Debug Logic");
+    //}
+    private void BrowseTimecycles()
     {
         try
         {

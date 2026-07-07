@@ -290,6 +290,12 @@
     <Compile Include="lsr\Locations\Places\GameLocations\BodyExport.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Business.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\ePedFocusZone.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\AIFightClubFighter.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClub.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubArena.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFight.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFighter.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFighterPlayer.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PlayerPoser.cs" />
@@ -619,6 +625,7 @@
     <Compile Include="lsr\Player\Interface\ICasinoGamePlayable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\ICuffable.cs" />
+    <Compile Include="lsr\Player\Interface\IFightClubable.cs" />
     <Compile Include="lsr\Player\Interface\IGangBackupable.cs" />
     <Compile Include="lsr\Player\Interface\IGangTerritoryManageable.cs" />
     <Compile Include="lsr\Player\Interface\IInteriorManageable.cs" />
@@ -697,6 +704,7 @@
     <Compile Include="lsr\Tasker\Gang\GangBrain.cs" />
     <Compile Include="lsr\Tasker\Generic\BeStationaryTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralBeStationary.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralFight.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralFlee\GeneralFlee.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralFollow\RideInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralIdle\StayWaitInVehicleTaskState.cs" />
