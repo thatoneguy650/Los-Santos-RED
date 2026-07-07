@@ -22,7 +22,7 @@
 - Verify NAudio.dll and NAudio.xml along with RageNativeUI.dll and RageNativeUI.xml are in the root GTA V directory
 - Verify the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder  are in the plugins folder (in the root GTA V directory)
 
-+ To update the mod, remove the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder from your Plugins folder and replace with the newest version
++ To update the mod, remove the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder from your Plugins folder and replace with the newest version. If you want to keep your Setting, SavedGames, and Outfits: You can backup the Ssettings.xml, SaveGames.xml, and SavedOutfits.xml and restore them after updating. LSR will automatically update them to include the new items after running.
 
 ## Features
 Enhanced Free Roam Mode
