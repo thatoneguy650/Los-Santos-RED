@@ -170,7 +170,19 @@ Enhanced Free Roam Mode
 [Greskrendtregk Mods](https://discord.gg/7zaZhKervU)
 
 ## License
-[![GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+Los Santos RED is Source Available software, not Open Source.
+
+Permissions:
+- You may view the source code.
+- You may submit Pull Requests for potential inclusion in the official project.
+
+Restrictions:
+- You may NOT redistribute the software or its source code (in whole or in part).
+- You may NOT create derivative works, forks, or modified versions for public release.
+- You may NOT re-upload, mirror, or host the code or compiled mod elsewhere.
+- You may NOT use this codebase as a base for other projects.
+
+Any modifications or contributions should be submitted via Pull Request to the official GitHub repository. This license supersedes any previous licensing (including any prior GPL references). Unauthorized use, distribution, or derivation will be considered a violation of copyright.
 
 ## Credits
 - [Peter Badoingy](https://github.com/PeterBadoingy)
