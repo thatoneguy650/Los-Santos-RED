@@ -22,7 +22,7 @@
 - Verify NAudio.dll and NAudio.xml along with RageNativeUI.dll and RageNativeUI.xml are in the root GTA V directory
 - Verify the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder  are in the plugins folder (in the root GTA V directory)
 
-+ To update the mod, remove the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder from your Plugins folder and replace with the newest version
++ To update the mod, remove the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder from your Plugins folder and replace with the newest version. If you want to keep your Setting, SavedGames, and Outfits: You can backup the Settings.xml, SaveGames.xml, and SavedOutfits.xml and restore them after updating. LSR will automatically update them to include the new items after running.
 
 ## Features
 Enhanced Free Roam Mode
@@ -170,7 +170,19 @@ Enhanced Free Roam Mode
 [Greskrendtregk Mods](https://discord.gg/7zaZhKervU)
 
 ## License
-[![GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+Los Santos RED is Source Available software, not Open Source.
+
+Permissions:
+- You may view the source code.
+- You may submit Pull Requests for potential inclusion in the official project.
+
+Restrictions:
+- You may NOT redistribute the software or its source code (in whole or in part).
+- You may NOT create derivative works, forks, or modified versions for public release.
+- You may NOT re-upload, mirror, or host the code or compiled mod elsewhere.
+- You may NOT use this codebase as a base for other projects.
+
+Any modifications or contributions should be submitted via Pull Request to the official GitHub repository. This license supersedes any previous licensing (including any prior GPL references). Unauthorized use, distribution, or derivation will be considered a violation of copyright.
 
 ## Credits
 - [Peter Badoingy](https://github.com/PeterBadoingy)
