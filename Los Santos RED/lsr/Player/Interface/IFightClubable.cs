@@ -12,5 +12,7 @@ namespace LosSantosRED.lsr.Interface
         Dispatcher Dispatcher { get; }
         Ped Character { get;  }
         bool IsDead { get; }
+        string PlayerName { get; }
+        BankAccounts BankAccounts { get; }
     }
 }

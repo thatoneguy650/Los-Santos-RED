@@ -295,7 +295,8 @@
     <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubArena.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFight.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFighter.cs" />
-    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubFighterPlayer.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\FightClubsMenu.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocations\Fight Club\PlayerFightClubFighter.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\MoveInteraction.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\OrbitCamera.cs" />
     <Compile Include="lsr\Locations\Places\GameLocations\PlayerPoser.cs" />

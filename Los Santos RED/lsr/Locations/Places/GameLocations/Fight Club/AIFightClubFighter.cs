@@ -13,13 +13,24 @@ public class AIFightClubFighter : FightClubFighter
     private ITargetable Targetable;
     public override bool IsPlayer => false;
     public PedExt PedExt { get; private set; }
-    public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnLocation spawnLocation, FightClub fightClub, DispatchablePerson dispatchablePerson,
+    public GangMember GangMember { get; private set; }
+    public Gang Gang { get; set; }
+    public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnPlace spawnPlace, FightClub fightClub, DispatchablePerson dispatchablePerson,
         ITargetable targetable, int spawnedOrder)
     {
         FightClubArena = fightClubArena;
         Player = player;
         Targetable = targetable;
-        PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation,null, dispatchablePerson, fightClub);
+        SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
+        if(Gang == null)
+        {
+            PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePerson, fightClub);
+        }
+        else
+        {
+            GangMember = Player.Dispatcher.GangDispatcher.SpawnGangMember(spawnLocation, Gang,true, true,null, dispatchablePerson, fightClub);
+            PedExt = GangMember;
+        }   
         if (PedExt == null || !PedExt.Pedestrian.Exists())
         {
             return;
@@ -31,12 +42,14 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.WillCallPolice = false;
         PedExt.WillCower = false;
         PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{spawnedOrder}");
+        PedExt.Pedestrian.BlockPermanentEvents = true;
+        PedExt.Pedestrian.KeepTasks = true;
+        PedExt.Pedestrian.Tasks.StandStill(1500000);
     }
     public override void Setup()
     {
         
     }
-
     public override void StartFight()
     {
         PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable);
@@ -103,7 +116,15 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.CanBeAmbientTasked = true;
         PedExt.CanBeTasked = true;
         PedExt.CanBeIdleTasked = true;
-        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+        if(GangMember != null && Gang != null)
+        {
+            PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup(Gang.ID);
+        }
+        else
+        {
+            PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+        }
+        PedExt.ClearTasks(true);
         PedExt.PedBrain.AssignIdleTask();
         base.Dispose();
         EntryPoint.WriteToConsole("AI FIGHTER DISPOSE RAN");

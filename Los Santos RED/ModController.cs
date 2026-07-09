@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr
         private Dispatcher Dispatcher;
         private Input Input;   
         private PedSwap PedSwap;   
-        private Mod.Player Player;
+        
         private Police Police;  
         private Mod.Tasker Tasker;
         private Mod.Time Time;
@@ -33,6 +33,7 @@ namespace LosSantosRED.lsr
         private Mod.World World;
         private Mod.Crafting Crafting;
         public ModDataFileManager ModDataFileManager { get; private set; }
+        public Mod.Player Player { get; private set; }
         private WeatherManager WeatherManager;
 
         public ModController()

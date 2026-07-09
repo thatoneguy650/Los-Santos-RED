@@ -932,6 +932,41 @@ public class GangDispatcher
         }
         return true;
     }
+
+
+    public GangMember SpawnGangMember(SpawnLocation SpawnLocation, Gang gang, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType, GameLocation GameLocation)
+    {
+        if (Gang == null || personType == null)
+        {
+            return null;
+        }
+
+        try
+        {
+            GameFiber.Yield();
+            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, vehicleType, personType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+            gangSpawnTask.AllowAnySpawn = true;
+            gangSpawnTask.AllowBuddySpawn = false;
+   
+            gangSpawnTask.GangTerritory = GangTerritories.GetGangTerritory(Gang.ID)?.FirstOrDefault(x => x.ZoneInternalGameName.Equals(World.Zones.GetZone(SpawnLocation.FinalPosition).InternalGameName));
+            gangSpawnTask.AttemptSpawn();
+            foreach (PedExt created in gangSpawnTask.CreatedPeople)
+            {
+                World.Pedestrians.AddEntity(created);
+            }
+            gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = GameLocation != null; });
+            gangSpawnTask.CreatedVehicles.ForEach(x => x.AddVehicleToList(World));// World.Vehicles.AddEntity(x, ResponseType.None));;
+            return gangSpawnTask.SpawnedGangMembers.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Gang Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return null;
+        }
+
+    }
+
+
     public void DebugSpawnGangMember(string gangID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;

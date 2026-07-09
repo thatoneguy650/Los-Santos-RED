@@ -53,6 +53,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<Bar> Bars;
     private List<FoodStand> FoodStands;
     private List<RaceMeetup> RaceMeetups;
+    private List<FightClub> FightClubs;
     private List<Forger> Forgers;
     private List<GamblingDen> GamblingDens;
     private List<RepairGarage> RepairGarages;
@@ -218,6 +219,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         DefaultConfig_Bars();
         DefaultConfig_FoodStands();
         DefaultConfig_RaceMeetups();
+        DefaultConfig_FightClubs();
         DefaultConfig_IllicitMarketplaces();
         DefaultConfig_BlankLocations();
         DefaultConfig_Dealerships();
@@ -266,6 +268,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.Bars.AddRange(Bars);
         PossibleLocations.FoodStands.AddRange(FoodStands);
         PossibleLocations.RaceMeetups.AddRange(RaceMeetups);
+        PossibleLocations.FightClubs.AddRange(FightClubs);
         PossibleLocations.CarDealerships.AddRange(Dealerships);
         PossibleLocations.VehicleExporters.AddRange(VehicleExporters);
         PossibleLocations.Forgers.AddRange(Forgers);
@@ -2330,6 +2333,29 @@ public class PlacesOfInterest : IPlacesOfInterest
             new FoodStand(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f, "Roadside Fruit", "Should Be OK To Eat","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f) }, },
             new FoodStand(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, "Grapeseed Fruit", "Grapeseed Fruit","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f) }, },
             new FoodStand(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f, "Roadside Fruit", "Roadside Fruit","FruitMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f) }, },
+        };
+    }
+    private void DefaultConfig_FightClubs()
+    {
+        FightClubs = new List<FightClub>()
+        {
+            new FightClub(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f, "Test Fight Club", "Test Fight Club","")
+            {
+                FightClubArena = new FightClubArena(new Vector3(1155.039f, 3102.574f, 40.41409f),
+                                                new List<SpawnPlace>() {
+                                                    new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f),
+                                                    new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f),
+                                                    new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f),
+                                                    new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f),
+                                                },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
+                                                new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
+                                                new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+                                            }),
+                OpenTime = 0,
+                CloseTime = 24,
+            },
         };
     }
     private void DefaultConfig_RaceMeetups()

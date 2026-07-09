@@ -38,7 +38,7 @@ public class Engine
     {
         UpdateDamage(driver);
 
-        if(driver.IsDriver)
+        if(driver?.IsDriver == true)
         {
             UpdateState();
         }

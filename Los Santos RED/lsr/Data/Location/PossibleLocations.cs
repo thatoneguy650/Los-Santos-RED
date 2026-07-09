@@ -71,6 +71,9 @@ public class PossibleLocations
     public List<GasPump> GasPumps { get; private set; } = new List<GasPump>();
     public List<CashRegister> CashRegisters { get; private set; } = new List<CashRegister>();
 
+
+    public List<FightClub> FightClubs { get; private set; } = new List<FightClub>();
+
     //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
     public List<StoredSpawn> StoredSpawns { get; private set; } = new List<StoredSpawn>();
@@ -136,7 +139,8 @@ public class PossibleLocations
         AllLocations.AddRange(CashRegisters);
         AllLocations.AddRange(GasPumps);
         AllLocations.AddRange(BodyExports);
-        AllLocations.AddRange(RaceMeetups);
+        //AllLocations.AddRange(RaceMeetups);
+        AllLocations.AddRange(FightClubs);
         return AllLocations;
     }
 

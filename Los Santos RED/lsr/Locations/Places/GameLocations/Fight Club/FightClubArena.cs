@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 public class FightClubArena
 {
     public Vector3 ArenaCenter { get; set; }
-    public List<SpawnLocation> FighterSpawnLocations { get; set; }
-    public List<SpawnLocation> SpectatorLocations { get; set; }
+    public List<SpawnPlace> FighterSpawnLocations { get; set; }
+    public List<SpawnPlace> SpectatorLocations { get; set; }
     public FightClubArena()
     {
 
     }
 
-    public FightClubArena(Vector3 arenaCenter, List<SpawnLocation> fighterSpawnLocations, List<SpawnLocation> spectatorLocations)
+    public FightClubArena(Vector3 arenaCenter, List<SpawnPlace> fighterSpawnLocations, List<SpawnPlace> spectatorLocations)
     {
         ArenaCenter = arenaCenter;
         FighterSpawnLocations = fighterSpawnLocations;

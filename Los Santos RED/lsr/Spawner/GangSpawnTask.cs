@@ -37,6 +37,7 @@ public class GangSpawnTask : SpawnTask
     public int PedSpawnLimit { get; set; } = 99;
     public List<GangTerritory> GangTerritories { get; set; }
     public GangTerritory GangTerritory { get; set; }
+    public List<GangMember> SpawnedGangMembers { get; private set; }
 
     public override void AttemptSpawn()
     {
@@ -307,6 +308,8 @@ public class GangSpawnTask : SpawnTask
             GangMember.SpawnPosition = ped.Position;
             GangMember.SpawnHeading = ped.Heading;
         }
+
+        SpawnedGangMembers.Add(GangMember);
         return GangMember;
     }
     private void SetupPed(Ped ped)

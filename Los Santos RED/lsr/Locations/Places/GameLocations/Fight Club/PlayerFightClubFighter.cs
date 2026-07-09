@@ -1,5 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +9,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class FightClubFighterPlayer : FightClubFighter
+public class PlayerFightClubFighter : FightClubFighter
 {
-    
+
     public override bool IsPlayer => true;
 
-    public void MoveToRing(FightClubArena fightClubArena, IEntityProvideable world, SpawnLocation SpawnLocation, IFightClubable player)
+    public void MoveToRing(FightClubArena fightClubArena, IEntityProvideable world, SpawnPlace SpawnLocation, IFightClubable player)
     {
         FightClubArena = fightClubArena;
         Player = player;
-        Player.Character.Position = SpawnLocation.FinalPosition;
+        Player.Character.Position = SpawnLocation.Position;
         Player.Character.Heading = SpawnLocation.Heading;
         FightClubArena = fightClubArena;
     }
     public override void Setup()
     {
-
+        
     }
     public override void StartFight()
     {
@@ -46,7 +48,6 @@ public class FightClubFighterPlayer : FightClubFighter
             HasLost = true;
             return;
         }
-
         if (distance >= 20f)
         {
             if (!IsOutsideRing)
@@ -66,23 +67,20 @@ public class FightClubFighterPlayer : FightClubFighter
                 EntryPoint.WriteToConsole("YOU WENT BACK INTO THE RING");
             }
         }
-
-
         if (GameTimeOutsideRing >= 5000 && !HasLost)
         {
             HasLost = true;
             Game.DisplayHelp("YOU LEFT THE RING TOO LONG");
             EntryPoint.WriteToConsole("YOU LEFT THE RING TOO LONG, FAIL");
         }
-
-
-
-
     }
     public override void Dispose()
     {
 
         base.Dispose();
     }
+
+
+
 }
 

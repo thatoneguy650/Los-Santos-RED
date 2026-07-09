@@ -64,26 +64,26 @@ public class WeaponItem : ModItem
 
     public override string GetTypeDescription()
     {
-        string description;
+        string descriptionToShow;
         if (Description.Length >= 200)
         {
-            description = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+            descriptionToShow = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
         }
         else
         {
-            description = Description;
+            descriptionToShow = Description;
         }
         if (!string.IsNullOrEmpty(VanillaName))
         {
-            description += $"~n~Alias: {VanillaName}"; //LOWER CASE OR IT ERRORS!
+            descriptionToShow += $"~n~Alias: ~p~{VanillaName}~s~"; //LOWER CASE OR IT ERRORS!
         }
-        description += $"~n~Category: {MenuCategory}";
+        descriptionToShow += $"~n~Category: ~y~{MenuCategory}~s~";
         if (RequiresDLC)
         {
-            description += $"~n~~b~DLC Weapon";
+            descriptionToShow += $"~n~~b~DLC Weapon~s~";
         }
         EntryPoint.WriteToConsole($"GET TYPE DESCRIPTION RAN FOR {ModelName} VanillaName:{VanillaName} MenuCategory:{MenuCategory}");
-        return Description;
+        return descriptionToShow;
     }
 
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
