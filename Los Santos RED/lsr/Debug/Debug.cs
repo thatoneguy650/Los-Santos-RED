@@ -1454,7 +1454,7 @@ public class Debug
 
     private void DebugNumpad5()
 {
-        StartDebugFightClub(true);
+        //StartDebugFightClub(true);
         //int Flags = 0;
         //if (int.TryParse(NativeHelper.GetKeyboardInput("20"), out Flags))
         //{
@@ -2005,46 +2005,46 @@ public class Debug
         //SpawnGunAttackers();
     }
 
-    private void StartDebugFightClub(bool isPlayer)
-    {
-        Vector3 ArenaCenter = new Vector3(1155.039f,3102.574f, 40.41409f);
+    //private void StartDebugFightClub(bool isPlayer)
+    //{
+    //    Vector3 ArenaCenter = new Vector3(1155.039f,3102.574f, 40.41409f);
 
-        SpawnPlace firstSpawn = new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f);
-        SpawnPlace secondSpawn = new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f);
-        SpawnPlace thirdSpawn = new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f);
-        SpawnPlace fourthSpawn = new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f);
-
-
-        List<SpawnPlace> spectatorPlaces = new List<SpawnPlace>() { 
-            new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
-            new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
-            new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
-        };
+    //    SpawnPlace firstSpawn = new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f);
+    //    SpawnPlace secondSpawn = new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f);
+    //    SpawnPlace thirdSpawn = new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f);
+    //    SpawnPlace fourthSpawn = new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f);
 
 
-        FightClubArena fightClubArena = new FightClubArena(ArenaCenter,new List<SpawnPlace>() { firstSpawn, secondSpawn, thirdSpawn, fourthSpawn }, spectatorPlaces);
-
-        int Flags = 2;
-        if (!int.TryParse(NativeHelper.GetKeyboardInput("2"), out Flags))
-        {
-            return;
-        }
-        FightClubFight fightClubFight = new FightClubFight(fightClubArena,null, isPlayer, Flags, World,Settings, Player, Player);
-        fightClubFight.Setup();
-        fightClubFight.Begin();
-        GameFiber FightClubDebug = GameFiber.StartNew(delegate
-        {
-            while (!fightClubFight.IsEnded || EntryPoint.ModController.IsRunning)
-            {
-                fightClubFight.Update();
-                GameFiber.Yield();
-            }
-            //fightClubFight.Dispose();
-        }, "FightClubDebug");
-        GameFiber.Sleep(500);
+    //    List<SpawnPlace> spectatorPlaces = new List<SpawnPlace>() { 
+    //        new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
+    //        new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
+    //        new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+    //    };
 
 
-    }
+    //    FightClubArena fightClubArena = new FightClubArena(ArenaCenter,new List<SpawnPlace>() { firstSpawn, secondSpawn, thirdSpawn, fourthSpawn }, spectatorPlaces, spectatorPlaces);
+
+    //    int Flags = 2;
+    //    if (!int.TryParse(NativeHelper.GetKeyboardInput("2"), out Flags))
+    //    {
+    //        return;
+    //    }
+    //    FightClubFight fightClubFight = new FightClubFight(fightClubArena,null, isPlayer, Flags, World,Settings, Player, Player);
+    //    fightClubFight.Setup();
+    //    fightClubFight.Begin();
+    //    GameFiber FightClubDebug = GameFiber.StartNew(delegate
+    //    {
+    //        while (!fightClubFight.IsEnded || EntryPoint.ModController.IsRunning)
+    //        {
+    //            fightClubFight.Update();
+    //            GameFiber.Yield();
+    //        }
+    //        //fightClubFight.Dispose();
+    //    }, "FightClubDebug");
+    //    GameFiber.Sleep(500);
+
+
+    //}
 
 
 

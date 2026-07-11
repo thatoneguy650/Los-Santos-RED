@@ -27,8 +27,10 @@ public class FightClubsMenu
     private IGangs Gangs;
     private UIMenuNumericScrollerItem<int> numberOfFightersScroller;
     private ISettingsProvideable Settings;
-
-    public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, ITargetable targetable, FightClub fightClub, IGangs gangs)
+    private List<string> AllowedGangs;
+    List<DispatchablePerson> NonGangFightersGroup;
+    public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, 
+        ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup)
     {
         MenuPool = menuPool;
         FightMenu = fightSubMenu;
@@ -39,6 +41,8 @@ public class FightClubsMenu
         Targetable = targetable;
         FightClub = fightClub;
         Gangs = gangs;
+        AllowedGangs = allowedGangs;
+        NonGangFightersGroup = nonGangFightersGroup;
     }
 
     public void Setup()
@@ -61,6 +65,7 @@ public class FightClubsMenu
         //determine gang or civilian fight
 
         numberOfFightersScroller = new UIMenuNumericScrollerItem<int>("Number of Fighters", "Pick the number of fighters, includes player if selected to fight", 2, 5, 1);
+        numberOfFightersScroller.Value = 2;
         FightMenu.AddItem(numberOfFightersScroller);
 
         isPlayerFightMenuItem = new UIMenuCheckboxItem("Player Fight",false);
@@ -69,10 +74,22 @@ public class FightClubsMenu
 
 
         isGangFightMenuItem = new UIMenuCheckboxItem("Gang Fight", false);
-
+        isGangFightMenuItem.CheckboxEvent += (sender, Checked) =>
+        {
+            GangToFightScroller.Enabled = isGangFightMenuItem.Checked;
+        };
         FightMenu.AddItem(isGangFightMenuItem);
 
-        GangToFightScroller = new UIMenuListScrollerItem<Gang>("Selected Gang","Select a gang to fight",Gangs.GetAllGangs());
+
+
+        List<Gang> toFightGangs = Gangs.GetAllGangs();
+        if(AllowedGangs != null && AllowedGangs.Any())
+        {
+            toFightGangs.RemoveAll(x=> AllowedGangs.Contains(x.ID));    
+        }
+
+        GangToFightScroller = new UIMenuListScrollerItem<Gang>("Selected Gang","Select a gang to fight", toFightGangs);
+        GangToFightScroller.Enabled = false;
         FightMenu.AddItem(GangToFightScroller);
 
         startFightMenuItem = new UIMenuItem("Start Fight", "Select to start the current fight");
@@ -87,6 +104,8 @@ public class FightClubsMenu
 
         //UpdateStartRaceDescription();
     }
+
+
 
     private bool AttemptStartFight(UIMenu menu)
     {
@@ -110,14 +129,14 @@ public class FightClubsMenu
                 }
                 else
                 {
-                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Settings, Targetable, FightClubable);
+                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup);
                 }
                 fightClubFight.Setup();
                 Game.FadeScreenIn(1000, true);
                 fightClubFight.Begin();
                 GameFiber FightClubDebug = GameFiber.StartNew(delegate
                 {
-                    while (!fightClubFight.IsEnded || EntryPoint.ModController.IsRunning)
+                    while (!fightClubFight.IsEnded && EntryPoint.ModController.IsRunning)
                     {
                         fightClubFight.Update();
                         GameFiber.Yield();

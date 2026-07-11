@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            //EntryPoint.WriteToConsole($"Dance Start: {DanceData.Name}");
+            EntryPoint.WriteToConsole($"CHEER Start: ");
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -248,7 +248,7 @@ namespace LosSantosRED.lsr.Player
         {
             //AnimationFlag = 0;
             AnimationBlendOutTime = -4.0f;
-            CheerData = Dances.GetRandomDance(); //new DanceData("Podium Dancers (F) 01", "anim@amb@nightclub@dancers@podium_dancers@", "hi_dance_facedj_17_v2_female^2");
+            CheerData = Dances.GetRandomCheer(); //new DanceData("Podium Dancers (F) 01", "anim@amb@nightclub@dancers@podium_dancers@", "hi_dance_facedj_17_v2_female^2");
             AnimationDictionary.RequestAnimationDictionay(CheerData.AnimationDictionary);          
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsPerformingActivity = true;
@@ -272,6 +272,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_FACIAL_IDLE_ANIM_OVERRIDE(Player.Character);
 
             DisplayedDanceName = false;
+            EntryPoint.WriteToConsole("CHEER ACTIVITY UNSETUP RAN");
         }
 
 

@@ -14,6 +14,7 @@ public class AIFightClubFighter : FightClubFighter
     public override bool IsPlayer => false;
     public PedExt PedExt { get; private set; }
     public GangMember GangMember { get; private set; }
+    public bool WasPreviousWinner { get; set; }
     public Gang Gang { get; set; }
     public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnPlace spawnPlace, FightClub fightClub, DispatchablePerson dispatchablePerson,
         ITargetable targetable, int spawnedOrder)
@@ -75,6 +76,25 @@ public class AIFightClubFighter : FightClubFighter
         CheckLoseConditions(PedExt.Pedestrian.DistanceTo(FightClubArena.ArenaCenter));
         base.Update();
     }
+    public void RestoreForNewFight(SpawnPlace spawnPlace, int fightersSpawned)
+    {
+        HasLost = false;
+        IsOutsideRing = false;
+        GameTimeLeftRing = 0;
+        if (PedExt == null || spawnPlace == null)
+        {
+            return;
+        }
+        if (!PedExt.Pedestrian.Exists())
+        {
+            HasLost = true;
+            return;
+        }
+        PedExt.Pedestrian.Health = PedExt.Pedestrian.MaxHealth;
+        PedExt.Pedestrian.Position = spawnPlace.Position;
+        PedExt.Pedestrian.Heading = spawnPlace.Heading;
+        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{fightersSpawned}");
+    }
     public void CheckLoseConditions(float distance)
     {
         if(HasLost)
@@ -132,7 +152,27 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.ClearTasks(true);
         PedExt.PedBrain.AssignIdleTask();
         base.Dispose();
-        EntryPoint.WriteToConsole("AI FIGHTER DISPOSE RAN");
+        EntryPoint.WriteToConsole($"AI FIGHTER DISPOSE RAN FOR {PedExt.Name}");
+    }
+
+    public void SetPassive()
+    {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (GangMember != null && Gang != null)
+        {
+            PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup(Gang.ID);
+        }
+        else
+        {
+            PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+        }
+        PedExt.ClearTasks(true);
+        PedExt.Pedestrian.IsPersistent = true;
+        PedExt.PedBrain.AssignIdleTask();
+        EntryPoint.WriteToConsole($"SET PASSIVE RAN FOR {PedExt.Name}");
     }
 }
 

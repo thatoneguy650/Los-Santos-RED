@@ -677,12 +677,13 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        CheerActivity danceActivity = new CheerActivity(Actionable, Settings, Dances);
-        if (danceActivity.CanPerform(Actionable))
+        CheerActivity cheerActivity = new CheerActivity(Actionable, Settings, Dances);
+        if (cheerActivity.CanPerform(Actionable))
         {
             ForceCancelAllActive();
-            LowerBodyActivity = danceActivity;
+            LowerBodyActivity = cheerActivity;
             LowerBodyActivity.Start();
+            EntryPoint.WriteToConsole("CHEER ACTIVITY STARTED RAN");
         }
     }
 

@@ -2352,10 +2352,39 @@ public class PlacesOfInterest : IPlacesOfInterest
                                                 new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
                                                 new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
                                                 new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+                                            },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
                                             }),
                 OpenTime = 0,
                 CloseTime = 24,
+                NonGangFightersGroup = "FightClubPeds",
             },
+
+            new FightClub(new Vector3(-97.11468f, -1013.614f, 27.27522f), 162.828f, "Construction Rumble", "Fight at the top of a skyscraper","")
+            {
+                FightClubArena = new FightClubArena(new Vector3(-149.5824f, -960.326f, 269.1349f),
+                                                new List<SpawnPlace>() {
+                                                    new SpawnPlace(new Vector3(-151.014f, -964.4382f, 269.1349f), 341.3192f),
+                                                    new SpawnPlace(new Vector3(-148.1251f, -956.165f, 269.1349f), 160.7147f),
+                                                    new SpawnPlace(new Vector3(-152.1757f, -959.4547f, 269.1349f), 250.0106f),
+                                                    new SpawnPlace(new Vector3(-147.2409f, -961.2305f, 269.1349f), 69.21899f),
+                                                },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f),
+                                                new SpawnPlace(new Vector3(-153.8694f, -954.1274f, 269.1349f), 210.2275f),
+                                                new SpawnPlace(new Vector3(-156.1372f, -963.7883f, 269.1354f), 295.4838f),
+                                                new SpawnPlace(new Vector3(-144.593f, -968.2645f, 269.1354f), 25.48967f),
+                                            },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(new Vector3(-79.78997f, -1032.375f, 28.23083f), 226.2868f),
+                                            }),
+                OpenTime = 0,
+                CloseTime = 24,
+                NonGangFightersGroup = "FightClubPeds",
+            },
+
+
         };
     }
     private void DefaultConfig_RaceMeetups()

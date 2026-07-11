@@ -362,7 +362,13 @@ public class UI : IMenuProvideable
             if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath ? 1000 : 2000))
             {
                 GameTimeLastDied = 0;
-                Show(DeathMenu);
+
+                if(!DisplayablePlayer.DisableMainMenu)
+                {
+                    Show(DeathMenu);
+                }
+
+                
                 if(Settings.SettingsManager.PlayerOtherSettings.SetCutToBlackDeath && Game.IsScreenFadedOut)
                 {
                     Game.FadeScreenIn(2000, false);
@@ -395,7 +401,11 @@ public class UI : IMenuProvideable
             if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted ? 1000 : 2000))
             {
                 GameTimeLastBusted = 0;
-                Show(BustedMenu);
+
+                if (!DisplayablePlayer.DisableMainMenu)
+                {
+                    Show(BustedMenu);
+                }
             }
         }
         else

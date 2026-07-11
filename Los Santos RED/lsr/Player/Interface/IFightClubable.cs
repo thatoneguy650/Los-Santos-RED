@@ -17,5 +17,8 @@ namespace LosSantosRED.lsr.Interface
         //ButtonPrompts ButtonPrompts { get; }
         ActivityManager ActivityManager { get; }
         ButtonPrompts ButtonPrompts { get; }
+        HealthManager HealthManager { get; }
+        Respawning Respawning { get; }
+        bool DisableMainMenu { get; set; }
     }
 }

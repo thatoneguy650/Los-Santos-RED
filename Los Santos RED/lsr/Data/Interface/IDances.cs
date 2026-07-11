@@ -8,5 +8,6 @@ namespace LosSantosRED.lsr.Interface
         List<DanceData> DanceLookups { get; }
 
         DanceData GetRandomDance();
+        DanceData GetRandomCheer();
     }
 }

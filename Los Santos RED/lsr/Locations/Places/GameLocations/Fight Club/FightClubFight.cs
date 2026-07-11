@@ -40,9 +40,11 @@ public class FightClubFight
     private bool PlayerWon;
     private ISettingsProvideable Settings;
     private int RoundNumber;
-
+    private bool IsShowingMenu;
 
     private AIFightClubFighter SelectedOrBetFighter;
+    private AIFightClubFighter PreviousWinner;
+    private List<DispatchablePerson> NonGangFightersGroup;
 
     public bool IsEnded { get; private set; }   
     public FightClubFight()
@@ -50,7 +52,8 @@ public class FightClubFight
 
     }
 
-    public FightClubFight(FightClubArena fightClubArena,  FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, IFightClubable player)
+    public FightClubFight(FightClubArena fightClubArena,  FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
+        IFightClubable player, List<DispatchablePerson> nonGangFightersGroup)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -60,8 +63,11 @@ public class FightClubFight
         TotalFighters = totalFighters;
         Targetable = targetable;
         Player = player;
+        NonGangFightersGroup = nonGangFightersGroup;
     }
-    public FightClubFight(FightClubArena fightClubArena, FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, IFightClubable player, Gang gang)
+
+    public FightClubFight(FightClubArena fightClubArena, FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
+        IFightClubable player, Gang gang)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -79,6 +85,30 @@ public class FightClubFight
         BigMessage = new BigMessageThread(true);
         MenuPool = new MenuPool();
         Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.DisableMainMenu = true;
+
+
+
+    }
+    public void Dispose()
+    {
+        IsEnded = true;
+        EntryPoint.WriteToConsole("DISPOSE RAN FOR FIGHT CLUB");
+        Player.DisableMainMenu = false;
+        Player.ButtonPrompts.RemovePrompt("StartCheer");
+        foreach (FightClubFighter fightClubFighter in Fighters)
+        {
+            fightClubFighter.Dispose();
+        }
+
+        GameFiber.Sleep(1000);
+
+        BigMessage.Fiber?.Abort();
+        if (BigMessage != null && BigMessage.MessageInstance != null)
+        {
+            BigMessage.MessageInstance.Dispose();
+        }
+        Player.ActivityManager.IsInteractingWithLocation = false;
     }
     public void Update()
     {
@@ -92,7 +122,7 @@ public class FightClubFight
 
         if(!IsPlayerFight && !IsEnded)
         {
-            if(Player.ActivityManager.IsCheering)
+            if(Player.ActivityManager.IsCheering && !IsShowingMenu)
             {
                 Player.ButtonPrompts.RemovePrompt("StartCheer");
             }
@@ -106,18 +136,19 @@ public class FightClubFight
                 }
 
             }
+            NativeHelper.DisablePlayerMovementControl();
         }
         if(IsEnded)
         {
             Player.ButtonPrompts.RemovePrompt("StartCheer");
         }
-        else
+        //else
+        //{
+        if (!IsPlayerFight && !IsEnded)
         {
-            if (!IsPlayerFight)
-            {
-                NativeHelper.DisablePlayerMovementControl();
-            }
+            
         }
+        //}
         
 
         if(!EntryPoint.ModController.IsRunning)
@@ -188,6 +219,12 @@ public class FightClubFight
     {
         PerformOutcome();
 
+        foreach (AIFightClubFighter fightClubFighter in AIFighters)
+        {
+            fightClubFighter.SetPassive();
+        }
+
+
         GameFiber.Sleep(1000);
 
         if (!IsPlayerFight)
@@ -209,61 +246,60 @@ public class FightClubFight
 
         //Dispose();
     }
-
+    private void DisplayInsufficientFundsMessage()
+    {
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", FightClub.Name, "~r~Insufficient Funds~s~", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+    }
     private void ShowContinueFightingMenu()
     {
         bool finishedWithMenu = false;
         bool startNewFight = false;
         MenuPool.Clear();
 
+        IsShowingMenu = true;
+
+
+
+
+
 
         UIMenu ContinueMenu = new UIMenu("Continue Fighting", "Select an option");
         MenuPool.Add(ContinueMenu);
 
-        int NewBetAmount = PlayerBetAmount * (RoundNumber + 1);
 
-
-        if (IsPlayerFight && PlayerBetAmount > 0)
+        if (IsPlayerFight)
         {
-            //Option TO go double or nothing
-
-            UIMenuItem doubleOrNothing = new UIMenuItem("Double or Nothing", "Select to double your bet and fight again.") { RightLabel = $"~r~${NewBetAmount}~s~" };
-            doubleOrNothing.Activated += (sender, e) =>
+            int ReliefCost = FightClub == null ? 500 : FightClub.PostRoundReliefPrice;
+            int ReliefHealthGained = FightClub == null ? 25 : FightClub.ReliefHealthGained;
+            UIMenuItem reliefBuyMenu = new UIMenuItem("Buy Some Relief", $"Select to purchase some relief. Gives you ~g~ +{ReliefHealthGained} HP~s~") { RightLabel = $"~r~${ReliefCost}" };
+            reliefBuyMenu.Activated += (sender, e) =>
             {
-                if(Player.BankAccounts.GetMoney(false) >= NewBetAmount)
+                if (Player.BankAccounts.GetMoney(false) >= ReliefCost)
                 {
-                    finishedWithMenu = true;
-                    startNewFight = true;
-                    Player.BankAccounts.GiveMoney(-1 * NewBetAmount, false);
-                    PlayerBetAmount = NewBetAmount;
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", FightClub.Name, "Placed Bet", $"You have placed a bet of ${PlayerBetAmount} on {PlayerBetName}");
+                    Player.BankAccounts.GiveMoney(-1 * ReliefCost, false);
+                    Player.HealthManager.ChangeHealth(ReliefHealthGained);
+                    reliefBuyMenu.Enabled = false;
                 }
                 else
                 {
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", FightClub.Name, "~r~Insufficient Funds~s~", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    DisplayInsufficientFundsMessage();
                 }
+                //ContinueMenu.Visible = false;
             };
-            ContinueMenu.AddItem(doubleOrNothing);
+            ContinueMenu.AddItem(reliefBuyMenu);
 
         }
 
-        else
+        UIMenuItem startFight = new UIMenuItem("Continue", "Select to continue fighting.");
+        startFight.Activated += (sender, e) =>
         {
-            //Start New fight or cancel
-
-            UIMenuItem startBet = new UIMenuItem("Continue", "Select to continue fighting.");
-            startBet.Activated += (sender, e) =>
-            {
-                finishedWithMenu = true;
-                startNewFight = true;
-            };
-            ContinueMenu.AddItem(startBet);
+            finishedWithMenu = true;
+            startNewFight = true;
+            ContinueMenu.Visible = false;
+        };
+        ContinueMenu.AddItem(startFight);
 
 
-
-
-
-        }
 
 
 
@@ -271,28 +307,23 @@ public class FightClubFight
         stopFighting.Activated += (sender, e) =>
         {
             finishedWithMenu = true;
+            ContinueMenu.Visible = false;
         };
         ContinueMenu.AddItem(stopFighting);
 
-
-
-
-
-
-
         ContinueMenu.Visible = true;
-
         while (MenuPool.IsAnyMenuOpen() && !finishedWithMenu)
         {
             NativeHelper.DisablePlayerMovementControl();
+            HighlightSelectedOrBetFighter();
             MenuPool.ProcessMenus();
             GameFiber.Yield();
         }
         ContinueMenu.Visible = false;
-
+        IsShowingMenu = false;
         if (startNewFight && EntryPoint.ModController.IsRunning)
         {
-            StartNewFight(!IsPlayerFight);
+            StartNewFight();
         }
         else
         {
@@ -300,7 +331,7 @@ public class FightClubFight
         }
     }
 
-    private void StartNewFight(bool takeBets)
+    private void StartNewFight()
     {
         RoundNumber++;
         ResetItems();
@@ -308,17 +339,22 @@ public class FightClubFight
         SpawnRingItems();
         SetGameplayCameraHint();
         AnnounceFighters();
-        if (takeBets)
-        {
-            TakeBets();
-        }
+        TakeBets();     
         DoCountdown();
         StartFight();
+    }
+    private void StartFight()
+    {
+        foreach (FightClubFighter fighter in Fighters)
+        {
+            fighter.StartFight();
+        }
+        ShowMessage("Fight Started", "");
     }
 
     private void SetGameplayCameraHint()
     {
-        NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(FightClubArena.ArenaCenter.X, FightClubArena.ArenaCenter.Y, FightClubArena.ArenaCenter.Z, 2000, 2000, 0);
+        //NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(FightClubArena.ArenaCenter.X, FightClubArena.ArenaCenter.Y, FightClubArena.ArenaCenter.Z, 2000, 2000, 0);
     }
 
     private void ResetItems()
@@ -333,7 +369,18 @@ public class FightClubFight
         {
             if(fightClubFighter.PedExt != null && fightClubFighter.PedExt.Pedestrian.Exists())
             {
-                fightClubFighter.PedExt.FullyDelete();
+                if (!fightClubFighter.HasLost && !fightClubFighter.PedExt.IsDead && !fightClubFighter.PedExt.IsUnconscious && fightClubFighter.PedExt.Pedestrian.Exists() && !fightClubFighter.PedExt.Pedestrian.IsDead)
+                {
+                    fightClubFighter.WasPreviousWinner = true;
+
+                    EntryPoint.WriteToConsole("YOU HAD A PREVIOUS WINNER OF THE FIGHT");
+
+
+                }
+                else
+                {
+                    fightClubFighter.PedExt.FullyDelete();
+                }
             }
         }
     }
@@ -395,35 +442,21 @@ public class FightClubFight
         EntryPoint.WriteToConsole("PLAYER LOST THE FIGHT");
         //Dispose();
     }
-    public void Dispose()
-    {
-        IsEnded = true;
-        EntryPoint.WriteToConsole("DISPOSE RAN FOR FIGHT CLUB");
-        Player.ButtonPrompts.RemovePrompt("StartCheer");
-        foreach (FightClubFighter fightClubFighter in Fighters)
-        {
-            fightClubFighter.Dispose();
-        }
 
-        GameFiber.Sleep(1000);
-
-        BigMessage.Fiber?.Abort();
-        if (BigMessage != null && BigMessage.MessageInstance != null)
-        {
-            BigMessage.MessageInstance.Dispose();
-        }
-        Player.ActivityManager.IsInteractingWithLocation = false;
-    }
     private void SpawnRingItems()
     {
+        Game.FadeScreenOut(1000, true);
+
         bool createdFighters = CreateFighters();
         if(!createdFighters)
         {
             IsEnded = true;
+            Game.FadeScreenIn(0, false);
             Dispose();
             Game.DisplayHelp("COULD NOT START FIGHT");
         }
         SetupFighters();
+        Game.FadeScreenIn(1000, true);
     }
     private void AnnounceFighters()
     {
@@ -439,12 +472,26 @@ public class FightClubFight
         BetMenu = new UIMenu("Bet", "Bet on the fighter to win");
         MenuPool.Add(BetMenu);
         int MaxBet = FightClub == null ? 5000 : FightClub.MaxBet;
+        int MinBet = FightClub == null ? 100 : FightClub.MinBet;
         if (Player.BankAccounts.GetMoney(false) < MaxBet)
         {
             MaxBet = Player.BankAccounts.GetMoney(false);
         }
 
-        UIMenuNumericScrollerItem<int>  AmountBetScroller = new UIMenuNumericScrollerItem<int>("Amount", "Set The Amount you wish to bet", 0, MaxBet, 1);
+        UIMenuNumericScrollerItem<int>  AmountBetScroller = new UIMenuNumericScrollerItem<int>("Amount", "Set The Amount you wish to bet", MinBet, MaxBet, 100);
+
+        AmountBetScroller.Activated += (sender, e) =>
+        {
+            if (int.TryParse(NativeHelper.GetKeyboardInput(AmountBetScroller.Value.ToString()), out int enteredAmount))
+            {
+                if (enteredAmount <= MaxBet && enteredAmount > MinBet)
+                {
+                    AmountBetScroller.Value = enteredAmount;
+                }
+            }
+        };
+
+
         BetMenu.AddItem(AmountBetScroller);
 
 
@@ -457,12 +504,18 @@ public class FightClubFight
         {
             foreach (AIFightClubFighter aIFightClubFighter in AIFighters)
             {
+
                 FightersToBetOn.Add(aIFightClubFighter.PedExt.Name);
 
             }
         }
 
         UIMenuListScrollerItem<string> FighterPickedMenu = new UIMenuListScrollerItem<string>("Fighter", "Select the fighter you want to win", FightersToBetOn);
+
+
+        SelectedOrBetFighter = AIFighters.Where(x => x.PedExt != null && FighterPickedMenu.SelectedItem != null && x.PedExt.Name == FighterPickedMenu.SelectedItem.ToString()).FirstOrDefault();
+
+
 
         FighterPickedMenu.IndexChanged += (sender, oldIndex, newIndex) =>
         {
@@ -474,7 +527,6 @@ public class FightClubFight
             //}
             //ApplyItems(player, ClothingPurchaseMenu.WorkingVariation, false);
         };
-
 
         BetMenu.AddItem(FighterPickedMenu);
 
@@ -498,7 +550,7 @@ public class FightClubFight
         BetMenu.AddItem(startBet);
 
         BetMenu.Visible = true;
-
+        IsShowingMenu = true;
         while (MenuPool.IsAnyMenuOpen() && !FinishedBetting)
         {
             NativeHelper.DisablePlayerMovementControl();
@@ -508,6 +560,7 @@ public class FightClubFight
             MenuPool.ProcessMenus();
             GameFiber.Yield();
         }
+        IsShowingMenu = false;
     }
 
     private void HighlightSelectedOrBetFighter()
@@ -526,7 +579,7 @@ public class FightClubFight
     private void DoCountdown()
     {
 
-
+        IsShowingMenu = true;
         GameTimeStartedCountdown = Game.GameTime;
         string showing = "";
 
@@ -550,32 +603,9 @@ public class FightClubFight
             NativeHelper.DisablePlayerMovementControl();
             GameFiber.Yield(); // CRITICAL: Keeps the game from freezing
         }
+        IsShowingMenu = false;
     }
-    private void StartFight()
-    {
-        foreach (FightClubFighter fighter in Fighters)
-        {
-            fighter.StartFight();
-        }
 
-        if (IsPlayerFight)
-        {
-            
-            //Game.DisplayHelp("Fight Started, stay in the ring until you cant");
-        }
-        else
-        {
-            //Game.DisplayHelp("Fight Started, cheer on your guy");
-        }
-        ShowMessage("Fight Started", "");
-
-
-        //if (!IsPlayerFight)
-        //{
-        //   Player.ActivityManager.Cheer();
-        //}
-
-    }
     private void SetupFighters()
     {
         foreach(FightClubFighter fighter in Fighters)
@@ -614,6 +644,14 @@ public class FightClubFight
     }
     private bool CreateFighters()
     {
+        if (AIFighters != null)
+        {
+            PreviousWinner = AIFighters.Where(x => !x.HasLost && x.PedExt != null && !x.PedExt.IsDead && !x.PedExt.IsUnconscious && x.PedExt.Pedestrian.Exists() && !x.PedExt.Pedestrian.IsDead).FirstOrDefault();
+
+        }
+        bool hasPreviousWinner = PreviousWinner != null;
+
+
         Fighters = new List<FightClubFighter>();
         AIFighters = new List<AIFightClubFighter>();
         int FightersToSpawn = IsPlayerFight ? TotalFighters-1 : TotalFighters;
@@ -632,7 +670,7 @@ public class FightClubFight
             FightClubFighterPlayer.MoveToRing(FightClubArena, World, toPick, Player);
             Fighters.Add(FightClubFighterPlayer);
         }     
-        else
+        else if(RoundNumber == 0)
         {
             SpawnPlace spectatorSpot = FightClubArena.SpectatorLocations.PickRandom();
             if (spectatorSpot == null)
@@ -643,6 +681,11 @@ public class FightClubFight
             Player.Character.Heading = spectatorSpot.Heading;
         }
         bool CreatedAny = false;
+
+
+
+
+
         for (int fightersSpawned = 0; fightersSpawned < FightersToSpawn; fightersSpawned++)
         {
             bool spawnedPed = false;
@@ -652,13 +695,28 @@ public class FightClubFight
                 return false;
             }
             spawnLocations.Remove(toPick);
-            if (GangToFight == null)
+
+
+
+            if (hasPreviousWinner && fightersSpawned == 0)
             {
-                spawnedPed = CreateCivilianFighter(toPick, fightersSpawned);
+                spawnedPed = true;
+                EntryPoint.WriteToConsole("RESTORED FIGHTER FROM PREVIOUS FIGHT");
+                PreviousWinner.RestoreForNewFight(toPick, fightersSpawned);
+                Fighters.Add(PreviousWinner);
+                AIFighters.Add(PreviousWinner);
             }
             else
             {
-                spawnedPed = CreateGangFighter(toPick,GangToFight, fightersSpawned);
+
+                if (GangToFight == null)
+                {
+                    spawnedPed = CreateCivilianFighter(toPick, fightersSpawned);
+                }
+                else
+                {
+                    spawnedPed = CreateGangFighter(toPick, GangToFight, fightersSpawned);
+                }
             }
 
             if(spawnedPed)
@@ -672,8 +730,16 @@ public class FightClubFight
     private bool CreateCivilianFighter(SpawnPlace spawnLocation, int order)
     {
         AIFightClubFighter aiFighter = new AIFightClubFighter();
-        
-        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, new DispatchablePerson("a_m_y_methhead_01", 0, 0), Targetable, order);//use the built in stuff here, get gans or other stuffo
+
+        DispatchablePerson dispatchablePersonToCreate = new DispatchablePerson("a_m_y_methhead_01", 0, 0);
+        if (NonGangFightersGroup != null && NonGangFightersGroup.Any())
+        {
+            dispatchablePersonToCreate = NonGangFightersGroup.RandomElementByWeight(x => x.AmbientSpawnChance);
+        }
+       
+
+
+        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, dispatchablePersonToCreate, Targetable, order);//use the built in stuff here, get gans or other stuffo
         Fighters.Add(aiFighter);
         AIFighters.Add(aiFighter);
         return aiFighter.PedExt != null || aiFighter.PedExt.Pedestrian.Exists();

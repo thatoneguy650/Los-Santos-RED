@@ -522,6 +522,10 @@ namespace Mod
         public bool IsConsideredNight { get; private set; }
         public bool IsUnconscious { get; internal set; }
 
+
+        public bool DisableMainMenu { get; set; }
+
+
         //public bool IsPoorWeather => Weather.IsPoorWeather;
 
 

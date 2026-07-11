@@ -82,6 +82,9 @@ public class DispatchablePeople : IDispatchablePeople
 
     public List<DispatchablePerson> RegularPeds { get; private set; }
     public List<DispatchablePerson> VehicleRacePeds { get; private set; }
+
+    public List<DispatchablePerson> FightClubPeds { get; private set; }
+
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
     private List<DispatchablePerson> NOOSEPeds_Old;
@@ -1943,6 +1946,22 @@ public class DispatchablePeople : IDispatchablePeople
 
         };
 
+        FightClubPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("a_m_y_methhead_01",100,100),
+            new DispatchablePerson("a_f_m_bodybuild_01",100,100),
+            new DispatchablePerson("a_f_m_trampbeac_01",100,100),
+            new DispatchablePerson("a_f_y_juggalo_01",100,100),
+            new DispatchablePerson("a_f_y_rurmeth_01",100,100),
+            new DispatchablePerson("a_m_m_beach_02",100,100),
+            new DispatchablePerson("a_m_m_hillbilly_01",100,100),
+            new DispatchablePerson("a_m_m_hillbilly_02",100,100),
+            new DispatchablePerson("a_m_m_rurmeth_01",100,100),
+            new DispatchablePerson("a_m_m_salton_04",100,100),
+            new DispatchablePerson("a_m_y_beach_03",100,100),
+            new DispatchablePerson("a_m_y_juggalo_01",100,100),
+        };
+
         ServicePeds();
     }
     private void ServicePeds()
@@ -2096,6 +2115,7 @@ public class DispatchablePeople : IDispatchablePeople
 
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("FightClubPeds", FightClubPeds));
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
@@ -2841,6 +2861,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TaxiDrivers", TaxiDrivers));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("RegularPeds", RegularPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FightClubPeds", FightClubPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));

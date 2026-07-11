@@ -371,7 +371,7 @@ namespace LosSantosRED.lsr
         }
         private void ProcessMenuControls()
         {
-            if (!Player.IsDisplayingCustomMenus)
+            if (!Player.IsDisplayingCustomMenus && !Player.DisableMainMenu)
             {
                 if (IsPressingMenuKey || Player.ButtonPrompts.IsPressed("MenuShowBusted") || Player.ButtonPrompts.IsPressed("MenuShowDead"))
                 {

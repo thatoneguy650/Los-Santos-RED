@@ -186,12 +186,39 @@ public class Dances : IDances
             new DanceData("Strip Club Private Dance (F)","mini@strip_club@private_dance@part1","priv_dance_p1"),
             new DanceData("Lap Dance 01","mp_safehouse","lap_dance_girl"),
             new DanceData("Private Dance 01","mini@strip_club@private_dance@idle","priv_dance_idle") { IsOnActionWheel = true },
+            
 
+
+            new DanceData("Cheer Female 1","amb@world_human_cheering@female_a","base") { IsCheer = true },
+            new DanceData("Cheer Female 2","amb@world_human_cheering@female_b","base"){ IsCheer = true },
+            new DanceData("Cheer Female 3","amb@world_human_cheering@female_c","base") { IsCheer = true },
+            new DanceData("Cheer Female 4","amb@world_human_cheering@female_d","base") { IsCheer = true },
+            new DanceData("Cheer Male 1","amb@world_human_cheering@male_a","base"){ IsCheer = true },
+            new DanceData("Cheer Male 2","amb@world_human_cheering@male_b","base") { IsCheer = true },
+            new DanceData("Cheer Male 3","amb@world_human_cheering@male_d","base") { IsCheer = true },
+            new DanceData("Cheer Male 4","amb@world_human_cheering@male_e","base") { IsCheer = true },
+
+
+            new DanceData("Cheer Podium 1","anim@arena@celeb@podium@no_prop@","clapping_a_1st") { IsCheer = true },
+            new DanceData("Cheer Podium 2","anim@arena@celeb@podium@no_prop@","cheer_a_2nd") { IsCheer = true },
+            new DanceData("Cheer Podium 3","anim@arena@celeb@podium@no_prop@","cheer_a_1nd") { IsCheer = true },
+
+            new DanceData("Slow Clap 1","anim@mp_player_intcelebrationfemale@slow_clap","slow_clap") { IsCheer = true },
+            new DanceData("Slow Clap 2","anim@mp_player_intcelebrationmale@slow_clap","slow_clap") { IsCheer = true },
+
+
+            new DanceData("Angry Clap 1","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_b") { IsCheer = true },
+            new DanceData("Angry Clap 2","anim@arena@celeb@flat@solo@no_props@","angry_clap_a_player_a") { IsCheer = true },
+            new DanceData("Angry Clap 3","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_a") { IsCheer = true },
         };
         Serialization.SerializeParams(DanceLookups, ConfigFileName);
     }
     public DanceData GetRandomDance()
     {
-        return DanceLookups.PickRandom();
+        return DanceLookups.Where(x=> !x.IsCheer).PickRandom();
+    }
+    public DanceData GetRandomCheer()
+    {
+        return DanceLookups.Where(x => x.IsCheer).PickRandom();
     }
 }

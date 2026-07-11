@@ -13,6 +13,8 @@ public class FightClub : GameLocation
 {
     private UIMenu FightSubMenu;
     private IGangs Gangs;
+    private IDispatchablePeople DispatchablePeople;
+
     public FightClub() : base()
     {
 
@@ -25,8 +27,14 @@ public class FightClub : GameLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.Rampage;
     public override string ButtonPromptText { get; set; }
     public int MaxBet { get; set; } = 5000;
-
+    public int MinBet { get; set; } = 100;
     public FightClubArena FightClubArena { get; set; }
+    public int PostRoundReliefPrice { get; set; } = 500;
+    public int ReliefHealthGained { get; set; } = 25;
+
+    public string NonGangFightersGroup { get; set; }
+    public List<string> AllowedGangs { get; set; }
+
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Fight at {Name}";
@@ -41,8 +49,11 @@ public class FightClub : GameLocation
     {
         Gangs = gangs;
        // PlacesOfInterest = placesOfInterest;
-       // DispatchablePeople = dispatchablePeople;
+        DispatchablePeople = dispatchablePeople;
         //DispatchableVehicles = modDataFileManager.DispatchableVehicles;
+
+
+
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
     }
     public override void OnInteract()
@@ -103,7 +114,8 @@ public class FightClub : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             FightSubMenu.SetBannerType(BannerImage);
         }
-        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World,Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs);
+        List<DispatchablePerson> listOfPeople = DispatchablePeople.GetPersonData(NonGangFightersGroup).ToList();
+        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World,Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs, AllowedGangs, listOfPeople);
         fightClubsMenu.Setup();
     }
 }
