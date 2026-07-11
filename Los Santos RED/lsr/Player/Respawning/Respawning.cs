@@ -112,6 +112,17 @@ public class Respawning// : IRespawning
 
 
     }
+
+
+    public void ForceRespawnAtPosition(Vector3 positionToSpawn, float HeadingToSpawn)
+    {
+        Game.FadeScreenOut(1000, true);
+        Respawn(false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        Player.Character.Position = positionToSpawn;
+        Player.Character.Heading = HeadingToSpawn;
+        Game.FadeScreenIn(1000, true);
+    }
+
     public bool BribePolice(ModUIMenu menu, PossibleBribe possibleBribe)
     {
         CalculateBribe();

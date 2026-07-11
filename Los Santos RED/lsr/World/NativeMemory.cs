@@ -3,13 +3,14 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System;
+using System.Net;
+using static System.Runtime.InteropServices.Marshal;
 
 namespace Mod
 {
     //ENTIRE CLASS IS FROM SHVDN, ADAPTED TO RPH
     public unsafe class NativeMemory
     {
-
         public static void SetMPGlobals()
         {
 

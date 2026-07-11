@@ -6,6 +6,7 @@ using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using LSR.Vehicles;
 using Microsoft.VisualBasic.Logging;
+using Mod;
 using NAudio.Gui;
 using Rage;
 using Rage.Native;
@@ -19,6 +20,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -2027,7 +2029,7 @@ public class Debug
         {
             return;
         }
-        FightClubFight fightClubFight = new FightClubFight(fightClubArena,null, isPlayer, Flags, World, Player, Player);
+        FightClubFight fightClubFight = new FightClubFight(fightClubArena,null, isPlayer, Flags, World,Settings, Player, Player);
         fightClubFight.Setup();
         fightClubFight.Begin();
         GameFiber FightClubDebug = GameFiber.StartNew(delegate
@@ -2043,6 +2045,22 @@ public class Debug
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void OffsetGarbage()
 {
@@ -2097,7 +2115,9 @@ GameFiber.StartNew(delegate
 
     private void DebugNumpad6()
     {
-        StartDebugFightClub(false);
+
+        NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+        //StartDebugFightClub(false);
 
 
 

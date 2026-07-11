@@ -934,7 +934,7 @@ public class GangDispatcher
     }
 
 
-    public GangMember SpawnGangMember(SpawnLocation SpawnLocation, Gang gang, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType, GameLocation GameLocation)
+    public GangMember SpawnGangMember(SpawnLocation SpawnLocation, Gang gang, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType, GameLocation GameLocation, bool keepUnarmed)
     {
         if (Gang == null || personType == null)
         {
@@ -947,8 +947,11 @@ public class GangDispatcher
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, vehicleType, personType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
-   
-            gangSpawnTask.GangTerritory = GangTerritories.GetGangTerritory(Gang.ID)?.FirstOrDefault(x => x.ZoneInternalGameName.Equals(World.Zones.GetZone(SpawnLocation.FinalPosition).InternalGameName));
+            gangSpawnTask.SpawnWithAllWeapons = false;
+            gangSpawnTask.IsGeneralBackup = false;
+            gangSpawnTask.IsHitSquad = false;
+            gangSpawnTask.KeepUnarmed = keepUnarmed;
+            //gangSpawnTask.GangTerritory = GangTerritories.GetGangTerritory(Gang.ID)?.FirstOrDefault(x => x.ZoneInternalGameName.Equals(World.Zones.GetZone(SpawnLocation.FinalPosition).InternalGameName));
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {

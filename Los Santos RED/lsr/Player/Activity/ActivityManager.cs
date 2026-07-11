@@ -231,6 +231,7 @@ public class ActivityManager
     public bool IsDraggingBody { get; set; }
     public bool IsHoldingHostage { get; set; }
     public bool IsDancing { get; set; }
+    public bool IsCheering { get; set; }
     public bool IsConversing { get; set; }
     public bool IsHoldingUp { get; set; }
     public bool IsInteractingWithLocation { get; set; } = false;
@@ -667,6 +668,24 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
+
+
+    public void Cheer()
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        CheerActivity danceActivity = new CheerActivity(Actionable, Settings, Dances);
+        if (danceActivity.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            LowerBodyActivity = danceActivity;
+            LowerBodyActivity.Start();
+        }
+    }
+
 
     public void Dance(DanceData danceData)
     {
@@ -2343,8 +2362,6 @@ public class ActivityManager
             isStartingPickpocket = false;
         }
     }
-
-
 
 }
 

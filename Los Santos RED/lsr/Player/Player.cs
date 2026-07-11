@@ -977,7 +977,7 @@ namespace Mod
         }
 
 
-             
+       
         public void OnBecamePedFromCustomzer()
         {
             SetPlayerFlags();
@@ -2123,6 +2123,9 @@ namespace Mod
             UpdateDuckingInVehicle();
             VehicleOwnership.Update();
             CheckAutoEngineDisableToggled();
+
+
+           
         }
         private void UpdateInVehicleData()
         {

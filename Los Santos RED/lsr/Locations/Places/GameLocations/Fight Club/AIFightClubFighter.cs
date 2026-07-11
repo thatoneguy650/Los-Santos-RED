@@ -28,7 +28,7 @@ public class AIFightClubFighter : FightClubFighter
         }
         else
         {
-            GangMember = Player.Dispatcher.GangDispatcher.SpawnGangMember(spawnLocation, Gang,true, true,null, dispatchablePerson, fightClub);
+            GangMember = Player.Dispatcher.GangDispatcher.SpawnGangMember(spawnLocation, Gang,true, true,null, dispatchablePerson, fightClub, true);
             PedExt = GangMember;
         }   
         if (PedExt == null || !PedExt.Pedestrian.Exists())
@@ -41,6 +41,7 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.WillFight = true;
         PedExt.WillCallPolice = false;
         PedExt.WillCower = false;
+        PedExt.Pedestrian.IsPersistent = true;
         PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{spawnedOrder}");
         PedExt.Pedestrian.BlockPermanentEvents = true;
         PedExt.Pedestrian.KeepTasks = true;
@@ -52,6 +53,10 @@ public class AIFightClubFighter : FightClubFighter
     }
     public override void StartFight()
     {
+        PedExt.WillFight = true;
+        PedExt.WillFightPolice = true;
+        PedExt.CanBeTasked = false;
+        PedExt.WillCower = false;
         PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable);
         PedExt.CurrentTask.Start();
     }

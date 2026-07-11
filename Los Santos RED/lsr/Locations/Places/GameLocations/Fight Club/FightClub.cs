@@ -103,7 +103,7 @@ public class FightClub : GameLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             FightSubMenu.SetBannerType(BannerImage);
         }
-        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs);
+        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World,Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs);
         fightClubsMenu.Setup();
     }
 }

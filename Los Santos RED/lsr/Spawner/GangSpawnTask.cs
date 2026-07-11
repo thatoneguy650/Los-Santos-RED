@@ -34,10 +34,11 @@ public class GangSpawnTask : SpawnTask
     public bool IsHitSquad { get; set; } = false;
     public bool IsBackupSquad { get; set; } = false;
     public bool IsGeneralBackup { get; set; } = false;
+    public bool KeepUnarmed { get; set; } = false;  
     public int PedSpawnLimit { get; set; } = 99;
     public List<GangTerritory> GangTerritories { get; set; }
     public GangTerritory GangTerritory { get; set; }
-    public List<GangMember> SpawnedGangMembers { get; private set; }
+    public List<GangMember> SpawnedGangMembers { get; private set; } = new List<GangMember>();
 
     public override void AttemptSpawn()
     {
@@ -302,7 +303,7 @@ public class GangSpawnTask : SpawnTask
         {
             GangMember.LocationTaskRequirements.TaskRequirements = SpawnRequirement;
         }
-        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun, GangTerritory);
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun, GangTerritory, KeepUnarmed);
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;

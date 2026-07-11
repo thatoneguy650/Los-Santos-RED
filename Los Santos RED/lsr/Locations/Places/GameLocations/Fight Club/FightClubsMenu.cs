@@ -26,12 +26,14 @@ public class FightClubsMenu
     private UIMenuCheckboxItem isGangFightMenuItem;
     private IGangs Gangs;
     private UIMenuNumericScrollerItem<int> numberOfFightersScroller;
+    private ISettingsProvideable Settings;
 
-    public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, IInteractionable player, IFightClubable fightClubable, ITargetable targetable, FightClub fightClub, IGangs gangs)
+    public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, ITargetable targetable, FightClub fightClub, IGangs gangs)
     {
         MenuPool = menuPool;
         FightMenu = fightSubMenu;
         World = world;
+        Settings = settings;
         Player = player;
         FightClubable = fightClubable;
         Targetable = targetable;
@@ -104,11 +106,11 @@ public class FightClubsMenu
                 FightClubFight fightClubFight;
                 if(isGangFightMenuItem.Checked)
                 {
-                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Targetable, FightClubable, GangToFightScroller.SelectedItem);
+                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World,Settings, Targetable, FightClubable, GangToFightScroller.SelectedItem);
                 }
                 else
                 {
-                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Targetable, FightClubable);
+                    fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Settings, Targetable, FightClubable);
                 }
                 fightClubFight.Setup();
                 Game.FadeScreenIn(1000, true);

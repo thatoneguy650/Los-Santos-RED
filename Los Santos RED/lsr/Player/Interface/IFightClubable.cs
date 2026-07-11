@@ -14,5 +14,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         string PlayerName { get; }
         BankAccounts BankAccounts { get; }
+        //ButtonPrompts ButtonPrompts { get; }
+        ActivityManager ActivityManager { get; }
+        ButtonPrompts ButtonPrompts { get; }
     }
 }

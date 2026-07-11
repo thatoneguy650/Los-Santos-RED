@@ -60,6 +60,8 @@ public class GangMember : PedExt, IWeaponIssuable
     public bool IsGeneralBackup { get; internal set; }
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
 
+    public bool KeepUnarmed { get; set; }
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -145,7 +147,7 @@ public class GangMember : PedExt, IWeaponIssuable
         }
         return false;
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun, GangTerritory gt)
+    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun, GangTerritory gt, bool keepUnarmed)
     {
         if (!Pedestrian.Exists())
         {
@@ -193,8 +195,11 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || WillHaveMelee, IsHitSquad || IsBackupSquad ||IsGeneralBackup || forceSidearm || WillHaveSidearms, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || WillHaveLongGuns, dispatchablePerson, true, true);
-        if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
+        if (!keepUnarmed)
+        {
+            WeaponInventory.IssueWeapons(weapons, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceMelee || WillHaveMelee, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceSidearm || WillHaveSidearms, IsHitSquad || IsBackupSquad || IsGeneralBackup || forceLongGun || WillHaveLongGuns, dispatchablePerson, true, true);
+        }
+            if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.SightDistance > 60f)
         {
             NativeFunction.Natives.SET_PED_SEEING_RANGE(Pedestrian, Settings.SettingsManager.CivilianSettings.SightDistance);
         }
