@@ -15,13 +15,13 @@ public class FightClubFighter
     protected bool IsOutsideRing;
     protected uint GameTimeLeftRing;
     public bool HasLost { get; set; }
-
+    public SpawnPlace SpawnPlace { get; set; }
     public uint GameTimeOutsideRing => GameTimeLeftRing == 0 ? 0 : Game.GameTime - GameTimeLeftRing;
     public virtual void Setup()
     {
         
     }
-    public virtual void StartFight()
+    public virtual void StartFight(FightClubFight fightClubFight)
     {
 
     }

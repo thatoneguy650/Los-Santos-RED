@@ -84,6 +84,7 @@ public class DispatchablePeople : IDispatchablePeople
     public List<DispatchablePerson> VehicleRacePeds { get; private set; }
 
     public List<DispatchablePerson> FightClubPeds { get; private set; }
+    public List<DispatchablePerson> DogFightPeds { get; private set; }
 
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
@@ -1961,6 +1962,18 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_beach_03",100,100),
             new DispatchablePerson("a_m_y_juggalo_01",100,100),
         };
+        DogFightPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("a_c_husky",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_rottweiler_02",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_rottweiler",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_retriever",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_shepherd",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_chop",100,100) { IsAnimal = true },
+            new DispatchablePerson("a_c_westy",5,5) { IsAnimal = true },
+            new DispatchablePerson("a_c_poodle",5,5) { IsAnimal = true },
+            new DispatchablePerson("a_c_pug",5,5) { IsAnimal = true },
+        };
 
         ServicePeds();
     }
@@ -2116,6 +2129,9 @@ public class DispatchablePeople : IDispatchablePeople
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("FightClubPeds", FightClubPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("DogFightPeds", DogFightPeds));
+
+        //DogFightPeds
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
@@ -2863,6 +2879,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FightClubPeds", FightClubPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VendorPeds", VendorPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("DogFightPeds", DogFightPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("IllicitMarketplacePeds", IllicitMarketplacePeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TellerPeds", TellerPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BurgerShotPeds", BurgerShotPeds));

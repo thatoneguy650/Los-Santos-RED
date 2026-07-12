@@ -13,13 +13,15 @@ public class GeneralFight : ComplexTask
     private PedExt PedGeneral;
     private TaskState CurrentTaskState;
     private uint GametimeLastRetasked;
+    private FightClubFight FightClubFight;
 
-    public GeneralFight(PedExt pedGeneral, IComplexTaskable ped, ITargetable player) :
+    public GeneralFight(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, FightClubFight fightClubFight) :
         base(player, ped, 1000)//1500
     {
         PedGeneral = pedGeneral;
         Name = "GeneralFight";
         SubTaskName = "";
+        FightClubFight = fightClubFight;
     }
     public override void ReTask()
     {
@@ -96,6 +98,10 @@ public class GeneralFight : ComplexTask
 
     private void CheckTasks()
     {
+        if (FightClubFight != null && !FightClubFight.IsFightActive)
+        {
+            return;
+        }
         Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
         if ((taskStatus == Rage.TaskStatus.NoTask || taskStatus == Rage.TaskStatus.Preparing) && Game.GameTime - GametimeLastRetasked >= 2000)
         {

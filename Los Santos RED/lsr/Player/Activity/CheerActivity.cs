@@ -25,8 +25,8 @@ namespace LosSantosRED.lsr.Player
         private UIMenuListScrollerItem<DanceData> DanceScrollerMenu;
         private string PlayingAnimation;
         private string PlayingDictionary;
-        private int AnimationFlagRepeat => 1;
-        private int AnimationFlagNormal => 0;
+        private int AnimationFlagRepeat => 1 | 16 | 32;
+        private int AnimationFlagNormal => 0 | 16 | 32;
         private bool DisplayedDanceName;
         public CheerActivity(IActionable player, ISettingsProvideable settings, IDances dances) : base()
         {
@@ -278,7 +278,7 @@ namespace LosSantosRED.lsr.Player
 
         private void SetRandomCheer()
         {
-            DanceData newDanceData = Dances.GetRandomDance();
+            DanceData newDanceData = Dances.GetRandomCheer();
             if (newDanceData != null)
             {
                 CheerData = newDanceData;

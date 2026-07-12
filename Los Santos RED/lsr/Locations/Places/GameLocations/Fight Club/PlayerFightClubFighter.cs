@@ -1,12 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
-using RAGENativeUI;
-using RAGENativeUI.Elements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class PlayerFightClubFighter : FightClubFighter
@@ -14,19 +7,20 @@ public class PlayerFightClubFighter : FightClubFighter
 
     public override bool IsPlayer => true;
 
-    public void MoveToRing(FightClubArena fightClubArena, IEntityProvideable world, SpawnPlace SpawnLocation, IFightClubable player)
+    public void MoveToRing(FightClubArena fightClubArena, IEntityProvideable world, SpawnPlace spawnPlace, IFightClubable player)
     {
         FightClubArena = fightClubArena;
         Player = player;
-        Player.Character.Position = SpawnLocation.Position;
-        Player.Character.Heading = SpawnLocation.Heading;
+        SpawnPlace = spawnPlace;
+        Player.Character.Position = spawnPlace.Position;
+        Player.Character.Heading = spawnPlace.Heading;
         FightClubArena = fightClubArena;
     }
     public override void Setup()
     {
         
     }
-    public override void StartFight()
+    public override void StartFight(FightClubFight fightClubFight)
     {
 
     }

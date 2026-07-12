@@ -2381,9 +2381,44 @@ public class PlacesOfInterest : IPlacesOfInterest
                                             }),
                 OpenTime = 0,
                 CloseTime = 24,
+                DisableGangFights = true,
                 NonGangFightersGroup = "FightClubPeds",
             },
+            new FightClub(new Vector3(1464.842f, 1047.021f, 114.334f), 0.1439041f, "Cartel Dogfights", "Bet on dog fights","")
+            {
+                FightClubArena = new FightClubArena(new Vector3(1451.354f, 1066.984f, 114.334f),
+                                                new List<SpawnPlace>() {
+                                                    new SpawnPlace(new Vector3(1446.786f, 1067.105f, 114.339f), 269.5739f),
+                                                    new SpawnPlace(new Vector3(1454.702f, 1066.896f, 114.3343f), 86.59025f),
+                                                    new SpawnPlace(new Vector3(1451.125f, 1071.216f, 114.334f), 180.6605f),
+                                                    new SpawnPlace(new Vector3(1450.512f, 1064.267f, 114.3375f), 351.7811f),
+                                                },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(new Vector3(1454.964f, 1061.744f, 114.3343f), 37.79124f),
+                                                new SpawnPlace(new Vector3(1445.41f, 1062.394f, 114.3481f), 309.4288f),
+                                                new SpawnPlace(new Vector3(1445.834f, 1072.552f, 114.3339f), 222.6311f),
+                                                new SpawnPlace(new Vector3(1456.124f, 1071.925f, 114.3339f), 139.0143f),
+                                            },
+                                                new List<SpawnPlace>() {
+                                                //new SpawnPlace(new Vector3(-79.78997f, -1032.375f, 28.23083f), 226.2868f),
+                                            }),
+                OpenTime = 0,
+                CloseTime = 24,
+                DisablePlayerFights = true,
+                DisableGangFights = true,
+                NonGangFightersGroup = "DogFightPeds",
+            },
 
+            /*
+             * new ConditionalLocation(new Vector3(1451.354f, 1066.984f, 114.334f), 91.76149f, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),
+new ConditionalLocation(, 75f),*/
 
         };
     }

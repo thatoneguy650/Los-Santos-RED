@@ -38,6 +38,11 @@ public class PedBrain
         Player = player;
         PlacesOfInterest = placesOfInterest;
 
+
+        if(!PedExt.CanBeTasked)
+        {
+            return;
+        }
         if (PedExt.CanBeTasked && PedExt.CanBeAmbientTasked)
         {
             if (PedExt.DistanceToPlayer >= 350f)//230f)

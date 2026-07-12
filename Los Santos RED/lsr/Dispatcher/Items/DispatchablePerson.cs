@@ -108,6 +108,9 @@ public class DispatchablePerson
 
 
     public bool IsInvisibleAndInvulnerable { get; set; } = false;
+
+
+
     public string GetDescription()
     {
         string description = "";
@@ -179,6 +182,7 @@ public class DispatchablePerson
         {
             return;
         }
+        pedExt.IsAnimal = IsAnimal;
         pedExt.Accuracy = RandomItems.GetRandomNumberInt(AccuracyMin, AccuracyMax);
         pedExt.ShootRate = RandomItems.GetRandomNumberInt(ShootRateMin, ShootRateMax);
         pedExt.CombatAbility = RandomItems.GetRandomNumberInt(CombatAbilityMin, CombatAbilityMax);

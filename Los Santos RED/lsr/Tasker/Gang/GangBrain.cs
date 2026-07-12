@@ -32,6 +32,10 @@ public class GangBrain : PedBrain
             }
             return;
         }
+        else if(!GangMember.CanBeTasked)
+        {
+            return;
+        }
         else
         {
             if (!GangMember.IsBusted && !GangMember.CanBeTasked)

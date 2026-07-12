@@ -14,7 +14,7 @@ public class FightClub : GameLocation
     private UIMenu FightSubMenu;
     private IGangs Gangs;
     private IDispatchablePeople DispatchablePeople;
-
+    private IIssuableWeapons IssuableWeapons;
     public FightClub() : base()
     {
 
@@ -32,9 +32,20 @@ public class FightClub : GameLocation
     public int PostRoundReliefPrice { get; set; } = 500;
     public int ReliefHealthGained { get; set; } = 25;
 
+
+    public bool AllowMeleeWeapons { get;set; }
+    public bool AllowSidearms { get; set; }
+    public bool AllowHeavyWeapons { get; set; }
+
+
+    public string MeleeWeaponsGroup { get;set; }
+    public string SidearmsWeaponsGroup { get; set; }
+    public string HeavyWeaponsGroup { get; set; }
+
     public string NonGangFightersGroup { get; set; }
     public List<string> AllowedGangs { get; set; }
-
+    public bool DisablePlayerFights { get;  set; }
+    public bool DisableGangFights { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Fight at {Name}";
@@ -51,7 +62,7 @@ public class FightClub : GameLocation
        // PlacesOfInterest = placesOfInterest;
         DispatchablePeople = dispatchablePeople;
         //DispatchableVehicles = modDataFileManager.DispatchableVehicles;
-
+        IssuableWeapons = issuableWeapons;
 
 
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);

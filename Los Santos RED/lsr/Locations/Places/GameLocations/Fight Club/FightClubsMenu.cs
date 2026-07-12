@@ -29,6 +29,10 @@ public class FightClubsMenu
     private ISettingsProvideable Settings;
     private List<string> AllowedGangs;
     List<DispatchablePerson> NonGangFightersGroup;
+    private UIMenuCheckboxItem meleeWeaponsCheckbox;
+    private UIMenuCheckboxItem sidearmsWeaponsCheckbox;
+    private UIMenuCheckboxItem heavyWeaponsCheckbox;
+
     public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, 
         ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup)
     {
@@ -68,29 +72,53 @@ public class FightClubsMenu
         numberOfFightersScroller.Value = 2;
         FightMenu.AddItem(numberOfFightersScroller);
 
-        isPlayerFightMenuItem = new UIMenuCheckboxItem("Player Fight",false);
-
-        FightMenu.AddItem(isPlayerFightMenuItem);
+        isPlayerFightMenuItem = new UIMenuCheckboxItem("Player Fight", false);
 
 
-        isGangFightMenuItem = new UIMenuCheckboxItem("Gang Fight", false);
-        isGangFightMenuItem.CheckboxEvent += (sender, Checked) =>
+        if (FightClub != null && !FightClub.DisablePlayerFights)
         {
-            GangToFightScroller.Enabled = isGangFightMenuItem.Checked;
-        };
-        FightMenu.AddItem(isGangFightMenuItem);
-
-
-
-        List<Gang> toFightGangs = Gangs.GetAllGangs();
-        if(AllowedGangs != null && AllowedGangs.Any())
-        {
-            toFightGangs.RemoveAll(x=> AllowedGangs.Contains(x.ID));    
+            FightMenu.AddItem(isPlayerFightMenuItem);
         }
 
-        GangToFightScroller = new UIMenuListScrollerItem<Gang>("Selected Gang","Select a gang to fight", toFightGangs);
-        GangToFightScroller.Enabled = false;
-        FightMenu.AddItem(GangToFightScroller);
+
+
+        if(FightClub != null && FightClub.AllowMeleeWeapons)
+        {
+            meleeWeaponsCheckbox = new UIMenuCheckboxItem("Allow Melee Weapons", false);
+            FightMenu.AddItem(meleeWeaponsCheckbox);
+        }
+        if (FightClub != null && FightClub.AllowSidearms)
+        {
+            sidearmsWeaponsCheckbox = new UIMenuCheckboxItem("Allow Sidearm Weapons", false);
+            FightMenu.AddItem(sidearmsWeaponsCheckbox);
+        }
+        if (FightClub != null && FightClub.AllowHeavyWeapons)
+        {
+            heavyWeaponsCheckbox = new UIMenuCheckboxItem("Allow Heavy Weapons", false);
+            FightMenu.AddItem(heavyWeaponsCheckbox);
+        }
+        if (FightClub != null && !FightClub.DisableGangFights)
+        { 
+
+            isGangFightMenuItem = new UIMenuCheckboxItem("Gang Fight", false);
+            isGangFightMenuItem.CheckboxEvent += (sender, Checked) =>
+            {
+                GangToFightScroller.Enabled = isGangFightMenuItem.Checked;
+            };
+            FightMenu.AddItem(isGangFightMenuItem);
+
+
+
+            List<Gang> toFightGangs = Gangs.GetAllGangs();
+            if (AllowedGangs != null && AllowedGangs.Any())
+            {
+                toFightGangs.RemoveAll(x => AllowedGangs.Contains(x.ID));
+            }
+
+            GangToFightScroller = new UIMenuListScrollerItem<Gang>("Selected Gang", "Select a gang to fight", toFightGangs);
+            GangToFightScroller.Enabled = false;
+            FightMenu.AddItem(GangToFightScroller);
+        }
 
         startFightMenuItem = new UIMenuItem("Start Fight", "Select to start the current fight");
         startFightMenuItem.Activated += (menu, item) =>
@@ -115,15 +143,20 @@ public class FightClubsMenu
         {
             try
             {
-                Game.FadeScreenOut(1000, true);
+                //Game.FadeScreenOut(1000, true);
                 MenuPool.CloseAllMenus();
                 while (Player.ActivityManager.IsInteractingWithLocation)
                 {
                     GameFiber.Yield();
                 }
+
+
+
+
+
                 int TotalFighters = numberOfFightersScroller.Value;
                 FightClubFight fightClubFight;
-                if(isGangFightMenuItem.Checked)
+                if(isGangFightMenuItem != null && isGangFightMenuItem.Checked)
                 {
                     fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World,Settings, Targetable, FightClubable, GangToFightScroller.SelectedItem);
                 }
@@ -131,9 +164,21 @@ public class FightClubsMenu
                 {
                     fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFightMenuItem.Checked, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup);
                 }
+                if (meleeWeaponsCheckbox != null)
+                {
+                    fightClubFight.AllowMeleeWeapons = meleeWeaponsCheckbox.Checked;
+                }
+                if (sidearmsWeaponsCheckbox != null)
+                {
+                    fightClubFight.AllowSidearms = sidearmsWeaponsCheckbox.Checked;
+                }
+                if (heavyWeaponsCheckbox != null)
+                {
+                    fightClubFight.AllowHeavyWeapons = heavyWeaponsCheckbox.Checked;
+                }
                 fightClubFight.Setup();
-                Game.FadeScreenIn(1000, true);
-                fightClubFight.Begin();
+                Game.FadeScreenOut(1000, true);
+                fightClubFight.BeginFirstFight();
                 GameFiber FightClubDebug = GameFiber.StartNew(delegate
                 {
                     while (!fightClubFight.IsEnded && EntryPoint.ModController.IsRunning)

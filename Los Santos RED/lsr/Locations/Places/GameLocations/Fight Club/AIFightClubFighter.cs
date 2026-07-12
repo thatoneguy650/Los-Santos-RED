@@ -9,19 +9,21 @@ using System.Threading.Tasks;
 
 public class AIFightClubFighter : FightClubFighter
 {
-    
+
     private ITargetable Targetable;
     public override bool IsPlayer => false;
     public PedExt PedExt { get; private set; }
     public GangMember GangMember { get; private set; }
     public bool WasPreviousWinner { get; set; }
     public Gang Gang { get; set; }
+
     public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnPlace spawnPlace, FightClub fightClub, DispatchablePerson dispatchablePerson,
         ITargetable targetable, int spawnedOrder)
     {
         FightClubArena = fightClubArena;
         Player = player;
         Targetable = targetable;
+        SpawnPlace = spawnPlace;
         SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
         if(Gang == null)
         {
@@ -42,6 +44,7 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.WillFight = true;
         PedExt.WillCallPolice = false;
         PedExt.WillCower = false;
+        PedExt.IsManuallyDeleted = true;
         PedExt.Pedestrian.IsPersistent = true;
         PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{spawnedOrder}");
         PedExt.Pedestrian.BlockPermanentEvents = true;
@@ -52,13 +55,13 @@ public class AIFightClubFighter : FightClubFighter
     {
         
     }
-    public override void StartFight()
+    public override void StartFight(FightClubFight fightClubFight)
     {
         PedExt.WillFight = true;
         PedExt.WillFightPolice = true;
         PedExt.CanBeTasked = false;
         PedExt.WillCower = false;
-        PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable);
+        PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable, fightClubFight);
         PedExt.CurrentTask.Start();
     }
     public override void Update()
@@ -76,12 +79,12 @@ public class AIFightClubFighter : FightClubFighter
         CheckLoseConditions(PedExt.Pedestrian.DistanceTo(FightClubArena.ArenaCenter));
         base.Update();
     }
-    public void RestoreForNewFight(SpawnPlace spawnPlace, int fightersSpawned)
+    public void RestoreForNewFight(int fighterNumber)
     {
         HasLost = false;
         IsOutsideRing = false;
         GameTimeLeftRing = 0;
-        if (PedExt == null || spawnPlace == null)
+        if (PedExt == null)
         {
             return;
         }
@@ -91,9 +94,16 @@ public class AIFightClubFighter : FightClubFighter
             return;
         }
         PedExt.Pedestrian.Health = PedExt.Pedestrian.MaxHealth;
-        PedExt.Pedestrian.Position = spawnPlace.Position;
-        PedExt.Pedestrian.Heading = spawnPlace.Heading;
-        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{fightersSpawned}");
+        PedExt.Pedestrian.IsPersistent = true;
+        PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup($"FIGHTER{fighterNumber}");
+        if( SpawnPlace == null)
+        {
+            return;
+        }
+        PedExt.Pedestrian.Position = SpawnPlace.Position;
+        PedExt.Pedestrian.Heading = SpawnPlace.Heading;
+
+
     }
     public void CheckLoseConditions(float distance)
     {
@@ -141,6 +151,8 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.CanBeAmbientTasked = true;
         PedExt.CanBeTasked = true;
         PedExt.CanBeIdleTasked = true;
+        PedExt.IsManuallyDeleted = false;
+
         if(GangMember != null && Gang != null)
         {
             PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup(Gang.ID);
@@ -170,8 +182,21 @@ public class AIFightClubFighter : FightClubFighter
             PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
         }
         PedExt.ClearTasks(true);
+        PedExt.CurrentTask = null;
         PedExt.Pedestrian.IsPersistent = true;
-        PedExt.PedBrain.AssignIdleTask();
+        PedExt.Pedestrian.BlockPermanentEvents = true;
+        PedExt.Pedestrian.KeepTasks = true;
+
+        if (SpawnPlace == null)
+        {
+            PedExt.Pedestrian.Tasks.StandStill(1500000);
+        }
+        else
+        {
+            PedExt.Pedestrian.Tasks.GoStraightToPosition(SpawnPlace.Position, 1.0f, SpawnPlace.Heading, 1.0f, 5000);
+        }
+        
+        //PedExt.PedBrain.AssignIdleTask();
         EntryPoint.WriteToConsole($"SET PASSIVE RAN FOR {PedExt.Name}");
     }
 }
