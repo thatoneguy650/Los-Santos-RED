@@ -2339,28 +2339,28 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         FightClubs = new List<FightClub>()
         {
-            new FightClub(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f, "Test Fight Club", "Test Fight Club","")
-            {
-                FightClubArena = new FightClubArena(new Vector3(1155.039f, 3102.574f, 40.41409f),
-                                                new List<SpawnPlace>() {
-                                                    new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f),
-                                                    new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f),
-                                                    new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f),
-                                                    new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f),
-                                                },
-                                                new List<SpawnPlace>() {
-                                                new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
-                                                new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
-                                                new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
-                                            },
-                                                new List<SpawnPlace>() {
-                                                new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
-                                            }),
-                OpenTime = 0,
-                CloseTime = 24,
-                NonGangFightersGroup = "FightClubPeds",
-            },
-
+            //new FightClub(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f, "Test Fight Club", "Test Fight Club","")
+            //{
+            //    FightClubArena = new FightClubArena(new Vector3(1155.039f, 3102.574f, 40.41409f),
+            //                                    new List<SpawnPlace>() {
+            //                                        new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f),
+            //                                        new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f),
+            //                                        new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f),
+            //                                        new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f),
+            //                                    },
+            //                                    new List<SpawnPlace>() {
+            //                                    new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
+            //                                    new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
+            //                                    new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+            //                                },
+            //                                    new List<SpawnPlace>() {
+            //                                    new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
+            //                                }),
+            //    OpenTime = 0,
+            //    CloseTime = 24,
+            //    NonGangFightersGroup = "FightClubPeds",
+            //},
+#if DEBUG
             new FightClub(new Vector3(-97.11468f, -1013.614f, 27.27522f), 162.828f, "Construction Rumble", "Fight at the top of a skyscraper","")
             {
                 FightClubArena = new FightClubArena(new Vector3(-149.5824f, -960.326f, 269.1349f),
@@ -2408,6 +2408,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 DisableGangFights = true,
                 NonGangFightersGroup = "DogFightPeds",
             },
+#endif
 
             /*
              * new ConditionalLocation(new Vector3(1451.354f, 1066.984f, 114.334f), 91.76149f, 75f),

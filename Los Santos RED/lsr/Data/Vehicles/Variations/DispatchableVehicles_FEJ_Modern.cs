@@ -51,7 +51,7 @@ public class DispatchableVehicles_FEJ_Modern
     public List<DispatchableVehicle> SunderedTaxiVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> LSLifeguardVehicles_FEJ_Modern { get; private set; }
     public List<DispatchableVehicle> PrisonVehicles_FEJ_Modern { get; private set; }
-
+    public List<DispatchableVehicle> KnowayVehicles_FEJ_Modern { get; private set; }
 
     public DispatchableVehicles_FEJ_Modern(DispatchableVehicles_FEJ dispatchableVehicles_FEJ)
     {
@@ -1451,6 +1451,24 @@ public class DispatchableVehicles_FEJ_Modern
     }
     private void Taxis()
     {
+
+        KnowayVehicles_FEJ_Modern = new List<DispatchableVehicle>()
+        {
+            new DispatchableVehicle("vivanite2", 100, 100) { ForceStayInSeats = new List<int>() { -1 }, RequiredPrimaryColorID = 134,RequiredSecondaryColorID = 134,VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(0,100),
+                        },
+                    },
+                } },
+            new DispatchableVehicle("knowayestride", 100, 100) { ForceStayInSeats = new List<int>() { -1 }, RequiredPrimaryColorID = 134,RequiredSecondaryColorID = 134,VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                } },
+        };
+
         DowntownTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
             //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 0 } },
             DispatchableVehicles_FEJ.Create_ServiceDilettante(10,10,1,false,ServiceVehicleType.Taxi1,-1,-1,-1,"",""),
@@ -1467,6 +1485,12 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi2,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi3,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,4,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,4,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,4,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,4,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,4,false,ServiceVehicleType.Taxi4,-1,-1,-1),
 
 
             DispatchableVehicles_FEJ.DispatchableVehicles.TaxiBroadWay,
@@ -1489,6 +1513,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi3,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,1,false,ServiceVehicleType.Taxi4,-1,-1,-1),
 
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,1,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,1,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,1,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,1,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
         };
         HellTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
             //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 2 } },
@@ -1506,6 +1535,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi2,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi3,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,0,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,0,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,0,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,0,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,0,false,ServiceVehicleType.Taxi4,-1,-1,-1),
 
         };
         ShitiTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
@@ -1525,6 +1559,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi3,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,3,false,ServiceVehicleType.Taxi4,-1,-1,-1),
 
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,3,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,3,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,3,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,3,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
         };
         SunderedTaxiVehicles_FEJ_Modern = new List<DispatchableVehicle>() {
             //new DispatchableVehicle("taxi", 5, 5){ RequiredLiveries = new List<int>() { 4 } },
@@ -1542,6 +1581,11 @@ public class DispatchableVehicles_FEJ_Modern
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi2,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi3,-1,-1,-1),
             DispatchableVehicles_FEJ.Create_TaxiVivanite(35,35,2,false,ServiceVehicleType.Taxi4,-1,-1,-1),
+
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,2,false,ServiceVehicleType.Taxi1,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,2,false,ServiceVehicleType.Taxi2,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,2,false,ServiceVehicleType.Taxi3,-1,-1,-1),
+            DispatchableVehicles_FEJ.Create_TaxiLaufer(35,35,2,false,ServiceVehicleType.Taxi4,-1,-1,-1),
         };
     }
 

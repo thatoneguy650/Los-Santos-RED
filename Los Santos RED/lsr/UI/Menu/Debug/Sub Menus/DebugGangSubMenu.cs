@@ -96,7 +96,10 @@ public class DebugGangSubMenu : DebugSubMenu
         UIMenuItem SetCurrentTerritoryOwned = new UIMenuItem("Set Current Territory Owned", "Set the current zone to be owned by your gang");
         SetCurrentTerritoryOwned.Activated += (menu, item) =>
         {
-            Player.GangTerritoryManager.SetTookOverZone(Player.CurrentLocation.CurrentZone);
+            Player.GangTerritoryManager.DebugSetWonZone(Player.CurrentLocation.CurrentZone);
+
+
+
             menu.Visible = false;
         };
 

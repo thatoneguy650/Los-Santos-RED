@@ -52,7 +52,7 @@ public class GangWar
         GameTimeStarted = Game.GameTime;
 
         SendWarStartedMessage();
-
+        Player.RelationshipManager.GangRelationships.SetReputation(TargetGang, -2000, false);
     }
     public void AddCasuality()
     {

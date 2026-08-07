@@ -22,8 +22,11 @@ public class GangRetaliation
     private uint TimeToReturnToZone;
     private ISettingsProvideable Settings;
     private bool HasPlayerBeenWarnedNotToLeaveZone;
-    private int TimesWon;
-    private int WinsNeeded = 1;
+
+
+
+    private int TimesPlayerDefendedRetaliation;
+
 
     public GangRetaliation(IGangTerritoryManageable player, GangTerritoryManager gangTerritoryManager, uint gameTimeWarEnded, Gang targetGang, List<Zone> zonesToAttack, ISettingsProvideable settings)
     {
@@ -34,12 +37,25 @@ public class GangRetaliation
         GangTerritoryManager = gangTerritoryManager;
         Settings = settings;
     }
+    public GangRetaliation(IGangTerritoryManageable player, GangTerritoryManager gangTerritoryManager, uint gameTimeWarEnded, Gang targetGang, List<Zone> zonesToAttack, ISettingsProvideable settings, int timesPlayerDefendedRetaliation)
+    {
+        Player = player;
+        GameTimeRetaliationStarted = gameTimeWarEnded;
+        TargetGang = targetGang;
+        ZonesToAttack = zonesToAttack;
+        GangTerritoryManager = gangTerritoryManager;
+        Settings = settings;
+        TimesPlayerDefendedRetaliation = timesPlayerDefendedRetaliation;
+    }
     public bool HasRetaliationStarted { get; private set; }
+
+
+
+    public bool IsRetaliationWarActive { get; private set; }
     public bool IsEnded { get; private set; }
     public bool HasPlayerReturnedToZone { get; private set; }
     public Gang TargetGang { get; private set; }
     public List<Zone> ZonesToAttack { get; private set; } = new List<Zone>();
-
     private bool IsPlayerInZone()
     {
         if (Player.CurrentLocation.CurrentZone == null)
@@ -59,7 +75,12 @@ public class GangRetaliation
     }
     public void Setup()
     {
-        WinsNeeded = RandomItems.GetRandomNumberInt(TargetGang.TakeoverTerritoryRetaliationTimesMin, TargetGang.TakeoverTerritoryRetaliationTimesMax);
+        if(TargetGang == null)
+        {
+            IsEnded = true;
+            return;
+        }
+        //WinsNeeded = RandomItems.GetRandomNumberInt(TargetGang.TakeoverTerritoryRetaliationTimesMin, TargetGang.TakeoverTerritoryRetaliationTimesMax);
         ResetTimedItems();
         EntryPoint.WriteToConsole($"GANG RETALIATION SETUP: TimeToStartRetaliation:{TimeToStartRetaliation} RetaliationPercentAtIncrement:{RetaliationPercentAtIncrement} RetaliationTime:{RetaliationTime} TimeToReturnToZone:{TimeToReturnToZone}");
     }
@@ -67,10 +88,27 @@ public class GangRetaliation
 
     private void ResetTimedItems()
     {
+        EntryPoint.WriteToConsole($"RESET GANG RETALIATION RESET TIMED ITEMS RAN");
         TimeToStartRetaliation = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationStartTimeMax); //60000, 120000);
+        
         RetaliationPercentAtIncrement = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageMax); //20f, 50f);
+        EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Initial");
+        RetaliationPercentAtIncrement -= (float)((float)TimesPlayerDefendedRetaliation * Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended);
+        EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Adjusted");
+        if (RetaliationPercentAtIncrement <= 1.0f)
+        {
+            RetaliationPercentAtIncrement = 1.0f;
+        }
+        EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Final");
+
         RetaliationTime = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeMax); //120000, 180000);
+        
+        
         TimeToReturnToZone = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin, Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMax); //120000, 180000); //Settings.SettingsManager.GangSettings.TerritoryRetaliationTimeToReturnMin
+
+        GameTimeReturnedToZone = 0;
+        HasPlayerBeenWarnedNotToLeaveZone = false;
+
     }
     private void CheckRetaliationStart()
     {
@@ -153,6 +191,7 @@ public class GangRetaliation
     private void OnRetaliationStarted()
     {
         HasRetaliationStarted = true;
+        HasPlayerReturnedToZone = false;
         GameTimeStarted = Game.GameTime;
         SendStartMessage();
         EntryPoint.WriteToConsole("GANG RETALIATION EVENT: RETALIATION STARTED");
@@ -166,7 +205,7 @@ public class GangRetaliation
             HasPlayerBeenWarnedNotToLeaveZone = true;
         }
         
-        EntryPoint.WriteToConsole("GANG RETALIATION EVENT: PLAYER LKEFT ZONE AFTER ARRIVING");
+        EntryPoint.WriteToConsole("GANG RETALIATION EVENT: PLAYER LEFT ZONE AFTER ARRIVING");
     }
     private void OnPlayerLost()
     {
@@ -174,28 +213,30 @@ public class GangRetaliation
         GameTimeEnded = Game.GameTime;
         SendLostMessage();
         GangTerritoryManager.EndRetaliation(this, false);
+        HasRetaliationStarted = false;
         EntryPoint.WriteToConsole("GANG RETALIATION EVENT: PLAYER LOST");
     }
     private void OnPlayerWon()
     {
         //GameTimeEnded = Game.GameTime;
         //IsEnded = true;
+        HasRetaliationStarted = false;
         SendWonMessage();
         //GangTerritoryManager.EndRetaliation(this, true);
-        TimesWon++;
+        TimesPlayerDefendedRetaliation++;
 
-        if(TimesWon >= WinsNeeded)
-        {
-            GangTerritoryManager.EndRetaliation(this, false);
-        }
-        else
-        {
+        //if(TimesWon >= WinsNeeded)
+        //{
+        //    GangTerritoryManager.EndRetaliation(this, false);
+        //}
+        //else
+        //{
             GameTimeRetaliationStarted = Game.GameTime;
             ResetTimedItems();
-        }
+        //}
 
         
-        EntryPoint.WriteToConsole($"GANG RETALIATION EVENT: PLAYER WON TimesWon{TimesWon} WinsNeeded{WinsNeeded}");
+        EntryPoint.WriteToConsole($"GANG RETALIATION EVENT: PLAYER WON TimesPlayerDefendedRetaliation{TimesPlayerDefendedRetaliation}");
     }
 
     private void OnPlayerReturnedToZoneFirstTime()

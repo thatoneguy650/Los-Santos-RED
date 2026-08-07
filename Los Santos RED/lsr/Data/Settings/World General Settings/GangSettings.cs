@@ -186,6 +186,7 @@ public class GangSettings : ISettingsDefaultable
     public float TerritoryRetaliationPercentageMax { get; set; }
     public uint TerritoryRetaliationTimeMin { get; set; }
     public uint TerritoryRetaliationTimeMax { get; set; }
+    public float TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended { get; set; }
 
     public GangSettings()
     {
@@ -352,7 +353,10 @@ public class GangSettings : ISettingsDefaultable
         TerritoryRetaliationTimeMax = 60000 * 10;
         TerritoryRetaliationTimeToReturnMin = 60000 * 8;
         TerritoryRetaliationTimeToReturnMax = 60000 * 10;
-       
+
+        TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended = 5f;
+
+
     }
 
 }

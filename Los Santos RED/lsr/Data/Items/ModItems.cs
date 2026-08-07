@@ -169,6 +169,8 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Stanier Service", true, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "servstanier2" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Vivanite Taxi", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "taxvivaniteliv" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Dilettante Service", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "servdilettante" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Ocelot E-Stride Service", true, ItemType.Vehicles) { ModelName = "knowayestride" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Benefactor Laufer Taxi", true, ItemType.Vehicles) { ModelName = "taxilaufer" });
 
         //Fire/EMS
         newPossibleItems.VehicleItems.Add(new VehicleItem("MTL Fire Truck (Livery)", ItemType.Vehicles) { ModelName = "firetrukliv", OverrideMakeName = "MTL", OverrideClassName = "Utility", });
@@ -221,6 +223,7 @@ public class ModItems : IModItems
 
         //Service
         newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Headmaster", ItemType.Vehicles) { ModelName = "civsbus" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Benefactor Laufer Service", ItemType.Vehicles) { ModelName = "servlaufer" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Brute Moving Van", false, ItemType.Vehicles) { OverrideMakeName = "Brute", ModelName = "civmovingvan" });
         //Motorcycles
         newPossibleItems.VehicleItems.Add(new VehicleItem("Western Sovereign Cruiser", ItemType.Vehicles) { ModelName = "civsovereign2" });
@@ -267,6 +270,7 @@ public class ModItems : IModItems
         //SUV
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Scout", false, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "civscoutgresk" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Annis Hellion Stock", false, ItemType.Vehicles) { ModelName = "civhellion" });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Mesa 2nd Gen", false, ItemType.Vehicles) { ModelName = "civterminus" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Seminole Frontier Stock", false, ItemType.Vehicles) { ModelName = "civseminole2" });
         //HELIS
         newPossibleItems.VehicleItems.Add(new VehicleItem("Buckingham Maverick 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Buckingham", ModelName = "civmaverick2" });//civ 2nd gen mav
@@ -3394,6 +3398,18 @@ public class ModItems : IModItems
             new VehicleItem("Shitzu Keitora", true, ItemType.Vehicles) { ModelName = "keitora" },
             new VehicleItem("Progen Luiva", true, ItemType.Vehicles) { ModelName = "luiva" },
 
+            //kortz center heist
+            new VehicleItem("Grotti Cartuccia GT", true, ItemType.Vehicles) { ModelName = "cartuccia" },
+            new VehicleItem("Ocelot E-Stride", true, ItemType.Vehicles) { ModelName = "estride" },
+            new VehicleItem("Pegassi Horus", true, ItemType.Vehicles) { ModelName = "horus" },
+            new VehicleItem("Benefactor Laufer", true, ItemType.Vehicles) { ModelName = "laufer" },
+            new VehicleItem("Benefactor LRC GT", true, ItemType.Vehicles) { ModelName = "lrcgt" },
+            new VehicleItem("Albany Merula", true, ItemType.Vehicles) { ModelName = "merula" },
+            new VehicleItem("Pegassi Ignus Pursuit", true, ItemType.Vehicles) { ModelName = "polignus" },
+            new VehicleItem("trflat2", true, ItemType.Vehicles) { ModelName = "trflat2" },
+            new VehicleItem("Grotti Veleno GT", true, ItemType.Vehicles) { ModelName = "velenogt" },
+            new VehicleItem("Gallivanter Warden", true, ItemType.Vehicles) { ModelName = "warden" },
+            new VehicleItem("Vapid Armored Caracara 6x6", true, ItemType.Vehicles) { ModelName = "caracara3" },
 
             //Drift
             new VehicleItem("Declasse Drift Tampa", ItemType.Vehicles) { ModelName = "drifttampa", RequiresDLC = true, },
@@ -3416,6 +3432,10 @@ public class ModItems : IModItems
             new VehicleItem("Dinka Drift RT3000", ItemType.Vehicles) { ModelName = "driftrt3000", RequiresDLC = true, },
             new VehicleItem("Ubermacht Drift Sentinel XS", ItemType.Vehicles) { ModelName = "driftsentinel2", RequiresDLC = true, },
 
+            new VehicleItem("Invetero Drift Coquette", true, ItemType.Vehicles) { ModelName = "drfitcoquette" },
+            new VehicleItem("Vapid Drift Dominator GTT", true, ItemType.Vehicles) { ModelName = "driftdominator8" },
+            new VehicleItem("Annis Drift Elegy Retro Custom", true, ItemType.Vehicles) { ModelName = "driftelegy" },
+
 
             //Bikes
             new VehicleItem("BMX", ItemType.Vehicles) { Description = "The classic bike for tooling the neighborhood or doing a double peg grind. Reinforced steel, super comfortable seat that wont cut off the circulation to your scrotum too bad. (i.e. for wimps!) A great deal for the cash-strapped.", ModelName = "bmx" },
@@ -3428,6 +3448,10 @@ public class ModItems : IModItems
 
             new VehicleItem("Coil Inductor", ItemType.Vehicles) { RequiresDLC = true, Description = "You might have thought that a mountain bike was already eco-friendly. Not true. The average Los Santos resident's sweat contains enough restricted substances to significantly damage any ecosystem they pedal through. The solution? The nimble torque-pumped Inductor, the electric mountain bike of your freedom-filled dreams. It only takes an open heart, a courageous spirit, and a strong life insurance claim to afford the lithium-ion battery. Completely worth it.", ModelName = "inductor" },
             new VehicleItem("Junk Energy Coil Inductor", ItemType.Vehicles) { RequiresDLC = true, Description = "You might have thought that a mountain bike was already eco-friendly. Not true. The average Los Santos resident's sweat contains enough restricted substances to significantly damage any ecosystem they pedal through. The solution? The nimble torque-pumped Inductor, the electric mountain bike of your freedom-filled dreams. It only takes an open heart, a courageous spirit, and a strong life insurance claim to afford the lithium-ion battery. Completely worth it. Now with JUNK ENERGY MARKINGS!", ModelName = "inductor2" },
+
+
+
+
 
             ////IV PACK
             //new VehicleItem("Dundreary Admiral", ItemType.Vehicles) { ModelName = "admiral" },
@@ -3796,10 +3820,10 @@ public class ModItems : IModItems
             new WeaponItem("Red Beth Musket","Armed with nothing but muskets and a superiority complex, the Brits took over half the world. Own the gun that built an Empire.", true, ItemType.Weapons) { VanillaName = "Musket", ModelName = "weapon_musket",PoliceFindDuringPlayerSearchPercentage = 100},
 
             //SMG
-            new WeaponItem("Shrewsbury Luzi","Combines compact design with a high rate of fire at approximately 700-900 rounds per minute.", false, ItemType.Weapons) { VanillaName = "Micro SMG", ModelName = "weapon_microsmg",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5 },
-            new WeaponItem("Hawk & Little MP6","This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false, ItemType.Weapons) { VanillaName = "SMG", ModelName = "weapon_smg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Shrewsbury Luzi","After military sales dried up, the Luzi found a new lease on life. And death. Who needs accuracy when they are within arms reach?", false, ItemType.Weapons) { VanillaName = "Micro SMG", ModelName = "weapon_microsmg",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5 },
+            new WeaponItem("Hawk & Little MP6","Hawk & Little's premium SMG made famous during the San Andreas Embassy Siege. Too bad about all those hostages.", false, ItemType.Weapons) { VanillaName = "SMG", ModelName = "weapon_smg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
             new WeaponItem("Hawk & Little XPM","Lightweight, compact, with a rate of fire to die very messily for: turn any confined space into a kill box at the click of a well-oiled trigger.", true, ItemType.Weapons) { VanillaName = "SMG Mk2", ModelName = "weapon_smg_mk2", FindPercentage = 5},
-            new WeaponItem("Vom Feuer Fisher","A high-capacity submachine gun that is both compact and lightweight. Holds up to 30 bullets in one magazine.", false, ItemType.Weapons) { VanillaName = "Assault SMG", ModelName = "weapon_assaultsmg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Vom Feuer Fisher","Fancy yourself a secret agent? See why they would never use this gun. Note: It only shoot bullets, not cameras.", false, ItemType.Weapons) { VanillaName = "Assault SMG", ModelName = "weapon_assaultsmg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
             new WeaponItem("Coil PXM","Who said personal weaponry couldn't be worthy of military personnel? Thanks to our lobbyists, not Congress. Integral suppressor.", false, ItemType.Weapons) { VanillaName = "Combat PDW", ModelName = "weapon_combatpdw",PoliceFindDuringPlayerSearchPercentage = 100},
             new WeaponItem("Vom Feuer KEK-9","This fully automatic is the snare drum to your twin-engine V8 bass: no drive-by sounds quite right without it.", false, ItemType.Weapons) { VanillaName = "Machine Pistol", ModelName = "weapon_machinepistol",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
             new WeaponItem("Hawk & Little Millipede","Increasingly popular since the marketing team looked beyond spec ops units and started caring about the little guys in low income areas.", false, ItemType.Weapons) { VanillaName = "Mini SMG", ModelName = "weapon_minismg",PoliceFindDuringPlayerSearchPercentage = 55, FindPercentage = 5},
@@ -3809,17 +3833,17 @@ public class ModItems : IModItems
 
             
             //AR
-            new WeaponItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false, ItemType.Weapons) { VanillaName = "Assault Rifle", ModelName = "weapon_assaultrifle",PoliceFindDuringPlayerSearchPercentage = 100 },
-            new WeaponItem("Shrewsbury A2-1K","The definitive revision of an all-time classic: all it takes is a little work, and looks can kill after all.", true, ItemType.Weapons) { VanillaName = "Assault Rifle Mk2", ModelName = "weapon_assaultrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
-            new WeaponItem("Vom Feuer A5-1R","Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false, ItemType.Weapons) { VanillaName = "Carbine Rifle", ModelName = "weapon_carbinerifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
-            new WeaponItem("Vom Feuer A5-1R MK2","This is bespoke, artisan firepower: you couldn't deliver a hail of bullets with more love and care if you inserted them by hand.", true, ItemType.Weapons) { VanillaName = "Carbine Rifle Mk2", ModelName = "weapon_carbinerifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 4, },
-            new WeaponItem("Vom Feuer BFR","The most lightweight and compact of all assault rifles, without compromising accuracy and rate of fire.", false, ItemType.Weapons) { VanillaName = "Advanced Rifle", ModelName = "weapon_advancedrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
-            new WeaponItem("Vom Feuer SL6","Combining accuracy, maneuverability, firepower and low recoil, this is an extremely versatile assault rifle for any combat situation.", false, ItemType.Weapons) { VanillaName = "Special Carbine",  ModelName = "weapon_specialcarbine",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
-            new WeaponItem("Vom Feuer SL6 MK2","The jack of all trades just got a serious upgrade: bow to the master.", true, ItemType.Weapons) { VanillaName = "Special Carbine Mk2", ModelName = "weapon_specialcarbine_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
-            new WeaponItem("Hawk & Little ZBZ-23","The latest Chinese import taking America by storm, this rifle is known for its balanced handling. Lightweight and very controllable in automatic fire.", false, ItemType.Weapons) { VanillaName = "Bullpup Rifle", ModelName = "weapon_bullpuprifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
-            new WeaponItem("Hawk & Little ZBZ-25X","So precise, so exquisite, it's not so much a hail of bullets as a symphony.", true, ItemType.Weapons) { VanillaName = "Bullpup Rifle Mk2", ModelName = "weapon_bullpuprifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Shrewsbury A7-4K","Simple, Cheap, and Garbage. When you positively, absolutely have to kill everybody in the room, and can't afford the good stuff. Accept some substitutes.", false, ItemType.Weapons) { VanillaName = "Assault Rifle", ModelName = "weapon_assaultrifle",PoliceFindDuringPlayerSearchPercentage = 100 },
+            new WeaponItem("Shrewsbury A2-1K","The classic rifle, upgraded. Bolting on old western accessories to an ancient gun will surely make it better? Right? At least more expensive.", true, ItemType.Weapons) { VanillaName = "Assault Rifle Mk2", ModelName = "weapon_assaultrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Vom Feuer A5-1R","The most American rifle ever built. Led us to victory in countless wars. The count of zero.", false, ItemType.Weapons) { VanillaName = "Carbine Rifle", ModelName = "weapon_carbinerifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Vom Feuer A5-1R MK2","Want to spend thousands on a gun that hasn't fundamentally changed since the 60s? Don't forget the accessories and your credit card.\r\n", true, ItemType.Weapons) { VanillaName = "Carbine Rifle Mk2", ModelName = "weapon_carbinerifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 4, },
+            new WeaponItem("Vom Feuer BFR","The newest Israeli hardware. When you get thrown out of a Burger Shot for showing it off, just say they are being antisemitic.", false, ItemType.Weapons) { VanillaName = "Advanced Rifle", ModelName = "weapon_advancedrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Vom Feuer SL6","The forefront of German engineering in the last few decades. Lightweight, easy to use, and most likely won't be invading Poland. Yet.", false, ItemType.Weapons) { VanillaName = "Special Carbine",  ModelName = "weapon_specialcarbine",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Vom Feuer SL6 MK2","Too good for the base model? Show the Europeans we mean business by buying their weapons at a premium. Let freedom ring!", true, ItemType.Weapons) { VanillaName = "Special Carbine Mk2", ModelName = "weapon_specialcarbine_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Hawk & Little ZBZ-23","Feel the need to add to the trade deficit? Make sure the rest of the manufacturing capacity moves overseas with this new import.", false, ItemType.Weapons) { VanillaName = "Bullpup Rifle", ModelName = "weapon_bullpuprifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Hawk & Little ZBZ-25X","Same imported rifle. New bolt on crap. ", true, ItemType.Weapons) { VanillaName = "Bullpup Rifle Mk2", ModelName = "weapon_bullpuprifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
             new WeaponItem("Shrewsbury Stinkov","Half the size, all the power, double the recoil: there's no riskier way to say 'I'm compensating for something'.", false, ItemType.Weapons) { VanillaName = "Compact Rifle", ModelName = "weapon_compactrifle",PoliceFindDuringPlayerSearchPercentage = 90, FindPercentage = 1},
-            new WeaponItem("Vom Feuer GUH-B4","This immensely powerful assault rifle was designed for highly qualified, exceptionally skilled soldiers. Yes, you can buy it.", false, ItemType.Weapons) { VanillaName = "Military Rifle", ModelName = "weapon_militaryrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
+            new WeaponItem("Vom Feuer GUH-B4","No need to pet this bullpup. Long barrel in a small package. Unlike you.", false, ItemType.Weapons) { VanillaName = "Military Rifle", ModelName = "weapon_militaryrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
             new WeaponItem("Vom Feuer POCK","The no-holds barred 30-round answer to that eternal question: how do I get this guy off my back?", true, ItemType.Weapons) { VanillaName = "Heavy Rifle", ModelName = "weapon_heavyrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 5},
             new WeaponItem("Vom Feuer DP1 Carbine","This season's must-have hardware for law enforcement, military personnel and anyone locked in a fight to the death with either law enforcement or military personnel.", true, ItemType.Weapons) { VanillaName = "Tactical Rifle", ModelName = "weapon_tacticalrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 7},//old school m16
             new WeaponItem("Vom Feuer LAR","Find out why it was called the right arm of the free world as you use it to shoot down police helicopters. Not so popular south of the border.",true,ItemType.Weapons) { VanillaName = "Battle Rifle", ModelName = "weapon_battlerifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 7 },
@@ -3827,14 +3851,14 @@ public class ModItems : IModItems
 
             //LMG
             new WeaponItem("Shrewsbury PDA","General purpose machine gun that combines rugged design with dependable performance. Long range penetrative power. Very effective against large groups.", false, ItemType.Weapons) { VanillaName = "Machine Gun",  ModelName = "weapon_mg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
-            new WeaponItem("Vom Feuer BAT","Lightweight, compact machine gun that combines excellent maneuverability with a high rate of fire to devastating effect.", false, ItemType.Weapons) { VanillaName = "Combat MG", ModelName = "weapon_combatmg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
-            new WeaponItem("Vom Feuer M70E1","You can never have too much of a good thing: after all, if the first shot counts, then the next hundred or so must count for double.", true, ItemType.Weapons) { VanillaName = "Combat MG Mk2", ModelName = "weapon_combatmg_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
-            new WeaponItem("Hawk & Little Kenan","Complete your look with a Prohibition gun. Looks great being fired from an Albany Roosevelt or paired with a pinstripe suit.", false, ItemType.Weapons) { VanillaName = "Gusenberg", ModelName = "weapon_gusenberg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Vom Feuer BAT","Belt-fed, mother approved. Neighborhood HOA got you down? Give them over 100 reasons they are wrong. Then reload.", false, ItemType.Weapons) { VanillaName = "Combat MG", ModelName = "weapon_combatmg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Vom Feuer M70E1","Made famous in the jungle of Vietnam. Bring the exhilaration of yelling 'Get Some' home.", true, ItemType.Weapons) { VanillaName = "Combat MG Mk2", ModelName = "weapon_combatmg_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Hawk & Little Kenan","What your great grandfather used to clear out the fuzz. Make them dance to the beat of this drum.", false, ItemType.Weapons) { VanillaName = "Gusenberg", ModelName = "weapon_gusenberg",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
 
             //SNIPER
-            new WeaponItem("Shrewsbury PWN","Standard sniper rifle. Ideal for situations that require accuracy at long range. Limitations include slow reload speed and very low rate of fire.", false, ItemType.Weapons) { VanillaName = "Sniper Rifle", ModelName = "weapon_sniperrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
-            new WeaponItem("Bartlett M92","Features armor-piercing rounds for heavy damage. Comes with laser scope as standard.", false, ItemType.Weapons) { VanillaName = "Heavy Sniper", ModelName = "weapon_heavysniper",PoliceFindDuringPlayerSearchPercentage = 100},
-            new WeaponItem("Bartlett M92 Mk2","Far away, yet always intimate: if you're looking for a secure foundation for that long-distance relationship, this is it.", true, ItemType.Weapons) { VanillaName = "Heavy Sniper", ModelName = "weapon_heavysniper_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Shrewsbury PWN","No need to go the arctic for this magnum. Great for use in a counter strike.", false, ItemType.Weapons) { VanillaName = "Sniper Rifle", ModelName = "weapon_sniperrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
+            new WeaponItem("Bartlett M92","Need to shoot through an engine block? And a house? And a person? The triple threat to all innocent bystanders.", false, ItemType.Weapons) { VanillaName = "Heavy Sniper", ModelName = "weapon_heavysniper",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Bartlett M92 Mk2","Need to shoot through an engine block? And a house? And a person? The triple threat to all innocent bystanders.", true, ItemType.Weapons) { VanillaName = "Heavy Sniper", ModelName = "weapon_heavysniper_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
             new WeaponItem("Vom Feuer M23 DBS","Whether you're up close or a disconcertingly long way away, this weapon will get the job done. A multi-range tool for tools.", false, ItemType.Weapons) { VanillaName = "Marksman Rifle", ModelName = "weapon_marksmanrifle",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
             new WeaponItem("Vom Feuer M23 DBS Scout","Known in military circles as The Dislocator, this mod set will destroy both the target and your shoulder, in that order.", true, ItemType.Weapons) { VanillaName = "Marksman Rifle Mk2", ModelName = "weapon_marksmanrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100, FindPercentage = 1},
 

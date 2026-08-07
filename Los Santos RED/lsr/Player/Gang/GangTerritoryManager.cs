@@ -22,9 +22,9 @@ public class GangTerritoryManager
     public List<GangWar> GangWars { get; set; } = new List<GangWar>();
     public List<GangRetaliation> Retaliations { get; set; } = new List<GangRetaliation>();
     public bool IsAtWarWith(Gang gang) => GangWars.Any(x=> !x.IsWarEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
-    public bool IsDoingRetaliation(Gang gang) => Retaliations.Any(x => !x.IsEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
+    public bool IsDoingRetaliation(Gang gang) => Retaliations.Any(x => x.HasRetaliationStarted && x.HasPlayerReturnedToZone && !x.IsEnded && x.TargetGang != null && x.TargetGang.ID.ToLower() == gang.ID.ToLower());
     public bool IsAtWarWithAnyGang() => GangWars.Any(x => !x.IsWarEnded);
-    public bool IsAnyGangRetaliating() => Retaliations.Any(x => !x.IsEnded);
+    public bool IsAnyGangRetaliating() => Retaliations.Any(x => x.HasRetaliationStarted && x.HasPlayerReturnedToZone && !x.IsEnded);
     public GangTerritoryManager(IGangTerritoryManageable player, ISettingsProvideable settings, IEntityProvideable world, IGangTerritories gangTerritories, 
         IPlacesOfInterest placesOfInterest, ITimeReportable time, IZones zones)
     {
@@ -130,6 +130,44 @@ public class GangTerritoryManager
         Retaliations.Remove(gr);
         EntryPoint.WriteToConsole("END RETALIATION RAN REMOVING ");
     }
+    public void DebugSetWonZone(Zone zone)
+    {
+        if (Player.CurrentGang == null)
+        {
+            return;
+        }
+        if (zone == null)
+        {
+            return;
+        }
+        if(zone.AssignedGang == null)
+        {
+            return;
+        }
+
+        Gang toFight = zone.AssignedGang;
+
+        bool updated = GangTerritories.UpdateTerritory(Player.CurrentGang.ID, zone);
+        if (updated)
+        {
+            zone.UpdateGangItems(GangTerritories);
+            List<GangDen> densToUpdate = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.ZoneID == zone.InternalGameName).ToList();
+            foreach (GangDen dens in densToUpdate)
+            {
+                dens.SetTakeoverGang(Player.CurrentGang);
+            }
+            ChangedZones.Add(zone);
+        }
+
+
+        Player.RelationshipManager.GangRelationships.SetReputation(toFight, -2000, false);
+
+
+
+        GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, toFight, new List<Zone> { zone }, Settings);
+        gr.Setup();
+        Retaliations.Add(gr);
+    }
     public bool SetTookOverZone(Zone zone)
     {
         if(Player.CurrentGang == null)
@@ -201,11 +239,68 @@ public class GangTerritoryManager
         GangWars.Add(existingWar);
     }
 
-    public void LoadRetaliation(Gang targetGang, List<Zone> zonesToAttack)
+    public void LoadRetaliation(Gang targetGang, List<Zone> zonesToAttack, int timePlayerDefended)
     {
-        GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, targetGang, zonesToAttack, Settings);
+        GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, targetGang, zonesToAttack, Settings, timePlayerDefended);
         gr.Setup();  
         Retaliations.Add(gr);
+    }
+    public List<Zone> GetCurrentWarfareZones(Gang gang)
+    {
+        List<Zone> toReturn = new List<Zone>();
+        if(gang == null)
+        {
+            return toReturn;
+        }
+        GangWar existingWar = GangWars.Where(x => !x.IsWarEnded && x.TargetGang != null && x.TargetGang.ID == gang.ID).FirstOrDefault();
+
+        if(existingWar != null)
+        {
+            return existingWar.ZonesToAttack.ToList();
+        }
+        GangRetaliation gangRetaliation = Retaliations.Where(x=>x.HasRetaliationStarted && !x.IsEnded && x.TargetGang != null && x.TargetGang.ID == gang.ID).FirstOrDefault();
+        if (gangRetaliation != null)
+        {
+            return gangRetaliation.ZonesToAttack.ToList();
+        }
+        return toReturn;
+    }
+    public Gang GetCurrentWarfareGang()
+    {
+        Gang toReturn = null;
+        if (Player.CurrentLocation.CurrentZone != null)
+        {
+            GangWar existingWar = GangWars.Where(x => !x.IsWarEnded && x.ZonesToAttack.Contains(Player.CurrentLocation.CurrentZone)).FirstOrDefault();
+            if (existingWar != null && existingWar.TargetGang != null)
+            {
+                toReturn = existingWar.TargetGang;
+            }
+        }
+        if(toReturn == null)
+        {
+            GangWar existingWar = GangWars.Where(x => !x.IsWarEnded).FirstOrDefault();
+            if (existingWar != null && existingWar.TargetGang != null)
+            {
+                toReturn = existingWar.TargetGang;
+            }
+        }
+        if (toReturn == null && Player.CurrentLocation.CurrentZone != null)
+        {
+            GangRetaliation existingRetaliation = Retaliations.Where(x => !x.IsEnded && x.HasRetaliationStarted && x.ZonesToAttack.Contains(Player.CurrentLocation.CurrentZone)).FirstOrDefault();
+            if (existingRetaliation != null && existingRetaliation.TargetGang != null)
+            {
+                toReturn = existingRetaliation.TargetGang;
+            }
+        }
+        if (toReturn == null)
+        {
+            GangRetaliation existingRetaliation = Retaliations.Where(x => !x.IsEnded && x.HasRetaliationStarted).FirstOrDefault();
+            if (existingRetaliation != null && existingRetaliation.TargetGang != null)
+            {
+                toReturn = existingRetaliation.TargetGang;
+            }
+        }
+        return toReturn;
     }
 }
 

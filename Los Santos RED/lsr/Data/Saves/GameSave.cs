@@ -145,8 +145,14 @@ namespace LosSantosRED.lsr.Data
             GangRetaliationSaves.Clear();
             foreach (GangRetaliation gw in player.GangTerritoryManager.Retaliations)
             {
-                GangRetaliationSave gws = new GangRetaliationSave();
-                GangRetaliationSaves.Add(gws);
+                if(gw.TargetGang == null || gw.ZonesToAttack == null)
+                {
+                    continue;
+                }
+                GangRetaliationSave grs = new GangRetaliationSave();
+                grs.ZoneIds = gw.ZonesToAttack.Select(x=>x.InternalGameName).ToList();
+                grs.TargetGangID = gw.TargetGang.ID;
+                GangRetaliationSaves.Add(grs);
             }
             
 
@@ -694,7 +700,7 @@ namespace LosSantosRED.lsr.Data
                         toAttackZones.Add(zone);
                     }
                 }
-                player.GangTerritoryManager.LoadRetaliation(targetGang, toAttackZones);
+                player.GangTerritoryManager.LoadRetaliation(targetGang, toAttackZones, grs.TimesPlayerDefendedRetaliation);
             }
         }
 

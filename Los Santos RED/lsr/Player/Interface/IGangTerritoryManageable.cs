@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         CellPhone CellPhone { get; }
         LocationData CurrentLocation { get; }
         bool IsAliveAndFree { get; }
+        RelationshipManager RelationshipManager { get; }
     }
 }

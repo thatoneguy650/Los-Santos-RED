@@ -24,7 +24,7 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     private UIMenuItem LayLowMenuItem;
     private UIMenuItem dropoffKick;
     private UIMenu LoanSubMenu;
-    private Gang OriginalGang;
+    
 
 
     public GangDen() : base()
@@ -59,6 +59,8 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     public int ExpectedItemAmount { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
+    [XmlIgnore]
+    public Gang OriginalGang { get; set; }
     [XmlIgnore]
     public Blip TerritoryBlip { get; set; }
     public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string assignedAssociationID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

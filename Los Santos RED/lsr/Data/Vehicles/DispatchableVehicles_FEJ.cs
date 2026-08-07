@@ -74,6 +74,7 @@ public class DispatchableVehicles_FEJ
     public string TaxiVivanite = "taxvivaniteliv";
     public string TaxiMinivan = "servminivan";
     public string ServiceStanierOld = "servstanierold";
+    public string TaxiLaufer = "taxilaufer";
 
     //Civilian
     public string CivilianEsperanto = "civesperanto";
@@ -4330,7 +4331,90 @@ public class DispatchableVehicles_FEJ
         }
         SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, -1, -1, "", "");
         return toReturn;
-    }    
+    }
+
+    public DispatchableVehicle Create_TaxiLaufer(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, ServiceVehicleType serviceVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel)
+    {
+        //Extras
+        //NO EXTRAS!
+        DispatchableVehicle toReturn = new DispatchableVehicle(TaxiLaufer, ambientPercent, wantedPercent);
+        if (liveryID != -1)
+        {
+            toReturn.VehicleMods = new List<DispatchableVehicleMod>()
+                {
+                    new DispatchableVehicleMod(48,100)
+                    {
+                        DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
+                            new DispatchableVehicleModValue(liveryID,100),
+                        },
+                    },
+                };
+        }
+        if (serviceVehicleType == ServiceVehicleType.Taxi1)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, true, 100),
+                new DispatchableVehicleExtra(5, true, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+                new DispatchableVehicleExtra(8, false, 100),
+                new DispatchableVehicleExtra(9, false, 100),
+
+
+            };
+        }
+        else if (serviceVehicleType == ServiceVehicleType.Taxi2)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, true, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(6, true, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+                new DispatchableVehicleExtra(8, false, 100),
+                new DispatchableVehicleExtra(9, false, 100),
+
+
+            };
+        }
+        else if (serviceVehicleType == ServiceVehicleType.Taxi3)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, true, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, true, 100),
+                new DispatchableVehicleExtra(8, false, 100),
+                new DispatchableVehicleExtra(9, true, 100),
+
+
+            };
+        }
+        else if (serviceVehicleType == ServiceVehicleType.Taxi4)
+        {
+            toReturn.VehicleExtras = new List<DispatchableVehicleExtra>() {
+
+                new DispatchableVehicleExtra(2, true, 100),
+                new DispatchableVehicleExtra(5, false, 100),
+                new DispatchableVehicleExtra(6, false, 100),
+                new DispatchableVehicleExtra(7, false, 100),
+                new DispatchableVehicleExtra(8, true, 100),
+                new DispatchableVehicleExtra(9, true, 100),
+
+
+            };
+        }
+
+        SetDefault(toReturn, useOptionalColors, requiredColor, minWantedLevel, maxWantedLevel, -1, -1, "", "");
+        return toReturn;
+    }
+
+
+
+
     public DispatchableVehicle Create_TaxiVivanite(int ambientPercent, int wantedPercent, int liveryID, bool useOptionalColors, ServiceVehicleType serviceVehicleType, int requiredColor, int minWantedLevel, int maxWantedLevel)
     {
         //Extras
