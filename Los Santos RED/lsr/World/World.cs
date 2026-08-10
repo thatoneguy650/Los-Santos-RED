@@ -409,6 +409,9 @@ namespace Mod
         "apa_ch2_04_mansion_private",
         "apa_ch2_04_mansion_railings_p",
         "apa_ch2_04_mansion_grass",
+        "hei_ch1_roads_mansion",
+        "apa_ch2_04_mansion_shared_distantlights",
+        "apa_ch2_04_mansion_shared_lodlights",
         // Richman Mansion
         "m25_2_ch1_06e_mansion_interior_a",
         "hei_ch1_06e_mansion_shared",
@@ -416,12 +419,17 @@ namespace Mod
         "hei_ch1_06e_mansion_private",
         "hei_ch1_06e_mansion_railings_p",
         "hei_ch1_roads_mansion",
+        "hei_ch1_06e_mansion_shared_distantlights",
+        "hei_ch1_06e_mansion_shared_lodlights",
         // Tongva Mansion
         "m25_2_ch1_09_mansion_interior_a",
         "hei_ch1_09_mansion_shared",
         "hei_ch1_09_mansion_private",
         "hei_ch1_09_mansion_railings_p",
-        "m25_2_mansion_props"
+        "m25_2_mansion_props",
+        "hei_ch1_roads_mansion",
+        "hei_ch1_09_mansion_shared_distantlights",
+        "hei_ch1_09_mansion_shared_lodlights"
         };
         private List<string> mansionSPIPLs = new List<string>()
         {
