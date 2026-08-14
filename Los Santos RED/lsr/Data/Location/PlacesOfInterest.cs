@@ -980,7 +980,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(-0.8613806f, 0.3224221f, -0.3925142f),
                 CameraRotation = new Rotator(-23.11103f, 1.531647E-05f, 69.4787f)
             },
-            new Business(new Vector3(-1.963163f, -1442.387f, 30.96308f), 181.27f, "Crack House", "")
+            new Business(new Vector3(-59.29573f, -1530.672f, 34.2352f), 51.10274f, "Crack House", "")
             {
                 FullName = "Strawberry, Crack House",
                 OpenTime = 0,
@@ -991,9 +991,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossibleModItemPayouts = new List<string>() { "Crack" },
                 ModItemPayoutAmount = 130,
                 PayoutFrequency = 7,
-                CameraPosition = new Vector3(0.2900654f, -1447.273f, 32.21395f),
-                CameraDirection = new Vector3(-0.436119f, 0.8543788f, -0.2825546f),
-                CameraRotation = new Rotator(-16.41273f, 8.455397E-06f, 27.04211f)
+                CameraPosition = new Vector3(-60.93146f, -1526.548f, 35.6205f),
+                CameraDirection = new Vector3(0.4076519f, -0.8839706f, -0.2289451f),
+                CameraRotation = new Rotator(-13.23497f, 1.710285E-05f, -155.2427f)
             },
             new Business(new Vector3(721.8885f, -2016.299f, 29.43184f), 263.9777f, "Spank House", "")
             {

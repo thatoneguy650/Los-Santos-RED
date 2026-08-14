@@ -409,7 +409,6 @@ namespace Mod
         "apa_ch2_04_mansion_private",
         "apa_ch2_04_mansion_railings_p",
         "apa_ch2_04_mansion_grass",
-        "hei_ch1_roads_mansion",
         "apa_ch2_04_mansion_shared_distantlights",
         "apa_ch2_04_mansion_shared_lodlights",
         // Richman Mansion
@@ -427,7 +426,6 @@ namespace Mod
         "hei_ch1_09_mansion_private",
         "hei_ch1_09_mansion_railings_p",
         "m25_2_mansion_props",
-        "hei_ch1_roads_mansion",
         "hei_ch1_09_mansion_shared_distantlights",
         "hei_ch1_09_mansion_shared_lodlights"
         };
