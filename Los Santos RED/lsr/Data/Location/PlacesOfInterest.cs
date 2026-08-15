@@ -465,301 +465,566 @@ public class PlacesOfInterest : IPlacesOfInterest
         Businesses = new List<Business>();
 
         Businesses = new List<Business>()
-        {
-            new Business(new Vector3(1437.496f,-1491.862f,63.62201f),163.8885f,"Trap House", "Selling misery since the 80's")
+        {         
+            // Cash Output Locations
+            // Random Businesses
+            // SP
+            new Business(new Vector3(718.3692f, -767.5186f, 24.86592f), 271.1747f, "Chop Shop", "")
             {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 135000,
-                SalesPrice = 60000,
-                FullName = "El Burro Heights, Trap House",
-                PossibleModItemPayouts = new List<string>() { "Marijuana", "Cocaine", "Crack", "Methamphetamine", "Heroin", "SPANK" },
-                ModItemPayoutAmount = 100,
-                CameraPosition = new Vector3(0f, 0f, 0f),
-                CameraDirection = new Vector3(0f, 0f, 0f),
-                CameraRotation = new Rotator(0f, 0f, 0f),
-                CraftingFlag = "DrugLab"
-            },
-            new Business(new Vector3(-699.1762f, -2412.538f, 13.94452f), 56.22367f,"Weed Farm", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 70000,
-                IsOnMPMap = false,
-                FullName = "LSIA, Marijuana Farm",
-                CameraPosition = new Vector3(-704.1312f, -2404.948f, 20.51479f),
-                CameraDirection = new Vector3(0.3770317f, -0.8497775f, -0.3684092f),
-                CameraRotation = new Rotator(-21.61754f, -2.663267E-05f, -156.074f),
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-            },
-            new Business(new Vector3(1138.891f,-322.3859f,67.14568f),10.44588f,"Weed Farm", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 70000,
-                IsOnMPMap = false,
-                FullName = "Mirror Park, Marijuana Lockup",
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-                CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
-                CameraDirection = new Vector3(0.8799238f, -0.3966516f, -0.2615371f),
-                CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f),
-            },
-
-            new Business(new Vector3(489.0005f,-921.6695f,26.37737f),272.7067f,"Document Forgery", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 96500,
-                SalesPrice = 45000,
-                IsOnMPMap = false,
-                FullName = "Mission Row, Counterfeit Factory",
-                PossibleModItemPayouts = new List<string>() { "Drivers License" },
-                ModItemPayoutAmount = 10,
-                CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
-                CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
-                CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f),
-            },
-            new Business(new Vector3(718.3692f,-767.5186f,24.86592f),271.1747f,"Chop Shop", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 346000,
-                SalesPrice = 173000,
-                PayoutMin = 2000,
-                PayoutMax = 5000,
-                PayoutFrequency = 5,
-                IsOnMPMap = false,
                 FullName = "La Mesa, Chop Shop",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 950000,
+                SalesPrice = 475000,
+                PayoutMin = 5000,
+                PayoutMax = 15000,
+                PayoutFrequency = 7,
+                IsOnMPMap = false,
                 CameraPosition = new Vector3(722.9553f, -772.1132f, 27.21863f),
                 CameraDirection = new Vector3(-0.7651124f, 0.5975918f, -0.2397646f),
                 CameraRotation = new Rotator(-13.87265f, -8.794256E-07f, 52.00835f)
             },
-            new Business(new Vector3(2848.69f, 4450.263f, 48.51294f), 109.1559f,"Weed Farm", "")
+            new Business(new Vector3(26.24912f, -1409.279f, 29.44853f), 182.4005f, "Hands On Car Wash", "")
             {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 70000,
-                IsOnMPMap = false,
-                FullName = "Sandy Shores, Weed Farm",
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-                CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
-                CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
-                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f),
-            },
-            new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 730000,
-                SalesPrice = 300000,
-                IsOnMPMap = false,
-                FullName = "Sandy Shores, Meth lab",
-                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
-                ModItemPayoutAmount = 200,
-            },
-            new Business(new Vector3(143.224f, -1656.096f, 29.48878f), 226.5995f,"Meth Lab", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 730000,
-                SalesPrice = 300000,
-                IsOnMPMap = false,
-                FullName = "Davis, meth lab",
-                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
-                ModItemPayoutAmount = 200,
-            },
-            new Business(new Vector3(298.715f, -758.941f, 29.39268f), 250.9668f,"Document Forgery", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 96500,
-                SalesPrice = 45000,
-                IsOnMPMap = false,
-                FullName = "Textile City, Document Forgery",
-                PossibleModItemPayouts = new List<string>() { "Drivers License" },
-                ModItemPayoutAmount = 10,
-                CameraPosition = new Vector3(315.1307f, -765.52f, 35.17923f),
-                CameraDirection = new Vector3(-0.9482352f, 0.316846f, -0.02141672f),
-                CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f),
-            },
-            new Business(new Vector3(-288.3814f, 6299.165f, 31.49225f), 44.36363f,"Cocaine Lockup", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 800000,
-                SalesPrice = 320000,
-                IsOnMPMap = false,
-                FullName = "Paleto Bay, Cocaine Lockup",
-                PossibleModItemPayouts = new List<string>() { "Cocaine" },
-                ModItemPayoutAmount = 200,
-            },
-            new Business(new Vector3(26.24912f,-1409.279f,29.44853f),182.4005f,"Hands On Car Wash", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 146000,
-                SalesPrice = 65000,
-                PayoutMin = 1000,
-                PayoutMax = 2500,
-                PayoutFrequency = 5,
-                IsOnMPMap = false,
                 FullName = "Strawberry, Hands On Car Wash",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 280000,
+                SalesPrice = 140000,
+                PayoutMin = 800,
+                PayoutMax = 2200,
+                PayoutFrequency = 7,
+                IsOnMPMap = false,
                 CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
                 CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
-                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f),
+                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f)
             },
-
-
-            //MP Map GARBAGE , should be thrown into a fucking volcano
-            new Business(new Vector3(-699.1762f, -2412.538f, 13.94452f), 56.22367f,"Weed Farm", "")
+            // MP
+            new Business(new Vector3(718.3692f, -767.5186f, 24.86592f), 271.1747f, "Chop Shop", "")
             {
+                FullName = "La Mesa, Chop Shop",
                 OpenTime = 0,
                 CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 90000,
+                InteriorID = 252673,
+                PurchasePrice = 950000,
+                SalesPrice = 475000,
+                PayoutMin = 5000,
+                PayoutMax = 15000,
+                PayoutFrequency = 7,
                 IsOnSPMap = false,
-                FullName = "LSIA, Marijuana Farm",
-                CameraPosition = new Vector3(-704.1312f, -2404.948f, 20.51479f),
-                CameraDirection = new Vector3(0.3770317f, -0.8497775f, -0.3684092f),
-                CameraRotation = new Rotator(-21.61754f, -2.663267E-05f, -156.074f),
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-                InteriorID = 247297,
-            },
-            new Business(new Vector3(1138.891f,-322.3859f,67.14568f),10.44588f,"Weed Farm", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 70000,
-                IsOnSPMap = false,
-                FullName = "Mirror Park, Marijuana Lockup",
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-                CameraPosition = new Vector3(1124.133f, -315.3037f, 73.32565f),
-                CameraDirection = new Vector3(0.8799238f, -0.3966516f, -0.2615371f),
-                CameraRotation = new Rotator(-15.16129f, -1.901809E-05f, -114.2649f),
-                InteriorID = 247297,
-            },
-            new Business(new Vector3(489.0005f,-921.6695f,26.37737f),272.7067f,"Document Forgery", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 96500,
-                SalesPrice = 45000,
-                IsOnSPMap = false,
-                FullName = "Mission Row, Counterfeit Factory",
-                PossibleModItemPayouts = new List<string>() { "Drivers License" },
-                ModItemPayoutAmount = 10,
-                CameraPosition = new Vector3(513.5526f, -920.3093f, 42.97589f),
-                CameraDirection = new Vector3(-0.9496481f, -0.02304305f, -0.3124701f),
-                CameraRotation = new Rotator(-18.20815f, 5.083711E-06f, 91.39f),
-                InteriorID = 246785,
-            },
-            new Business(new Vector3(718.3692f,-767.5186f,24.86592f),271.1747f,"Chop Shop", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 346000,
-                SalesPrice = 173000,
-                PayoutMin = 2000,
-                PayoutMax = 5000,
-                PayoutFrequency = 5,
-                IsOnSPMap = false,
-                FullName = "Strawberry, Chop Shop",
                 CameraPosition = new Vector3(722.9553f, -772.1132f, 27.21863f),
                 CameraDirection = new Vector3(-0.7651124f, 0.5975918f, -0.2397646f),
-                CameraRotation = new Rotator(-13.87265f, -8.794256E-07f, 52.00835f),
-                InteriorID = 252673,
+                CameraRotation = new Rotator(-13.87265f, -8.794256E-07f, 52.00835f)
             },
-            new Business(new Vector3(2848.69f, 4450.263f, 48.51294f), 109.1559f,"Weed Farm", "")
+            new Business(new Vector3(26.24912f, -1409.279f, 29.44853f), 182.4005f, "Hands On Car Wash", "")
             {
+                FullName = "Strawberry, Hands On Car Wash",
                 OpenTime = 0,
                 CloseTime = 24,
-                PurchasePrice = 150000,
-                SalesPrice = 70000,
+                InteriorID = 298497,
+                PurchasePrice = 280000,
+                SalesPrice = 140000,
+                PayoutMin = 800,
+                PayoutMax = 2200,
+                PayoutFrequency = 7,
                 IsOnSPMap = false,
-                FullName = "Sandy Shores, Weed Farm",
-                PossibleModItemPayouts = new List<string>() { "Marijuana" },
-                ModItemPayoutAmount = 200,
-                CameraPosition = new Vector3(2827.245f, 4443.401f, 62.79689f),
-                CameraDirection = new Vector3(0.8953656f, 0.292662f, -0.3356626f),
-                CameraRotation = new Rotator(-19.61284f, -4.531792E-07f, -71.89934f),
-                InteriorID = 247297,
+                CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
+                CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
+                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f)
             },
-            new Business(new Vector3(201.6389f, 2462.551f, 55.90598f), 200.5553f,"Meth lab", "")
+
+            // Forgery Locations
+            // What is the point of these....
+            // SP
+            new Business(new Vector3(-822.5889f, -1099.328f, 11.15491f), 300.789f,"Document Forgery", "")
             {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 730000,
-                SalesPrice = 300000,
-                IsOnSPMap = false,
-                FullName = "Sandy Shores, Meth lab",
-                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
-                ModItemPayoutAmount = 200,
-                InteriorID = 247041,
-            },
-            new Business(new Vector3(143.224f, -1656.096f, 29.48878f), 226.5995f,"Meth Lab", "")
-            {
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 730000,
-                SalesPrice = 300000,
-                IsOnSPMap = false,
-                FullName = "Davis, meth lab",
-                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
-                ModItemPayoutAmount = 200,
-                InteriorID = 247041,
-            },
-            new Business(new Vector3(298.715f, -758.941f, 29.39268f), 250.9668f,"Document Forgery", "")
-            {
+                FullName = "Vespucci Canals, Document Forgery",
                 OpenTime = 0,
                 CloseTime = 24,
                 PurchasePrice = 96500,
                 SalesPrice = 45000,
-                IsOnSPMap = false,
-                FullName = "Textile City, Document Forgery",
+                IsOnMPMap = false,              
                 PossibleModItemPayouts = new List<string>() { "Drivers License" },
                 ModItemPayoutAmount = 10,
-                CameraPosition = new Vector3(315.1307f, -765.52f, 35.17923f),
-                CameraDirection = new Vector3(-0.9482352f, 0.316846f, -0.02141672f),
-                CameraRotation = new Rotator(-1.227182f, 8.539695E-06f, 71.52332f),
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-818.3562f, -1097.514f, 13.12393f),
+                CameraDirection = new Vector3(-0.9562664f, -0.1780141f, -0.2320896f),
+                CameraRotation = new Rotator(-13.42013f, 1.097176E-05f, 100.5452f)
+            },
+            new Business(new Vector3(-182.8013f, 219.7721f, 88.80391f), 177.3187f,"Document Forgery", "")
+            {
+                FullName = "West Vinewood, Document Forgery",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 96500,
+                SalesPrice = 45000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Drivers License" },
+                ModItemPayoutAmount = 10,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-188.1812f, 214.5902f, 90.77222f),
+                CameraDirection = new Vector3(0.6676412f, 0.7240129f, -0.17338f),
+                CameraRotation = new Rotator(-9.984396f, 1.300354E-06f, -42.68039f)
+            },
+            // MP
+            new Business(new Vector3(-822.5889f, -1099.328f, 11.15491f), 300.789f,"Document Forgery", "")
+            {
+                FullName = "Vespucci Canals, Document Forgery",
+                OpenTime = 0,
+                CloseTime = 24,
                 InteriorID = 246785,
+                PurchasePrice = 96500,
+                SalesPrice = 45000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Drivers License" },
+                ModItemPayoutAmount = 10,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-818.3562f, -1097.514f, 13.12393f),
+                CameraDirection = new Vector3(-0.9562664f, -0.1780141f, -0.2320896f),
+                CameraRotation = new Rotator(-13.42013f, 1.097176E-05f, 100.5452f)
             },
-            new Business(new Vector3(-288.3814f, 6299.165f, 31.49225f), 44.36363f,"Cocaine Lockup", "")
+            new Business(new Vector3(-182.8013f, 219.7721f, 88.80391f), 177.3187f,"Document Forgery", "")
             {
+                FullName = "West Vinewood, Document Forgery",
                 OpenTime = 0,
                 CloseTime = 24,
-                PurchasePrice = 800000,
-                SalesPrice = 320000,
+                InteriorID = 246785,
+                PurchasePrice = 96500,
+                SalesPrice = 45000,
                 IsOnSPMap = false,
-                FullName = "Paleto Bay, Cocaine Lockup",
+                PossibleModItemPayouts = new List<string>() { "Drivers License" },
+                ModItemPayoutAmount = 10,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-188.1812f, 214.5902f, 90.77222f),
+                CameraDirection = new Vector3(0.6676412f, 0.7240129f, -0.17338f),
+                CameraRotation = new Rotator(-9.984396f, 1.300354E-06f, -42.68039f)
+            },
+
+
+
+            // Drug Output Locations
+
+            // Marijuana Farms
+            // SP
+            new Business(new Vector3(140.8631f, -1983.233f, 18.32125f), 232.1814f, "Marijuana Farm", "")
+            {
+                FullName = "Davis, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1450000,
+                SalesPrice = 725000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(141.8321f, -1987.301f, 19.60561f),
+                CameraDirection = new Vector3(-0.3122545f, 0.9256482f, -0.2137113f),
+                CameraRotation = new Rotator(-12.33993f, 7.4287E-06f, 18.6411f)
+            },
+            new Business(new Vector3(2521.533f, 4124.379f, 38.63076f), 61.95085f,"Marijuana Farm", "")
+            {
+                FullName = "Grapeseed, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1250000,
+                SalesPrice = 625000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(2518.316f, 4130.418f, 41.2044f),
+                CameraDirection = new Vector3(0.4706378f, -0.8105382f, -0.3486085f),
+                CameraRotation = new Rotator(-20.40223f, -5.465501E-06f, -149.8585f)
+            },
+            new Business(new Vector3(747.7368f, -1214.981f, 24.74812f), 269.0554f,"Marijuana Farm", "")
+            {
+                FullName = "La Mesa, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1350000,
+                SalesPrice = 650000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(755.5076f, -1219.065f, 28.07484f),
+                CameraDirection = new Vector3(-0.7550827f, 0.6050696f, -0.2524696f),
+                CameraRotation = new Rotator(-14.6237f, -8.823578E-06f, 51.2938f)
+            },
+            new Business(new Vector3(-699.1762f, -2412.538f, 13.94452f), 56.22367f,"Marijuana Farm", "")
+            {
+                FullName = "LSIA, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1450000,
+                SalesPrice = 725000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-704.1312f, -2404.948f, 20.51479f),
+                CameraDirection = new Vector3(0.3770317f, -0.8497775f, -0.3684092f),
+                CameraRotation = new Rotator(-21.61754f, -2.663267E-05f, -156.074f)
+            },
+
+            // MP
+            new Business(new Vector3(140.8631f, -1983.233f, 18.32125f), 232.1814f, "Marijuana Farm", "")
+            {
+                FullName = "Davis, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247297,
+                PurchasePrice = 1450000,
+                SalesPrice = 725000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(141.8321f, -1987.301f, 19.60561f),
+                CameraDirection = new Vector3(-0.3122545f, 0.9256482f, -0.2137113f),
+                CameraRotation = new Rotator(-12.33993f, 7.4287E-06f, 18.6411f)
+            },
+            new Business(new Vector3(2521.533f, 4124.379f, 38.63076f), 61.95085f, "Marijuana Farm", "")
+            {
+                FullName = "Grapeseed, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247297,
+                PurchasePrice = 1250000,
+                SalesPrice = 625000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(2518.316f, 4130.418f, 41.2044f),
+                CameraDirection = new Vector3(0.4706378f, -0.8105382f, -0.3486085f),
+                CameraRotation = new Rotator(-20.40223f, -5.465501E-06f, -149.8585f)
+            },
+            new Business(new Vector3(747.7368f, -1214.981f, 24.74812f), 269.0554f,"Marijuana Farm", "")
+            {
+                FullName = "La Mesa, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247297,
+                PurchasePrice = 1350000,
+                SalesPrice = 650000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(755.5076f, -1219.065f, 28.07484f),
+                CameraDirection = new Vector3(-0.7550827f, 0.6050696f, -0.2524696f),
+                CameraRotation = new Rotator(-14.6237f, -8.823578E-06f, 51.2938f)
+            },
+            new Business(new Vector3(-699.1762f, -2412.538f, 13.94452f), 56.22367f, "Marijuana Farm", "")
+            {
+                FullName = "LSIA, Marijuana Farm",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247297,
+                PurchasePrice = 1450000,
+                SalesPrice = 725000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 2500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-704.1312f, -2404.948f, 20.51479f),
+                CameraDirection = new Vector3(0.3770317f, -0.8497775f, -0.3684092f),
+                CameraRotation = new Rotator(-21.61754f, -2.663267E-05f, -156.074f)
+            },
+
+            // Meth Lab Locations
+            // SP
+            new Business(new Vector3(1194.241f, -1248.233f, 35.36439f), 268.6973f,"Meth Lab", "")
+            {
+                FullName = "Murrieta Heights, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247041,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1198.929f, -1251.184f, 37.71561f),
+                CameraDirection = new Vector3(-0.8458744f, 0.4599758f, -0.2700347f),
+                CameraRotation = new Rotator(-15.66633f, 0f, 61.46321f)
+            },
+            new Business(new Vector3(2905.576f, 4406.824f, 50.28793f), 294.1044f,"Meth Lab", "")
+            {
+                FullName = "San Chianski Mountain Range, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(2911.499f, 4405.573f, 52.4704f),
+                CameraDirection = new Vector3(-0.9473948f, 0.1730992f, -0.2692207f),
+                CameraRotation = new Rotator(-15.6179f, 8.865047E-07f, 79.64566f)
+            },
+            new Business(new Vector3(-570.3602f, 311.1015f, 84.4906f), 355.6609f,"Meth Lab", "")
+            {
+                FullName = "West Vinewood, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-567.6677f, 313.7431f, 86.11723f),
+                CameraDirection = new Vector3(-0.5921869f, -0.767436f, -0.2456758f),
+                CameraRotation = new Rotator(-14.22177f, 0f, 142.3447f)
+            },
+
+            // MP
+            new Business(new Vector3(1194.241f, -1248.233f, 35.36439f), 268.6973f,"Meth Lab", "")
+            {
+                FullName = "Murrieta Heights, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247041,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1198.929f, -1251.184f, 37.71561f),
+                CameraDirection = new Vector3(-0.8458744f, 0.4599758f, -0.2700347f),
+                CameraRotation = new Rotator(-15.66633f, 0f, 61.46321f)
+            },
+            new Business(new Vector3(2905.576f, 4406.824f, 50.28793f), 294.1044f,"Meth Lab", "")
+            {
+                FullName = "San Chianski Mountain Range, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247041,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(2911.499f, 4405.573f, 52.4704f),
+                CameraDirection = new Vector3(-0.9473948f, 0.1730992f, -0.2692207f),
+                CameraRotation = new Rotator(-15.6179f, 8.865047E-07f, 79.64566f)
+            },
+            new Business(new Vector3(-570.3602f, 311.1015f, 84.4906f), 355.6609f,"Meth Lab", "")
+            {
+                FullName = "West Vinewood, Meth Lab",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247041,
+                PurchasePrice = 910000,
+                SalesPrice = 455000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 1500,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-567.6677f, 313.7431f, 86.11723f),
+                CameraDirection = new Vector3(-0.5921869f, -0.767436f, -0.2456758f),
+                CameraRotation = new Rotator(-14.22177f, 0f, 142.3447f)
+            },
+
+
+            // Cocaine Lab Locations
+            // SP
+            new Business(new Vector3(-1471.821f, -920.312f, 10.02519f), 230.4427f, "Cocaine Factory", "")
+            {
+                FullName = "Del Perro, Cocaine Factory",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnMPMap = false,
                 PossibleModItemPayouts = new List<string>() { "Cocaine" },
-                ModItemPayoutAmount = 200,
-                InteriorID = 247553,
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1467.46f, -919.5157f, 11.45784f),
+                CameraDirection = new Vector3(-0.9682435f, 0.02352471f, -0.2488998f),
+                CameraRotation = new Rotator(-14.41242f, -8.319303E-06f, 88.6082f)
             },
-            new Business(new Vector3(26.24912f,-1409.279f,29.44853f),182.4005f,"Hands On Car Wash", "")
+            new Business(new Vector3(51.32673f, -2571.335f, 6.004593f), 0.2976117f, "Cocaine Factory", "")
             {
+                FullName = "Elysian Island, Cocaine Factory",
                 OpenTime = 0,
                 CloseTime = 24,
-                PurchasePrice = 146000,
-                SalesPrice = 66000,
-                PayoutMin = 1000,
-                PayoutMax = 2500,
-                PayoutFrequency = 5,
-                IsOnSPMap = false,
-                FullName = "Strawberry, Hands On Car Wash",
-                CameraPosition = new Vector3(-3.404628f, -1414.432f, 35.67281f),
-                CameraDirection = new Vector3(0.8998004f, 0.4036007f, -0.1657277f),
-                CameraRotation = new Rotator(-9.539512f, -1.731491E-06f, -65.84164f),
-                InteriorID = 298497,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(48.38601f, -2567.047f, 8.452159f),
+                CameraDirection = new Vector3(0.4695583f, -0.848988f, -0.2423517f),
+                CameraRotation = new Rotator(-14.02538f, -1.056009E-05f, -151.0539f)
             },
+            new Business(new Vector3(-341.9786f, 6065.678f, 31.50732f), 312.4756f, "Cocaine Factory", "")
+            {
+                FullName = "Paleto Bay, Cocaine Factory",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnMPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-337.6012f, 6066.335f, 32.87599f),
+                CameraDirection = new Vector3(-0.9418502f, -0.1705141f, -0.2895566f),
+                CameraRotation = new Rotator(-16.83141f, -1.114982E-06f, 100.2618f)
+            },
+
+            // MP
+            new Business(new Vector3(-1471.821f, -920.312f, 10.02519f), 230.4427f, "Cocaine Factory", "")
+            {
+                FullName = "Del Perro, Cocaine Factory",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247553,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1467.46f, -919.5157f, 11.45784f),
+                CameraDirection = new Vector3(-0.9682435f, 0.02352471f, -0.2488998f),
+                CameraRotation = new Rotator(-14.41242f, -8.319303E-06f, 88.6082f)
+            },
+            new Business(new Vector3(51.32673f, -2571.335f, 6.004593f), 0.2976117f, "Cocaine Factory", "")
+            {
+                FullName = "Elysian Island, Cocaine Factory",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247553,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(48.38601f, -2567.047f, 8.452159f),
+                CameraDirection = new Vector3(0.4695583f, -0.848988f, -0.2423517f),
+                CameraRotation = new Rotator(-14.02538f, -1.056009E-05f, -151.0539f)
+            },
+            new Business(new Vector3(-341.9786f, 6065.678f, 31.50732f), 312.4756f, "Cocaine Factory", "")
+            {
+                FullName = "Paleto Bay, Cocaine Factory",
+                OpenTime = 0,
+                CloseTime = 24,
+                InteriorID = 247553,
+                PurchasePrice = 1650000,
+                SalesPrice = 825000,
+                IsOnSPMap = false,
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 1200,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-337.6012f, 6066.335f, 32.87599f),
+                CameraDirection = new Vector3(-0.9418502f, -0.1705141f, -0.2895566f),
+                CameraRotation = new Rotator(-16.83141f, -1.114982E-06f, 100.2618f)
+            },
+
+
+            // Trap Houses
+            // Entry lvl business ownership, low cost, low output
+            // No Interiors - for now...
+            new Business(new Vector3(166.6181f, 2229.331f, 90.75507f), 53.85284f, "Meth House", "")
+            {
+                FullName = "Grand Senora Desert, Meth House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 90000,
+                SalesPrice = 45000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 140,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(162.5851f, 2241.448f, 93.88857f),
+                CameraDirection = new Vector3(0.3424095f, -0.9239209f, -0.1706633f),
+                CameraRotation = new Rotator(-9.826386f, 4.549049E-06f, -159.6651f)
+            },
+            new Business(new Vector3(65.44521f, 6662.548f, 31.78686f), 328.2891f, "Heroin House", "")
+            {
+                FullName = "Paleto Bay, Heroin House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 100000,
+                SalesPrice = 48000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Heroin" },
+                ModItemPayoutAmount = 95,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(72.0151f, 6669.055f, 35.08036f),
+                CameraDirection = new Vector3(-0.6934528f, -0.6359544f, -0.338652f),
+                CameraRotation = new Rotator(-19.79477f, -3.175864E-05f, 132.5234f)
+            },
+            new Business(new Vector3(-1131.32f, -981.0688f, 2.150195f), 211.455f, "Coke House", "")
+            {
+                FullName = "Vespucci Canals, Coke House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 125000,
+                SalesPrice = 55000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 110,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1125.437f, -982.5558f, 4.765129f),
+                CameraDirection = new Vector3(-0.8613806f, 0.3224221f, -0.3925142f),
+                CameraRotation = new Rotator(-23.11103f, 1.531647E-05f, 69.4787f)
+            },
+            new Business(new Vector3(-59.29573f, -1530.672f, 34.2352f), 51.10274f, "Crack House", "")
+            {
+                FullName = "Strawberry, Crack House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 80000,
+                SalesPrice = 38000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Crack" },
+                ModItemPayoutAmount = 130,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-60.93146f, -1526.548f, 35.6205f),
+                CameraDirection = new Vector3(0.4076519f, -0.8839706f, -0.2289451f),
+                CameraRotation = new Rotator(-13.23497f, 1.710285E-05f, -155.2427f)
+            },
+            new Business(new Vector3(721.8885f, -2016.299f, 29.43184f), 263.9777f, "Spank House", "")
+            {
+                FullName = "Cypress Flats, Spank House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 85000,
+                SalesPrice = 40000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "SPANK" },
+                ModItemPayoutAmount = 120,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(725.4429f, -2019.444f, 31.12762f),
+                CameraDirection = new Vector3(-0.7428212f, 0.6283983f, -0.2309379f),
+                CameraRotation = new Rotator(-13.35229f, 2.193734E-06f, 49.77006f)
+            },
+            new Business(new Vector3(1654.869f, 4862.137f, 41.99331f), 278.5673f, "Grow House", "")
+            {
+                FullName = "Grapeseed, Grow House",
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 65000,
+                SalesPrice = 30000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 250,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1657.02f, 4865.193f, 43.39472f),
+                CameraDirection = new Vector3(-0.6561275f, -0.7227788f, -0.2169967f),
+                CameraRotation = new Rotator(-12.5327f, -3.935761E-06f, 137.7673f)
+            }
         };
     }
     private void DefaultConfig_TattooShops()
