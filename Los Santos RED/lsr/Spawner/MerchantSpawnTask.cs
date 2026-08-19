@@ -183,9 +183,9 @@ public class MerchantSpawnTask : SpawnTask
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
     }
-    public override void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation)
+    public override void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation, Interior interior)
     {
-        base.PostRun(conditionalLocation, gameLocation);
+        base.PostRun(conditionalLocation, gameLocation, interior);
         if(gameLocation == null)
         {
             return;

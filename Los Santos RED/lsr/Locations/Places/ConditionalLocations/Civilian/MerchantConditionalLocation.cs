@@ -34,7 +34,7 @@ public class MerchantConditionalLocation : ConditionalLocation
             //merchantSpawnTask.ClearVehicleArea = true;
             //merchantSpawnTask.PlacePedOnGround = true;
             merchantSpawnTask.AttemptSpawn();
-            merchantSpawnTask.PostRun(this, GameLocation);
+            merchantSpawnTask.PostRun(this, GameLocation, Interior);
         }
         catch (Exception ex)
         {

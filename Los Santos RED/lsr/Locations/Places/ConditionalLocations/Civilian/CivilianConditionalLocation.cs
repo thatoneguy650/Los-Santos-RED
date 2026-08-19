@@ -34,7 +34,7 @@ public class CivilianConditionalLocation : ConditionalLocation
             civilianSpawnTask.AllowBuddySpawn = false;
             civilianSpawnTask.SpawnRequirement = TaskRequirements;
             civilianSpawnTask.AttemptSpawn();
-            civilianSpawnTask.PostRun(this, GameLocation);
+            civilianSpawnTask.PostRun(this, GameLocation, Interior);
             //civilianSpawnTask.CreatedPeople.ForEach(x => { x.EnableAutoCleanup = true; });
         }
         catch (Exception ex)

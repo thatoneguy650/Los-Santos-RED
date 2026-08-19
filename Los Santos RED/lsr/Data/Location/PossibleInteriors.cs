@@ -19,6 +19,7 @@ public class PossibleInteriors
     public List<ClothingShopInterior> ClothingShopInteriors { get; private set; } = new List<ClothingShopInterior>();
 
     public List<BusinessInterior> BusinessInteriors { get; set; } = new List<BusinessInterior>();
+    public List<GamblingDenInterior> GamblingDenInteriors { get; private set; } = new List<GamblingDenInterior>();
     public List<Interior> AllInteriors()
     {
         List<Interior> Allinteriors = new List<Interior>();
@@ -29,6 +30,7 @@ public class PossibleInteriors
         Allinteriors.AddRange(BarberShopInteriors);
         Allinteriors.AddRange(ClothingShopInteriors);
         Allinteriors.AddRange(BusinessInteriors);
+        Allinteriors.AddRange(GamblingDenInteriors);
         return Allinteriors;
     }
 }

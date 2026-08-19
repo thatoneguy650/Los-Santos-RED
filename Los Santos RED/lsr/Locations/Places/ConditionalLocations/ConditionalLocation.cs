@@ -40,6 +40,7 @@ public class ConditionalLocation
     protected string MasterAssociationID;
     protected bool IsPerson;
     protected GameLocation GameLocation;
+    protected Interior Interior;
     protected IDispatchablePeople DispatchablePeople;
     protected IDispatchableVehicles DispatchableVehicles;
 
@@ -111,7 +112,7 @@ public class ConditionalLocation
     //}
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, 
         IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time,
-        IModItems modItems, GameLocation gameLocation, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles)
+        IModItems modItems, GameLocation gameLocation, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles, Interior interior)
     {
         Player = player;
         IsPerson = isPerson;
@@ -132,6 +133,7 @@ public class ConditionalLocation
         Time = time;
         ModItems = modItems;
         GameLocation = gameLocation;
+        Interior = interior;
         DispatchablePeople = dispatchablePeople;
         DispatchableVehicles = dispatchableVehicles;
         AttemptedSpawn = DetermineRun(force);
@@ -147,7 +149,7 @@ public class ConditionalLocation
 
     public virtual void ForceSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings,
     IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time,
-    IModItems modItems, GameLocation gameLocation)
+    IModItems modItems, GameLocation gameLocation, Interior interior)
     {
         Player = player;
         IsPerson = isPerson;
@@ -168,6 +170,7 @@ public class ConditionalLocation
         Time = time;
         ModItems = modItems;
         GameLocation = gameLocation;
+        Interior = interior;
         GenerateSpawnLocation();
         GetDispatchableGenerator();
 

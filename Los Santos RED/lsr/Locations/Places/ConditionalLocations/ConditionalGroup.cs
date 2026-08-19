@@ -30,6 +30,7 @@ public class ConditionalGroup
     protected DispatchablePerson DispatchablePerson;
     protected DispatchableVehicle DispatchableVehicle;
     protected GameLocation GameLocation;
+    protected Interior Interior;
     private IDispatchablePeople DispatchablePeople;
     private IDispatchableVehicles DispatchableVehicles;
 
@@ -48,7 +49,7 @@ public class ConditionalGroup
     public bool AttemptedSpawn { get; private set; }
     public virtual void AttemptSpawn(IDispatchable player, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, 
         IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems,
-        GameLocation gameLocation, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles)
+        GameLocation gameLocation, IDispatchablePeople dispatchablePeople, IDispatchableVehicles dispatchableVehicles, Interior interior)
     {
         Player = player;
         Agencies = agencies;
@@ -67,6 +68,7 @@ public class ConditionalGroup
         Time = time;
         ModItems = modItems;
         GameLocation = gameLocation;
+        Interior = interior;
         DispatchablePeople = dispatchablePeople;
         DispatchableVehicles = dispatchableVehicles;
         AttemptedSpawn = DetermineRun();
@@ -78,7 +80,7 @@ public class ConditionalGroup
         {
             foreach (ConditionalLocation cl in PossiblePedSpawns)
             {
-                cl.AttemptSpawn(Player, true, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, masterAssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, GameLocation, DispatchablePeople, DispatchableVehicles);
+                cl.AttemptSpawn(Player, true, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, masterAssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, GameLocation, DispatchablePeople, DispatchableVehicles, Interior);
                 GameFiber.Yield();
             }
         }
@@ -87,7 +89,7 @@ public class ConditionalGroup
         {
             foreach (ConditionalLocation cl in PossibleVehicleSpawns)
             {
-                cl.AttemptSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, masterAssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, GameLocation, DispatchablePeople, DispatchableVehicles);
+                cl.AttemptSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, masterAssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, GameLocation, DispatchablePeople, DispatchableVehicles, Interior);
                 GameFiber.Yield();
             }
         }

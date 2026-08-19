@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 public class WorldSettings : ISettingsDefaultable
 {
+
+    [Description("If enabled the MP map will be auto loaded before LSR starts")]
+    public bool AutoLoadMPMap { get; set; }
+
     [Description("Updates vehicle plates for the given state, plate style, and number format given in PlateTypes.xml.")]
     public bool UpdateVehiclePlates { get; set; }
     [Description("Percentage of vehicles that will get a plate type to match your current state (if not San Andreas).")]
@@ -92,6 +96,8 @@ public class WorldSettings : ISettingsDefaultable
     public bool ExtendedVehicleCleanup { get;  set; }
     public bool SuppressFEJVehiclesFromGenerators { get; set; }
     public bool SetMissionFlagOn { get; set; }
+
+
     //public int MaxPedsBeforeDispatchPause { get; set; }
     //public int MaxVehiclesBeforeDispatchPause { get; set; }
 
@@ -107,6 +113,7 @@ public class WorldSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        AutoLoadMPMap = true;
         UpdateVehiclePlates = true;
         CleanupVehicles = true;
         ReplaceVanillaShopKeepers = true;

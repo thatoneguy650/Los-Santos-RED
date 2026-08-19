@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Mod;
 using Rage;
 using System;
@@ -60,6 +61,60 @@ public class LocationDispatcher
         DispatchablePeople = dispatchablePeople;
         DispatchableVehicles = dispatchableVehicles;
     }
+
+
+    public void DispatchInterior(Interior interior)
+    {
+        if (interior.PossibleGroupSpawns != null)
+        {
+            foreach (ConditionalGroup cg in interior.PossibleGroupSpawns)
+            {
+                EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {interior.Name}");
+                cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, interior.GameLocation.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus,
+                    WeatherReporter, Time, ModItems, interior.GameLocation, DispatchablePeople, DispatchableVehicles, interior);
+                GameFiber.Yield();
+            }
+        }
+        if (interior.PossiblePedSpawns != null)
+        {
+            foreach (ConditionalLocation cl in interior.PossiblePedSpawns)
+            {
+                EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {interior.Name}");
+                cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, interior.GameLocation.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus,
+                    WeatherReporter, Time, ModItems, interior.GameLocation, DispatchablePeople, DispatchableVehicles, interior);
+                GameFiber.Yield();
+            }
+        }
+        if (interior.PossibleVehicleSpawns != null)
+        {
+            foreach (ConditionalLocation cl in interior.PossibleVehicleSpawns)
+            {
+                EntryPoint.WriteToConsole($"ATTEMPTING VEHICLE SPAWN AT {interior.Name} {interior.GameLocation.AssociationID}");
+
+
+                cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, interior.GameLocation.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus,
+                    WeatherReporter, Time, ModItems, interior.GameLocation, DispatchablePeople, DispatchableVehicles,interior);
+                GameFiber.Yield();
+            }
+        }
+        interior.IsDispatchFilled = true;
+        GameFiber.Yield();
+    }
+    public void RecallInterior(Interior interior)
+    {
+        
+        foreach(PedExt pedExt in interior.LocationSpawnedPedExts)
+        {
+            pedExt.FullyDelete();
+        }
+        foreach (VehicleExt vehicleExt in interior.LocationSpawnedVehicleExts)
+        {
+            vehicleExt.FullyDelete();
+        }
+        interior.IsDispatchFilled = false;
+    }
+
+
     public void Dispatch()
     {
         foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossibleGroupSpawns != null || x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
@@ -70,7 +125,7 @@ public class LocationDispatcher
                 {
                     EntryPoint.WriteToConsole($"ATTEMPTING GROUP SPAWN AT {ps.Name}");
                     cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, 
-                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles, null);
                     GameFiber.Yield();
                 }
             }
@@ -84,7 +139,7 @@ public class LocationDispatcher
                 {
                     EntryPoint.WriteToConsole($"ATTEMPTING PED SPAWN AT {ps.Name}");
                     cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus,
-                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles, null);
                     GameFiber.Yield();
                 }
             }
@@ -100,7 +155,7 @@ public class LocationDispatcher
 
 
                     cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, 
-                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles);
+                        WeatherReporter, Time, ModItems, ps, DispatchablePeople, DispatchableVehicles,null);
                     GameFiber.Yield();
                 }
             }
@@ -182,7 +237,7 @@ public class LocationDispatcher
                 return;
             }
             cl.SetVehicle(selected);
-            cl.ForceSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World,ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps);
+            cl.ForceSpawn(Player, false, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World,ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, ps, null);
             GameFiber.Yield();
             priorityList.Remove(selected);
         }
@@ -209,7 +264,7 @@ public class LocationDispatcher
             }
             cl.SetVehicle(selected);
 
-            cl.ForceSpawn(Player, true, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, agency.ID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, null);
+            cl.ForceSpawn(Player, true, true, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, agency.ID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems, null, null);
             GameFiber.Yield();
             //priorityList.Remove(selected);
             spawns++;

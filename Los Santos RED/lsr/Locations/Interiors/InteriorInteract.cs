@@ -24,6 +24,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(DisplayInteract))]
 [XmlInclude(typeof(AudioEmitterInteract))]
 [XmlInclude(typeof(TryOnInteract))]
+[XmlInclude(typeof(GamblingInteract))]
 //UrinalInteract
 //ToiletInteract
 public class InteriorInteract
@@ -360,6 +361,20 @@ public class InteriorInteract
         }
         return isInPosition;
     }
+
+
+    public void MoveToPositionWithoutWaiting(float speed)
+    {
+        if (UseNavmesh)
+        {
+            NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, speed, -1, 0.1f, 0, Heading);
+        }
+        else
+        {
+            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, speed, 5000, Heading, 0.5f);
+        }
+    }
+
 
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {

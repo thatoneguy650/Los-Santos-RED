@@ -2093,6 +2093,30 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 OpenTime = 18,
                 CloseTime = 4,
+                IsOnMPMap = false, 
+                AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
+                CameraPosition = new Vector3(-338.0188f, 40.86187f, 81.43283f),
+                CameraDirection = new Vector3(-0.3936391f, 0.8768913f, -0.2758803f),
+                CameraRotation = new Rotator(-16.01448f, 1.154718E-05f, 24.17545f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-357.4808f, 88.34515f, 70.52021f), 326.8036f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                    new GangConditionalLocation(new Vector3(-353.4513f, 109.2422f, 66.49493f), 322.5599f, 40f) { AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-345.571f, 107.8305f, 66.68494f), 182.9895f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_GAMBETTI"},
+                },
+            },
+            new GamblingDen(new Vector3(-358.2999f, 91.13467f, 70.5202f), 267.5716f,"The Hush Casino","We'll take care of you Win or Lose!")// Gambetti Casino, decnet condo
+            {
+                GamblingParameters = GetParameters(2),
+                WinLimit = 35000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                IsOnSPMap = false,
+                InteriorID = 29926520,
                 AssignedAssociationID = "AMBIENT_GANG_GAMBETTI",
                 CameraPosition = new Vector3(-338.0188f, 40.86187f, 81.43283f),
                 CameraDirection = new Vector3(-0.3936391f, 0.8768913f, -0.2758803f),

@@ -345,7 +345,7 @@ public class Dispatcher
         TaxiDispatcher.ForceTaxiSpawn(taxifirmID);
     }
 
-    public PedExt SpawnCivilian(SpawnLocation SpawnLocation, DispatchableVehicle DispatchableVehicle, DispatchablePerson DispatchablePerson, GameLocation GameLocation)
+    public PedExt SpawnCivilian(SpawnLocation SpawnLocation, DispatchableVehicle DispatchableVehicle, DispatchablePerson DispatchablePerson, GameLocation GameLocation, Interior Interior)
     {
         EntryPoint.WriteToConsole("CIVILIAN CONDITIONAL SPAWN TASK RUN START");
         try
@@ -355,7 +355,7 @@ public class Dispatcher
             civilianSpawnTask.AllowAnySpawn = true;
             civilianSpawnTask.AllowBuddySpawn = false;
             civilianSpawnTask.AttemptSpawn();
-            civilianSpawnTask.PostRun(null, GameLocation);
+            civilianSpawnTask.PostRun(null, GameLocation, Interior);
             return civilianSpawnTask.CreatedPeople.FirstOrDefault() ;
             //civilianSpawnTask.CreatedPeople.ForEach(x => { x.EnableAutoCleanup = true; });
         }

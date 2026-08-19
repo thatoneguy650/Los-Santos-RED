@@ -277,7 +277,8 @@
     <Compile Include="lsr\Locations\Interiors\CraftInteriorInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\AudioEmitterInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\ExitInteriorInteract.cs" />
-    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\BlackJackInteract.cs" />
+    <Compile Include="lsr\Locations\Interiors\GamblingDenInterior.cs" />
+    <Compile Include="lsr\Locations\Interiors\Gambling\Blackjack\GamblingInteract.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\MoneyEntitySet.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\Trophy\CabinetData.cs" />
     <Compile Include="lsr\Locations\Interiors\Residence\MansionInterior.cs" />

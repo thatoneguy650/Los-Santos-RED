@@ -62,6 +62,9 @@ namespace LosSantosRED.lsr
             ModDataFileManager.Setup();
             GameFiber.Yield();
 
+
+
+
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
             NAudioPlayer.Setup();
             GameFiber.Yield();
@@ -75,6 +78,11 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer,
                 ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups, ModDataFileManager.LocationTypes,
                 ModDataFileManager.Organizations, ModDataFileManager.Contacts, ModDataFileManager);
+
+
+
+
+
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time,
                 ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer,
                 NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions,
@@ -142,6 +150,14 @@ namespace LosSantosRED.lsr
 #endif
 
             UI.SetupDebugMenu();
+
+
+            if (ModDataFileManager.Settings.SettingsManager.WorldSettings.AutoLoadMPMap && !World.IsMPMapLoaded)
+            {
+                World.LoadMPMap();
+            }
+
+
             Game.FadeScreenIn(500, true);
             DisplayLoadSuccessfulMessage();
 

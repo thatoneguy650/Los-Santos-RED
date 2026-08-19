@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -105,6 +106,13 @@ public class Interior
 
 
 
+    public List<ConditionalGroup> PossibleGroupSpawns { get; set; }
+    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+
+
+
+
     [XmlIgnore]
     public virtual List<InteriorInteract> AllInteractPoints => InteractPoints;
     [XmlIgnore]
@@ -113,6 +121,12 @@ public class Interior
     public GameLocation GameLocation => gameLocation;
     [XmlIgnore]
     public bool IsAlarmActive => isAlarmActive;
+    [XmlIgnore]
+    public bool IsDispatchFilled { get; set; }
+    [XmlIgnore]
+    public List<PedExt> LocationSpawnedPedExts { get; set; } = new List<PedExt>();
+    [XmlIgnore]
+    public List<VehicleExt> LocationSpawnedVehicleExts { get; set; } = new List<VehicleExt>();
 
     public virtual void Setup(IInteractionable player, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ILocationInteractable locationInteractable, IModItems modItems, IClothesNames clothesNames, IRadioStations radioStations)
     {
@@ -220,7 +234,7 @@ public class Interior
                     }
                 }
 
-
+                Player.Dispatcher.LocationDispatcher.DispatchInterior(this);
 
                 IsActive = true;
                 GameFiber.Yield();
@@ -322,7 +336,7 @@ public class Interior
                     }
                 }
 
-
+                Player.Dispatcher.LocationDispatcher.RecallInterior(this);
                 IsActive = false;
                 GameFiber.Yield();
 
@@ -625,6 +639,9 @@ public class Interior
                 InteractableLocation.AttemptVendorDespawn();
             }
             RemoveSpawnedProps();
+            Unload();
+
+
             GameFiber.Sleep(500);
             Game.FadeScreenIn(1000, true);
             InteractableLocation.DoExitCamera(false);

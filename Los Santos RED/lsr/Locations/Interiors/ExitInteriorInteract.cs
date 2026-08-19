@@ -19,7 +19,8 @@ public class ExitInteriorInteract : InteriorInteract
     }
     public override void OnInteract()
     {
-        MoveToPosition();
+        MoveToPositionWithoutWaiting(1.0f);
+        //MoveToPosition();
         RemovePrompt();
         if (Interior != null)
         {

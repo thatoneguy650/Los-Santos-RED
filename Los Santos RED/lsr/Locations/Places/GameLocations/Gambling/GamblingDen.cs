@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-public class GamblingDen : GameLocation
+public class GamblingDen : GameLocation, IRestableLocation
 {
     private UIMenu GameChoiceSubMenu;
     private UIMenu LoanSubMenu;
+    private bool KeepInteractionGoing;
+    private UIMenuNumericScrollerItem<int> RestMenuItem;
+
     public GamblingDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -32,8 +35,11 @@ public class GamblingDen : GameLocation
     public bool IsRestrictedToMember { get; set; } = false;
     public int WinLimit { get; set; } = 10000;
     public int WinLimitResetHours { get; set; } = 24;
+    public GameLocation GameLocation => this;
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
+    [XmlIgnore]
+    public GamblingDenInterior GamblingDenInterior { get; set; }
     public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world,
 IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors,
 ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
@@ -41,6 +47,15 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         base.StoreData(shopMenus, agencies, gangs, zones, jurisdictions, gangTerritories, names, crimes, PedGroups, world, streets, locationTypes, settings, plateTypes, associations, contacts, interiors, player, modItems, weapons, time, placesOfInterest, issuableWeapons, heads, dispatchablePeople, modDataFileManager);
         //Menu = ShopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
+        if (HasInterior)
+        {
+            GamblingDenInterior = interiors.PossibleInteriors.GamblingDenInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
+            interior = GamblingDenInterior;
+            if (GamblingDenInterior != null)
+            {
+                GamblingDenInterior.SetGamblingDen(this);
+            }
+        }
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -54,34 +69,11 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             return;
         }
 
-
-        if(AssociatedGang != null)
+        if(!IsAvailableForPlayer())
         {
-            GangReputation currentReputation = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
-            GangRespect gangRespect = GangRespect.Hostile;
-            if (currentReputation != null)
-            {
-                gangRespect = currentReputation.GangRelationship;
-            }
-            if (IsRestrictedToMember && gangRespect != GangRespect.Member)
-            {
-                Game.DisplayHelp($"{Name} is only available to members");
-                PlayErrorSound();
-                return;
-            }
-            else if (IsRestrictedToFriendly && gangRespect != GangRespect.Member && gangRespect != GangRespect.Friendly)
-            {
-                Game.DisplayHelp($"{Name} is only available to associates");
-                PlayErrorSound();
-                return;
-            }
-            else if (gangRespect == GangRespect.Hostile)
-            {
-                Game.DisplayHelp($"{Name} is not available to hostile gang members");
-                PlayErrorSound();
-                return;
-            }
+            return;
         }
+        
 
 
         if (!CanInteract)
@@ -98,6 +90,37 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             StandardInteract(null, false);
         }
     }
+    public bool IsAvailableForPlayer()
+    {
+        if (AssociatedGang != null)
+        {
+            GangReputation currentReputation = Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang);
+            GangRespect gangRespect = GangRespect.Hostile;
+            if (currentReputation != null)
+            {
+                gangRespect = currentReputation.GangRelationship;
+            }
+            if (IsRestrictedToMember && gangRespect != GangRespect.Member)
+            {
+                Game.DisplayHelp($"{Name} is only available to members");
+                PlayErrorSound();
+                return false;
+            }
+            else if (IsRestrictedToFriendly && gangRespect != GangRespect.Member && gangRespect != GangRespect.Friendly)
+            {
+                Game.DisplayHelp($"{Name} is only available to associates");
+                PlayErrorSound();
+                return false;
+            }
+            else if (gangRespect == GangRespect.Hostile)
+            {
+                Game.DisplayHelp($"{Name} is not available to hostile gang members");
+                PlayErrorSound();
+                return false;
+            }
+        }
+        return true;
+    }
     public override void StandardInteract(LocationCamera locationCamera, bool isInside)
     {
         Player.ActivityManager.IsInteractingWithLocation = true;
@@ -111,7 +134,7 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
                 CreateInteractionMenu();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 InteractionMenu.Visible = true;
-                Interact();
+                Interact(true, true, true);
                 ProcessInteractionMenu();
                 DisposeInteractionMenu();
                 DisposeCamera(isInside);
@@ -127,17 +150,52 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
             }
         }, "GamblingDenInteract");
     }
-    private void Interact()
+
+
+
+    public void CreateInteriorGameMenu(bool allowLoans, bool allowBlackjack, bool allowRoulette)
     {
-        GameChoiceSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Play Game");
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Choose one of the games to play.";
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        //Player.IsTransacting = true;
+        //GameFiber.StartNew(delegate
+        //{
+            try
+            {
+                //SetupLocationCamera(null, true, false);
+                CreateInteractionMenu();
+                //Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                InteractionMenu.Visible = true;
+                Interact(allowLoans, allowBlackjack, allowRoulette);
+                ProcessInteractionMenu();
+                DisposeInteractionMenu();
+                //DisposeCamera(true);
+                //DisposeInterior();
+                //Player.IsTransacting = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        //}, "GamblingDenInteract");
+    }
+    private void Interact(bool allowLoans, bool allowBlackjack, bool allowRoulette)
+    {
+        if (allowBlackjack || allowRoulette)
+        {
+            GameChoiceSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Play Game");
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Choose one of the games to play.";
+        }
         if (HasBannerImage)
         {
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             GameChoiceSubMenu.SetBannerType(BannerImage);
         }
 
-        if (GamblingParameters.BlackJackGameRulesList != null)
+        if (allowBlackjack && GamblingParameters.BlackJackGameRulesList != null)
         {
             foreach (BlackJackGameRules blackJackGameRules in GamblingParameters.BlackJackGameRulesList)
             {
@@ -151,7 +209,7 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
                 GameChoiceSubMenu.AddItem(playBlackjackMenuItem);
             }
         }
-        if (GamblingParameters.RouletteGameRulesList != null)
+        if (allowRoulette && GamblingParameters.RouletteGameRulesList != null)
         {
             foreach (RouletteGameRules rouletteGameRules in GamblingParameters.RouletteGameRulesList)
             {
@@ -165,7 +223,7 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
                 GameChoiceSubMenu.AddItem(playrouletteMenuItem);
             }
         }
-        if(AssociatedGang == null)
+        if(AssociatedGang == null || !allowLoans)
         {
             EntryPoint.WriteToConsole("No gang, not adding loan options");
             return;
@@ -261,4 +319,98 @@ ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControl
         possibleLocations.GamblingDens.Add(this);
         base.AddLocation(possibleLocations);
     }
+
+
+
+
+
+
+    //ALL THIS CRAP NEEDS TO GO !!!!
+    public void CreateRestMenu(bool removeBanner)
+    {
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        Player.IsTransacting = true;
+        CreateInteractionMenu();
+        InteractionMenu.Visible = true;
+        if (removeBanner)
+        {
+            InteractionMenu.RemoveBanner();
+        }
+        else if (!HasBannerImage)
+        {
+            InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+        }
+        InteractionMenu.Clear();
+        CreateRestInteractionMenu();
+        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        DisposeInteractionMenu();
+        // StoreCamera?.StopImmediately(false);
+        Player.ActivityManager.IsInteractingWithLocation = false;
+        Player.IsTransacting = false;
+        if (Interior != null)
+        {
+            Interior.IsMenuInteracting = false;
+        }
+    }
+    private void CreateRestInteractionMenu()
+    {
+        RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your business to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+        RestMenuItem.Activated += (sender, selectedItem) =>
+        {
+            Rest(RestMenuItem.Value);
+        };
+        InteractionMenu.AddItem(RestMenuItem);
+    }
+
+    private void Rest(int Hours)
+    {
+        Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
+        InteractionMenu.Visible = false;
+        KeepInteractionGoing = true;
+        Player.IsResting = true;
+        Player.IsSleeping = true;
+        Player.ButtonPrompts.AddPrompt("BusinessRest", "Cancel Rest", "BusinessRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+
+
+
+
+
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (Time.IsFastForwarding)
+                {
+                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                    {
+                        Player.HealthManager.ChangeHealth(1);
+                    }
+                    if (Player.ButtonPrompts.IsPressed("BusinessRest"))
+                    {
+                        Time.StopFastForwarding();
+                    }
+                    GameFiber.Yield();
+                }
+                Player.ButtonPrompts.RemovePrompts("BusinessRest");
+                Player.IsResting = false;
+                Player.IsSleeping = false;
+                InteractionMenu.Visible = true;
+                KeepInteractionGoing = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "FastForwardWatcher");
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT BUSINESS");
+    }
+
+
+
+
 }

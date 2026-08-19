@@ -39,6 +39,7 @@ using System.Windows.Forms;
 //using System.Windows.Media;
 //using System.Windows.Media;
 using System.Xml.Linq;
+using static DispatchScannerFiles;
 //using System.Windows.Media;
 //using System.Windows.Media;
 //using System.Windows.Media;
@@ -537,25 +538,159 @@ public class Debug
     }
 
 
+    private int renderTargetId = -1;
+    private int scaleformHandle = -1;
+    private string targetName = "tvscreen";
+    // Prop model for a standard flat screen TV
+    private uint tvModelHash = Game.GetHashKey("m25_2_prop_m52_mansiontv");
 
+    public void InitializeTv()
+    {
+        // 1. Load the scaleform movie (e.g., MP_BIG_MESSAGE_FREEMODE)
+        scaleformHandle = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("MP_BIG_MESSAGE_FREEMODE");
+        while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(scaleformHandle))
+        {
+            GameFiber.Yield();
+        }
+
+        // Call a function on the scaleform to set up text
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(scaleformHandle, "SHOW_SHARD_CENTERED_TOP_MP_MESSAGE");
+        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING("TV POWERED BY RPH");
+        NativeFunction.Natives.SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING("Render Target Active");
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        // 2. Find the closest TV object near the player
+        Vector3 playerPos = Game.LocalPlayer.Character.Position;
+        int tvObject = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<int>(
+            playerPos.X, playerPos.Y, playerPos.Z, 10.0f, tvModelHash, false, false, false
+        );
+
+        if (tvObject == 0)
+        {
+            Game.DisplayNotification("No TV object found nearby!");
+            return;
+        }
+
+        // 3. Register and link the render target
+        if (!NativeFunction.Natives.IS_NAMED_RENDERTARGET_REGISTERED<bool>(targetName))
+        {
+            NativeFunction.Natives.REGISTER_NAMED_RENDERTARGET(targetName, false);
+        }
+
+        NativeFunction.Natives.LINK_NAMED_RENDERTARGET(tvModelHash);
+        renderTargetId = NativeFunction.Natives.GET_NAMED_RENDERTARGET_RENDER_ID<int>(targetName);
+    }
+
+    public void DrawLoop()
+    {
+        // Run this inside a continuous GameFiber loop
+        if (renderTargetId != -1 && scaleformHandle != -1)
+        {
+            // Set the drawing focus to the TV screen texture
+            NativeFunction.Natives.SET_TEXT_RENDER_ID(renderTargetId);
+
+            // Draw the scaleform (parameters: handle, x, y, width, height, r, g, b, a, unk)
+            NativeFunction.Natives.DRAW_SCALEFORM_MOVIE(scaleformHandle, 0.5f, 0.5f, 1.0f, 1.0f, 255, 255, 255, 255, 0);
+
+            // Reset the render target back to the default game screen
+            NativeFunction.Natives.SET_TEXT_RENDER_ID(NativeFunction.Natives.GET_DEFAULT_SCRIPT_RENDERTARGET_RENDER_ID<int>());
+        }
+    }
+
+
+
+
+    private int CreateNamedRenderTargetForModel(string name, uint model)
+    {
+        int handle = 0;
+        if(!NativeFunction.Natives.IS_NAMED_RENDERTARGET_REGISTERED<bool>(name))
+        {
+            NativeFunction.Natives.REGISTER_NAMED_RENDERTARGET(name, 0);
+        }
+
+        if(!NativeFunction.Natives.IS_NAMED_RENDERTARGET_LINKED<bool>(model))
+        {
+            NativeFunction.Natives.LINK_NAMED_RENDERTARGET(model);
+        }
+        if(NativeFunction.Natives.IS_NAMED_RENDERTARGET_REGISTERED<bool>(name))
+        {
+            handle = NativeFunction.Natives.GET_NAMED_RENDERTARGET_RENDER_ID<int> (name);
+        }
+        return handle;
+    }
 
     private void DebugNumpad4()
     {
 
 
 
-        int Flags = 0;
-        if (int.TryParse(NativeHelper.GetKeyboardInput("1024"), out Flags))
-        {
 
-            NativeFunction.Natives.SET_PED_TO_RAGDOLL(Player.Character, 4000, 5000, 1, 1, 1, 1);
-            NativeFunction.Natives.CREATE_NM_MESSAGE(1, 0);
-            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
-            NativeFunction.Natives.CREATE_NM_MESSAGE(1, Flags);
-            NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
-            GameFiber.Sleep(1000);
-            Game.DisplaySubtitle("RAN NM MESSAGE");
-        }
+        /*	local model = GetHashKey("des_tvsmash_start"); -- 2054093856
+	local pos = { x = -810.59, y = 170.46, z = 77.25 };
+	local entity = GetClosestObjectOfType(pos.x, pos.y, pos.z, 0.05, model, 0, 0, 0)
+	local handle = CreateNamedRenderTargetForModel("tvscreen", model)
+	while true do
+		SetTextRenderId(handle) -- set render target
+		Set_2dLayer(4)
+		Citizen.InvokeNative(0xC6372ECD45D73BCD, 1)
+			DrawRect(0.5, 0.5, 1.0, 0.5, 255, 0, 0, 255); -- WOAH!
+		SetTextRenderId(GetDefaultScriptRendertargetRenderId()) -- reset
+		Citizen.InvokeNative(0xC6372ECD45D73BCD, 0)
+		Citizen.Wait(0)
+
+
+
+
+        function CreateNamedRenderTargetForModel(name, model)
+	local handle = 0
+	if not IsNamedRendertargetRegistered(name) then
+		RegisterNamedRendertarget(name, 0)
+	end
+	if not IsNamedRendertargetLinked(model) then
+		LinkNamedRendertarget(model)
+	end
+	if IsNamedRendertargetRegistered(name) then
+		handle = GetNamedRendertargetRenderId(name)
+	end
+
+	return handle
+end
+
+
+
+	end*/
+        InitializeTv();
+
+        //uint modelHash = 4330783;//4330783,new Vector3(63.19641f, -78.62871f, -73.48909f)//m25_2_prop_m52_mansiontv 4330783
+        //Vector3 pos = new Vector3(63.19641f, -78.62871f, -73.48909f);
+        //Entity tvEntity = NativeFunction.Natives.GET_CLOSEST_OBJECT_OF_TYPE<Entity>(pos.X, pos.Y, pos.Z, 0.05, modelHash, 0, 0, 0);
+        //int handle = CreateNamedRenderTargetForModel("tvscreen", modelHash);
+        GameFiber.StartNew(delegate
+        {      
+            while (!Game.IsKeyDown(Keys.O))
+            {
+                //NativeFunction.Natives.SET_TEXT_RENDER_ID(handle);
+                DrawLoop();
+                GameFiber.Yield();
+            }
+
+        }, "Run Debug Logic");
+        GameFiber.Sleep(500);
+
+
+
+        //int Flags = 0;
+        //if (int.TryParse(NativeHelper.GetKeyboardInput("1024"), out Flags))
+        //{
+
+        //    NativeFunction.Natives.SET_PED_TO_RAGDOLL(Player.Character, 4000, 5000, 1, 1, 1, 1);
+        //    NativeFunction.Natives.CREATE_NM_MESSAGE(1, 0);
+        //    NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
+        //    NativeFunction.Natives.CREATE_NM_MESSAGE(1, Flags);
+        //    NativeFunction.Natives.GIVE_PED_NM_MESSAGE(Player.Character);
+        //    GameFiber.Sleep(1000);
+        //    Game.DisplaySubtitle("RAN NM MESSAGE");
+        //}
 
 
 

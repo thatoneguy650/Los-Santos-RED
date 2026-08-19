@@ -51,7 +51,7 @@ public class SecurityConditionalLocation : ConditionalLocation
             securitySpawnTask.PlacePedOnGround = DispatchableVehicle == null; //true;
             securitySpawnTask.AttemptSpawn();
             //EntryPoint.WriteToConsole("SECUIRTY RUN SPAWN TASK PRE POST RUN");
-            securitySpawnTask.PostRun(this, GameLocation);
+            securitySpawnTask.PostRun(this, GameLocation, Interior);
 
             //securitySpawnTask.CreatedPeople.ForEach(x => { EntryPoint.WriteToConsole($"I CREATED SECURITY {x.Handle}"); });
 

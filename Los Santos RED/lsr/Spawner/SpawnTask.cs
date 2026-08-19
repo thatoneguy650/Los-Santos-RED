@@ -239,7 +239,7 @@ public abstract class SpawnTask
     {
 
     }
-    public virtual void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation)
+    public virtual void PostRun(ConditionalLocation conditionalLocation, GameLocation gameLocation, Interior interior)
     {
         
 
@@ -254,11 +254,32 @@ public abstract class SpawnTask
             //    EntryPoint.WriteToConsole($"ADDED EXTRA SPAWN REQUIREMENTS {SpawnRequirement}");
             //}
             //gameLocation?.AddSpawnedPed(x); 
+            if(interior != null)
+            {
+                interior.LocationSpawnedPedExts.Add(x);
+            }
+            else if (gameLocation != null)
+            {
+                gameLocation.LocationSpawnedPedExts.Add(x);
+            }
+
+
         });
         CreatedVehicles.ForEach(x => { 
             x.AddVehicleToList(World); 
             x.WasSpawnedEmpty = conditionalLocation?.IsEmptyVehicleSpawn == true;
             //gameLocation?.AddSpawnedVehicle(x);  
+
+
+            if (interior != null)
+            {
+                interior.LocationSpawnedVehicleExts.Add(x);
+            }
+            else if (gameLocation != null)
+            {
+                gameLocation.LocationSpawnedVehicleExts.Add(x);
+            }
+
         });
     }
 }

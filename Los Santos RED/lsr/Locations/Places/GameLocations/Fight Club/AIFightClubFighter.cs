@@ -27,7 +27,7 @@ public class AIFightClubFighter : FightClubFighter
         SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
         if(Gang == null)
         {
-            PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePerson, fightClub);
+            PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePerson, fightClub, null);
         }
         else
         {

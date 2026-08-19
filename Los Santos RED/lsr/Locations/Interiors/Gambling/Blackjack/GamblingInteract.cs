@@ -5,17 +5,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
-public class BlackJackInteract : InteriorInteract
+public class GamblingInteract : InteriorInteract
 {
+
     protected virtual bool CanInteract => true;
-    public BlackJackInteract()
+
+    public bool AllowBlackjack { get; set; }
+    public bool AllowRoulette { get; set; }
+    public bool AllowLoans { get; set; }
+    [XmlIgnore]
+    public GamblingDen GamblingDen { get; set; }
+
+    public GamblingInteract()
     {
+
     }
 
-    public BlackJackInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
+    public GamblingInteract(string name, Vector3 position, float heading, string buttonPromptText) : base(name, position, heading, buttonPromptText)
     {
+
     }
 
 
@@ -24,10 +35,7 @@ public class BlackJackInteract : InteriorInteract
         Interior.IsMenuInteracting = true;
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        //if (Settings.SettingsManager.ActivitySettings.UseCameraForTheftInteracts)
-        //{
-        //    SetupCamera(false);
-        //}
+        SetupCamera(false);
         if (!WithWarp)
         {
             if (!MoveToPosition(3.0f))
@@ -53,7 +61,14 @@ public class BlackJackInteract : InteriorInteract
     }
     private void StartGame()
     {
-
+        GamblingDen.CreateInteriorGameMenu(AllowLoans, AllowBlackjack, AllowRoulette);
     }
-
+    public override void AddPrompt()
+    {
+        if (Player == null)
+        {
+            return;
+        }
+        Player.ButtonPrompts.AttemptAddPrompt(Name, ButtonPromptText, Name, Settings.SettingsManager.KeySettings.InteractStart, 999);
+    }
 }
