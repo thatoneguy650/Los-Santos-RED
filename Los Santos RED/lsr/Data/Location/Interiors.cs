@@ -969,6 +969,52 @@ public class Interiors : IInteriors
     {
         PossibleInteriors.GamblingDenInteriors.AddRange(new List<GamblingDenInterior>() {
 
+
+            new GamblingDenInterior(275210, "The Diamond Casino")
+            { 
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1089.87f, 206.4465f, -48.99973f),
+                InteriorEgressHeading = 344.5287f,
+               MaxUpdateDistance = 200f,
+                RequestIPLs = new List<string>() 
+                {
+                    "vw_casino_carpark",
+                    "vw_casino_garage",
+                    "vw_casino_main",
+                    "hei_dlc_windows_casino",
+                    "hei_dlc_casino_aircon",
+                    "vw_dlc_casino_door",
+                    "hei_dlc_casino_door",
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("CasinoExit1",new Vector3(1089.849f, 206.5102f, -48.99973f), 166.2538f,"Exit"),
+                    
+                },
+                GamblingInteracts = new List<GamblingInteract>()
+                {
+                    new GamblingInteract("MidEndStartGame1",new Vector3(1142.314f, 265.3642f, -51.84085f), 221.117f,"Play Blackjack") {
+                        CameraPosition = new Vector3(1143.04f, 264.5802f, -51.16304f), 
+                        CameraDirection = new Vector3(0.3547603f, -0.3709598f, -0.8582156f), 
+                        CameraRotation = new Rotator(-59.11681f, 9.980024E-06f, -136.2787f), AllowBlackjack = true, },
+                    new GamblingInteract("MidEndStartGame2",new Vector3(1147.877f, 270.7372f, -51.84085f), 217.23f,"Play Blackjack") {
+                        CameraPosition = new Vector3(1148.658f, 269.9864f, -51.1749f), 
+                        CameraDirection = new Vector3(0.3048999f, -0.3017586f, -0.9033149f),
+                        CameraRotation = new Rotator(-64.59727f, -7.960999E-06f, -134.7033f), AllowBlackjack = true, },
+                    new GamblingInteract("MidEndStartGame3",new Vector3(1153.129f, 265.7646f, -51.84085f), 46.97577f,"Play Blackjack") {
+                        CameraPosition = new Vector3(1152.126f, 266.4443f, -51.23646f), 
+                        CameraDirection = new Vector3(-0.3599098f, 0.3606389f, -0.8604676f), 
+                        CameraRotation = new Rotator(-59.36913f, 3.351384E-05f, 44.94202f), AllowBlackjack = true, },
+                    new GamblingInteract("MidEndStartGame4",new Vector3(1147.493f, 260.111f, -51.84085f), 42.18553f,"Play Blackjack") {
+                        CameraPosition = new Vector3(1146.603f, 260.935f, -51.23646f), 
+                        CameraDirection = new Vector3(-0.3653991f, 0.3671501f, -0.8553855f), 
+                        CameraRotation = new Rotator(-58.80235f, 5.439181E-05f, 44.86304f), AllowBlackjack = true, },
+                },
+            },
+            
+            
+
+
         new GamblingDenInterior(29926520, "Mid End Casino")
             {
                 IsTeleportEntry = true,

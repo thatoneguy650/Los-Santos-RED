@@ -2062,6 +2062,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraRotation = new Rotator(-10.90876f, 2.445427E-07f, -88.623f),
                 IsOnMPMap = true,
                 IsOnSPMap = false,
+                InteriorID = 275210,
+                
+               
             },
 
 
