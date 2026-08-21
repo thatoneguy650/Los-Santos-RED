@@ -1015,7 +1015,7 @@ public class Interiors : IInteriors
             
 
 
-        new GamblingDenInterior(29926520, "Mid End Casino")
+            new GamblingDenInterior(29926520, "Mid End Casino")
             {
                 IsTeleportEntry = true,
 
@@ -1033,7 +1033,7 @@ public class Interiors : IInteriors
 
                     // Main Room
                     new PropSpawn("vw_prop_vw_key_cabinet_01a", new SpawnPlace(new Vector3(62.9f, -84.3f, -73.83309f), 90f)) { PlaceOnGround = true },
-                    //new PropSpawn("hei_prop_bank_cctv_02", new SpawnPlace(new Vector3(64.55062f, -82.58261f, -72.2077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("hei_prop_bank_cctv_02", new SpawnPlace(new Vector3(64.55062f, -82.58261f, -72.44f), 0f)) { PlaceOnGround = false },
                     new PropSpawn("v_res_fh_barcchair", new SpawnPlace(new Vector3(65.61381f, -84.74506f, -75.19622f), -88.99964f)) { PlaceOnGround = true },
                     new PropSpawn("prop_clothes_rail_01", new SpawnPlace(new Vector3(65.44012f, -88.21f, -74.92f), 0f)) { PlaceOnGround = true },
 
@@ -1045,7 +1045,6 @@ public class Interiors : IInteriors
                     new PropSpawn("h4_prop_h4_weed_chair_01a", new SpawnPlace(new Vector3(56.85f, -83.35f, -75.19622f), 0f)) { PlaceOnGround = true },
                     new PropSpawn("h4_prop_h4_weed_chair_01a", new SpawnPlace(new Vector3(55.65f, -85.24f, -75.19622f), 90f)) { PlaceOnGround = true },
                     new PropSpawn("h4_prop_h4_weed_chair_01a", new SpawnPlace(new Vector3(58.08f, -85.2f, -75.19622f), -90f)) { PlaceOnGround = true },
-
 
                     new PropSpawn("vw_prop_vw_table_01a", new SpawnPlace(new Vector3(56.86f, -85.21f, -75.19622f), -90.00028f)) { PlaceOnGround = true },
                     new PropSpawn("vw_prop_vw_table_01a", new SpawnPlace(new Vector3(59.227726f, -80.4621353f, -75.19622f), 0.99747926f)) { PlaceOnGround = true },
@@ -1155,6 +1154,165 @@ public class Interiors : IInteriors
 
                 },
                 
+            },
+
+            new GamblingDenInterior(29926521, "Mid End Casino Alt")
+            {
+                IsTeleportEntry = true,
+
+
+
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    //Entry Room
+                    new PropSpawn("vw_prop_vw_barrier_rope_01a", new SpawnPlace(new Vector3(65.68357f, -87.50677f, -75.19622f), -87.9996948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_vw_barrier_rope_01a", new SpawnPlace(new Vector3(65.76449f, -88.9822159f, -75.19622f), -87.9996948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_vw_barrier_rope_01a", new SpawnPlace(new Vector3(67.02407f, -91.00627f, -75.19622f), -87.9996948f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_chair_01a", new SpawnPlace(new Vector3(65.96286f, -92.0108643f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+
+                    // Main Room
+                    new PropSpawn("hei_prop_bank_cctv_02", new SpawnPlace(new Vector3(64.55062f, -82.58261f, -72.44f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.62f, -86.17f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("hei_heist_stn_benchshort", new SpawnPlace(new Vector3(65.64f, -84.85f, -75.19622f), 89.99966f)) { PlaceOnGround = true },
+
+                    new PropSpawn("h4_prop_h4_table_07", new SpawnPlace(new Vector3(66.09169f, -81.608345f, -75.19622f), 3.999936f)) { PlaceOnGround = true },
+                    new PropSpawn("v_med_p_notebook", new SpawnPlace(new Vector3(66.0848541f, -81.614975f, -74.37157f), -48.99991f)) { PlaceOnGround = false },
+
+                    new PropSpawn("bkr_prop_clubhouse_jukebox_02a", new SpawnPlace(new Vector3(62.87f, -80.70089f, -75.19622f), -90f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm_prop_x17_tv_ceiling_01", new SpawnPlace(new Vector3(56.83f, -76.4f, -73.4077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm_prop_x17_tv_ceiling_01", new SpawnPlace(new Vector3(61.35f, -76.4f, -73.4077f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("ch_prop_casino_roulette_01b", new SpawnPlace(new Vector3(57.04f, -84.97343f, -75.19622f), -90.00009f)) { PlaceOnGround = true },
+                    new PropSpawn("ch_prop_casino_blackjack_01a", new SpawnPlace(new Vector3(58.9f, -81.4f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_vw_casino_cards_01", new SpawnPlace(new Vector3(58.88f, -81.21f, -74.23f), 20.9999847f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_str_shelffreel_01", new SpawnPlace(new Vector3(58.9f, -78f, -75.19622f), 89.99961f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_art_01b", new SpawnPlace(new Vector3(58.83f, -80.05f, -75.19622f), 1.000008f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_yacht_sofa_02", new SpawnPlace(new Vector3(55.5f, -77.75f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_yacht_sofa_02", new SpawnPlace(new Vector3(58f, -77.75f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_yacht_side_table_02", new SpawnPlace(new Vector3(56.7239952f, -77.75f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_stripset", new SpawnPlace(new Vector3(56.73f, -77.51f, -74.5437241f), -26.9994831f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_yacht_sofa_02", new SpawnPlace(new Vector3(59.82257f, -77.75f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_yacht_sofa_02", new SpawnPlace(new Vector3(62.6861877f, -77.75f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_yacht_side_table_02", new SpawnPlace(new Vector3(61.3f, -77.75f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bikerset", new SpawnPlace(new Vector3(61.27f, -77.74f, -74.5437241f), -7.99632072f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bar_nuts", new SpawnPlace(new Vector3(61.57f, -77.75f, -74.5437241f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_yacht_side_table_01", new SpawnPlace(new Vector3(55.45981f, -79.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ilev_fh_lampa_on", new SpawnPlace(new Vector3(55.4894257f, -79.65f, -74.69622f), 90.9989853f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_yacht_side_table_01", new SpawnPlace(new Vector3(59.7970123f, -79.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_horse_01c", new SpawnPlace(new Vector3(59.8f, -79.64f, -74.69622f), 49.9999046f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_yacht_side_table_01", new SpawnPlace(new Vector3(62.7400131f, -79.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ilev_fh_lampa_on", new SpawnPlace(new Vector3(62.7276421f, -79.65f, -74.69622f), -87.9996262f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_yacht_side_table_01", new SpawnPlace(new Vector3(58f, -79.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(58f, -79.65f, -74.69622f), -53.9997063f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_yacht_coffee_table_01", new SpawnPlace(new Vector3(55.37f, -82.29f, -75.19622f), -89.99963f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(55.3315163f, -82.29731f, -74.71932f), 59.99958f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_casino_art_plant_01a", new SpawnPlace(new Vector3(55.3438835f, -80.7166f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_20a", new SpawnPlace(new Vector3(65.98665f, -85.1948853f, -73.95f), -89.99968f)) { PlaceOnGround =  false},
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.05f, -81.24721f, -74.00491f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_141a", new SpawnPlace(new Vector3(54.8252831f, -82.2997f, -74.1508255f), 89.99998f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_58a", new SpawnPlace(new Vector3(56.9f, -87.78223f, -74.1381454f), 179.999985f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_88a", new SpawnPlace(new Vector3(62.5937958f, -83.73357f, -74.12f), -179.999985f)) { PlaceOnGround = false },
+
+                    // Kitchen
+                    new PropSpawn("prop_bar_coasterdisp", new SpawnPlace(new Vector3(59.57419f, -87.5555344f, -74.2162247f), -94.99963f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_whiskey_bottle", new SpawnPlace(new Vector3(62.05749f, -85.47686f, -74.2232056f), -74.0000458f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_whiskey_glasses", new SpawnPlace(new Vector3(60.6267281f, -87.5162354f, -74.2194748f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_whiskey_glasses", new SpawnPlace(new Vector3(60.6204262f, -87.23613f, -74.21931f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0624161f, -85.6711044f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(59.22788f, -87.1798859f, -74.2162247f), 75.99906f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_vodka_bottle", new SpawnPlace(new Vector3(59.3995171f, -87.25775f, -74.2162247f), 148.9993f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bar_nuts", new SpawnPlace(new Vector3(59.47733f, -84.5477753f, -74.28317f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bar_nuts", new SpawnPlace(new Vector3(62.11993f, -85.826f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vodkarow", new SpawnPlace(new Vector3(59.45f, -85.2f, -74.28355f), 89.99961f)) { PlaceOnGround = true },
+                    new PropSpawn("beerrow_local", new SpawnPlace(new Vector3(62.1645927f, -84.74422f, -72.7339859f), -91.0003357f)) { PlaceOnGround = true },
+                    new PropSpawn("spiritsrow", new SpawnPlace(new Vector3(62.4655037f, -86.36988f, -72.7339859f), -90.9995346f)) { PlaceOnGround = true },
+
+                    // Office/Bedroom
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(67.90005f, -79.58303f, -75.19622f), -89.99978f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(67.6338654f, -78.83333f, -74.39422f), 95.99967f)) { PlaceOnGround = true },
+                    new PropSpawn("w_am_baseball", new SpawnPlace(new Vector3(68.08957f, -80.54694f, -74.03134f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("w_me_bat", new SpawnPlace(new Vector3(66.03697f, -80.79858f, -75f), 127.999489f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_club_chair_02", new SpawnPlace(new Vector3(66.6f, -79.7f, -74.6f), 117.999313f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(67.27916f, -81.21922f, -75.19631f), 92.9988f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm3_prop_xm3_safe_01a", new SpawnPlace(new Vector3(70.05f, -76.54f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_filecab_01a", new SpawnPlace(new Vector3(69.1973953f, -76.4094849f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_filecab_01a", new SpawnPlace(new Vector3(68.5463943f, -76.42001f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bar_fridge_04", new SpawnPlace(new Vector3(67.06847f, -76.26345f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_vw_card_case_01a", new SpawnPlace(new Vector3(67.1f, -76.41f, -74.28f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("v_ret_ml_liqshelfe", new SpawnPlace(new Vector3(70.33f, -82.31f, -74.2f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ret_ml_liqshelfc", new SpawnPlace(new Vector3(69.8f, -83.47f, -74.21f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ret_ml_liqshelfb", new SpawnPlace(new Vector3(68.39f, -83.48f, -74.21259f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_111a", new SpawnPlace(new Vector3(65.91107f, -79.45f, -74.15f), 89.99998f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_108a", new SpawnPlace(new Vector3(67.1f, -76.0179138f, -74.15f), 0f)) { PlaceOnGround = false },
+
+                    // Toilet
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(63.93569f, -77.07664f, -73.8708038f), 89.99998f)) { PlaceOnGround = false },
+
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MidEndCasino2Exit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "GamblingJukeBox1",
+                        Position = new Vector3(62.26733f, -80.75336f, -74.19626f),
+                        Heading =  274.506f,
+                        ButtonPromptText = "Jukebox Control",
+                        UseNavmesh = false,
+                    },
+
+                new ToiletInteract("MidEndCasino2Toilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MidEndCasino2Sink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                GamblingInteracts = new List<GamblingInteract>()
+                {
+                    new GamblingInteract("MidEndCasino2LoanStart1",new Vector3(65.43083f, -81.96262f, -74.19624f), 303.5281f,"Get Loan") { 
+                        AllowLoans = true,
+                        CameraPosition = new Vector3(64.4806f, -84.2567f, -73.09048f),
+                        CameraDirection = new Vector3(0.326435f, 0.8798579f, -0.3453842f),
+                        CameraRotation = new Rotator(-20.20525f, -5.003673E-06f, -20.3553f)
+                    },
+                    new GamblingInteract("MidEndCasino2StartGame1",new Vector3(59.40027f, -82.21412f, -74.19624f), 25.73325f,"Play Blackjack") {
+                        CameraPosition = new Vector3(59.28312f, -81.88605f, -73.59573f),
+                        CameraDirection = new Vector3(-0.2185106f, 0.5516284f, -0.8049591f),
+                        CameraRotation = new Rotator(-53.60631f, 5.899701E-05f, 21.60947f), AllowBlackjack = true, },
+
+                    new GamblingInteract("MidEndCasino2StartGame2",new Vector3(55.92815f, -84.08271f, -74.19624f), 219.1936f,"Play Roulette") {
+                        CameraPosition = new Vector3(56.28103f, -85.36378f, -73.81536f),
+                        CameraDirection = new Vector3(0.7085543f, 0.0008191445f, -0.7056559f),
+                        CameraRotation = new Rotator(-44.88255f, 3.388924E-07f, -89.93376f) ,AllowRoulette = true, },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+
+                    new GangConditionalLocation(new Vector3(55.94663f, -81.44022f, -74.19627f), 236.0395f, 100f){TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(64.13995f, -81.67818f, -74.19627f), 175.9137f, 100f) {TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+
+                },
+
             },
 
               new GamblingDenInterior(28979330, "Basement Casino") // Paleto Bay Entrance Location -156.3501f, 6292.674f, 31.67826f), 133.7562f
