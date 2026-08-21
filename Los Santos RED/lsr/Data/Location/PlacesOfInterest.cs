@@ -2350,6 +2350,30 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 OpenTime = 18,
                 CloseTime = 4,
+                IsOnMPMap = false,
+                AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+                CameraPosition = new Vector3(1358.505f, 4371.237f, 48.73557f),
+                CameraDirection = new Vector3(0.3603207f, -0.8906768f, -0.2772433f),
+                CameraRotation = new Rotator(-16.09575f, -5.775947E-06f, -157.9743f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1363.469f, 4360.977f, 44.4992f), 327.1165f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                    new GangConditionalLocation(new Vector3(1372.259f, 4358.026f, 44.49716f), 327.7067f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1369.516f, 4365.044f, 44.32616f), 78.89337f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+            },
+            new GamblingDen(new Vector3(1366.062f, 4358.021f, 44.50027f), 356.1247f,"The Cove Casino","Out of the way, out of prying eyes!")//Pavano Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 15000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                IsOnSPMap = false,
+                InteriorID = 28979330,
                 AssignedAssociationID = "AMBIENT_GANG_PAVANO",
                 CameraPosition = new Vector3(1358.505f, 4371.237f, 48.73557f),
                 CameraDirection = new Vector3(0.3603207f, -0.8906768f, -0.2772433f),
