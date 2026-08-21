@@ -934,10 +934,124 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             // Trap Houses
             // Entry lvl business ownership, low cost, low output
-            // No Interiors - for now...
+
+            // Coke House
+            // SP Low
+            new Business(new Vector3(1208.92f, -455.1302f, 66.86222f), 73.67944f, "Coke House", "")
+            {
+                FullName = "Mirror Park, Coke House",
+                IsOnMPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 125000,
+                SalesPrice = 55000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 110,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1196.658f, -457.0761f, 74.80643f),
+                CameraDirection = new Vector3(0.9494327f, 0.1463425f, -0.2777795f),
+                CameraRotation = new Rotator(-16.12772f, 0f, -81.23757f)
+            },
+            // MP Low
+            new Business(new Vector3(1208.92f, -455.1302f, 66.86222f), 73.67944f, "Coke House", "")
+            {
+                FullName = "Mirror Park, Coke House",
+                InteriorID = 29900904,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 125000,
+                SalesPrice = 55000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Cocaine" },
+                ModItemPayoutAmount = 110,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1196.658f, -457.0761f, 74.80643f),
+                CameraDirection = new Vector3(0.9494327f, 0.1463425f, -0.2777795f),
+                CameraRotation = new Rotator(-16.12772f, 0f, -81.23757f)
+            },
+
+            // Crack House
+            // SP Low
+            new Business(new Vector3(-37.72031f, -1473.576f, 31.57275f), 4.959129f, "Crack House", "")
+            {
+                FullName = "Strawberry, Crack House",
+                IsOnMPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 80000,
+                SalesPrice = 38000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Crack" },
+                ModItemPayoutAmount = 130,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-34.20585f, -1463.998f, 36.75412f),
+                CameraDirection = new Vector3(-0.3876801f, -0.9036574f, -0.1819542f),
+                CameraRotation = new Rotator(-10.48361f, -8.682677E-06f, 156.7801f)
+            },
+            // MP Low
+            new Business(new Vector3(-37.72031f, -1473.576f, 31.57275f), 4.959129f, "Crack House", "")
+            {
+                FullName = "Strawberry, Crack House",
+                InteriorID = 29900903,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 80000,
+                SalesPrice = 38000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Crack" },
+                ModItemPayoutAmount = 130,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-34.20585f, -1463.998f, 36.75412f),
+                CameraDirection = new Vector3(-0.3876801f, -0.9036574f, -0.1819542f),
+                CameraRotation = new Rotator(-10.48361f, -8.682677E-06f, 156.7801f)
+            },
+
+            // Heroin House
+            // SP Low
+            new Business(new Vector3(-3091.561f, 379.3093f, 7.111762f), 252.2786f, "Heroin House", "")
+            {
+                FullName = "Banham Canyon, Heroin House",
+                IsOnMPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 180000,
+                SalesPrice = 88000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Heroin" },
+                ModItemPayoutAmount = 95,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-3072.178f, 376.4839f, 11.09967f),
+                CameraDirection = new Vector3(-0.9557317f, -0.1548787f, -0.2501789f),
+                CameraRotation = new Rotator(-14.4881f, 6.613616E-07f, 99.2049f)
+            },
+            // MP Low
+            new Business(new Vector3(-3091.561f, 379.3093f, 7.111762f), 252.2786f, "Heroin House", "")
+            {
+                FullName = "Banham Canyon, Heroin House",
+                InteriorID = 29900905,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 180000,
+                SalesPrice = 88000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Heroin" },
+                ModItemPayoutAmount = 95,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-3072.178f, 376.4839f, 11.09967f),
+                CameraDirection = new Vector3(-0.9557317f, -0.1548787f, -0.2501789f),
+                CameraRotation = new Rotator(-14.4881f, 6.613616E-07f, 99.2049f)
+            },
+
+            //Meth House
+            //SP Mid
             new Business(new Vector3(166.6181f, 2229.331f, 90.75507f), 53.85284f, "Meth House", "")
             {
                 FullName = "Grand Senora Desert, Meth House",
+                IsOnMPMap = false,
                 OpenTime = 0,
                 CloseTime = 24,
                 PurchasePrice = 90000,
@@ -950,54 +1064,31 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CameraDirection = new Vector3(0.3424095f, -0.9239209f, -0.1706633f),
                 CameraRotation = new Rotator(-9.826386f, 4.549049E-06f, -159.6651f)
             },
-            new Business(new Vector3(65.44521f, 6662.548f, 31.78686f), 328.2891f, "Heroin House", "")
+            //MP Mid
+            new Business(new Vector3(166.6181f, 2229.331f, 90.75507f), 53.85284f, "Meth House", "")
             {
-                FullName = "Paleto Bay, Heroin House",
+                FullName = "Grand Senora Desert, Meth House",
+                InteriorID = 29926502,
+                IsOnSPMap = false,
                 OpenTime = 0,
                 CloseTime = 24,
-                PurchasePrice = 100000,
-                SalesPrice = 48000,
+                PurchasePrice = 90000,
+                SalesPrice = 45000,
                 CraftingFlag = "DrugLab",
-                PossibleModItemPayouts = new List<string>() { "Heroin" },
-                ModItemPayoutAmount = 95,
+                PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
+                ModItemPayoutAmount = 140,
                 PayoutFrequency = 7,
-                CameraPosition = new Vector3(72.0151f, 6669.055f, 35.08036f),
-                CameraDirection = new Vector3(-0.6934528f, -0.6359544f, -0.338652f),
-                CameraRotation = new Rotator(-19.79477f, -3.175864E-05f, 132.5234f)
+                CameraPosition = new Vector3(162.5851f, 2241.448f, 93.88857f),
+                CameraDirection = new Vector3(0.3424095f, -0.9239209f, -0.1706633f),
+                CameraRotation = new Rotator(-9.826386f, 4.549049E-06f, -159.6651f)
             },
-            new Business(new Vector3(-1131.32f, -981.0688f, 2.150195f), 211.455f, "Coke House", "")
+
+            // SPANK House - Bend Over!
+            // SP Low
+            new Business(new Vector3(-1087.502f, -1529.16f, 4.907219f), 214.3883f, "Spank House", "")
             {
-                FullName = "Vespucci Canals, Coke House",
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 125000,
-                SalesPrice = 55000,
-                CraftingFlag = "DrugLab",
-                PossibleModItemPayouts = new List<string>() { "Cocaine" },
-                ModItemPayoutAmount = 110,
-                PayoutFrequency = 7,
-                CameraPosition = new Vector3(-1125.437f, -982.5558f, 4.765129f),
-                CameraDirection = new Vector3(-0.8613806f, 0.3224221f, -0.3925142f),
-                CameraRotation = new Rotator(-23.11103f, 1.531647E-05f, 69.4787f)
-            },
-            new Business(new Vector3(-59.29573f, -1530.672f, 34.2352f), 51.10274f, "Crack House", "")
-            {
-                FullName = "Strawberry, Crack House",
-                OpenTime = 0,
-                CloseTime = 24,
-                PurchasePrice = 80000,
-                SalesPrice = 38000,
-                CraftingFlag = "DrugLab",
-                PossibleModItemPayouts = new List<string>() { "Crack" },
-                ModItemPayoutAmount = 130,
-                PayoutFrequency = 7,
-                CameraPosition = new Vector3(-60.93146f, -1526.548f, 35.6205f),
-                CameraDirection = new Vector3(0.4076519f, -0.8839706f, -0.2289451f),
-                CameraRotation = new Rotator(-13.23497f, 1.710285E-05f, -155.2427f)
-            },
-            new Business(new Vector3(721.8885f, -2016.299f, 29.43184f), 263.9777f, "Spank House", "")
-            {
-                FullName = "Cypress Flats, Spank House",
+                FullName = "La Puerta, Spank House",
+                IsOnMPMap = false,
                 OpenTime = 0,
                 CloseTime = 24,
                 PurchasePrice = 85000,
@@ -1006,13 +1097,35 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossibleModItemPayouts = new List<string>() { "SPANK" },
                 ModItemPayoutAmount = 120,
                 PayoutFrequency = 7,
-                CameraPosition = new Vector3(725.4429f, -2019.444f, 31.12762f),
-                CameraDirection = new Vector3(-0.7428212f, 0.6283983f, -0.2309379f),
-                CameraRotation = new Rotator(-13.35229f, 2.193734E-06f, 49.77006f)
+                CameraPosition = new Vector3(-1088.245f, -1538.072f, 8.401177f),
+                CameraDirection = new Vector3(-0.1527622f, 0.9482571f, -0.2783383f),
+                CameraRotation = new Rotator(-16.16105f, 8.889002E-07f, 9.151598f)
             },
-            new Business(new Vector3(1654.869f, 4862.137f, 41.99331f), 278.5673f, "Grow House", "")
+            // Mp Low
+            new Business(new Vector3(-1087.502f, -1529.16f, 4.907219f), 214.3883f, "Spank House", "")
             {
-                FullName = "Grapeseed, Grow House",
+                FullName = "La Puerta, Spank House",
+                InteriorID = 29900902,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 85000,
+                SalesPrice = 40000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "SPANK" },
+                ModItemPayoutAmount = 120,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(-1088.245f, -1538.072f, 8.401177f),
+                CameraDirection = new Vector3(-0.1527622f, 0.9482571f, -0.2783383f),
+                CameraRotation = new Rotator(-16.16105f, 8.889002E-07f, 9.151598f)
+            },
+
+            // Weed Grow Houses
+            // SP Low
+            new Business(new Vector3(392.7252f, -2017.225f, 23.40314f), 65.63387f, "Grow House", "")
+            {
+                FullName = "Rancho, Low Grow House",
+                IsOnMPMap = false,
                 OpenTime = 0,
                 CloseTime = 24,
                 PurchasePrice = 65000,
@@ -1021,10 +1134,64 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossibleModItemPayouts = new List<string>() { "Marijuana" },
                 ModItemPayoutAmount = 250,
                 PayoutFrequency = 7,
-                CameraPosition = new Vector3(1657.02f, 4865.193f, 43.39472f),
-                CameraDirection = new Vector3(-0.6561275f, -0.7227788f, -0.2169967f),
-                CameraRotation = new Rotator(-12.5327f, -3.935761E-06f, 137.7673f)
-            }
+                CameraPosition = new Vector3(387.458f, -2010.893f, 26.06207f),
+                CameraDirection = new Vector3(0.6204097f, -0.750122f, -0.2289298f),
+                CameraRotation = new Rotator(-13.23407f, -1.190303f, -140.4066f)
+            },
+            // MP Low
+            new Business(new Vector3(392.7252f, -2017.225f, 23.40314f), 65.63387f, "Grow House", "")
+            {
+                FullName = "Rancho, Low Grow House",
+                InteriorID = 29900901,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 65000,
+                SalesPrice = 30000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 250,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(387.458f, -2010.893f, 26.06207f),
+                CameraDirection = new Vector3(0.6204097f, -0.750122f, -0.2289298f),
+                CameraRotation = new Rotator(-13.23407f, -1.190303f, -140.4066f)
+            },
+            // SP Mid
+            new Business(new Vector3(1719.142f, 4677.249f, 43.6558f), 89.3922f, "Grow House", "")
+            {
+                FullName = "Grapeseed,Mid Grow House",
+                IsOnMPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 85000,
+                SalesPrice = 42000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 550,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1712.142f, 4683.815f, 45.45129f),
+                CameraDirection = new Vector3(0.846153f, -0.4779863f, -0.2356996f),
+                CameraRotation = new Rotator(-13.63287f, 1.537419E-05f, -119.4618f)
+            },
+            // MP Mid
+            new Business(new Vector3(1719.142f, 4677.249f, 43.6558f), 89.3922f, "Grow House", "")
+            {
+                FullName = "Grapeseed, Mid Grow House",
+                InteriorID = 29926501,
+                IsOnSPMap = false,
+                OpenTime = 0,
+                CloseTime = 24,
+                PurchasePrice = 85000,
+                SalesPrice = 42000,
+                CraftingFlag = "DrugLab",
+                PossibleModItemPayouts = new List<string>() { "Marijuana" },
+                ModItemPayoutAmount = 550,
+                PayoutFrequency = 7,
+                CameraPosition = new Vector3(1712.142f, 4683.815f, 45.45129f),
+                CameraDirection = new Vector3(0.846153f, -0.4779863f, -0.2356996f),
+                CameraRotation = new Rotator(-13.63287f, 1.537419E-05f, -119.4618f)
+            },
+
         };
     }
     private void DefaultConfig_TattooShops()
@@ -2183,6 +2350,30 @@ public class PlacesOfInterest : IPlacesOfInterest
                 WinLimitResetHours = 24,
                 OpenTime = 18,
                 CloseTime = 4,
+                IsOnMPMap = false,
+                AssignedAssociationID = "AMBIENT_GANG_PAVANO",
+                CameraPosition = new Vector3(1358.505f, 4371.237f, 48.73557f),
+                CameraDirection = new Vector3(0.3603207f, -0.8906768f, -0.2772433f),
+                CameraRotation = new Rotator(-16.09575f, -5.775947E-06f, -157.9743f),
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1363.469f, 4360.977f, 44.4992f), 327.1165f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                    new GangConditionalLocation(new Vector3(1372.259f, 4358.026f, 44.49716f), 327.7067f, 40f) { AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1369.516f, 4365.044f, 44.32616f), 78.89337f, 40f) { IsEmpty = true, AssociationID = "AMBIENT_GANG_PAVANO"},
+                },
+            },
+            new GamblingDen(new Vector3(1366.062f, 4358.021f, 44.50027f), 356.1247f,"The Cove Casino","Out of the way, out of prying eyes!")//Pavano Casino
+            {
+                GamblingParameters = defaultParameters,
+                WinLimit = 15000,
+                WinLimitResetHours = 24,
+                OpenTime = 18,
+                CloseTime = 4,
+                IsOnSPMap = false,
+                InteriorID = 28979330,
                 AssignedAssociationID = "AMBIENT_GANG_PAVANO",
                 CameraPosition = new Vector3(1358.505f, 4371.237f, 48.73557f),
                 CameraDirection = new Vector3(0.3603207f, -0.8906768f, -0.2772433f),
