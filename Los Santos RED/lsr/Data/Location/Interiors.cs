@@ -683,15 +683,15 @@ public class Interiors : IInteriors
                     new PropSpawn("prop_ff_counter_01", new SpawnPlace(new Vector3(939.85f, -2269.44f, -51.4f), -90f)) { PlaceOnGround = true },
 
                     // Counter Props
-                    new PropSpawn("m23_2_prop_m32_bag_weapons_01a", new SpawnPlace(new Vector3(939.7354f, -2268.26318f, -50.4759979f), 90.99962f)) { PlaceOnGround = true },
-                    new PropSpawn("m23_2_prop_m32_weaponcrate_01a", new SpawnPlace(new Vector3(939.8044f, -2272.15454f, -50.4759979f), 88.99951f)) { PlaceOnGround = true },
-                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(939.8329f, -2266.26367f, -50.4759979f), 0.999606f)) { PlaceOnGround = true },
-                    new PropSpawn("m23_2_prop_m32_guncase_01a", new SpawnPlace(new Vector3(939.796753f, -2267.577f, -50.4759979f), -98.9995956f)) { PlaceOnGround = true },
-                    new PropSpawn("m24_2_prop_m42_guncase_01a", new SpawnPlace(new Vector3(939.770569f, -2266.94141f, -50.4759979f), -77.99965f)) { PlaceOnGround = true },
-                    new PropSpawn("prop_box_guncase_01a", new SpawnPlace(new Vector3(939.638f, -2271.41748f, -50.4759979f), -96.99991f)) { PlaceOnGround = true },
-                    new PropSpawn("prop_box_guncase_02a", new SpawnPlace(new Vector3(939.965637f, -2271.429f, -50.4759979f), -95.9995041f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_bag_weapons_01a", new SpawnPlace(new Vector3(939.7354f, -2268.26318f, -50.4759979f), 90.99962f)) { PlaceOnGround = false },
+                    new PropSpawn("m23_2_prop_m32_weaponcrate_01a", new SpawnPlace(new Vector3(939.8044f, -2272.15454f, -50.4759979f), 88.99951f)) { PlaceOnGround = false },
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(939.8329f, -2266.26367f, -50.4759979f), 0.999606f)) { PlaceOnGround = false },
+                    new PropSpawn("m23_2_prop_m32_guncase_01a", new SpawnPlace(new Vector3(939.796753f, -2267.577f, -50.4759979f), -98.9995956f)) { PlaceOnGround = false },
+                    new PropSpawn("m24_2_prop_m42_guncase_01a", new SpawnPlace(new Vector3(939.770569f, -2266.94141f, -50.4759979f), -77.99965f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_box_guncase_01a", new SpawnPlace(new Vector3(939.638f, -2271.41748f, -50.4759979f), -96.99991f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_box_guncase_02a", new SpawnPlace(new Vector3(939.965637f, -2271.429f, -50.4759979f), -95.9995041f)) { PlaceOnGround = false },
                     new PropSpawn("ex_office_swag_guns01", new SpawnPlace(new Vector3(939.459f, -2269.42432f, -50.5744934f), -90.9997f)) { PlaceOnGround = false },
-                    new PropSpawn("m23_2_prop_m32_maskcrate", new SpawnPlace(new Vector3(939.7798f, -2270.79834f, -50.4759979f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_maskcrate", new SpawnPlace(new Vector3(939.7798f, -2270.79834f, -50.4759979f), 0f)) { PlaceOnGround = false },
 
                     // Floor Stuff
                     new PropSpawn("m23_2_prop_m32_weaponcrate_01b", new SpawnPlace(new Vector3(938.8704f, -2267.34058f, -51.39861f), -92.99937f)) { PlaceOnGround = true },
@@ -1908,8 +1908,8 @@ public class Interiors : IInteriors
                     //new PropSpawn("v_res_fa_chair01", new SpawnPlace(new Vector3(-27.96f, -73.75f, -74.92f), 93.00102f)) { PlaceOnGround = true }, // tester
 
 
-                    //new PropSpawn("prop_chair_06", new SpawnPlace(new Vector3(-24.5f, -73.68f, -75.00862f), -89.999794f)) { PlaceOnGround = true },
-                    //new PropSpawn("prop_chair_06", new SpawnPlace(new Vector3(-27.69f, -73.71f, -75.00862f), 89.00019f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_chair_06", new SpawnPlace(new Vector3(-24.5f, -73.68f, -75.00862f), -89.999794f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_chair_06", new SpawnPlace(new Vector3(-27.69f, -73.71f, -75.00862f), 89.00019f)) { PlaceOnGround = true },
                     new PropSpawn("prop_chair_06", new SpawnPlace(new Vector3(-26.16f, -72.7f, -75.00862f), 0.999912441f)) { PlaceOnGround = true }, // dealer
                     new PropSpawn("bkr_prop_weed_chair_01a", new SpawnPlace(new Vector3(-26.15f, -74.58f, -75.00862f), 173.9997f)) { PlaceOnGround = true },
                     new PropSpawn("vw_prop_vw_table_01a", new SpawnPlace(new Vector3(-26.09693f, -73.71252f, -75.00862f), -180f)) { PlaceOnGround = true },
@@ -12045,14 +12045,14 @@ public class Interiors : IInteriors
                     {
                         OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
                         RequiredPedGroup = "Coke",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>(){ "WORLD_HUMAN_DRUG_PROCESSORS_COKE", },
                     },
                     new CivilianConditionalLocation(new Vector3(1095.294f, -3194.827f, -40.99347f), 180.4458f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
                         RequiredPedGroup = "Coke",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>(){ "WORLD_HUMAN_DRUG_PROCESSORS_COKE", },
                     },
                     new CivilianConditionalLocation(new Vector3(1099.713f, -3194.306f, -40.99347f), 87.22012f, 100f)
@@ -12152,31 +12152,31 @@ public class Interiors : IInteriors
                     {
                         OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
                         RequiredPedGroup = "Counterfeit",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
-                        //ForcedScenarios = new List<string>()
-                        //{
-                        //    "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
-                        //    "WORLD_HUMAN_CLIPBOARD",
-                        //    "WORLD_HUMAN_CLIPBOARD_FACILITY"
-                        //},
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
                     },
                     new CivilianConditionalLocation(new Vector3(1158.42f, -3195.766f, -41f), 205.8045f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
                         RequiredPedGroup = "Counterfeit",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
-                        //ForcedScenarios = new List<string>()
-                        //{
-                        //    "WORLD_HUMAN_INSPECT_CROUCH",
-                        //    "WORLD_HUMAN_INSPECT_STAND",
-                        //    "WORLD_HUMAN_JANITOR"
-                        //},
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_INSPECT_CROUCH",
+                            "WORLD_HUMAN_INSPECT_STAND",
+                            "WORLD_HUMAN_JANITOR"
+                        },
                     },
                     new CivilianConditionalLocation(new Vector3(1172.86f, -3197.96f, -40f), 62.52f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
                         RequiredPedGroup = "CounterSec",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
                     },
                 },
             },
@@ -12294,7 +12294,8 @@ public class Interiors : IInteriors
                     {
                         OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
                         RequiredPedGroup = "HazMat",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>() { "WORLD_HUMAN_CLIPBOARD", "WORLD_HUMAN_CLIPBOARD_FACILITY" },
                     },
                 },
             },
@@ -12812,7 +12813,7 @@ public class Interiors : IInteriors
                     new CivilianConditionalLocation(new Vector3(-22.52f, -80.83f, -76.00858f), 180f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "HomelessPeds",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>() { "WORLD_HUMAN_BUM_SLUMPED" } 
                     },
                 }
@@ -12982,7 +12983,8 @@ public class Interiors : IInteriors
                 PropSpawns = new List<PropSpawn>()
                 {
                     // Entry Room
-                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(-18.63255f, -78.59312f, -75.00862f), 0f)) { PlaceOnGround = true },
+                    //new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(-18.63255f, -78.59312f, -75.00862f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_surf_board_ldn_04", new SpawnPlace(new Vector3(-18.4f, -78.4f, -73.69f), 136f)) { PlaceOnGround = true },
                     new PropSpawn("prop_rub_washer_01", new SpawnPlace(new Vector3(-20.44f, -79.87f, -75.00862f), 180f)) { PlaceOnGround = true },
                     new PropSpawn("ng_proc_binbag_02a", new SpawnPlace(new Vector3(-19.94f, -79.99f, -75.00862f), 0f)) { PlaceOnGround = true },
 
@@ -13035,7 +13037,7 @@ public class Interiors : IInteriors
                     new PropSpawn("ba_prop_club_dressing_posters_02", new SpawnPlace(new Vector3(-21.1738014f, -79.69852f, -74.05f), -90f)) { PlaceOnGround = false },
 
                     // Main Room
-                                        new PropSpawn("m25_1_prop_m51_wndwbarricade_01b", new SpawnPlace(new Vector3(-23.6261749f, -70.9907455f, -74.4696045f), 0f)) { PlaceOnGround = false  },
+                    new PropSpawn("m25_1_prop_m51_wndwbarricade_01b", new SpawnPlace(new Vector3(-23.6261749f, -70.9907455f, -74.4696045f), 0f)) { PlaceOnGround = false  },
                     new PropSpawn("m25_1_prop_m51_wndwbarricade_01b", new SpawnPlace(new Vector3(-19.46263f, -70.81712f, -74.1549149f), 0f)) { PlaceOnGround = false  },
                     new PropSpawn("m25_1_prop_m51_wndwbarricade_01b", new SpawnPlace(new Vector3(-23.2292118f, -81.3691f, -74.38873f), 0f)) { PlaceOnGround = false },
                     new PropSpawn("m25_1_prop_m51_doorbarricade_01a", new SpawnPlace(new Vector3(-27.6803322f, -70.95372f, -73.83339f), 0f)) { PlaceOnGround = true },
@@ -13140,7 +13142,7 @@ public class Interiors : IInteriors
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new CivilianConditionalLocation(new Vector3(-26.39859f, -74.35877f, -76.00858f), 88.62341f, 100f)
+                    new CivilianConditionalLocation(new Vector3(-26.39859f, -74.35877f, -77.00858f), -90f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
                         RequiredPedGroup = "AcidLabCook",
@@ -13149,7 +13151,7 @@ public class Interiors : IInteriors
                     new CivilianConditionalLocation(new Vector3(-22.52f, -80.83f, -76.00858f), 120f, 100f)
                     {
                         OverrideDispatchablePersonGroupID = "HomelessPeds",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>() { "WORLD_HUMAN_BUM_SLUMPED" }
                     },
                 }
