@@ -2793,7 +2793,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
             //    CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             //},
-            new VehicleModShop(new Vector3(-205.7094f, -1306.615f, 31.03303f), 181.1362f,"Benny's Original Motor Works","Lowrider culture and customization.")
+            new VehicleModShop(new Vector3(-212.2025f, -1324.637f, 30.59422f), 181.1362f,"Benny's Original Motor Works","Lowrider culture and customization.")
             {// enterance -205.7094f, -1306.615f, 31.03303f), 181.1362f,
                 OpenTime = 0,
                 CloseTime = 24,
