@@ -176,6 +176,9 @@ public class SettingsManager
     [Description("Gang Settings")]
     public GangSettings GangSettings { get; set; } = new GangSettings();
     [Category("Civilian Groups")]
+    [Description("Gang Progression Settings")]
+    public GangProgressionSettings GangProgressionSettings { get; set; } = new GangProgressionSettings();
+    [Category("Civilian Groups")]
     [Description("Security Settings")]
     public SecuritySettings SecuritySettings { get; set; } = new SecuritySettings();
     [Category("Civilian Groups")]
