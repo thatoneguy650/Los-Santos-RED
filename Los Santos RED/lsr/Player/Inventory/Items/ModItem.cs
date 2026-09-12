@@ -476,7 +476,7 @@ public class ModItem
             {
                 try
                 {
-                   Transaction.SellingProp = new Rage.Object(ModelToSpawn, Position);
+                   Transaction.SellingProp = new Rage.Object(ModelToSpawn, Position + new Vector3(0f,0f,10f));
                 }
                 catch (Exception ex)
                 {
@@ -484,11 +484,13 @@ public class ModItem
                 }
                 if (Transaction.SellingProp.Exists())
                 {
+                    Transaction.SellingProp.Position = Position;
                     Transaction.SellingProp.SetRotationYaw(Transaction.SellingProp.Rotation.Yaw + 45f);
                     if (Transaction.SellingProp != null && Transaction.SellingProp.Exists())
                     {
                         NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(Transaction.SellingProp, false);
                     }
+                    Transaction.SellingProp.IsCollisionEnabled = false;
                 }
                 //EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN");
             }
