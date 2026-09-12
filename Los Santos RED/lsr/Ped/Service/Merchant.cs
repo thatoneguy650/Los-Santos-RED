@@ -22,7 +22,7 @@ public class Merchant : PedExt, IWeaponIssuable
     public override bool KnowsGangAreas => false;
     public override bool CanTransact => IsNearSpawnPosition && base.CanTransact;
     public override bool IsMerchant { get; set; } = true;
-    public override bool CanBeIdleTasked => !SetupMenus;
+    public override bool CanBeIdleTasked => true;//!SetupMenus;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssociatedStore?.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons)
     {

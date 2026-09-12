@@ -6131,7 +6131,7 @@ new ConditionalLocation(, 75f),*/
                 VendorLongGunWeaponsID = "AllLongGuns",
                 VendorSidearmWeaponsID ="AllSidearms",
                 VendorPersonnelID = "GunshopPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(997.4385f, -2201.026f, -50.99989f), 269.0397f) },
+                //VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(997.4385f, -2201.026f, -50.99989f), 269.0397f) },
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1044.326f, -2404.086f, 29.69204f),352.682f),
                     new SpawnPlace(new Vector3(1044.763f, -2397.967f, 29.08815f), 355.825f),
@@ -6166,7 +6166,7 @@ new ConditionalLocation(, 75f),*/
                 VendorLongGunWeaponsID = "AllLongGuns",
                 VendorSidearmWeaponsID ="AllSidearms",
                 VendorPersonnelID = "GunshopPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1088.746f, -3101.636f, -40.99995f), 5.399706f) },
+                //VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1088.746f, -3101.636f, -40.99995f), 5.399706f) },
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-294.596252f, -1407.9834f, 31.034042f),-114.274956f),
                     new SpawnPlace(new Vector3(-314.638672f, -1413.5625f, 30.819231f ), 178.67157f),
@@ -6204,7 +6204,7 @@ new ConditionalLocation(, 75f),*/
                 VendorLongGunWeaponsID = "AllLongGuns",
                 VendorSidearmWeaponsID ="AllSidearms",
                 VendorPersonnelID = "GunshopPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(60.95277f, -79.10422f, -76.19621f), 201.2242f) },
+                //VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(60.95277f, -79.10422f, -76.19621f), 201.2242f) },
                 ParkingSpaces = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(322.9245f, -1981.151f, 23.22856f),305.8783f),
@@ -6240,7 +6240,7 @@ new ConditionalLocation(, 75f),*/
                 VendorLongGunWeaponsID = "AllLongGuns",
                 VendorSidearmWeaponsID ="AllSidearms",
                 VendorPersonnelID = "GunshopPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1087.508f, -3194.527f, -40.99347f), 345.7893f) },
+                //VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1087.508f, -3194.527f, -40.99347f), 345.7893f) },
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
                     new SpawnPlace(new Vector3(-256.5694f, 6265.761f, 30.58578f), 317.2921f),
@@ -6277,7 +6277,7 @@ new ConditionalLocation(, 75f),*/
                 VendorLongGunWeaponsID = "AllLongGuns",
                 VendorSidearmWeaponsID ="AllSidearms",
                 VendorPersonnelID = "GunshopPeds",
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(938.9184f, -2269.421f, -52.40619f), 273.2929f) },
+                //VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(938.9184f, -2269.421f, -52.40619f), 273.2929f) },
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
                     new SpawnPlace(new Vector3(1659.542f, 4946.245f, 41.20879f), 224.609f),

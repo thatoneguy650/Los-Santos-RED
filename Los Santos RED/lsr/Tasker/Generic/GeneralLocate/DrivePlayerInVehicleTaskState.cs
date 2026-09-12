@@ -429,6 +429,8 @@ class DrivePlayerInVehicleTaskState : TaskState
             EntryPoint.WriteToConsole("SET PARK RAN");
         }
 
+        GameFiber.Sleep(100);
+
         GameFiber.StartNew(MarkParkingSpace);
 
     }

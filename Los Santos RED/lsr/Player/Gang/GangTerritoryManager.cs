@@ -250,7 +250,7 @@ public class GangTerritoryManager
             return;
         }
         existingWar.AddCasuality();
-        EntryPoint.WriteToConsole($"ADDED CASUALTY TO GANG WAR {gangMember.Gang.ShortName} IN {deathZone.DisplayName} Casualites:{existingWar.Casualites} CasualityLimit:{existingWar.CasualityLimit} GangWarCasualtyLimit:{gangMember.Gang.GangWarCasualtyLimit}");
+        EntryPoint.WriteToConsole($"ADDED CASUALTY TO GANG WAR {gangMember.Gang.ShortName} IN {deathZone.DisplayName} Casualites:{existingWar.Casualites} CasualityLimit:{existingWar.CasualityLimit}");
     }
 
 

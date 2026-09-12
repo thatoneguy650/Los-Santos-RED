@@ -520,7 +520,7 @@ namespace Mod
         public bool IsBlockingTraffic { get; set; }
         public Crafting Crafting { get; set; }
         public bool IsConsideredNight { get; private set; }
-        public bool IsUnconscious { get; internal set; }
+
 
 
         public bool DisableMainMenu { get; set; }

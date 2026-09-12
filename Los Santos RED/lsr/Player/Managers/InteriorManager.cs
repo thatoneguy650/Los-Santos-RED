@@ -99,7 +99,7 @@ public class InteriorManager
         if (ClosestInteriorInteract != null && ClosestInteriorInteract.ShouldAddPrompt && !Interactionable.ButtonPrompts.HasPrompt(ClosestInteriorInteract.ButtonPromptText))
         {
             OnClosestInteractChanged();
-            EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
+            //EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
         }
     }
     public void Dispose()
@@ -206,22 +206,22 @@ public class InteriorManager
         if(PrevClosestInteriorInteract == null && ClosestInteriorInteract != null)
         {
             OnClosestInteractChanged();
-            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM NULL TO {ClosestInteriorInteract.Position}");
+            //EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM NULL TO {ClosestInteriorInteract.Position}");
         }
         else if (PrevClosestInteriorInteract != null && ClosestInteriorInteract != null && PrevClosestInteriorInteract != ClosestInteriorInteract)
         {
             OnClosestInteractChanged();
-            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO {ClosestInteriorInteract.Position}");
+            //EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO {ClosestInteriorInteract.Position}");
         }
         else if (PrevClosestInteriorInteract != null && ClosestInteriorInteract == null)
         {
             OnClosestInteractChanged();
-            EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO NULL");
+            //EntryPoint.WriteToConsole($"UpdateClosestInteract CHANGED FROM {PrevClosestInteriorInteract.Position} TO NULL");
         }
         else if (ClosestInteriorInteract != null && ClosestInteriorInteract.ShouldAddPrompt && !Interactionable.ButtonPrompts.HasPrompt(ClosestInteriorInteract.ButtonPromptText))
         {
             OnClosestInteractChanged();
-            EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
+            //EntryPoint.WriteToConsole($"UpdateClosestInteract NO PROMPT, READDING");
         }
         PrevClosestInteriorInteract = ClosestInteriorInteract;
        // GameFiber.Yield();

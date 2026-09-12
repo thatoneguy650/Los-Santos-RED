@@ -410,7 +410,7 @@ public class GameLocation : ILocationDispatchable
     }
     public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {
-        EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} RAN");
+        EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} RAN FIRST");
         int VendorsSpawned = 0;
         List<SpawnPlace> spawns = new List<SpawnPlace>();
         if(isInterior)
@@ -431,7 +431,7 @@ public class GameLocation : ILocationDispatchable
                 //EntryPoint.WriteToConsole($"ATTEMPT VENDOR SPAWN AT {Name} START");
                 if (SpawnVendor(spawnPlace))
                 {
-                    EntryPoint.WriteToConsole($"VENDOR SPAWNED AT {Name}");
+                    EntryPoint.WriteToConsole($"VENDOR SPAWNED AT {Name} SECOND");
                     VendorsSpawned++;
                 }
             }

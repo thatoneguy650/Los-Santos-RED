@@ -244,6 +244,11 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Albany Presidente", ItemType.Vehicles) { OverrideMakeName = "Albany", OverrideClassName = "Sedan", ModelName = "civpresidente" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin S95", ItemType.Vehicles) { OverrideMakeName = "Karin", OverrideClassName = "Sedan", ModelName = "civs95" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Benefactor Streiter Stock", true, ItemType.Vehicles) { ModelName = "civstreiter", Description = "Look in the mirror and what do you see? Is it a flabby, pallid investment manager with a solitary sex life and spiraling personal debts? It's OK, you don't need to answer that - you're only seeing this ad because we've datamined your Lifeinvader profile. And statistically, we know your next step is going to be the impulsive purchase of a 4x4 that you'll never take out of the city - which is where the Streiter comes in.", });
+
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Imponte DF8-90", true, ItemType.Vehicles) { ModelName = "civdf8", Description = "See why Imponte is a relic of the past as the dash creaks around you.", });
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Feroci", true, ItemType.Vehicles) { ModelName = "civferoci", Description = "Luxury AND performance? How about neither.", });
+
+
         //Compacts
         newPossibleItems.VehicleItems.Add(new VehicleItem("Grotti Brioso AC", ItemType.Vehicles) { ModelName = "civbrioso" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Weeny Issi 2nd Gen", ItemType.Vehicles) { ModelName = "civissi8" });
@@ -266,6 +271,9 @@ public class ModItems : IModItems
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon V8", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveronv8" });//swapped from vaid to KARIN and renamed
         newPossibleItems.VehicleItems.Add(new VehicleItem("Karin Everon 2nd Gen", true, ItemType.Vehicles) { OverrideMakeName = "Karin", ModelName = "civeveron3" });
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Kamacho Stock", true, ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "civkamacho" });
+
+        newPossibleItems.VehicleItems.Add(new VehicleItem("Declasse Rancher", true, ItemType.Vehicles) { ModelName = "civrancher",Description = "Big, dumb, and powerful. Just like you. Well, two out of three isnt bad." });
+
         newPossibleItems.VehicleItems.Add(new VehicleItem("Canis Bodhi Mod", ItemType.Vehicles) { OverrideMakeName = "Canis", ModelName = "bodhi", Description = "The Canis Bodhi has traveled the well-trodden path from military to redneck to hipster." });
         //SUV
         newPossibleItems.VehicleItems.Add(new VehicleItem("Vapid Scout", false, ItemType.Vehicles) { OverrideMakeName = "Vapid", ModelName = "civscoutgresk" });

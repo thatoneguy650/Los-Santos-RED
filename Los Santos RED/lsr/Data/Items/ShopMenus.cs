@@ -400,6 +400,7 @@ public class ShopMenus : IShopMenus
         {
             karinMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
             karinMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
+            karinMenu.Items.Add(new MenuItem("Karin Feroci", 22000, 8900));
         }
 
         ShopMenu albanyMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "AlbanyMenu").FirstOrDefault();
@@ -428,6 +429,7 @@ public class ShopMenus : IShopMenus
             premiumDeluxMenu.Items.Add(new MenuItem("Declasse Merit", 23000, 7800));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon V8", 58000, 25500));
             premiumDeluxMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 48000, 25500));
+            premiumDeluxMenu.Items.Add(new MenuItem("Karin Feroci", 22000, 8900));
             
             premiumDeluxMenu.Items.Add(new MenuItem("Schyster PMP 600", 36000, 17000));
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
@@ -441,7 +443,8 @@ public class ShopMenus : IShopMenus
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Kamacho Stock", 79000, 23000));
 
             premiumDeluxMenu.Items.Add(new MenuItem("Karin S95", 34000, 16000));
-
+            premiumDeluxMenu.Items.Add(new MenuItem("Imponte DF8-90", 28000, 18000));
+            premiumDeluxMenu.Items.Add(new MenuItem("Declasse Rancher", 25000, 5000));
         }
         ShopMenu sandersMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "SandersMenu").FirstOrDefault();
         if (sandersMenu != null)
@@ -2521,6 +2524,7 @@ public class ShopMenus : IShopMenus
         new MenuItem("Karin Vivanite",37000,12000),
         new MenuItem("Karin Asterope GZ",38000,23500),
         new MenuItem("Karin Woodlander",22000,8900),
+        
         //Annis
         new MenuItem("Annis Euros X32",25000,14000),
         new MenuItem("Annis 300R",36000,16000),

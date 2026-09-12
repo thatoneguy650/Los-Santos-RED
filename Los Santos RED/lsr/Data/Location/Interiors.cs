@@ -416,6 +416,7 @@ public class Interiors : IInteriors
                 {
                     new ExitInteriorInteract("JamesGunShopExit1",new Vector3(1009.792f, -2199.354f, -48.99992f), 274.9501f,"Exit"),
                 }
+                ,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(997.4385f, -2201.026f, -50.99989f), 269.0397f) },
 
             },
             new Interior(23577701, "Strawberry - Guns Shop 2") // Original Interior id 235777 +01 - ex_int_warehouse_s_dlc
@@ -472,7 +473,8 @@ public class Interiors : IInteriors
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("StrawGunShopExit1",new Vector3(1104.872f, -3099.55f, -38.99995f), 274.2609f,"Exit"),
-                }
+                },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1088.746f, -3101.636f, -40.99995f), 5.399706f) },
 
             },
 
@@ -581,7 +583,8 @@ public class Interiors : IInteriors
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("JamesGunShopExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
-                }
+                },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(60.95277f, -79.10422f, -76.19621f), 201.2242f) },
 
             },
             new Interior(24755301, "Paleto Bay - Guns Shop 4") // Original Interior 247553 +01, Cocaine Lockup interior
@@ -663,7 +666,8 @@ public class Interiors : IInteriors
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("PaletoGunShopExit1",new Vector3(1088.689f, -3188.042f, -38.99347f), 358.1666f,"Exit"),
-                }
+                },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(1087.508f, -3194.527f, -40.99347f), 345.7893f) },
 
             },
 
@@ -732,7 +736,8 @@ public class Interiors : IInteriors
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("GrapeseedGunShopExit",new Vector3(941.3074f, -2263.597f, -50.40947f), 3.140162f,"Exit"),
-                }
+                },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(938.9184f, -2269.421f, -52.40619f), 273.2929f) },
 
             },
 

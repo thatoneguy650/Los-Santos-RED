@@ -156,7 +156,7 @@ namespace Mod
             EntryPoint.WriteToConsole($"craftedQuantity{craftedQuantity} finalQuantity{finalQuantity}");
             while (craftedQuantity < finalQuantity)//Game.GameTime - GameTimeStartedCrafting <= (finalCraftableItem.Cooldown * finalQuantity))
             {
-                if (!Player.IsAliveAndFree || Player.IsUnconscious || Player.ButtonPrompts.IsPressed("stopcraftingprompt1") || (Settings.SettingsManager.ActivitySettings.AllowSkippingCrafting && Player.ButtonPrompts.IsPressed("skipcraftingprompt1")))
+                if (!Player.IsAliveAndFree || Player.ButtonPrompts.IsPressed("stopcraftingprompt1") || (Settings.SettingsManager.ActivitySettings.AllowSkippingCrafting && Player.ButtonPrompts.IsPressed("skipcraftingprompt1")))
                 {
                     IsCrafting = false;
                     if (!string.IsNullOrEmpty(finalCraftableItem.CrimeId))

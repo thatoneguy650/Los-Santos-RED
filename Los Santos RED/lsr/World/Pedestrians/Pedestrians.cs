@@ -265,6 +265,10 @@ public class Pedestrians : ITaskerReportable
             {
                 continue;
             }
+            else if(PedExts.Any(x => x.Handle == localHandle))
+            {
+                continue;
+            }
             else if (PedType == 28)//Animal
             {
                 continue;//dont do anything yet, let the game just do nothing with them, what about killing animals? no big deal for now i guess

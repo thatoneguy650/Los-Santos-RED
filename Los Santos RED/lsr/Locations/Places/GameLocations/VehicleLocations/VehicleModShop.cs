@@ -71,6 +71,27 @@ public class VehicleModShop : GameLocation
         {
             return;
         }
+
+
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera(true);
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+
+
+
+
+
+
+
+    }
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -79,20 +100,20 @@ public class VehicleModShop : GameLocation
         {
             try
             {
-                if(VehiclePreviewLocation != null)
+                if (VehiclePreviewLocation != null)
                 {
                     Game.FadeScreenOut(500, true);
-                    Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false,true,0);
+                    Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false, true, 0);
                     hasteleported = true;
                     GameFiber.Sleep(500);
-                    
+
                 }
                 Player.CurrentVehicle?.Radio.SetOff();
 
                 CreateInteractionMenu();
                 SetupOrbitCamera();
 
-                if(hasteleported)
+                if (hasteleported)
                 {
                     Game.FadeScreenIn(500, true);
                 }
@@ -109,7 +130,7 @@ public class VehicleModShop : GameLocation
                     Game.FadeScreenOut(500, true);
                     Player.GPSManager.TeleportToCoords(EntrancePosition, EntranceHeading, false, true, 0);
                     OrbitCamera.Dispose();
-                    GameFiber.Sleep(500);         
+                    GameFiber.Sleep(500);
                     Game.FadeScreenIn(500, true);
                 }
                 else
@@ -117,7 +138,7 @@ public class VehicleModShop : GameLocation
                     OrbitCamera.Dispose();
                 }
 
-                
+
 
 
 
@@ -134,7 +155,6 @@ public class VehicleModShop : GameLocation
                 EntryPoint.ModController.CrashUnload();
             }
         }, "ModShopInteract");
-
     }
 
     private void SetupOrbitCamera()

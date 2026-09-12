@@ -284,7 +284,8 @@ public class ConditionalLocation
         {
             ped.LocationTaskRequirements.ForcedScenarios.AddRange(ForcedScenarios.ToList());
         }
-        //EntryPoint.WriteToConsoleTestLong("ADDED LOCATION REQUIREMENTS");
+        //ped.PedBrain.ClearTask();
+        EntryPoint.WriteToConsole($"ADDED LOCATION REQUIREMENTS {ped.Handle}");
     }
 
     public void AddDistanceOffset(Vector3 offsetToAdd)

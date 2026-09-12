@@ -120,7 +120,15 @@ namespace LosSantosRED.lsr.Helper
             }
             return uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out hash);
         }
-
+        public static string ConvertMSToTime(uint TotalGameTime)
+        {
+            TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
+            string answer = string.Format("{0:000}:{1:000}.{2:000}",
+                                    t.Minutes,
+                                    t.Seconds,
+                                    t.Milliseconds);
+            return answer;
+        }
 
         public static string AddOrdinal(int num)
         {

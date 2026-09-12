@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
@@ -130,11 +131,19 @@ public class GangRetaliation
     }
     public void Update()
     {
+
+
+
         if (IsEnded)
         {
             return;
         }
-        if(Player.RecentlyRespawned)
+
+
+        EntryPoint.WriteToConsole($"GANG RETALIATION UPDATE RAN HasPlayerEnteredArea{HasPlayerEnteredArea} TimeAfterReturn{Game.GameTime - GameTimeReturnedToZone} NeededTime:{RetaliationTime}");
+
+
+        if (Player.RecentlyRespawned)
         {
             OnPlayerLost();
             EntryPoint.WriteToConsole("PLAYER LOST RETALIATION SINCE THEY DIED OR GOT BUSTED");
@@ -287,11 +296,11 @@ public class GangRetaliation
     private void SendReturnedMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Took you long enough, {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is running rampant. Waste those fucks!",
-                                $"Did you stop for gas on the way back? We are getting fucked by {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~",
-                                $"We're you in Lemoyne? The fuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are all over us!",
+                                $"Took you long enough, {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is running rampant. Hold Out for {NativeHelper.ConvertMSToTime(RetaliationTime)}.",
+                                $"We are getting fucked by {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Hold out for {NativeHelper.ConvertMSToTime(RetaliationTime)}",
+                                $"We're you in Lemoyne? The fuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are all over us! We need you to hold out for {NativeHelper.ConvertMSToTime(RetaliationTime)}",
                                 };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
     private void SendStartMessage()
     {
@@ -309,7 +318,7 @@ public class GangRetaliation
                                 $"Do you enjoy making us look bad? We just lost {ZonesToAttack.FirstOrDefault()?.DisplayName} to {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~.",
                                 $"So much for {ZonesToAttack.FirstOrDefault()?.DisplayName} the motherfuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are back to running it.",
                                 };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
     private void SendWonMessage()
     {
@@ -319,7 +328,7 @@ public class GangRetaliation
 
             $"So many {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ bodies in {ZonesToAttack.FirstOrDefault()?.DisplayName}. They've got their tail between their legs.",
                                 };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
     private void SendWonWithoutWorkMessage()
     {
@@ -329,7 +338,7 @@ public class GangRetaliation
 
             $"So many {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ bodies in {ZonesToAttack.FirstOrDefault()?.DisplayName}. Why weren't you there?.",
                                 };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
     private void SendLeftZoneMessage()
     {
@@ -338,7 +347,7 @@ public class GangRetaliation
                                 $"You need to stay in {ZonesToAttack.FirstOrDefault()?.DisplayName} or we are going to get fucked.",
                                 $"GET BACK TO {ZonesToAttack.FirstOrDefault()?.DisplayName} NOW.",
                                 };
-        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 1, false);
+        Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
 
     //public void LoadFromSave(uint timeToStartRetaliation, float retaliationPercentAtIncrement, uint retaliationTime, uint timeToReturnToZone, bool hasRetaliationStarted, bool isEnded, bool hasPlayerReturnedToZone)

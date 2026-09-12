@@ -191,7 +191,10 @@ public class LocationDispatcher
     private void HandleServiceWorkerSpawns()
     {
 
-        foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && x.IsOpen(Time.CurrentHour) && !x.IsServiceFilled).ToList())
+        foreach (GameLocation ps in World.Places.ActiveLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && x.VendorLocations.Any() && x.IsOpen(Time.CurrentHour) && !x.IsServiceFilled
+        
+        && (x.Interior == null || !x.Interior.IsTeleportEntry)
+        ).ToList())
         {
             ps.AttemptVendorSpawn(ps.IsOpen(Time.CurrentHour),Interiors,Settings,Crimes,Weapons,Time,World, false);
             ps.IsServiceFilled = true;
@@ -199,7 +202,12 @@ public class LocationDispatcher
             GameFiber.Yield();
         }
         GameFiber.Yield();
-        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && (!x.IsNearby || !x.IsOpen(Time.CurrentHour)) && x.IsServiceFilled).ToList())
+        foreach (GameLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && (!x.IsNearby || !x.IsOpen(Time.CurrentHour)) && x.VendorLocations.Any() && x.IsServiceFilled
+        
+        
+        && (x.Interior == null || !x.Interior.IsTeleportEntry)
+
+        ).ToList())
         {
             ps.AttemptVendorDespawn();
             EntryPoint.WriteToConsole($"VENDOR DESPAWN AT {ps.Name} HandleServiceWorkerSpawns");

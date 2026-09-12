@@ -38,8 +38,11 @@ public class PedBrain
         Player = player;
         PlacesOfInterest = placesOfInterest;
 
-
-        if(!PedExt.CanBeTasked)
+        if (PedExt.IsMerchant)
+        {
+            EntryPoint.WriteToConsole($"{PedExt.Handle} IS GETTING A PED BRAIN UPDATE");
+        }
+        if (!PedExt.CanBeTasked)
         {
             return;
         }
@@ -86,6 +89,10 @@ public class PedBrain
     }
     protected virtual void UpdateCurrentTask()
     {
+        //if (PedExt.IsMerchant)
+        //{
+        //    EntryPoint.WriteToConsole($"{PedExt.Handle} IS GETTING A PED BRAIN UPDATE FOR CURRENT TASK DistanceToPlayer:{PedExt.DistanceToPlayer} TaskName:{PedExt.CurrentTask?.Name} CanBeIdleTasked:{PedExt.CanBeIdleTasked}");
+        //}
         if (PedExt.IsBusted)
         {
             if (PedExt.DistanceToPlayer <= 175f)//75f
@@ -132,14 +139,21 @@ public class PedBrain
             }
             else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
             {
+                //EntryPoint.WriteToConsole($"DID A REGULAR IDLE FOR {PedExt.Handle}");
                 SetIdle();
             }
         }
         else if (PedExt.WasModSpawned && PedExt.CurrentTask == null && PedExt.CanBeIdleTasked)
         {
+            //EntryPoint.WriteToConsole($"DID A FAR AWAY REGULAR IDLE FOR {PedExt.Handle}");
             SetIdle();
         }
         PedExt.GameTimeLastUpdatedTask = Game.GameTime;
+
+        //if (PedExt.IsMerchant)
+        //{
+        //    EntryPoint.WriteToConsole($"{PedExt.Handle} IS GETTING A PED BRAIN UPDATE FOR CURRENT TASK DistanceToPlayer:{PedExt.DistanceToPlayer} TaskName:{PedExt.CurrentTask?.Name} CanBeIdleTasked:{PedExt.CanBeIdleTasked}");
+        //}
     }
     protected void SetArrested()
     {
@@ -229,6 +243,12 @@ public class PedBrain
     public void AssignIdleTask()
     {
         SetIdle();
+    }
+
+    public virtual void ClearTask()
+    {
+        PedExt.CurrentTask = null;
+
     }
 }
 

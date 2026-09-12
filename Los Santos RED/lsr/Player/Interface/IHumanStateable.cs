@@ -25,5 +25,7 @@ namespace LosSantosRED.lsr.Interface
       //  bool IsSitting { get; }
        // bool IsLayingDown { get; }
         Sprinting Sprinting { get; }
+        bool IsStunned { get; }
+        bool IsRagdoll { get; }
     }
 }

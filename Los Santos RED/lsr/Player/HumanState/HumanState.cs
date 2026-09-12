@@ -65,9 +65,21 @@ public class HumanState
                     MinNeed = humanNeed.CurrentValue;
                 }
             }
+
+
+
+
             MinimumNeedPercent = MinNeed;
             HasNeedsManaged = !IsBelowThreeQuarters;
             HasPressingNeeds = IsBelowQuarter;
+
+
+            if (Player.IsDead || Player.IsStunned || Player.IsRagdoll)
+            {
+                HasNeedsManaged = false;
+            }
+
+
         }
         else
         {

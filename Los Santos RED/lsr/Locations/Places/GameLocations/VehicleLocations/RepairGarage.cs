@@ -61,6 +61,20 @@ public class RepairGarage : GameLocation
         {
             return;
         }
+        if (Interior != null && Interior.IsTeleportEntry)
+        {
+            DoEntranceCamera(true);
+            Interior.Teleport(Player, this, StoreCamera);
+        }
+        else
+        {
+            StandardInteract(null, false);
+        }
+
+    }
+
+    public override void StandardInteract(LocationCamera locationCamera, bool isInside)
+    {
         Player.ActivityManager.IsInteractingWithLocation = true;
         CanInteract = false;
         Player.IsTransacting = true;
@@ -69,7 +83,7 @@ public class RepairGarage : GameLocation
             try
             {
                 CreateInteractionMenu();
-                
+
                 StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                 StoreCamera.StaysInVehicle = true;
                 StoreCamera.Setup();
@@ -89,7 +103,6 @@ public class RepairGarage : GameLocation
                 EntryPoint.ModController.CrashUnload();
             }
         }, "PayNSprayInteract");
-        
     }
     private void HandleDoor()
     {
