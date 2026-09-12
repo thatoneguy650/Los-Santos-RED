@@ -2793,7 +2793,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
             //    CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             //},
-            new VehicleModShop(new Vector3(-205.7094f, -1306.615f, 31.03303f), 181.1362f,"Benny's Original Motor Works","Lowrider culture and customization.")
+            new VehicleModShop(new Vector3(-212.2025f, -1324.637f, 30.59422f), 181.1362f,"Benny's Original Motor Works","Lowrider culture and customization.")
             {// enterance -205.7094f, -1306.615f, 31.03303f), 181.1362f,
                 OpenTime = 0,
                 CloseTime = 24,
@@ -3077,11 +3077,11 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         FoodStands = new List<FoodStand>()
         {
-            new FoodStand(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f) }, BannerImagePath = "stores\\beefybills.png" },
+            new FoodStand(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ IsOnMPMap = false, VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, "Beefy Bills Burger Bar","Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f) }, BannerImagePath = "stores\\beefybills.png" },
             new FoodStand(new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f) }, BannerImagePath = "stores\\beefybills.png" },
-            new FoodStand(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f) }, BannerImagePath = "stores\\beefybills.png" },
+            new FoodStand(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ IsOnMPMap = false, VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f) }, BannerImagePath = "stores\\beefybills.png" },
 
 
             new FoodStand(new Vector3(-1693.241f, -1073.102f, 13.25018f), 47.97861f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1693.241f, -1073.102f, 13.25018f), 47.97861f) }, BannerImagePath = "stores\\beefybills.png" },
@@ -3092,7 +3092,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new FoodStand(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu") { VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
 
             new FoodStand(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
-            new FoodStand(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f ) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ IsOnMPMap = false, VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f ) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f) }, BannerImagePath = "stores\\chihuahuahotdogs.png" },
             //new Vector3(-1857.076f, -1225.12f, 13.01722f), 316.8728f
 
@@ -3103,7 +3103,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             //new FoodStand(new Vector3(821.7623f, -2973.566f, 6.020659f), 269.9576f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(821.7623f, -2973.566f, 6.020659f), VendorHeading = 269.9576f, BannerImagePath = "stores\\chihuahuahotdogs.png" },
-            new FoodStand(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f, "Attack-A-Taco", "Heavy Shelling!","TacoFarmerMenu") { BannerImagePath = "stores\\attackataco.png",VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f) }, },
+            new FoodStand(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f, "Attack-A-Taco", "Heavy Shelling!","TacoFarmerMenu") { IsOnMPMap = false, BannerImagePath = "stores\\attackataco.png",VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f) }, },
             new FoodStand(new Vector3(-1148.969f, -1601.963f, 4.390241f), 35.73399f, "Gyro Day", "Gyro Day","GenericMenu") { BannerImagePath = "stores\\gyroday.png", CloseTime = 19, VendorLocations = new List<SpawnPlace>() { 
                 //new SpawnPlace(new Vector3(-1145.969f, -1602.963f, 4.390241f), 35.73399f),  (Gyro Day clears stall at 7pm, closes shutters down at 8pm)
             new SpawnPlace(new Vector3(-1143.96021f, -1600.45581f, 4.091243f), 35.73399f),

@@ -7404,7 +7404,7 @@ new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
         new MenuItem("Medium Body Armor",1250),
         new MenuItem("Heavy Body Armor",1500),
         new MenuItem("Full Body Armor",2000),
-        new MenuItem("Health Pack",1550),
+        //new MenuItem("Health Pack",1550),
         new MenuItem("Health Pack",1000),
         new MenuItem("Large Health Pack",2000),
         new MenuItem("Bandage",200),
