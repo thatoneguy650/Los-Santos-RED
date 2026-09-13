@@ -92,6 +92,11 @@ public class GroupManager
         GroupMember newMember = new GroupMember(groupMember, CurrentGroupMembers.Count + 1, Targetable, World, Settings, this, Weapons);
         CurrentGroupMembers.Add(newMember);
         newMember.OnBecameGroupMember();
+        // Every route into the crew passes through here — gang backup and a direct recruit
+        // alike. Claiming identity inside GangBackup missed anyone recruited by hand, which
+        // is the same mistake squad credit made before it started counting the group.
+        Player?.GangCrewManager?.ClaimIdentity(groupMember, (groupMember as GangMember)?.Gang
+            ?? Player?.RelationshipManager?.GangRelationships?.CurrentGang);
         return newMember;
     }
     public void Disband()

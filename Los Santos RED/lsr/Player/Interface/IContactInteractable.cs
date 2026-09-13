@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Interface
         PlayerVoice PlayerVoice { get; }
         Dispatcher Dispatcher { get; }
         GangBackupManager GangBackupManager { get; }
+        GangRequisitionManager GangRequisitionManager { get; }
         GangTerritoryManager GangTerritoryManager { get; }
 
         void AddCrime(Crime toCallIn, bool v1, Vector3 placeSeen, VehicleExt vehicleSeen, WeaponInformation weaponSeen, bool v2, bool v3, bool v4, bool alwaysAddInstance);

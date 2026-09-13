@@ -137,20 +137,26 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <!-- Location of the GTA V install that supplies RagePluginHookSDK, RAGENativeUI
+       and NAudio. Override per machine in Los Santos RED.csproj.user (gitignored)
+       rather than editing this file. -->
+  <PropertyGroup>
+    <GTAVPath Condition=" '$(GTAVPath)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V</GTAVPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>$(GTAVPath)\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>$(GTAVPath)\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHookSDK">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
+      <HintPath>$(GTAVPath)\SDK\RagePluginHookSDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -1475,6 +1481,26 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <!-- Gang progression feature. Kept in its own ItemGroup so upstream additions to the
+       main list never collide with ours on merge. -->
+  <ItemGroup>
+    <Compile Include="lsr\Player\Gang\Progression\GangStandingLevel.cs" />
+    <Compile Include="lsr\Player\Gang\Progression\GangStandingLevels.cs" />
+    <Compile Include="lsr\Player\Gang\Progression\GangProgressionSave.cs" />
+    <Compile Include="lsr\Player\Gang\Progression\GangStandingEvent.cs" />
+    <Compile Include="lsr\Player\Gang\Progression\GangProgressionManager.cs" />
+    <Compile Include="lsr\Player\Gang\Requisition\GangRankPrivilege.cs" />
+    <Compile Include="lsr\Player\Gang\Requisition\GangRankPrivileges.cs" />
+    <Compile Include="lsr\Player\Gang\Requisition\GangRequisitionManager.cs" />
+    <Compile Include="lsr\Player\Gang\Crew\GangCrewMember.cs" />
+    <Compile Include="lsr\Player\Gang\Crew\GangCrewEvent.cs" />
+    <Compile Include="lsr\Player\Gang\Crew\GangCrewManager.cs" />
+    <Compile Include="lsr\Player\Gang\Crew\GangKickUpManager.cs" />
+    <Compile Include="lsr\Player\Gang\Shared\GangPedTests.cs" />
+    <Compile Include="lsr\Data\Saves\GameSave.GangCrew.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\GangProgressionSettings.cs" />
+    <Compile Include="lsr\Data\Saves\GameSave.GangProgression.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneGangStandingApp.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

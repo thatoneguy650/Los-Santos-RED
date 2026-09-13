@@ -88,6 +88,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsWearingMask { get; }
         bool IsMovingSlowly { get; }
         GangTerritoryManager GangTerritoryManager { get; }
+        GangRequisitionManager GangRequisitionManager { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer, bool alwaysAddInstance);
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
