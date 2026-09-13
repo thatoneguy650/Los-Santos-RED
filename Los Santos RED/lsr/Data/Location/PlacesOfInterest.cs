@@ -2793,6 +2793,50 @@ public class PlacesOfInterest : IPlacesOfInterest
             //    CameraDirection = new Vector3(0.8348238f, -0.5354371f, -0.1279697f),
             //    CameraRotation = new Rotator(-7.352283f, 1.50649E-06f, -122.6752f)
             //},
+
+            new VehicleModShop(new Vector3(-168.9217f, -34.77706f, 51.88509f), 69.63069f,"Burton Auto Shop","Exotic car culture and customization.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                IsOnSPMap = false,
+                InteriorID = 28595301,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1351.88f, 156.0435f, -99.57311f), 207.5384f),
+            },
+            new VehicleModShop(new Vector3(761.6539f, -677.7732f, 28.42552f), 89.90034f-180f,"La Mesa Auto Shop","Muscle car culture and customization.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                IsOnSPMap = false,
+                InteriorID = 28595303,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1351.88f, 156.0435f, -99.57311f), 207.5384f),
+            },
+            new VehicleModShop(new Vector3(492.0412f, -894.8689f, 25.1848f), 88.94118f,"Mission Row Auto Shop","Asian car culture and customization.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                IsOnSPMap = false,
+                InteriorID = 28595305,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1351.88f, 156.0435f, -99.57311f), 207.5384f),
+            },
+            new VehicleModShop(new Vector3(235.5857f, -1875.015f, 25.88925f), 52.54437f,"Rancho Auto Shop","US car culture and customization.")
+            {
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                IsOnSPMap = false,
+                InteriorID = 28595307,
+                HasNoGarageDoors = true,
+                VehiclePreviewLocation = new SpawnPlace(new Vector3(-1351.88f, 156.0435f, -99.57311f), 207.5384f),
+            },
+
+
+
             new VehicleModShop(new Vector3(-212.2025f, -1324.637f, 30.59422f), 181.1362f,"Benny's Original Motor Works","Lowrider culture and customization.")
             {// enterance -205.7094f, -1306.615f, 31.03303f), 181.1362f,
                 OpenTime = 0,

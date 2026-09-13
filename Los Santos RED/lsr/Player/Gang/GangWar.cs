@@ -88,7 +88,7 @@ public class GangWar
         {
             SetOutcome(false);
         }
-        else if(Casualites > CasualityLimit)
+        else if(Casualites >= CasualityLimit)
         {
             EntryPoint.WriteToConsole("GANG WAR IS OVER THE CASUALITY LIMIT, SET PLAYER WINS");
             SetOutcome(true);

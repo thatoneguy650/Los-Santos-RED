@@ -102,10 +102,18 @@ public class VehicleModShop : GameLocation
             {
                 if (VehiclePreviewLocation != null)
                 {
-                    Game.FadeScreenOut(500, true);
-                    Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false, true, 0);
-                    hasteleported = true;
-                    GameFiber.Sleep(500);
+                    if(Player.Position.DistanceTo2D(VehiclePreviewLocation.Position) >= 20f)
+                    {
+                        Game.FadeScreenOut(500, true);
+                        Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false, true, 0);
+                        hasteleported = true;
+                        GameFiber.Sleep(500);
+                    }
+                    else
+                    {
+                        Player.GPSManager.TeleportToCoords(VehiclePreviewLocation.Position, VehiclePreviewLocation.Heading, false, true, 0);
+                    }
+
 
                 }
                 Player.CurrentVehicle?.Radio.SetOff();
@@ -116,6 +124,7 @@ public class VehicleModShop : GameLocation
                 if (hasteleported)
                 {
                     Game.FadeScreenIn(500, true);
+                    EntryPoint.WriteToConsole("VEHICLE MOD SHOP HAS TELEPORTED FADING SCREEN IN");
                 }
 
                 HandleDoor();

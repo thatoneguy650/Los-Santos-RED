@@ -58,9 +58,9 @@ public class GangTerritoryManager
                 w.Update(Player);
             }
         }
-        foreach(GangRetaliation ended in Retaliations.ToList())
+        foreach(GangRetaliation retaliations in Retaliations.ToList())
         {
-            ended.Update();
+            retaliations.Update();
         }
    
     }

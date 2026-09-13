@@ -435,7 +435,7 @@ public class ShopMenus : IShopMenus
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 28000, 14500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 76000, 24500));
             premiumDeluxMenu.Items.Add(new MenuItem("Bravado Bison XL", 31000, 14000));
-
+            premiumDeluxMenu.Items.Add(new MenuItem("Canis Mesa 2nd Gen", 29000, 9000));
 
             premiumDeluxMenu.Items.Add(new MenuItem("Annis Hellion Stock", 19000, 3000));
             premiumDeluxMenu.Items.Add(new MenuItem("Canis Seminole Frontier Stock", 20000, 5000));
@@ -2595,7 +2595,7 @@ public class ShopMenus : IShopMenus
         new MenuItem("Canis Terminus",49000,25000),
         new MenuItem("Canis Castigator",24000,12000),
         new MenuItem("Canis Mesa",21000,8000),
-        new MenuItem("Canis Mesa 2nd Gen",29000,9000),
+        //new MenuItem("Canis Mesa 2nd Gen",29000,9000),
         //
         new MenuItem("Canis Kamacho",45000,23000),
         new MenuItem("Canis Seminole",29000,13000),

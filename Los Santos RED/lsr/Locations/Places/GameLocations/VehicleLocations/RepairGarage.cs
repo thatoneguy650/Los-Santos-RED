@@ -87,6 +87,8 @@ public class RepairGarage : GameLocation
                 StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
                 StoreCamera.StaysInVehicle = true;
                 StoreCamera.Setup();
+
+
                 HandleDoor();
                 GeneratePayNSprayMenu();
                 ProcessInteractionMenu();

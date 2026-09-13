@@ -132,7 +132,10 @@ public class GangRetaliation
     public void Update()
     {
 
-
+        if(!Settings.SettingsManager.GangSettings.EnableTerritoryRetaliation)
+        {
+            return;
+        }
 
         if (IsEnded)
         {

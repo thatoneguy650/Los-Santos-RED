@@ -303,6 +303,298 @@ public class Interiors : IInteriors
         {
             //Mod Shops
             new Interior(196609, "Benny's Original Motor Works"),
+            new Interior(28595301, "Burton - Tuner Garage") // Original Interior id 285953 +01 - tr_tuner_shop_burton - Garage Front - 28595302
+            {
+                InternalInteriorCoordinates = new Vector3(-1350.0f, 160.0f, -100.0f),
+                IsTeleportEntry = true,
+                RequestIPLs = new List<string>() { "tr_tuner_shop_garage" },
+                InteriorSets = new List<string>()
+                {
+                    //"entity_set_bedroom",
+                    "entity_set_bedroom_empty",
+                    //"entity_set_bombs",
+                    //"entity_set_box_clutter",
+                    //"entity_set_cabinets",
+                    "entity_set_car_lift_cutscene",
+                    "entity_set_car_lift_default",
+                    "entity_set_car_lift_purchase",
+                    //"entity_set_chalkboard",
+                    "entity_set_container",
+                    //"entity_set_cut_seats",
+                    //"entity_set_def_table",
+                    //"entity_set_drive",
+                    //"entity_set_ecu",
+                    //"entity_set_IAA",
+                    //"entity_set_jammers",
+                    //"entity_set_laptop",
+                    "entity_set_lightbox",
+                    //"entity_set_methLab",
+                    "entity_set_plate",
+                    "entity_set_scope",
+                    //"entity_set_table",
+                    "entity_set_thermal",
+                    "entity_set_tints",
+                    "entity_set_train",
+                    "entity_set_virus",
+                },
+                InteriorSetStyleID = 5, // 1 - 9
+                InteriorTintColor = 1, // 0 - 8
+                InteriorWallpaperColor = -1,
+                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 177.5939f,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1347.66f, 151.4016f, -100.39426f), 37.31578f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "HighMech",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>
+                {
+                    new CivilianConditionalLocation(new Vector3(-1342.066f, 139.8746f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1337.844f, 140.056f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1333.584f, 140.056f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1328.955f, 140.0677f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1324.358f, 140.9321f, -99.57154f), 40.25529f, 50f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.661f, 146.1097f, -99.57154f), 90f, 75f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.71f, 149.9109f, -99.57154f), 90f, 50f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1331.286f, 156.7288f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1335.87f, 156.7185f, -99.57154f), 180f, 50f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1340.033f, 156.7305f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "SuperCars_Racing"},
+                },
+            },
+            new Interior(28595303, "La Mesa - Tuner Garage") // Original Interior id 285953 +03 - tr_tuner_shop_mesa - Garage Front - 28595304
+            {
+                InternalInteriorCoordinates = new Vector3(-1350.0f, 160.0f, -100.0f),
+                IsTeleportEntry = true,
+                RequestIPLs = new List<string>() { "tr_tuner_shop_garage" },
+                InteriorSets = new List<string>()
+                {
+                    //"entity_set_bedroom",
+                    "entity_set_bedroom_empty",
+                    "entity_set_bombs",
+                    //"entity_set_box_clutter",
+                    "entity_set_cabinets",
+                    "entity_set_car_lift_cutscene",
+                    "entity_set_car_lift_default",
+                    //"entity_set_car_lift_purchase",
+                    //"entity_set_chalkboard",
+                    //"entity_set_container",
+                    //"entity_set_cut_seats",
+                    //"entity_set_def_table",
+                    //"entity_set_drive",
+                    //"entity_set_ecu",
+                    //"entity_set_IAA",
+                    //"entity_set_jammers",
+                    //"entity_set_laptop",
+                    "entity_set_lightbox",
+                    //"entity_set_methLab",
+                    "entity_set_plate",
+                    "entity_set_scope",
+                    "entity_set_table",
+                    "entity_set_thermal",
+                    "entity_set_tints",
+                    "entity_set_train",
+                    "entity_set_virus",
+                },
+                InteriorSetStyleID = 1, // 0 - 9
+                InteriorTintColor = 2,  // 0 - 8
+                InteriorEgressPosition = new Vector3(-1357.546f, 164.7633f, -99.58295f),//new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 1.888935f-180f,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract("TunerShopModInteract",new Vector3(-1351.759f, 155.8396f, -99.68653f), 329.7793f,"Mod Vehicle") { DisableCamera = true,DisableMovement = true },
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.546f, 164.7633f, -99.58295f), 0f,"Exit"),
+                },              
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1347.66f, 151.4016f, -100.39426f), 37.31578f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>
+                {
+                    new CivilianConditionalLocation(new Vector3(-1342.066f, 139.8746f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1337.844f, 140.056f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1333.584f, 140.056f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1328.955f, 140.0677f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1324.358f, 140.9321f, -99.57154f), 40.25529f, 50f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.661f, 146.1097f, -99.57154f), 90f, 75f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.71f, 149.9109f, -99.57154f), 90f, 50f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1331.286f, 156.7288f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1335.87f, 156.7185f, -99.57154f), 180f, 50f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1340.033f, 156.7305f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "OldMuscle_Racing"},
+                },
+            },
+            new Interior(28595305, "Mission Row - Tuner Garage") // Original Interior id 285953 +05 - tr_tuner_shop_mission Row - Garage Front - 28595306
+            {
+                InternalInteriorCoordinates = new Vector3(-1350.0f, 160.0f, -100.0f),
+                IsTeleportEntry = true,
+                RequestIPLs = new List<string>() { "tr_tuner_shop_garage" },
+                InteriorSets = new List<string>()
+                {
+                    //"entity_set_bedroom",
+                    "entity_set_bedroom_empty",
+                    "entity_set_bombs",
+                    //"entity_set_box_clutter",
+                    //"entity_set_cabinets",
+                    "entity_set_car_lift_cutscene",
+                    "entity_set_car_lift_default",
+                    "entity_set_car_lift_purchase",
+                    //"entity_set_chalkboard",
+                    //"entity_set_container",
+                    //"entity_set_cut_seats",
+                    //"entity_set_def_table",
+                    //"entity_set_drive",
+                    //"entity_set_ecu",
+                    //"entity_set_IAA",
+                    //"entity_set_jammers",
+                    //"entity_set_laptop",
+                    "entity_set_lightbox",
+                    //"entity_set_methLab",
+                    "entity_set_plate",
+                    "entity_set_scope",
+                    //"entity_set_table",
+                    "entity_set_thermal",
+                    "entity_set_tints",
+                    "entity_set_train",
+                    "entity_set_virus",
+                },
+                InteriorSetStyleID = 8, // 1 - 9
+                InteriorTintColor = 7, // 0 - 8
+                InteriorWallpaperColor = -1,
+                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 177.5939f,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1347.66f, 151.4016f, -100.39426f), 37.31578f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>
+                {
+                    new CivilianConditionalLocation(new Vector3(-1342.066f, 139.8746f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1337.844f, 140.056f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1333.584f, 140.056f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1328.955f, 140.0677f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1324.358f, 140.9321f, -99.57154f), 40.25529f, 50f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.661f, 146.1097f, -99.57154f), 90f, 75f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1323.71f, 149.9109f, -99.57154f), 90f, 50f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1331.286f, 156.7288f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1335.87f, 156.7185f, -99.57154f), 180f, 50f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1340.033f, 156.7305f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "TunerSports_Racing"},
+                },
+            },
+            new Interior(28595307, "Rancho - Tuner Garage") // Original Interior id 285953 +07 - tr_tuner_shop_rancho - Garage Front - 28595308
+            {
+                InternalInteriorCoordinates = new Vector3(-1350.0f, 160.0f, -100.0f),
+                IsTeleportEntry = true,
+                RequestIPLs = new List<string>() { "tr_tuner_shop_garage" },
+                InteriorSets = new List<string>()
+                {
+                    //"entity_set_bedroom",
+                    "entity_set_bedroom_empty",
+                    "entity_set_bombs",
+                    //"entity_set_box_clutter",
+                    "entity_set_cabinets",
+                    "entity_set_car_lift_cutscene",
+                    "entity_set_car_lift_default",
+                    "entity_set_car_lift_purchase",
+                    //"entity_set_chalkboard",
+                    //"entity_set_container",
+                    //"entity_set_cut_seats",
+                    //"entity_set_def_table",
+                    //"entity_set_drive",
+                    //"entity_set_ecu",
+                    //"entity_set_IAA",
+                    //"entity_set_jammers",
+                    //"entity_set_laptop",
+                    "entity_set_lightbox",
+                    //"entity_set_methLab",
+                    "entity_set_plate",
+                    "entity_set_scope",
+                    //"entity_set_table",
+                    "entity_set_thermal",
+                    "entity_set_tints",
+                    "entity_set_train",
+                    "entity_set_virus",
+                },
+                InteriorSetStyleID = 6, // 1 - 9
+                InteriorTintColor = 5, // 0 - 8
+                InteriorWallpaperColor = -1,
+                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 177.5939f,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(-1347.66f, 151.4016f, -100.39426f), 37.31578f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "MidMech",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>
+                {
+                    new CivilianConditionalLocation(new Vector3(-1342.066f, 139.8746f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1337.844f, 140.056f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1333.584f, 140.056f, -99.57154f), 0f, 50f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1328.955f, 140.0677f, -99.57154f), 0f, 75f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1324.358f, 140.9321f, -99.57154f), 40.25529f, 50f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+
+                    new CivilianConditionalLocation(new Vector3(-1332.665f, 147.9408f, -99.51448f), 90f, 75f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1326.159f, 150.7936f, -99.78781f), 90f, 50f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+
+                    new CivilianConditionalLocation(new Vector3(-1331.286f, 156.7288f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1335.87f, 156.7185f, -99.57154f), 180f, 50f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                    new CivilianConditionalLocation(new Vector3(-1340.033f, 156.7305f, -99.57154f), 180f, 75f){ OverrideDispatchableVehicleGroupID = "UsSports_Racing"},
+                },
+            },
+
+
             //Barber
 
             //Clothes
@@ -11444,6 +11736,13 @@ public class Interiors : IInteriors
     {
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
+
+
+
+
+
+
+
             new Interior(311818518,"USS Luxington",new List<string>() //3082.3117 -4717.1191 15.2622
             { 
                 "hei_carrier",

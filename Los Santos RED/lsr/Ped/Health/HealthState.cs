@@ -235,6 +235,12 @@ public class HealthState
     {
         if (Game.GameTime - GameTimeLastCheckedDamage >= 300 && MyPed.Pedestrian.Exists())
         {
+            if(!MyPed.Pedestrian.Exists())
+            {
+                MyPed.Pedestrian = Player.Character;
+            }
+
+
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
@@ -261,6 +267,10 @@ public class HealthState
                         EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor} CurrentTotal {CurrentTotal} Total{Total}");
                     }
                 }
+
+
+
+
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
                 Total = CurrentHealth + CurrentArmor;
@@ -269,10 +279,20 @@ public class HealthState
                 CheckPainYells(CurrentPlayer, prevHealth);
 
             }
+            if (CurrentHealth > Health + 5)
+            {
+                if (IsBleeding)
+                {
+                    EntryPoint.WriteToConsole($"YOUR HEALTH INCREASED SOMEHOW STOPPING BLEEDING Health{Health} CurrentHealth{CurrentHealth}");
+                    StopBleeding();
+                }
+            }
 
         }
         UpdateBleeding();
-
+        //Health = CurrentHealth;
+        //Armor = CurrentArmor;
+        //Total = CurrentHealth + CurrentArmor;
         //if (IsPlayer && IsBleeding)
         //{
         //    Game.DisplaySubtitle($"IsBleeding:{IsBleeding} GameTimeLastBled:{GameTimeLastBled} ShouldBleed:{BleedDamageTime}");
@@ -588,7 +608,7 @@ public class HealthState
             MyPed.Pedestrian.Health = Health;
             Armor = (Armor - NewArmorDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Armor = Armor;
-            //EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
+            EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 
 
         }

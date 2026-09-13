@@ -150,6 +150,11 @@ public class Transmission
 
     private void UpdateCurrentGear()
     {
+        if(VehicleToMonitor == null || !VehicleToMonitor.Vehicle.Exists())
+        {
+            return;
+        }
+
         CurrentSpeedMPH = VehicleToMonitor.Vehicle.Speed * 2.23694f;
         CurrentRPMRatio = VehicleToMonitor.Vehicle.EngineRevolutionsRatio;
 

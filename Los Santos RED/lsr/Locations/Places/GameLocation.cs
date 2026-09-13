@@ -701,12 +701,24 @@ public class GameLocation : ILocationDispatchable
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         StoreCamera.SayGreeting = sayGreeting;
+
+        if(Player.IsInVehicle)
+        {
+            StoreCamera.StaysInVehicle = true;
+        }
+
         StoreCamera.DoEntranceOnly();
     }
     public void DoExitCamera(bool sayGreeting)
     {
         StoreCamera = new LocationCamera(this, Player, Settings, NoEntryCam);
         StoreCamera.SayGreeting = sayGreeting;
+
+        if (Player.IsInVehicle)
+        {
+            StoreCamera.StaysInVehicle = true;
+        }
+
         StoreCamera.Dispose();
     }
     public void StandardInteractWithNewCamera(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)
@@ -1552,10 +1564,14 @@ public class GameLocation : ILocationDispatchable
             return;
         }
 
-        if (gangToReplace.ID == AssignedAssociationID)
+        if (gangToReplace.ID == OriginalAssignedAssociationID)
         {
             AssignedAssociationID = newGang.ID;
             HasBeenTakenOver = true;
+        }
+        else
+        {
+            return;
         }
         foreach(ConditionalGroup conditionalGroup in PossibleGroupSpawns)
         {

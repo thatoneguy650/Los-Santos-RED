@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 public class StandardInteriorInteract : InteriorInteract
 {
+    public bool DisableCamera { get; set; } = false;
+    public bool DisableMovement { get; set; } = false;
     public StandardInteriorInteract()
     {
     }
@@ -23,24 +25,43 @@ public class StandardInteriorInteract : InteriorInteract
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
         uint GameTimeStarted = Game.GameTime;
-        SetupCamera(false);
-        if (!MoveToPosition())
+
+        if (!DisableCamera)
         {
-            Interior.IsMenuInteracting = false;
-            Game.DisplayHelp("Access Failed");
-            LocationCamera?.StopImmediately(true);
-            return;
+
+            SetupCamera(false);
         }
-        while(Game.GameTime - GameTimeStarted <= 1500)
+        else
         {
-            GameFiber.Yield();
+            if(Game.IsScreenFadedOut)
+            {
+                Game.FadeScreenIn(1500, true);
+            }
+        }
+
+        if (!DisableMovement)
+        {
+
+            if (!MoveToPosition())
+            {
+                Interior.IsMenuInteracting = false;
+                Game.DisplayHelp("Access Failed");
+                LocationCamera?.StopImmediately(true);
+                return;
+            }
+            while (Game.GameTime - GameTimeStarted <= 1500)
+            {
+                GameFiber.Yield();
+            }
         }
         Player.InteriorManager.OnStartedInteriorInteract();
+        EntryPoint.WriteToConsole($"StandardInteriorInteract GOT TO STANDARD INTERACT IsScreenFadedOut:{Game.IsScreenFadedOut}");
         InteractableLocation?.StandardInteract(LocationCamera, true);   
         while (Player.IsAliveAndFree && Player.ActivityManager.IsInteractingWithLocation)
         {
             GameFiber.Yield();
         }
+        Interior.IsMenuInteracting = false;
         Player.InteriorManager.OnEndedInteriorInteract();
     }
     public override void AddPrompt()

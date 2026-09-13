@@ -411,8 +411,20 @@ public class Interior
         {
             Game.FadeScreenOut(1500, true);
             InteractableLocation.Interior.Load(true);
-            Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
-            Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
+
+            if(Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                Player.CurrentVehicle.Vehicle.Position = InteractableLocation.Interior.InteriorEgressPosition;
+                Player.CurrentVehicle.Vehicle.Heading = InteractableLocation.Interior.InteriorEgressHeading;
+            }
+            else
+            {
+                Player.Character.Position = InteractableLocation.Interior.InteriorEgressPosition;
+                Player.Character.Heading = InteractableLocation.Interior.InteriorEgressHeading;
+            }
+
+
+
             IsInside = true;
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
@@ -437,6 +449,7 @@ public class Interior
             }
             else
             {
+                GameFiber.Sleep(500);
                 Game.FadeScreenIn(1500, true);
             }
         }
@@ -448,7 +461,7 @@ public class Interior
         {
             return;
         }
-        ii.SetupFake(Player, Settings, InteractableLocation, LocationInteractable);
+        ii.SetupFake(Player, Settings, InteractableLocation,this, LocationInteractable);
         ii.OnInteract();
     }
     public void SetInteriorColorTint(string entitySetName, int InteriorColorStyle)
@@ -631,9 +644,23 @@ public class Interior
             }
 
 
-            Player.Character.Position = InteractableLocation.EntrancePosition;
-            Player.Character.Heading = InteractableLocation.EntranceHeading;
-            Player.Character.IsVisible = false;
+            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                Player.CurrentVehicle.Vehicle.Position = InteractableLocation.EntrancePosition;
+                Player.CurrentVehicle.Vehicle.Heading = InteractableLocation.EntranceHeading;
+            }
+            else
+            {
+                Player.Character.Position = InteractableLocation.EntrancePosition;
+                Player.Character.Heading = InteractableLocation.EntranceHeading;
+            }
+
+
+            if (!Player.IsInVehicle)
+            {
+
+                Player.Character.IsVisible = false;
+            }
             if (VendorLocations != null && VendorLocations.Any())
             {
                 InteractableLocation.AttemptVendorDespawn();

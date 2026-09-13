@@ -71,6 +71,9 @@ public class InteriorInteract
     public bool WithWarp { get; set; } = false;
     public bool ForceIsntantCamera { get; set; } = false;
     public bool IsAutoInteract { get; set; } = false;
+
+
+
     public virtual int MarkerType { get; set; } = 0;
     public virtual bool ShouldAddPrompt => !Interior.IsMenuInteracting && distanceTo <= InteractDistance && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesOnFoot;
     
@@ -136,11 +139,12 @@ public class InteriorInteract
             OnInteract();
         }
     }
-    public virtual void SetupFake(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, ILocationInteractable locationInteractable)
+    public virtual void SetupFake(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
     {
         Player = player;
         Settings = settings;
         InteractableLocation = interactableLocation;
+        Interior = interior;
         LocationInteractable = locationInteractable;
     }
     public virtual void Update(IInteractionable player, ISettingsProvideable settings, GameLocation interactableLocation, Interior interior, ILocationInteractable locationInteractable)
@@ -366,6 +370,10 @@ public class InteriorInteract
 
     public void MoveToPositionWithoutWaiting(float speed)
     {
+        if(Player.IsInVehicle)
+        {
+            return;
+        }
         if (UseNavmesh)
         {
             NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Player.Character, Position.X, Position.Y, Position.Z, speed, -1, 0.1f, 0, Heading);

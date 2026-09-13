@@ -255,7 +255,7 @@ public class ModDataFileManager
             "HeySlickThatsMe, AllenKennedy" + Environment.NewLine + Environment.NewLine +
             "Models" + Environment.NewLine +
             "EUP Holster Glock - Alex_Ashford and the EUP Team" + Environment.NewLine +
-            "Other 3d Models - IVA, romunql, rwroclav, Vesper 3D" + Environment.NewLine + Environment.NewLine;
+            "Other 3d Models - IVA, romunql, rwroclav, Vesper 3D from SKetchfab" + Environment.NewLine + Environment.NewLine;
         File.WriteAllText($"Plugins\\LosSantosRED\\AlternateConfigs\\{StaticStrings.FEWConfigFolder}\\readme.txt", Description);
     }
     private void SetupFullModernTraffic()
@@ -276,8 +276,12 @@ public class ModDataFileManager
             //"Incompatible with Los Santos 2008 config and the Liberty City Preservation Project." + Environment.NewLine +
             "Install the greskfullmoderntraffic_novanillagang_addon.oiv after greskfullmoderntraffic.oiv to remove all vanilla gang spawns." + Environment.NewLine +
             "Scout - Gabriele Cappellano - original sketch       Da7k - 3D model      Nacho - 3D model - porting, assets, mapping, bugfixes     Dani02 - bugfixes, glass shards     11john11 - model improvements, dlcpack, police rims, interior assets        Eddlm - custom handling" + Environment.NewLine +
+            "Small selection of IV Pack Cars below with some tweaks to update them for the modern times. For the original pack, more cars, and mods see https://www.gta5-mods.com/vehicles/ivpack-gtaiv-vehicles-in-gtav ." + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1." + Environment.NewLine +
             "PMP 600 - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
+            "Feroci - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
+            "Rancher - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
+            "DF8-90 - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
             "Presidente - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere." + Environment.NewLine +
             "IV Contender - _CP_, Vanillaworks Team, Thundersmacker, RM76, TheAdmiester, Killatomate, GTA5Korn, Yard1, Lundy, CDemapp, PhilBellic, I'm Not MentaL, sparky66, Insincere.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernTraffic\\readme.txt", Description2);
@@ -326,8 +330,8 @@ public class ModDataFileManager
             "Model Credits:"
             + Environment.NewLine +
             "Scout - Gabriele Cappellano - original sketch       Da7k - 3D model      Nacho - 3D model - porting, assets, mapping, bugfixes     Dani02 - bugfixes, glass shards     11john11 - model improvements, dlcpack, police rims, interior assets        Eddlm - custom handling" + Environment.NewLine +
-            "BeaverRam - Original Model by Stan." + Environment.NewLine +
-            "Modern Police Steel Wheel - Adapted from Megarobloxfr";
+            "BeaverRam - Original Model by Stan. Sketchfab.com" + Environment.NewLine +
+            "Modern Police Steel Wheel - Adapted from Megarobloxfr Sketchfab.com";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
         //string Description2 = "Want to use the built in peds along with the FEJ vehicles? This is the config for you. Be sure to install the FEJ OIV without EUP. Copys over the xmls to the main directory.";
         //File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Variations\\Vanilla Peds\\readme.txt", Description2);
