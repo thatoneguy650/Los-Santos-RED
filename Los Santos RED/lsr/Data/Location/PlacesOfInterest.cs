@@ -6372,7 +6372,7 @@ new ConditionalLocation(, 75f),*/
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
-            IsOnMPMap = false,
+            IsOnMPMap = true,
             IsOnSPMap = true,
             MaxAssaultSpawns = 30,
             DisableNearbyScenarios = true,
