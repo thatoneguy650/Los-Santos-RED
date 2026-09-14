@@ -660,7 +660,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("taxi", 50, 50),
             TaxiBroadWay,
             TaxiEudora,
-                        new DispatchableVehicle("laufer", 100, 100) { RequiredPrimaryColorID = 63,RequiredSecondaryColorID = 134,VehicleMods = new List<DispatchableVehicleMod>()
+                new DispatchableVehicle("laufer", 100, 100) { RequiredPrimaryColorID = 63,RequiredSecondaryColorID = 134,RequiredPearlescentColorID = 0, VehicleMods = new List<DispatchableVehicleMod>() // Remove Pink Pearlescent Tint
                 {
                     new DispatchableVehicleMod(48,100)
                     {
