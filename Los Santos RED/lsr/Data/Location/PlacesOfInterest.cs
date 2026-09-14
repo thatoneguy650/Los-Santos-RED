@@ -7584,7 +7584,7 @@ new ConditionalLocation(, 75f),*/
                 new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 35f),
             }
         };
-        GangDen VagosMainDen2 = new GangDen(new Vector3(976.3761f, -1831.478f, 31.26991f), 355.635f, "Vagos Garage", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
+        GangDen VagosMainDen1MP = new GangDen(new Vector3(976.3761f, -1831.478f, 31.26991f), 355.635f, "Vagos Garage", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -7912,8 +7912,8 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
         };
 
-        GangDens.Add(VagosMainDen2);
-        GangDens.Add(VagosMainDen2);
+        GangDens.Add(VagosMainDen);
+        GangDens.Add(VagosMainDen1MP);
         GangDens.Add(VagosHangout1);
         //GangDens.Add(VagosHangout2);
         //GangDens.Add(VagosHangout3);
