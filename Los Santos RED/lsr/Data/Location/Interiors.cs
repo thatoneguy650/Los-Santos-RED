@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using Blackjack;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -302,7 +303,13 @@ public class Interiors : IInteriors
         PossibleInteriors.GeneralInteriors.AddRange(new List<Interior>()
         {
             //Mod Shops
-            new Interior(196609, "Benny's Original Motor Works"),
+            new Interior(196609, "Benny's Original Motor Works")
+            {
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract("TunerShopModInteract",new Vector3(-212.2025f, -1324.637f, 30.59422f), 158.393f,"Mod Vehicle") { DisableCamera = true,DisableMovement = true },
+                },
+            },
             new Interior(28595301, "Burton - Tuner Garage") // Original Interior id 285953 +01 - tr_tuner_shop_burton - Garage Front - 28595302
             {
                 InternalInteriorCoordinates = new Vector3(-1350.0f, 160.0f, -100.0f),
@@ -340,11 +347,12 @@ public class Interiors : IInteriors
                 InteriorSetStyleID = 5, // 1 - 9
                 InteriorTintColor = 1, // 0 - 8
                 InteriorWallpaperColor = -1,
-                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
-                InteriorEgressHeading = 177.5939f,
+                InteriorEgressPosition = new Vector3(-1357.546f, 164.7633f, -99.58295f),//new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 1.888935f-180f,
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                    new StandardInteriorInteract("TunerShopModInteract",new Vector3(-1351.759f, 155.8396f, -99.68653f), 329.7793f,"Mod Vehicle") { DisableCamera = true,DisableMovement = true },
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.546f, 164.7633f, -99.58295f), 0f,"Exit"),
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -484,11 +492,12 @@ public class Interiors : IInteriors
                 InteriorSetStyleID = 8, // 1 - 9
                 InteriorTintColor = 7, // 0 - 8
                 InteriorWallpaperColor = -1,
-                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
-                InteriorEgressHeading = 177.5939f,
+                InteriorEgressPosition = new Vector3(-1357.546f, 164.7633f, -99.58295f),//new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 1.888935f-180f,
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                    new StandardInteriorInteract("TunerShopModInteract",new Vector3(-1351.759f, 155.8396f, -99.68653f), 329.7793f,"Mod Vehicle") { DisableCamera = true,DisableMovement = true },
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.546f, 164.7633f, -99.58295f), 0f,"Exit"),
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -556,11 +565,12 @@ public class Interiors : IInteriors
                 InteriorSetStyleID = 6, // 1 - 9
                 InteriorTintColor = 5, // 0 - 8
                 InteriorWallpaperColor = -1,
-                InteriorEgressPosition = new Vector3(-1357.844f, 167.8942f, -98.79807f),
-                InteriorEgressHeading = 177.5939f,
+                InteriorEgressPosition = new Vector3(-1357.546f, 164.7633f, -99.58295f),//new Vector3(-1357.844f, 167.8942f, -98.79807f),
+                InteriorEgressHeading = 1.888935f-180f,
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.844f, 167.8942f, -98.79807f), 0f,"Exit"),
+                    new StandardInteriorInteract("TunerShopModInteract",new Vector3(-1351.759f, 155.8396f, -99.68653f), 329.7793f,"Mod Vehicle") { DisableCamera = true,DisableMovement = true },
+                    new ExitInteriorInteract("TunerShopExit1",new Vector3(-1357.546f, 164.7633f, -99.58295f), 0f,"Exit"),
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
@@ -706,7 +716,7 @@ public class Interiors : IInteriors
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("JamesGunShopExit1",new Vector3(1009.792f, -2199.354f, -48.99992f), 274.9501f,"Exit"),
+                    new ExitInteriorInteract("CypressFlatsShopExit1",new Vector3(1009.792f, -2199.354f, -48.99992f), 274.9501f,"Exit"),
                 }
                 ,VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(997.4385f, -2201.026f, -50.99989f), 269.0397f) },
 
@@ -1598,6 +1608,7 @@ public class Interiors : IInteriors
             {
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1391.485f, 1132.229f, 114.3336f),
+                RequestIPLs = new List<string>() {"v_ranch"},
                 InteriorEgressHeading = 269.3185f,
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -1672,6 +1683,1006 @@ public class Interiors : IInteriors
 //new Vector3(981.5935f, -98.13846f, 74.97108f), 222.2108f, "Name", "Description"),  //lostmcpiss1
                 },
             },
+            new GangDenInterior(246273,"AOD M.C. Clubhouse")
+             {//bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1110.35f, -3166.175f, -37.51859f),
+                InteriorEgressHeading = 340.7777f,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_grg","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_rec","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_bar","Radio"),
+                },
+                InteriorSets = new List<string>()
+                {
+
+                    "walls_01", // 1 - 2
+                    "furnishings_01", // 1 - 2
+                    "decorative_01", // 1 - 2
+                    "gun_locker",
+                    "mod_booth",
+
+                    "cash_stash1",
+                    //    stage1
+                    //    "cash_stash1",
+                    //
+                    //    stage2 
+                    //    "cash_stash1",
+                    //    "cash_stash2"
+                    //
+                    //    stage3
+                    //    "cash_stash1",
+                    //    "cash_stash2",
+                    //    "cash_stash3",
+
+                    //"coke_stash1",
+                    //    stage1
+                    //    "coke_stash1",
+                    //
+                    //    stage2
+                    //    "coke_stash1",
+                    //    "coke_stash2"
+                    //
+                    //    stage3
+                    //    "coke_stash1",
+                    //    "coke_stash2",
+                    //    "coke_stash3",
+
+                    //"counterfeit_stash1",
+                    //    stage1
+                    //    "counterfeit_stash1",
+                    //
+                    //    stage2
+                    //    "counterfeit_stash1",
+                    //    "counterfeit_stash2"
+                    // 
+                    //    stage3
+                    //    "counterfeit_stash1",
+                    //    "counterfeit_stash2",
+                    //    "counterfeit_stash3",
+   
+                    //"id_stash1",
+                    //    stage1
+                    //    "id_stash1",
+                    //
+                    //    stage2
+                    //    "id_stash1",
+                    //    "id_stash2"
+                    //
+                    //    stage3 
+                    //    "id_stash1",
+                    //    "id_stash2",
+                    //    "id_stash3",                   
+
+                    "meth_stash3",
+                    //    stage1
+                    //    "meth_stash1",
+                    //
+                    //    stage2
+                    //    "meth_stash1",
+                    //    "meth_stash2"
+                    //
+                    //    stage3
+                    //    "meth_stash1",
+                    //    "meth_stash2",
+                    //    "meth_stash3",
+
+                    "weed_stash2",
+                    //    stage1
+                    //    "weed_stash1",
+                    //
+                    //    stage2  
+                    //    "weed_stash1",
+                    //    "weed_stash2"
+                    //
+                    //    stage3  
+                    //    "weed_stash1",
+                    //    "weed_stash2",
+                    //    "weed_stash3"
+
+                    "mural_01", 
+                    // rideFree = "mural_01",
+                    // mods = "mural_02",
+                    // brave = "mural_03",
+                    // fist = "mural_04",
+                    // forest = "mural_05",
+                    // mods2 = "mural_06",
+                    // rideForever = "mural_07",
+                    // heart = "mural_08",
+                    // route68 = "mural_09",
+                },
+
+                    //   Colors
+                    // sable = 0,
+                    // yellowGray = 1,
+                    // red = 2,
+                    // brown = 3,
+                    // yellow = 4,
+                    // lightYellow = 5,
+                    // lightYellowGray = 6,
+                    // lightGray = 7,
+                    // orange = 8,
+                    //  gray = 9
+                InteriorTintColor = 2,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("AODDen2Exit1",new Vector3(1110.35f, -3166.175f, -37.51859f), 178.3495f,"Exit") ,
+
+                    new StandardInteriorInteract("AODDen2Standard1",new Vector3(1117.981f, -3161.479f, -36.87047f), 77.47559f,"Interact"){ UseNavmesh = false } ,
+                    new AudioEmitterInteract()
+                    {
+                        Name = "AODDenRadio1",
+                        Position = new Vector3(1122.451f, -3152.284f, -37.06277f),
+                        Heading =  182.7204f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1120.85f, -3150.969f, -36.04099f),
+                        CameraDirection = new Vector3(0.633864f, -0.7374569f, -0.2331819f),
+                        CameraRotation = new Rotator(-13.48447f, -3.072918E-06f, -139.3201f),
+                    },
+
+                    new SinkInteract("AODDen2Sink1",new Vector3(1124.668f, -3160.488f, -37.06274f), 89.89037f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    new ToiletInteract("AODDenToilet1",new Vector3(1125.783f, -3161.463f, -37.06274f), 176.7994f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    new ToiletInteract("AODDenToilet1",new Vector3(1124.627f, -3161.512f, -37.06274f), 175.8347f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    //Standing Piss 
+                    new ToiletInteract("AODDenUrinal1",new Vector3(1125.674f, -3158.489f, -36.93729f), 272.562f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1124.207f, -3159.112f, -35.70354f),
+                        CameraDirection = new Vector3(0.814513f, 0.005888665f, -0.5801154f),
+                        CameraRotation = new Rotator(-35.45866f, 1.29384E-06f, -89.58578f),
+                    },
+                    new ToiletInteract("AODDenUrinal1",new Vector3(1125.699f, -3159.59f, -36.93729f), 271.5432f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1124.207f, -3159.112f, -35.70354f),
+                        CameraDirection = new Vector3(0.814513f, 0.005888665f, -0.5801154f),
+                        CameraRotation = new Rotator(-35.45866f, 1.29384E-06f, -89.58578f),
+                    },
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("AODDen2Rest1", new Vector3(1119.937f, -3161.991f, -36.70049f), 177.3407f,"Rest")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1122.285f, -3161.174f, -35.77942f),
+                        CameraDirection = new Vector3(-0.7515815f, -0.554848f, -0.3567475f),
+                        CameraRotation = new Rotator(-20.90059f, 2.741723E-06f, 126.4362f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1109.719f, -3150.637f, -37.51862f), 180.5398f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1115.784f, -3156.102f, -37.06277f), 267.9507f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1116.097f, -3155.095f, -37.06277f), 222.7967f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1121.152f, -3144.571f, -37.06277f), 267.8852f, 100f) // behind bar
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1122.784f, -3145.283f, -37.06277f), 66.66338f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1116.317f, -3161.052f, -36.87049f), 260.1508f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new GangConditionalLocation(new Vector3(1099.701f, -3145.144f, -38.00296f), 178.9158f, 100f),
+                     new GangConditionalLocation(new Vector3(1103.568f, -3144.838f, -38.00594f), 180.4009f, 100f),
+                     new GangConditionalLocation(new Vector3(1101.563f, -3156.821f, -38.00434f), 272.7238f, 100f)
+                },
+             },
+            new GangDenInterior(287745,"Kkhangpae Office")
+             {
+                IsTeleportEntry = true, //sf_fixeroffice_kt1_08
+                InteriorEgressPosition = new Vector3(-574.855f, -715.8423f, 113.0053f),
+                InteriorEgressHeading = 88.73509f,
+                RequestIPLs = new List<string>() { "sf_fixeroffice_kt1_08" },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(971119102,new Vector3(-577.3538f, -715.0907f, 117.1062f)){ ForceRotateOpen = true },// Safe Door - Opened Inwards
+                },  
+                InteriorSets = new List<string>() 
+                {
+                    //"entity_set_standard_office",
+                    //"entity_set_blocker",
+
+                    "entity_set_tint_ag",
+                    "entity_set_wpaper_9", // 1 - 9
+                    "entity_set_disc_03", // 1 - 6
+                    "entity_set_art_3", // 1 - 3
+                    "entity_set_m_trip_01",
+                    "entity_set_m_trip_02",
+                    "entity_set_m_trip_03",
+                    "entity_set_armoury",
+                    "entity_set_moving",
+                    "entity_set_spare_seats",
+                    "entity_set_player_seats",
+                    "entity_set_player_desk",
+                    "entity_set_m_golf_intro",
+                    "entity_set_m_setup",
+                    "entity_set_m_nightclub",
+                    "entity_set_m_yacht",
+                    "entity_set_m_promoter",
+                    "entity_set_m_limo_photo",
+                    "entity_set_m_limo_wallet",
+                    "entity_set_m_the_way",
+                    "entity_set_m_billionaire",
+                    "entity_set_m_hood",
+                    "entity_set_m_fire_booth",
+                    "entity_set_m_50",
+                    "entity_set_m_taxi",
+                    "entity_set_m_gone_golfing",
+                    "entity_set_m_motel",
+                    "entity_set_m_construction",
+                    "entity_set_m_hit_list",
+                    "entity_set_m_tuner",
+                    "entity_set_m_attack",
+                    "entity_set_m_vehicles",
+                },
+                InteriorTintColor   = 7,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("KkhangpaeOfficeExit1",new Vector3(-574.855f, -715.8423f, 113.0053f), 270.2314f,"Exit") ,
+
+                    new StandardInteriorInteract("KkhangpaeOfficeStandard1",new Vector3(-599.5054f, -717.5174f, 116.8053f), 180.2921f,"Interact"){ UseNavmesh = false } ,
+                    new StandardInteriorInteract("KkhangpaeOfficeStandard2",new Vector3(-581.9081f, -712.624f, 116.8052f), 270.7584f,"Interact") { UseNavmesh = false },
+
+                    new SinkInteract("KkhangpaeOfficeSink1",new Vector3(-597.8599f, -708.7389f, 121.605f), 91.96072f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-596.9418f, -709.9734f, 122.5143f),
+                        CameraDirection = new Vector3(-0.7320005f, 0.5312896f, -0.4265052f),
+                        CameraRotation = new Rotator(-25.24597f, 9.439333E-06f, 54.02766f)
+                    },
+                    new ToiletInteract("KkhangpaeOfficeToilet1",new Vector3(-597.8066f, -709.9431f, 121.605f), 88.88883f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-596.3962f, -708.868f, 122.8762f),
+                        CameraDirection = new Vector3(-0.7692101f, -0.4281508f, -0.4743445f),
+                        CameraRotation = new Rotator(-28.31668f, 0f, 119.1008f)
+                    },
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("KkhangpaeOfficeRest1", new Vector3(-591.5254f, -710.327f, 121.605f), 89.29795f,"Sleep")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-592.0306f, -706.7571f, 122.4517f),
+                        CameraDirection = new Vector3(-0.3110221f, -0.8889151f, -0.3362962f),
+                        CameraRotation = new Rotator(-19.65138f, 4.396893E-05f, 160.7156f)
+                    },
+                },
+                //OutfitInteracts = new List<OutfitInteract>()
+                //{
+                //    new OutfitInteract("KkhangpaeOfficeOutfit1",new Vector3(-600.6908f, -709.7198f, 121.605f), 358.3163f,"Change Outfit")
+                //    {
+                //        CameraPosition = new Vector3(-600.608f, -707.7247f, 122.0725f),
+                //        CameraDirection = new Vector3(-0.03016551f, -0.9830623f, -0.1807719f),
+                //        CameraRotation = new Rotator(-10.41472f, -3.526555E-07f, 178.2424f)
+                //    },
+                //},
+                //InventoryInteracts = new List<InventoryInteract>()
+                //{
+                //    new InventoryInteract("KkhangpaeOfficeInventory1",new Vector3(-580.3825f, -724.5529f, 121.605f), 269.6913f,"Access Weapons")
+                //    {
+                //        UseNavmesh = false,
+                //        CanAccessCash = false,
+                //        CanAccessItems = false,
+                //        // cam coords
+                //    },
+                //    new InventoryInteract("KkhangpaeOfficeInventory2",new Vector3(-599.5057f, -727.0237f, 121.605f), 185.7631f,"Access Items")
+                //    {
+                //        UseNavmesh = false,
+                //        CanAccessCash = false,
+                //        CanAccessWeapons = false,
+                //        // cam coords
+                //    },
+                //    new InventoryInteract("KkhangpaeOfficeInventory3",new Vector3(-578.3148f, -715.0811f, 116.8053f), 273.6381f,"Access Cash")
+                //    {
+                //        UseNavmesh = false,
+                //        CanAccessWeapons = false,
+                //        CanAccessItems = false,
+                //        // cam coords
+                //    }
+                //}
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-599.2944f, -719.9197f, 114.8052f), 0.3285207f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario }, // Office
+                    new GangConditionalLocation(new Vector3(-579.5241f, -712.4803f, 114.8053f), 92.68477f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario }, // Office
+
+                    new GangConditionalLocation(new Vector3(-590.5699f, -721.8628f, 114.8053f), 181.0646f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-589.6938f, -722.0541f, 114.8053f), 160.2113f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-590.217f, -724.6091f, 114.8053f), 0.9082476f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-589.6805f, -716.3231f, 114.804f), 215.743f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-581.3912f, -710.5942f, 114.8054f), 224.6293f, 100f) { RequiredPedGroup = "Suit", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-590.9229f, -719.5145f, 120.605f), 1.382367f, 100f) { RequiredPedGroup = "", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-593.1531f, -718.4785f, 120.605f), 263.0092f, 100f) { RequiredPedGroup = "", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-600.1539f, -724.6461f, 120.605f), 208.7408f, 100f) { RequiredPedGroup = "", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+                    new GangConditionalLocation(new Vector3(-599.0582f, -726.5564f, 120.605f), 26.40613f, 100f) { RequiredPedGroup = "", TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario },
+
+
+                    //Civvies
+                    new CivilianConditionalLocation(new Vector3(-592.1235f, -707.8069f, 111.0053f), 198.691f, 100f) { OverrideDispatchablePersonGroupID = "TellerPeds", TaskRequirements = TaskRequirements.Guard },// front desk 1
+                    new CivilianConditionalLocation(new Vector3(-595.1524f, -710.9138f, 111.0053f), 256.1453f, 100f) { OverrideDispatchablePersonGroupID = "TellerPeds", TaskRequirements = TaskRequirements.Guard },// front desk 2
+
+                    new CivilianConditionalLocation(new Vector3(-581.7328f, -711.3953f, 111.0053f), 195.6763f, 100f) { OverrideDispatchablePersonGroupID = "RegularPeds", TaskRequirements = TaskRequirements.Guard },// entry
+                    new CivilianConditionalLocation(new Vector3(-581.3176f, -712.8846f, 111.0053f), 15.64172f, 100f) { OverrideDispatchablePersonGroupID = "RegularPeds", TaskRequirements = TaskRequirements.Guard },// entry
+
+                },
+                VendorLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-582.2567f, -720.9912f, 121.605f), 169f),
+                },
+             },
+            new GangDenInterior(238849,"Triads Office")
+             {
+                IsTeleportEntry = true, //sf_fixeroffice_kt1_08
+                InteriorEgressPosition = new Vector3(-75.39861f, -823.6433f, 243.3859f),
+                InteriorEgressHeading = 340.7777f,
+                RequestIPLs = new List<string>() { "ex_dt1_11_office_01b","ex_prop_safedoor_office1b" },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(845785021,new Vector3(-83.52531f, -803.2687f, 243.4363f)){ ForceRotateOpen = true },// Safe Door Left 
+                    //new InteriorDoor(3145349608,new Vector3(-81.8717f, -798.7255f, 243.4363f)){ ForceRotateOpen = true },// Safe Door Right - door opens inwards
+                },
+                InteriorSets = new List<string>()
+                {
+                    //"entity_set_standard_office",
+                    //"entity_set_blocker",
+
+                    "cash_set_24", // 1- 24
+                    "swag_booze_cigs3", // 1 - 3
+                    "swag_counterfeit3", // 1 - 3
+                    "swag_drugbags3", // 1 - 3
+                    "swag_drugstatue3",
+                    "swag_electronic3",
+                    "swag_furcoats3",
+                    "swag_gems3",
+                    "swag_guns3",
+                    "swag_ivory3",
+                    "swag_jewelwatch3",
+                    "swag_med3",
+                    "swag_art3",
+                    "swag_pills3",
+                    "swag_silver3",
+                    "office_chairs",
+                    "office_booze",
+                },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("TriadDen2Exit1",new Vector3(-75.8466f, -826.9893f, 243.3859f), 247.7499f,"Exit") ,
+
+                    new StandardInteriorInteract("TriadDen2Standard1",new Vector3(-78.49609f, -802.3412f, 243.4008f), 69.40793f,"Interact"){ UseNavmesh = false } ,
+
+                    new SinkInteract("TriadDen2Sink1",new Vector3(-84.18291f, -814.2727f, 243.386f), 157.2827f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-82.66643f, -813.6588f, 244.4263f),
+                        CameraDirection = new Vector3(-0.8490362f, -0.2119722f, -0.4839476f),
+                        CameraRotation = new Rotator(-28.94355f, -6.341616E-06f, 104.018f)
+                    },
+                    new ToiletInteract("TriadDenToilet1",new Vector3(-84.37146f, -813.853f, 243.386f), 71.18423f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-82.66643f, -813.6588f, 244.4263f),
+                        CameraDirection = new Vector3(-0.8490362f, -0.2119722f, -0.4839476f),
+                        CameraRotation = new Rotator(-28.94355f, -6.341616E-06f, 104.018f)
+                    },
+                    //Twin Sink
+                    new SinkInteract("TriadDen2Sink2",new Vector3(-80.01613f, -811.5836f, 243.3859f), 69.78497f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-79.36671f, -813.431f, 244.5458f),
+                        CameraDirection = new Vector3(-0.3261487f, 0.8605562f, -0.3912416f),
+                        CameraRotation = new Rotator(-23.03178f, -1.298814E-05f, 20.75658f)
+                    },
+                    new SinkInteract("TriadDen2Sink3",new Vector3(-79.49554f, -810.2341f, 243.3859f), 71.17731f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-79.36671f, -813.431f, 244.5458f),
+                        CameraDirection = new Vector3(-0.3261487f, 0.8605562f, -0.3912416f),
+                        CameraRotation = new Rotator(-23.03178f, -1.298814E-05f, 20.75658f)
+                    },
+
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("TriadDen2Rest1", new Vector3(-82.62677f, -809.8245f, 243.5858f), 69.67696f,"Rest") //used couch,bed has clipping issues
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-83.36595f, -812.1003f, 244.497f),
+                        CameraDirection = new Vector3(-0.1532849f, 0.8813916f, -0.4468249f),
+                        CameraRotation = new Rotator(-26.54016f, -1.956398E-05f, 9.865767f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-72.10109f, -814.1434f, 242.3859f), 157.4579f, 100f){TaskRequirements = TaskRequirements.Guard }, //  front desk
+
+                    new GangConditionalLocation(new Vector3(-80.70766f, -802.1781f, 242.4008f), 251.5587f, 100f)
+                    {
+                        RequiredPedGroup = "Suit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_IMPATIENT",
+                            "WORLD_HUMAN_CLIPBOARD",
+                        },
+                    },// boss desk 1
+                    new GangConditionalLocation(new Vector3(-78.75209f, -805.8729f, 242.3859f), 345.3921f, 100f)
+                    {
+                        RequiredPedGroup = "Suit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },// front desk 2
+                    new GangConditionalLocation(new Vector3(-70.85522f, -806.6273f, 242.4008f), 299.3811f, 100f) 
+                    {
+                        RequiredPedGroup = "Suit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    }, // Office
+                    new GangConditionalLocation(new Vector3(-65.2214f, -804.4576f, 242.3859f), 5.208984f, 100f)
+                    {
+                        RequiredPedGroup = "Suit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_INSPECT_STAND",
+                        },
+                    }, // office
+                },
+             },
+            new GangDenInterior(293377,"Armenian Scrapyard")
+             { // m23_2_sp1_03_reds
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1098.967f, -2266.266f, -48.99993f),
+                InteriorEgressHeading = 178.9f,
+                Doors = new List<InteriorDoor>()
+                {
+                    //new InteriorDoor(0xCBC396B2,new Vector3(1074.33533f, -2285.408f, -46.54339f)){ ForceRotateOpen = true},// Safe Door 
+                },
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_m23_2_dlc_int_salvage_radioemitter_shop_floor_01","Radio"),
+                    new AudioEmitter($"se_m23_2_dlc_int_salvage_radioemitter_shop_floor_02","Radio"),
+                    new AudioEmitter($"se_m23_2_dlc_int_salvage_radioemitter_shop_floor_03","Radio"),
+                    new AudioEmitter($"se_m23_2_dlc_int_salvage_radioemitter_shop_floor_04","Radio"),
+                    new AudioEmitter($"se_m23_2_dlc_int_salvage_radioemitter_shop_office_01","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("imp_prop_covered_vehicle_03a", new SpawnPlace(new Vector3(1093.4f, -2281.3f, -50f), 180f)) {PlaceOnGround = true },
+                     new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(1089.9f, -2281.4f, -50f), 180f)) {PlaceOnGround = true },
+                     new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(1082.0f, -2281.3f, -50f), -180f)) {PlaceOnGround = true },
+                },
+
+
+                InteriorSets = new List<string>()
+                {
+                    // Main
+                    "set_tint_b", 
+                    "set_mechanic_upgrade", // basic - upgrade
+                    "set_safe_upgrade", // basic - upgrade
+                    "set_car_lift_01_up", // up - down
+                    "set_car_lift_02_down",
+
+                    // Custom Stuff
+                    // 1 Per Slot
+                    // Computer Desk
+                    //Above
+                    "set_uv_plan_rt",
+                    // On
+                    "set_card_casino",
+                    "set_card_maze",
+
+
+                    //Work Bench 4 slots
+                    // Multiple item selections on some slots
+                    // Some items may cause clipping with other slots
+
+                    // Slot 1
+                    "set_armor_crate",
+                    //"set_box_sanitation",
+
+                    // Inbetween Slot 1 - 2 - Can cause clipping on armor crate/mask crate
+                    //"set_blowtorch",
+
+                    // Infront of Slot 1  - Clips on armor crate
+                    // "set_bolt_cutter",
+
+
+                    // Slot 2
+                    //"set_sonar",
+                    //"set_crate_mask",
+                    //"set_box_flares",
+                    "set_case_teargas",
+
+                    // Slot 3
+                    "set_guncase",
+
+                    // Slot 4
+                    //"set_bag_panic",
+                    //"set_bag_coastguard",
+                    "set_bag_rappel",
+                    //"set_bag_scuba",
+
+                    //Office
+                    //wall
+                    "set_trophy_jersey",
+                    // shelf
+                    "set_trophy_badge",
+                    "set_trophy_chips",
+                    "set_trophy_sub",
+                    "set_trophy_anchor",
+                },
+
+                    //   Colors
+                    // gray = 1,
+                    // red = 2,
+                    // blue = 3,
+                    // orange = 4,
+                    // yellow = 5,
+                    // green = 6,
+                    // pink = 7,
+                    // teal = 8,
+                    // darkGray = 9,
+                InteriorTintColor = 9,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("ArmScrapExit1",new Vector3(1098.967f, -2266.266f, -48.99993f), 358.7821f,"Exit") ,
+
+                    new StandardInteriorInteract("ArmScrapStandard1",new Vector3(1075.529f, -2281.799f, -46.59991f), 356.7269f,"Interact")
+                    { 
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1075.648f, -2282.018f, -45.63513f),
+                        CameraDirection = new Vector3(0.8140216f, 0.541508f, -0.2100901f),
+                        CameraRotation = new Rotator(-12.12764f, 8.296E-06f, -56.36713f),
+                    } ,
+                    new AudioEmitterInteract()
+                    {
+                        Name = "ArmScrapRadio1",
+                        Position = new Vector3(1086.922f, -2267.023f, -48.9999f),
+                        Heading = 1.741971f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("ArmScrapRest",new Vector3(1071.15f, -2280.052f, -46.59991f), 266.1706f,"Rest")
+                    {
+                        CameraPosition = new Vector3(1071.224f, -2282.632f, -45.3866f),
+                        CameraDirection = new Vector3(0.4740863f, 0.7788293f, -0.4106909f),
+                        CameraRotation = new Rotator(-24.24825f, -6.554706E-06f, -31.32956f)
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1076.286f, -2281.121f, -47.5999f), 285.5856f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+
+                    new GangConditionalLocation(new Vector3(1094.414f, -2271.098f, -49.99993f), 14.22432f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1116.097f, -3155.095f, -38.06277f), 222.7967f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1093.979f, -2269.086f, -49.99993f), 193.87f, 100f) 
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1074.368f, -2275.434f, -49.99993f), 98.54671f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+
+                    // Civvies
+                    new CivilianConditionalLocation(new Vector3(1099.733f, -2283.033f, -49.99992f), 9.196243f, 100f)
+                    {    
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "Reds",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+
+                    },
+                    new CivilianConditionalLocation(new Vector3(1075.969f, -2276.966f, -49.99992f), 183.3392f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "Reds",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>(){"WORLD_HUMAN_INSPECT_CROUCH"},
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new GangConditionalLocation(new Vector3(1082.25f, -2269.8f, -49.08f), 0f, 100f), // Lift
+                     new GangConditionalLocation(new Vector3(1098.19f, -2278.32f, -49.62f), 170f, 75f), // near entry
+                     //new GangConditionalLocation(new Vector3(1085.4f, -2281.7f, -49.62f), 176.62f, 100f) // near steps
+                },
+             },
+            new GangDenInterior(246529,"Vagos Garage")
+             {//bkr_biker_interior_placement_interior_1_biker_dlc_int_02_milo
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(997.1853f, -3164.437f, -38.90732f),
+                InteriorEgressHeading = 270f,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_bkr_biker_dlc_int_02_grg","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_02_rec","Radio"),
+                },
+                InteriorSets = new List<string>()
+                {
+
+                    "walls_01", // 1 - 2
+                    "furnishings_01", // 1 - 2 - Colors for "furnishings_01" only
+                    "decorative_01", // 1 - 2
+                    "gun_locker",
+                    "mod_booth",
+                    "mod_booth",
+                    "lower_walls_default",
+                    //    stage1
+                    //    "cash_small",
+                    //
+                    //    stage2 
+                    //    "cash_small",
+                    //    "cash_medium"
+                    //
+                    //    stage3
+                    //    "cash_small",
+                    //    "cash_medium",
+                    //    "cash_large",
+
+                    //"coke_stash1",
+                    //    stage1
+                    //    "coke_small",
+                    //
+                    //    stage2
+                    //    "coke_small",
+                    //    "coke_medium"
+                    //
+                    //    stage3
+                    //    "coke_small",
+                    //    "coke_medium",
+                    //    "coke_large",
+
+                    //"counterfeit_stash1",
+                    //    stage1
+                    //    "counterfeit_small",
+                    //
+                    //    stage2
+                    //    "counterfeit_small",
+                    //    "counterfeit_medium"
+                    // 
+                    //    stage3
+                    //    "counterfeit_small",
+                    //    "counterfeit_medium",
+                    //    "counterfeit_large",
+   
+                    //"id_stash1",
+                    //    stage1
+                    //    "id_small",
+                    //
+                    //    stage2
+                    //    "id_small",
+                    //    "id_medium"
+                    //
+                    //    stage3 
+                    //    "id_small",
+                    //    "id_medium",
+                    //    "id__large",                   
+
+                    "meth_stash3",
+                    //    stage1
+                    //    "meth_small",
+                    //
+                    //    stage2
+                    //    "meth_small",
+                    //    "meth_medium"
+                    //
+                    //    stage3
+                    //    "meth_small",
+                    //    "meth_medium",
+                    //    "meth_large",
+
+                    "weed_stash2",
+                    //    stage1
+                    //    "weed_small",
+                    //
+                    //    stage2  
+                    //    "weed_small",
+                    //    "weed_medium"
+                    //
+                    //    stage3  
+                    //    "weed_small",
+                    //    "weed_medium",
+                    //    "weed_large"
+
+                    "mural_01", 
+                    // rideFree = "mural_01",
+                    // mods = "mural_02",
+                    // brave = "mural_03",
+                    // fist = "mural_04",
+                    // forest = "mural_05",
+                    // mods2 = "mural_06",
+                    // rideForever = "mural_07",
+                    // heart = "mural_08",
+                    // route68 = "mural_09",
+                },
+
+                    //   Colors
+                    // sable = 0,
+                    // yellowGray = 1,
+                    // red = 2,
+                    // brown = 3,
+                    // yellow = 4,
+                    // lightYellow = 5,
+                    // lightYellowGray = 6,
+                    // lightGray = 7,
+                    // orange = 8,
+                    //  gray = 9
+                InteriorTintColor = 7,
+                InteriorSetStyleID = 8,
+                InteriorWallpaperColor = 8,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("VaGarageExit1",new Vector3(997.1853f, -3164.437f, -38.90732f), 89.66283f,"Exit") ,
+
+                    new StandardInteriorInteract("VaGarageStandard1",new Vector3(1007.912f, -3169.815f, -38.90711f), 90.14715f,"Interact"){ UseNavmesh = false } ,
+                    new AudioEmitterInteract()
+                    {
+                        Name = "VaGarageRadio1",
+                        Position = new Vector3(1001.069f, -3170.119f, -34.06671f),
+                        Heading =  179.2847f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1002.77f, -3167.594f, -32.53288f),
+                        CameraDirection = new Vector3(-0.4678494f, -0.8156407f, -0.3403633f),
+                        CameraRotation = new Rotator(-19.89901f, -3.631943E-06f, 150.1615f),
+                    },
+
+                    new SinkInteract("VaGarageSink1",new Vector3(1015.94f, -3150.762f, -38.89819f), 266.8007f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    new ToiletInteract("VaGarageToilet1",new Vector3(1016.044f, -3149.734f, -38.89819f), 357.864f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    //Standing Piss 
+                    new ToiletInteract("VaGarageUrinal1",new Vector3(1013.592f, -3149.382f, -38.78778f), 0.09792258f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    new ToiletInteract("VaGarageUrinal2",new Vector3(1014.78f, -3149.349f, -38.78778f), 358.0256f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("VaGarageRest1", new Vector3(1009.551f, -3171.271f, -38.73422f), 270.7909f,"Rest")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1008.895f, -3168.078f, -37.50977f),
+                        CameraDirection = new Vector3(0.4473929f, -0.828482f, -0.336834f),
+                        CameraRotation = new Rotator(-19.6841f, -4.533806E-06f, -151.6303f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    // Ground
+                    new GangConditionalLocation(new Vector3(1005.575f, -3169.213f, -38.90759f), 69.61701f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1014.748f, -3158.512f, -38.90756f), 164.7705f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1014.041f, -3160.268f, -38.90771f), 341.4082f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    // Upstairs
+                    new GangConditionalLocation(new Vector3(998.6373f, -3170.185f, -35.0775f), 356.8465f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },// bar
+
+                    new GangConditionalLocation(new Vector3(998.8123f, -3168.189f, -35.07747f), 178.2457f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1000.029f, -3165.507f, -35.05906f), 78.60181f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(998.4161f, -3164.464f, -35.07746f), 219.3394f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(998.2596f, -3165.825f, -35.07746f), 304.6156f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1007.823f, -3165.235f, -35.06264f), 178.6293f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_PICNIC",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1007.77f, -3167.42f, -35.07746f), 2.713974f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STUPOR_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1005.827f, -3170.752f, -35.07746f), 2.774848f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1011.476f, -3167.682f, -35.07747f), 87.45511f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new GangConditionalLocation(new Vector3(999.8427f, -3171.666f, -39.52887f), 0f, 100f),
+                     new GangConditionalLocation(new Vector3(1003.041f, -3171.218f, -39.52824f), 0f, 100f),
+                     new GangConditionalLocation(new Vector3(1010.136f, -3158.197f, -39.52864f), 297.7765f, 100f),
+                     new GangConditionalLocation(new Vector3(999.8988f, -3148.474f, -39.51363f), 180f, 100f)
+                },
+             },
         });
     }
     private void FightClubs()
@@ -1717,8 +2728,9 @@ public class Interiors : IInteriors
                     //General outside stuff
                     "hei_dlc_windows_casino",
                     "hei_dlc_casino_aircon",
-                    "vw_dlc_casino_door",
-                    "hei_dlc_casino_door",
+                    //"vw_dlc_casino_door",
+                    //"hei_dlc_casino_door",
+                    "hei_ch3_12_casino_new_door"
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -11862,12 +12874,18 @@ public class Interiors : IInteriors
                 NeedsActivation = true,
             },
 
-
+            //Tuner / Mod Shop Building Facades
+            new Interior(28595302,"Burton  - Tuner Garage",new List<string>() { "tr_tuner_shop_burton" }), // Tuner Shop Burton
+            new Interior(28595304,"LA Mesa  - Tuner Garage",new List<string>() { "tr_tuner_shop_mesa" }), // Tuner Shop La Mesa
+            new Interior(28595306,"Misssion Row  - Tuner Garage",new List<string>() { "tr_tuner_shop_mission" }), // Tuner Shop Mission Row
+            new Interior(28595308,"Rancho  - Tuner Garage",new List<string>() { "tr_tuner_shop_rancho" }), // Tuner Shop Rancho
 
 
             new Interior(19381,"Auto Shop",new List<string>() { "bkr_bi_id1_23_door" }), // Vagos Den Rear Garage door
 
-            //.
+            // RED's Salvageyard Fronts
+            new Interior(29337701,"La Puerta - Salvage Yard",new List<string>() { "m23_2_sp1_03_reds" }), // interior id = 293377 +01 for front
+
 
             //Old Generic Stuff, i dont think we are loading any of this 
             new Interior(25090,"Mission Carpark"),// { IsSPOnly = true } ,
@@ -11996,8 +13014,8 @@ public class Interiors : IInteriors
                 {
                     new CivilianConditionalLocation(new Vector3(22.42017f, -1401.317f, -75.7f), 316.6561f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.BasicScenario,
                         ForcedScenarios = new List<string>()
                         {
@@ -12008,8 +13026,8 @@ public class Interiors : IInteriors
                     },
                     new CivilianConditionalLocation(new Vector3(17.7629f, -1393.571f, -75.7f), 357.9334f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.BasicScenario,
                         ForcedScenarios = new List<string>()
                         {
@@ -12098,8 +13116,8 @@ public class Interiors : IInteriors
                 {
                     new CivilianConditionalLocation(new Vector3(955.6559f, -3005.546f, -40.64f), 94.19627f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>()
                         {
@@ -12110,8 +13128,8 @@ public class Interiors : IInteriors
                     },
                     new CivilianConditionalLocation(new Vector3(991.8078f, -2989.026f, -40.64f), 4.214914f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>()
                         {
@@ -12122,8 +13140,8 @@ public class Interiors : IInteriors
                     },
                     new CivilianConditionalLocation(new Vector3(966.5159f, -2992.953f, -40.64f), 264.841f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>()
                         {
@@ -12136,8 +13154,8 @@ public class Interiors : IInteriors
                     // Lazy Sit
                     new CivilianConditionalLocation(new Vector3(981.85f, -3007.39f, -40.64f), 136.89f, 100f)
                     {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "ChopShop",
+                        OverrideDispatchablePersonGroupID = "MechanicsPeds",
+                        RequiredPedGroup = "LowMech",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
                     },
                 },

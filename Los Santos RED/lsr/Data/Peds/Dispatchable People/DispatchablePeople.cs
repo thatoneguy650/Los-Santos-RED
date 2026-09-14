@@ -67,6 +67,7 @@ public class DispatchablePeople : IDispatchablePeople
 
     private List<DispatchablePerson> SpanishLordsPeds;
     public List<DispatchablePerson> OtherPeds { get; private set; }
+    public List<DispatchablePerson> MechanicsPeds { get; private set; }
     public List<DispatchablePerson> DrugFacilityPeds { get; private set; }
     public List<DispatchablePerson> OfficeFacilityPeds { get; private set; }
     public List<DispatchablePerson> CasinoPeds { get; private set; }
@@ -1812,15 +1813,15 @@ public class DispatchablePeople : IDispatchablePeople
         //    //new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1) { DebugName = "VarriosOrtegaMale" },
         //};
         TriadsPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1) { DebugName = "TriadMale1" },
-            new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1) { DebugName = "TriadMale2" },
-            new DispatchablePerson("g_m_m_korboss_01",33,33,5,10,400,600,0,1) { DebugName = "TriadMale3" },
+            new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1) { GroupName = "Street", DebugName = "TriadMale1" },
+            new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1) { GroupName = "Street", DebugName = "TriadMale2" },
+            new DispatchablePerson("g_m_m_korboss_01",33,33,5,10,400,600,0,1) { GroupName = "Suit", DebugName = "TriadMale3" },
             //new DispatchablePerson("ig_hao",33,33,5,10,400,600,0,1) { DebugName = "TriadHaoMale1" },
         };
         KoreanPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_korean_01",33,33,5,10,400,600,0,1) { DebugName = "KoreanMale1" },
-            new DispatchablePerson("g_m_y_korean_02",33,33,5,10,400,600,0,1) { DebugName = "KoreanMale2" },
-            new DispatchablePerson("g_m_y_korlieut_01",33,33,5,10,400,600,0,1) { DebugName = "KoreanMale3" },
+            new DispatchablePerson("g_m_y_korean_01",33,33,5,10,400,600,0,1) { GroupName = "Street", DebugName = "KoreanMale1" },
+            new DispatchablePerson("g_m_y_korean_02",33,33,5,10,400,600,0,1) { GroupName = "Street", DebugName = "KoreanMale2" },
+            new DispatchablePerson("g_m_y_korlieut_01",33,33,5,10,400,600,0,1) { GroupName = "Suit", DebugName = "KoreanMale3" },
         };
         RedneckPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,10,400,600,0,1) { DebugName = "RedneckMale1" },
@@ -1891,6 +1892,58 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatAbilityMax = 2
                 ,AlwaysHasLongGun = true
                 ,CombatRange = 2
+            },
+        };
+
+
+        MechanicsPeds = new List<DispatchablePerson>()
+        {
+            new DispatchablePerson("IG_Mechanic_01",100,100)
+            {
+                DebugName = "Mechanic Male 1",
+                GroupName = "Reds",
+            },
+            new DispatchablePerson("IG_Mechanic_02",100,100)
+            {
+                DebugName = "Mechanic Female 1",
+                GroupName = "Reds",
+            },
+            new DispatchablePerson("IG_Mechanic_03",100,100)
+            {
+                DebugName = "Mechanic Male 2",
+                GroupName = "HighMech",
+            },
+            new DispatchablePerson("S_M_Y_XMech_01",100,100)
+            {
+                DebugName = "Mechanic Male 3",
+                GroupName = "MidMech",
+            },
+            new DispatchablePerson("S_M_Y_XMech_02",100,100)
+            {
+                DebugName = "Mechanic Male 4",
+                GroupName = "LowMech",
+            },
+            new DispatchablePerson("S_M_Y_XMech_02_MP",100,100)
+            {
+                DebugName = "Mechanic Male 5",
+                GroupName = "LowMech",
+                RequiredVariation = new PedVariation
+                 (
+                    new List<PedComponent>()
+                    {
+                        new PedComponent(5, 0, 0, 0),
+                    }
+                 )
+            },
+            new DispatchablePerson("MP_M_WareMech_01",100,100)
+            {
+                DebugName = "Mechanic Male 6",
+                GroupName = "LowMech",
+            },
+            new DispatchablePerson("S_F_M_Autoshop_01",100,100)
+            {
+                DebugName = "Mechanic Female 2",
+                GroupName = "MidMech",
             },
         };
 
@@ -2513,17 +2566,6 @@ public class DispatchablePeople : IDispatchablePeople
 
         OfficeFacilityPeds = new List<DispatchablePerson>()
         {
-            new DispatchablePerson("IG_Mechanic_01",100,100)
-            {
-                DebugName = "ChopShop Male 1",
-                GroupName = "ChopShop"
-            },
-            new DispatchablePerson("IG_Mechanic_02",100,100)
-            {
-                DebugName = "ChopShop Female 1",
-                GroupName = "ChopShop"
-            },
-
             new DispatchablePerson("MP_F_Counterfeit_01",100,100)
             {
                 DebugName = "Counterfeit Female 1",
@@ -2906,10 +2948,6 @@ public class DispatchablePeople : IDispatchablePeople
                     }
                 ),
             },
-
-
-
-
         };
 
         HighSecurityPeds = new List<DispatchablePerson>()  // The Men In Black style security guards, for high security venues like the Casino, etc.
@@ -3172,6 +3210,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("HomelessPeds", HomelessPeds));
 
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VehicleRacePeds", VehicleRacePeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("MechanicsPeds", MechanicsPeds));
+
         PeopleGroupLookup.Add(new DispatchablePersonGroup("FightClubPeds", FightClubPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("DogFightPeds", DogFightPeds));
 
