@@ -4044,7 +4044,37 @@ new ConditionalLocation(, 75f),*/
             new Landmark(new Vector3(895.3204f, -179.2765f, 74.70034f), 237.3235f,"Downtown Cab Co.","In transit since 1922") { OpenTime = 0,CloseTime = 24,CameraPosition = new Vector3(924.0997f, -175.3463f, 83.62648f), CameraDirection = new Vector3(-0.9416905f, 0.03393731f, -0.3347644f), CameraRotation = new Rotator(-19.55821f, -1.698846E-07f, 87.93603f) },
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.mp3" },
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
-            new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
+            new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") 
+            {
+                IsTemporarilyClosed = true, 
+                OpenTime = 0,
+                CloseTime = 24, 
+                InteriorID = 119042,
+                AssignedAssociationID = "GRP6",
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-9.94501f, -660.0998f, 33.48029f), 191.2299f, 100f)
+                    {
+                        RequiredPedGroup = "ArmedSecurity",
+                        TaskRequirements = TaskRequirements.Guard,
+                    },
+                    new SecurityConditionalLocation(new Vector3(-3.834663f, -657.6923f, 33.45126f), 7.147353f, 100f)
+                    {
+                        RequiredPedGroup = "ArmedSecurity",
+                        TaskRequirements = TaskRequirements.Guard,
+                    },
+                    new SecurityConditionalLocation(new Vector3(11.50021f, -660.2f, 33.44885f), 91.80022f, 100f)
+                    {
+                        RequiredPedGroup = "ArmedSecurity",
+                        TaskRequirements = TaskRequirements.Guard,
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new SecurityConditionalLocation(new Vector3(4.760444f, -668.1167f, 31.98798f), 186.5787f, 100f),
+                     new SecurityConditionalLocation(new Vector3(-21.38801f, -669.7518f, 31.98862f), 6.222563f, 100f),
+                },
+            },
             new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","Know the saying about seeing how sausage is made?") {OpenTime = 0,CloseTime = 24, InteriorID = 28162, ScannerFilePath = "01_specific_location\\0x0D8D06A1.mp3" },
             new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","We make more than just garments") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
             new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","Taking your scrap since 1924") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = -103 },

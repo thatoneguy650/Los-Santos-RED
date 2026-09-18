@@ -479,42 +479,42 @@ namespace Mod
 
                 // Gunrunning DLC
                     // Yacht: -1363.724, 6734.108, 2.44598
-                        "gr_heist_yacht2",
-                        "gr_heist_yacht2_bar",
-                        "gr_heist_yacht2_bar_lod",
-                        "gr_heist_yacht2_bedrm",
-                        "gr_heist_yacht2_bedrm_lod",
-                        "gr_heist_yacht2_bridge",
-                        "gr_heist_yacht2_bridge_lod",
-                        "gr_heist_yacht2_enginrm",
-                        "gr_heist_yacht2_enginrm_lod",
-                        "gr_heist_yacht2_lod",
-                        "gr_heist_yacht2_lounge",
-                        "gr_heist_yacht2_lounge_lod",
-                        "gr_heist_yacht2_slod",
+                        //"gr_heist_yacht2",
+                        //"gr_heist_yacht2_bar",
+                        //"gr_heist_yacht2_bar_lod",
+                        //"gr_heist_yacht2_bedrm",
+                        //"gr_heist_yacht2_bedrm_lod",
+                        //"gr_heist_yacht2_bridge",
+                        //"gr_heist_yacht2_bridge_lod",
+                        //"gr_heist_yacht2_enginrm",
+                        //"gr_heist_yacht2_enginrm_lod",
+                        //"gr_heist_yacht2_lod",
+                        //"gr_heist_yacht2_lounge",
+                        //"gr_heist_yacht2_lounge_lod",
+                        //"gr_heist_yacht2_slod",
 
                 // Hiests DLC
                 // Heist Yacht: -2043.974,-1031.582, 11.981
-                        "hei_yacht_heist",
-                        "hei_yacht_heist_Bar",
-                        "hei_yacht_heist_Bedrm",
-                        "hei_yacht_heist_Bridge",
-                        "hei_yacht_heist_DistantLights",
-                        "hei_yacht_heist_enginrm",
-                        "hei_yacht_heist_LODLights",
-                        "hei_yacht_heist_Lounge",
+                        //"hei_yacht_heist",
+                        //"hei_yacht_heist_Bar",
+                        //"hei_yacht_heist_Bedrm",
+                        //"hei_yacht_heist_Bridge",
+                        //"hei_yacht_heist_DistantLights",
+                        //"hei_yacht_heist_enginrm",
+                        //"hei_yacht_heist_LODLights",
+                        //"hei_yacht_heist_Lounge",
 
                 // Heist Carrier: 3082.3117 -4717.1191 15.2622
-                        "hei_carrier",
-                        "hei_carrier_distantlights",
-                        "hei_Carrier_int1",
-                        "hei_Carrier_int2",
-                        "hei_Carrier_int3",
-                        "hei_Carrier_int4",
-                        "hei_Carrier_int5",
-                        "hei_Carrier_int6",
-                        "hei_carrier_lodlights",
-                        "hei_carrier_slod",
+                        //"hei_carrier",
+                        //"hei_carrier_distantlights",
+                        //"hei_Carrier_int1",
+                        //"hei_Carrier_int2",
+                        //"hei_Carrier_int3",
+                        //"hei_Carrier_int4",
+                        //"hei_Carrier_int5",
+                        //"hei_Carrier_int6",
+                        //"hei_carrier_lodlights",
+                        //"hei_carrier_slod",
 
 
                 // Tuner DLC
@@ -546,17 +546,17 @@ namespace Mod
                     //"xm3_train_crash",
 
                     // Bunker Exteriors
-                        "gr_case0_bunkerclosed", // Desert: 848.6175, 2996.567, 45.81612
-                        "gr_case1_bunkerclosed", // SmokeTree: 2126.785, 3335.04, 48.21422
-                        "gr_case2_bunkerclosed", // Scrapyard: 2493.654, 3140.399, 51.28789
-                        "gr_case3_bunkerclosed", // Oilfields: 481.0465, 2995.135, 43.96672
-                        "gr_case4_bunkerclosed", // RatonCanyon: -391.3216, 4363.728, 58.65862
-                        "gr_case5_bunkerclosed", // Grapeseed: 1823.961, 4708.14, 42.4991
-                        "gr_case6_bunkerclosed", // Farmhouse: 1570.372, 2254.549, 78.89397
-                        "gr_case7_bunkerclosed", // Paletto: -783.0755, 5934.686, 24.31475
-                        "gr_case9_bunkerclosed", // Route68: 24.43542, 2959.705, 58.35517
-                        "gr_case10_bunkerclosed", // Zancudo: -3058.714, 3329.19, 12.5844
-                        "gr_case11_bunkerclosed", // Great Ocean Highway: -3180.466, 1374.192, 19.9597
+                        //"gr_case0_bunkerclosed", // Desert: 848.6175, 2996.567, 45.81612
+                        //"gr_case1_bunkerclosed", // SmokeTree: 2126.785, 3335.04, 48.21422
+                        //"gr_case2_bunkerclosed", // Scrapyard: 2493.654, 3140.399, 51.28789
+                        //"gr_case3_bunkerclosed", // Oilfields: 481.0465, 2995.135, 43.96672
+                        //"gr_case4_bunkerclosed", // RatonCanyon: -391.3216, 4363.728, 58.65862
+                        //"gr_case5_bunkerclosed", // Grapeseed: 1823.961, 4708.14, 42.4991
+                        //"gr_case6_bunkerclosed", // Farmhouse: 1570.372, 2254.549, 78.89397
+                        //"gr_case7_bunkerclosed", // Paletto: -783.0755, 5934.686, 24.31475
+                        //"gr_case9_bunkerclosed", // Route68: 24.43542, 2959.705, 58.35517
+                        //"gr_case10_bunkerclosed", // Zancudo: -3058.714, 3329.19, 12.5844
+                        //"gr_case11_bunkerclosed", // Great Ocean Highway: -3180.466, 1374.192, 19.9597
 
                 // Mercenaries DLC
                     //base
@@ -593,14 +593,14 @@ namespace Mod
                         "m24_1_bailoffice_vinewood",
 
                     // Aircraft carrier: -3208.03, 3954.54, 14.0
-                        "m24_1_carrier",
-                        "m24_1_carrier_int1",
-                        "m24_1_carrier_int2",
-                        "m24_1_carrier_int3",
-                        "m24_1_carrier_int4",
-                        "m24_1_carrier_int5",
-                        "m24_1_carrier_int6",
-                        "m24_1_carrier_ladders",
+                        //"m24_1_carrier",
+                        //"m24_1_carrier_int1",
+                        //"m24_1_carrier_int2",
+                        //"m24_1_carrier_int3",
+                        //"m24_1_carrier_int4",
+                        //"m24_1_carrier_int5",
+                        //"m24_1_carrier_int6",
+                        //"m24_1_carrier_ladders",
 
                 // Agents DLC
                     // base
