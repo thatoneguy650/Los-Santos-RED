@@ -21,7 +21,7 @@ namespace Mod
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
         private ICrimes Crimes;
-        private IWeapons Weapons;     
+        private IWeapons Weapons;
         private ITimeControllable Time;
         private IInteriors Interiors;
         private IShopMenus ShopMenus;
@@ -75,7 +75,7 @@ namespace Mod
         public bool IsFEWInstalled { get; private set; }
         public bool IsFMLPInstalled { get; private set; }
 
-        public bool IsFERSInstalled { get; private set; }   
+        public bool IsFERSInstalled { get; private set; }
         public bool IsEUPInstalled { get; private set; }
         public bool IsEUPSUPInstalled { get; private set; }
         public string DebugString => "";
@@ -96,7 +96,7 @@ namespace Mod
         private void CheckSpecialCircumstances()
         {
             IsFEJInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfej"));
-            EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}",0);
+            EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}", 0);
 
             IsFMTInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmt"));
             EntryPoint.WriteToConsole($"FMT Installed: {IsFMTInstalled}", 0);
@@ -135,9 +135,9 @@ namespace Mod
         }
         public void Update()
         {
-   
+
             SetDensity();
-            
+
             if (Settings.SettingsManager.WorldSettings.AllowPoliceBackupBlip)
             {
                 if (PoliceBackupPoint == Vector3.Zero)
@@ -166,7 +166,7 @@ namespace Mod
                     TotalWantedBlip.Delete();
                 }
             }
-            if(TotalWantedLevel != totalWantedLevel)
+            if (TotalWantedLevel != totalWantedLevel)
             {
                 OnTotalWantedLevelChanged();
             }
@@ -201,6 +201,7 @@ namespace Mod
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
                 NativeFunction.Natives.x0888C3502DBBEEF5();// ON_ENTER_MP();
                 LoadMansionIPLs();
+                LoadWorldIPLs();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = true;
             }
@@ -211,11 +212,12 @@ namespace Mod
             {
                 Game.FadeScreenOut(1500, true);
                 UnloadMansionIPLs();
+                UnloadWorldIPLs();
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
-    
+
             }
         }
         public void AddBlip(Blip myBlip)
@@ -247,7 +249,7 @@ namespace Mod
         {
             CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.DefaultSpawnMultiplier;// 1.0f;
             if (Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
-            { 
+            {
                 if (TotalWantedLevel >= 10)
                 {
                     CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
@@ -277,7 +279,7 @@ namespace Mod
                     CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
                 }
             }
-            if(isTrafficDisabled)
+            if (isTrafficDisabled)
             {
                 CurrentSpawnMultiplier = 0.0f;
             }
@@ -340,11 +342,11 @@ namespace Mod
         }
         private void OnTotalWantedLevelChanged()
         {
-            if(TotalWantedLevel == 0)
+            if (TotalWantedLevel == 0)
             {
                 OnTotalWantedLevelRemoved();
             }
-            else if(totalWantedLevel == 0)
+            else if (totalWantedLevel == 0)
             {
                 OnTotalWantedLevelAdded();
             }
@@ -365,7 +367,7 @@ namespace Mod
         private void OnTotalWantedLevelAdded()
         {
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
-           
+
 
 
         }
@@ -427,7 +429,7 @@ namespace Mod
         "hei_ch1_09_mansion_railings_p",
         "m25_2_mansion_props",
         "hei_ch1_09_mansion_shared_distantlights",
-        "hei_ch1_09_mansion_shared_lodlights"
+        "hei_ch1_09_mansion_shared_lodlights",
         };
         private List<string> mansionSPIPLs = new List<string>()
         {
@@ -442,6 +444,201 @@ namespace Mod
         "hei_ch1_roads_original",
         "hei_ch1_09_mansion_original",
         "hei_ch1_09_props_original"
+        };
+
+
+        private void LoadWorldIPLs()
+        {
+            foreach (string ipl in worldMPIPLs)
+            {
+                NativeFunction.Natives.REQUEST_IPL(ipl);
+            }
+        }
+        private void UnloadWorldIPLs()
+        {
+            foreach (string ipl in worldMPIPLs)
+            {
+                NativeFunction.Natives.REMOVE_IPL(ipl);
+            }
+        }
+
+        //Load Map Fixes and Building Exteriors.
+        private List<string> worldMPIPLs = new List<string>()
+        {
+        // Base game
+            // Vagos Garage Door fix - Put here to keep loaded since the door is loaded/unloaded when using the den.
+                        "bkr_bi_id1_23_door",
+                    // Grave Hole fix -282.4638f, 2835.845f, 55.91446f
+                        "lr_cs6_08_grave_closed",
+
+                       // "ch1_02_open", // Sniper Mission interior test
+                // Cayo 
+                    // base
+                        //"h4_ch2_mansion_final",
+
+
+                // Gunrunning DLC
+                    // Yacht: -1363.724, 6734.108, 2.44598
+                        "gr_heist_yacht2",
+                        "gr_heist_yacht2_bar",
+                        "gr_heist_yacht2_bar_lod",
+                        "gr_heist_yacht2_bedrm",
+                        "gr_heist_yacht2_bedrm_lod",
+                        "gr_heist_yacht2_bridge",
+                        "gr_heist_yacht2_bridge_lod",
+                        "gr_heist_yacht2_enginrm",
+                        "gr_heist_yacht2_enginrm_lod",
+                        "gr_heist_yacht2_lod",
+                        "gr_heist_yacht2_lounge",
+                        "gr_heist_yacht2_lounge_lod",
+                        "gr_heist_yacht2_slod",
+
+                // Hiests DLC
+                // Heist Yacht: -2043.974,-1031.582, 11.981
+                        "hei_yacht_heist",
+                        "hei_yacht_heist_Bar",
+                        "hei_yacht_heist_Bedrm",
+                        "hei_yacht_heist_Bridge",
+                        "hei_yacht_heist_DistantLights",
+                        "hei_yacht_heist_enginrm",
+                        "hei_yacht_heist_LODLights",
+                        "hei_yacht_heist_Lounge",
+
+                // Heist Carrier: 3082.3117 -4717.1191 15.2622
+                        "hei_carrier",
+                        "hei_carrier_distantlights",
+                        "hei_Carrier_int1",
+                        "hei_Carrier_int2",
+                        "hei_Carrier_int3",
+                        "hei_Carrier_int4",
+                        "hei_Carrier_int5",
+                        "hei_Carrier_int6",
+                        "hei_carrier_lodlights",
+                        "hei_carrier_slod",
+
+
+                // Tuner DLC
+                    // Los Santos Car Meet: -2000.0, 1113.211, -25.36243
+                        "tr_tuner_meetup",
+                        "tr_tuner_race_line",
+
+                    // Tuner Shop Exteriors
+                        "tr_tuner_shop_burton",
+                        "tr_tuner_shop_mesa",
+                        "tr_tuner_shop_mission",
+                        "tr_tuner_shop_rancho",
+                        "tr_tuner_shop_strawberry",
+
+                // Drug Wars DLC
+                    // base
+                        "xm3_collision_fixes",
+                        "xm3_sum2_fix",
+                        "xm3_security_fix",
+
+                    // Freakshop Exterior (warehouse)
+                        "xm3_warehouse",
+                        "xm3_warehouse_grnd",
+
+                    // Eclipse Boulevard Garage: 519.2477, -2618.788, -50.000
+                        "xm3_garage_fix",
+
+                    //Train crash: 2630.595, 1458.144, 25.3669
+                    //"xm3_train_crash",
+
+                    // Bunker Exteriors
+                        "gr_case0_bunkerclosed", // Desert: 848.6175, 2996.567, 45.81612
+                        "gr_case1_bunkerclosed", // SmokeTree: 2126.785, 3335.04, 48.21422
+                        "gr_case2_bunkerclosed", // Scrapyard: 2493.654, 3140.399, 51.28789
+                        "gr_case3_bunkerclosed", // Oilfields: 481.0465, 2995.135, 43.96672
+                        "gr_case4_bunkerclosed", // RatonCanyon: -391.3216, 4363.728, 58.65862
+                        "gr_case5_bunkerclosed", // Grapeseed: 1823.961, 4708.14, 42.4991
+                        "gr_case6_bunkerclosed", // Farmhouse: 1570.372, 2254.549, 78.89397
+                        "gr_case7_bunkerclosed", // Paletto: -783.0755, 5934.686, 24.31475
+                        "gr_case9_bunkerclosed", // Route68: 24.43542, 2959.705, 58.35517
+                        "gr_case10_bunkerclosed", // Zancudo: -3058.714, 3329.19, 12.5844
+                        "gr_case11_bunkerclosed", // Great Ocean Highway: -3180.466, 1374.192, 19.9597
+
+                // Mercenaries DLC
+                    //base
+                        "m23_1_legacy_fixes",
+                        "m23_2_legacy_fixes",
+                // Chop Shop DLC
+                    // base
+                        "m23_2_acp_collision_fixes_01",
+                        "m23_2_acp_collision_fixes_02",
+                        "m23_2_tug_collision",
+                        "m23_2_hei_yacht_collision_fixes",
+                        "m23_2_vinewood_garage",
+
+                    // lifeguard Exterior
+                        "m23_2_lifeguard_access",
+
+                    // Salvage Yard Exteriors
+                        "m23_2_sp1_03_reds",
+                        "m23_2_sc1_03_reds",
+                        "m23_2_id2_04_reds",
+                        "m23_2_cs1_05_reds",
+                        "m23_2_cs4_11_reds",
+
+                // Bounties DLC
+                    // base
+                        "m24_1_legacyfixes",
+                        "m24_1_pizzasigns",
+
+                    // Bail Office Exteriors
+                        "m24_1_bailoffice_davis",
+                        "m24_1_bailoffice_delperro",
+                        "m24_1_bailoffice_missionrow",
+                        "m24_1_bailoffice_paletobay",
+                        "m24_1_bailoffice_vinewood",
+
+                    // Aircraft carrier: -3208.03, 3954.54, 14.0
+                        "m24_1_carrier",
+                        "m24_1_carrier_int1",
+                        "m24_1_carrier_int2",
+                        "m24_1_carrier_int3",
+                        "m24_1_carrier_int4",
+                        "m24_1_carrier_int5",
+                        "m24_1_carrier_int6",
+                        "m24_1_carrier_ladders",
+
+                // Agents DLC
+                    // base
+                        "m24_2_legacy_fixes",
+                        "m24_2_mp2024_02_additions",
+
+                    // Garment Factory Exterior  752.31, -997.24, -47.0
+                        "m24_2_garment_factory",
+
+                    // Hangar door: -2632.43, 2963.23, 8.5
+                        "m24_2_prop_m42_hangerdoor_02a",
+
+                // Money Fronts DLC
+                    // base
+                        "m25_1_legacy_fixes",
+                        "m25_2_legacy_fixes",
+                        "m25_1_mp2025_01_additions",
+                        "m25_1_bobcat",
+                        "m25_1_garage",
+                        "m25_1_quikpharma",
+
+                    // Hand's On Car Wash Exterior
+                        "m25_1_carwash",
+
+                    // Offices - Smoke on Water and Higgins Heli Exteriors
+                        "m25_1_helitours",
+                        "m25_1_smokeonthewater",
+
+                // Kortz Centre DLC
+                    // base
+                        "m26_1_mp2026_01_additions_critical_0",
+                    // Museum Exterior
+                        "m26_1_mp2026_01_additions_exterior",
+                        "m26_1_mp2026_01_additions_exterior_cctv",
+
+                        "m26_1_mp2026_01_additions_kortz_lowerbarriers_up",
+                    //  "m26_1_mp2026_01_additions_kortz_lowerbarriers",
+
         };
     }
 }

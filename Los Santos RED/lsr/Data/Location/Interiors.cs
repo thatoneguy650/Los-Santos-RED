@@ -1608,13 +1608,62 @@ public class Interiors : IInteriors
             {
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1391.485f, 1132.229f, 114.3336f),
-                RequestIPLs = new List<string>() {"v_ranch"},
                 InteriorEgressHeading = 269.3185f,
+                // RequestIPLs = new List<string>() {"v_ranch"}, don't need to request
+                PropSpawns = new List<PropSpawn>()
+                {
+
+                    new PropSpawn("sum_prop_ac_dustsheet_01a", new SpawnPlace(new Vector3(1396.94177f, 1145.39551f, 113.333611f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_dustsheet_01a", new SpawnPlace(new Vector3(1396.98f, 1149.6f, 113.333611f), 88.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_dustsheet_02a", new SpawnPlace(new Vector3(1394.19f, 1150.95f, 113.34f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_paints_bench01", new SpawnPlace(new Vector3(1397.42078f, 1147.26062f, 113.333611f), 179.999146f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_paint_wpaper01", new SpawnPlace(new Vector3(1397.17651f, 1144.33679f, 113.333611f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_paint_stepl02", new SpawnPlace(new Vector3(1397.64441f, 1149.30786f, 113.333611f), 115.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_paint_stepl01", new SpawnPlace(new Vector3(1397.25354f, 1143.758f, 113.333611f), -91.99883f)) { PlaceOnGround = true },
+                },
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("madrazoRanchExit1",new Vector3(1391.485f, 1132.229f, 114.3336f), 89.3185f,"Exit") ,
-                    new StandardInteriorInteract("madrazoRanchStandard1",new Vector3(1397.711f, 1145.432f, 114.3336f), 98.00688f,"Interact") ,
+                    new StandardInteriorInteract("madrazoRanchStandard1",new Vector3(1397.232f, 1139.711f, 114.3336f), 95.1875f,"Interact") ,
                 },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1398.82f, 1128.836f, 114.3337f), 356.2637f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1400.328f, 1141.409f, 114.3337f), 92.94054f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1408.204f, 1144.461f, 114.3337f), 55.14666f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1399.067f, 1155.157f, 114.3337f), 177.7045f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                }
             },
 
             new GangDenInterior(245761,"LOST M.C. Clubhouse")
@@ -1684,7 +1733,7 @@ public class Interiors : IInteriors
                 },
             },
             new GangDenInterior(246273,"AOD M.C. Clubhouse")
-             {//bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo
+            {//bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1110.35f, -3166.175f, -37.51859f),
                 InteriorEgressHeading = 340.7777f,
@@ -1697,9 +1746,9 @@ public class Interiors : IInteriors
                 InteriorSets = new List<string>()
                 {
 
-                    "walls_01", // 1 - 2
-                    "furnishings_01", // 1 - 2
-                    "decorative_01", // 1 - 2
+                    "walls_02", // 1 - 2
+                    "furnishings_02", // 1 - 2
+                    "decorative_02", // 1 - 2
                     "gun_locker",
                     "mod_booth",
 
@@ -1928,7 +1977,265 @@ public class Interiors : IInteriors
                      new GangConditionalLocation(new Vector3(1103.568f, -3144.838f, -38.00594f), 180.4009f, 100f),
                      new GangConditionalLocation(new Vector3(1101.563f, -3156.821f, -38.00434f), 272.7238f, 100f)
                 },
+            },
+
+            new GangDenInterior(24627301,"Redneck Clubhouse") // Default = 2462730 +01
+             {//bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo
+                InternalInteriorCoordinates = new Vector3(1107.04f, -3157.399f, -37.51859f),
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1110.35f, -3166.175f, -37.51859f),
+                InteriorEgressHeading = 340.7777f,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_grg","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_rec","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_01_bar","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                    new PropSpawn("prop_rub_carwreck_10", new SpawnPlace(new Vector3(1101.32959f, -3159.80322f, -38.5186f), 80.0013351f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_carwreck_14", new SpawnPlace(new Vector3(1106.27368f, -3164.20044f, -38.5186f), 162.99971f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_carwreck_3", new SpawnPlace(new Vector3(1098.83667f, -3164.60352f, -38.5186f), -2.99898958f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_carwreck_5", new SpawnPlace(new Vector3(1101.59863f, -3164.474f, -38.5186f), 175.0002f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_wreckedcart", new SpawnPlace(new Vector3(1104.03674f, -3162.55542f, -38.5186f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_barrel_pile_03", new SpawnPlace(new Vector3(1103.99146f, -3166.40942f, -38.5186f), 153.999878f)) { PlaceOnGround = true },
+                },
+                InteriorSets = new List<string>()
+                {
+
+                    "walls_01", // 1 - 2
+                    "furnishings_01", // 1 - 2
+                    "decorative_01", // 1 - 2
+                    "gun_locker",
+                    //"mod_booth",
+
+                    //"cash_stash1",
+                    //    stage1
+                    //    "cash_stash1",
+                    //
+                    //    stage2 
+                    //    "cash_stash1",
+                    //    "cash_stash2"
+                    //
+                    //    stage3
+                    //    "cash_stash1",
+                    //    "cash_stash2",
+                    //    "cash_stash3",
+
+                    //"coke_stash1",
+                    //    stage1
+                    //    "coke_stash1",
+                    //
+                    //    stage2
+                    //    "coke_stash1",
+                    //    "coke_stash2"
+                    //
+                    //    stage3
+                    //    "coke_stash1",
+                    //    "coke_stash2",
+                    //    "coke_stash3",
+
+                    //"counterfeit_stash1",
+                    //    stage1
+                    //    "counterfeit_stash1",
+                    //
+                    //    stage2
+                    //    "counterfeit_stash1",
+                    //    "counterfeit_stash2"
+                    // 
+                    //    stage3
+                    //    "counterfeit_stash1",
+                    //    "counterfeit_stash2",
+                    //    "counterfeit_stash3",
+   
+                    //"id_stash1",
+                    //    stage1
+                    //    "id_stash1",
+                    //
+                    //    stage2
+                    //    "id_stash1",
+                    //    "id_stash2"
+                    //
+                    //    stage3 
+                    //    "id_stash1",
+                    //    "id_stash2",
+                    //    "id_stash3",                   
+
+                    "meth_stash3",
+                    //    stage1
+                    //    "meth_stash1",
+                    //
+                    //    stage2
+                    //    "meth_stash1",
+                    //    "meth_stash2"
+                    //
+                    //    stage3
+                    //    "meth_stash1",
+                    //    "meth_stash2",
+                    //    "meth_stash3",
+
+                    //"weed_stash2",
+                    //    stage1
+                    //    "weed_stash1",
+                    //
+                    //    stage2  
+                    //    "weed_stash1",
+                    //    "weed_stash2"
+                    //
+                    //    stage3  
+                    //    "weed_stash1",
+                    //    "weed_stash2",
+                    //    "weed_stash3"
+
+                    //"mural_01", 
+                    // rideFree = "mural_01",
+                    // mods = "mural_02",
+                    // brave = "mural_03",
+                    // fist = "mural_04",
+                    // forest = "mural_05",
+                    // mods2 = "mural_06",
+                    // rideForever = "mural_07",
+                    // heart = "mural_08",
+                    // route68 = "mural_09",
+                },
+
+                    //   Colors
+                    // sable = 0,
+                    // yellowGray = 1,
+                    // red = 2,
+                    // brown = 3,
+                    // yellow = 4,
+                    // lightYellow = 5,
+                    // lightYellowGray = 6,
+                    // lightGray = 7,
+                    // orange = 8,
+                    //  gray = 9
+                InteriorTintColor = 9,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("REDDen2Exit1",new Vector3(1110.35f, -3166.175f, -37.51859f), 178.3495f,"Exit") ,
+
+                    new StandardInteriorInteract("REDDen2Standard1",new Vector3(1117.981f, -3161.479f, -36.87047f), 77.47559f,"Interact"){ UseNavmesh = false } ,
+                    new AudioEmitterInteract()
+                    {
+                        Name = "REDDenRadio1",
+                        Position = new Vector3(1122.451f, -3152.284f, -37.06277f),
+                        Heading =  182.7204f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1120.85f, -3150.969f, -36.04099f),
+                        CameraDirection = new Vector3(0.633864f, -0.7374569f, -0.2331819f),
+                        CameraRotation = new Rotator(-13.48447f, -3.072918E-06f, -139.3201f),
+                    },
+
+                    new SinkInteract("REDDen2Sink1",new Vector3(1124.668f, -3160.488f, -37.06274f), 89.89037f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    new ToiletInteract("REDDenToilet1",new Vector3(1125.783f, -3161.463f, -37.06274f), 176.7994f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    new ToiletInteract("REDDenToilet1",new Vector3(1124.627f, -3161.512f, -37.06274f), 175.8347f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1125.569f, -3158.658f, -35.65231f),
+                        CameraDirection = new Vector3(-0.2631671f, -0.8510262f, -0.45442f),
+                        CameraRotation = new Rotator(-27.02762f, -2.156508E-05f, 162.8166f),
+                    },
+                    //Standing Piss 
+                    new ToiletInteract("REDDenUrinal1",new Vector3(1125.674f, -3158.489f, -36.93729f), 272.562f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1124.207f, -3159.112f, -35.70354f),
+                        CameraDirection = new Vector3(0.814513f, 0.005888665f, -0.5801154f),
+                        CameraRotation = new Rotator(-35.45866f, 1.29384E-06f, -89.58578f),
+                    },
+                    new ToiletInteract("REDDenUrinal1",new Vector3(1125.699f, -3159.59f, -36.93729f), 271.5432f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1124.207f, -3159.112f, -35.70354f),
+                        CameraDirection = new Vector3(0.814513f, 0.005888665f, -0.5801154f),
+                        CameraRotation = new Rotator(-35.45866f, 1.29384E-06f, -89.58578f),
+                    },
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("REDDen2Rest1", new Vector3(1119.937f, -3161.991f, -36.70049f), 177.3407f,"Rest")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1122.285f, -3161.174f, -35.77942f),
+                        CameraDirection = new Vector3(-0.7515815f, -0.554848f, -0.3567475f),
+                        CameraRotation = new Rotator(-20.90059f, 2.741723E-06f, 126.4362f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(1109.719f, -3150.637f, -37.51862f), 180.5398f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1115.784f, -3156.102f, -37.06277f), 267.9507f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1116.097f, -3155.095f, -37.06277f), 222.7967f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1121.152f, -3144.571f, -37.06277f), 267.8852f, 100f) // behind bar
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1122.784f, -3145.283f, -37.06277f), 66.66338f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1116.317f, -3161.052f, -36.87049f), 260.1508f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new GangConditionalLocation(new Vector3(1099.701f, -3145.144f, -38.00296f), 178.9158f, 100f),
+                     new GangConditionalLocation(new Vector3(1103.568f, -3144.838f, -38.00594f), 180.4009f, 100f),
+                     new GangConditionalLocation(new Vector3(1101.563f, -3156.821f, -38.00434f), 272.7238f, 100f)
+                },
              },
+
             new GangDenInterior(287745,"Kkhangpae Office")
              {
                 IsTeleportEntry = true, //sf_fixeroffice_kt1_08
@@ -2171,8 +2478,6 @@ public class Interiors : IInteriors
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new GangConditionalLocation(new Vector3(-72.10109f, -814.1434f, 242.3859f), 157.4579f, 100f){TaskRequirements = TaskRequirements.Guard }, //  front desk
-
                     new GangConditionalLocation(new Vector3(-80.70766f, -802.1781f, 242.4008f), 251.5587f, 100f)
                     {
                         RequiredPedGroup = "Suit",
@@ -2210,8 +2515,10 @@ public class Interiors : IInteriors
                             "WORLD_HUMAN_INSPECT_STAND",
                         },
                     }, // office
+                    new CivilianConditionalLocation(new Vector3(-72.10109f, -814.1434f, 242.3859f), 157.4579f, 100f){ OverrideDispatchablePersonGroupID = "TellerPeds", TaskRequirements = TaskRequirements.Guard }, //  front desk
                 },
              },
+
             new GangDenInterior(293377,"Armenian Scrapyard")
              { // m23_2_sp1_03_reds
                 IsTeleportEntry = true,
@@ -2235,8 +2542,6 @@ public class Interiors : IInteriors
                      new PropSpawn("imp_prop_covered_vehicle_07a", new SpawnPlace(new Vector3(1089.9f, -2281.4f, -50f), 180f)) {PlaceOnGround = true },
                      new PropSpawn("imp_prop_covered_vehicle_01a", new SpawnPlace(new Vector3(1082.0f, -2281.3f, -50f), -180f)) {PlaceOnGround = true },
                 },
-
-
                 InteriorSets = new List<string>()
                 {
                     // Main
@@ -2504,20 +2809,9 @@ public class Interiors : IInteriors
                     // route68 = "mural_09",
                 },
 
-                    //   Colors
-                    // sable = 0,
-                    // yellowGray = 1,
-                    // red = 2,
-                    // brown = 3,
-                    // yellow = 4,
-                    // lightYellow = 5,
-                    // lightYellowGray = 6,
-                    // lightGray = 7,
-                    // orange = 8,
-                    //  gray = 9
                 InteriorTintColor = 7,
-                InteriorSetStyleID = 8,
-                InteriorWallpaperColor = 8,
+                InteriorSetStyleID = -1,
+                InteriorWallpaperColor = -1,
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract("VaGarageExit1",new Vector3(997.1853f, -3164.437f, -38.90732f), 89.66283f,"Exit") ,
@@ -2683,6 +2977,1419 @@ public class Interiors : IInteriors
                      new GangConditionalLocation(new Vector3(999.8988f, -3148.474f, -39.51363f), 180f, 100f)
                 },
              },
+            new GangDenInterior(24652901,"Diablos Garage") // Default ID = 246529 +01
+             {//bkr_biker_interior_placement_interior_1_biker_dlc_int_02_milo
+                InternalInteriorCoordinates = new Vector3(998.4809f, -3164.711f, -38.90733f),
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(997.1853f, -3164.437f, -38.90732f),
+                InteriorEgressHeading = 270f,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_bkr_biker_dlc_int_02_grg","Radio"),
+                    new AudioEmitter($"se_bkr_biker_dlc_int_02_rec","Radio"),
+                },
+                InteriorSets = new List<string>()
+                {
+
+                    "walls_01", // 1 - 2
+                    "furnishings_01", // 1 - 2 - Colors for "furnishings_01" only
+                    "decorative_01", // 1 - 2
+                    "gun_locker",
+                    "mod_booth",
+                    "mod_booth",
+                    "lower_walls_default",
+                    //    stage1
+                    //    "cash_small",
+                    //
+                    //    stage2 
+                    //    "cash_small",
+                    //    "cash_medium"
+                    //
+                    //    stage3
+                    //    "cash_small",
+                    //    "cash_medium",
+                    //    "cash_large",
+
+                    //"coke_stash1",
+                    //    stage1
+                    //    "coke_small",
+                    //
+                    //    stage2
+                    //    "coke_small",
+                    //    "coke_medium"
+                    //
+                    //    stage3
+                    //    "coke_small",
+                    //    "coke_medium",
+                    //    "coke_large",
+
+                    //"counterfeit_stash1",
+                    //    stage1
+                    //    "counterfeit_small",
+                    //
+                    //    stage2
+                    //    "counterfeit_small",
+                    //    "counterfeit_medium"
+                    // 
+                    //    stage3
+                    //    "counterfeit_small",
+                    //    "counterfeit_medium",
+                    //    "counterfeit_large",
+   
+                    //"id_stash1",
+                    //    stage1
+                    //    "id_small",
+                    //
+                    //    stage2
+                    //    "id_small",
+                    //    "id_medium"
+                    //
+                    //    stage3 
+                    //    "id_small",
+                    //    "id_medium",
+                    //    "id__large",                   
+
+                    "meth_stash3",
+                    //    stage1
+                    //    "meth_small",
+                    //
+                    //    stage2
+                    //    "meth_small",
+                    //    "meth_medium"
+                    //
+                    //    stage3
+                    //    "meth_small",
+                    //    "meth_medium",
+                    //    "meth_large",
+
+                    "weed_stash2",
+                    //    stage1
+                    //    "weed_small",
+                    //
+                    //    stage2  
+                    //    "weed_small",
+                    //    "weed_medium"
+                    //
+                    //    stage3  
+                    //    "weed_small",
+                    //    "weed_medium",
+                    //    "weed_large"
+
+                    "mural_09", 
+                    // rideFree = "mural_01",
+                    // mods = "mural_02",
+                    // brave = "mural_03",
+                    // fist = "mural_04",
+                    // forest = "mural_05",
+                    // mods2 = "mural_06",
+                    // rideForever = "mural_07",
+                    // heart = "mural_08",
+                    // route68 = "mural_09",
+                },
+
+                InteriorTintColor = 8,
+                InteriorSetStyleID = -1,
+                InteriorWallpaperColor = -1,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("DiaGarageExit1",new Vector3(997.1853f, -3164.437f, -38.90732f), 89.66283f,"Exit") ,
+
+                    new StandardInteriorInteract("DiaGarageStandard1",new Vector3(1007.912f, -3169.815f, -38.90711f), 90.14715f,"Interact"){ UseNavmesh = false } ,
+                    new AudioEmitterInteract()
+                    {
+                        Name = "DiaGarageRadio1",
+                        Position = new Vector3(1001.069f, -3170.119f, -34.06671f),
+                        Heading =  179.2847f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1002.77f, -3167.594f, -32.53288f),
+                        CameraDirection = new Vector3(-0.4678494f, -0.8156407f, -0.3403633f),
+                        CameraRotation = new Rotator(-19.89901f, -3.631943E-06f, 150.1615f),
+                    },
+
+                    new SinkInteract("DiaGarageSink1",new Vector3(1015.94f, -3150.762f, -38.89819f), 266.8007f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    new ToiletInteract("DiaGarageToilet1",new Vector3(1016.044f, -3149.734f, -38.89819f), 357.864f,"Use Toilet")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    //Standing Piss 
+                    new ToiletInteract("DiaGarageUrinal1",new Vector3(1013.592f, -3149.382f, -38.78778f), 0.09792258f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+                    new ToiletInteract("DiaGarageUrinal2",new Vector3(1014.78f, -3149.349f, -38.78778f), 358.0256f,"Use Urinal")
+                    {
+                        IsStanding = true,
+                        CameraPosition = new Vector3(1013.767f, -3153.175f, -37.32402f),
+                        CameraDirection = new Vector3(0.414555f, 0.811904f, -0.4110426f),
+                        CameraRotation = new Rotator(-24.27035f, -1.873099E-05f, -27.04868f),
+                    },
+
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract("DiaGarageRest1", new Vector3(1009.551f, -3171.271f, -38.73422f), 270.7909f,"Rest")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1008.895f, -3168.078f, -37.50977f),
+                        CameraDirection = new Vector3(0.4473929f, -0.828482f, -0.336834f),
+                        CameraRotation = new Rotator(-19.6841f, -4.533806E-06f, -151.6303f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    // Ground
+                    new GangConditionalLocation(new Vector3(1005.575f, -3169.213f, -38.90759f), 69.61701f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1014.748f, -3158.512f, -38.90756f), 164.7705f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1014.041f, -3160.268f, -38.90771f), 341.4082f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    // Upstairs
+                    new GangConditionalLocation(new Vector3(998.6373f, -3170.185f, -35.0775f), 356.8465f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },// bar
+
+                    new GangConditionalLocation(new Vector3(998.8123f, -3168.189f, -35.07747f), 178.2457f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1000.029f, -3165.507f, -35.05906f), 78.60181f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(998.4161f, -3164.464f, -35.07746f), 219.3394f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(998.2596f, -3165.825f, -35.07746f), 304.6156f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1007.823f, -3165.235f, -35.06264f), 178.6293f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_PICNIC",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1007.77f, -3167.42f, -35.07746f), 2.713974f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STUPOR_CLUBHOUSE",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(1005.827f, -3170.752f, -35.07746f), 2.774848f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                    new GangConditionalLocation(new Vector3(1011.476f, -3167.682f, -35.07747f), 87.45511f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                    },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                     new GangConditionalLocation(new Vector3(999.8427f, -3171.666f, -39.52887f), 0f, 100f),
+                     new GangConditionalLocation(new Vector3(1003.041f, -3171.218f, -39.52824f), 0f, 100f),
+                     new GangConditionalLocation(new Vector3(1010.136f, -3158.197f, -39.52864f), 297.7765f, 100f),
+                     new GangConditionalLocation(new Vector3(999.8988f, -3148.474f, -39.51363f), 180f, 100f)
+                },
+             },
+
+
+            // Mid Apart Setups
+            new GangDenInterior(29926510, "Families Gang House") // 299265 +10
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // Entry
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(66.7693558f, -90.49705f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_bikecover_01a", new SpawnPlace(new Vector3(65.4f, -88f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_bike_02", new SpawnPlace(new Vector3(66.5f, -92f, -75.19622f), -90f)) { PlaceOnGround = true },
+
+
+
+                    // Bedroom
+                    new PropSpawn("sf_prop_sf_bed_dog_01b", new SpawnPlace(new Vector3(69.74506f, -82.84729f, -75.19622f), -137.999237f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_bedsidetable_01a", new SpawnPlace(new Vector3(66.26f, -78.45f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(69.87f, -76.5508f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(68.53f, -76.55338f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_tre_bed1_messy", new SpawnPlace(new Vector3(67.35f, -79.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+
+                    //Main room
+                    new PropSpawn("apa_mp_h_stn_sofacorn_06", new SpawnPlace(new Vector3(56.1f, -77.4f, -75.19622f), 89.99953f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ba_prop_battle_weed_bigbag_01a", new SpawnPlace(new Vector3(58.37812f, -85.0833f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01a", new SpawnPlace(new Vector3(58.35f, -84.9f, -75.19622f), 90.00023f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_1_prop_m41_officepile_01a", new SpawnPlace(new Vector3(61.462265f, -86.85615f, -75.19622f), -2.99985647f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_2_prop_m42_weedboxpile_01a", new SpawnPlace(new Vector3(55.85486f, -82.34841f, -75.19622f), -90.9992447f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(58f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(55.7f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_rub_cardpile_05", new SpawnPlace(new Vector3(60.7831039f, -85.21098f, -75.19622f), 71.99964f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_cardpile_06", new SpawnPlace(new Vector3(55.74687f, -85.81029f, -75.19622f), -88.99963f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_fan_floor_01a", new SpawnPlace(new Vector3(58.41247f, -87.3419647f, -75.19622f), -128.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_lrg_01a", new SpawnPlace(new Vector3(55.75523f, -86.6343155f, -75.1656952f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_lrg_01a", new SpawnPlace(new Vector3(55.7160072f, -84.92128f, -75.1656952f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_spray_01a", new SpawnPlace(new Vector3(59.0465927f, -84.9436646f, -73.96f), -86.99906f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_wateringcan", new SpawnPlace(new Vector3(56.1921959f, -85.70412f, -75.14364f), -155.9992f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_cs_fertilizer", new SpawnPlace(new Vector3(55.25f, -83.5f, -74.75f), 59.99997f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_plantpot_stack_01b", new SpawnPlace(new Vector3(57.7208633f, -87.3392639f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(57.1691856f, -87.3909454f, -75.19622f), -167.000336f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(56.66232f, -87.3591461f, -75.19622f), -167.000336f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(56.95f, -87.37f, -74.7789f), -167.000336f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_avunitl_03", new SpawnPlace(new Vector3(63.1456146f, -78.63405f, -75.19622f), -90.00048f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(67.05407f, -76.4765854f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic3", new SpawnPlace(new Vector3(62.5426674f, -83.4682159f, -75.19622f), 179.999619f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills4", new SpawnPlace(new Vector3(69.8960648f, -77.26485f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills3", new SpawnPlace(new Vector3(59.6918068f, -76.78914f, -75.19622f), 89.99962f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(62.1976776f, -86.93943f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_coffeetable", new SpawnPlace(new Vector3(57.5380325f, -78.84678f, -75.19622f), 89.99965f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bikerset", new SpawnPlace(new Vector3(57.5050163f, -78.82259f, -74.7721558f), -65.9995041f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_g_bong_01a", new SpawnPlace(new Vector3(57.87922f, -78.44881f, -74.77103f), 120.999046f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_dry_02a", new SpawnPlace(new Vector3(57.55421f, -78.43591f, -74.77103f), -4.999998f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_02", new SpawnPlace(new Vector3(57.0751762f, -78.84684f, -74.77103f), -98.99966f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_01", new SpawnPlace(new Vector3(57.12951f, -78.6521149f, -74.77103f), -50.99908f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_03", new SpawnPlace(new Vector3(57.0951653f, -78.68831f, -74.77103f), -26.9999733f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m26_1_prop_m61_bag_green_01a", new SpawnPlace(new Vector3(59.2335968f, -83.42593f, -75.19622f), -4.00031757f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bigbag_open_01a", new SpawnPlace(new Vector3(59.1229172f, -85.57098f, -74.1379242f), 0.00114476681f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(58.9071541f, -83.17901f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("gr_prop_gunlocker_ammo_01a", new SpawnPlace(new Vector3(59.4699631f, -83.41326f, -74.22f), 178.99942f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_laptop_lester_01", new SpawnPlace(new Vector3(59.49232f, -82.9972458f, -74.35682f), 168.999359f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_photo_01a", new SpawnPlace(new Vector3(59.8204422f, -83.09277f, -74.35682f), 153.0006f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(59.83212f, -82.9822159f, -74.35682f), -128.99968f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(59.08074f, -82.93619f, -74.35683f), -73.9998f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(59.451786f, -85.75893f, -74.2838f), -82.9997559f)) { PlaceOnGround = false },
+
+                    new PropSpawn("bkr_prop_weed_dry_01a", new SpawnPlace(new Vector3(59.4424057f, -85.35f, -74.28369f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_scales_01a", new SpawnPlace(new Vector3(58.4f, -83.1f, -74.27f), 84.99988f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_dry_01a", new SpawnPlace(new Vector3(58.03855f, -82.88446f, -74.35682f), 116.999535f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_01a", new SpawnPlace(new Vector3(58.7996635f, -82.84708f, -74.35682f), -78.99978f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(58.42529f, -82.82387f, -74.35682f), -1.99999094f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.7602539f, -83.46294f, -74.35682f), 178.9995f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.84141f, -83.369f, -74.35682f), -18.0000114f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_cs_beer_box", new SpawnPlace(new Vector3(55.722435f, -80.86356f, -75.05f), 15.9990082f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(55.15f, -81.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("beerrow_world", new SpawnPlace(new Vector3(55.1928177f, -81.85914f, -74.24622f), 93.9999f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_baseball_01a", new SpawnPlace(new Vector3(55.12254f, -81.08281f, -74.24622f), 104.9996f)) { PlaceOnGround = false },
+                    new PropSpawn("w_am_baseball", new SpawnPlace(new Vector3(55.177063f, -81.22778f, -74.2f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bong_01a", new SpawnPlace(new Vector3(55.16054f, -82.8316f, -74.2447357f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_1_prop_m51_dog_bowl_empty", new SpawnPlace(new Vector3(59.8496628f, -84.08747f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("hei_prop_hei_drug_pack_02", new SpawnPlace(new Vector3(59.0859642f, -84.31424f, -74.13797f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(60.7199631f, -76.5862f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+
+                    //new PropSpawn("apa_p_h_acc_artwalls_03", new SpawnPlace(new Vector3(54.8252831f, -81.18119f, -74f), 90f)) { PlaceOnGround = false },
+                    //new PropSpawn("apa_p_h_acc_artwalls_04", new SpawnPlace(new Vector3(54.8252831f, -82.57572f, -74f), 90f)) { PlaceOnGround = false },
+                    //new PropSpawn("m25_2_prop_m52_wallart_l_01", new SpawnPlace(new Vector3(62.6f, -83.73357f, -74.5f), -180f)) { PlaceOnGround = false },
+                    //new PropSpawn("m25_2_prop_m52_wallart_l_02", new SpawnPlace(new Vector3(70.57393f, -82.7f, -74.6f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_108a", new SpawnPlace(new Vector3(66.99889f, -76.0179138f, -73.98421f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_140a", new SpawnPlace(new Vector3(65.98668f, -85.14174f, -73.9244843f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_142a", new SpawnPlace(new Vector3(65f, -81.24721f, -73.95f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_168a", new SpawnPlace(new Vector3(62.65f, -76.0179138f, -74.2f), 0.9979196f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("FamHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("FamHouseStandard1",new Vector3(59.59193f, -82.39076f, -74.19622f), 174.873f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("FamHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("FamHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("FamHouseRest1", new Vector3(67.08235f, -81.7861f, -74.19628f), 358.3062f,"Rest")
+                    {
+                        CameraPosition = new Vector3(70.13339f, -81.54811f, -72.90229f),
+                        CameraDirection = new Vector3(-0.8094301f, 0.3820198f, -0.445964f),
+                        CameraRotation = new Rotator(-26.48503f, 1.14466E-05f, 64.7345f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(57.44777f, -84.445f, -74.19623f), 265.0917f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(57.02351f, -80.89116f, -74.19623f), 292.3568f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(59.45224f, -78.31217f, -74.19623f), 173.9513f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.40674f, -86.12437f, -74.19621f), 26.58068f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926511, "Ballas Gang House") // 299265 +11
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // Entry
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(66.7693558f, -90.49705f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ret_fh_shelf_02", new SpawnPlace(new Vector3(65.5f, -88.15f, -75.2f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_bike_02", new SpawnPlace(new Vector3(66.5f, -92f, -75.19622f), -90f)) { PlaceOnGround = true },
+
+                    // Bedroom
+                    new PropSpawn("sf_prop_sf_bed_dog_01b", new SpawnPlace(new Vector3(69.74506f, -82.84729f, -75.19622f), -137.999237f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_bedsidetable_01a", new SpawnPlace(new Vector3(66.31f, -78.33f, -75.2f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(69.87f, -76.5508f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(68.53f, -76.55338f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_bed_double_09", new SpawnPlace(new Vector3(66f, -79.81f, -75.2f), 89f)) { PlaceOnGround = true },
+
+                    //Main room
+                    new PropSpawn("apa_mp_h_stn_sofacorn_08", new SpawnPlace(new Vector3(56.1f, -77.4f, -75.19622f), 89.99953f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ba_prop_battle_weed_bigbag_01a", new SpawnPlace(new Vector3(58.37812f, -85.0833f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_table01a", new SpawnPlace(new Vector3(58.35f, -84.9f, -75.19622f), 90.00023f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_meth_table01a", new SpawnPlace(new Vector3(56.0492477f, -87.17367f, -75.19622f), 180f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_1_prop_m41_officepile_01a", new SpawnPlace(new Vector3(61.462265f, -86.85615f, -75.19622f), -2.99985647f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_drugbag2", new SpawnPlace(new Vector3(55.79966f, -82.40035f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_drug_stack_01a", new SpawnPlace(new Vector3(55.58557f, -83.93262f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(58f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(55.7f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_rub_cardpile_05", new SpawnPlace(new Vector3(60.7831039f, -85.21098f, -75.19622f), 71.99964f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_cardpile_06", new SpawnPlace(new Vector3(55.74687f, -85.81029f, -75.19622f), -88.99963f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_coke_fullmetalbowl_02", new SpawnPlace(new Vector3(59.76308f, -87.2091f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunits_01", new SpawnPlace(new Vector3(63.1456146f, -78.63405f, -75.19622f), -90.00048f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(67.05407f, -76.4765854f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic3", new SpawnPlace(new Vector3(62.5426674f, -83.4682159f, -75.19622f), 179.999619f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills4", new SpawnPlace(new Vector3(69.8960648f, -77.26485f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills3", new SpawnPlace(new Vector3(59.6918068f, -76.78914f, -75.19622f), 89.99962f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(62.1976776f, -86.93943f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_coffeetable", new SpawnPlace(new Vector3(57.5380325f, -78.84678f, -75.19622f), 89.99965f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bikerset", new SpawnPlace(new Vector3(57.5050163f, -78.82259f, -74.7721558f), -65.9895041f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_g_bong_01a", new SpawnPlace(new Vector3(57.87922f, -78.44881f, -74.77103f), 120.999046f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.55421f, -78.43591f, -74.77103f), -4.999998f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_coke_line_s", new SpawnPlace(new Vector3(57.0751762f, -78.84684f, -74.77103f), -98.99966f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_cs_crackpipe", new SpawnPlace(new Vector3(57.12951f, -78.6521149f, -74.77103f), -50.99908f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_cs_crackpipe", new SpawnPlace(new Vector3(57.0951653f, -78.68831f, -74.77103f), -26.9999733f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m23_2_prop_m32_bag_panic_01a", new SpawnPlace(new Vector3(59.2335968f, -83.42593f, -75.19622f), -4.00031757f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(58.9071541f, -83.17901f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("gr_prop_gunlocker_ammo_01a", new SpawnPlace(new Vector3(59.4699631f, -83.41326f, -74.22f), 178.99942f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_laptop_agent14_01", new SpawnPlace(new Vector3(59.49232f, -82.9972458f, -74.35682f), 168.999359f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_photo_01a", new SpawnPlace(new Vector3(59.8204422f, -83.09277f, -74.35682f), 153.0006f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(59.83212f, -82.9822159f, -74.35682f), -128.99968f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(59.08074f, -82.93619f, -74.35683f), -73.9998f)) { PlaceOnGround = false },
+
+                    new PropSpawn("h4_prop_h4_coke_scale_03", new SpawnPlace(new Vector3(58.4f, -83.1f, -74.27f), -180f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_cut_02", new SpawnPlace(new Vector3(58.03855f, -82.88446f, -74.35682f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_01a", new SpawnPlace(new Vector3(58.7996635f, -82.84708f, -74.35682f), -78.99978f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(58.42529f, -82.82387f, -74.35682f), -1.99999094f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.7602539f, -83.46294f, -74.35682f), 178.9995f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.84141f, -83.369f, -74.35682f), -18.0000114f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_cs_beer_box", new SpawnPlace(new Vector3(55.722435f, -80.86356f, -75.05f), 15.9990082f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_cut_02", new SpawnPlace(new Vector3(59.4424057f, -85.35f, -74.28369f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(55.15f, -81.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("beerrow_world", new SpawnPlace(new Vector3(55.1928177f, -81.85914f, -74.24622f), 93.9999f)) { PlaceOnGround = false },
+                    new PropSpawn("xm3_prop_xm3_bong_01a", new SpawnPlace(new Vector3(55.12254f, -81.08281f, -74.2447357f), 104.9996f)) { PlaceOnGround = false },
+                    //new PropSpawn("w_am_baseball", new SpawnPlace(new Vector3(55.177063f, -81.22778f, -74.2f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm3_prop_xm3_bong_01a", new SpawnPlace(new Vector3(55.16054f, -82.8316f, -74.2447357f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_1_prop_m51_dog_bowl_empty", new SpawnPlace(new Vector3(59.8496628f, -84.08747f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("hei_prop_hei_drug_pack_02", new SpawnPlace(new Vector3(59.0859642f, -84.31424f, -74.13797f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(60.7199631f, -76.5862f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_117a", new SpawnPlace(new Vector3(66.99889f, -76.0179138f, -73.98421f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_174a", new SpawnPlace(new Vector3(65.98668f, -85.14174f, -73.9244843f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_46a", new SpawnPlace(new Vector3(65f, -81.24721f, -73.95f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_167a", new SpawnPlace(new Vector3(62.65f, -76.0179138f, -74.2f), 0.9979196f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("BallHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("BallHouseStandard1",new Vector3(59.59193f, -82.39076f, -74.19622f), 174.873f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("BallHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("BallHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("BallHouseRest1", new Vector3(67.08235f, -81.7861f, -74.19628f), 358.3062f,"Rest")
+                    {
+                        CameraPosition = new Vector3(70.13339f, -81.54811f, -72.90229f),
+                        CameraDirection = new Vector3(-0.8094301f, 0.3820198f, -0.445964f),
+                        CameraRotation = new Rotator(-26.48503f, 1.14466E-05f, 64.7345f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(57.44777f, -84.445f, -74.19623f), 265.0917f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(57.02351f, -80.89116f, -74.19623f), 292.3568f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(59.45224f, -78.31217f, -74.19623f), 173.9513f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.40674f, -86.12437f, -74.19621f), 26.58068f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926512, "Marabunta Gang House") // 299265 +12
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // Entry
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(66.7693558f, -90.49705f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_bikecover_01a", new SpawnPlace(new Vector3(65.4f, -88f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_bike_02", new SpawnPlace(new Vector3(66.5f, -92f, -75.19622f), -90f)) { PlaceOnGround = true },
+
+
+
+                    // Bedroom
+                    new PropSpawn("sf_prop_sf_bed_dog_01b", new SpawnPlace(new Vector3(69.74506f, -82.84729f, -75.19622f), -137.999237f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_bedsidetable_01a", new SpawnPlace(new Vector3(66.26f, -78.45f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(69.87f, -76.5508f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(68.53f, -76.55338f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_tre_bed1_messy", new SpawnPlace(new Vector3(67.35f, -79.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+
+                    //Main room
+                    new PropSpawn("apa_mp_h_stn_sofacorn_07", new SpawnPlace(new Vector3(56.1f, -77.4f, -75.19622f), 89.99953f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_str_avunitm_03", new SpawnPlace(new Vector3(63.1456146f, -78.63405f, -75.19622f), -90.00048f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ba_prop_battle_weed_bigbag_01a", new SpawnPlace(new Vector3(58.37812f, -85.0833f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01a", new SpawnPlace(new Vector3(58.35f, -84.9f, -75.19622f), 90.00023f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_1_prop_m41_officepile_01a", new SpawnPlace(new Vector3(61.462265f, -86.85615f, -75.19622f), -2.99985647f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_2_prop_m42_weedboxpile_01a", new SpawnPlace(new Vector3(55.85486f, -82.34841f, -75.19622f), -90.9992447f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(58f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(55.7f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_rub_cardpile_05", new SpawnPlace(new Vector3(60.7831039f, -85.21098f, -75.19622f), 71.99964f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_cardpile_06", new SpawnPlace(new Vector3(55.74687f, -85.81029f, -75.19622f), -88.99963f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_fan_floor_01a", new SpawnPlace(new Vector3(58.41247f, -87.3419647f, -75.19622f), -128.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_lrg_01a", new SpawnPlace(new Vector3(55.75523f, -86.6343155f, -75.1656952f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_lrg_01a", new SpawnPlace(new Vector3(55.7160072f, -84.92128f, -75.1656952f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_spray_01a", new SpawnPlace(new Vector3(59.0465927f, -84.9436646f, -73.96f), -86.99906f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_wateringcan", new SpawnPlace(new Vector3(56.1921959f, -85.70412f, -75.14364f), -155.9992f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_cs_fertilizer", new SpawnPlace(new Vector3(55.25f, -83.5f, -74.75f), 59.99997f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_plantpot_stack_01b", new SpawnPlace(new Vector3(57.7208633f, -87.3392639f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(57.1691856f, -87.3909454f, -75.19622f), -167.000336f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(56.66232f, -87.3591461f, -75.19622f), -167.000336f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bucket_01d", new SpawnPlace(new Vector3(56.95f, -87.37f, -74.7789f), -167.000336f)) { PlaceOnGround = false },
+
+
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(67.05407f, -76.4765854f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic3", new SpawnPlace(new Vector3(62.5426674f, -83.4682159f, -75.19622f), 179.999619f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills4", new SpawnPlace(new Vector3(69.8960648f, -77.26485f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills3", new SpawnPlace(new Vector3(59.6918068f, -76.78914f, -75.19622f), 89.99962f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(62.1976776f, -86.93943f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_coffeetable", new SpawnPlace(new Vector3(57.5380325f, -78.84678f, -75.19622f), 89.99965f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bikerset", new SpawnPlace(new Vector3(57.5050163f, -78.82259f, -74.7721558f), -65.9995041f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_g_bong_01a", new SpawnPlace(new Vector3(57.87922f, -78.44881f, -74.77103f), 120.999046f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_dry_02a", new SpawnPlace(new Vector3(57.55421f, -78.43591f, -74.77103f), -4.999998f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_02", new SpawnPlace(new Vector3(57.0751762f, -78.84684f, -74.77103f), -98.99966f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_01", new SpawnPlace(new Vector3(57.12951f, -78.6521149f, -74.77103f), -50.99908f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_papers_03", new SpawnPlace(new Vector3(57.0951653f, -78.68831f, -74.77103f), -26.9999733f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m23_2_prop_m32_bag_rappel_01a", new SpawnPlace(new Vector3(59.2335968f, -83.42593f, -75.19622f), -4.00031757f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bigbag_open_01a", new SpawnPlace(new Vector3(59.1229172f, -85.57098f, -74.1379242f), 0.00114476681f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(58.9071541f, -83.17901f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("gr_prop_gunlocker_ammo_01a", new SpawnPlace(new Vector3(59.4699631f, -83.41326f, -74.22f), 178.99942f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_laptop_lester_01", new SpawnPlace(new Vector3(59.49232f, -82.9972458f, -74.35682f), 168.999359f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_photo_01a", new SpawnPlace(new Vector3(59.8204422f, -83.09277f, -74.35682f), 153.0006f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(59.83212f, -82.9822159f, -74.35681f), -128.99968f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(59.08074f, -82.93619f, -74.35683f), -73.9998f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(59.451786f, -85.75893f, -74.2838f), -82.9997559f)) { PlaceOnGround = false },
+
+                    new PropSpawn("bkr_prop_weed_dry_01a", new SpawnPlace(new Vector3(59.4424057f, -85.35f, -74.28369f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_scales_01a", new SpawnPlace(new Vector3(58.4f, -83.1f, -74.27f), 84.99988f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_dry_01a", new SpawnPlace(new Vector3(58.03855f, -82.88446f, -74.35682f), 116.999535f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_01a", new SpawnPlace(new Vector3(58.7996635f, -82.84708f, -74.35682f), -78.99978f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(58.42529f, -82.82387f, -74.35682f), -1.99999094f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.7602539f, -83.46294f, -74.35682f), 178.9995f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.84141f, -83.369f, -74.35682f), -18.0000114f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_cs_beer_box", new SpawnPlace(new Vector3(55.722435f, -80.86356f, -75.05f), 15.9990082f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(55.15f, -81.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("beerrow_world", new SpawnPlace(new Vector3(55.1928177f, -81.85914f, -74.24622f), 93.9999f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_baseball_01a", new SpawnPlace(new Vector3(55.12254f, -81.08281f, -74.24622f), 104.9996f)) { PlaceOnGround = false },
+                    new PropSpawn("w_am_baseball", new SpawnPlace(new Vector3(55.177063f, -81.22778f, -74.2f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bong_01a", new SpawnPlace(new Vector3(55.16054f, -82.8316f, -74.2447357f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_1_prop_m51_dog_bowl_empty", new SpawnPlace(new Vector3(59.8496628f, -84.08747f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("hei_prop_hei_drug_pack_02", new SpawnPlace(new Vector3(59.0859642f, -84.31424f, -74.13797f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(60.7199631f, -76.5862f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_32a", new SpawnPlace(new Vector3(66.99889f, -76.0179138f, -73.98421f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_20a", new SpawnPlace(new Vector3(65.98668f, -85.14174f, -73.9244843f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_131a", new SpawnPlace(new Vector3(65f, -81.24721f, -73.95f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_94a", new SpawnPlace(new Vector3(62.65f, -76.0179138f, -74.2f), 0.9979196f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MarabHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MarabHouseStandard1",new Vector3(59.59193f, -82.39076f, -74.19622f), 174.873f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MarabHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MarabHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MarabHouseRest1", new Vector3(67.08235f, -81.7861f, -74.19628f), 358.3062f,"Rest")
+                    {
+                        CameraPosition = new Vector3(70.13339f, -81.54811f, -72.90229f),
+                        CameraDirection = new Vector3(-0.8094301f, 0.3820198f, -0.445964f),
+                        CameraRotation = new Rotator(-26.48503f, 1.14466E-05f, 64.7345f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(57.44777f, -84.445f, -74.19623f), 265.0917f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(57.02351f, -80.89116f, -74.19623f), 292.3568f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(59.45224f, -78.31217f, -74.19623f), 173.9513f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.40674f, -86.12437f, -74.19621f), 26.58068f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926513, "Varrios Gang House") // 299265 +13
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // Entry
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(66.7693558f, -90.49705f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ret_fh_shelf_02", new SpawnPlace(new Vector3(65.5f, -88.15f, -75.2f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_bike_02", new SpawnPlace(new Vector3(66.5f, -92f, -75.19622f), -90f)) { PlaceOnGround = true },
+
+                    // Bedroom
+                    new PropSpawn("sf_prop_sf_bed_dog_01b", new SpawnPlace(new Vector3(69.74506f, -82.84729f, -75.19622f), -137.999237f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_bedsidetable_01a", new SpawnPlace(new Vector3(66.31f, -78.33f, -75.2f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(69.87f, -76.5508f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_1_prop_m51_wardrobe_01a", new SpawnPlace(new Vector3(68.53f, -76.55338f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_bed_double_09", new SpawnPlace(new Vector3(66f, -79.81f, -75.2f), 89f)) { PlaceOnGround = true },
+
+                    //Main room
+                    new PropSpawn("apa_mp_h_stn_sofacorn_05", new SpawnPlace(new Vector3(56.1f, -77.4f, -75.19622f), 89.99953f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_mp_drug_pack_blue", new SpawnPlace(new Vector3(58.37812f, -85.0833f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_meth_table01a", new SpawnPlace(new Vector3(58.35f, -84.9f, -75.19622f), 90.00023f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_table01a", new SpawnPlace(new Vector3(56.0492477f, -87.17367f, -75.19622f), 180f)) { PlaceOnGround = true },
+                    new PropSpawn("m24_1_prop_m41_officepile_01a", new SpawnPlace(new Vector3(61.462265f, -86.85615f, -75.19622f), -2.99985647f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_drugbag2", new SpawnPlace(new Vector3(55.79966f, -82.40035f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_drug_stack_01a", new SpawnPlace(new Vector3(55.58557f, -83.93262f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(58f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm_prop_x17_sub_lampa_large_blue", new SpawnPlace(new Vector3(55.7f, -85.8f, -72.4077f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_rub_cardpile_05", new SpawnPlace(new Vector3(60.7831039f, -85.21098f, -75.19622f), 71.99964f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_cardpile_06", new SpawnPlace(new Vector3(55.74687f, -85.81029f, -75.19622f), -88.99963f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_coke_fullmetalbowl_02", new SpawnPlace(new Vector3(59.76308f, -87.2091f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunits_01", new SpawnPlace(new Vector3(63.1456146f, -78.63405f, -75.19622f), -90.00048f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(67.05407f, -76.4765854f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic3", new SpawnPlace(new Vector3(62.5426674f, -83.4682159f, -75.19622f), 179.999619f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills4", new SpawnPlace(new Vector3(69.8960648f, -77.26485f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills3", new SpawnPlace(new Vector3(59.6918068f, -76.78914f, -75.19622f), 89.99962f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(62.1976776f, -86.93943f, -74.2162247f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_coffeetable", new SpawnPlace(new Vector3(57.5380325f, -78.84678f, -75.19622f), 89.99965f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_bikerset", new SpawnPlace(new Vector3(57.5050163f, -78.82259f, -74.7721558f), -65.9895041f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_g_bong_01a", new SpawnPlace(new Vector3(57.87922f, -78.44881f, -74.77103f), 120.999046f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.55421f, -78.43591f, -74.77103f), -4.999998f)) { PlaceOnGround = false },
+                    new PropSpawn("p_cs_coke_line_s", new SpawnPlace(new Vector3(57.0751762f, -78.84684f, -74.77103f), -98.99966f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_cs_crackpipe", new SpawnPlace(new Vector3(57.12951f, -78.6521149f, -74.77103f), -50.99908f)) { PlaceOnGround = false },
+                    new PropSpawn("prop_cs_crackpipe", new SpawnPlace(new Vector3(57.0951653f, -78.68831f, -74.77103f), -26.9999733f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_1_prop_m51_heistbag_02a", new SpawnPlace(new Vector3(59.2335968f, -83.42593f, -75.19622f), -4.00031757f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(58.9071541f, -83.17901f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("gr_prop_gunlocker_ammo_01a", new SpawnPlace(new Vector3(59.4699631f, -83.41326f, -74.22f), 178.99942f)) { PlaceOnGround = true },
+                    new PropSpawn("xm_prop_x17_laptop_agent14_01", new SpawnPlace(new Vector3(59.49232f, -82.9972458f, -74.35682f), 168.999359f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_photo_01a", new SpawnPlace(new Vector3(59.8204422f, -83.09277f, -74.35682f), 153.0006f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(59.83212f, -82.9822159f, -74.35682f), -128.99968f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(59.08074f, -82.93619f, -74.35683f), -73.9998f)) { PlaceOnGround = false },
+
+                    new PropSpawn("h4_prop_h4_coke_scale_03", new SpawnPlace(new Vector3(58.4f, -83.1f, -74.27f), -180f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_cut_02", new SpawnPlace(new Vector3(58.03855f, -82.88446f, -74.35682f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_01a", new SpawnPlace(new Vector3(58.7996635f, -82.84708f, -74.35682f), -78.99978f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(58.42529f, -82.82387f, -74.35682f), -1.99999094f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.7602539f, -83.46294f, -74.35682f), 178.9995f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_club_tonic_can", new SpawnPlace(new Vector3(58.84141f, -83.369f, -74.35682f), -18.0000114f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_cs_beer_box", new SpawnPlace(new Vector3(55.722435f, -80.86356f, -75.05f), 15.9990082f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_cut_02", new SpawnPlace(new Vector3(59.4424057f, -85.35f, -74.28369f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(55.15f, -81.9f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("beerrow_world", new SpawnPlace(new Vector3(55.1928177f, -81.85914f, -74.24622f), 93.9999f)) { PlaceOnGround = false },
+                    new PropSpawn("xm3_prop_xm3_bong_01a", new SpawnPlace(new Vector3(55.12254f, -81.08281f, -74.2447357f), 104.9996f)) { PlaceOnGround = false },
+                    //new PropSpawn("w_am_baseball", new SpawnPlace(new Vector3(55.177063f, -81.22778f, -74.2f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("xm3_prop_xm3_bong_01a", new SpawnPlace(new Vector3(55.16054f, -82.8316f, -74.2447357f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("m25_1_prop_m51_dog_bowl_empty", new SpawnPlace(new Vector3(59.8496628f, -84.08747f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("hei_prop_hei_drug_pack_02", new SpawnPlace(new Vector3(59.0859642f, -84.31424f, -74.13797f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(60.7199631f, -76.5862f, -75.19622f), 0.999749541f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_06a", new SpawnPlace(new Vector3(66.99889f, -76.0179138f, -73.98421f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_72a", new SpawnPlace(new Vector3(65.98668f, -85.14174f, -73.9244843f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_87a", new SpawnPlace(new Vector3(65f, -81.24721f, -73.95f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_93a", new SpawnPlace(new Vector3(62.65f, -76.0179138f, -74.2f), 0.9979196f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("VarrHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("VarrHouseStandard1",new Vector3(59.59193f, -82.39076f, -74.19622f), 174.873f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("VarrHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("VarrHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("VarrHouseRest1", new Vector3(67.08235f, -81.7861f, -74.19628f), 358.3062f,"Rest")
+                    {
+                        CameraPosition = new Vector3(70.13339f, -81.54811f, -72.90229f),
+                        CameraDirection = new Vector3(-0.8094301f, 0.3820198f, -0.445964f),
+                        CameraRotation = new Rotator(-26.48503f, 1.14466E-05f, 64.7345f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(57.44777f, -84.445f, -74.19623f), 265.0917f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(57.02351f, -80.89116f, -74.19623f), 292.3568f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(59.45224f, -78.31217f, -74.19623f), 173.9513f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.40674f, -86.12437f, -74.19621f), 26.58068f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+
+            // Mafia Mid APts
+            new GangDenInterior(29926514, "Mafia Gang House") // 299265 +14
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // mini office
+                    new PropSpawn("vw_prop_vw_wallart_133a", new SpawnPlace(new Vector3(57.70f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(56.6f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_134a", new SpawnPlace(new Vector3(55.50f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+
+
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(56.6f, -86.95f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(57.31774f, -86.55609f, -74.388f), -118.999153f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtrayb", new SpawnPlace(new Vector3(57.5090637f, -86.44334f, -74.388f), -18.0001335f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(57.0184746f, -86.94511f, -74.388f), -172.000839f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(58.01013f, -87.33649f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_tallcabinet_01a", new SpawnPlace(new Vector3(58.55f, -87.35f, -75.19f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_skull_01b", new SpawnPlace(new Vector3(58.3996964f, -87.27606f, -73.29526f), -150.000549f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_12a", new SpawnPlace(new Vector3(58.65291f, -87.1909943f, -73.29526f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_bin_10a", new SpawnPlace(new Vector3(55.2f, -86f, -75.2f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(56.22139f, -85.79577f, -75.19622f), 33.9999542f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(55.4963455f, -83.8f, -75.19622f), 143.000015f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_art_football_01a", new SpawnPlace(new Vector3(59.0906143f, -84.35525f, -74.13796f), -2.00083876f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_biker_gcase_s", new SpawnPlace(new Vector3(59.0777359f, -85.35643f, -74.08f), -90.0004349f)) { PlaceOnGround = true },
+
+                    // main room
+                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(65.35682f, -91.86452f, -75.19622f), -48.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_vase_11a", new SpawnPlace(new Vector3(55.36487f, -77.63798f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunitl_01", new SpawnPlace(new Vector3(54.85f, -80.65f, -75.19f), 89.99948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_car_01a", new SpawnPlace(new Vector3(54.9987335f, -79.6f, -74.25867f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_02a", new SpawnPlace(new Vector3(55f, -79.6f, -73.78607f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_05a", new SpawnPlace(new Vector3(55f, -79.6f, -73.29533f), 89.99999f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_sideboardl_03", new SpawnPlace(new Vector3(62.85f, -78.68964f, -75.19f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("m26_1_prop_m61_art_statue_01e", new SpawnPlace(new Vector3(62.88426f, -79.87989f, -74.1941f), -99.9989548f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_m_statue", new SpawnPlace(new Vector3(62.8419f, -78.65485f, -74.1941f), -88.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(62.8371658f, -77.4780655f, -74.1941f), -92.9996948f)) { PlaceOnGround = false },
+                    new PropSpawn("m25_2_prop_m52_bowl_empty_01a", new SpawnPlace(new Vector3(62.8134155f, -79.2872543f, -74.1941f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bowl_fruit_01a", new SpawnPlace(new Vector3(62.7672424f, -78.07565f, -74.1941f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_acc_rugwoolm_04", new SpawnPlace(new Vector3(57.5f, -80.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_tab_coffee_07", new SpawnPlace(new Vector3(57.6761971f, -80.67051f, -75.15414f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(57.6449242f, -80.69767f, -74.70421f), 49.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtraya", new SpawnPlace(new Vector3(58.0398369f, -80.41496f, -74.70422f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.61332f, -81.2185f, -74.70423f), 88.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_coke_spoon_01a", new SpawnPlace(new Vector3(57.82157f, -81.17453f, -74.70423f), -20.9999847f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_magrack", new SpawnPlace(new Vector3(60.1123276f, -78.97494f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(57.5f, -77.02f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(60.2f, -80.65f, -75.19622f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_drinkglobe_01a", new SpawnPlace(new Vector3(60.1838f, -76.76568f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(62.65992f, -76.54385f, -75.19639f), 76.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(55.3108177f, -76.66736f, -75.19622f), 141.999222f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_76a", new SpawnPlace(new Vector3(63.185524f, -78.8257141f, -73.9405f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_170a", new SpawnPlace(new Vector3(62.6f, -76.0179138f, -74f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.9867f, -85.15f, -74.05f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_100a", new SpawnPlace(new Vector3(62.89159f, -85.2373047f, -74.15f), 89.99999f)) { PlaceOnGround = false },
+
+
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(62.8251648f, -80.81617f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_03a", new SpawnPlace(new Vector3(65.34733f, -85.85438f, -75.19622f), 151.999237f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ex_prop_ex_console_table_01", new SpawnPlace(new Vector3(65f, -81.6f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_bird_01a", new SpawnPlace(new Vector3(64.9828339f, -81.5553f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01c", new SpawnPlace(new Vector3(64.43574f, -81.66322f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01b", new SpawnPlace(new Vector3(65.5327148f, -81.68282f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_tre_washbasket", new SpawnPlace(new Vector3(63.7836075f, -81.5174f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_vacuum", new SpawnPlace(new Vector3(65.60325f, -87.00877f, -75.19622f), 93.9995f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.61152f, -89.54493f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(62.09074f, -85.82804f, -74.2232056f), -120.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0877075f, -85.65382f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(59.75949f, -87.27494f, -74.2162247f), -131.999771f)) { PlaceOnGround = true },
+
+
+
+
+                    new PropSpawn("ex_office_swag_booze_cigs", new SpawnPlace(new Vector3(59.37447f, -76.9423447f, -75.19622f), -75.00037f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_booze_cigs3", new SpawnPlace(new Vector3(61.54395f, -76.45648f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    // bedroom
+                    new PropSpawn("apa_mp_h_bed_with_table_02", new SpawnPlace(new Vector3(68.5f, -76.1f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(67.17787f, -76.44816f, -74.55f), 57.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_bottle_pills_01a", new SpawnPlace(new Vector3(66.9607f, -76.42869f, -74.5598145f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_fh_bedsideclock", new SpawnPlace(new Vector3(69.91819f, -76.49267f, -74.5f), -45.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mbottoman", new SpawnPlace(new Vector3(68.5f, -79.5193f, -75.19622f), 0.0002827644f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_exer_bike_01", new SpawnPlace(new Vector3(66.35f, -80.3f, -75.09f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(70.13561f, -83.27113f, -75.19622f), -70.0000839f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_acc_stand_01a", new SpawnPlace(new Vector3(70.21089f, -82.25815f, -75.19622f), -89.99902f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(68.6f, -83.45f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_antique_box", new SpawnPlace(new Vector3(68.03573f, -83.44211f, -74.24622f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_battle_ps_box_01", new SpawnPlace(new Vector3(69.32231f, -83.42601f, -74.24622f), 22.99998f)) { PlaceOnGround = false },
+                    //new PropSpawn("hei_heist_acc_flowers_02", new SpawnPlace(new Vector3(68.59687f, -83.4378357f, -74.24622f), 0f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MafiaHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MafiaHouseStandard1",new Vector3(57.10546f, -85.77699f, -74.19618f), 181.7523f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MafiaHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MafiaHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MafiaHouseRest1", new Vector3(66.35446f, -77.41423f, -74.1962f), 268.7238f,"Rest")
+                    {
+                        CameraPosition = new Vector3(67.27582f, -80.83466f, -72.72119f),
+                        CameraDirection = new Vector3(0.3024873f, 0.7844725f, -0.5413911f),
+                        CameraRotation = new Rotator(-32.77839f, 1.015465E-06f, -21.0863f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    //new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    //{
+                    //    TaskRequirements = TaskRequirements.Guard,
+                    //    ForcedScenarios = new List<string>()
+                    //    {
+                    //        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                    //        "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                    //    },
+                    //},
+                    new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+
+
+
+            // Yardies Night Club
+            new GangDenInterior(27161701, "Yardies Club") // 271617 +01
+            {// Nightclub: -1604.664 -3012.583 -78.000 ba_int_placement_ba_interior_0_dlc_int_01_ba_milo_
+                InternalInteriorCoordinates = new Vector3(-1604.664f, -3012.583f, -78.000f),
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(-1569.538f, -3017.204f, -74.40617f),
+                InteriorEgressHeading = 2.66116f,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_ba_dlc_int_01_entry_hall","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_entry_stairs","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_main_area_2","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_bars","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_main_area","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_office","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_bogs","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_rear_l_corridor","Radio"),
+                    new AudioEmitter($"se_ba_dlc_int_01_garage","Radio"),
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(2739859149,new Vector3(-1607.536f, -3005.431f, -75.05607f)){ },// VIP Door top 
+                },
+                InteriorSets = new List<string>()
+                {
+
+                    //"Int01_ba_clubname_09",
+                    "Int01_ba_Style01", 
+                    //"Int01_ba_style01_podium", 
+                    //"Int01_ba_equipment_setup", 
+                    //"Int01_ba_equipment_upgrade",
+                    //"Int01_ba_security_upgrade",
+                    //"Int01_ba_dj04",
+                    //"DJ_02_Lights_01",
+                    //"DJ_01_Lights_02",
+                    //"DJ_04_Lights_03",
+                    //"DJ_03_Lights_04",
+                    "Int01_ba_booze_03",
+                    //"Int01_ba_trophy01",
+
+                    "Int01_ba_Clutter",
+                    "Int01_ba_Worklamps",
+                    //"Int01_ba_deliverytruck",
+                    //"Int01_ba_dry_ice",
+                    "light_rigs_off",
+                    //"Int01_ba_lightgrid_01",
+                    //"Int01_ba_trad_lights",
+                    //"Int01_ba_trophy04",
+                    //"Int01_ba_trophy05",
+                    //"Int01_ba_trophy07",
+                    //"Int01_ba_trophy08",
+                    //"Int01_ba_trophy09",
+                    //"Int01_ba_trophy10",
+                    //"Int01_ba_trophy11",
+                },
+                MaxUpdateDistance = 100,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    new PropSpawn("ch_prop_ch_tunnel_worklight", new SpawnPlace(new Vector3(-1595.79321f, -3015.94458f, -78.806015f), -159.998f)) { PlaceOnGround = true },
+
+                    new PropSpawn("sf_prop_sf_blocker_studio_02a", new SpawnPlace(new Vector3(-1610.97f, -3003.79f, -80.00598f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_plantpot_stack_01c", new SpawnPlace(new Vector3(-1606.36938f, -3007.614f, -77.0050049f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_crates_rifles_03a", new SpawnPlace(new Vector3(-1608.57f, -3006.05f, -76.21f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_barrier_01c", new SpawnPlace(new Vector3(-1605.6f, -3006.07f, -77.0050049f), -90f)) { PlaceOnGround = true },
+                    //new PropSpawn("xm_prop_crates_rifles_04a", new SpawnPlace(new Vector3(-1603.6f, -3005.57f, -77.0050049f), 0f)) { PlaceOnGround = true },
+
+                    //new PropSpawn("ch_prop_ch_crate_01a", new SpawnPlace(new Vector3(-1608.08f, -3006.135f, -76.19f), -90f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m23_2_prop_m32_dustsheet_02a", new SpawnPlace(new Vector3(-1599.74f, -3004.3f, -77.0050049f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_dustsheet_02a", new SpawnPlace(new Vector3(-1594.89f, -3004.3f, -77f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_paints_bench01", new SpawnPlace(new Vector3(-1600.73f, -3005.1f, -77f), 90f)) { PlaceOnGround = true },
+
+                    new PropSpawn("xm_prop_crates_rifles_04a", new SpawnPlace(new Vector3(-1610.9f, -3006f, -80.00598f), 89.99997f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_couch03", new SpawnPlace(new Vector3(-1575.90576f, -3013.37354f, -80.00592f), -117.998344f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_couch04", new SpawnPlace(new Vector3(-1599.95776f, -3018.67651f, -80.00606f), 179.998978f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_couch04", new SpawnPlace(new Vector3(-1593.61f, -3008.51f, -80.00606f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_drugbag2", new SpawnPlace(new Vector3(-1598.32642f, -3018.66357f, -80.00606f), -92.9997559f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_drugbag2", new SpawnPlace(new Vector3(-1585.67944f, -3014.58228f, -78.98572f), 89.9996643f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_drugbags", new SpawnPlace(new Vector3(-1577.21521f, -3015.66943f, -78.9738846f), 68.99961f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic", new SpawnPlace(new Vector3(-1591.08191f, -3008.51587f, -80.00606f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_electronic3", new SpawnPlace(new Vector3(-1589.14319f, -3019.20337f, -80.00606f), -178.000214f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_guns04", new SpawnPlace(new Vector3(-1597.17322f, -3016.52368f, -80.00606f), -92.00017f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_med1", new SpawnPlace(new Vector3(-1602.00415f, -3018.46533f, -80.00606f), 164.000351f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_med3", new SpawnPlace(new Vector3(-1594.5509f, -3015.127f, -80.00606f), 0f)) { PlaceOnGround = true },
+                    //new PropSpawn("ex_office_swag_med4", new SpawnPlace(new Vector3(-1592.29346f, -3011.9f, -80.00606f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_paintings02", new SpawnPlace(new Vector3(-1604.28821f, -3004.542f, -80.00606f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_meth_table01a", new SpawnPlace(new Vector3(-1598.5f, -3011.5f, -80.00606f), -0.000649452151f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_meth_table01a", new SpawnPlace(new Vector3(-1596.3f, -3012.55f, -80.00606f), 179.999481f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_table01a", new SpawnPlace(new Vector3(-1596.3f, -3011.50439f, -80.00606f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_table01a", new SpawnPlace(new Vector3(-1598.5f, -3012.55f, -80.00606f), 179.999985f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m23_2_prop_m32_desktop_01a", new SpawnPlace(new Vector3(-1602.3f, -3012f, -78.7910461f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_j_dinechair", new SpawnPlace(new Vector3(-1603.48047f, -3011.7124f, -78.7910461f), 64.99983f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_jarmchair", new SpawnPlace(new Vector3(-1603.05811f, -3014.82642f, -78.7910461f), -148.998611f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_pills4", new SpawnPlace(new Vector3(-1594.45f, -3012.55f, -80.00606f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills3", new SpawnPlace(new Vector3(-1594.42f, -3011.55f, -80.00606f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(-1594.686f, -3012.02686f, -80.00606f), -89.99999f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(-1580.12769f, -3015.51172f, -78.9738846f), -12.9995832f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ba_prop_battle_meth_bigbag_01a", new SpawnPlace(new Vector3(-1578.66028f, -3016.2998f, -80.00592f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_meth_chiller_01a", new SpawnPlace(new Vector3(-1595.95166f, -3007.3f, -80.00606f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_meth_phosphorus", new SpawnPlace(new Vector3(-1602.141f, -3009.651f, -80.00606f), 75.9998245f)) { PlaceOnGround = true },
+                    new PropSpawn("tr_prop_meth_hcacid", new SpawnPlace(new Vector3(-1585.755f, -3015.44922f, -78.98572f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("tr_prop_meth_pseudoephedrine", new SpawnPlace(new Vector3(-1586.38074f, -3013.29834f, -80.00606f), 178.999619f)) { PlaceOnGround = true },
+                    new PropSpawn("tr_prop_meth_sacid", new SpawnPlace(new Vector3(-1585.73425f, -3016.05737f, -78.98572f), 72.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_barrel_pile_03", new SpawnPlace(new Vector3(-1603.2f, -3008.7f, -80.00606f), 88.99891f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_barrel_pile_05", new SpawnPlace(new Vector3(-1604.96069f, -3007.84f, -80.00606f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_rub_cage01d", new SpawnPlace(new Vector3(-1589.18274f, -3017.83252f, -80.00606f), -103.999039f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(-1598.79529f, -3008.3894f, -80.00606f), -95.00004f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_boxpile_01", new SpawnPlace(new Vector3(-1612.21216f, -3007.55127f, -80.00598f), 179.00116f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_coke_scale_02", new SpawnPlace(new Vector3(-1594.97717f, -3011.51221f, -79.16666f), -89.99946f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_fullmetalbowl_02", new SpawnPlace(new Vector3(-1594.98f, -3011.76f, -78.94696f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_scale_03", new SpawnPlace(new Vector3(-1594.8512f, -3012.80542f, -79.16666f), 115.999306f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bag_pile_01a", new SpawnPlace(new Vector3(-1594.5343f, -3011.82471f, -79.16666f), 176.999008f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_bag_01a", new SpawnPlace(new Vector3(-1594.36682f, -3011.569f, -79.16666f), 88.99991f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_cut_02", new SpawnPlace(new Vector3(-1594.62244f, -3011.281f, -79.16666f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_mortalpestle", new SpawnPlace(new Vector3(-1594.289f, -3011.147f, -79.16666f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("h4_prop_h4_coke_testtubes", new SpawnPlace(new Vector3(-1594.97437f, -3012.29272f, -79.16666f), 80.99966f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_coke_press_01b", new SpawnPlace(new Vector3(-1590.52527f, -3014.55542f, -80.00606f), 84.99999f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("h4_prop_club_laptop_dj", new SpawnPlace(new Vector3(-1578.83264f, -3015.59473f, -78.9738846f), 177.998871f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_fakeid_boxdl_01a", new SpawnPlace(new Vector3(-1575.98657f, -3015.54883f, -78.9738846f), 61.9995422f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_fakeid_boxpp_01a", new SpawnPlace(new Vector3(-1575.28149f, -3015.62842f, -78.9738846f), 90.9995956f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_doll_bigbox", new SpawnPlace(new Vector3(-1576.79834f, -3011.561f, -80.00592f), -87.99967f)) { PlaceOnGround = true },
+                    new PropSpawn("ch_prop_toolbox_01b", new SpawnPlace(new Vector3(-1576.0874f, -3014.7854f, -80.00592f), 49.9998474f)) { PlaceOnGround = true },
+                    new PropSpawn("imp_prop_impexp_boxcoke_01", new SpawnPlace(new Vector3(-1579.86218f, -3019.027f, -80.00592f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("imp_prop_impexp_boxwood_01", new SpawnPlace(new Vector3(-1577.32922f, -3018.30981f, -80.00592f), 179.999908f)) { PlaceOnGround = true },
+                    new PropSpawn("tr_prop_meth_hcacid", new SpawnPlace(new Vector3(-1586.56848f, -3008.47974f, -78.98561f), 23.9992943f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_med1", new SpawnPlace(new Vector3(-1587.67322f, -3008.07349f, -80.00606f), -5.00103855f)) { PlaceOnGround = true },
+                    new PropSpawn("v_ind_cf_boxes", new SpawnPlace(new Vector3(-1588.12317f, -3006.52246f, -79.28f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_rub_cardpile_07", new SpawnPlace(new Vector3(-1588.78455f, -3007.99023f, -80.00606f), 74.99986f)) { PlaceOnGround = true },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("YardHouseExit1",new Vector3(-1569.538f, -3017.204f, -74.40617f), 182.9544f,"Exit"),
+                    new StandardInteriorInteract("YardHouseStandard1",new Vector3(-1578.754f, -3014.613f, -79.00588f), 182.919f,"Manage"){AutoCamera = false},
+                    new AudioEmitterInteract()
+                    {
+                        Name = "YardHouseRadio1",
+                        Position = new Vector3(-1570.532f, -3014.08f, -74.40617f),// -1570.532f, -3014.08f, -74.40617f), 81.434f
+                        Heading =  81.434f,
+                        ButtonPromptText = "Music Control",
+                        UseNavmesh = false,
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "YardHouseRadio2",
+                        Position = new Vector3(-1603.531f, -3012.367f, -77.79607f),// -1603.531f, -3012.367f, -77.79607f), 289.3846f
+                        Heading =  289.3846f,
+                        ButtonPromptText = "Music Control",
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract("YardHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("YardHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   //new RestInteract("YardHouseRest1", new Vector3(-1600.568f, -3006.749f, -76.00504f), 0.6944672f,"Rest")
+                   // {
+                   //     CameraPosition = new Vector3(-1597.965f, -3007.447f, -75.01402f),
+                   //     CameraDirection = new Vector3(-0.7489817f, 0.5710162f, -0.3361056f),
+                   //     CameraRotation = new Rotator(-19.63978f, 2.084974E-05f, 52.67846f)
+                   // },
+                    new RestInteract("YardHouseRest2", new Vector3(-1592.971f, -3010.008f, -79.00609f), 354.7038f,"Rest")
+                    {
+                        UseNavmesh = false,
+
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                    new RestInteract("YardHouseRest3", new Vector3(-1600.405f, -3017.043f, -79.00609f), 178.2763f,"Rest")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1599.253f, -3015.446f, -78.1081f),
+                        CameraDirection = new Vector3(-0.3306038f, -0.8705552f, -0.3644649f),
+                        CameraRotation = new Rotator(-21.37466f, -1.100203E-05f, 159.2051f),
+                        StartAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getin_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        LoopAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_sleep_loop_couch", (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        EndAnimations = new List<AnimationBundle>()
+                        {
+                            new AnimationBundle("savecouch@", "t_getout_couch", (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_TURN_OFF_COLLISION), 4.0f, -4.0f) { Gender = "U" }
+                        },
+                        UseDefaultAnimations = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(-1572.165f, -3013.136f, -74.40617f), 279.7149f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1570.16f, -3012.029f, -74.40616f), 118.6708f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1576.806f, -3010.303f, -79.00589f), 2.098584f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1588.107f, -3011.33f, -79.00601f), 181.2034f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1602.288f, -3014.058f, -77.79608f), 272.7165f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1596.203f, -3007.519f, -76.00504f), 182.0764f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(-1611.656f, -3009.893f, -79.00603f), 77.74024f, 100f)
+                    {
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    },
+
+                    // civvies
+                    new CivilianConditionalLocation(new Vector3(-1593.711f, -3012.196f, -79.00608f), 92.19627f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
+                        RequiredPedGroup = "Coke",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>(){ "WORLD_HUMAN_CLIPBOARD_FACILITY", },
+                    },
+                    new CivilianConditionalLocation(new Vector3(-1598.485f, -3013.639f, -79.00608f), 1.454133f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
+                        RequiredPedGroup = "Coke",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
+                    },
+                    new CivilianConditionalLocation(new Vector3(-1596.429f, -3010.646f, -79.00608f), 183.7791f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
+                        RequiredPedGroup = "Coke",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
+                    },
+                }
+            },
+
+
+
+
+
         });
     }
     private void FightClubs()
@@ -4733,15 +6440,21 @@ public class Interiors : IInteriors
             },
             new ResidenceInterior(24578,"7611 Goma St")
             {
-                RequestIPLs = new List<string>() {  },
+                InternalInteriorCoordinates = new Vector3(-1153.183f, -1518.348f, 9.630823f),
+                RequestIPLs = new List<string>() { "hei_vb_30_interior_v_trevors_milo_" },// hei_vb_30_interior_v_trevors_milo_
                 RemoveIPLs = new List<string>() { "vb_30_crimetape" },
+                IsWeaponRestricted = false,
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"trevor_apartment_radio","Radio"),
+                },
                 Doors = new List<InteriorDoor>()
                 {
                     new InteriorDoor(-607040053, new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true, CanBeForcedOpenByPlayer = false, },
                     new InteriorDoor(3687927243,new Vector3(-1149.709f, -1521.088f, 10.78267f)) { LockWhenClosed = true, NeedsDefaultUnlock = true, CanBeForcedOpenByPlayer = false, },
                 },
                 //DisabledInteriorCoords = new Vector3(-1388.0013427734375f, -618.419677734375f, 30.819599151611328f),
-                InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" },
+                InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_a","swap_mrJam_A" }, 
                 InteractPoints = new List<InteriorInteract>(){
                     new StandardInteriorInteract("gomaStd1",new Vector3(-1156.618f, -1517.657f, 10.63273f), 23.34965f,"Interact")
                     {
@@ -4761,7 +6474,15 @@ public class Interiors : IInteriors
                         CraftingFlag = "Stove",
                         AutoCamera = false,
                         CameraPosition = Vector3.Zero,
-                    }
+                    },
+                    new AudioEmitterInteract()
+                    {
+                        Name = "gomaRadio1",
+                        Position = new Vector3(-1154.086f, -1522.669f, 10.63274f),
+                        Heading =  171.397f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                    },
                 },
                 OutfitInteracts = new List<OutfitInteract>()
                 {
@@ -4898,98 +6619,14 @@ public class Interiors : IInteriors
             },
 
             //Houses
-            new ResidenceInterior(206081,"2044 North Conker Avenue")
+            new ResidenceInterior(206081, "2044 North Conker Avenue")
             {
                 InternalInteriorCoordinates = new Vector3(340.9412f, 437.1798f, 149.3925f),
                 IsTeleportEntry = true,
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(341.8584f, 437.655f, 149.3941f),
                 InteriorEgressHeading = 116.4628f,
-                RestInteracts = new List<RestInteract>()
-                {
-                        new RestInteract()
-                        {
-                            Name = "2044NorthConkRest1",
-                            Position = new Vector3(333.0005f, 424.0142f, 145.5967f),
-                            Heading = 122.1341f,
-                            InteractDistance = 1f,
-                            CameraPosition = new Vector3(332.1866f, 427.3331f, 147.0565f),
-                            CameraDirection = new Vector3( - 0.354439f, -0.8480681f, -0.3938954f),
-                            CameraRotation = new Rotator( - 23.1971f, 4.830111E-05f, 157.3181f),
-                            ButtonPromptText = "Sleep",
-                            UseNavmesh = false,
-                        },
-                },
-                InventoryInteracts = new List<InventoryInteract>()
-                {
-                    new InventoryInteract()
-                    {
-                        CanAccessWeapons = false,
-                        CanAccessCash = false,
-                        AllowedItemTypes = new List<ItemType>() { ItemType.Food, ItemType.Meals },
-                        Name = "2044NorthConkInventory1",
-                        Position = new Vector3(342.6711f, 430.5975f, 149.3807f),
-                        Heading = 294.7958f,
-                        CameraPosition = new Vector3(340.1125f, 431.4519f, 150.6194f),
-                        CameraDirection = new Vector3(0.895169f, -0.3380183f, -0.2905444f),
-                        CameraRotation = new Rotator( - 16.89055f, 5.487425E-05f, -110.6867f),
-                        ButtonPromptText = "Open Pantry",
-                        Title = "Pantry",
-                        Description = "Access food items",
-                        UseNavmesh = false,
-                    },
-                    new InventoryInteract()
-                    {
-                        CanAccessItems = false,
-                        CanAccessCash = false,
-                        Name = "2044NorthConkInventory2",
-                        Position = new Vector3(336.2231f, 437.8118f, 141.7708f),
-                        Heading = 30.97907f,
-                        CameraPosition = new Vector3(334.6476f, 435.1272f, 143.2005f),
-                        CameraDirection = new Vector3(0.509838f, 0.8177249f, -0.2671912f),
-                        CameraRotation = new Rotator( - 15.49719f, 5.758902E-06f, -31.94286f),
-                        ButtonPromptText = "Access Weapons",
-                        UseNavmesh = false,
-                    },
-                    new InventoryInteract()
-                    {
-                        CanAccessWeapons = false,
-                        CanAccessCash = false,
-                        AllowedItemTypes = new List<ItemType>() { ItemType.Drinks },
-                        Name = "2044NorthConkInventory3",
-                        Position = new Vector3(341.0717f, 433.2059f, 149.3806f),//new Vector3(341.269f, 433.4402f, 149.3806f),
-                        Heading = 297.7491f,
-                        AutoCamera = true,
-                        Title = "Fridge",
-                        Description = "Access drink items",
-                        UseNavmesh = false,
-                    },
-                    new InventoryInteract()
-                    {
-                        CanAccessWeapons = false,
-                        DisallowedItemTypes = new List<ItemType>() { ItemType.Drinks,ItemType.Food, ItemType.Meals },
-                        Name = "2044NorthConkInventory4",
-                        Position = new Vector3(337.6338f, 436.5455f, 141.7708f),
-                        Heading = 294.9129f,
-                        CameraPosition = new Vector3(336.5846f, 432.6438f, 143.1402f),
-                        CameraDirection = new Vector3(0.3455506f, 0.8929839f, -0.2884001f),
-                        CameraRotation = new Rotator(-16.7622f, -3.566641E-06f, -21.15453f),
-                        ButtonPromptText = "Access Items/Cash",
-                        UseNavmesh = false,
-                    },
-                },
-                OutfitInteracts = new List<OutfitInteract>()
-                {
-                    new OutfitInteract() {
-                        Name = "2044NorthConkOutfit1",
-                        Position = new Vector3(334.3427f, 428.6346f, 145.5709f),
-                        Heading = 125.7571f,
-                        CameraPosition = new Vector3(332.0534f, 427.342f, 146.4523f),
-                        CameraDirection = new Vector3(0.8700684f, 0.4245014f, -0.2505585f),
-                        CameraRotation = new Rotator( - 14.51057f, 1.411048E-05f, -63.99251f),
-                        ButtonPromptText = "Change Outfit",
-                        UseNavmesh = false,
-                    },
-                },
+
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract()
@@ -5016,8 +6653,8 @@ public class Interiors : IInteriors
                         Position = new Vector3(341.2922f, 427.8438f, 145.5709f),
                         Heading = 206.6838f,
                         CameraPosition = new Vector3(338.8505f, 429.0959f, 147.0373f),
-                        CameraDirection = new Vector3(0.8618982f,-0.3906567f,-0.3232939f),
-                        CameraRotation = new Rotator(-18.86224f,-4.511121E-07f,-114.3825f),
+                        CameraDirection = new Vector3(0.8618982f, -0.3906567f, -0.3232939f),
+                        CameraRotation = new Rotator(-18.86224f, -4.511121E-07f, -114.3825f),
                         ButtonPromptText = "Use Toilet",
                         UseNavmesh = false,
                     },
@@ -5043,82 +6680,113 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
-                    new CraftInteriorInteract("Stove",new Vector3(339.9724f,430.7738f,149.3807f), 139.3014f, "Stove")
+                    new CraftInteriorInteract("Stove", new Vector3(339.9724f, 430.7738f, 149.3807f), 139.3014f, "Stove")
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
                         CameraPosition = Vector3.Zero,
-                    }
-                },
-            },
-            new ResidenceInterior(206337, "2045 North Conker Avenue")
-            {
-                InternalInteriorCoordinates = new Vector3(373.023f, 416.105f, 145.7006f),
-                IsTeleportEntry = true,
-                InteriorEgressPosition = new Vector3(373.59f, 423.5691f, 145.9079f),
-                InteriorEgressHeading = 166.8477f,
-                RestInteracts = new List<RestInteract>()
-                {
-                    new RestInteract() {
-                        StartAnimations = new List < AnimationBundle > () {},
-                        LoopAnimations = new List < AnimationBundle > () {},
-                        EndAnimations = new List < AnimationBundle > () {},
-                        Name = "2045NorthConkRest1",
-                        Position = new Vector3(376.9633f, 408.1437f, 142.1256f),
-                        Heading = 159.9418f,
-                        InteractDistance = 1f,
-                        CameraPosition = new Vector3(374.0139f, 409.4142f, 143.3061f),
-                        CameraDirection = new Vector3(0.4850231f, -0.8303007f, -0.2745057f),
-                        CameraRotation = new Rotator( - 15.93256f, -1.331822E-05f, -149.7085f),
-                        ButtonPromptText = "Sleep",
-                        UseNavmesh = false,
                     },
                 },
+
                 InventoryInteracts = new List<InventoryInteract>()
                 {
                     new InventoryInteract()
                     {
                         CanAccessWeapons = false,
                         CanAccessCash = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
-                        Name = "2045NorthConkInventory1",
-                        Position = new Vector3(378.208f, 419.2106f, 145.9001f),
-                        Heading = 342.1691f,
-                        CameraPosition = new Vector3(375.507f, 417.9591f, 147.0778f),
-                        CameraDirection = new Vector3(0.879289f, 0.4073337f, -0.24684f),
-                        CameraRotation = new Rotator( - 14.2906f, 2.42285E-05f, -65.14391f),
-                        ButtonPromptText = "Access Items",
+                        AllowedItemTypes = new List<ItemType>() { ItemType.Food, ItemType.Meals },
+                        Name = "2044NorthConkInventory1",
+                        Position = new Vector3(342.6711f, 430.5975f, 149.3807f),
+                        Heading = 294.7958f,
+                        CameraPosition = new Vector3(340.1125f, 431.4519f, 150.6194f),
+                        CameraDirection = new Vector3(0.895169f, -0.3380183f, -0.2905444f),
+                        CameraRotation = new Rotator(-16.89055f, 5.487425E-05f, -110.6867f),
+                        ButtonPromptText = "Open Pantry",
+                        Title = "Pantry",
+                        Description = "Access food items",
                         UseNavmesh = false,
                     },
                     new InventoryInteract()
                     {
                         CanAccessItems = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
-                        Name = "2045NorthConkInventory2",
-                        Position = new Vector3(378.9872f, 429.8485f, 138.3001f),
-                        Heading = 256.9881f,
-                        CameraPosition = new Vector3(377.7497f, 432.1255f, 139.3781f),
-                        CameraDirection = new Vector3(0.4488232f, -0.8689867f, -0.2083742f),
-                        CameraRotation = new Rotator( - 12.02709f, 3.142567E-05f, -152.6841f),
-                        ButtonPromptText = "Access Items",
+                        CanAccessCash = false,
+                        Name = "2044NorthConkInventory2",
+                        Position = new Vector3(336.2231f, 437.8118f, 141.7708f),
+                        Heading = 30.97907f,
+                        CameraPosition = new Vector3(334.6476f, 435.1272f, 143.2005f),
+                        CameraDirection = new Vector3(0.509838f, 0.8177249f, -0.2671912f),
+                        CameraRotation = new Rotator(-15.49719f, 5.758902E-06f, -31.94286f),
+                        ButtonPromptText = "Access Weapons",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { ItemType.Drinks },
+                        Name = "2044NorthConkInventory3",
+                        Position = new Vector3(341.0717f, 433.2059f, 149.3806f), // new Vector3(341.269f, 433.4402f, 149.3806f),
+                        Heading = 297.7491f,
+                        AutoCamera = true,
+                        Title = "Fridge",
+                        Description = "Access drink items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        DisallowedItemTypes = new List<ItemType>() { ItemType.Drinks, ItemType.Food, ItemType.Meals },
+                        Name = "2044NorthConkInventory4",
+                        Position = new Vector3(337.6338f, 436.5455f, 141.7708f),
+                        Heading = 294.9129f,
+                        CameraPosition = new Vector3(336.5846f, 432.6438f, 143.1402f),
+                        CameraDirection = new Vector3(0.3455506f, 0.8929839f, -0.2884001f),
+                        CameraRotation = new Rotator(-16.7622f, -3.566641E-06f, -21.15453f),
+                        ButtonPromptText = "Access Items/Cash",
                         UseNavmesh = false,
                     },
                 },
-                OutfitInteracts = new List<OutfitInteract>() {
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
                     new OutfitInteract()
                     {
-                        Name = "2045NorthConkOutfit1",
-                        Position = new Vector3(374.325f, 411.6066f, 142.1001f),
-                        Heading = 166.6548f,
-                        CameraPosition = new Vector3(373.709f, 408.8297f, 142.9015f),
-                        CameraDirection = new Vector3(0.2510608f, 0.9399703f, -0.2311372f),
-                        CameraRotation = new Rotator( - 13.36403f, -1.64538E-05f, -14.9543f),
+                        Name = "2044NorthConkOutfit1",
+                        Position = new Vector3(334.3427f, 428.6346f, 145.5709f),
+                        Heading = 125.7571f,
+                        CameraPosition = new Vector3(332.0534f, 427.342f, 146.4523f),
+                        CameraDirection = new Vector3(0.8700684f, 0.4245014f, -0.2505585f),
+                        CameraRotation = new Rotator(-14.51057f, 1.411048E-05f, -63.99251f),
                         ButtonPromptText = "Change Outfit",
                         UseNavmesh = false,
                     },
                 },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "2044NorthConkRest1",
+                        Position = new Vector3(333.0005f, 424.0142f, 145.5967f),
+                        Heading = 122.1341f,
+                        InteractDistance = 1f,
+                        CameraPosition = new Vector3(332.1866f, 427.3331f, 147.0565f),
+                        CameraDirection = new Vector3(-0.354439f, -0.8480681f, -0.3938954f),
+                        CameraRotation = new Rotator(-23.1971f, 4.830111E-05f, 157.3181f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+            },
+
+            new ResidenceInterior(206337, "2045 North Conker Avenue")
+            {
+                InternalInteriorCoordinates = new Vector3(373.023f, 416.105f, 145.7006f),
+                IsTeleportEntry = true,
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
+                InteriorEgressPosition = new Vector3(373.59f, 423.5691f, 145.9079f),
+                InteriorEgressHeading = 166.8477f,
+
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract()
@@ -5136,7 +6804,7 @@ public class Interiors : IInteriors
                         Heading = 342.7884f,
                         CameraPosition = new Vector3(371.0208f, 414.4162f, 146.8516f),
                         CameraDirection = new Vector3(0.05308443f, -0.9791117f, -0.1962712f),
-                        CameraRotation = new Rotator( - 11.31899f, -3.26516E-07f, -176.8966f),
+                        CameraRotation = new Rotator(-11.31899f, -3.26516E-07f, -176.8966f),
                         UseNavmesh = false,
                     },
                     new ToiletInteract()
@@ -5146,7 +6814,7 @@ public class Interiors : IInteriors
                         Heading = 259.2629f,
                         CameraPosition = new Vector3(376.517f, 415.0572f, 143.542f),
                         CameraDirection = new Vector3(0.871114f, 0.3520918f, -0.3423329f),
-                        CameraRotation = new Rotator( - 20.01907f, -9.08677E-07f, -67.99214f),
+                        CameraRotation = new Rotator(-20.01907f, -9.08677E-07f, -67.99214f),
                         ButtonPromptText = "Use Toilet",
                         UseNavmesh = false,
                     },
@@ -5172,12 +6840,79 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
-                    new CraftInteriorInteract("Stove",new Vector3(376.3965f, 417.4155f, 145.9001f), 185f, "Stove")
+                    new CraftInteriorInteract("Stove", new Vector3(376.3965f, 417.4155f, 145.9001f), 185f, "Stove")
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
                         CameraPosition = Vector3.Zero,
-                    }
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Name = "2045NorthConkInventory1",
+                        Position = new Vector3(378.208f, 419.2106f, 145.9001f),
+                        Heading = 342.1691f,
+                        CameraPosition = new Vector3(375.507f, 417.9591f, 147.0778f),
+                        CameraDirection = new Vector3(0.879289f, 0.4073337f, -0.24684f),
+                        CameraRotation = new Rotator(-14.2906f, 2.42285E-05f, -65.14391f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Name = "2045NorthConkInventory2",
+                        Position = new Vector3(378.9872f, 429.8485f, 138.3001f),
+                        Heading = 256.9881f,
+                        CameraPosition = new Vector3(377.7497f, 432.1255f, 139.3781f),
+                        CameraDirection = new Vector3(0.4488232f, -0.8689867f, -0.2083742f),
+                        CameraRotation = new Rotator(-12.02709f, 3.142567E-05f, -152.6841f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2045NorthConkOutfit1",
+                        Position = new Vector3(374.325f, 411.6066f, 142.1001f),
+                        Heading = 166.6548f,
+                        CameraPosition = new Vector3(373.709f, 408.8297f, 142.9015f),
+                        CameraDirection = new Vector3(0.2510608f, 0.9399703f, -0.2311372f),
+                        CameraRotation = new Rotator(-13.36403f, -1.64538E-05f, -14.9543f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "2045NorthConkRest1",
+                        Position = new Vector3(376.9633f, 408.1437f, 142.1256f),
+                        Heading = 159.9418f,
+                        InteractDistance = 1f,
+                        CameraPosition = new Vector3(374.0139f, 409.4142f, 143.3061f),
+                        CameraDirection = new Vector3(0.4850231f, -0.8303007f, -0.2745057f),
+                        CameraRotation = new Rotator(-15.93256f, -1.331822E-05f, -149.7085f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
                 },
             },
             new ResidenceInterior(207105, "3655 Wild Oats Drive")
@@ -5186,75 +6921,14 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-174.15f, 497.3787f, 137.667f),
                 InteriorEgressHeading = 192.5397f,
-                RestInteracts = new List<RestInteract>()
-                {
-                    new RestInteract()
-                    {
-                        StartAnimations = new List < AnimationBundle > () {},
-                        LoopAnimations = new List < AnimationBundle > () {},
-                        EndAnimations = new List < AnimationBundle > () {},
-                        Name = "3655WildOatRest1",
-                        Position = new Vector3( - 163.504f, 485.4048f, 133.8696f),
-                        Heading = 191.6281f,
-                        InteractDistance = 1f,
-                        CameraPosition = new Vector3( - 167.3033f, 485.3243f, 135.2373f),
-                        CameraDirection = new Vector3(0.8730214f, -0.3290629f, -0.3599322f),
-                        CameraRotation = new Rotator( - 21.09603f, -9.608605E-06f, -110.6526f),
-                        ButtonPromptText = "Sleep",
-                        UseNavmesh = false,
-                    },
-                },
-                InventoryInteracts = new List<InventoryInteract>()
-                {
-                    new InventoryInteract()
-                    {
-                        CanAccessWeapons = false,
-                        CanAccessCash = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
-                        Name = "3655WildOatInventory1",
-                        Position = new Vector3( - 167.2706f, 496.5005f, 137.6537f),
-                        Heading = 13.35964f,
-                        CameraPosition = new Vector3( - 170.0928f, 493.4945f, 138.954f),
-                        CameraDirection = new Vector3(0.5746922f, 0.773095f, -0.2684271f),
-                        CameraRotation = new Rotator( - 15.57069f, -1.595342E-05f, -36.62584f),
-                        ButtonPromptText = "Access Items",
-                        UseNavmesh = false,
-                    },
-                    new InventoryInteract() {
-                        CanAccessItems = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
-                        Name = "3655WildOatInventory2",
-                        Position = new Vector3( - 176.0963f, 492.0989f, 130.0437f),
-                        Heading = 106.0434f,
-                        CameraPosition = new Vector3( - 173.5369f, 489.9279f, 130.9913f),
-                        CameraDirection = new Vector3( - 0.7695915f, 0.5710856f, -0.2856399f),
-                        CameraRotation = new Rotator( - 16.59711f, -3.385385E-05f, 53.42225f),
-                        ButtonPromptText = "Access Items",
-                        UseNavmesh = false,
-                    },
-                },
-                OutfitInteracts = new List<OutfitInteract>()
-                {
-                    new OutfitInteract()
-                    {
-                        Name = "3655WildOatOutfit1",
-                        Position = new Vector3( - 167.4785f, 487.9693f, 133.8437f),
-                        Heading = 186.7014f,
-                        CameraPosition = new Vector3( - 167.0799f, 485.2438f, 134.6422f),
-                        CameraDirection = new Vector3( - 0.1694784f, 0.949171f, -0.2652385f),
-                        CameraRotation = new Rotator( - 15.38112f, -7.305287E-06f, 10.12371f),
-                        ButtonPromptText = "Change Outfit",
-                        UseNavmesh = false,
-                    },
-                },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
+
                 InteractPoints = new List<InteriorInteract>()
                 {
                     new ExitInteriorInteract()
                     {
                         Name = "3655WildOatExit1",
-                        Position = new Vector3( - 174.15f, 497.3787f, 137.667f),
+                        Position = new Vector3(-174.15f, 497.3787f, 137.667f),
                         Heading = 15.29212f,
                         ButtonPromptText = "Exit",
                         UseNavmesh = false,
@@ -5262,21 +6936,21 @@ public class Interiors : IInteriors
                     new StandardInteriorInteract()
                     {
                         Name = "3655WildOatStd1",
-                        Position = new Vector3( - 169.6604f, 485.4504f, 137.4436f),
+                        Position = new Vector3(-169.6604f, 485.4504f, 137.4436f),
                         Heading = 16.84413f,
-                        CameraPosition = new Vector3( - 171.98f, 488.6649f, 138.856f),
+                        CameraPosition = new Vector3(-171.98f, 488.6649f, 138.856f),
                         CameraDirection = new Vector3(0.640749f, -0.7213035f, -0.2629869f),
-                        CameraRotation = new Rotator( - 15.24737f, 2.65477E-06f, -138.3846f),
+                        CameraRotation = new Rotator(-15.24737f, 2.65477E-06f, -138.3846f),
                         UseNavmesh = false,
                     },
                     new ToiletInteract()
                     {
                         Name = "3655WildOatToilet1",
-                        Position = new Vector3( - 164.9799f, 494.3438f, 133.8438f),
+                        Position = new Vector3(-164.9799f, 494.3438f, 133.8438f),
                         Heading = 281.0751f,
-                        CameraPosition = new Vector3( - 166.7136f, 491.73f, 135.3105f),
+                        CameraPosition = new Vector3(-166.7136f, 491.73f, 135.3105f),
                         CameraDirection = new Vector3(0.5075332f, 0.817638f, -0.2718054f),
-                        CameraRotation = new Rotator( - 15.77173f, -6.653801E-06f, -31.82915f),
+                        CameraRotation = new Rotator(-15.77173f, -6.653801E-06f, -31.82915f),
                         ButtonPromptText = "Use Toilet",
                         UseNavmesh = false,
                     },
@@ -5302,38 +6976,159 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
-                    new CraftInteriorInteract("Stove",new Vector3(-168.1958f,493.834f,137.6536f), 205f, "Stove")
+                    new CraftInteriorInteract("Stove", new Vector3(-168.1958f, 493.834f, 137.6536f), 205f, "Stove")
                     {
                         CraftingFlag = "Stove",
                         AutoCamera = false,
                         CameraPosition = Vector3.Zero,
-                    }
+                    },
                 },
-            },
 
-            //Additional MP Houses
-            new ResidenceInterior(206593,"3677 Whispymound Drive") {
-                RestInteracts = new List < RestInteract > () {
-                    new RestInteract() {
-                        StartAnimations = new List < AnimationBundle > () {},
-                        LoopAnimations = new List < AnimationBundle > () {},
-                        EndAnimations = new List < AnimationBundle > () {},
-                        Name = "3677WhispyMDrRest1",
-                        Position = new Vector3(125.8886f, 546.3633f, 180.5226f),
-                        Heading = 182.4487f,
-                        CameraPosition = new Vector3(122.6701f, 546.2838f, 181.7142f),
-                        CameraDirection = new Vector3(0.7625598f, -0.5107692f, -0.3970105f),
-                        CameraRotation = new Rotator( - 23.39142f, 9.30225E-07f, -123.8145f),
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Name = "3655WildOatInventory1",
+                        Position = new Vector3(-167.2706f, 496.5005f, 137.6537f),
+                        Heading = 13.35964f,
+                        CameraPosition = new Vector3(-170.0928f, 493.4945f, 138.954f),
+                        CameraDirection = new Vector3(0.5746922f, 0.773095f, -0.2684271f),
+                        CameraRotation = new Rotator(-15.57069f, -1.595342E-05f, -36.62584f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Name = "3655WildOatInventory2",
+                        Position = new Vector3(-176.0963f, 492.0989f, 130.0437f),
+                        Heading = 106.0434f,
+                        CameraPosition = new Vector3(-173.5369f, 489.9279f, 130.9913f),
+                        CameraDirection = new Vector3(-0.7695915f, 0.5710856f, -0.2856399f),
+                        CameraRotation = new Rotator(-16.59711f, -3.385385E-05f, 53.42225f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "3655WildOatOutfit1",
+                        Position = new Vector3(-167.4785f, 487.9693f, 133.8437f),
+                        Heading = 186.7014f,
+                        CameraPosition = new Vector3(-167.0799f, 485.2438f, 134.6422f),
+                        CameraDirection = new Vector3(-0.1694784f, 0.949171f, -0.2652385f),
+                        CameraRotation = new Rotator(-15.38112f, -7.305287E-06f, 10.12371f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "3655WildOatRest1",
+                        Position = new Vector3(-163.504f, 485.4048f, 133.8696f),
+                        Heading = 191.6281f,
+                        InteractDistance = 1f,
+                        CameraPosition = new Vector3(-167.3033f, 485.3243f, 135.2373f),
+                        CameraDirection = new Vector3(0.8730214f, -0.3290629f, -0.3599322f),
+                        CameraRotation = new Rotator(-21.09603f, -9.608605E-06f, -110.6526f),
                         ButtonPromptText = "Sleep",
                         UseNavmesh = false,
                     },
                 },
-                InventoryInteracts = new List < InventoryInteract > () {
-                    new InventoryInteract() {
+            },
+            new ResidenceInterior(206593, "3677 Whispymound Drive")
+            {
+                InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
+                IsTeleportEntry = true,
+                Doors = new List<InteriorDoor>() { },
+                RequestIPLs = new List<string>() { },
+                RemoveIPLs = new List<string>() { },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
+                InteriorEgressPosition = new Vector3(117.3436f, 559.7256f, 184.3049f),
+                InteriorEgressHeading = 188.2407f,
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "3677WhispyMDrExit1",
+                        Position = new Vector3(117.3436f, 559.7256f, 184.3049f),
+                        Heading = 6.260241f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "3677WhispyMDrStd1",
+                        Position = new Vector3(119.7448f, 546.8057f, 184.097f),
+                        Heading = 6.364705f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(118.0364f, 548.9323f, 185.1137f),
+                        CameraDirection = new Vector3(0.5115602f, -0.8026207f, -0.3067673f),
+                        CameraRotation = new Rotator(-17.86452f, 5.113036E-05f, -147.4881f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "3677WhispyMDrToilet1",
+                        Position = new Vector3(125.0282f, 555.0813f, 180.4973f),
+                        Heading = 279.1512f,
+                        CameraPosition = new Vector3(123.8326f, 553.5462f, 181.3578f),
+                        CameraDirection = new Vector3(0.732986f, 0.5595635f, -0.3868077f),
+                        CameraRotation = new Rotator(-22.75601f, -6.480885E-05f, -52.64179f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "3677WhispyMDrWash1",
+                        Position = new Vector3(123.7435f, 556.5359f, 180.5091f),
+                        Heading = 7.017373f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(122.4933f, 555.8272f, 181.4969f),
+                        CameraDirection = new Vector3(0.6746727f, 0.6210913f, -0.3988262f),
+                        CameraRotation = new Rotator(-23.50482f, -2.793072E-05f, -47.3679f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "3677WhispyMDrWash2",
+                        Position = new Vector3(125.1659f, 556.5369f, 180.4973f),
+                        Heading = 5.326504f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(122.4933f, 555.8272f, 181.4969f),
+                        CameraDirection = new Vector3(0.6746727f, 0.6210913f, -0.3988262f),
+                        CameraRotation = new Rotator(-23.50482f, -2.793072E-05f, -47.3679f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
                         CanAccessWeapons = false,
                         CanAccessCash = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
                         Title = "",
                         Description = "",
                         Name = "3677WhispyMDrInventory1",
@@ -5342,15 +7137,16 @@ public class Interiors : IInteriors
                         InteractDistance = 2f,
                         CameraPosition = new Vector3(121.4272f, 556.2952f, 185.3616f),
                         CameraDirection = new Vector3(0.7402999f, 0.5385184f, -0.402435f),
-                        CameraRotation = new Rotator( - 23.73049f, -2.891149E-05f, -53.96663f),
+                        CameraRotation = new Rotator(-23.73049f, -2.891149E-05f, -53.96663f),
                         ButtonPromptText = "Access Items",
                         UseNavmesh = false,
                     },
-                    new InventoryInteract() {
+                    new InventoryInteract()
+                    {
                         CanAccessItems = false,
                         CanAccessWeapons = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
                         Title = "",
                         Description = "",
                         Name = "3677WhispyMDrInventory2",
@@ -5358,16 +7154,17 @@ public class Interiors : IInteriors
                         Heading = 96.76508f,
                         InteractDistance = 2f,
                         CameraPosition = new Vector3(119.4411f, 545.4094f, 181.4012f),
-                        CameraDirection = new Vector3( - 0.5917099f, -0.6976438f, -0.4039463f),
-                        CameraRotation = new Rotator( - 23.82512f, -9.333075E-07f, 139.6969f),
+                        CameraDirection = new Vector3(-0.5917099f, -0.6976438f, -0.4039463f),
+                        CameraRotation = new Rotator(-23.82512f, -9.333075E-07f, 139.6969f),
                         ButtonPromptText = "Cash Drawer",
                         UseNavmesh = false,
                     },
-                    new InventoryInteract() {
+                    new InventoryInteract()
+                    {
                         CanAccessItems = false,
                         CanAccessCash = false,
-                        AllowedItemTypes = new List < ItemType > () {},
-                        DisallowedItemTypes = new List < ItemType > () {},
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
                         Title = "",
                         Description = "",
                         Name = "3677WhispyMDrInventory3",
@@ -5376,931 +7173,1016 @@ public class Interiors : IInteriors
                         InteractDistance = 2f,
                         CameraPosition = new Vector3(118.9552f, 569.4901f, 177.5214f),
                         CameraDirection = new Vector3(0.6417705f, -0.6729101f, -0.3678623f),
-                        CameraRotation = new Rotator( - 21.58384f, -3.397171E-05f, -136.3569f),
+                        CameraRotation = new Rotator(-21.58384f, -3.397171E-05f, -136.3569f),
                         ButtonPromptText = "Weapons Locker",
                         UseNavmesh = false,
                     },
                 },
-                OutfitInteracts = new List < OutfitInteract > () {
-                    new OutfitInteract() {
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
                         Name = "3677WhispyMDrOutfit1",
                         Position = new Vector3(122.0902f, 548.9814f, 180.4972f),
                         Heading = 183.1734f,
                         InteractDistance = 2f,
                         CameraPosition = new Vector3(122.407f, 546.5842f, 181.1327f),
-                        CameraDirection = new Vector3( - 0.09616696f, 0.9643564f, -0.2465129f),
-                        CameraRotation = new Rotator( - 14.27126f, -2.202401E-07f, 5.694788f),
+                        CameraDirection = new Vector3(-0.09616696f, 0.9643564f, -0.2465129f),
+                        CameraRotation = new Rotator(-14.27126f, -2.202401E-07f, 5.694788f),
                         ButtonPromptText = "Change Outfit",
                         UseNavmesh = false,
                     },
                 },
-                InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "3677WhispyMDrRest1",
+                        Position = new Vector3(125.8886f, 546.3633f, 180.5226f),
+                        Heading = 182.4487f,
+                        CameraPosition = new Vector3(122.6701f, 546.2838f, 181.7142f),
+                        CameraDirection = new Vector3(0.7625598f, -0.5107692f, -0.3970105f),
+                        CameraRotation = new Rotator(-23.39142f, 9.30225E-07f, -123.8145f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
+                ClearPositions = new List<Vector3>() { },
+            },
+            new ResidenceInterior(207361, "2874 Hillcrest Avenue")
+            {
+                InternalInteriorCoordinates = new Vector3(-857.798f, 682.563f, 152.6529f),
                 IsTeleportEntry = true,
-                Doors = new List <InteriorDoor> () {},
-                RequestIPLs = new List <String> () {},
-                RemoveIPLs = new List <String> () {},
-                InteriorSets = new List <String> () {},
-                InteriorEgressPosition = new Vector3(117.3436f, 559.7256f, 184.3049f),
-                InteriorEgressHeading = 188.2407f,
-                InteractPoints = new List <InteriorInteract> () {
-                    new ExitInteriorInteract() {
-                        Name = "3677WhispyMDrExit1",
-                        Position = new Vector3(117.3436f, 559.7256f, 184.3049f),
-                        Heading = 6.260241f,
+                //RequestIPLs = new List<string>() { "apa_ch2_09b_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_09b_ext2" },
+                RemoveIPLs = new List<string>() { "apa_ch2_09b" },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
+                InteriorEgressPosition = new Vector3(-859.9145f, 691.2387f, 152.8607f),
+                InteriorEgressHeading = 185.0775f,
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2874HillcrestAveExit1",
+                        Position = new Vector3(-859.9145f, 691.2387f, 152.8607f),
+                        Heading = 356.9291f,
                         InteractDistance = 2f,
                         ButtonPromptText = "Exit",
                         UseNavmesh = false,
                     },
-                    new StandardInteriorInteract() {
-                        Name = "3677WhispyMDrStd1",
-                        Position = new Vector3(119.7448f, 546.8057f, 184.097f),
-                        Heading = 6.364705f,
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2874HillcrestAveStd1",
+                        Position = new Vector3(-857.4491f, 678.1083f, 152.6529f),
+                        Heading = 0.4769578f,
                         InteractDistance = 2f,
-                        CameraPosition = new Vector3(118.0364f, 548.9323f, 185.1137f),
-                        CameraDirection = new Vector3(0.5115602f, -0.8026207f, -0.3067673f),
-                        CameraRotation = new Rotator( - 17.86452f, 5.113036E-05f, -147.4881f),
+                        CameraPosition = new Vector3(-858.7364f, 680.4945f, 153.5299f),
+                        CameraDirection = new Vector3(0.4019186f, -0.8688135f, -0.2891791f),
+                        CameraRotation = new Rotator(-16.80882f, 2.36348E-05f, -155.1744f),
                         UseNavmesh = false,
                     },
-                    new ToiletInteract() {
-                        Name = "3677WhispyMDrToilet1",
-                        Position = new Vector3(125.0282f, 555.0813f, 180.4973f),
-                        Heading = 279.1512f,
-                        CameraPosition = new Vector3(123.8326f, 553.5462f, 181.3578f),
-                        CameraDirection = new Vector3(0.732986f, 0.5595635f, -0.3868077f),
-                        CameraRotation = new Rotator( - 22.75601f, -6.480885E-05f, -52.64179f),
+                    new ToiletInteract()
+                    {
+                        Name = "2874HillcrestAveToilet1",
+                        Position = new Vector3(-852.113f, 686.1462f, 149.0531f),
+                        Heading = 275.3149f,
+                        CameraPosition = new Vector3(-853.4448f, 684.4023f, 150.0508f),
+                        CameraDirection = new Vector3(0.7114994f, 0.5939562f, -0.3754793f),
+                        CameraRotation = new Rotator(-22.05394f, -2.671408E-05f, -50.14504f),
                         ButtonPromptText = "Use Toilet",
                         UseNavmesh = false,
                     },
-                    new SinkInteract() {
-                        Name = "3677WhispyMDrWash1",
-                        Position = new Vector3(123.7435f, 556.5359f, 180.5091f),
-                        Heading = 7.017373f,
+                    new SinkInteract()
+                    {
+                        Name = "2874HillcrestAveWash1",
+                        Position = new Vector3(-853.4738f, 687.613f, 149.065f),
+                        Heading = 5.279492f,
                         InteractDistance = 2f,
-                        CameraPosition = new Vector3(122.4933f, 555.8272f, 181.4969f),
-                        CameraDirection = new Vector3(0.6746727f, 0.6210913f, -0.3988262f),
-                        CameraRotation = new Rotator( - 23.50482f, -2.793072E-05f, -47.3679f),
+                        CameraPosition = new Vector3(-854.678f, 687.0937f, 150.0155f),
+                        CameraDirection = new Vector3(0.65728f, 0.6045602f, -0.4499889f),
+                        CameraRotation = new Rotator(-26.74297f, 0f, -47.39243f),
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
-                    new SinkInteract() {
-                        Name = "3677WhispyMDrWash2",
-                        Position = new Vector3(125.1659f, 556.5369f, 180.4973f),
-                        Heading = 5.326504f,
+                    new SinkInteract()
+                    {
+                        Name = "2874HillcrestAveWash2",
+                        Position = new Vector3(-852.0748f, 687.5978f, 149.0531f),
+                        Heading = 358.6225f,
                         InteractDistance = 2f,
-                        CameraPosition = new Vector3(122.4933f, 555.8272f, 181.4969f),
-                        CameraDirection = new Vector3(0.6746727f, 0.6210913f, -0.3988262f),
-                        CameraRotation = new Rotator( - 23.50482f, -2.793072E-05f, -47.3679f),
+                        CameraPosition = new Vector3(-854.678f, 687.0937f, 150.0155f),
+                        CameraDirection = new Vector3(0.65728f, 0.6045602f, -0.4499889f),
+                        CameraRotation = new Rotator(-26.74297f, 0f, -47.39243f),
                         ButtonPromptText = "Use Sink",
                         UseNavmesh = false,
                     },
                 },
-                ClearPositions = new List <Vector3> () {},
-            },
-            new ResidenceInterior(207361, "2874 Hillcrest Avenue")
-            {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                StartAnimations = new List < AnimationBundle > () {},
-                LoopAnimations = new List < AnimationBundle > () {},
-                EndAnimations = new List < AnimationBundle > () {},
-                Name = "2874HillcrestAveRest1",
-                Position = new Vector3( - 851.5009f, 677.3481f, 149.0785f),
-                Heading = 186.0841f,
-                CameraPosition = new Vector3( - 854.7201f, 677.6414f, 150.2451f),
-                CameraDirection = new Vector3(0.6550292f, -0.6153208f, -0.4385398f),
-                CameraRotation = new Rotator( - 26.01075f, 9.499971E-07f, -133.2096f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2874HillcrestAveInventory1",
-                Position = new Vector3( - 854.1332f, 688.7078f, 152.853f),
-                Heading = 7.001656f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 855.8873f, 687.586f, 154.0107f),
-                CameraDirection = new Vector3(0.7420815f, 0.5778303f, -0.3397459f),
-                CameraRotation = new Rotator( - 19.86139f, -2.632534E-05f, -52.09348f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2874HillcrestAveInventory2",
-                Position = new Vector3( - 858.9979f, 674.7934f, 149.0531f),
-                Heading = 102.5044f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 857.7955f, 677.0128f, 150.0618f),
-                CameraDirection = new Vector3( - 0.6351141f, -0.7019386f, -0.3223543f),
-                CameraRotation = new Rotator( - 18.80536f, -1.89403E-05f, 137.8612f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2874HillcrestAveInventory3",
-                Position = new Vector3( - 856.6957f, 698.8257f, 145.253f),
-                Heading = 277.9463f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 857.8467f, 700.6895f, 146.2396f),
-                CameraDirection = new Vector3(0.6652163f, -0.6734213f, -0.3224765f),
-                CameraRotation = new Rotator( - 18.81276f, -1.262742E-05f, -135.3512f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "2874HillcrestAveOutfit1",
-                Position = new Vector3( - 855.4317f, 680.1762f, 149.053f),
-                Heading = 180.8558f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 855.2012f, 677.9338f, 149.7829f),
-                CameraDirection = new Vector3( - 0.05468202f, 0.9638299f, -0.260848f),
-                CameraRotation = new Rotator( - 15.12039f, -9.396657E-07f, 3.247143f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
-                InternalInteriorCoordinates = new Vector3(-857.798f, 682.563f, 152.6529f),
-                IsTeleportEntry = true,
-                Doors = new List<InteriorDoor>() { },
-                RequestIPLs = new List<String>() { },
-                RemoveIPLs = new List<String>() { },
-                InteriorSets = new List<String>() { },
-                InteriorEgressPosition = new Vector3(-859.9145f, 691.2387f, 152.8607f),
-                InteriorEgressHeading = 185.0775f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2874HillcrestAveExit1",
-                Position = new Vector3( - 859.9145f, 691.2387f, 152.8607f),
-                Heading = 356.9291f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2874HillcrestAveStd1",
-                Position = new Vector3( - 857.4491f, 678.1083f, 152.6529f),
-                Heading = 0.4769578f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 858.7364f, 680.4945f, 153.5299f),
-                CameraDirection = new Vector3(0.4019186f, -0.8688135f, -0.2891791f),
-                CameraRotation = new Rotator( - 16.80882f, 2.36348E-05f, -155.1744f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2874HillcrestAveToilet1",
-                Position = new Vector3(-852.113f, 686.1462f, 149.0531f),
-                Heading = 275.3149f,
-                CameraPosition = new Vector3( - 853.4448f, 684.4023f, 150.0508f),
-                CameraDirection = new Vector3(0.7114994f, 0.5939562f, -0.3754793f),
-                CameraRotation = new Rotator( - 22.05394f, -2.671408E-05f, -50.14504f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2874HillcrestAveWash1",
-                Position = new Vector3( - 853.4738f, 687.613f, 149.065f),
-                Heading = 5.279492f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 854.678f, 687.0937f, 150.0155f),
-                CameraDirection = new Vector3(0.65728f, 0.6045602f, -0.4499889f),
-                CameraRotation = new Rotator( - 26.74297f, 0f, -47.39243f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2874HillcrestAveWash2",
-                Position = new Vector3(-852.0748f, 687.5978f, 149.0531f),
-                Heading = 358.6225f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 854.678f, 687.0937f, 150.0155f),
-                CameraDirection = new Vector3(0.65728f, 0.6045602f, -0.4499889f),
-                CameraRotation = new Rotator( - 26.74297f, 0f, -47.39243f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2874HillcrestAveInventory1",
+                        Position = new Vector3(-854.1332f, 688.7078f, 152.853f),
+                        Heading = 7.001656f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-855.8873f, 687.586f, 154.0107f),
+                        CameraDirection = new Vector3(0.7420815f, 0.5778303f, -0.3397459f),
+                        CameraRotation = new Rotator(-19.86139f, -2.632534E-05f, -52.09348f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2874HillcrestAveInventory2",
+                        Position = new Vector3(-858.9979f, 674.7934f, 149.0531f),
+                        Heading = 102.5044f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-857.7955f, 677.0128f, 150.0618f),
+                        CameraDirection = new Vector3(-0.6351141f, -0.7019386f, -0.3223543f),
+                        CameraRotation = new Rotator(-18.80536f, -1.89403E-05f, 137.8612f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2874HillcrestAveInventory3",
+                        Position = new Vector3(-856.6957f, 698.8257f, 145.253f),
+                        Heading = 277.9463f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-857.8467f, 700.6895f, 146.2396f),
+                        CameraDirection = new Vector3(0.6652163f, -0.6734213f, -0.3224765f),
+                        CameraRotation = new Rotator(-18.81276f, -1.262742E-05f, -135.3512f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2874HillcrestAveOutfit1",
+                        Position = new Vector3(-855.4317f, 680.1762f, 149.053f),
+                        Heading = 180.8558f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-855.2012f, 677.9338f, 149.7829f),
+                        CameraDirection = new Vector3(-0.05468202f, 0.9638299f, -0.260848f),
+                        CameraRotation = new Rotator(-15.12039f, -9.396657E-07f, 3.247143f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "2874HillcrestAveRest1",
+                        Position = new Vector3(-851.5009f, 677.3481f, 149.0785f),
+                        Heading = 186.0841f,
+                        CameraPosition = new Vector3(-854.7201f, 677.6414f, 150.2451f),
+                        CameraDirection = new Vector3(0.6550292f, -0.6153208f, -0.4385398f),
+                        CameraRotation = new Rotator(-26.01075f, 9.499971E-07f, -133.2096f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
                 ClearPositions = new List<Vector3>() { },
             },
-            new ResidenceInterior(207617,"2868 Hillcrest Avenue")
+            new ResidenceInterior(207617, "2868 Hillcrest Avenue")
             {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                StartAnimations = new List < AnimationBundle > () {},
-                LoopAnimations = new List < AnimationBundle > () {},
-                EndAnimations = new List < AnimationBundle > () {},
-                Name = "2868HillcrestAveRest1",
-                Position = new Vector3( - 769.225f, 606.6739f, 140.3565f),
-                Heading = 110.8262f,
-                CameraPosition = new Vector3( - 769.3904f, 610.0786f, 141.6123f),
-                CameraDirection = new Vector3( - 0.3373653f, -0.8550257f, -0.3938473f),
-                CameraRotation = new Rotator( - 23.1941f, -3.250964E-06f, 158.4674f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2868HillcrestAveInventory1",
-                Position = new Vector3( - 758.6924f, 611.904f, 144.1406f),
-                Heading = 290.364f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 760.3583f, 613.0176f, 145.2854f),
-                CameraDirection = new Vector3(0.8517901f, -0.3671363f, -0.3737172f),
-                CameraRotation = new Rotator( - 21.94505f, 3.221639E-05f, -113.3169f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2868HillcrestAveInventory2",
-                Position = new Vector3( - 764.1301f, 619.9535f, 136.5305f),
-                Heading = 21.27656f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 765.7929f, 618.752f, 137.5933f),
-                CameraDirection = new Vector3(0.5053546f, 0.7572073f, -0.4138283f),
-                CameraRotation = new Rotator( - 24.44555f, 4.032742E-05f, -33.71886f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2868HillcrestAveInventory3",
-                Position = new Vector3( - 773.3774f, 612.9773f, 140.3313f),
-                Heading = 16.64957f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 771.3787f, 612.6984f, 141.3906f),
-                CameraDirection = new Vector3( - 0.847395f, 0.3318431f, -0.4144899f),
-                CameraRotation = new Rotator( - 24.4872f, 3.752629E-06f, 68.6145f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "2868HillcrestAveOutfit1",
-                Position = new Vector3( - 767.215f, 611.0546f, 140.3307f),
-                Heading = 106.0402f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 769.3765f, 610.3242f, 141.1601f),
-                CameraDirection = new Vector3(0.897975f, 0.3076635f, -0.3146175f),
-                CameraRotation = new Rotator( - 18.33772f, 4.317354E-05f, -71.08755f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
                 InternalInteriorCoordinates = new Vector3(-763.107f, 615.906f, 144.1401f),
                 IsTeleportEntry = true,
+                //RequestIPLs = new List<string>() { "apa_ch2_09b_interior_1_v_mp_stilts_b_milo_", "apa_ch2_09b_ext3" },
+                RemoveIPLs = new List<string>() { "apa_ch2_09b" },
+                InteriorSets = new List<string>() { "apart_hi_booze_b", "apart_hi_smokes_b", "apart_hi_strip_b" },
                 InteriorEgressPosition = new Vector3(-758.3497f, 618.9664f, 144.1531f),
                 InteriorEgressHeading = 105.945f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2868HillcrestAveExit1",
-                Position = new Vector3( - 758.3497f, 618.9664f, 144.1531f),
-                Heading = 285.5187f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2868HillcrestAveStd1",
-                Position = new Vector3( - 769.757f, 612.5219f, 143.9305f),
-                Heading = 283.0699f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 767.4705f, 614.4906f, 144.9521f),
-                CameraDirection = new Vector3( - 0.7332091f, -0.6398386f, -0.2302413f),
-                CameraRotation = new Rotator( - 13.31128f, 2.632034E-06f, 131.1097f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2868HillcrestAveToilet1",
-                Position = new Vector3(-760.5676f, 609.4951f, 140.3307f),
-                Heading = 193.8453f,
-                CameraPosition = new Vector3( - 762.5089f, 610.7808f, 141.3424f),
-                CameraDirection = new Vector3(0.7697082f, -0.523907f, -0.3647887f),
-                CameraRotation = new Rotator( - 21.39458f, -1.833922E-06f, -124.2414f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2868HillcrestAveWash1",
-                Position = new Vector3( - 759.4769f, 611.0027f, 140.343f),
-                Heading = 285.4872f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 759.9645f, 612.1797f, 141.4061f),
-                CameraDirection = new Vector3(0.6600884f, -0.5283374f, -0.5339877f),
-                CameraRotation = new Rotator( - 32.27528f, -0.0001100676f, -128.6739f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2868HillcrestAveWash2",
-                Position = new Vector3(-758.9645f, 609.5732f, 140.3307f),
-                Heading = 287.3187f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 759.9645f, 612.1797f, 141.4061f),
-                CameraDirection = new Vector3(0.6600884f, -0.5283374f, -0.5339877f),
-                CameraRotation = new Rotator( - 32.27528f, -0.0001100676f, -128.6739f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2868HillcrestAveExit1",
+                        Position = new Vector3(-758.3497f, 618.9664f, 144.1531f),
+                        Heading = 285.5187f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2868HillcrestAveStd1",
+                        Position = new Vector3(-769.757f, 612.5219f, 143.9305f),
+                        Heading = 283.0699f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-767.4705f, 614.4906f, 144.9521f),
+                        CameraDirection = new Vector3(-0.7332091f, -0.6398386f, -0.2302413f),
+                        CameraRotation = new Rotator(-13.31128f, 2.632034E-06f, 131.1097f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "2868HillcrestAveToilet1",
+                        Position = new Vector3(-760.5676f, 609.4951f, 140.3307f),
+                        Heading = 193.8453f,
+                        CameraPosition = new Vector3(-762.5089f, 610.7808f, 141.3424f),
+                        CameraDirection = new Vector3(0.7697082f, -0.523907f, -0.3647887f),
+                        CameraRotation = new Rotator(-21.39458f, -1.833922E-06f, -124.2414f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2868HillcrestAveWash1",
+                        Position = new Vector3(-759.4769f, 611.0027f, 140.343f),
+                        Heading = 285.4872f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-759.9645f, 612.1797f, 141.4061f),
+                        CameraDirection = new Vector3(0.6600884f, -0.5283374f, -0.5339877f),
+                        CameraRotation = new Rotator(-32.27528f, -0.0001100676f, -128.6739f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2868HillcrestAveWash2",
+                        Position = new Vector3(-758.9645f, 609.5732f, 140.3307f),
+                        Heading = 287.3187f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-759.9645f, 612.1797f, 141.4061f),
+                        CameraDirection = new Vector3(0.6600884f, -0.5283374f, -0.5339877f),
+                        CameraRotation = new Rotator(-32.27528f, -0.0001100676f, -128.6739f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2868HillcrestAveInventory1",
+                        Position = new Vector3(-758.6924f, 611.904f, 144.1406f),
+                        Heading = 290.364f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-760.3583f, 613.0176f, 145.2854f),
+                        CameraDirection = new Vector3(0.8517901f, -0.3671363f, -0.3737172f),
+                        CameraRotation = new Rotator(-21.94505f, 3.221639E-05f, -113.3169f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2868HillcrestAveInventory2",
+                        Position = new Vector3(-764.1301f, 619.9535f, 136.5305f),
+                        Heading = 21.27656f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-765.7929f, 618.752f, 137.5933f),
+                        CameraDirection = new Vector3(0.5053546f, 0.7572073f, -0.4138283f),
+                        CameraRotation = new Rotator(-24.44555f, 4.032742E-05f, -33.71886f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2868HillcrestAveInventory3",
+                        Position = new Vector3(-773.3774f, 612.9773f, 140.3313f),
+                        Heading = 16.64957f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-771.3787f, 612.6984f, 141.3906f),
+                        CameraDirection = new Vector3(-0.847395f, 0.3318431f, -0.4144899f),
+                        CameraRotation = new Rotator(-24.4872f, 3.752629E-06f, 68.6145f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2868HillcrestAveOutfit1",
+                        Position = new Vector3(-767.215f, 611.0546f, 140.3307f),
+                        Heading = 106.0402f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-769.3765f, 610.3242f, 141.1601f),
+                        CameraDirection = new Vector3(0.897975f, 0.3076635f, -0.3146175f),
+                        CameraRotation = new Rotator(-18.33772f, 4.317354E-05f, -71.08755f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "2868HillcrestAveRest1",
+                        Position = new Vector3(-769.225f, 606.6739f, 140.3565f),
+                        Heading = 110.8262f,
+                        CameraPosition = new Vector3(-769.3904f, 610.0786f, 141.6123f),
+                        CameraDirection = new Vector3(-0.3373653f, -0.8550257f, -0.3938473f),
+                        CameraRotation = new Rotator(-23.1941f, -3.250964E-06f, 158.4674f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
                 ClearPositions = new List<Vector3>() { },
             },
-            new ResidenceInterior(208641,"2866 Hillcrest Avenue")
+            new ResidenceInterior(208641, "2866 Hillcrest Avenue")
             {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                StartAnimations = new List < AnimationBundle > () {},
-                LoopAnimations = new List < AnimationBundle > () {},
-                EndAnimations = new List < AnimationBundle > () {},
-                Name = "2866HillcrestAveRest1",
-                Position = new Vector3( - 741.7344f, 578.2546f, 142.486f),
-                Heading = 146.448f,
-                CameraPosition = new Vector3( - 744.536f, 579.7596f, 143.4573f),
-                CameraDirection = new Vector3(0.3138163f, -0.8604938f, -0.4013349f),
-                CameraRotation = new Rotator( - 23.66166f, 1.444812E-05f, -159.9634f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2866HillcrestAveInventory1",
-                Position = new Vector3( - 737.59f, 589.0109f, 146.2604f),
-                Heading = 334.0882f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 739.4871f, 588.8943f, 147.0714f),
-                CameraDirection = new Vector3(0.9305623f, 0.05484095f, -0.3620033f),
-                CameraRotation = new Rotator( - 21.22327f, -4.579462E-07f, -86.62728f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2866HillcrestAveInventory2",
-                Position = new Vector3( - 749.4645f, 579.9824f, 142.4606f),
-                Heading = 63.62537f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 747.8635f, 581.3597f, 143.2503f),
-                CameraDirection = new Vector3( - 0.86753f, -0.3294917f, -0.3725947f),
-                CameraRotation = new Rotator( - 21.87573f, -1.472033E-05f, 110.797f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2866HillcrestAveInventory3",
-                Position = new Vector3( - 734.3171f, 598.8799f, 138.6604f),
-                Heading = 245.9131f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 734.1554f, 601.0134f, 139.4422f),
-                CameraDirection = new Vector3( - 0.01822698f, -0.9537277f, -0.3001186f),
-                CameraRotation = new Rotator( - 17.46473f, 6.433049E-07f, 178.9051f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "2866HillcrestAveOutfit1",
-                Position = new Vector3( - 743.4583f, 582.577f, 142.4605f),
-                Heading = 150.176f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 744.5214f, 580.3284f, 143.2913f),
-                CameraDirection = new Vector3(0.4879013f, 0.8173583f, -0.3063948f),
-                CameraRotation = new Rotator( - 17.8421f, 3.587644E-06f, -30.83402f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
                 InternalInteriorCoordinates = new Vector3(-746.6974f, 576.9874f, 144.86f),
                 IsTeleportEntry = true,
-                RequestIPLs = new List<string>() {
-                        "apa_stilt_ch2_09c_int",
-                    },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_09c_int", "apa_stilt_ch2_09c_ext1" },
+                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_a", "apart_hi_smokes_a", "apart_hi_strip_a" },
                 InteriorEgressPosition = new Vector3(-741.0357f, 594.1995f, 146.2682f),
                 InteriorEgressHeading = 146.5121f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2866HillcrestAveExit1",
-                Position = new Vector3( - 741.0357f, 594.1995f, 146.2682f),
-                Heading = 331.7428f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2866HillcrestAveStd1",
-                Position = new Vector3( - 746.2287f, 582.1323f, 146.0603f),
-                Heading = 332.7006f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 746.3914f, 584.8408f, 147.1075f),
-                CameraDirection = new Vector3( - 0.08847187f, -0.9578879f, -0.273173f),
-                CameraRotation = new Rotator( - 15.85317f, 4.437655E-07f, 174.7231f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2866HillcrestAveToilet1",
-                Position = new Vector3(-737.3578f, 585.8151f, 142.4605f),
-                Heading = 242.0518f,
-                CameraPosition = new Vector3( - 739.1013f, 585.1049f, 143.1959f),
-                CameraDirection = new Vector3(0.9369323f, 0.06204982f, -0.3439589f),
-                CameraRotation = new Rotator( - 20.11826f, -3.182382E-06f, -86.21103f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2866HillcrestAveWash1",
-                Position = new Vector3( - 737.6904f, 587.8032f, 142.4725f),
-                Heading = 328.55f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 738.9469f, 587.8602f, 143.2228f),
-                CameraDirection = new Vector3(0.8772637f, 0.1506086f, -0.455769f),
-                CameraRotation = new Rotator( - 27.11443f, -7.673524E-06f, -80.25843f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2866HillcrestAveWash2",
-                Position = new Vector3(-736.4802f, 587.0096f, 142.4606f),
-                Heading = 330.0962f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 738.9469f, 587.8602f, 143.2228f),
-                CameraDirection = new Vector3(0.8772637f, 0.1506086f, -0.455769f),
-                CameraRotation = new Rotator( - 27.11443f, -7.673524E-06f, -80.25843f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2866HillcrestAveExit1",
+                        Position = new Vector3(-741.0357f, 594.1995f, 146.2682f),
+                        Heading = 331.7428f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2866HillcrestAveStd1",
+                        Position = new Vector3(-746.2287f, 582.1323f, 146.0603f),
+                        Heading = 332.7006f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-746.3914f, 584.8408f, 147.1075f),
+                        CameraDirection = new Vector3(-0.08847187f, -0.9578879f, -0.273173f),
+                        CameraRotation = new Rotator(-15.85317f, 4.437655E-07f, 174.7231f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "2866HillcrestAveToilet1",
+                        Position = new Vector3(-737.3578f, 585.8151f, 142.4605f),
+                        Heading = 242.0518f,
+                        CameraPosition = new Vector3(-739.1013f, 585.1049f, 143.1959f),
+                        CameraDirection = new Vector3(0.9369323f, 0.06204982f, -0.3439589f),
+                        CameraRotation = new Rotator(-20.11826f, -3.182382E-06f, -86.21103f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2866HillcrestAveWash1",
+                        Position = new Vector3(-737.6904f, 587.8032f, 142.4725f),
+                        Heading = 328.55f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-738.9469f, 587.8602f, 143.2228f),
+                        CameraDirection = new Vector3(0.8772637f, 0.1506086f, -0.455769f),
+                        CameraRotation = new Rotator(-27.11443f, -7.673524E-06f, -80.25843f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2866HillcrestAveWash2",
+                        Position = new Vector3(-736.4802f, 587.0096f, 142.4606f),
+                        Heading = 330.0962f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-738.9469f, 587.8602f, 143.2228f),
+                        CameraDirection = new Vector3(0.8772637f, 0.1506086f, -0.455769f),
+                        CameraRotation = new Rotator(-27.11443f, -7.673524E-06f, -80.25843f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2866HillcrestAveInventory1",
+                        Position = new Vector3(-737.59f, 589.0109f, 146.2604f),
+                        Heading = 334.0882f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-739.4871f, 588.8943f, 147.0714f),
+                        CameraDirection = new Vector3(0.9305623f, 0.05484095f, -0.3620033f),
+                        CameraRotation = new Rotator(-21.22327f, -4.579462E-07f, -86.62728f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2866HillcrestAveInventory2",
+                        Position = new Vector3(-749.4645f, 579.9824f, 142.4606f),
+                        Heading = 63.62537f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-747.8635f, 581.3597f, 143.2503f),
+                        CameraDirection = new Vector3(-0.86753f, -0.3294917f, -0.3725947f),
+                        CameraRotation = new Rotator(-21.87573f, -1.472033E-05f, 110.797f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2866HillcrestAveInventory3",
+                        Position = new Vector3(-734.3171f, 598.8799f, 138.6604f),
+                        Heading = 245.9131f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-734.1554f, 601.0134f, 139.4422f),
+                        CameraDirection = new Vector3(-0.01822698f, -0.9537277f, -0.3001186f),
+                        CameraRotation = new Rotator(-17.46473f, 6.433049E-07f, 178.9051f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2866HillcrestAveOutfit1",
+                        Position = new Vector3(-743.4583f, 582.577f, 142.4605f),
+                        Heading = 150.176f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-744.5214f, 580.3284f, 143.2913f),
+                        CameraDirection = new Vector3(0.4879013f, 0.8173583f, -0.3063948f),
+                        CameraRotation = new Rotator(-17.8421f, 3.587644E-06f, -30.83402f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "2866HillcrestAveRest1",
+                        Position = new Vector3(-741.7344f, 578.2546f, 142.486f),
+                        Heading = 146.448f,
+                        CameraPosition = new Vector3(-744.536f, 579.7596f, 143.4573f),
+                        CameraDirection = new Vector3(0.3138163f, -0.8604938f, -0.4013349f),
+                        CameraRotation = new Rotator(-23.66166f, 1.444812E-05f, -159.9634f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
                 ClearPositions = new List<Vector3>() { },
             },
-            new ResidenceInterior(208129,"2862 Hillcrest Avenue")
+            new ResidenceInterior(208129, "2862 Hillcrest Avenue")
             {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                StartAnimations = new List < AnimationBundle > () {},
-                LoopAnimations = new List < AnimationBundle > () {},
-                EndAnimations = new List < AnimationBundle > () {},
-                Name = "2862HillcrestAveRest1",
-                Position = new Vector3( - 666.8728f, 587.166f, 141.5957f),
-                Heading = 221.7262f,
-                CameraPosition = new Vector3( - 669.5845f, 585.5392f, 143.117f),
-                CameraDirection = new Vector3(0.8944548f, 0.07008594f, -0.4416318f),
-                CameraRotation = new Rotator( - 26.20804f, -1.665303E-06f, -85.51968f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2862HillcrestAveInventory1",
-                Position = new Vector3( - 675.6671f, 594.9548f, 145.3796f),
-                Heading = 41.49871f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 676.6571f, 592.7364f, 146.5602f),
-                CameraDirection = new Vector3(0.2633265f, 0.8719893f, -0.4126667f),
-                CameraRotation = new Rotator( - 24.37247f, -8.435738E-06f, -16.80346f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2862HillcrestAveInventory2",
-                Position = new Vector3( - 681.2135f, 586.8436f, 137.7697f),
-                Heading = 131.3576f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 678.8915f, 585.951f, 138.7892f),
-                CameraDirection = new Vector3( - 0.9406421f, 0.1436474f, -0.3075028f),
-                CameraRotation = new Rotator( - 17.9088f, 4.037615E-06f, 81.31732f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2862HillcrestAveInventory3",
-                Position = new Vector3( - 671.2198f, 580.9656f, 141.5739f),
-                Heading = 131.8276f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 671.6243f, 583.123f, 142.5302f),
-                CameraDirection = new Vector3(0.06705433f, -0.9498118f, -0.3055509f),
-                CameraRotation = new Rotator( - 17.79131f, -1.120819E-07f, -175.9618f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "2862HillcrestAveOutfit1",
-                Position = new Vector3( - 671.5975f, 587.3071f, 141.5698f),
-                Heading = 219.6087f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 670.068f, 585.3218f, 142.2223f),
-                CameraDirection = new Vector3( - 0.631759f, 0.7347354f, -0.2470715f),
-                CameraRotation = new Rotator( - 14.30429f, 0f, 40.69044f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
                 InternalInteriorCoordinates = new Vector3(-676.127f, 588.612f, 145.1698f),
                 IsTeleportEntry = true,
+                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                InteriorSets = new List<string>() { "apart_hi_booze_b", "apart_hi_smokes_b", "apart_hi_strip_b" },
                 InteriorEgressPosition = new Vector3(-682.1874f, 592.3237f, 145.393f),
                 InteriorEgressHeading = 216.9307f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2862HillcrestAveExit1",
-                Position = new Vector3( - 682.1874f, 592.3237f, 145.393f),
-                Heading = 37.03963f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2862HillcrestAveStd1",
-                Position = new Vector3( - 671.9644f, 584.4865f, 145.1697f),
-                Heading = 39.51886f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 674.3513f, 585.4233f, 146.0696f),
-                CameraDirection = new Vector3(0.8744266f, -0.3722682f, -0.3111181f),
-                CameraRotation = new Rotator( - 18.12663f, 7.636043E-06f, -113.0608f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2862HillcrestAveToilet1",
-                Position = new Vector3(-672.6783f, 594.1899f, 141.5699f),
-                Heading = 315.49f,
-                CameraPosition = new Vector3( - 672.995f, 592.0282f, 142.6447f),
-                CameraDirection = new Vector3(0.2366741f, 0.8770948f, -0.4179595f),
-                CameraRotation = new Rotator( - 24.70583f, -7.988276E-06f, -15.10096f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2862HillcrestAveWash1",
-                Position = new Vector3( - 674.5394f, 594.6476f, 141.5821f),
-                Heading = 43.3874f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 675.2704f, 593.658f, 142.5043f),
-                CameraDirection = new Vector3(0.2019831f, 0.8624508f, -0.4640921f),
-                CameraRotation = new Rotator( - 27.65148f, -6.265083E-06f, -13.18092f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2862HillcrestAveWash2",
-                Position = new Vector3(-673.4442f, 595.5475f, 141.5699f),
-                Heading = 41.78911f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 675.2704f, 593.658f, 142.5043f),
-                CameraDirection = new Vector3(0.2019831f, 0.8624508f, -0.4640921f),
-                CameraRotation = new Rotator( - 27.65148f, -6.265083E-06f, -13.18092f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2862HillcrestAveExit1",
+                        Position = new Vector3(-682.1874f, 592.3237f, 145.393f),
+                        Heading = 37.03963f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2862HillcrestAveStd1",
+                        Position = new Vector3(-671.9644f, 584.4865f, 145.1697f),
+                        Heading = 39.51886f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-674.3513f, 585.4233f, 146.0696f),
+                        CameraDirection = new Vector3(0.8744266f, -0.3722682f, -0.3111181f),
+                        CameraRotation = new Rotator(-18.12663f, 7.636043E-06f, -113.0608f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "2862HillcrestAveToilet1",
+                        Position = new Vector3(-672.6783f, 594.1899f, 141.5699f),
+                        Heading = 315.49f,
+                        CameraPosition = new Vector3(-672.995f, 592.0282f, 142.6447f),
+                        CameraDirection = new Vector3(0.2366741f, 0.8770948f, -0.4179595f),
+                        CameraRotation = new Rotator(-24.70583f, -7.988276E-06f, -15.10096f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2862HillcrestAveWash1",
+                        Position = new Vector3(-674.5394f, 594.6476f, 141.5821f),
+                        Heading = 43.3874f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-675.2704f, 593.658f, 142.5043f),
+                        CameraDirection = new Vector3(0.2019831f, 0.8624508f, -0.4640921f),
+                        CameraRotation = new Rotator(-27.65148f, -6.265083E-06f, -13.18092f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2862HillcrestAveWash2",
+                        Position = new Vector3(-673.4442f, 595.5475f, 141.5699f),
+                        Heading = 41.78911f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-675.2704f, 593.658f, 142.5043f),
+                        CameraDirection = new Vector3(0.2019831f, 0.8624508f, -0.4640921f),
+                        CameraRotation = new Rotator(-27.65148f, -6.265083E-06f, -13.18092f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2862HillcrestAveInventory1",
+                        Position = new Vector3(-675.6671f, 594.9548f, 145.3796f),
+                        Heading = 41.49871f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-676.6571f, 592.7364f, 146.5602f),
+                        CameraDirection = new Vector3(0.2633265f, 0.8719893f, -0.4126667f),
+                        CameraRotation = new Rotator(-24.37247f, -8.435738E-06f, -16.80346f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2862HillcrestAveInventory2",
+                        Position = new Vector3(-681.2135f, 586.8436f, 137.7697f),
+                        Heading = 131.3576f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-678.8915f, 585.951f, 138.7892f),
+                        CameraDirection = new Vector3(-0.9406421f, 0.1436474f, -0.3075028f),
+                        CameraRotation = new Rotator(-17.9088f, 4.037615E-06f, 81.31732f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2862HillcrestAveInventory3",
+                        Position = new Vector3(-671.2198f, 580.9656f, 141.5739f),
+                        Heading = 131.8276f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-671.6243f, 583.123f, 142.5302f),
+                        CameraDirection = new Vector3(0.06705433f, -0.9498118f, -0.3055509f),
+                        CameraRotation = new Rotator(-17.79131f, -1.120819E-07f, -175.9618f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2862HillcrestAveOutfit1",
+                        Position = new Vector3(-671.5975f, 587.3071f, 141.5698f),
+                        Heading = 219.6087f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-670.068f, 585.3218f, 142.2223f),
+                        CameraDirection = new Vector3(-0.631759f, 0.7347354f, -0.2470715f),
+                        CameraRotation = new Rotator(-14.30429f, 0f, 40.69044f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        StartAnimations = new List<AnimationBundle>() { },
+                        LoopAnimations = new List<AnimationBundle>() { },
+                        EndAnimations = new List<AnimationBundle>() { },
+                        Name = "2862HillcrestAveRest1",
+                        Position = new Vector3(-666.8728f, 587.166f, 141.5957f),
+                        Heading = 221.7262f,
+                        CameraPosition = new Vector3(-669.5845f, 585.5392f, 143.117f),
+                        CameraDirection = new Vector3(0.8944548f, 0.07008594f, -0.4416318f),
+                        CameraRotation = new Rotator(-26.20804f, -1.665303E-06f, -85.51968f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
                 ClearPositions = new List<Vector3>() { },
             },
-            new ResidenceInterior(207873,"2117 Milton Road")
+            new ResidenceInterior(207873, "2117 Milton Road")
             {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                Name = "2117MiltonRoadRest1",
-                Position = new Vector3( - 568.4893f, 646.1376f, 142.0576f),
-                Heading = 167.9836f,
-                CameraPosition = new Vector3( - 571.7147f, 647.1907f, 143.1924f),
-                CameraDirection = new Vector3(0.5084095f, -0.7622369f, -0.4006428f),
-                CameraRotation = new Rotator( - 23.61837f, -3.820498E-05f, -146.2968f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2117MiltonRoadInventory1",
-                Position = new Vector3( - 567.3121f, 657.5324f, 145.8321f),
-                Heading = 344.1812f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 569.2823f, 656.8463f, 146.7616f),
-                CameraDirection = new Vector3(0.8621153f, 0.3152996f, -0.3966652f),
-                CameraRotation = new Rotator( - 23.36987f, -4.557362E-05f, -69.91113f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2117MiltonRoadInventory2",
-                Position = new Vector3( - 576.2966f, 645.946f, 142.0323f),
-                Heading = 78.14932f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 575.0161f, 648.0704f, 142.9277f),
-                CameraDirection = new Vector3( - 0.7564366f, -0.5147552f, -0.4035228f),
-                CameraRotation = new Rotator( - 23.79859f, -3.359221E-05f, 124.2353f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "2117MiltonRoadInventory3",
-                Position = new Vector3( - 566.5204f, 668.0264f, 138.2321f),
-                Heading = 257.7583f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 567.1656f, 669.7759f, 139.2798f),
-                CameraDirection = new Vector3(0.3714076f, -0.8614651f, -0.3463154f),
-                CameraRotation = new Rotator( - 20.26211f, -2.138716E-05f, -156.6774f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "2117MiltonRoadOutfit1",
-                Position = new Vector3( - 571.2106f, 650.0455f, 142.0322f),
-                Heading = 160.594f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 571.7885f, 647.773f, 142.8578f),
-                CameraDirection = new Vector3(0.2578968f, 0.9203916f, -0.2938852f),
-                CameraRotation = new Rotator( - 17.0907f, 0f, -15.65305f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
                 InternalInteriorCoordinates = new Vector3(-573.0324f, 643.7613f, 144.4316f),
                 IsTeleportEntry = true,
+                //RequestIPLs = new List<string>() { "apa_ch2_09c_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_09c_ext3" },
+                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_a", "apart_hi_smokes_a", "apart_hi_strip_a" },
                 InteriorEgressPosition = new Vector3(-571.8827f, 661.8361f, 145.8399f),
                 InteriorEgressHeading = 165.7903f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2117MiltonRoadExit1",
-                Position = new Vector3( - 571.8827f, 661.8361f, 145.8399f),
-                Heading = 346.0906f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2117MiltonRoadStd1",
-                Position = new Vector3( - 573.8051f, 648.6808f, 145.632f),
-                Heading = 348.8827f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 574.5377f, 650.7093f, 146.6002f),
-                CameraDirection = new Vector3(0.2257358f, -0.9093344f, -0.3495059f),
-                CameraRotation = new Rotator( - 20.45709f, 1.457987E-05f, -166.0585f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2117MiltonRoadToilet1",
-                Position = new Vector3(-566.2118f, 654.5648f, 142.0323f),
-                Heading = 254.0167f,
-                CameraPosition = new Vector3( - 567.6953f, 653.4572f, 143.0564f),
-                CameraDirection = new Vector3(0.8589513f, 0.2903567f, -0.4217767f),
-                CameraRotation = new Rotator( - 24.94681f, 1.553686E-05f, -71.32288f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2117MiltonRoadWash1",
-                Position = new Vector3( - 567.0015f, 656.3623f, 142.0441f),
-                Heading = 341.7439f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 568.6034f, 656.2526f, 143.051f),
-                CameraDirection = new Vector3(0.8414465f, 0.1797778f, -0.5095565f),
-                CameraRotation = new Rotator( - 30.63429f, 2.282188E-05f, -77.9399f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2117MiltonRoadWash2",
-                Position = new Vector3(-565.6008f, 656.0184f, 142.0322f),
-                Heading = 345.5208f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 568.6034f, 656.2526f, 143.051f),
-                CameraDirection = new Vector3(0.8414465f, 0.1797778f, -0.5095565f),
-                CameraRotation = new Rotator( - 30.63429f, 2.282188E-05f, -77.9399f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2117MiltonRoadExit1",
+                        Position = new Vector3(-571.8827f, 661.8361f, 145.8399f),
+                        Heading = 346.0906f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2117MiltonRoadStd1",
+                        Position = new Vector3(-573.8051f, 648.6808f, 145.632f),
+                        Heading = 348.8827f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-574.5377f, 650.7093f, 146.6002f),
+                        CameraDirection = new Vector3(0.2257358f, -0.9093344f, -0.3495059f),
+                        CameraRotation = new Rotator(-20.45709f, 1.457987E-05f, -166.0585f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "2117MiltonRoadToilet1",
+                        Position = new Vector3(-566.2118f, 654.5648f, 142.0323f),
+                        Heading = 254.0167f,
+                        CameraPosition = new Vector3(-567.6953f, 653.4572f, 143.0564f),
+                        CameraDirection = new Vector3(0.8589513f, 0.2903567f, -0.4217767f),
+                        CameraRotation = new Rotator(-24.94681f, 1.553686E-05f, -71.32288f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2117MiltonRoadWash1",
+                        Position = new Vector3(-567.0015f, 656.3623f, 142.0441f),
+                        Heading = 341.7439f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-568.6034f, 656.2526f, 143.051f),
+                        CameraDirection = new Vector3(0.8414465f, 0.1797778f, -0.5095565f),
+                        CameraRotation = new Rotator(-30.63429f, 2.282188E-05f, -77.9399f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2117MiltonRoadWash2",
+                        Position = new Vector3(-565.6008f, 656.0184f, 142.0322f),
+                        Heading = 345.5208f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-568.6034f, 656.2526f, 143.051f),
+                        CameraDirection = new Vector3(0.8414465f, 0.1797778f, -0.5095565f),
+                        CameraRotation = new Rotator(-30.63429f, 2.282188E-05f, -77.9399f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2117MiltonRoadInventory1",
+                        Position = new Vector3(-567.3121f, 657.5324f, 145.8321f),
+                        Heading = 344.1812f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-569.2823f, 656.8463f, 146.7616f),
+                        CameraDirection = new Vector3(0.8621153f, 0.3152996f, -0.3966652f),
+                        CameraRotation = new Rotator(-23.36987f, -4.557362E-05f, -69.91113f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2117MiltonRoadInventory2",
+                        Position = new Vector3(-576.2966f, 645.946f, 142.0323f),
+                        Heading = 78.14932f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-575.0161f, 648.0704f, 142.9277f),
+                        CameraDirection = new Vector3(-0.7564366f, -0.5147552f, -0.4035228f),
+                        CameraRotation = new Rotator(-23.79859f, -3.359221E-05f, 124.2353f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "2117MiltonRoadInventory3",
+                        Position = new Vector3(-566.5204f, 668.0264f, 138.2321f),
+                        Heading = 257.7583f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-567.1656f, 669.7759f, 139.2798f),
+                        CameraDirection = new Vector3(0.3714076f, -0.8614651f, -0.3463154f),
+                        CameraRotation = new Rotator(-20.26211f, -2.138716E-05f, -156.6774f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "2117MiltonRoadOutfit1",
+                        Position = new Vector3(-571.2106f, 650.0455f, 142.0322f),
+                        Heading = 160.594f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-571.7885f, 647.773f, 142.8578f),
+                        CameraDirection = new Vector3(0.2578968f, 0.9203916f, -0.2938852f),
+                        CameraRotation = new Rotator(-17.0907f, 0f, -15.65305f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "2117MiltonRoadRest1",
+                        Position = new Vector3(-568.4893f, 646.1376f, 142.0576f),
+                        Heading = 167.9836f,
+                        CameraPosition = new Vector3(-571.7147f, 647.1907f, 143.1924f),
+                        CameraDirection = new Vector3(0.5084095f, -0.7622369f, -0.4006428f),
+                        CameraRotation = new Rotator(-23.61837f, -3.820498E-05f, -146.2968f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
                 ClearPositions = new List<Vector3>() { },
             },
-            new ResidenceInterior(208385,"2113 Mad Wayne Thunder Drive")
+            new ResidenceInterior(208385, "2113 Mad Wayne Thunder Drive")
             {
-                RestInteracts = new List<RestInteract>() {
-            new RestInteract() {
-                Name = "2113MadWayneRest1",
-                Position = new Vector3( - 1282.646f, 435.1075f, 94.12035f),
-                Heading = 185.5997f,
-                CameraPosition = new Vector3( - 1285.653f, 435.5347f, 95.28134f),
-                CameraDirection = new Vector3(0.6979379f, -0.5768532f, -0.4244092f),
-                CameraRotation = new Rotator( - 25.11327f, 1.414359E-05f, -129.5741f),
-                ButtonPromptText = "Sleep",
-                UseNavmesh = false,
-            },
-        },
-                InventoryInteracts = new List<InventoryInteract>() {
-            new InventoryInteract() {
-                CanAccessWeapons = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "3677WhispyMDrInventory1",
-                Position = new Vector3( - 1284.266f, 446.57f, 97.89471f),
-                Heading = 2.661436f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1286.199f, 445.6415f, 98.73716f),
-                CameraDirection = new Vector3(0.8332375f, 0.4513904f, -0.3193149f),
-                CameraRotation = new Rotator( - 18.6215f, -7.207512E-06f, -61.55423f),
-                ButtonPromptText = "Access Items",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessWeapons = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "3677WhispyMDrInventory2",
-                Position = new Vector3( - 1290.167f, 433.09f, 94.09482f),
-                Heading = 95.55701f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1289.279f, 435.2166f, 95.02458f),
-                CameraDirection = new Vector3( - 0.6014408f, -0.7210578f, -0.3440125f),
-                CameraRotation = new Rotator( - 20.12153f, -6.364896E-06f, 140.1682f),
-                ButtonPromptText = "Cash Drawer",
-                UseNavmesh = false,
-            },
-            new InventoryInteract() {
-                CanAccessItems = false,
-                CanAccessCash = false,
-                AllowedItemTypes = new List < ItemType > () {},
-                DisallowedItemTypes = new List < ItemType > () {},
-                Title = "",
-                Description = "",
-                Name = "3677WhispyMDrInventory3",
-                Position = new Vector3( - 1286.003f, 457.0468f, 90.29469f),
-                Heading = 268.169f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1286.948f, 458.8978f, 91.06673f),
-                CameraDirection = new Vector3(0.5200119f, -0.7859902f, -0.3343756f),
-                CameraRotation = new Rotator( - 19.53458f, -4.529592E-06f, -146.5113f),
-                ButtonPromptText = "Weapons Locker",
-                UseNavmesh = false,
-            },
-        },
-                OutfitInteracts = new List<OutfitInteract>() {
-            new OutfitInteract() {
-                Name = "3677WhispyMDrOutfit1",
-                Position = new Vector3( - 1286.221f, 438.1595f, 94.0948f),
-                Heading = 176.0847f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1286.163f, 435.8915f, 94.92171f),
-                CameraDirection = new Vector3(0.01443324f, 0.9546465f, -0.2973915f),
-                CameraRotation = new Rotator( - 17.301f, 6.147849E-07f, -0.8661853f),
-                ButtonPromptText = "Change Outfit",
-                UseNavmesh = false,
-            },
-        },
-                InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
+                InternalInteriorCoordinates = new Vector3(-1286.362f, 431.7878f, 96.49426f),
                 IsTeleportEntry = true,
+                //RequestIPLs = new List<string>() { "apa_ch2_12b_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_12b_ext1" },
+                RemoveIPLs = new List<string>() { "apa_ch2_12b" },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(-1289.709f, 449.4589f, 97.90252f),
                 InteriorEgressHeading = 180.0762f,
-                InteractPoints = new List<InteriorInteract>() {
-            new ExitInteriorInteract() {
-                Name = "2113MadWayneExit1",
-                Position = new Vector3( - 1289.709f, 449.4589f, 97.90252f),
-                Heading = 1.617516f,
-                InteractDistance = 2f,
-                ButtonPromptText = "Exit",
-                UseNavmesh = false,
-            },
-            new StandardInteriorInteract() {
-                Name = "2113MadWayneStd1",
-                Position = new Vector3( - 1288.58f, 436.4243f, 97.69458f),
-                Heading = 1.099969f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1290.047f, 438.8174f, 98.54319f),
-                CameraDirection = new Vector3(0.4059573f, -0.869975f, -0.2798966f),
-                CameraRotation = new Rotator( - 16.25404f, 2.667959E-06f, -154.9848f),
-                UseNavmesh = false,
-            },
-            new ToiletInteract() {
-                Name = "2113MadWayneToilet1",
-                Position = new Vector3(-1282.475f, 443.9754f, 94.09483f),
-                Heading = 270.4488f,
-                CameraPosition = new Vector3( - 1283.755f, 442.5715f, 94.99776f),
-                CameraDirection = new Vector3(0.7434317f, 0.5413036f, -0.39281f),
-                CameraRotation = new Rotator( - 23.12946f, -6.498791E-05f, -53.94109f),
-                ButtonPromptText = "Use Toilet",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2113MadWayneWash1",
-                Position = new Vector3( - 1283.7f, 445.5079f, 94.10678f),
-                Heading = 4.615284f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1284.896f, 445.025f, 94.89018f),
-                CameraDirection = new Vector3(0.7028471f, 0.6098564f, -0.366171f),
-                CameraRotation = new Rotator( - 21.47967f, -1.559743E-05f, -49.05201f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-            new SinkInteract() {
-                Name = "2113MadWayneWash2",
-                Position = new Vector3(-1282.236f, 445.4718f, 94.09483f),
-                Heading = 359.5689f,
-                InteractDistance = 2f,
-                CameraPosition = new Vector3( - 1284.896f, 445.025f, 94.89018f),
-                CameraDirection = new Vector3(0.7028471f, 0.6098564f, -0.366171f),
-                CameraRotation = new Rotator( - 21.47967f, -1.559743E-05f, -49.05201f),
-                ButtonPromptText = "Use Sink",
-                UseNavmesh = false,
-            },
-        },
+
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract()
+                    {
+                        Name = "2113MadWayneExit1",
+                        Position = new Vector3(-1289.709f, 449.4589f, 97.90252f),
+                        Heading = 1.617516f,
+                        InteractDistance = 2f,
+                        ButtonPromptText = "Exit",
+                        UseNavmesh = false,
+                    },
+                    new StandardInteriorInteract()
+                    {
+                        Name = "2113MadWayneStd1",
+                        Position = new Vector3(-1288.58f, 436.4243f, 97.69458f),
+                        Heading = 1.099969f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1290.047f, 438.8174f, 98.54319f),
+                        CameraDirection = new Vector3(0.4059573f, -0.869975f, -0.2798966f),
+                        CameraRotation = new Rotator(-16.25404f, 2.667959E-06f, -154.9848f),
+                        UseNavmesh = false,
+                    },
+                    new ToiletInteract()
+                    {
+                        Name = "2113MadWayneToilet1",
+                        Position = new Vector3(-1282.475f, 443.9754f, 94.09483f),
+                        Heading = 270.4488f,
+                        CameraPosition = new Vector3(-1283.755f, 442.5715f, 94.99776f),
+                        CameraDirection = new Vector3(0.7434317f, 0.5413036f, -0.39281f),
+                        CameraRotation = new Rotator(-23.12946f, -6.498791E-05f, -53.94109f),
+                        ButtonPromptText = "Use Toilet",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2113MadWayneWash1",
+                        Position = new Vector3(-1283.7f, 445.5079f, 94.10678f),
+                        Heading = 4.615284f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1284.896f, 445.025f, 94.89018f),
+                        CameraDirection = new Vector3(0.7028471f, 0.6098564f, -0.366171f),
+                        CameraRotation = new Rotator(-21.47967f, -1.559743E-05f, -49.05201f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract()
+                    {
+                        Name = "2113MadWayneWash2",
+                        Position = new Vector3(-1282.236f, 445.4718f, 94.09483f),
+                        Heading = 359.5689f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1284.896f, 445.025f, 94.89018f),
+                        CameraDirection = new Vector3(0.7028471f, 0.6098564f, -0.366171f),
+                        CameraRotation = new Rotator(-21.47967f, -1.559743E-05f, -49.05201f),
+                        ButtonPromptText = "Use Sink",
+                        UseNavmesh = false,
+                    },
+                },
+
+                InventoryInteracts = new List<InventoryInteract>()
+                {
+                    new InventoryInteract()
+                    {
+                        CanAccessWeapons = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "3677WhispyMDrInventory1",
+                        Position = new Vector3(-1284.266f, 446.57f, 97.89471f),
+                        Heading = 2.661436f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1286.199f, 445.6415f, 98.73716f),
+                        CameraDirection = new Vector3(0.8332375f, 0.4513904f, -0.3193149f),
+                        CameraRotation = new Rotator(-18.6215f, -7.207512E-06f, -61.55423f),
+                        ButtonPromptText = "Access Items",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessWeapons = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "3677WhispyMDrInventory2",
+                        Position = new Vector3(-1290.167f, 433.09f, 94.09482f),
+                        Heading = 95.55701f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1289.279f, 435.2166f, 95.02458f),
+                        CameraDirection = new Vector3(-0.6014408f, -0.7210578f, -0.3440125f),
+                        CameraRotation = new Rotator(-20.12153f, -6.364896E-06f, 140.1682f),
+                        ButtonPromptText = "Cash Drawer",
+                        UseNavmesh = false,
+                    },
+                    new InventoryInteract()
+                    {
+                        CanAccessItems = false,
+                        CanAccessCash = false,
+                        AllowedItemTypes = new List<ItemType>() { },
+                        DisallowedItemTypes = new List<ItemType>() { },
+                        Title = "",
+                        Description = "",
+                        Name = "3677WhispyMDrInventory3",
+                        Position = new Vector3(-1286.003f, 457.0468f, 90.29469f),
+                        Heading = 268.169f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1286.948f, 458.8978f, 91.06673f),
+                        CameraDirection = new Vector3(0.5200119f, -0.7859902f, -0.3343756f),
+                        CameraRotation = new Rotator(-19.53458f, -4.529592E-06f, -146.5113f),
+                        ButtonPromptText = "Weapons Locker",
+                        UseNavmesh = false,
+                    },
+                },
+
+                OutfitInteracts = new List<OutfitInteract>()
+                {
+                    new OutfitInteract()
+                    {
+                        Name = "3677WhispyMDrOutfit1",
+                        Position = new Vector3(-1286.221f, 438.1595f, 94.0948f),
+                        Heading = 176.0847f,
+                        InteractDistance = 2f,
+                        CameraPosition = new Vector3(-1286.163f, 435.8915f, 94.92171f),
+                        CameraDirection = new Vector3(0.01443324f, 0.9546465f, -0.2973915f),
+                        CameraRotation = new Rotator(-17.301f, 6.147849E-07f, -0.8661853f),
+                        ButtonPromptText = "Change Outfit",
+                        UseNavmesh = false,
+                    },
+                },
+
+                RestInteracts = new List<RestInteract>()
+                {
+                    new RestInteract()
+                    {
+                        Name = "2113MadWayneRest1",
+                        Position = new Vector3(-1282.646f, 435.1075f, 94.12035f),
+                        Heading = 185.5997f,
+                        CameraPosition = new Vector3(-1285.653f, 435.5347f, 95.28134f),
+                        CameraDirection = new Vector3(0.6979379f, -0.5768532f, -0.4244092f),
+                        CameraRotation = new Rotator(-25.11327f, 1.414359E-05f, -129.5741f),
+                        ButtonPromptText = "Sleep",
+                        UseNavmesh = false,
+                    },
+                },
+
                 ClearPositions = new List<Vector3>() { },
             },
 
@@ -12815,7 +14697,7 @@ public class Interiors : IInteriors
                 new Vector3(-1075.071f, -250.3029f, 37.76332f),
                 new Vector3(-1077.251f, -251.8201f, 44.02116f),
                 new Vector3(-1051.115f, -237.8116f, 44.02106f), } } ,
-            new Interior(119042,"Union Depository",new List<string>() { "FINBANK" },new List<string>() { }){ IsRestricted = true },
+            new Interior(119042,"Union Depository",new List<string>() { "FINBANK" },new List<string>() { }){ IsRestricted = true, RemoveIPLs = new List<string>() {"dt1_03_shutter"}},
             new Interior(28162,"Clucking Bell Farms",new List<string>() { "CS1_02_cf_onmission1","CS1_02_cf_onmission2","CS1_02_cf_onmission3","CS1_02_cf_onmission4" },new List<string>() { "CS1_02_cf_offmission" }){ IsRestricted = true },
             new Interior(35330,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }){ IsRestricted = true },
             new Interior(67074,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }){ IsRestricted = true },
@@ -12828,7 +14710,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(993120320, new Vector3(-561.2866f, 293.5044f, 87.77851f))})
             { DisabledInteriorCoords = new Vector3(-556.5089111328125f, 286.318115234375f, 81.1763f) },
             new Interior(107778,"Bahama Mama's",
-                new List<string>() { "v_bahama" },
+                new List<string>() { "hei_sm_16_interior_v_bahama_milo_" },
                 new List<string>() { },
                 new List<InteriorDoor>() { })
             {
@@ -12880,11 +14762,17 @@ public class Interiors : IInteriors
             new Interior(28595306,"Misssion Row  - Tuner Garage",new List<string>() { "tr_tuner_shop_mission" }), // Tuner Shop Mission Row
             new Interior(28595308,"Rancho  - Tuner Garage",new List<string>() { "tr_tuner_shop_rancho" }), // Tuner Shop Rancho
 
-
             new Interior(19381,"Auto Shop",new List<string>() { "bkr_bi_id1_23_door" }), // Vagos Den Rear Garage door
 
             // RED's Salvageyard Fronts
             new Interior(29337701,"La Puerta - Salvage Yard",new List<string>() { "m23_2_sp1_03_reds" }), // interior id = 293377 +01 for front
+
+            //Hands-On Carwash
+            new Interior(29849701,"Hand's On Carwash",new List<string>() { "m25_1_carwash" }), // interior id = 298497 +01 for front
+            // Smoke On Water
+            new Interior(29875302,"Smoke on the water",new List<string>() { "m25_1_smokeonthewater" }), // interior id = 298753 +02 for front
+            // Higgin's Heli Front
+            new Interior(29875303,"Higgin's Heli Tours",new List<string>() { "m25_1_helitours" }), // interior id = 298753 +03 for front
 
 
             //Old Generic Stuff, i dont think we are loading any of this 
