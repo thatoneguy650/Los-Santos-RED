@@ -191,30 +191,6 @@ public class Interior
                     GameFiber.Yield();
                 }
 
-                //  Wait until the engine maps the interior handle at these coordinates.
-                // When returning to an area, GET_INTERIOR_AT_COORDS returns 0 until the chunk handles load.
-                if (InternalInteriorCoordinates != Vector3.Zero)
-                {
-                    uint loadTimeoutStarted = Game.GameTime;
-                    int currentInteriorCheck = 0;
-
-                    while (currentInteriorCheck == 0 && (Game.GameTime - loadTimeoutStarted < 3000))
-                    {
-                        currentInteriorCheck = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(
-                            InternalInteriorCoordinates.X,
-                            InternalInteriorCoordinates.Y,
-                            InternalInteriorCoordinates.Z
-                        );
-                        GameFiber.Yield();
-                    }
-
-                    // Update the handle once the engine registers it
-                    if (currentInteriorCheck != 0)
-                    {
-                        InternalID = currentInteriorCheck;
-                    }
-                }
-
                 // Deactivate the current entity set style before activating the new one ( If one is loaded )
                 if (InteriorSetStyleID != -1)
                 {
