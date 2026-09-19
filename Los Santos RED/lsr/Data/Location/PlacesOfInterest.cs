@@ -4092,21 +4092,21 @@ new ConditionalLocation(, 75f),*/
             new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.mp3" },
             new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.mp3" },
             new Landmark(new Vector3(-698.5507f, 46.47984f, 44.03382f), 204.1632f, "The Epsilon Program", "Kifflom!"){ OpenTime = 0,CloseTime = 24 },
-            //new Landmark(new Vector3(967.7619f, -1830.047f, 31.23835f), 352.7595f,"Auto Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 19381,IsBlipEnabled = false, IsOnSPMap = false }, // Vagos Rear Garage
+            new Landmark(new Vector3(967.7619f, -1830.047f, 31.23835f), 352.7595f,"Auto Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 19381,IsBlipEnabled = false, IsOnSPMap = false }, // Vagos Rear Garage
 
-            ////Tuner/Mod Shop Fronts
-            //new Landmark(new Vector3(-199.2529f, -28.69608f, 54.44987f), 0f,"Burton - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595302,IsBlipEnabled = false, IsOnSPMap = false }, // Burton Tuner Garage Front
-            //new Landmark(new Vector3(712.2996f, -692.8026f, 36.44653f), 0f,"La Mesa - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595304,IsBlipEnabled = false, IsOnSPMap = false }, // La Mesa Tuner Garage Front
-            //new Landmark(new Vector3(472.4982f, -906.6881f, 32.15997f), 0f,"Mission Row - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595306,IsBlipEnabled = false, IsOnSPMap = false }, // La Mesa Tuner Garage Front
-            //new Landmark(new Vector3(225.428f, -1862.078f, 35.47239f), 0f,"Rancho - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595308,IsBlipEnabled = false, IsOnSPMap = false }, // Rancho Tuner Garage Front
+            //Tuner/Mod Shop Fronts
+            new Landmark(new Vector3(-199.2529f, -28.69608f, 54.44987f), 0f,"Burton - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595302,IsBlipEnabled = false, IsOnSPMap = false }, // Burton Tuner Garage Front
+            new Landmark(new Vector3(712.2996f, -692.8026f, 36.44653f), 0f,"La Mesa - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595304,IsBlipEnabled = false, IsOnSPMap = false }, // La Mesa Tuner Garage Front
+            new Landmark(new Vector3(472.4982f, -906.6881f, 32.15997f), 0f,"Mission Row - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595306,IsBlipEnabled = false, IsOnSPMap = false }, // La Mesa Tuner Garage Front
+            new Landmark(new Vector3(225.428f, -1862.078f, 35.47239f), 0f,"Rancho - Mod Shop","") {OpenTime = 0,CloseTime = 24, InteriorID = 28595308,IsBlipEnabled = false, IsOnSPMap = false }, // Rancho Tuner Garage Front
 
-            //// Reds Salvage yards
-            //new Landmark(new Vector3(-527.2779f, -1729.379f, 21.0794f), 0f,"La Puerta - Salvage Yard","") {OpenTime = 0,CloseTime = 24, InteriorID = 29337701,IsBlipEnabled = false, IsOnSPMap = false }, // La Puerta Front
-            ////Hands On Carwash
-            //new Landmark(new Vector3(9.815008f, -1399.865f, 33.96551f), 0f,"Hand's On Carwash","") {OpenTime = 0,CloseTime = 24, InteriorID = 29849701,IsBlipEnabled = false, IsOnSPMap = false }, // Carwash Front
+            // Reds Salvage yards
+            new Landmark(new Vector3(-527.2779f, -1729.379f, 21.0794f), 0f,"La Puerta - Salvage Yard","") {OpenTime = 0,CloseTime = 24, InteriorID = 29337701,IsBlipEnabled = false, IsOnSPMap = false }, // La Puerta Front
+            //Hands On Carwash
+            new Landmark(new Vector3(9.815008f, -1399.865f, 33.96551f), 0f,"Hand's On Carwash","") {OpenTime = 0,CloseTime = 24, InteriorID = 29849701,IsBlipEnabled = false, IsOnSPMap = false }, // Carwash Front
 
-            //new Landmark(new Vector3(-1164.585f, -1566.91f, 6.31653f), 0f,"Smoke on the Water","") {OpenTime = 0,CloseTime = 24, InteriorID = 29875302,IsBlipEnabled = false, IsOnSPMap = false },
-            //new Landmark(new Vector3(-742.3659f, -1518.76f, 7.328722f), 0f,"Higgins Heli Tours","") {OpenTime = 0,CloseTime = 24, InteriorID = 29875303,IsBlipEnabled = false, IsOnSPMap = false },
+            new Landmark(new Vector3(-1164.585f, -1566.91f, 6.31653f), 0f,"Smoke on the Water","") {OpenTime = 0,CloseTime = 24, InteriorID = 29875302,IsBlipEnabled = false, IsOnSPMap = false },
+            new Landmark(new Vector3(-742.3659f, -1518.76f, 7.328722f), 0f,"Higgins Heli Tours","") {OpenTime = 0,CloseTime = 24, InteriorID = 29875303,IsBlipEnabled = false, IsOnSPMap = false },
 
 
             new Landmark(new Vector3(-1465.816f, -1393.664f, 2.514868f), 116.3505f,"Vespucci Lifeguard Tower 1","")
