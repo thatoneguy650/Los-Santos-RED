@@ -6685,6 +6685,7 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(340.9412f, 437.1798f, 149.3925f),
                 IsTeleportEntry = true,
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_04_ext1" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(341.8584f, 437.655f, 149.3941f),
                 InteriorEgressHeading = 116.4628f,
@@ -6845,9 +6846,11 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(373.023f, 416.105f, 145.7006f),
                 IsTeleportEntry = true,
-                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(373.59f, 423.5691f, 145.9079f),
                 InteriorEgressHeading = 166.8477f,
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_04_ext2" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_04_house01","apa_ch2_04_house01_d" },
+                InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
 
                 InteractPoints = new List<InteriorInteract>()
                 {
@@ -6983,6 +6986,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(-174.15f, 497.3787f, 137.667f),
                 InteriorEgressHeading = 192.5397f,
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_05e_ext1" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
 
                 InteractPoints = new List<InteriorInteract>()
@@ -7118,7 +7122,7 @@ public class Interiors : IInteriors
                 InternalInteriorCoordinates = new Vector3(120.5f, 549.952f, 184.097f),
                 IsTeleportEntry = true,
                 Doors = new List<InteriorDoor>() { },
-                RequestIPLs = new List<string>() { },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_05c_ext1" },
                 RemoveIPLs = new List<string>() { },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(117.3436f, 559.7256f, 184.3049f),
@@ -7281,8 +7285,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-857.798f, 682.563f, 152.6529f),
                 IsTeleportEntry = true,
-                //RequestIPLs = new List<string>() { "apa_ch2_09b_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_09b_ext2" },
-                RemoveIPLs = new List<string>() { "apa_ch2_09b" },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_09b_ext2" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_09b" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(-859.9145f, 691.2387f, 152.8607f),
                 InteriorEgressHeading = 185.0775f,
@@ -7444,8 +7448,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-763.107f, 615.906f, 144.1401f),
                 IsTeleportEntry = true,
-                //RequestIPLs = new List<string>() { "apa_ch2_09b_interior_1_v_mp_stilts_b_milo_", "apa_ch2_09b_ext3" },
-                RemoveIPLs = new List<string>() { "apa_ch2_09b" },
+                RequestIPLs = new List<string>() {"apa_ch2_09b_ext3" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_09b" },
                 InteriorSets = new List<string>() { "apart_hi_booze_b", "apart_hi_smokes_b", "apart_hi_strip_b" },
                 InteriorEgressPosition = new Vector3(-758.3497f, 618.9664f, 144.1531f),
                 InteriorEgressHeading = 105.945f,
@@ -7607,8 +7611,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-746.6974f, 576.9874f, 144.86f),
                 IsTeleportEntry = true,
-                RequestIPLs = new List<string>() { "apa_stilt_ch2_09c_int", "apa_stilt_ch2_09c_ext1" },
-                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_09c_int","apa_stilt_ch2_09c_ext1" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_09c" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_a", "apart_hi_smokes_a", "apart_hi_strip_a" },
                 InteriorEgressPosition = new Vector3(-741.0357f, 594.1995f, 146.2682f),
                 InteriorEgressHeading = 146.5121f,
@@ -7770,7 +7774,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-676.127f, 588.612f, 145.1698f),
                 IsTeleportEntry = true,
-                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                RequestIPLs = new List<string>() {"apa_stilt_ch2_09c_ext2" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_09c" },
                 InteriorSets = new List<string>() { "apart_hi_booze_b", "apart_hi_smokes_b", "apart_hi_strip_b" },
                 InteriorEgressPosition = new Vector3(-682.1874f, 592.3237f, 145.393f),
                 InteriorEgressHeading = 216.9307f,
@@ -7932,8 +7937,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-573.0324f, 643.7613f, 144.4316f),
                 IsTeleportEntry = true,
-                //RequestIPLs = new List<string>() { "apa_ch2_09c_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_09c_ext3" },
-                RemoveIPLs = new List<string>() { "apa_ch2_09c" },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_09c_ext3" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_09c" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_a", "apart_hi_smokes_a", "apart_hi_strip_a" },
                 InteriorEgressPosition = new Vector3(-571.8827f, 661.8361f, 145.8399f),
                 InteriorEgressHeading = 165.7903f,
@@ -8091,8 +8096,8 @@ public class Interiors : IInteriors
             {
                 InternalInteriorCoordinates = new Vector3(-1286.362f, 431.7878f, 96.49426f),
                 IsTeleportEntry = true,
-                //RequestIPLs = new List<string>() { "apa_ch2_12b_interior_0_v_mp_stilts_a_milo_", "apa_stilt_ch2_12b_ext1" },
-                RemoveIPLs = new List<string>() { "apa_ch2_12b" },
+                RequestIPLs = new List<string>() { "apa_stilt_ch2_12b_ext1" },
+                //RemoveIPLs = new List<string>() { "apa_ch2_12b" },
                 InteriorSets = new List<string>() { "stilts_kitchen_window", "apart_hi_booze_c", "apart_hi_smokes_c", "apart_hi_strip_c" },
                 InteriorEgressPosition = new Vector3(-1289.709f, 449.4589f, 97.90252f),
                 InteriorEgressHeading = 180.0762f,
