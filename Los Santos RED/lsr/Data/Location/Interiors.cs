@@ -4250,22 +4250,84 @@ public class Interiors : IInteriors
                         ButtonPromptText = "Music Control",
                         UseNavmesh = false,
                     },
-                    new ToiletInteract("YardHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                    // stand
+                    new ToiletInteract("YardStandToilet1",new Vector3(-1612.14f, -3013.487f, -79.00602f), 90.90112f,"Use Toilet") {
+                        IsStanding = true,
                         UseNavmesh = false,
+                        CameraPosition = new Vector3(-1610.785f, -3017.198f, -77.98041f),
+                        CameraDirection = new Vector3(-0.5536109f, 0.7524619f, -0.356814f),
+                        CameraRotation = new Rotator(-20.90466f, -2.741799E-06f, 36.34314f)
                     },
-                    new SinkInteract("YardHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    new ToiletInteract("YardStandToilet2",new Vector3(-1612.204f, -3015.01f, -79.00602f), 92.69461f,"Use Toilet") {
+                        IsStanding = true,
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1610.785f, -3017.198f, -77.98041f),
+                        CameraDirection = new Vector3(-0.5536109f, 0.7524619f, -0.356814f),
+                        CameraRotation = new Rotator(-20.90466f, -2.741799E-06f, 36.34314f)
+                    },
+                    new ToiletInteract("YardStandToilet3",new Vector3(-1612.138f, -3016.83f, -79.00602f), 90.71505f,"Use Toilet") {
+                        IsStanding = true,
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1611.069f, -3015.021f, -78.17106f),
+                        CameraDirection = new Vector3(-0.5880244f, -0.7259892f, -0.3566048f),
+                        CameraRotation = new Rotator(-20.89183f, 2.741563E-06f, 140.9938f)
+                    },
+                    new ToiletInteract("YardStandToilet4",new Vector3(-1612.219f, -3018.37f, -79.00602f), 87.36248f,"Use Toilet") {
+                        IsStanding = true,
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1611.069f, -3015.021f, -78.17106f),
+                        CameraDirection = new Vector3(-0.5880244f, -0.7259892f, -0.3566048f),
+                        CameraRotation = new Rotator(-20.89183f, 2.741563E-06f, 140.9938f)
+                    },
+                    //sit
+                    new ToiletInteract("YardSitToilet1",new Vector3(-1609.326f, -3013.408f, -79.00602f), 268.1133f,"Use Toilet") {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1612.66f, -3014.498f, -77.99392f),
+                        CameraDirection = new Vector3(0.9466715f, -0.001338221f, -0.3221976f),
+                        CameraRotation = new Rotator(-18.79588f, 5.000787E-06f, -90.08099f)
+                    },
+                    new ToiletInteract("YardSitToilet2",new Vector3(-1609.234f, -3015.364f, -79.00602f), 271.5673f,"Use Toilet") {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1612.66f, -3014.498f, -77.99392f),
+                        CameraDirection = new Vector3(0.9466715f, -0.001338221f, -0.3221976f),
+                        CameraRotation = new Rotator(-18.79588f, 5.000787E-06f, -90.08099f)
+                    },
+                    new ToiletInteract("YardSitToilet3",new Vector3(-1609.255f, -3016.983f, -79.006f), 265.2889f,"Use Toilet") {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1612.668f, -3017.851f, -77.99392f),
+                        CameraDirection = new Vector3(0.9466715f, -0.001338221f, -0.3221976f),
+                        CameraRotation = new Rotator(-18.79588f, 5.000787E-06f, -90.08099f)
+                    },
+                    new ToiletInteract("YardSitToilet4",new Vector3(-1609.224f, -3018.724f, -79.006f), 268.2006f,"Use Toilet") {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1612.668f, -3017.851f, -77.99392f),
+                        CameraDirection = new Vector3(0.9466715f, -0.001338221f, -0.3221976f),
+                        CameraRotation = new Rotator(-18.79588f, 5.000787E-06f, -90.08099f)
+                    },
+                    new SinkInteract("YardHouseSink1",new Vector3(-1608.395f, -3010.168f, -79.006f), 269.4824f,"Use Sink")
                     {
                         UseNavmesh = false,
+                        CameraPosition = new Vector3(-1610.668f, -3009.593f, -77.87135f),
+                        CameraDirection = new Vector3(0.8580334f, -0.3765748f, -0.3492423f),
+                        CameraRotation = new Rotator(-20.44098f, -4.555732E-07f, -113.6958f)
+                    },
+                    new SinkInteract("YardHouseSink2",new Vector3(-1608.444f, -3010.883f, -79.006f), 268.653f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1610.668f, -3009.593f, -77.87135f),
+                        CameraDirection = new Vector3(0.8580334f, -0.3765748f, -0.3492423f),
+                        CameraRotation = new Rotator(-20.44098f, -4.555732E-07f, -113.6958f)
+                    },
+                    new SinkInteract("YardHouseSink3",new Vector3(-1608.474f, -3011.559f, -79.006f), 273.26f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(-1610.668f, -3009.593f, -77.87135f),
+                        CameraDirection = new Vector3(0.8580334f, -0.3765748f, -0.3492423f),
+                        CameraRotation = new Rotator(-20.44098f, -4.555732E-07f, -113.6958f)
                     },
                 },
                 RestInteracts = new List<RestInteract>()
                 {
-                   //new RestInteract("YardHouseRest1", new Vector3(-1600.568f, -3006.749f, -76.00504f), 0.6944672f,"Rest")
-                   // {
-                   //     CameraPosition = new Vector3(-1597.965f, -3007.447f, -75.01402f),
-                   //     CameraDirection = new Vector3(-0.7489817f, 0.5710162f, -0.3361056f),
-                   //     CameraRotation = new Rotator(-19.63978f, 2.084974E-05f, 52.67846f)
-                   // },
                     new RestInteract("YardHouseRest2", new Vector3(-1592.971f, -3010.008f, -79.00609f), 354.7038f,"Rest")
                     {
                         UseNavmesh = false,
