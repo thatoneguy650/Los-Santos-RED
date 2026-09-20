@@ -673,6 +673,10 @@ namespace LosSantosRED.lsr.Data
 
         private void LoadGangWarfare(IInventoryable player, IGangs gangs, IZones zones)
         {
+            player.GangTerritoryManager.Reset();
+
+
+
             foreach(GangWarSave gws in GangWarSaves)
             {
                 Gang targetGang = gangs.GetGang(gws.TargetGangID);

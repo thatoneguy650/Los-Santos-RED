@@ -109,7 +109,7 @@ public class GangTerritoryManager
         {
             foreach(Zone zone in existingWar.ZonesToAttack)
             {
-                SetTookOverZone(zone, existingWar);
+                SetTookOverZone(zone, existingWar.TargetGang);
             }
             GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, existingWar.TargetGang, existingWar.ZonesToAttack, Settings, existingWar.CenterPoint);
             gr.Setup();
@@ -168,7 +168,7 @@ public class GangTerritoryManager
         gr.Setup();
         Retaliations.Add(gr);
     }
-    public bool SetTookOverZone(Zone zone, GangWar gangWar)
+    public bool SetTookOverZone(Zone zone, Gang targetGang)
     {
         if(Player.CurrentGang == null)
         {
@@ -178,7 +178,7 @@ public class GangTerritoryManager
         {
             return false;
         }
-        if(gangWar == null)
+        if(targetGang == null)
         {
             return false;
         }
@@ -189,7 +189,7 @@ public class GangTerritoryManager
             List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
-                gameLocation.SetTakeoverGang(Player.CurrentGang, gangWar.TargetGang);
+                gameLocation.SetTakeoverGang(Player.CurrentGang, targetGang);
             }
             ChangedZones.Add(zone);
         }
@@ -242,6 +242,12 @@ public class GangTerritoryManager
         GangWar existingWar = new GangWar(Player, targetGang, zonesToAttack, casualityLimit, this, World, centerPoint);// gangToBattle.GangWarCasualtyLimit);
         existingWar.Setup();
         GangWars.Add(existingWar);
+
+        foreach(Zone zone in zonesToAttack)
+        {
+            SetTookOverZone(zone,targetGang);
+        }
+
     }
 
     public void LoadRetaliation(Gang targetGang, List<Zone> zonesToAttack, int timePlayerDefended, Vector3 centerPoint)
@@ -249,6 +255,12 @@ public class GangTerritoryManager
         GangRetaliation gr = new GangRetaliation(Player, this, Game.GameTime, targetGang, zonesToAttack, Settings, timePlayerDefended, centerPoint);
         gr.Setup();  
         Retaliations.Add(gr);
+
+        foreach (Zone zone in zonesToAttack)
+        {
+            SetTookOverZone(zone, targetGang);
+        }
+
     }
     public Vector3 GetCurrentWarfarePosition(Gang gang)
     {

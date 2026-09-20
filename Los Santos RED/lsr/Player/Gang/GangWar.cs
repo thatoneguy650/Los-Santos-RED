@@ -138,12 +138,13 @@ public class GangWar
 
         if (IsPlayerInZone())
         {
-            HasPlayerEnteredArea = true;
-
-            if (CenterPoint == Vector3.Zero)
+            if (CenterPoint == Vector3.Zero || !HasPlayerEnteredArea)
             {
                 CenterPoint = Player.Position;
             }
+            HasPlayerEnteredArea = true;
+
+
             EntryPoint.WriteToConsole("GangWar Player has entered the zone for the first time");
         }
     }

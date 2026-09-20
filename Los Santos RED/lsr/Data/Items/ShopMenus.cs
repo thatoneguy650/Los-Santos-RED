@@ -524,27 +524,27 @@ public class ShopMenus : IShopMenus
         ShopMenu sunshineExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "SunshineMenu").FirstOrDefault();
         if (sunshineExportMenu != null)
         {
-            sunshineExportMenu.Items.Add(new MenuItem("Vapid Scout", 0, 15000));
-            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara Utility", 0, 8000));
-            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara 2WD", 0, 9000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Scout", 0, 5000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara Utility", 0, 3000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Caracara 2WD", 0, 4000));
             sunshineExportMenu.Items.Add(new MenuItem("Vapid Dominator 4th Gen", 0, 3600));
-            sunshineExportMenu.Items.Add(new MenuItem("Vapid Firebolt Stock", 0, 3000));
-            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 20500));
-            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 0, 20500));
-            sunshineExportMenu.Items.Add(new MenuItem("Albany Esperanto", 0, 5000));      
-            sunshineExportMenu.Items.Add(new MenuItem("Pfister Comet Stock", 0, 18000));        
-            sunshineExportMenu.Items.Add(new MenuItem("Bravado Bison XL", 0, 9000));
-            sunshineExportMenu.Items.Add(new MenuItem("Annis Hellion Stock", 0, 1000));
-            sunshineExportMenu.Items.Add(new MenuItem("Declasse Vigero 2nd Gen", 0, 9000));
-            sunshineExportMenu.Items.Add(new MenuItem("Western Gargoyle Cruiser", 0, 2800));
-            sunshineExportMenu.Items.Add(new MenuItem("Dinka Chavos V6", 0, 12500));
-            sunshineExportMenu.Items.Add(new MenuItem("Annis Minimus", 0, 10500));
-            sunshineExportMenu.Items.Add(new MenuItem("Dinka Sugoi", 0, 8000));
-            sunshineExportMenu.Items.Add(new MenuItem("Declasse Granger 3600LX", 0, 19000));
-            sunshineExportMenu.Items.Add(new MenuItem("Vapid Aleutian", 0, 18000));
-            sunshineExportMenu.Items.Add(new MenuItem("Karin Vivanite", 0, 8000));
-            sunshineExportMenu.Items.Add(new MenuItem("Annis Euros", 0, 7000));
-            sunshineExportMenu.Items.Add(new MenuItem("Annis 300R", 0, 7000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Firebolt Stock", 0, 2000));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 3500));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Everon 2nd Gen", 0, 4500));
+            sunshineExportMenu.Items.Add(new MenuItem("Albany Esperanto", 0, 1000));      
+            sunshineExportMenu.Items.Add(new MenuItem("Pfister Comet Stock", 0, 9000));        
+            sunshineExportMenu.Items.Add(new MenuItem("Bravado Bison XL", 0, 4000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Hellion Stock", 0, 1200));
+            sunshineExportMenu.Items.Add(new MenuItem("Declasse Vigero 2nd Gen", 0, 5000));
+            sunshineExportMenu.Items.Add(new MenuItem("Western Gargoyle Cruiser", 0, 800));
+            sunshineExportMenu.Items.Add(new MenuItem("Dinka Chavos V6", 0, 2500));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Minimus", 0, 3500));
+            sunshineExportMenu.Items.Add(new MenuItem("Dinka Sugoi", 0, 4000));
+            sunshineExportMenu.Items.Add(new MenuItem("Declasse Granger 3600LX", 0, 5000));
+            sunshineExportMenu.Items.Add(new MenuItem("Vapid Aleutian", 0, 6000));
+            sunshineExportMenu.Items.Add(new MenuItem("Karin Vivanite", 0, 4000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis Euros", 0, 6000));
+            sunshineExportMenu.Items.Add(new MenuItem("Annis 300R", 0, 6000));
 
 
 
@@ -553,49 +553,49 @@ public class ShopMenus : IShopMenus
         ShopMenu nationalExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "NationalMenu").FirstOrDefault();
         if (nationalExportMenu != null)
         {
-            nationalExportMenu.Items.Add(new MenuItem("Schyster PMP 600", 0, 12000));
-            nationalExportMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 0, 9500));
-            nationalExportMenu.Items.Add(new MenuItem("Canis Kamacho Stock", 0, 17000));
-            nationalExportMenu.Items.Add(new MenuItem("Canis Mesa 2nd Gen", 0, 12000));
-            nationalExportMenu.Items.Add(new MenuItem("Vapid Caracara SX3 4WD", 0, 9000));
-            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 0, 2000));
-            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 0, 2000));
-            nationalExportMenu.Items.Add(new MenuItem("Grotti Brioso AC", 0, 5000));
-            nationalExportMenu.Items.Add(new MenuItem("Pfister Comet Retro", 0, 8000));
-            nationalExportMenu.Items.Add(new MenuItem("Nagasaki Shinobi", 0, 3000));
-            nationalExportMenu.Items.Add(new MenuItem("Ubermacht Sentinel XS4", 0, 4500));
-            nationalExportMenu.Items.Add(new MenuItem("Bravado Buffalo STX", 0, 15000));
-            nationalExportMenu.Items.Add(new MenuItem("Weeny Issi 2nd Gen", 0, 5000));
-            nationalExportMenu.Items.Add(new MenuItem("Vapid Riata", 0, 13000));
+            nationalExportMenu.Items.Add(new MenuItem("Schyster PMP 600", 0, 3000));
+            nationalExportMenu.Items.Add(new MenuItem("Canis Bodhi Mod", 0, 1000));
+            nationalExportMenu.Items.Add(new MenuItem("Canis Kamacho Stock", 0, 5000));
+            nationalExportMenu.Items.Add(new MenuItem("Canis Mesa 2nd Gen", 0, 3000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Caracara SX3 4WD", 0, 3000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat 4x4", 0, 1000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Bobcat Regular Bed", 0, 1000));
+            nationalExportMenu.Items.Add(new MenuItem("Grotti Brioso AC", 0, 2000));
+            nationalExportMenu.Items.Add(new MenuItem("Pfister Comet Retro", 0, 4000));
+            nationalExportMenu.Items.Add(new MenuItem("Nagasaki Shinobi", 0, 1000));
+            nationalExportMenu.Items.Add(new MenuItem("Ubermacht Sentinel XS4", 0, 2500));
+            nationalExportMenu.Items.Add(new MenuItem("Bravado Buffalo STX", 0, 7000));
+            nationalExportMenu.Items.Add(new MenuItem("Weeny Issi 2nd Gen", 0, 2000));
+            nationalExportMenu.Items.Add(new MenuItem("Vapid Riata", 0, 5000));
             nationalExportMenu.Items.Add(new MenuItem("Karin S95", 0, 6000));
-            nationalExportMenu.Items.Add(new MenuItem("Benefactor Streiter Stock", 0, 23000));
+            nationalExportMenu.Items.Add(new MenuItem("Benefactor Streiter Stock", 0, 8000));
         }
 
         ShopMenu paletoExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "PaletoExportMenu").FirstOrDefault();
         if (paletoExportMenu != null)
         {
-            paletoExportMenu.Items.Add(new MenuItem("Declasse Merit", 0, 4800));
-            paletoExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 20500));
-            paletoExportMenu.Items.Add(new MenuItem("Canis Seminole Frontier Stock", 0, 2000));
-            paletoExportMenu.Items.Add(new MenuItem("Western Sovereign Cruiser", 0, 6000));
-            paletoExportMenu.Items.Add(new MenuItem("Vapid Gemini", 0, 10000));
-            paletoExportMenu.Items.Add(new MenuItem("Vapid Sadler 4WD", 0, 7000));
-            paletoExportMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 0, 7000));
-            paletoExportMenu.Items.Add(new MenuItem("Albany Presidente", 0, 7000));
-            paletoExportMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 0, 19500));
-            paletoExportMenu.Items.Add(new MenuItem("Canis Castigator", 0, 6500));
-            paletoExportMenu.Items.Add(new MenuItem("Canis Terminus", 0, 9500));
-            paletoExportMenu.Items.Add(new MenuItem("Fathom FR36", 0, 12500));
-            paletoExportMenu.Items.Add(new MenuItem("Vapid Dominator GT", 0, 14000));
-            paletoExportMenu.Items.Add(new MenuItem("Bravado Buffalo EVX", 0, 19000));
-            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX Convertible", 0, 17000));
-            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX", 0, 18000));
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Merit", 0, 1200));
+            paletoExportMenu.Items.Add(new MenuItem("Karin Everon V8", 0, 2500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Seminole Frontier Stock", 0, 1500));
+            paletoExportMenu.Items.Add(new MenuItem("Western Sovereign Cruiser", 0, 1000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Gemini", 0, 2000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Sadler 4WD", 0, 1000));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Stanier 2nd Gen", 0, 1000));
+            paletoExportMenu.Items.Add(new MenuItem("Albany Presidente", 0, 2000));
+            paletoExportMenu.Items.Add(new MenuItem("Bravado Gauntlet R/T", 0, 7500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Castigator", 0, 4500));
+            paletoExportMenu.Items.Add(new MenuItem("Canis Terminus", 0, 6500));
+            paletoExportMenu.Items.Add(new MenuItem("Fathom FR36", 0, 6500));
+            paletoExportMenu.Items.Add(new MenuItem("Vapid Dominator GT", 0, 5000));
+            paletoExportMenu.Items.Add(new MenuItem("Bravado Buffalo EVX", 0, 5000));
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX Convertible", 0, 5000));
+            paletoExportMenu.Items.Add(new MenuItem("Declasse Vigero ZX", 0, 5500));
         }
 
         ShopMenu jdmExportMenu = fejPossibleShopMenus.ShopMenuList.Where(x => x.ID == "JDM-X").FirstOrDefault();
         if (jdmExportMenu != null)
         {
-            jdmExportMenu.Items.Add(new MenuItem("Maibatsu Kuruma", 0, 9000));
+            jdmExportMenu.Items.Add(new MenuItem("Maibatsu Kuruma", 0, 2000));
         }
 
         ShopMenuTypes final = new ShopMenuTypes();
@@ -3084,130 +3084,130 @@ public class ShopMenus : IShopMenus
 
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
         new ShopMenu("SunshineMenu", "Sunshine", new List<MenuItem>() {
-        new MenuItem("Vapid Dominator",55000,10000),
+        new MenuItem("Vapid Dominator",0,1000),
 
-        new MenuItem("Albany Alpha",0,8500),
-        new MenuItem("Albany Cavalcade",0,9500),
-        new MenuItem("Albany Cavalcade 2",0,9000),
-        new MenuItem("Albany Washington",0,5000),
+        new MenuItem("Albany Alpha",0,2500),
+        new MenuItem("Albany Cavalcade",0,2500),
+        new MenuItem("Albany Cavalcade 2",0,3000),
+        new MenuItem("Albany Washington",0,1000),
 
-        new MenuItem("Bravado Buffalo",0,7000),
-        new MenuItem("Bravado Buffalo S",0,7900),
-        new MenuItem("Bravado Banshee",0,25000),
-        new MenuItem("Bravado Banshee 900R",0,30000),
-        new MenuItem("Karin BeeJay XL",0,5500),
-        new MenuItem("Karin Kuruma",0,12000),
+        new MenuItem("Bravado Buffalo",0,3000),
+        new MenuItem("Bravado Buffalo S",0,4900),
+        new MenuItem("Bravado Banshee",0,8000),
+        new MenuItem("Bravado Banshee 900R",0,10000),
+        new MenuItem("Karin BeeJay XL",0,2500),
+        new MenuItem("Karin Kuruma",0,6000),
 
-        new MenuItem("Benefactor Surano",0,9500),
-        new MenuItem("Benefactor Serrano",0,4500),
-        new MenuItem("Benefactor Dubsta",0,21000),
-        new MenuItem("Benefactor Dubsta 2",0,23000),
+        new MenuItem("Benefactor Surano",0,2500),
+        new MenuItem("Benefactor Serrano",0,3500),
+        new MenuItem("Benefactor Dubsta",0,5000),
+        new MenuItem("Benefactor Dubsta 2",0,3000),
 
-        new MenuItem("Gallivanter Baller",0,17000),
+        new MenuItem("Gallivanter Baller",0,4000),
 
-        new MenuItem("Enus Cognoscenti",0,55000),
+        new MenuItem("Enus Cognoscenti",0,10000),
 
-        new MenuItem("Pfister Comet",0,27000),
+        new MenuItem("Pfister Comet",0,8000),
 
-        new MenuItem("Pfister Neon",0,57000),
+        new MenuItem("Pfister Neon",0,7000),
         //new MenuItem("Pfister 811",0,34000),
 
-        new MenuItem("Pegassi Osiris",0,18000),
-        new MenuItem("Pegassi FCR 1000",0,2300),
-        new MenuItem("Pegassi Reaper",0,17500),
-        new MenuItem("Pegassi Tempesta",0,220000),
-        new MenuItem("Pegassi Tezeract",0,230000),
+        new MenuItem("Pegassi Osiris",0,8000),
+        new MenuItem("Pegassi FCR 1000",0,1300),
+        new MenuItem("Pegassi Reaper",0,2500),
+        new MenuItem("Pegassi Tempesta",0,20000),
+        new MenuItem("Pegassi Tezeract",0,23000),
 
 
 
-        new MenuItem("Grotti GT750",0,35000),
-        new MenuItem("Ubermacht Sentinel XS4",0,6500),
+        new MenuItem("Grotti GT750",0,3500),
+        new MenuItem("Ubermacht Sentinel XS4",0,3500),
         new MenuItem("Pfister X-treme",0,9500),
-        new MenuItem("Vapid FMJ Mk V",0,45000),
+        new MenuItem("Vapid FMJ Mk V",0,9500),
 
 
 
     }),
 
 new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
-        new MenuItem("Karin Sultan",0,5600),
-        new MenuItem("Karin Sultan RS",0,6700),
+        new MenuItem("Karin Sultan",0,3600),
+        new MenuItem("Karin Sultan RS",0,3700),
 
-        new MenuItem("Bravado Gauntlet",0,8600),
-        new MenuItem("Bravado Buffalo",0,10500),
-        new MenuItem("Bravado Buffalo S",0,12500),
-        new MenuItem("Bravado Banshee",0,22000),
+        new MenuItem("Bravado Gauntlet",0,3600),
+        new MenuItem("Bravado Buffalo",0,2500),
+        new MenuItem("Bravado Buffalo S",0,3500),
+        new MenuItem("Bravado Banshee",0,10000),
 
-        new MenuItem("Vapid Dominator ASP",0,14000),
-        new MenuItem("Vapid Dominator GTT",0,19000),
-        new MenuItem("Vapid Dominator GTX",0,26000),
-        new MenuItem("Vapid Flash GT",0,12000),
-        new MenuItem("Vapid FMJ",0,15000),
-        new MenuItem("Vapid Bullet",0,43000),
+        new MenuItem("Vapid Dominator ASP",0,7000),
+        new MenuItem("Vapid Dominator GTT",0,5000),
+        new MenuItem("Vapid Dominator GTX",0,6000),
+        new MenuItem("Vapid Flash GT",0,4000),
+        new MenuItem("Vapid FMJ",0,12000),
+        new MenuItem("Vapid Bullet",0,13000),
 
-        new MenuItem("Gallivanter Baller",0,16000),
+        new MenuItem("Gallivanter Baller",0,2000),
         new MenuItem("Gallivanter Baller 2",0,1900),
-        new MenuItem("Gallivanter Baller LE",0,22000),
-        new MenuItem("Gallivanter Baller LE LWB",0,23000),
+        new MenuItem("Gallivanter Baller LE",0,2200),
+        new MenuItem("Gallivanter Baller LE LWB",0,2300),
 
 
-        new MenuItem("Benefactor Schafter",0,6800),
-        new MenuItem("Benefactor Schafter V12",0,21500),
-        new MenuItem("Benefactor Feltzer",0,19000),
-        new MenuItem("Benefactor Schwartzer",0,5000),
+        new MenuItem("Benefactor Schafter",0,3800),
+        new MenuItem("Benefactor Schafter V12",0,2500),
+        new MenuItem("Benefactor Feltzer",0,3000),
+        new MenuItem("Benefactor Schwartzer",0,4000),
 
 
 
 
         new MenuItem("Benefactor Streiter",0,35000),
-        new MenuItem("Benefactor Schlagen GT",0,120000),
-        new MenuItem("Benefactor Krieger",0,156000),
+        new MenuItem("Benefactor Schlagen GT",0,12000),
+        new MenuItem("Benefactor Krieger",0,15000),
 
-        new MenuItem("Enus Huntley S",0,21000),
-        new MenuItem("Enus Cognoscenti Cabrio",0,46000),
-        new MenuItem("Enus Super Diamond",0,50000),
-        new MenuItem("Enus Cognoscenti 55",0,34000),
-        new MenuItem("Enus Cognoscenti",0,23000),
-        new MenuItem("Enus Paragon R",0,13000),
-        new MenuItem("Enus Windsor",0,180000),
-        new MenuItem("Enus Windsor Drop",0,170000),
+        new MenuItem("Enus Huntley S",0,4100),
+        new MenuItem("Enus Cognoscenti Cabrio",0,4600),
+        new MenuItem("Enus Super Diamond",0,9000),
+        new MenuItem("Enus Cognoscenti 55",0,9000),
+        new MenuItem("Enus Cognoscenti",0,9000),
+        new MenuItem("Enus Paragon R",0,9000),
+        new MenuItem("Enus Windsor",0,90000),
+        new MenuItem("Enus Windsor Drop",0,9000),
 
-        new MenuItem("Pegassi Bati 801",0,2500),
-        new MenuItem("Pegassi Bati 801RR",0,2000),
+        new MenuItem("Pegassi Bati 801",0,1500),
+        new MenuItem("Pegassi Bati 801RR",0,1000),
         new MenuItem("Pegassi Esskey",0,1500),
-        new MenuItem("Pegassi Infernus",0,67000),
-        new MenuItem("Pegassi Zentorno",0,145000),
+        new MenuItem("Pegassi Infernus",0,7000),
+        new MenuItem("Pegassi Zentorno",0,14000),
 
         new MenuItem("Pegassi Toros",0,12000),
-        new MenuItem("Pegassi Zentorno",0,200000),
-        new MenuItem("Pegassi Zorrusso",0,250000),
+        new MenuItem("Pegassi Zentorno",0,20000),
+        new MenuItem("Pegassi Zorrusso",0,25000),
 
 
-        new MenuItem("Pfister Astrale",0,25500),
-        new MenuItem("Grotti Itali Classic",0,25000),
-        new MenuItem("Shitzu Keitora",0,2500),
-        new MenuItem("Progen Luiva",0,35500),
-        new MenuItem("Grotti Cartuccia GT",0,45000),
-        new MenuItem("Ocelot E-Stride",0,20500),
+        new MenuItem("Pfister Astrale",0,5500),
+        new MenuItem("Grotti Itali Classic",0,5000),
+        new MenuItem("Shitzu Keitora",0,5500),
+        new MenuItem("Progen Luiva",0,8500),
+        new MenuItem("Grotti Cartuccia GT",0,10000),
+        new MenuItem("Ocelot E-Stride",0,12500),
 
 
          }),
 
         new ShopMenu("PaletoExportMenu", "Paleto Exports", new List<MenuItem>() {
-            new MenuItem("Bravado Youga",0, 5000),
-            new MenuItem("Bravado Gresley",0, 5500),
-            new MenuItem("Bravado Bison",0, 6500),
-            new MenuItem("Bravado Gauntlet",0,7800),
-            new MenuItem("Bravado Buffalo S",0,8900),
+            new MenuItem("Bravado Youga",0, 1000),
+            new MenuItem("Bravado Gresley",0, 1200),
+            new MenuItem("Bravado Bison",0, 1200),
+            new MenuItem("Bravado Gauntlet",0,5500),
+            new MenuItem("Bravado Buffalo S",0,2300),
 
 
-            new MenuItem("Karin Futo",0,2000),
-            new MenuItem("Karin Rebel",0,5600),
+            new MenuItem("Karin Futo",0,1000),
+            new MenuItem("Karin Rebel",0,900),
             new MenuItem("Karin BeeJay XL",0,2800),
             new MenuItem("Karin Dilettante",0,2400),
-            new MenuItem("Karin Asterope",0,3400),
-            new MenuItem("Vapid Stanier",0, 3400),
-            new MenuItem("Vapid Minivan",0, 2500),
+            new MenuItem("Karin Asterope",0,1400),
+            new MenuItem("Vapid Stanier",0, 1400),
+            new MenuItem("Vapid Minivan",0, 1500),
 
             new MenuItem("Benefactor Schwartzer",0,4000),
 
@@ -3216,40 +3216,40 @@ new ShopMenu("NationalMenu", "National", new List<MenuItem>() {
 
 
 
-            new MenuItem("Pegassi Horus",0,35500),
+            new MenuItem("Pegassi Horus",0,5500),
             new MenuItem("Benefactor Laufer",0,15500),
-            new MenuItem("Benefactor LRC GT",0,55000),
-            new MenuItem("Albany Merula",0,20500),
-            new MenuItem("Grotti Veleno GT",0,25500),
-            new MenuItem("Gallivanter Warden",0,16500),
+            new MenuItem("Benefactor LRC GT",0,15000),
+            new MenuItem("Albany Merula",0,6000),
+            new MenuItem("Grotti Veleno GT",0,12000),
+            new MenuItem("Gallivanter Warden",0,8000),
         }),
 
 
         new ShopMenu("JDM-X", "JDMX", new List<MenuItem>() {
-                new MenuItem("Karin Sultan RS Classic",0,18000),
-                new MenuItem("Karin Sultan RS",0,16000),
-                new MenuItem("Karin Sultan Classic",0,13000),
-                new MenuItem("Karin Sultan",0,11000),
-                new MenuItem("Karin Futo",0,5000),
-                new MenuItem("Karin Futo GTX",0,13000),
-                new MenuItem("Dinka Blista Kanjo Custom",0,10000),
-                new MenuItem("Dinka Blista Compact",0,5500),
-                new MenuItem("Karin 190z",0,25000),
-                new MenuItem("Maibatsu Penumbra",0,5000),
-                new MenuItem("Maibatsu Penumbra FF",0,15000),
-                new MenuItem("Annis ZR350",0,35000),
-                new MenuItem("Dinka RT3000",0,18000),
-                new MenuItem("Annis Remus",0,16000),
-                new MenuItem("Karin Previon",0,10000),
-                new MenuItem("Annis Elegy RH8",0,75000),
-                new MenuItem("Annis Elegy Retro Custom",0,90000),
-                new MenuItem("Annis Euros",0,10000),
-                new MenuItem("Karin Kuruma",0,15000),
-                new MenuItem("Dinka Jester",0,100000),
-                new MenuItem("Dinka Jester (Racecar)",0,125000),
-                new MenuItem("Emperor ETR1",0,200000),
-                new MenuItem("Dinka Jester Classic",0,60000),
-                new MenuItem("Dinka Jester RR",0,40000),
+                new MenuItem("Karin Sultan RS Classic",0,3800),
+                new MenuItem("Karin Sultan RS",0,2800),
+                new MenuItem("Karin Sultan Classic",0,2500),
+                new MenuItem("Karin Sultan",0,3400),
+                new MenuItem("Karin Futo",0,1200),
+                new MenuItem("Karin Futo GTX",0,1500),
+                new MenuItem("Dinka Blista Kanjo Custom",0,1800),
+                new MenuItem("Dinka Blista Compact",0,1200),
+                new MenuItem("Karin 190z",0,4500),
+                new MenuItem("Maibatsu Penumbra",0,2500),
+                new MenuItem("Maibatsu Penumbra FF",0,2500),
+                new MenuItem("Annis ZR350",0,4800),
+                new MenuItem("Dinka RT3000",0,5000),
+                new MenuItem("Annis Remus",0,2800),
+                new MenuItem("Karin Previon",0,2800),
+                new MenuItem("Annis Elegy RH8",0,6800),
+                new MenuItem("Annis Elegy Retro Custom",0,5800),
+                new MenuItem("Annis Euros",0,4500),
+                new MenuItem("Karin Kuruma",0,2100),
+                new MenuItem("Dinka Jester",0,4700),
+                new MenuItem("Dinka Jester (Racecar)",0,4800),
+                new MenuItem("Emperor ETR1",0,9000),
+                new MenuItem("Dinka Jester Classic",0,4500),
+                new MenuItem("Dinka Jester RR",0,6500),
             }),
 
         new ShopMenu("IVExportMidHighMenu", "Vehicle Exports (Mid–High)", new List<MenuItem>()

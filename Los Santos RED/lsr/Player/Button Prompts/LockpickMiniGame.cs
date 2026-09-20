@@ -99,17 +99,40 @@ public class LockpickMiniGame
                 //Game.DisplaySubtitle($"I AM RUNNING THE SCALEFORM{Game.GameTime}");
                 DisablePlayerControls();
 
-                // 2. Input Capture
-                float lx = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 218);
-                float ly = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 219);
-                float rx = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 220);
-                float ry = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 221);
+                // 2. Input Capture based on device type
+                if (Player.IsUsingController)
+                {
+                    // Controller: Use analog sticks
+                    float lx = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 218);
+                    float ly = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 219);
+                    float rx = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 220);
+                    float ry = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 221);
 
-                // Smooth stick movement
-                if (Math.Abs(lx) > 0.1f || Math.Abs(ly) > 0.1f)
-                    playerL = LerpAngle(playerL, (float)(Math.Atan2(ly, lx) * 180 / Math.PI) + 90f, 0.2f);
-                if (Math.Abs(rx) > 0.1f || Math.Abs(ry) > 0.1f)
-                    playerR = LerpAngle(playerR, (float)(Math.Atan2(ry, rx) * 180 / Math.PI) + 90f, 0.2f);
+                    // Smooth stick movement
+                    if (Math.Abs(lx) > 0.1f || Math.Abs(ly) > 0.1f)
+                        playerL = LerpAngle(playerL, (float)(Math.Atan2(ly, lx) * 180 / Math.PI) + 90f, 0.2f);
+                    if (Math.Abs(rx) > 0.1f || Math.Abs(ry) > 0.1f)
+                        playerR = LerpAngle(playerR, (float)(Math.Atan2(ry, rx) * 180 / Math.PI) + 90f, 0.2f);
+                }
+                else
+                {
+                    // Keyboard Left Side (WASD / Move controls)
+                    float lx = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 218);
+                    float ly = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 219);
+
+                    if (Math.Abs(lx) > 0.1f || Math.Abs(ly) > 0.1f)
+                        playerL = LerpAngle(playerL, (float)(Math.Atan2(ly, lx) * 180 / Math.PI) + 90f, 0.2f);
+
+                    // Mouse Right Side - Smooth rotational delta mapping
+                    float mouseDeltaX = NativeFunction.CallByName<float>("GET_CONTROL_NORMAL", 0, 220); // LookLeftRight
+
+                    if (Math.Abs(mouseDeltaX) > 0.01f)
+                    {
+                        // Scale the mouse movement into smooth degree changes
+                        playerR += mouseDeltaX * 120f;
+                        playerR = NormalizeAngle(playerR);
+                    }
+                }
 
                 UpdateScaleforms();
 
@@ -129,7 +152,7 @@ public class LockpickMiniGame
                     pinStep++;
                     progress = 0f;
                     if (pinStep <= TotalPinSteps)
-                    {       
+                    {
                         PlayNextPinStepSound();
                         targetR = (float)rnd.NextDouble() * 360f;
                         //Game.DisplayNotification($"Pin {currentPin} - Step {pinStep}/{TotalPinSteps}");
@@ -140,13 +163,13 @@ public class LockpickMiniGame
                         pinStep = 1;
                         if (currentPin <= TotalPins)
                         {
-                            PlayNextPinSound();                     
+                            PlayNextPinSound();
                             ResetPin();
                             //Game.DisplayNotification($"Moving to Pin {currentPin}/{TotalPins}");
                         }
                         else
                         {
-                            PlayFinishedSound();                       
+                            PlayFinishedSound();
                             IsActive = false;
                             HasPickedLock = true;
                             //Game.DisplayNotification("Lock Picked!");
@@ -161,7 +184,6 @@ public class LockpickMiniGame
         }
         Dispose();
     }
-
     private void PlayNextPinStepSound()
     {
         if (IsHotwire)
@@ -281,8 +303,23 @@ public class LockpickMiniGame
     }
     private void ResetPin()
     {
-        targetL = (float)rnd.NextDouble() * 360f;
-        targetR = (float)rnd.NextDouble() * 360f;
+        if (Player.IsUsingController)
+        {
+            // Controllers get full 360-degree smooth random angles for both sticks
+            targetL = (float)rnd.NextDouble() * 360f;
+            targetR = (float)rnd.NextDouble() * 360f;
+        }
+        else
+        {
+            // Keyboard left side gets snapped to 8 discrete directions (45-degree increments)
+            int totalDirections = 8;
+            float angleStep = 360f / totalDirections;
+
+            targetL = rnd.Next(0, totalDirections) * angleStep;
+
+            // Mouse right side stays completely smooth for fine rotation
+            targetR = (float)rnd.NextDouble() * 360f;
+        }
         FillSpeed = 1.0f;
     }
     private void DisablePlayerControls()

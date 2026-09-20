@@ -125,6 +125,7 @@ public class GangRetaliation
         if (!RandomItems.RandomPercent(RetaliationPercentAtIncrement))
         {
             GameTimeRetaliationStarted = Game.GameTime;
+            EntryPoint.WriteToConsole($"CheckRetaliationStart");
             return;
         }
         OnRetaliationStarted();
@@ -143,7 +144,7 @@ public class GangRetaliation
         }
 
 
-        EntryPoint.WriteToConsole($"GANG RETALIATION UPDATE RAN HasPlayerEnteredArea{HasPlayerEnteredArea} TimeAfterReturn{Game.GameTime - GameTimeReturnedToZone} NeededTime:{RetaliationTime}");
+        EntryPoint.WriteToConsole($"GANG RETALIATION UPDATE RAN HasPlayerEnteredArea{HasPlayerEnteredArea} IsWarfareActive{IsWarfareActive} TimeAfterReturn{Game.GameTime - GameTimeReturnedToZone} RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} TimeToStartRetaliation{TimeToStartRetaliation} RetaliationTime:{RetaliationTime}");
 
 
         if (Player.RecentlyRespawned)

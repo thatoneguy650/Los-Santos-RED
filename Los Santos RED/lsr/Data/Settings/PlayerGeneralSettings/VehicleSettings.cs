@@ -244,29 +244,29 @@ public class VehicleSettings : ISettingsDefaultable
 
 
         LockpickRegularTotalPinsMin = 1;
-        LockpickRegularTotalPinsMax = 4;
-        LockpickRegularTotalPinStepsMin = 2;
-        LockpickRegularTotalPinStepsMax = 4;
+        LockpickRegularTotalPinsMax = 2;// 4;
+        LockpickRegularTotalPinStepsMin = 1;// 2;
+        LockpickRegularTotalPinStepsMax = 2;// 4;
         LockpickRegularZoneWidthMin = 10f;
         LockpickRegularZoneWidthMax = 30f;
         LockpickRegularFillSpeedMin = 0.75f;
         LockpickRegularFillSpeedMax = 1.25f;
 
 
-        LockpickHighEndTotalPinsMin = 3;
-        LockpickHighEndTotalPinsMax = 6;
-        LockpickHighEndTotalPinStepsMin = 3;
-        LockpickHighEndTotalPinStepsMax = 5;
+        LockpickHighEndTotalPinsMin = 2;// 3;
+        LockpickHighEndTotalPinsMax = 4;// 6;
+        LockpickHighEndTotalPinStepsMin = 2;//3;
+        LockpickHighEndTotalPinStepsMax = 4;// 5;
         LockpickHighEndZoneWidthMin = 5f;
         LockpickHighEndZoneWidthMax = 15f;
         LockpickHighEndFillSpeedMin = 0.5f;
         LockpickHighEndFillSpeedMax = 0.75f;
-       
 
-        LockpickPoliceTotalPinsMin = 4;
-        LockpickPoliceTotalPinsMax = 6;
-        LockpickPoliceTotalPinStepsMin = 4;
-        LockpickPoliceTotalPinStepsMax = 6;
+
+        LockpickPoliceTotalPinsMin = 2;// 4;
+        LockpickPoliceTotalPinsMax = 5;// 6;
+        LockpickPoliceTotalPinStepsMin = 2;// 4;
+        LockpickPoliceTotalPinStepsMax = 5;// 6;
         LockpickPoliceZoneWidthMin = 10f;
         LockpickPoliceZoneWidthMax = 30f;
         LockpickPoliceFillSpeedMin = 0.75f;
@@ -277,7 +277,7 @@ public class VehicleSettings : ISettingsDefaultable
 
         HotwireRegularTotalPinsMin = 1;
         HotwireRegularTotalPinsMax = 2;
-        HotwireRegularTotalPinStepsMin = 2;
+        HotwireRegularTotalPinStepsMin = 1;// 2;
         HotwireRegularTotalPinStepsMax = 3;
         HotwireRegularZoneWidthMin = 20f;
         HotwireRegularZoneWidthMax = 30f;
@@ -285,20 +285,20 @@ public class VehicleSettings : ISettingsDefaultable
         HotwireRegularFillSpeedMax = 1.25f;
 
 
-        HotwireHighEndTotalPinsMin = 3;
-        HotwireHighEndTotalPinsMax = 4;
-        HotwireHighEndTotalPinStepsMin = 2;
-        HotwireHighEndTotalPinStepsMax = 4;
+        HotwireHighEndTotalPinsMin = 2;// 3;
+        HotwireHighEndTotalPinsMax = 3;// 4;
+        HotwireHighEndTotalPinStepsMin = 1;// 2;
+        HotwireHighEndTotalPinStepsMax = 3;// 4;
         HotwireHighEndZoneWidthMin = 10f;
         HotwireHighEndZoneWidthMax = 15f;
         HotwireHighEndFillSpeedMin = 0.75f;
         HotwireHighEndFillSpeedMax = 1.00f;
 
 
-        HotwirePoliceTotalPinsMin = 3;
-        HotwirePoliceTotalPinsMax = 5;
-        HotwirePoliceTotalPinStepsMin = 3;
-        HotwirePoliceTotalPinStepsMax = 5;
+        HotwirePoliceTotalPinsMin = 2;// 3;
+        HotwirePoliceTotalPinsMax = 4;// 5;
+        HotwirePoliceTotalPinStepsMin = 2;// 3;
+        HotwirePoliceTotalPinStepsMax = 4;// 5;
         HotwirePoliceZoneWidthMin = 10f;
         HotwirePoliceZoneWidthMax = 30f;
         HotwirePoliceFillSpeedMin = 0.75f;

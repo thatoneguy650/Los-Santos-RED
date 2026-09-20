@@ -25,7 +25,7 @@ public class ScrapYard : GameLocation
     public override int MapIcon { get; set; } = 527;// (int)BlipSprite.CriminalCarsteal;
     public override string ButtonPromptText { get; set; }
     public float VehiclePickupDistance { get; set; } = 25f;
-    public int ScrapValuePerVolume { get; set; } = 100;
+    public int ScrapValuePerVolume { get; set; } = 25;//100;
     public ScrapYard(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
