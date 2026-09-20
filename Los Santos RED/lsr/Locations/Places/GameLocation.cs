@@ -1573,34 +1573,58 @@ public class GameLocation : ILocationDispatchable
         {
             return;
         }
-        foreach(ConditionalGroup conditionalGroup in PossibleGroupSpawns)
+        if (PossibleGroupSpawns != null)
         {
-            conditionalGroup.UpdateAssociation(newGang.ID, gangToReplace.ID);
+            foreach (ConditionalGroup conditionalGroup in PossibleGroupSpawns)
+            {
+                conditionalGroup.UpdateAssociation(newGang.ID, gangToReplace.ID);
+            }
         }
         List<ConditionalLocation> totalList = new List<ConditionalLocation> { };
-        totalList.AddRange(PossiblePedSpawns.ToList());
-        totalList.AddRange(PossibleVehicleSpawns.ToList());
+        if (PossiblePedSpawns != null)
+        {
+
+            totalList.AddRange(PossiblePedSpawns.ToList());
+        }
+        if(PossibleVehicleSpawns != null)
+        {
+            totalList.AddRange(PossibleVehicleSpawns.ToList());
+        }
+        
         foreach (ConditionalLocation conditionalLocation in totalList)
         {
             conditionalLocation.UpdateAssociation(newGang.ID, gangToReplace.ID);
         }
+        EntryPoint.WriteToConsole($"SetTakeoverGang {Name} newGang{newGang.ShortName} gangToReplace{gangToReplace.ShortName}");
     }
 
     public virtual void ResetGangTakeover()
     {
+        string currentAssignedAssociationID = AssignedAssociationID;
         AssignedAssociationID = OriginalAssignedAssociationID;
         HasBeenTakenOver = false;
-        foreach (ConditionalGroup conditionalGroup in PossibleGroupSpawns)
+        if (PossibleGroupSpawns != null)
         {
-            conditionalGroup.ResetAssociation();
+            foreach (ConditionalGroup conditionalGroup in PossibleGroupSpawns)
+            {
+                conditionalGroup.ResetAssociation();
+            }
         }
         List<ConditionalLocation> totalList = new List<ConditionalLocation> { };
-        totalList.AddRange(PossiblePedSpawns.ToList());
-        totalList.AddRange(PossibleVehicleSpawns.ToList());
+        if (PossiblePedSpawns != null)
+        {
+
+            totalList.AddRange(PossiblePedSpawns.ToList());
+        }
+        if (PossibleVehicleSpawns != null)
+        {
+            totalList.AddRange(PossibleVehicleSpawns.ToList());
+        }
         foreach (ConditionalLocation conditionalLocation in totalList)
         {
             conditionalLocation.ResetAssociation();
         }
+        EntryPoint.WriteToConsole($"RESETGangTakeoverSetFor {Name} to {OriginalAssignedAssociationID} from {currentAssignedAssociationID}");
     }
 }
 

@@ -186,21 +186,11 @@ public class GangTerritoryManager
         if(updated)
         {
             zone.UpdateGangItems(GangTerritories);
-            //List<GangDen> densToUpdate = PlacesOfInterest.PossibleLocations.GangDens.Where(x=> x.ZoneID == zone.InternalGameName).ToList();
-            //foreach(GangDen dens in densToUpdate)
-            //{
-            //    dens.SetTakeoverGang(Player.CurrentGang);
-            //}
-
-
             List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
                 gameLocation.SetTakeoverGang(Player.CurrentGang, gangWar.TargetGang);
             }
-
-
-
             ChangedZones.Add(zone);
         }
         return updated;
@@ -215,20 +205,11 @@ public class GangTerritoryManager
         if(restored)
         {
             zone.UpdateGangItems(GangTerritories);
-            //List<GangDen> densToUpdate = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.ZoneID == zone.InternalGameName).ToList();
-            //foreach (GangDen dens in densToUpdate)
-            //{
-            //    dens.ResetGang();
-            //}
-
-
-
             List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
                 gameLocation.ResetGangTakeover();
             }
-
             ChangedZones.Remove(zone);
         }
         return restored;
