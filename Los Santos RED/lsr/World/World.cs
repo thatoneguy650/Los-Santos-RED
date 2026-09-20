@@ -21,7 +21,7 @@ namespace Mod
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
         private ICrimes Crimes;
-        private IWeapons Weapons;     
+        private IWeapons Weapons;
         private ITimeControllable Time;
         private IInteriors Interiors;
         private IShopMenus ShopMenus;
@@ -75,7 +75,7 @@ namespace Mod
         public bool IsFEWInstalled { get; private set; }
         public bool IsFMLPInstalled { get; private set; }
 
-        public bool IsFERSInstalled { get; private set; }   
+        public bool IsFERSInstalled { get; private set; }
         public bool IsEUPInstalled { get; private set; }
         public bool IsEUPSUPInstalled { get; private set; }
         public string DebugString => "";
@@ -96,7 +96,7 @@ namespace Mod
         private void CheckSpecialCircumstances()
         {
             IsFEJInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfej"));
-            EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}",0);
+            EntryPoint.WriteToConsole($"FEJ Installed: {IsFEJInstalled}", 0);
 
             IsFMTInstalled = NativeFunction.Natives.IS_DLC_PRESENT<bool>(Game.GetHashKey("greskfmt"));
             EntryPoint.WriteToConsole($"FMT Installed: {IsFMTInstalled}", 0);
@@ -135,9 +135,9 @@ namespace Mod
         }
         public void Update()
         {
-   
+
             SetDensity();
-            
+
             if (Settings.SettingsManager.WorldSettings.AllowPoliceBackupBlip)
             {
                 if (PoliceBackupPoint == Vector3.Zero)
@@ -166,7 +166,7 @@ namespace Mod
                     TotalWantedBlip.Delete();
                 }
             }
-            if(TotalWantedLevel != totalWantedLevel)
+            if (TotalWantedLevel != totalWantedLevel)
             {
                 OnTotalWantedLevelChanged();
             }
@@ -215,7 +215,7 @@ namespace Mod
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
-    
+
             }
         }
         public void AddBlip(Blip myBlip)
@@ -247,7 +247,7 @@ namespace Mod
         {
             CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.DefaultSpawnMultiplier;// 1.0f;
             if (Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
-            { 
+            {
                 if (TotalWantedLevel >= 10)
                 {
                     CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
@@ -277,7 +277,7 @@ namespace Mod
                     CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
                 }
             }
-            if(isTrafficDisabled)
+            if (isTrafficDisabled)
             {
                 CurrentSpawnMultiplier = 0.0f;
             }
@@ -340,11 +340,11 @@ namespace Mod
         }
         private void OnTotalWantedLevelChanged()
         {
-            if(TotalWantedLevel == 0)
+            if (TotalWantedLevel == 0)
             {
                 OnTotalWantedLevelRemoved();
             }
-            else if(totalWantedLevel == 0)
+            else if (totalWantedLevel == 0)
             {
                 OnTotalWantedLevelAdded();
             }
@@ -365,7 +365,7 @@ namespace Mod
         private void OnTotalWantedLevelAdded()
         {
             //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
-           
+
 
 
         }
@@ -427,7 +427,7 @@ namespace Mod
         "hei_ch1_09_mansion_railings_p",
         "m25_2_mansion_props",
         "hei_ch1_09_mansion_shared_distantlights",
-        "hei_ch1_09_mansion_shared_lodlights"
+        "hei_ch1_09_mansion_shared_lodlights",
         };
         private List<string> mansionSPIPLs = new List<string>()
         {
@@ -443,5 +443,8 @@ namespace Mod
         "hei_ch1_09_mansion_original",
         "hei_ch1_09_props_original"
         };
+
+
+
     }
 }

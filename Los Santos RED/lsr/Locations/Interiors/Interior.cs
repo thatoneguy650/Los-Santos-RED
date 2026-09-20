@@ -190,6 +190,7 @@ public class Interior
                     }
                     GameFiber.Yield();
                 }
+
                 // Deactivate the current entity set style before activating the new one ( If one is loaded )
                 if (InteriorSetStyleID != -1)
                 {
