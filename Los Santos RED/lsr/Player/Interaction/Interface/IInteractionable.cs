@@ -52,6 +52,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsSetDisabledControls { get; set; }
         string ModelName { get; }
         bool IsUsingController { get; }
+        bool IsRagdoll { get; }
+        bool IsStunned { get; }
 
         void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);

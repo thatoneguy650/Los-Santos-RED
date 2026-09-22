@@ -119,7 +119,7 @@ public class PlayerVehicleRacer : VehicleRacer
     private string ConvertMSToTime(uint TotalGameTime)
     {
         TimeSpan t = TimeSpan.FromMilliseconds(TotalGameTime);
-        string answer = string.Format("{0:000}:{1:000}.{2:000}",
+        string answer = string.Format("{0:00}:{1:00}.{2:000}",
                                 t.Minutes,
                                 t.Seconds,
                                 t.Milliseconds);

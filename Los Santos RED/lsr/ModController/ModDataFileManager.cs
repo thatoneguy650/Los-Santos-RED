@@ -279,7 +279,7 @@ public class ModDataFileManager
         string Description = "A pack of lore friendly license plates designed to work with Los Santos RED. Includes lore friendly versions of ALL states and select state/government agencies. GTA V ENHANCED ONLY" + Environment.NewLine + Environment.NewLine + Environment.NewLine +
            "Installation: "+ Environment.NewLine +
            "1. Install greskfullmodernlicenseplatesEnhanced.oiv using OIV Package Installer. Verify your dlclist.xml contains <Item>dlcpacks:/greskfmlp/</Item>" + Environment.NewLine +
-           "To use, copy all of the .xml files from the AlternateConfigs\\FullModernLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +;
+           "To use, copy all of the .xml files from the AlternateConfigs\\FullModernLicensePlates folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine;
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullModernLicensePlates\\readme.txt", Description);
     }
     private void SetupFullExpandedJurisdiction()

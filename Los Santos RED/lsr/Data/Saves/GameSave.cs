@@ -136,6 +136,7 @@ namespace LosSantosRED.lsr.Data
                 GangWarSave gws = new GangWarSave();
                 gws.TargetGangID = gw.TargetGang.ID;
                 gws.ZoneIds = new List<string>();
+                gws.CenterPoint = gw.CenterPoint;
                 foreach(Zone zone in gw.ZonesToAttack)
                 {
                     gws.ZoneIds.Add(zone.InternalGameName);
@@ -152,6 +153,7 @@ namespace LosSantosRED.lsr.Data
                 GangRetaliationSave grs = new GangRetaliationSave();
                 grs.ZoneIds = gw.ZonesToAttack.Select(x=>x.InternalGameName).ToList();
                 grs.TargetGangID = gw.TargetGang.ID;
+                grs.CenterPoint = gw.CenterPoint;
                 GangRetaliationSaves.Add(grs);
             }
             

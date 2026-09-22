@@ -2167,7 +2167,7 @@ public class ActivityManager
         lockpickMiniGame.Dispose();
         Player.ButtonPrompts.RemovePrompts("hotwire");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        if (lockpickMiniGame.HasPickedLock)
+        if (lockpickMiniGame.HasPickedLock && Player.CurrentVehicle != null)
         {
             Player.CurrentVehicle.IsHotWireLocked = false;
             ///Player.CurrentVehicle.Vehicle.MustBeHotwired = true;

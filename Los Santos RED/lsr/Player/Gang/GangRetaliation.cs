@@ -300,9 +300,9 @@ public class GangRetaliation
     private void SendReturnedMessage()
     {
         List<string> Replies = new List<string>() {
-                                $"Took you long enough, {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is running rampant. Hold Out for {NativeHelper.ConvertMSToTime(RetaliationTime)}.",
-                                $"We are getting fucked by {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Hold out for {NativeHelper.ConvertMSToTime(RetaliationTime)}",
-                                $"We're you in Lemoyne? The fuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are all over us! We need you to hold out for {NativeHelper.ConvertMSToTime(RetaliationTime)}",
+                                $"Took you long enough, {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ is running rampant. Hold Out for {RetaliationTimeMinutes} minutes.",
+                                $"We are getting fucked by {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Hold out for {RetaliationTimeMinutes} minutes",
+                                $"We're you in Lemoyne? The fuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are all over us! We need you to hold out for {RetaliationTimeMinutes} minutes",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
     }
@@ -323,6 +323,15 @@ public class GangRetaliation
                                 $"So much for {ZonesToAttack.FirstOrDefault()?.DisplayName} the motherfuckers at {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are back to running it.",
                                 };
         Player.CellPhone.AddScheduledText(Player.CurrentGang.Contact, Replies.PickRandom(), 0, true);
+    }
+
+    private int RetaliationTimeMinutes
+    {
+        get
+        {
+            TimeSpan t = TimeSpan.FromMilliseconds(RetaliationTime);
+            return (int)Math.Ceiling(t.TotalMinutes);
+        }
     }
     private void SendWonMessage()
     {

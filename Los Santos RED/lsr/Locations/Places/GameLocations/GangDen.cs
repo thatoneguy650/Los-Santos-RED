@@ -100,7 +100,15 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         }
         if (!IsAvailableForPlayer)
         {
-            Game.DisplayHelp($"{Name} is only available to associates and members");
+            if (OriginalAssignedAssociationID != AssignedAssociationID)
+            {
+                Game.DisplayHelp($"{Name} is contested");
+            }
+            else
+            {
+                Game.DisplayHelp($"{Name} is only available to associates and members");
+            }
+            
             return;
         }
         if (!CanInteract)
@@ -122,7 +130,14 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     {
         if (!IsAvailableForPlayer)
         {
-            Game.DisplayHelp($"{Name} is only available to associates and members");
+            if (OriginalAssignedAssociationID != AssignedAssociationID)
+            {
+                Game.DisplayHelp($"{Name} is contested");
+            }
+            else
+            {
+                Game.DisplayHelp($"{Name} is only available to associates and members");
+            }
             StoreCamera = locationCamera;
             DisposeCamera(isInside);
             DisposeInterior();

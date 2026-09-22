@@ -145,7 +145,7 @@ public class GangWar
             HasPlayerEnteredArea = true;
 
 
-            EntryPoint.WriteToConsole("GangWar Player has entered the zone for the first time");
+            EntryPoint.WriteToConsole($"GangWar Player has entered the zone for the first time CenterPoint:{CenterPoint} Player.Position{Player.Position}");
         }
     }
 

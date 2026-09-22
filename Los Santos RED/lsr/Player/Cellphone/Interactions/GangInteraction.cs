@@ -329,7 +329,7 @@ public class GangInteraction : IContactMenuInteraction
             "~n~~c~Greyed Out~s~ Zones cannot be captured." +
             
             "~n~~n~ Install the AlternateConfigs\\RemoveVanillaGangs oiv and set GangSettings.DisableVanillaGangZoneTakeover to false to allow taking over vanilla zones." +
-            "~n~ If using ~h~Full Modern Traffic~s~ use the novanillagang_addon oiv to remove vanilla gang spawns.", 
+            "~n~ If using Full Modern Traffic use the novanillagang_addon oiv to remove vanilla gang spawns.", 
             new List<ZoneDisplay> { });
 
         UpdateGangWarZoneSelectorMenu();
@@ -338,6 +338,11 @@ public class GangInteraction : IContactMenuInteraction
         UIMenuItem GangWarStart = new UIMenuItem("Start", $"Start the war.");
         GangWarStart.Activated += (sender, selectedItem) =>
         {
+            if(ZoneMenu.SelectedItem.IsDisabled)
+            {
+                Game.DisplaySubtitle("Zone cannot be captured");
+                return;
+            }
             Player.GangTerritoryManager.StartGangWar(GangWarTargetMenu.SelectedItem?.Gang, ZoneMenu.SelectedItem?.Zone);
             sender.Visible = false;
         };
@@ -375,7 +380,27 @@ public class GangInteraction : IContactMenuInteraction
                 {
                     zed.HasDen = true;
                 }
-                zonesToSelect.Add(zed);
+
+
+                bool addZone = true;
+
+                if(toAdded.DisableGangTakeover)
+                {
+                    addZone = false;
+                }
+                if(!Settings.SettingsManager.GangSettings.DisableVanillaGangZoneTakeover)
+                {
+                    addZone = true;
+                }
+
+
+                zed.IsDisabled = !addZone;
+
+                //if (addZone)
+                //{
+                    zonesToSelect.Add(zed);
+                //}
+                
             }
 
         }
@@ -894,9 +919,14 @@ public class GangInteraction : IContactMenuInteraction
 
         public Zone Zone { get; set; }
         public bool HasDen { get; set; }
+        public bool IsDisabled { get; set; }
         public override string ToString()
         {
-            if(HasDen)
+            if(IsDisabled)
+            {
+                return $"~c~{Zone.DisplayName}~s~";
+            }
+            else if(HasDen)
             {
                 return $"~g~{Zone.DisplayName}~s~";
             }

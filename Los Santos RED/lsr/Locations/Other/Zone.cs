@@ -219,7 +219,7 @@ public class Zone
         {
             toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
         }
-        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && AssignedGang != null)
+        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && AssignedGang != null && !IsContestedTerritory)
         {
             toDisplay += $"{CurrentDefaultTextColor} - " + AssignedGang.ColorInitials;
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssignedGang);
@@ -234,7 +234,7 @@ public class Zone
         }
         if (IsContestedTerritory)
         {
-            toDisplay +=" (Contested)";
+            toDisplay += $"{CurrentDefaultTextColor} (Contested)";
         }
         return toDisplay;
     }

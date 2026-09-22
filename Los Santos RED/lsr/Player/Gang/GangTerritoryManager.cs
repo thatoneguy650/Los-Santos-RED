@@ -116,7 +116,7 @@ public class GangTerritoryManager
             Retaliations.Add(gr);
 
         }
-        EntryPoint.WriteToConsole($"Gang War ENDED with {gangToBattle.ShortName} in {existingWar.ZonesToAttack.FirstOrDefault().DisplayName} IsPlayerVictory:{IsPlayerVictory}");
+        EntryPoint.WriteToConsole($"Gang War ENDED with {gangToBattle.ShortName} in {existingWar.ZonesToAttack.FirstOrDefault().DisplayName} IsPlayerVictory:{IsPlayerVictory} prevCenterPoint{existingWar.CenterPoint}");
 
         GangWars.Remove(existingWar);
         return true;

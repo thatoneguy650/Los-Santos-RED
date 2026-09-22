@@ -138,7 +138,7 @@ public class LESpawnTask : SpawnTask
                         {
                             AddPassengers();
                         }
-                        if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats.Any())
+                        if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats != null && VehicleType.CaninePossibleSeats.Any())
                         {
                             EntryPoint.WriteToConsole("LE SPAWN TASK ATTEMPT VEHICLE SPAWN CANINE1");
                             AddCaninePassengers();
