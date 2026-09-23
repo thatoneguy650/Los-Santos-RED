@@ -42,10 +42,10 @@ public class PedBrain
         {
             EntryPoint.WriteToConsole($"{PedExt.Handle} IS GETTING A PED BRAIN UPDATE");
         }
-        if (!PedExt.CanBeTasked)
-        {
-            return;
-        }
+        //if (!PedExt.CanBeTasked)
+        //{
+        //    return;
+        //}
         if (PedExt.CanBeTasked && PedExt.CanBeAmbientTasked)
         {
             if (PedExt.DistanceToPlayer >= 350f)//230f)

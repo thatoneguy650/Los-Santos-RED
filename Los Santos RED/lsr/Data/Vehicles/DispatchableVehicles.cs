@@ -3393,6 +3393,16 @@ public class DispatchableVehicles : IDispatchableVehicles
             {
                 DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
                         {
+                            new DispatchableVehicleModValue(11,100),
+                        },
+            });
+        }
+        else if (agencyID == "LSIAPD")
+        {
+            policeTerminus.VehicleMods.Add(new DispatchableVehicleMod(48, 100)
+            {
+                DispatchableVehicleModValues = new List<DispatchableVehicleModValue>()
+                        {
                             new DispatchableVehicleModValue(10,100),
                         },
             });
