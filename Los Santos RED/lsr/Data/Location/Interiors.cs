@@ -1320,7 +1320,7 @@ public class Interiors : IInteriors
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(3082015943, new Vector3(1167.129f,2703.754f,38.30173f)){ LockWhenClosed = true, InteractPostion = new Vector3(1166.135f, 2703.446f, 38.17941f), InteractHeader = 3.388772f },
+                    new InteriorDoor(3082015943, new Vector3(1167.1290f, 2703.7540f, 38.3017f)){ LockWhenClosed = true, InteractPostion = new Vector3(1166.135f, 2703.446f, 38.17941f), InteractHeader = 3.388772f },
                 }) {
                 IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
             InteractPoints = new List<InteriorInteract>()
@@ -3909,7 +3909,7 @@ public class Interiors : IInteriors
             },
 
             // Mafia Mid APts
-            new GangDenInterior(29926514, "Mafia Gang House") // 299265 +14
+            new GangDenInterior(29926514, "Pavano Gang House") // 299265 +14 Pavano
             {
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
@@ -4042,6 +4042,7 @@ public class Interiors : IInteriors
                 {
                     new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
                     {
+                        AssociationID = "AMBIENT_GANG_PAVANO",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
                         ForcedScenarios = new List<string>()
                         {
@@ -4050,6 +4051,7 @@ public class Interiors : IInteriors
                     },
                     new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
                     {
+                        AssociationID = "AMBIENT_GANG_PAVANO",
                         TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>()
                         {
@@ -4068,6 +4070,7 @@ public class Interiors : IInteriors
                     //},
                     new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
                     {
+                        AssociationID = "AMBIENT_GANG_PAVANO",
                         TaskRequirements = TaskRequirements.Guard,
                         ForcedScenarios = new List<string>()
                         {
@@ -4077,6 +4080,7 @@ public class Interiors : IInteriors
                     },
                     new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
                     {
+                        AssociationID = "AMBIENT_GANG_PAVANO",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
                         ForcedScenarios = new List<string>()
                         {
@@ -4085,7 +4089,726 @@ public class Interiors : IInteriors
                     },
                 }
             },
+            new GangDenInterior(29926515, "Lupisella Gang House") // 299265 +15 Lupisella
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // mini office
+                    new PropSpawn("vw_prop_vw_wallart_133a", new SpawnPlace(new Vector3(57.70f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(56.6f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_134a", new SpawnPlace(new Vector3(55.50f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
 
+
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(56.6f, -86.95f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(57.31774f, -86.55609f, -74.388f), -118.999153f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtrayb", new SpawnPlace(new Vector3(57.5090637f, -86.44334f, -74.388f), -18.0001335f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(57.0184746f, -86.94511f, -74.388f), -172.000839f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(58.01013f, -87.33649f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_tallcabinet_01a", new SpawnPlace(new Vector3(58.55f, -87.35f, -75.19f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_skull_01b", new SpawnPlace(new Vector3(58.3996964f, -87.27606f, -73.29526f), -150.000549f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_12a", new SpawnPlace(new Vector3(58.65291f, -87.1909943f, -73.29526f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_bin_10a", new SpawnPlace(new Vector3(55.2f, -86f, -75.2f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(56.22139f, -85.79577f, -75.19622f), 33.9999542f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(55.4963455f, -83.8f, -75.19622f), 143.000015f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_art_football_01a", new SpawnPlace(new Vector3(59.0906143f, -84.35525f, -74.13796f), -2.00083876f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_biker_gcase_s", new SpawnPlace(new Vector3(59.0777359f, -85.35643f, -74.08f), -90.0004349f)) { PlaceOnGround = true },
+
+                    // main room
+                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(65.35682f, -91.86452f, -75.19622f), -48.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_vase_11a", new SpawnPlace(new Vector3(55.36487f, -77.63798f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunitl_01", new SpawnPlace(new Vector3(54.85f, -80.65f, -75.19f), 89.99948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_car_01a", new SpawnPlace(new Vector3(54.9987335f, -79.6f, -74.25867f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_02a", new SpawnPlace(new Vector3(55f, -79.6f, -73.78607f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_05a", new SpawnPlace(new Vector3(55f, -79.6f, -73.29533f), 89.99999f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_sideboardl_03", new SpawnPlace(new Vector3(62.85f, -78.68964f, -75.19f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("m26_1_prop_m61_art_statue_01e", new SpawnPlace(new Vector3(62.88426f, -79.87989f, -74.1941f), -99.9989548f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_m_statue", new SpawnPlace(new Vector3(62.8419f, -78.65485f, -74.1941f), -88.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(62.8371658f, -77.4780655f, -74.1941f), -92.9996948f)) { PlaceOnGround = false },
+                    new PropSpawn("m25_2_prop_m52_bowl_empty_01a", new SpawnPlace(new Vector3(62.8134155f, -79.2872543f, -74.1941f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bowl_fruit_01a", new SpawnPlace(new Vector3(62.7672424f, -78.07565f, -74.1941f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_acc_rugwoolm_04", new SpawnPlace(new Vector3(57.5f, -80.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_tab_coffee_07", new SpawnPlace(new Vector3(57.6761971f, -80.67051f, -75.15414f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(57.6449242f, -80.69767f, -74.70421f), 49.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtraya", new SpawnPlace(new Vector3(58.0398369f, -80.41496f, -74.70422f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.61332f, -81.2185f, -74.70423f), 88.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_coke_spoon_01a", new SpawnPlace(new Vector3(57.82157f, -81.17453f, -74.70423f), -20.9999847f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_magrack", new SpawnPlace(new Vector3(60.1123276f, -78.97494f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(57.5f, -77.02f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(60.2f, -80.65f, -75.19622f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_drinkglobe_01a", new SpawnPlace(new Vector3(60.1838f, -76.76568f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(62.65992f, -76.54385f, -75.19639f), 76.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(55.3108177f, -76.66736f, -75.19622f), 141.999222f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_76a", new SpawnPlace(new Vector3(63.185524f, -78.8257141f, -73.9405f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_170a", new SpawnPlace(new Vector3(62.6f, -76.0179138f, -74f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.9867f, -85.15f, -74.05f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_100a", new SpawnPlace(new Vector3(62.89159f, -85.2373047f, -74.15f), 89.99999f)) { PlaceOnGround = false },
+
+
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(62.8251648f, -80.81617f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_03a", new SpawnPlace(new Vector3(65.34733f, -85.85438f, -75.19622f), 151.999237f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ex_prop_ex_console_table_01", new SpawnPlace(new Vector3(65f, -81.6f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_bird_01a", new SpawnPlace(new Vector3(64.9828339f, -81.5553f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01c", new SpawnPlace(new Vector3(64.43574f, -81.66322f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01b", new SpawnPlace(new Vector3(65.5327148f, -81.68282f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_tre_washbasket", new SpawnPlace(new Vector3(63.7836075f, -81.5174f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_vacuum", new SpawnPlace(new Vector3(65.60325f, -87.00877f, -75.19622f), 93.9995f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.61152f, -89.54493f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(62.09074f, -85.82804f, -74.2232056f), -120.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0877075f, -85.65382f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(59.75949f, -87.27494f, -74.2162247f), -131.999771f)) { PlaceOnGround = true },
+
+
+
+
+                    new PropSpawn("ex_office_swag_booze_cigs", new SpawnPlace(new Vector3(59.37447f, -76.9423447f, -75.19622f), -75.00037f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_booze_cigs3", new SpawnPlace(new Vector3(61.54395f, -76.45648f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    // bedroom
+                    new PropSpawn("apa_mp_h_bed_with_table_02", new SpawnPlace(new Vector3(68.5f, -76.1f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(67.17787f, -76.44816f, -74.55f), 57.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_bottle_pills_01a", new SpawnPlace(new Vector3(66.9607f, -76.42869f, -74.5598145f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_fh_bedsideclock", new SpawnPlace(new Vector3(69.91819f, -76.49267f, -74.5f), -45.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mbottoman", new SpawnPlace(new Vector3(68.5f, -79.5193f, -75.19622f), 0.0002827644f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_exer_bike_01", new SpawnPlace(new Vector3(66.35f, -80.3f, -75.09f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(70.13561f, -83.27113f, -75.19622f), -70.0000839f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_acc_stand_01a", new SpawnPlace(new Vector3(70.21089f, -82.25815f, -75.19622f), -89.99902f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(68.6f, -83.45f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_antique_box", new SpawnPlace(new Vector3(68.03573f, -83.44211f, -74.24622f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_battle_ps_box_01", new SpawnPlace(new Vector3(69.32231f, -83.42601f, -74.24622f), 22.99998f)) { PlaceOnGround = false },
+                    //new PropSpawn("hei_heist_acc_flowers_02", new SpawnPlace(new Vector3(68.59687f, -83.4378357f, -74.24622f), 0f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MafiaHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MafiaHouseStandard1",new Vector3(57.10546f, -85.77699f, -74.19618f), 181.7523f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MafiaHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MafiaHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MafiaHouseRest1", new Vector3(66.35446f, -77.41423f, -74.1962f), 268.7238f,"Rest")
+                    {
+                        CameraPosition = new Vector3(67.27582f, -80.83466f, -72.72119f),
+                        CameraDirection = new Vector3(0.3024873f, 0.7844725f, -0.5413911f),
+                        CameraRotation = new Rotator(-32.77839f, 1.015465E-06f, -21.0863f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_LUPISELLA",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_LUPISELLA",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    //new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    //{
+                    //    TaskRequirements = TaskRequirements.Guard,
+                    //    ForcedScenarios = new List<string>()
+                    //    {
+                    //        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                    //        "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                    //    },
+                    //},
+                    new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_LUPISELLA",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_LUPISELLA",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926516, "Messina Gang House") // 299265 +16 Messina
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // mini office
+                    new PropSpawn("vw_prop_vw_wallart_133a", new SpawnPlace(new Vector3(57.70f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(56.6f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_134a", new SpawnPlace(new Vector3(55.50f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+
+
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(56.6f, -86.95f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(57.31774f, -86.55609f, -74.388f), -118.999153f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtrayb", new SpawnPlace(new Vector3(57.5090637f, -86.44334f, -74.388f), -18.0001335f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(57.0184746f, -86.94511f, -74.388f), -172.000839f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(58.01013f, -87.33649f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_tallcabinet_01a", new SpawnPlace(new Vector3(58.55f, -87.35f, -75.19f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_skull_01b", new SpawnPlace(new Vector3(58.3996964f, -87.27606f, -73.29526f), -150.000549f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_12a", new SpawnPlace(new Vector3(58.65291f, -87.1909943f, -73.29526f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_bin_10a", new SpawnPlace(new Vector3(55.2f, -86f, -75.2f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(56.22139f, -85.79577f, -75.19622f), 33.9999542f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(55.4963455f, -83.8f, -75.19622f), 143.000015f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_art_football_01a", new SpawnPlace(new Vector3(59.0906143f, -84.35525f, -74.13796f), -2.00083876f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_biker_gcase_s", new SpawnPlace(new Vector3(59.0777359f, -85.35643f, -74.08f), -90.0004349f)) { PlaceOnGround = true },
+
+                    // main room
+                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(65.35682f, -91.86452f, -75.19622f), -48.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_vase_11a", new SpawnPlace(new Vector3(55.36487f, -77.63798f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunitl_01", new SpawnPlace(new Vector3(54.85f, -80.65f, -75.19f), 89.99948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_car_01a", new SpawnPlace(new Vector3(54.9987335f, -79.6f, -74.25867f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_02a", new SpawnPlace(new Vector3(55f, -79.6f, -73.78607f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_05a", new SpawnPlace(new Vector3(55f, -79.6f, -73.29533f), 89.99999f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_sideboardl_03", new SpawnPlace(new Vector3(62.85f, -78.68964f, -75.19f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("m26_1_prop_m61_art_statue_01e", new SpawnPlace(new Vector3(62.88426f, -79.87989f, -74.1941f), -99.9989548f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_m_statue", new SpawnPlace(new Vector3(62.8419f, -78.65485f, -74.1941f), -88.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(62.8371658f, -77.4780655f, -74.1941f), -92.9996948f)) { PlaceOnGround = false },
+                    new PropSpawn("m25_2_prop_m52_bowl_empty_01a", new SpawnPlace(new Vector3(62.8134155f, -79.2872543f, -74.1941f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bowl_fruit_01a", new SpawnPlace(new Vector3(62.7672424f, -78.07565f, -74.1941f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_acc_rugwoolm_04", new SpawnPlace(new Vector3(57.5f, -80.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_tab_coffee_07", new SpawnPlace(new Vector3(57.6761971f, -80.67051f, -75.15414f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(57.6449242f, -80.69767f, -74.70421f), 49.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtraya", new SpawnPlace(new Vector3(58.0398369f, -80.41496f, -74.70422f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.61332f, -81.2185f, -74.70423f), 88.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_coke_spoon_01a", new SpawnPlace(new Vector3(57.82157f, -81.17453f, -74.70423f), -20.9999847f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_magrack", new SpawnPlace(new Vector3(60.1123276f, -78.97494f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(57.5f, -77.02f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(60.2f, -80.65f, -75.19622f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_drinkglobe_01a", new SpawnPlace(new Vector3(60.1838f, -76.76568f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(62.65992f, -76.54385f, -75.19639f), 76.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(55.3108177f, -76.66736f, -75.19622f), 141.999222f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_76a", new SpawnPlace(new Vector3(63.185524f, -78.8257141f, -73.9405f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_170a", new SpawnPlace(new Vector3(62.6f, -76.0179138f, -74f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.9867f, -85.15f, -74.05f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_100a", new SpawnPlace(new Vector3(62.89159f, -85.2373047f, -74.15f), 89.99999f)) { PlaceOnGround = false },
+
+
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(62.8251648f, -80.81617f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_03a", new SpawnPlace(new Vector3(65.34733f, -85.85438f, -75.19622f), 151.999237f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ex_prop_ex_console_table_01", new SpawnPlace(new Vector3(65f, -81.6f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_bird_01a", new SpawnPlace(new Vector3(64.9828339f, -81.5553f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01c", new SpawnPlace(new Vector3(64.43574f, -81.66322f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01b", new SpawnPlace(new Vector3(65.5327148f, -81.68282f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_tre_washbasket", new SpawnPlace(new Vector3(63.7836075f, -81.5174f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_vacuum", new SpawnPlace(new Vector3(65.60325f, -87.00877f, -75.19622f), 93.9995f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.61152f, -89.54493f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(62.09074f, -85.82804f, -74.2232056f), -120.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0877075f, -85.65382f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(59.75949f, -87.27494f, -74.2162247f), -131.999771f)) { PlaceOnGround = true },
+
+
+
+
+                    new PropSpawn("ex_office_swag_booze_cigs", new SpawnPlace(new Vector3(59.37447f, -76.9423447f, -75.19622f), -75.00037f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_booze_cigs3", new SpawnPlace(new Vector3(61.54395f, -76.45648f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    // bedroom
+                    new PropSpawn("apa_mp_h_bed_with_table_02", new SpawnPlace(new Vector3(68.5f, -76.1f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(67.17787f, -76.44816f, -74.55f), 57.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_bottle_pills_01a", new SpawnPlace(new Vector3(66.9607f, -76.42869f, -74.5598145f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_fh_bedsideclock", new SpawnPlace(new Vector3(69.91819f, -76.49267f, -74.5f), -45.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mbottoman", new SpawnPlace(new Vector3(68.5f, -79.5193f, -75.19622f), 0.0002827644f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_exer_bike_01", new SpawnPlace(new Vector3(66.35f, -80.3f, -75.09f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(70.13561f, -83.27113f, -75.19622f), -70.0000839f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_acc_stand_01a", new SpawnPlace(new Vector3(70.21089f, -82.25815f, -75.19622f), -89.99902f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(68.6f, -83.45f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_antique_box", new SpawnPlace(new Vector3(68.03573f, -83.44211f, -74.24622f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_battle_ps_box_01", new SpawnPlace(new Vector3(69.32231f, -83.42601f, -74.24622f), 22.99998f)) { PlaceOnGround = false },
+                    //new PropSpawn("hei_heist_acc_flowers_02", new SpawnPlace(new Vector3(68.59687f, -83.4378357f, -74.24622f), 0f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MafiaHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MafiaHouseStandard1",new Vector3(57.10546f, -85.77699f, -74.19618f), 181.7523f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MafiaHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MafiaHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MafiaHouseRest1", new Vector3(66.35446f, -77.41423f, -74.1962f), 268.7238f,"Rest")
+                    {
+                        CameraPosition = new Vector3(67.27582f, -80.83466f, -72.72119f),
+                        CameraDirection = new Vector3(0.3024873f, 0.7844725f, -0.5413911f),
+                        CameraRotation = new Rotator(-32.77839f, 1.015465E-06f, -21.0863f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_MESSINA",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_MESSINA",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    //new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    //{
+                    //    TaskRequirements = TaskRequirements.Guard,
+                    //    ForcedScenarios = new List<string>()
+                    //    {
+                    //        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                    //        "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                    //    },
+                    //},
+                    new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_MESSINA",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_MESSINA",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926517, "Ancelotti Gang House") // 299265 +17 Ancelotti
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // mini office
+                    new PropSpawn("vw_prop_vw_wallart_133a", new SpawnPlace(new Vector3(57.70f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(56.6f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_134a", new SpawnPlace(new Vector3(55.50f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+
+
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(56.6f, -86.95f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(57.31774f, -86.55609f, -74.388f), -118.999153f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtrayb", new SpawnPlace(new Vector3(57.5090637f, -86.44334f, -74.388f), -18.0001335f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(57.0184746f, -86.94511f, -74.388f), -172.000839f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(58.01013f, -87.33649f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_tallcabinet_01a", new SpawnPlace(new Vector3(58.55f, -87.35f, -75.19f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_skull_01b", new SpawnPlace(new Vector3(58.3996964f, -87.27606f, -73.29526f), -150.000549f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_12a", new SpawnPlace(new Vector3(58.65291f, -87.1909943f, -73.29526f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_bin_10a", new SpawnPlace(new Vector3(55.2f, -86f, -75.2f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(56.22139f, -85.79577f, -75.19622f), 33.9999542f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(55.4963455f, -83.8f, -75.19622f), 143.000015f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_art_football_01a", new SpawnPlace(new Vector3(59.0906143f, -84.35525f, -74.13796f), -2.00083876f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_biker_gcase_s", new SpawnPlace(new Vector3(59.0777359f, -85.35643f, -74.08f), -90.0004349f)) { PlaceOnGround = true },
+
+                    // main room
+                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(65.35682f, -91.86452f, -75.19622f), -48.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_vase_11a", new SpawnPlace(new Vector3(55.36487f, -77.63798f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunitl_01", new SpawnPlace(new Vector3(54.85f, -80.65f, -75.19f), 89.99948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_car_01a", new SpawnPlace(new Vector3(54.9987335f, -79.6f, -74.25867f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_02a", new SpawnPlace(new Vector3(55f, -79.6f, -73.78607f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_05a", new SpawnPlace(new Vector3(55f, -79.6f, -73.29533f), 89.99999f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_sideboardl_03", new SpawnPlace(new Vector3(62.85f, -78.68964f, -75.19f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("m26_1_prop_m61_art_statue_01e", new SpawnPlace(new Vector3(62.88426f, -79.87989f, -74.1941f), -99.9989548f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_m_statue", new SpawnPlace(new Vector3(62.8419f, -78.65485f, -74.1941f), -88.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(62.8371658f, -77.4780655f, -74.1941f), -92.9996948f)) { PlaceOnGround = false },
+                    new PropSpawn("m25_2_prop_m52_bowl_empty_01a", new SpawnPlace(new Vector3(62.8134155f, -79.2872543f, -74.1941f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bowl_fruit_01a", new SpawnPlace(new Vector3(62.7672424f, -78.07565f, -74.1941f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_acc_rugwoolm_04", new SpawnPlace(new Vector3(57.5f, -80.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_tab_coffee_07", new SpawnPlace(new Vector3(57.6761971f, -80.67051f, -75.15414f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(57.6449242f, -80.69767f, -74.70421f), 49.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtraya", new SpawnPlace(new Vector3(58.0398369f, -80.41496f, -74.70422f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.61332f, -81.2185f, -74.70423f), 88.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_coke_spoon_01a", new SpawnPlace(new Vector3(57.82157f, -81.17453f, -74.70423f), -20.9999847f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_magrack", new SpawnPlace(new Vector3(60.1123276f, -78.97494f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(57.5f, -77.02f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(60.2f, -80.65f, -75.19622f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_drinkglobe_01a", new SpawnPlace(new Vector3(60.1838f, -76.76568f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(62.65992f, -76.54385f, -75.19639f), 76.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(55.3108177f, -76.66736f, -75.19622f), 141.999222f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_76a", new SpawnPlace(new Vector3(63.185524f, -78.8257141f, -73.9405f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_170a", new SpawnPlace(new Vector3(62.6f, -76.0179138f, -74f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.9867f, -85.15f, -74.05f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_100a", new SpawnPlace(new Vector3(62.89159f, -85.2373047f, -74.15f), 89.99999f)) { PlaceOnGround = false },
+
+
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(62.8251648f, -80.81617f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_03a", new SpawnPlace(new Vector3(65.34733f, -85.85438f, -75.19622f), 151.999237f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ex_prop_ex_console_table_01", new SpawnPlace(new Vector3(65f, -81.6f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_bird_01a", new SpawnPlace(new Vector3(64.9828339f, -81.5553f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01c", new SpawnPlace(new Vector3(64.43574f, -81.66322f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01b", new SpawnPlace(new Vector3(65.5327148f, -81.68282f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_tre_washbasket", new SpawnPlace(new Vector3(63.7836075f, -81.5174f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_vacuum", new SpawnPlace(new Vector3(65.60325f, -87.00877f, -75.19622f), 93.9995f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.61152f, -89.54493f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(62.09074f, -85.82804f, -74.2232056f), -120.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0877075f, -85.65382f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(59.75949f, -87.27494f, -74.2162247f), -131.999771f)) { PlaceOnGround = true },
+
+
+
+
+                    new PropSpawn("ex_office_swag_booze_cigs", new SpawnPlace(new Vector3(59.37447f, -76.9423447f, -75.19622f), -75.00037f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_booze_cigs3", new SpawnPlace(new Vector3(61.54395f, -76.45648f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    // bedroom
+                    new PropSpawn("apa_mp_h_bed_with_table_02", new SpawnPlace(new Vector3(68.5f, -76.1f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(67.17787f, -76.44816f, -74.55f), 57.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_bottle_pills_01a", new SpawnPlace(new Vector3(66.9607f, -76.42869f, -74.5598145f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_fh_bedsideclock", new SpawnPlace(new Vector3(69.91819f, -76.49267f, -74.5f), -45.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mbottoman", new SpawnPlace(new Vector3(68.5f, -79.5193f, -75.19622f), 0.0002827644f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_exer_bike_01", new SpawnPlace(new Vector3(66.35f, -80.3f, -75.09f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(70.13561f, -83.27113f, -75.19622f), -70.0000839f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_acc_stand_01a", new SpawnPlace(new Vector3(70.21089f, -82.25815f, -75.19622f), -89.99902f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(68.6f, -83.45f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_antique_box", new SpawnPlace(new Vector3(68.03573f, -83.44211f, -74.24622f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_battle_ps_box_01", new SpawnPlace(new Vector3(69.32231f, -83.42601f, -74.24622f), 22.99998f)) { PlaceOnGround = false },
+                    //new PropSpawn("hei_heist_acc_flowers_02", new SpawnPlace(new Vector3(68.59687f, -83.4378357f, -74.24622f), 0f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MafiaHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MafiaHouseStandard1",new Vector3(57.10546f, -85.77699f, -74.19618f), 181.7523f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MafiaHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MafiaHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MafiaHouseRest1", new Vector3(66.35446f, -77.41423f, -74.1962f), 268.7238f,"Rest")
+                    {
+                        CameraPosition = new Vector3(67.27582f, -80.83466f, -72.72119f),
+                        CameraDirection = new Vector3(0.3024873f, 0.7844725f, -0.5413911f),
+                        CameraRotation = new Rotator(-32.77839f, 1.015465E-06f, -21.0863f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_ANCELOTTI",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_ANCELOTTI",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    //new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    //{
+                    //    TaskRequirements = TaskRequirements.Guard,
+                    //    ForcedScenarios = new List<string>()
+                    //    {
+                    //        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                    //        "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                    //    },
+                    //},
+                    new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_ANCELOTTI",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_ANCELOTTI",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
+            new GangDenInterior(29926518, "Gambetti Gang House") // 299265 +18 Gambetti
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // mini office
+                    new PropSpawn("vw_prop_vw_wallart_133a", new SpawnPlace(new Vector3(57.70f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_132a", new SpawnPlace(new Vector3(56.6f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_134a", new SpawnPlace(new Vector3(55.50f, -87.78223f, -73.7f), 177.999878f)) { PlaceOnGround = false },
+
+
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(56.6f, -86.95f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ng_proc_coffee_01a", new SpawnPlace(new Vector3(57.31774f, -86.55609f, -74.388f), -118.999153f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtrayb", new SpawnPlace(new Vector3(57.5090637f, -86.44334f, -74.388f), -18.0001335f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(57.0184746f, -86.94511f, -74.388f), -172.000839f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ex_office_swag_guns02", new SpawnPlace(new Vector3(58.01013f, -87.33649f, -75.19f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_2_prop_m32_tallcabinet_01a", new SpawnPlace(new Vector3(58.55f, -87.35f, -75.19f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_skull_01b", new SpawnPlace(new Vector3(58.3996964f, -87.27606f, -73.29526f), -150.000549f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_12a", new SpawnPlace(new Vector3(58.65291f, -87.1909943f, -73.29526f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("prop_bin_10a", new SpawnPlace(new Vector3(55.2f, -86f, -75.2f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("p_clb_officechair_s", new SpawnPlace(new Vector3(56.22139f, -85.79577f, -75.19622f), 33.9999542f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_art_statue_tgr_01a", new SpawnPlace(new Vector3(55.4963455f, -83.8f, -75.19622f), 143.000015f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_art_football_01a", new SpawnPlace(new Vector3(59.0906143f, -84.35525f, -74.13796f), -2.00083876f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_biker_gcase_s", new SpawnPlace(new Vector3(59.0777359f, -85.35643f, -74.08f), -90.0004349f)) { PlaceOnGround = true },
+
+                    // main room
+                    new PropSpawn("h4_prop_h4_pile_letters_01a", new SpawnPlace(new Vector3(65.35682f, -91.86452f, -75.19622f), -48.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_vase_11a", new SpawnPlace(new Vector3(55.36487f, -77.63798f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("hei_heist_str_avunitl_01", new SpawnPlace(new Vector3(54.85f, -80.65f, -75.19f), 89.99948f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_car_01a", new SpawnPlace(new Vector3(54.9987335f, -79.6f, -74.25867f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_02a", new SpawnPlace(new Vector3(55f, -79.6f, -73.78607f), 89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_car_05a", new SpawnPlace(new Vector3(55f, -79.6f, -73.29533f), 89.99999f)) { PlaceOnGround = false },
+
+                    new PropSpawn("hei_heist_str_sideboardl_03", new SpawnPlace(new Vector3(62.85f, -78.68964f, -75.19f), -89.99999f)) { PlaceOnGround = true },
+                    new PropSpawn("m26_1_prop_m61_art_statue_01e", new SpawnPlace(new Vector3(62.88426f, -79.87989f, -74.1941f), -99.9989548f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_m_statue", new SpawnPlace(new Vector3(62.8419f, -78.65485f, -74.1941f), -88.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_casino_art_panther_01a", new SpawnPlace(new Vector3(62.8371658f, -77.4780655f, -74.1941f), -92.9996948f)) { PlaceOnGround = false },
+                    new PropSpawn("m25_2_prop_m52_bowl_empty_01a", new SpawnPlace(new Vector3(62.8134155f, -79.2872543f, -74.1941f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("sf_prop_sf_bowl_fruit_01a", new SpawnPlace(new Vector3(62.7672424f, -78.07565f, -74.1941f), 0f)) { PlaceOnGround = false },
+
+                    new PropSpawn("apa_mp_h_acc_rugwoolm_04", new SpawnPlace(new Vector3(57.5f, -80.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("apa_mp_h_tab_coffee_07", new SpawnPlace(new Vector3(57.6761971f, -80.67051f, -75.15414f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_acc_drink_tray_02", new SpawnPlace(new Vector3(57.6449242f, -80.69767f, -74.70421f), 49.9999046f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mp_ashtraya", new SpawnPlace(new Vector3(58.0398369f, -80.41496f, -74.70422f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_coke_powder_02", new SpawnPlace(new Vector3(57.61332f, -81.2185f, -74.70423f), 88.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_coke_spoon_01a", new SpawnPlace(new Vector3(57.82157f, -81.17453f, -74.70423f), -20.9999847f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_j_magrack", new SpawnPlace(new Vector3(60.1123276f, -78.97494f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(57.5f, -77.02f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("m25_2_prop_m52_sofa_01a", new SpawnPlace(new Vector3(60.2f, -80.65f, -75.19622f), -89.9996262f)) { PlaceOnGround = true },
+                    new PropSpawn("sum_prop_ac_drinkglobe_01a", new SpawnPlace(new Vector3(60.1838f, -76.76568f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(62.65992f, -76.54385f, -75.19639f), 76.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("apa_mp_h_floorlamp_c", new SpawnPlace(new Vector3(55.3108177f, -76.66736f, -75.19622f), 141.999222f)) { PlaceOnGround = true },
+
+                    new PropSpawn("vw_prop_vw_wallart_76a", new SpawnPlace(new Vector3(63.185524f, -78.8257141f, -73.9405f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_170a", new SpawnPlace(new Vector3(62.6f, -76.0179138f, -74f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_143a", new SpawnPlace(new Vector3(65.9867f, -85.15f, -74.05f), -89.99999f)) { PlaceOnGround = false },
+                    new PropSpawn("vw_prop_vw_wallart_100a", new SpawnPlace(new Vector3(62.89159f, -85.2373047f, -74.15f), 89.99999f)) { PlaceOnGround = false },
+
+
+
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(62.8251648f, -80.81617f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_03a", new SpawnPlace(new Vector3(65.34733f, -85.85438f, -75.19622f), 151.999237f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("ex_prop_ex_console_table_01", new SpawnPlace(new Vector3(65f, -81.6f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_bird_01a", new SpawnPlace(new Vector3(64.9828339f, -81.5553f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01c", new SpawnPlace(new Vector3(64.43574f, -81.66322f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("h4_prop_int_plants_01b", new SpawnPlace(new Vector3(65.5327148f, -81.68282f, -74.1949844f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("v_res_tre_washbasket", new SpawnPlace(new Vector3(63.7836075f, -81.5174f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("v_res_vacuum", new SpawnPlace(new Vector3(65.60325f, -87.00877f, -75.19622f), 93.9995f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(65.61152f, -89.54493f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_bottle_macbeth", new SpawnPlace(new Vector3(62.09074f, -85.82804f, -74.2232056f), -120.9998f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_drink_whisky", new SpawnPlace(new Vector3(62.0877075f, -85.65382f, -74.2232056f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_pills2", new SpawnPlace(new Vector3(59.75949f, -87.27494f, -74.2162247f), -131.999771f)) { PlaceOnGround = true },
+
+
+
+
+                    new PropSpawn("ex_office_swag_booze_cigs", new SpawnPlace(new Vector3(59.37447f, -76.9423447f, -75.19622f), -75.00037f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_office_swag_booze_cigs3", new SpawnPlace(new Vector3(61.54395f, -76.45648f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    // bedroom
+                    new PropSpawn("apa_mp_h_bed_with_table_02", new SpawnPlace(new Vector3(68.5f, -76.1f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_pistol_xm3", new SpawnPlace(new Vector3(67.17787f, -76.44816f, -74.55f), 57.9994f)) { PlaceOnGround = true },
+                    new PropSpawn("xm3_prop_xm3_bottle_pills_01a", new SpawnPlace(new Vector3(66.9607f, -76.42869f, -74.5598145f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_fh_bedsideclock", new SpawnPlace(new Vector3(69.91819f, -76.49267f, -74.5f), -45.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("v_res_mbottoman", new SpawnPlace(new Vector3(68.5f, -79.5193f, -75.19622f), 0.0002827644f)) { PlaceOnGround = true },
+
+                    new PropSpawn("prop_exer_bike_01", new SpawnPlace(new Vector3(66.35f, -80.3f, -75.09f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("vw_prop_casino_art_plant_07a", new SpawnPlace(new Vector3(70.13561f, -83.27113f, -75.19622f), -70.0000839f)) { PlaceOnGround = true },
+                    new PropSpawn("sf_prop_sf_acc_stand_01a", new SpawnPlace(new Vector3(70.21089f, -82.25815f, -75.19622f), -89.99902f)) { PlaceOnGround = true },
+
+                    new PropSpawn("m25_2_prop_m52_sideboard_01b", new SpawnPlace(new Vector3(68.6f, -83.45f, -75.19622f), -179.999985f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_antique_box", new SpawnPlace(new Vector3(68.03573f, -83.44211f, -74.24622f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("ba_prop_battle_ps_box_01", new SpawnPlace(new Vector3(69.32231f, -83.42601f, -74.24622f), 22.99998f)) { PlaceOnGround = false },
+                    //new PropSpawn("hei_heist_acc_flowers_02", new SpawnPlace(new Vector3(68.59687f, -83.4378357f, -74.24622f), 0f)) { PlaceOnGround = false },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MafiaHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MafiaHouseStandard1",new Vector3(57.10546f, -85.77699f, -74.19618f), 181.7523f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MafiaHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MafiaHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                RestInteracts = new List<RestInteract>()
+                {
+                   new RestInteract("MafiaHouseRest1", new Vector3(66.35446f, -77.41423f, -74.1962f), 268.7238f,"Rest")
+                    {
+                        CameraPosition = new Vector3(67.27582f, -80.83466f, -72.72119f),
+                        CameraDirection = new Vector3(0.3024873f, 0.7844725f, -0.5413911f),
+                        CameraRotation = new Rotator(-32.77839f, 1.015465E-06f, -21.0863f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(61.74599f, -77.34471f, -74.19624f), 143.3068f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_GAMBETTI",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_FACILITY",
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(61.88632f, -79.07507f, -74.19624f), 92.78786f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_GAMBETTI",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_SMOKING_POT_CLUBHOUSE"
+                        },
+                    },
+                    //new GangConditionalLocation(new Vector3(60.80278f, -79.06251f, -74.19623f), 116.2029f, 100f)
+                    //{
+                    //    TaskRequirements = TaskRequirements.Guard,
+                    //    ForcedScenarios = new List<string>()
+                    //    {
+                    //        "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                    //        "WORLD_HUMAN_STAND_MOBILE_UPRIGHT_CLUBHOUSE"
+                    //    },
+                    //},
+                    new GangConditionalLocation(new Vector3(60.77461f, -84.37287f, -74.19624f), 2.66567f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_GAMBETTI",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE",
+                            "WORLD_HUMAN_STAND_IMPATIENT_CLUBHOUSE"
+                        },
+                    },
+                    new GangConditionalLocation(new Vector3(65.36079f, -84.32096f, -74.19624f), 87.33477f, 100f)
+                    {
+                        AssociationID = "AMBIENT_GANG_GAMBETTI",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_DRUG_DEALER_HARD",
+                        },
+                    },
+                }
+            },
 
 
             // Yardies Night Club
@@ -13826,6 +14549,63 @@ public class Interiors : IInteriors
                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
                     new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  93.75737f },//teller door
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca5Drawer1",new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1171.215f, 2715.287f, 38.06635f),360f-90.35101f,-.4f),
+                        Heading = 90.35101f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1175.178f, 2715.24f, 38.06626f),360f-271.4401f,-.4f),
+                        Heading = 271.4401f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaulttop",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1173.201f, 2716.751f, 38.06634f),360f-357.0772f,-.4f),
+                        Heading = 357.0772f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+            },
+            new BankInterior(906262,"Fleeca Bank") 
+            {
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true, 
+                SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, 
+                Doors =  new List<InteriorDoor>() {
+                   new InteriorDoor(2121050683,new Vector3(1175.5420f, 2710.8610f, 38.2269f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.24f, 2712.083f, 38.08813f), InteractHeader =  90f }, // vault door
+                   new InteriorDoor(3142793112,new Vector3(1176.4950f, 2703.6130f, 38.4391f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
+                   new InteriorDoor(73386408,new Vector3(1173.9030f, 2703.6130f, 38.4390f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
+                   new InteriorDoor(4163212883, new Vector3(1178.8700f, 2709.3650f, 38.3625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.461f, 2708.432f, 38.08786f), InteractHeader =  90f },//teller door
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
