@@ -6972,7 +6972,7 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnSPMap = false,
-            InteriorID = 29926514,
+            InteriorID = 29926515,
             MaxAssaultSpawns = 10,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -7023,7 +7023,7 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnSPMap = false,
-            InteriorID = 29926514,
+            InteriorID = 29926516,
             MaxAssaultSpawns = 20,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -7074,7 +7074,7 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnSPMap = false,
-            InteriorID = 29926514,
+            InteriorID = 29926517,
             MaxAssaultSpawns = 15,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -7127,7 +7127,7 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnSPMap = false,
-            InteriorID = 29926514,
+            InteriorID = 29926518,
             MaxAssaultSpawns = 10,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
