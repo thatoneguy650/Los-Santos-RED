@@ -11,5 +11,7 @@ namespace LosSantosRED.lsr.Interface
         Dispatcher Dispatcher { get; }
         GroupManager GroupManager { get; }
         CellPhone CellPhone { get; }
+        GangRequisitionManager GangRequisitionManager { get; }
+        GangCrewManager GangCrewManager { get; }
     }
 }

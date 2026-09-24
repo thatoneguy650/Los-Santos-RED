@@ -1,4 +1,4 @@
-using ExtensionsMethods;
+﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using Mod;
 using Rage;
@@ -11,12 +11,14 @@ using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
+    private readonly IEntityProvideable World;
     private bool WillDealDrugs = false;
     private bool WillHaveLongGuns = false;
     private bool WillHaveSidearms = false;
     private bool WillHaveMelee = false;
     public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name,gang.MemberName, world)
     {
+        World = world;
         Gang = gang;
         WasModSpawned = wasModSpawned;
         WeaponInventory = new WeaponInventory(this, settings);
@@ -52,6 +54,13 @@ public class GangMember : PedExt, IWeaponIssuable
     public override string BlipName => "Gang Member";
     public bool IsHitSquad { get; set; } = false;
     public bool IsBackupSquad { get; set; } = false;
+    /// <summary>
+    /// Set by GangRequisitionManager when this man joins a squad the player actually paid
+    /// for, capped at the number paid for. IsBackupSquad cannot serve this purpose:
+    /// GangBackup.GetBackupMembers also sets it on any same-gang ped that wanders within
+    /// 55m, so it marks who is in the squad, not who is on the bill.
+    /// </summary>
+    public bool WasRequisitionedBackup { get; set; } = false;
     public bool IsAddedToPlayerGroup { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
@@ -61,6 +70,14 @@ public class GangMember : PedExt, IWeaponIssuable
     public override bool HasWeapon => WeaponInventory.HasPistol || WeaponInventory.HasLongGun;
 
     public bool KeepUnarmed { get; set; }
+
+    public override void OnKilledPed(PedExt myPed)
+    {
+        base.OnKilledPed(myPed);
+        // If this is one of ours out with us, he just earned his keep.
+        PlayerToCheck?.GangRequisitionManager?.OnCrewMemberKilledSomeone(this, myPed);
+        
+    }
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -99,6 +116,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public override void OnDeath(IPoliceRespondable policeRespondable)
     {
         policeRespondable.GangTerritoryManager.AddCasuality(this);
+        policeRespondable.GangRequisitionManager?.OnBackupMemberKilled(this);
         base.OnDeath(policeRespondable);
     }
 
@@ -342,6 +360,23 @@ public class GangMember : PedExt, IWeaponIssuable
 
 
 
+        Gang playerGang = Player?.RelationshipManager?.GangRelationships?.CurrentGang;
+
+        // Standing for violence, scored on whose ground it happened on. The zone lookup
+        // above resolves the VICTIM's territory for its reputation maths; this needs the
+        // PLAYER's, which is a different question and so a second lookup.
+        if (playerGang != null && Gang != null && Pedestrian.Exists())
+        {
+            bool onOwnTurf = false;
+            Zone killZone = Zones.GetZone(Pedestrian.Position);
+            if (killZone != null)
+            {
+                List<GangTerritory> myTerritories = GangTerritories.GetGangTerritory(playerGang.ID);
+                onOwnTurf = myTerritories != null && myTerritories.Any(x => x.ZoneInternalGameName.ToLower() == killZone.InternalGameName.ToLower());
+            }
+            bool isDeclaredEnemy = playerGang.EnemyGangs != null && playerGang.EnemyGangs.Any(x => x == Gang.ID);
+            Player.GangProgressionManager?.OnRivalKilled(Gang, onOwnTurf, isDeclaredEnemy);
+        }
         base.OnKilledByPlayer(Player, Zones, GangTerritories);
     }
     public override void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)

@@ -16,6 +16,8 @@ namespace LosSantosRED.lsr.Interface
         GPSManager GPSManager { get; }
         LocationData CurrentLocation { get; }
         RelationshipManager RelationshipManager { get; }
+        GangProgressionManager GangProgressionManager { get; }
+        GangCrewManager GangCrewManager { get; }
         PlayerTasks PlayerTasks { get; }
         CellPhone CellPhone { get; }
         PoliceResponse PoliceResponse { get; }
