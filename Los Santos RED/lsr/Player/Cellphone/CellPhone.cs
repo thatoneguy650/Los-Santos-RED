@@ -149,7 +149,7 @@ public class CellPhone
     {
         CheckScheduledItems();
         MenuPool.ProcessMenus();
-        foreach (PhoneContact phoneContact in ContactList)
+        foreach (PhoneContact phoneContact in ContactList.ToList())
         {
             phoneContact.MenuInteraction?.Update();
         }

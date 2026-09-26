@@ -481,6 +481,10 @@ public class Interior
     {
         foreach(PropSpawn ps in PropSpawns)
         {
+            if(!NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ps.ModelName)))
+            {
+                return;
+            }
             Rage.Object newProp = new Rage.Object(ps.ModelName, ps.SpawnPlace.Position, ps.SpawnPlace.Heading);// 239.2449f);
             if (newProp.Exists())
             {

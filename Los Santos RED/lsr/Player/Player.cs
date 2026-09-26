@@ -1670,7 +1670,7 @@ namespace Mod
                     CurrentVehicle.HasAutoSetRadio = false;
                     CurrentVehicle.ResetTopSpeed();
                 }
-
+                GroupManager.OnPlayerGotInVehicle();
 
                 EntryPoint.WriteToConsole("OnIsInVehicleChanged CHANGED TO TRUE");
             }

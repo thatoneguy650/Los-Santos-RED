@@ -18,6 +18,9 @@ public class GroupManager
     private ITargetable Targetable;
     private bool IsSetCombatSpacing = false;
     private int selectedMode = 0;
+    private bool HasShownAutoDrivePrompt = false;
+    private readonly string autoDriveHelpText = "Use map waypoints to set the drivers destination.";
+
     public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
@@ -245,6 +248,19 @@ public class GroupManager
         PlayerDriverWander = !PlayerDriverWander;
         UpdateAllTasking();
         Game.DisplaySubtitle($"Player Driver Wander {(PlayerDriverWander ? "Enabled" : "Disabled")}");
+    }
+
+    public void OnPlayerGotInVehicle()
+    {
+        if(HasShownAutoDrivePrompt)
+        {
+            return;
+        }
+        if (Player.IsInVehicle && Player.IsDriver)
+        {
+            Game.DisplayHelp($"{autoDriveHelpText}");
+            HasShownAutoDrivePrompt = true;
+        }
     }
 }
 

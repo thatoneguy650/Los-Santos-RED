@@ -163,18 +163,6 @@ public class StaticPlaces
             {
                 gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
             }
-           // gl.IsBlipEnabled = setEnabled;
-
-            //if (setEnabled)
-            //{
-             //   gl.ActivateBlip(Time, World);
-            //}
-            //else
-            //{
-            //    gl.DeactivateBlip();
-            //}
-            //gl.IsEnabled = setEnabled;
-            //EntryPoint.WriteToConsole($"SetGangLocationActive {iD} setEnabled:{setEnabled}");
         }
     }
     public void AddAllBlips()

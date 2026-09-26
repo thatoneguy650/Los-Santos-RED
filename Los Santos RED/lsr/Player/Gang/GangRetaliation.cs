@@ -147,18 +147,19 @@ public class GangRetaliation
         EntryPoint.WriteToConsole($"GANG RETALIATION UPDATE RAN HasPlayerEnteredArea{HasPlayerEnteredArea} IsWarfareActive{IsWarfareActive} TimeAfterReturn{Game.GameTime - GameTimeReturnedToZone} RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} TimeToStartRetaliation{TimeToStartRetaliation} RetaliationTime:{RetaliationTime}");
 
 
-        if (Player.RecentlyRespawned)
-        {
-            OnPlayerLost();
-            EntryPoint.WriteToConsole("PLAYER LOST RETALIATION SINCE THEY DIED OR GOT BUSTED");
-            return;
-        }
+
         if (!IsWarfareActive)
         {
             CheckRetaliationStart();
         }
         if (!IsWarfareActive)
         {
+            return;
+        }
+        if (Player.RecentlyRespawned)
+        {
+            OnPlayerLost();
+            EntryPoint.WriteToConsole("PLAYER LOST RETALIATION SINCE THEY DIED OR GOT BUSTED");
             return;
         }
         UpdateActive();

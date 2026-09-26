@@ -1613,7 +1613,6 @@ public class GameLocation : ILocationDispatchable
         List<ConditionalLocation> totalList = new List<ConditionalLocation> { };
         if (PossiblePedSpawns != null)
         {
-
             totalList.AddRange(PossiblePedSpawns.ToList());
         }
         if (PossibleVehicleSpawns != null)

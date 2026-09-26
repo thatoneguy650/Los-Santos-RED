@@ -151,7 +151,7 @@ public class GangTerritoryManager
         if (updated)
         {
             zone.UpdateGangItems(GangTerritories);
-            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
+            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.IsEnabled && x.ZoneID == zone.InternalGameName && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
                 gameLocation.SetTakeoverGang(Player.CurrentGang, toFight);        
@@ -186,7 +186,7 @@ public class GangTerritoryManager
         if(updated)
         {
             zone.UpdateGangItems(GangTerritories);
-            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
+            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.IsEnabled && x.ZoneID == zone.InternalGameName && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
                 gameLocation.SetTakeoverGang(Player.CurrentGang, targetGang);
@@ -205,7 +205,7 @@ public class GangTerritoryManager
         if(restored)
         {
             zone.UpdateGangItems(GangTerritories);
-            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.ZoneID == zone.InternalGameName).ToList();
+            List<GameLocation> gameLocationsToUpdate = PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x => x.IsEnabled && x.ZoneID == zone.InternalGameName && x.IsCorrectMap(World.IsMPMapLoaded)).ToList();
             foreach (GameLocation gameLocation in gameLocationsToUpdate)
             {
                 gameLocation.ResetGangTakeover();

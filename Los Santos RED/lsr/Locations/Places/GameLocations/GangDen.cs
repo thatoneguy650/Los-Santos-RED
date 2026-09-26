@@ -590,30 +590,25 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         IsAvailableForPlayer = false;
         DeactivateBlip();
         ActivateBlip(Time, World);
-
-
-
-
         base.SetTakeoverGang(currentGang, gangToReplace);
-
     }
     public override void ResetGangTakeover()
     {
+        bool shouldBeAvailable = false;
         if (OriginalGang != null)
         {
             AssociatedGang = OriginalGang;
             AssignedAssociationID = OriginalGang.ID;
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(OriginalGang);
+            if (gr != null)
+            {
+                shouldBeAvailable = gr.IsMember || gr.GangRelationship == GangRespect.Friendly;
+            }
         }
-        IsAvailableForPlayer = true;
+        IsAvailableForPlayer = shouldBeAvailable;
         DeactivateBlip();
         ActivateBlip(Time, World);
-
-
-
-
-
         base.ResetGangTakeover();
-
     }
 }
 
