@@ -30,6 +30,7 @@ public class BlankLocationsData
         DiablosGang();
         GambettiGang();
         KhangpaeGang();
+        LostGang();
         LupisellaGang();
         MarabuntaGang();
         MessinaGang();
@@ -37,6 +38,7 @@ public class BlankLocationsData
         TriadGang();
         YardiesGang();
         RedneckGang();
+        VagosGang();
         VarriosGang();
         RandomPeds();
         LoadHelpers();
@@ -11820,6 +11822,192 @@ new List<ConditionalGroup>() {
             VehicleDeliveryLocations = new List<SpawnPlace>() { },
         };
         BlankLocationPlaces.Add(VarriosArenaCP);
+
+    }
+
+    private void LostGang()
+    {
+        BlankLocation LostGangDen = new BlankLocation()
+        {
+
+            Name = "LOST GangDen",
+            FullName = "",
+            Description = "Gang Spawns For OIV Removal",
+            MapIcon = 47,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(969.5936f, -126.7885f, 74.36127f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "SanAndreas",
+            AssignedAssociationID = "AMBIENT_GANG_LOST",
+            MenuID = "",
+            PossibleGroupSpawns =
+            new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                  Name = "Outside Den 0-24 Hours Spawns",
+                  Percentage = 100f,
+                  MinHourSpawn = 0,
+                  MaxHourSpawn = 24,
+                  PossiblePedSpawns =
+                  new List<ConditionalLocation>()
+                  {
+                    // Main Road Left
+                    new GangConditionalLocation(new Vector3(954.971f, -138.248611f, 72.47955f), 236.8577f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(954.913269f, -139.375977f, 72.4835052f), 262.0112f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(956.15564f, -140.305481f, 72.49005f), 6.630057f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(956.7951f, -138.784485f, 72.48616f), 155.062f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    // Main Road Right
+                    new GangConditionalLocation(new Vector3(962.2081f, -143.6709f, 72.4869156f), 285.6683f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(963.183044f, -142.681335f, 72.5071259f), 146.9276f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(963.8963f, -143.359528f, 72.49819f), 86.70744f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                  },
+                },
+                new ConditionalGroup()
+                {
+                  Name = "Compound 16-24 Spawns",
+                  Percentage = 100f,
+                  MinHourSpawn = 16,
+                  MaxHourSpawn = 24,
+                  PossiblePedSpawns =
+                  new List<ConditionalLocation>()
+                  {
+                    // Inside Compound Left
+                    new GangConditionalLocation(new Vector3(952.960632f, -124.3555f, 72.35311f), 275.0123f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(952.7779f, -123.300346f, 72.35311f), 236.1046f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    new GangConditionalLocation(new Vector3(953.9593f, -123.044624f, 72.35311f), 170.4291f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    // Solo Outside Garage Door
+                    new GangConditionalLocation(new Vector3(969.6277f, -112.282951f, 72.35311f), 214.6107f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    // Outside Den Door Solo
+                    new GangConditionalLocation(new Vector3(985.34845f, -105.944458f, 72.35307f), 134.2483f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_DRINKING"}, },
+                    // Side Of Den
+                    new GangConditionalLocation(new Vector3(986.025452f, -104.806992f, 72.85354f), 144.135f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    // End Of Building Right Side
+                    new GangConditionalLocation(new Vector3(979.0191f, -140.051788f, 72.21262f), 176.084f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(978.131042f, -140.456375f, 72.2159348f), 237.3763f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(978.777649f, -141.837021f, 72.22805f), 1.293581f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(979.578552f, -140.924118f, 72.22024f), 90.19797f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                  },
+                },
+                new ConditionalGroup()
+                {
+                  Name = "Compound 0-8 Spawns",
+                  Percentage = 100f,
+                  MinHourSpawn = 0,
+                  MaxHourSpawn = 8,
+                  PossiblePedSpawns =
+                  new List<ConditionalLocation>()
+                  {
+                    // Stairs
+                    new GangConditionalLocation(new Vector3(962.2627f, -120.982506f, 72.35311f), 171.6968f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(963.389954f, -121.109177f, 72.35311f), 157.1102f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    // Far side of Garage doors
+                    new GangConditionalLocation(new Vector3(972.0793f, -111.995018f, 72.35311f), 3.756682f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(972.3305f, -110.760757f, 72.35311f), 135.0347f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    // side of Den group
+                    new GangConditionalLocation(new Vector3(989.45f, -102.5812f, 74.8488f), 83.65113f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(988.7194f, -101.735565f, 72.8427658f), 212.1979f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(989.8182f, -101.489296f, 72.85354f), 133.2589f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                  },
+                },
+                new ConditionalGroup()
+                {
+                  Name = "Compound 8-16 Spawns",
+                  Percentage = 100f,
+                  MinHourSpawn = 8,
+                  MaxHourSpawn = 16,
+                  PossiblePedSpawns =
+                  new List<ConditionalLocation>()
+                  {
+                    // Outside Garages
+                    new GangConditionalLocation(new Vector3(966.5918f, -116.684212f, 73.35311f), 247.245f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(967.319153f, -115.917519f, 73.35311f), 161.8625f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(968.294067f, -116.869583f, 73.35311f), 61.27053f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    // side of Den door
+                    new GangConditionalLocation(new Vector3(987.6134f, -102.786438f, 73.85352f), 270.2867f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    // Inside Compound Right - Container
+                    new GangConditionalLocation(new Vector3(979.481445f, -121.03933f, 72.96307f), 109.6106f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    new GangConditionalLocation(new Vector3(979.6543f, -122.155075f, 72.97419f), 83.61115f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+
+                  },
+                },
+            },
+        };
+        BlankLocationPlaces.Add(LostGangDen);
+
+    }
+
+    private void VagosGang()
+    {
+        BlankLocation VagosGangDen = new BlankLocation()
+        {
+
+            Name = "Vagos GangDen",
+            FullName = "",
+            Description = "Gang Spawns For OIV Removal",
+            MapIcon = 47,
+            MapIconScale = 1f,
+            EntrancePosition = new Vector3(976.3761f, -1831.478f, 31.26991f),
+            EntranceHeading = 0f,
+            OpenTime = 0,
+            CloseTime = 24,
+            StateID = "SanAndreas",
+            AssignedAssociationID = "AMBIENT_GANG_VAGOS",
+            MenuID = "",
+            PossibleGroupSpawns =
+            new List<ConditionalGroup>()
+            {
+                new ConditionalGroup()
+                {
+                  Name = "",
+                  Percentage = 100f,
+                  MinHourSpawn = 0, // Using Default Scenario Min and Max Hours for this group.
+                  MaxHourSpawn = 24, // If issue arises (Loading Too Many) then this can be split into 4 groups similar to the Lost.
+                  PossiblePedSpawns =
+                  new List<ConditionalLocation>()
+                  {
+                    // Main Road
+                    new GangConditionalLocation(new Vector3(959.003967f, -1852.40869f, 29.2356987f), 86.02477f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(959.0037f, -1851.52234f, 29.2274876f), 145.891f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+
+                    new GangConditionalLocation(new Vector3(959.9241f, -1824.339f, 29.23476f), 341.544f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(960.8004f, -1823.645f, 29.23162f), 86.6598f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(960.0920f, -1822.9060f, 29.2345f), 184.0702f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+
+                    new GangConditionalLocation(new Vector3(962.3967f, -1797.283f, 29.23568f), 64.59355f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(962.0249f, -1798.373f, 29.23447f), 133.7027f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    //Outside Den
+                    new GangConditionalLocation(new Vector3(978.8489f, -1831.853f, 29.32465f), 352.7695f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    // Alley Entrance - Side Road
+                    new GangConditionalLocation(new Vector3(982.2084f, -1778.36047f, 29.3191261f), 356.3695f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(983.0565f, -1778.01221f, 29.3407249f), 62.33862f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    // Alley Stairs
+                    new GangConditionalLocation(new Vector3(998.157837f, -1785.30164f,  30.57005f), 86.29939f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(999.2848f, -1786.51868f, 30.4717827f), 86.29939f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    // Oppiste end
+                    new GangConditionalLocation(new Vector3(985.9877f, -1871.894f, 29.02093f), 109.3853f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(985.9783f, -1873.169f, 28.99829f), 47.0918f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    // Across Main Road
+                    new GangConditionalLocation(new Vector3(941.9116f, -1863.472f, 29.15568f), 211.9332f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(940.8739f, -1862.098f, 29.17068f), 342.9316f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(940.5406f, -1861.095f, 29.17561f), 218.4662f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    // Wall
+                    new GangConditionalLocation(new Vector3(942.6127f, -1836.403f, 29.2009f), 285.685f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    new GangConditionalLocation(new Vector3(942.4352f, -1835.342f, 29.21433f), 266.6224f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    // building steps
+                    new GangConditionalLocation(new Vector3(932.0722f, -1808.961f, 28.71877f), 284.0031f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(931.8958f, -1807.802f, 28.70049f), 258.4308f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(933.2655f, -1807.691f, 28.75799f), 72.90257f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    // Corner
+                    new GangConditionalLocation(new Vector3(944.2256f, -1782.076f, 29.23608f), 356.2364f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(945.1646f, -1781.291f, 29.24301f), 40.03037f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                  },
+                },
+            },
+        };
+        BlankLocationPlaces.Add(VagosGangDen);
 
     }
 }

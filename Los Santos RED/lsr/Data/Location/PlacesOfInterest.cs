@@ -1063,7 +1063,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CraftingFlag = "DrugLab",
                 PossibleModItemPayouts = new List<string>() { "Crack" },
                 ModItemPayoutAmount = 130,
-                PayoutFrequency = 7,
+                PayoutFrequency = 1,
                 CameraPosition = new Vector3(-34.20585f, -1463.998f, 36.75412f),
                 CameraDirection = new Vector3(-0.3876801f, -0.9036574f, -0.1819542f),
                 CameraRotation = new Rotator(-10.48361f, -8.682677E-06f, 156.7801f)
@@ -1100,7 +1100,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CraftingFlag = "DrugLab",
                 PossibleModItemPayouts = new List<string>() { "Heroin" },
                 ModItemPayoutAmount = 95,
-                PayoutFrequency = 7,
+                PayoutFrequency = 1,
                 CameraPosition = new Vector3(-3072.178f, 376.4839f, 11.09967f),
                 CameraDirection = new Vector3(-0.9557317f, -0.1548787f, -0.2501789f),
                 CameraRotation = new Rotator(-14.4881f, 6.613616E-07f, 99.2049f)
@@ -1155,7 +1155,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CraftingFlag = "DrugLab",
                 PossibleModItemPayouts = new List<string>() { "Methamphetamine" },
                 ModItemPayoutAmount = 140,
-                PayoutFrequency = 7,
+                PayoutFrequency = 1,
                 CameraPosition = new Vector3(162.5851f, 2241.448f, 93.88857f),
                 CameraDirection = new Vector3(0.3424095f, -0.9239209f, -0.1706633f),
                 CameraRotation = new Rotator(-9.826386f, 4.549049E-06f, -159.6651f)
@@ -1192,7 +1192,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CraftingFlag = "DrugLab",
                 PossibleModItemPayouts = new List<string>() { "SPANK" },
                 ModItemPayoutAmount = 120,
-                PayoutFrequency = 7,
+                PayoutFrequency = 1,
                 CameraPosition = new Vector3(-1088.245f, -1538.072f, 8.401177f),
                 CameraDirection = new Vector3(-0.1527622f, 0.9482571f, -0.2783383f),
                 CameraRotation = new Rotator(-16.16105f, 8.889002E-07f, 9.151598f)
@@ -1229,7 +1229,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 CraftingFlag = "DrugLab",
                 PossibleModItemPayouts = new List<string>() { "Marijuana" },
                 ModItemPayoutAmount = 250,
-                PayoutFrequency = 7,
+                PayoutFrequency = 1,
                 CameraPosition = new Vector3(387.458f, -2010.893f, 26.06207f),
                 CameraDirection = new Vector3(0.6204097f, -0.750122f, -0.2289298f),
                 CameraRotation = new Rotator(-13.23407f, -1.190303f, -140.4066f)
@@ -2122,6 +2122,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 VehiclePreviewLocation = new SpawnPlace(new Vector3(-43.94203f, -1096.923f, 26.44f), 165.1469f),
                 InteriorID = 7170,
                 LicensePlatePreviewText = "PDXMOTORS",
+                //IgnoreEntranceInteract = true,
+                //VendorPersonnelID = "TellerPeds",
+                //VendorLocations = new List<SpawnPlace>()
+                //{
+                //    new SpawnPlace(new Vector3(-56.73692f, -1098.648f, 26.42234f), 29.54412f),
+                //},
                 VehicleDeliveryLocations = new List<SpawnPlace>()
                 {
                     new SpawnPlace(new Vector3(-56.35966f, -1116.532f, 26.4349f), 2.403779f),
@@ -2285,6 +2291,27 @@ public class PlacesOfInterest : IPlacesOfInterest
                 OpenTime = 0,
                 CloseTime = 24,
 
+            },
+            new VehicleExporter(new Vector3(485.0587f, -1315.38f, 29.20732f), 294.9294f,"Strawberry Exports","Turn Cars to CASH!","NationalMenu")
+            {
+                 ContactName = StaticStrings.VehicleExporterContactName,
+                 ParkingSpaces = new List<SpawnPlace>()
+                 {
+                    new SpawnPlace(new Vector3(481.3462f, -1317.455f, 28.84775f), 117.8958f),
+                 },
+                OpenTime = 0,
+                CloseTime = 24,
+                CameraPosition = new Vector3(475.2056f, -1312.079f, 30.48446f),
+                CameraDirection = new Vector3(-0.8320724f, 0.4813989f, -0.2755186f),
+                CameraRotation = new Rotator(-15.99292f, 5.328893E-06f, 59.9483f),
+                VehiclePreviewCameraPosition = new Vector3(475.1411f, -1313.878f, 30.17732f),
+                VehiclePreviewCameraDirection = new Vector3(0.802176f, -0.5432738f, -0.247724f),
+                VehiclePreviewCameraRotation = new Rotator(-14.34287f, -1.2778E-05f, -124.1078f),
+                InteriorID = 197377,
+                IgnoreEntranceInteract= true,
+                NoEntryCam = true,
+                IsWalkup = true,
+                //GarageDoors = new List<InteriorDoor>() { new InteriorDoor(4104186511, new Vector3(484.5642f, -1315.574f, 30.20331f)) { NeedsDefaultUnlock = false ,UseDoorSystem = true,DoorSystemHash = -190780785 } },
             },
         };
     }
@@ -3540,50 +3567,13 @@ new ConditionalLocation(, 75f),*/
             {
                 BannerImagePath = "stores\\maze.png",
             },
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Everything, at a price","Fleeca")
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Everything, at a price","Fleeca") // No Interior
             {
                 BannerImagePath = "stores\\fleeca.png",
             },
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Everything, at a price","Fleeca")
-            {
-                BannerImagePath = "stores\\fleeca.png",
-                InteriorID = 71682,
-                VendorLocations = new List<SpawnPlace>()
-                {
-                    new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
-                },
-                ActivateCells = 3,
-                ActivateDistance = 75f,
-                RestrictedAreas = new RestrictedAreas()
-                {
-                    RestrictedAreasList = new List<RestrictedArea>()
-                    {
-                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
-                                                                {
-                                                                    new Vector2 { X = -352.0612f, Y = -53.76372f },
-                                                                    new Vector2 { X = -349.4093f, Y = -55.09093f },
-                                                                    new Vector2 { X = -350.9847f, Y = -60.41546f },
-                                                                    new Vector2 { X = -354.1934f, Y = -58.88084f },
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                        new RestrictedArea("Fleeca Front Room",new Vector2[]
-                                                                {
-                                                                    new Vector2 { X = -354.5473f, Y = -50.24043f },
-                                                                    new Vector2 { X = -348.8781f, Y = -52.28946f },
-                                                                    new Vector2 { X = -356.3486f, Y = -53.77395f },
-                                                                    new Vector2 { X = -349.7612f, Y = -56.4671f },
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                    }
-                },
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-                    new SecurityConditionalLocation(new Vector3(-352.5154f,-46.69918f,49.03637f),158.5911f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(-350.0684f,-55.37014f,49.01481f),72.79137f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                },
-            },
-            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "Everything, at a price","Fleeca")
-            {
+            // Fleeca Interiors
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "Everything, at a price","Fleeca") // PillBox
+            {           
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 76802,
                 VendorLocations = new List<SpawnPlace>() {
@@ -3620,7 +3610,7 @@ new ConditionalLocation(, 75f),*/
                     new SecurityConditionalLocation(new Vector3(150.8173f,-1046.188f,29.34632f),69.36922f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
-            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "Everything, at a price","Fleeca")
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "Everything, at a price","Fleeca") // Alta
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 11266,
@@ -3659,12 +3649,13 @@ new ConditionalLocation(, 75f),*/
                     new SecurityConditionalLocation(new Vector3(315.2496f,-284.7239f,54.14301f),70.262f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
-            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca")
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Everything, at a price","Fleeca") // Burton 
             {
                 BannerImagePath = "stores\\fleeca.png",
-                InteriorID = 20226,
-                VendorLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
+                InteriorID = 71682,
+                VendorLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f),
                 },
                 ActivateCells = 3,
                 ActivateDistance = 75f,
@@ -3672,110 +3663,31 @@ new ConditionalLocation(, 75f),*/
                 {
                     RestrictedAreasList = new List<RestrictedArea>()
                     {
-                        new RestrictedArea("Fleeca Front Room",new Vector2[]
-                                                                {
-                                                                    new Vector2(-2961.179f, 479.6267f),
-                                                                    new Vector2(-2960.874f, 485.6059f),
-                                                                    new Vector2(-2959.902f, 485.5941f),
-                                                                    new Vector2(-2960.162f, 480.3656f),
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
                         new RestrictedArea("Fleeca Vault Room",new Vector2[]
                                                                 {
-                                                                    new Vector2(-2958.778f, 478.9443f),
-                                                                    new Vector2(-2958.035f, 485.9171f),
-                                                                    new Vector2(-2952.487f, 485.9096f),
-                                                                    new Vector2(-2953.033f, 482.3984f),
-                                                                    new Vector2(-2957.316f, 478.8758f),
+                                                                    new Vector2 { X = -352.0612f, Y = -53.76372f },
+                                                                    new Vector2 { X = -349.4093f, Y = -55.09093f },
+                                                                    new Vector2 { X = -350.9847f, Y = -60.41546f },
+                                                                    new Vector2 { X = -354.1934f, Y = -58.88084f },
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2 { X = -354.5473f, Y = -50.24043f },
+                                                                    new Vector2 { X = -348.8781f, Y = -52.28946f },
+                                                                    new Vector2 { X = -356.3486f, Y = -53.77395f },
+                                                                    new Vector2 { X = -349.7612f, Y = -56.4671f },
                                                                 },
                                                                 null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
                     }
                 },
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
-                    new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(-2957.569f,485.632f,15.67533f),174.1285f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-352.5154f,-46.69918f,49.03637f),158.5911f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-350.0684f,-55.37014f,49.01481f),72.79137f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca")
-            {
-                BannerImagePath = "stores\\fleeca.png",
-                IsOnMPMap = false,
-                InteriorID = 90626,
-                VendorLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
-                },
-                ActivateCells = 3,
-                ActivateDistance = 75f,
-                RestrictedAreas = new RestrictedAreas()
-                {
-                    RestrictedAreasList = new List<RestrictedArea>()
-                    {
-                        new RestrictedArea("Fleeca Front Room",new Vector2[]
-                                                                {
-                                                                    new Vector2(1178.291f, 2708.304f),
-                                                                    new Vector2(1172.311f, 2708.387f),
-                                                                    new Vector2(1172.286f, 2709.354f),
-                                                                    new Vector2(1177.512f, 2709.322f),
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
-                                                                {
-                                                                    new Vector2(1178.821f, 2710.764f),
-                                                                    new Vector2(1171.883f, 2711.214f),
-                                                                    new Vector2(1171.645f, 2716.751f),
-                                                                    new Vector2(1175.179f, 2716.31f),
-                                                                    new Vector2(1178.877f, 2712.224f),
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                    }
-                },
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-                    new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(1172.005f,2711.791f,38.06627f), 270.1688f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                },
-            },
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca") 
-            {
-                BannerImagePath = "stores\\fleeca.png",
-                IsOnSPMap = false,
-                InteriorID = 906262,
-                VendorLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
-                },
-                ActivateCells = 3,
-                ActivateDistance = 75f,
-                RestrictedAreas = new RestrictedAreas()
-                {
-                    RestrictedAreasList = new List<RestrictedArea>()
-                    {
-                        new RestrictedArea("Fleeca Front Room",new Vector2[]
-                                                                {
-                                                                    new Vector2(1178.291f, 2708.304f),
-                                                                    new Vector2(1172.311f, 2708.387f),
-                                                                    new Vector2(1172.286f, 2709.354f),
-                                                                    new Vector2(1177.512f, 2709.322f),
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
-                                                                {
-                                                                    new Vector2(1178.821f, 2710.764f),
-                                                                    new Vector2(1171.883f, 2711.214f),
-                                                                    new Vector2(1171.645f, 2716.751f),
-                                                                    new Vector2(1175.179f, 2716.31f),
-                                                                    new Vector2(1178.877f, 2712.224f),
-                                                                },
-                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
-                    }
-                },
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-                    new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                    new SecurityConditionalLocation(new Vector3(1172.005f,2711.791f,38.06627f), 270.1688f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
-                },
-            },
-            new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "Everything, at a price","Fleeca")
+            new Bank(new Vector3(-1214.902f, -327.0157f, 37.6686f), 26.31765f, "Fleeca Bank", "Everything, at a price","Fleeca") // Rockford Hills
             {
                 BannerImagePath = "stores\\fleeca.png",
                 InteriorID = 87810,
@@ -3814,15 +3726,137 @@ new ConditionalLocation(, 75f),*/
                     new SecurityConditionalLocation(new Vector3(-1207.684f,-333.7042f,37.75927f), 116.2364f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca") // Banham Canyon
+            {
+                BannerImagePath = "stores\\fleeca.png",
+                InteriorID = 20226,
+                IsOnMPMap = false,
+                VendorLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2961.179f, 479.6267f),
+                                                                    new Vector2(-2960.874f, 485.6059f),
+                                                                    new Vector2(-2959.902f, 485.5941f),
+                                                                    new Vector2(-2960.162f, 480.3656f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2958.778f, 478.9443f),
+                                                                    new Vector2(-2958.035f, 485.9171f),
+                                                                    new Vector2(-2952.487f, 485.9096f),
+                                                                    new Vector2(-2953.033f, 482.3984f),
+                                                                    new Vector2(-2957.316f, 478.8758f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-2957.569f,485.632f,15.67533f),174.1285f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
+            },
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "Everything, at a price","Fleeca") // Banham Canyon MP
+            {
+                BannerImagePath = "stores\\fleeca.png",
+                InteriorID = 2022602,
+                IsOnSPMap = false,
+                VendorLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2961.179f, 479.6267f),
+                                                                    new Vector2(-2960.874f, 485.6059f),
+                                                                    new Vector2(-2959.902f, 485.5941f),
+                                                                    new Vector2(-2960.162f, 480.3656f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(-2958.778f, 478.9443f),
+                                                                    new Vector2(-2958.035f, 485.9171f),
+                                                                    new Vector2(-2952.487f, 485.9096f),
+                                                                    new Vector2(-2953.033f, 482.3984f),
+                                                                    new Vector2(-2957.316f, 478.8758f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(-2965.206f,480.3015f,15.6969f),268.606f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(-2957.569f,485.632f,15.67533f),174.1285f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
+            },
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "Everything, at a price","Fleeca") // Grand Senora Desert
+            {
+                BannerImagePath = "stores\\fleeca.png",
+                InteriorID = 90626,
+                VendorLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 75f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Fleeca Front Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.291f, 2708.304f),
+                                                                    new Vector2(1172.311f, 2708.387f),
+                                                                    new Vector2(1172.286f, 2709.354f),
+                                                                    new Vector2(1177.512f, 2709.322f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Fleeca Vault Room",new Vector2[]
+                                                                {
+                                                                    new Vector2(1178.821f, 2710.764f),
+                                                                    new Vector2(1171.883f, 2711.214f),
+                                                                    new Vector2(1171.645f, 2716.751f),
+                                                                    new Vector2(1175.179f, 2716.31f),
+                                                                    new Vector2(1178.877f, 2712.224f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(1177.713f,2704.353f,38.08786f),0.2107314f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(1172.005f,2711.791f,38.06627f), 270.1688f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                },
+            },
 
 
             new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "Since 1903","Pacific Std")
             {
                 BannerImagePath = "stores\\pacificstandard.png",
                 InteriorID = 103170,
-                VendorLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f),
-                    new SpawnPlace(new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f),
+                IsOnMPMap = false,
+                VendorLocations = new List<SpawnPlace>() 
+                {
+                    new SpawnPlace(new Vector3(254.5927f, 222.2474f, 104.2869f), 178f),
+                    new SpawnPlace(new Vector3(251.6939f, 223.3772f, 104.2869f), 142f),
+                    new SpawnPlace(new Vector3(249.4682f, 224.1124f, 104.2869f), 178f),
+                    new SpawnPlace(new Vector3(246.4859f, 225.304f, 104.2877f), 142f),
+                    new SpawnPlace(new Vector3(244.2808f, 226.0421f, 104.2878f), 178f),
+                    new SpawnPlace(new Vector3(241.2955f, 227.088f, 104.2869f), 142f),
                 },
                 ActivateCells = 3,
                 ActivateDistance = 100f,
@@ -3868,8 +3902,76 @@ new ConditionalLocation(, 75f),*/
                     //new SecurityConditionalLocation(new Vector3(256.9742f,220.4982f,106.2852f), 159.0666f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                     new SecurityConditionalLocation(new Vector3(253.94f,221.3301f,101.6834f), 342.1928f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                     new SecurityConditionalLocation(new Vector3(251.7139f,222.3622f,101.6834f), 332.5652f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    //new SecurityConditionalLocation(new Vector3(264.437f,219.3253f,100.6899f), 332.5652f,100f) // X:264.437 Y:219.3253 Z:100.6899
+                    //{
+                    //    AssociationID = "GRP6",
+                    //    RequiredPedGroup = "ArmedSecurity",
+                    //    LongGunAlwaysEquipped = true,
+                    //    ForceSidearm = true,ForceLongGun = true,
+                    //    MinHourSpawn = 0, MaxHourSpawn = 24,
+                    //    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    //    ForcedScenarios = new List<string>() { "prop_human_seat_computer" },
+                    //},
+                },
+            },
+            new Bank(new Vector3(230.2334f, 214.4399f, 105.552f), 115.9025f, "Pacific Standard Bank", "Since 1903","Pacific Std")  // MP
+            {
+                BannerImagePath = "stores\\pacificstandard.png",
+                InteriorID = 10317002,
+                IsOnSPMap = false,
+                VendorLocations = new List<SpawnPlace>()
+                {
+                    new SpawnPlace(new Vector3(254.5927f, 222.2474f, 104.2869f), 178f),
+                    new SpawnPlace(new Vector3(251.6939f, 223.3772f, 104.2869f), 142f),
+                    new SpawnPlace(new Vector3(249.4682f, 224.1124f, 104.2869f), 178f),
+                    new SpawnPlace(new Vector3(246.4859f, 225.304f, 104.2877f), 142f),
+                    new SpawnPlace(new Vector3(244.2808f, 226.0421f, 104.2878f), 178f),
+                    new SpawnPlace(new Vector3(241.2955f, 227.088f, 104.2869f), 142f),
+                },
+                ActivateCells = 3,
+                ActivateDistance = 100f,
+                RestrictedAreas = new RestrictedAreas()
+                {
+                    RestrictedAreasList = new List<RestrictedArea>()
+                    {
+                        new RestrictedArea("Pacific Standard Teller Area",new Vector2[]
+                                                                {
+                                                                    new Vector2(240.7343f, 227.4087f),
+                                                                    new Vector2(242.9524f, 233.4778f),
+                                                                    new Vector2(259.9221f, 219.8555f),
+                                                                    new Vector2(269.7702f, 223.7066f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Pacific Standard Vault Stairs",new Vector2[]
+                                                                {
+                                                                    new Vector2(261.7909f, 219.8125f),
+                                                                    new Vector2(267.5229f, 217.7241f),
+                                                                    new Vector2(269.7004f, 223.6757f),
+                                                                    new Vector2(253.7455f, 229.3237f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsCivilianReactableRestricted = true, },
+                        new RestrictedArea("Pacific Standard Vault",new Vector2[]
+                                                                {
+                                                                    new Vector2(251.6466f, 224.2327f),
+                                                                    new Vector2(248.9319f, 216.9391f),
+                                                                    new Vector2(265.0714f, 211.7376f),
+                                                                    new Vector2(266.5878f, 215.077f),
+                                                                    new Vector2(255.3204f, 222.8831f),
+                                                                },
+                                                                null,RestrictedAreaType.Bank) { IsZRestricted = true, ZRestrictionMin = 101.6835f - 3f,ZRestrictionMax = 101.6835f + 3f, IsCivilianReactableRestricted = true, },
+                    }
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new SecurityConditionalLocation(new Vector3(233.8826f,213.5529f,106.2868f),292.8797f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(246.5008f,214.1364f,106.2868f),345.16f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(240.2741f,214.4063f,110.283f),160.8276f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(256.9109f, 226.4966f, 106.2868f), 162.127f, 95f){ AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(262.8836f, 220.7263f, 101.6833f), 340.696f, 95f){ AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
 
-
+                    //new SecurityConditionalLocation(new Vector3(256.9742f,220.4982f,106.2852f), 159.0666f,95f) { AssociationID = "GRP6", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(253.94f,221.3301f,101.6834f), 342.1928f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
+                    new SecurityConditionalLocation(new Vector3(251.7139f,222.3622f,101.6834f), 332.5652f,95f) { AssociationID = "GRP6",RequiredPedGroup = "ArmedSecurity", LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true, MinHourSpawn = 6, MaxHourSpawn = 20, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>() { "WORLD_HUMAN_GUARD_STAND" }, },
                 },
             },
 
@@ -3881,8 +3983,10 @@ new ConditionalLocation(, 75f),*/
             {
                 BannerImagePath = "stores\\blainecountybank.png",
                 InteriorID = 42754,
-                VendorLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f),
+                VendorLocations = new List<SpawnPlace>() 
+                {
+                    new SpawnPlace(new Vector3(-111.1117f, 6470.031f, 31.62672f), 129.021f),
+                    new SpawnPlace(new Vector3(-112.1374f, 6471.229f, 31.6267f), 134.4394f),
                 },
                 ActivateCells = 4,
                 ActivateDistance = 150f,
@@ -4087,7 +4191,7 @@ new ConditionalLocation(, 75f),*/
             new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","Come spend money like a rich person!") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.mp3" },
             new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","You're In, For A Good Time") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.mp3" },
             new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","Long journeys need short legs") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.mp3" },
-            new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","Seeing is relieving") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0D1B649D.mp3" },
+            new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","Seeing is relieving") { OpenTime = 0, CloseTime = 24, InteriorID = 118018, ScannerFilePath = "01_specific_location\\0x0D1B649D.mp3" },
             new Landmark(new Vector3(712.96f, 1204.1f, 329.3f), 0f,"Vinewood Sign","Or was it Vinewoodland?") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0C57ACE0.mp3" },
             new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.mp3" },
             new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.mp3" },
@@ -6413,6 +6517,19 @@ new ConditionalLocation(, 75f),*/
             MaxAssaultSpawns = 30,
             DisableNearbyScenarios = true,
             DisableScenarioDistance = 100f,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1395.212f, 1141.87f, 114.6328f), 90f),
+                new SpawnPlace(new Vector3(1394.743f, 1152.884f, 114.3995f), 90f),
+                new SpawnPlace(new Vector3(1389.741f, 1162.319f, 114.3345f), 90f),
+                new SpawnPlace(new Vector3(1409.096f, 1164.741f, 114.3342f), 270f),
+                new SpawnPlace(new Vector3(1409.003f, 1160.085f, 114.3342f), 270f),
+                new SpawnPlace(new Vector3(1409.972f, 1147.437f, 114.334f), 270f),
+                new SpawnPlace(new Vector3(1407.032f, 1127.644f, 114.3341f), 180f),
+                new SpawnPlace(new Vector3(1400.466f, 1127.725f, 114.3344f), 180f),
+                new SpawnPlace(new Vector3(1443.969f, 1132.255f, 114.334f), 180f),
+                new SpawnPlace(new Vector3(1441.434f, 1137.952f, 114.3266f), 90f),
+            },  
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 65f) { TaskRequirements = TaskRequirements.Guard },
@@ -6442,6 +6559,19 @@ new ConditionalLocation(, 75f),*/
             IsOnMPMap = true,
             IsOnSPMap = false,
             InteriorID = -706,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1395.212f, 1141.87f, 114.6328f), 90f),
+                new SpawnPlace(new Vector3(1394.743f, 1152.884f, 114.3995f), 90f),
+                new SpawnPlace(new Vector3(1389.741f, 1162.319f, 114.3345f), 90f),
+                new SpawnPlace(new Vector3(1409.096f, 1164.741f, 114.3342f), 270f),
+                new SpawnPlace(new Vector3(1409.003f, 1160.085f, 114.3342f), 270f),
+                new SpawnPlace(new Vector3(1409.972f, 1147.437f, 114.334f), 270f),
+                new SpawnPlace(new Vector3(1407.032f, 1127.644f, 114.3341f), 180f),
+                new SpawnPlace(new Vector3(1400.466f, 1127.725f, 114.3344f), 180f),
+                new SpawnPlace(new Vector3(1443.969f, 1132.255f, 114.334f), 180f),
+                new SpawnPlace(new Vector3(1441.434f, 1137.952f, 114.3266f), 90f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 55f) { TaskRequirements = TaskRequirements.Guard },
@@ -6472,6 +6602,14 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-605.2941f, -1780.346f, 22.64002f), 214.7294f),
+                new SpawnPlace(new Vector3(-602.9934f, -1778.947f, 22.64001f), 212.5719f),
+                new SpawnPlace(new Vector3(-592.4568f, -1765.238f, 22.18037f), 232.2458f),
+                new SpawnPlace(new Vector3(-583.207f, -1767.657f, 22.18037f), 148.862f),
+                new SpawnPlace(new Vector3(-570.8998f, -1776.167f, 22.18037f), 147.2779f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 45f),
@@ -6509,6 +6647,16 @@ new ConditionalLocation(, 75f),*/
             InteriorID = 293377,
             IsOnSPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-499.2289f, -1716.116f, 19.43671f), 147.4582f),
+                new SpawnPlace(new Vector3(-487.4412f, -1731.721f, 18.74353f), 112.3531f),
+                new SpawnPlace(new Vector3(-464.4762f, -1740.078f, 15.76328f), 22.68452f),
+                new SpawnPlace(new Vector3(-518.996f, -1733.539f, 18.35192f), 280.0774f),
+                new SpawnPlace(new Vector3(-489.5229f, -1719.543f, 22.52637f), 151.0339f),
+                new SpawnPlace(new Vector3(-502.9501f, -1678.834f, 18.3263f), 270.876f),
+                new SpawnPlace(new Vector3(-485.3434f, -1691.403f, 18.46146f), 66.12402f),
+            },
             // Minimum entries as ARM BL exists in yard - may move them into here
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
@@ -6540,13 +6688,25 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-1147.513f, -1452.031f, 3.598566f), 34.41771f),
+                new SpawnPlace(new Vector3(-1151.917f, -1447.637f, 3.710769f), 214.5342f),
+                new SpawnPlace(new Vector3(-1132.393f, -1434.1f, 4.026212f), 217.2793f),
+                new SpawnPlace(new Vector3(-1120.33f, -1449.335f, 4.040649f), 37.95449f),
+                new SpawnPlace(new Vector3(-1132.92f, -1456.291f, 3.869226f), 309.9518f),
+                new SpawnPlace(new Vector3(-1150.189f, -1473.572f, 3.379835f), 127.6421f),
+                new SpawnPlace(new Vector3(-1164.366f, -1429.561f, 3.589624f), 29.71297f),
+                new SpawnPlace(new Vector3(-1201.282f, -1474.454f, 3.356607f), 216.3387f),
+                new SpawnPlace(new Vector3(-1161.301f, -1532.462f, 3.533583f), 306.6382f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 35f),
                 new GangConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 35f),
                 new GangConditionalLocation(new Vector3(-1166.395f, -1453.536f, 4.367522f), 122.2634f, 35f),
                 new GangConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 35f),
-                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 35f),
+                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 35f), 
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
@@ -6565,6 +6725,18 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 27161701,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-1147.513f, -1452.031f, 3.598566f), 34.41771f),
+                new SpawnPlace(new Vector3(-1151.917f, -1447.637f, 3.710769f), 214.5342f),
+                new SpawnPlace(new Vector3(-1132.393f, -1434.1f, 4.026212f), 217.2793f),
+                new SpawnPlace(new Vector3(-1120.33f, -1449.335f, 4.040649f), 37.95449f),
+                new SpawnPlace(new Vector3(-1132.92f, -1456.291f, 3.869226f), 309.9518f),
+                new SpawnPlace(new Vector3(-1150.189f, -1473.572f, 3.379835f), 127.6421f),
+                new SpawnPlace(new Vector3(-1164.366f, -1429.561f, 3.589624f), 29.71297f),
+                new SpawnPlace(new Vector3(-1201.282f, -1474.454f, 3.356607f), 216.3387f),
+                new SpawnPlace(new Vector3(-1161.301f, -1532.462f, 3.533583f), 306.6382f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 35f),
@@ -6594,6 +6766,24 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(259.5945f, -3059.748f, 4.862996f), 121.1893f),
+                new SpawnPlace(new Vector3(257.3155f, -3062.532f, 4.862997f), 41.40289f),
+                new SpawnPlace(new Vector3(249.2999f, -3073.471f, 4.863023f), 134.7726f),
+                new SpawnPlace(new Vector3(256.9539f, -3081.718f, 4.868857f), 135.945f),
+                new SpawnPlace(new Vector3(262.0152f, -3083.523f, 4.868788f), 226.6208f),
+                new SpawnPlace(new Vector3(269.9313f, -3075.652f, 4.774576f), 223.4672f),
+                new SpawnPlace(new Vector3(280.2556f, -3065.681f, 4.77555f), 227.2318f),
+                new SpawnPlace(new Vector3(270.2598f, -3056.766f, 4.817614f), 316.4533f),
+                new SpawnPlace(new Vector3(275.5166f, -3015.439f, 5.136481f), 97.55825f),
+                new SpawnPlace(new Vector3(285.0347f, -2981.069f, 4.539929f), 173.9707f),
+                new SpawnPlace(new Vector3(285.7259f, -3028.987f, 5.136465f), 269.5735f),
+                new SpawnPlace(new Vector3(246.9582f, -3026.748f, 11.45123f), 185.2274f),
+                new SpawnPlace(new Vector3(213.8953f, -3077.219f, 6.01534f), 282.2874f),
+                new SpawnPlace(new Vector3(235.2579f, -3111.713f, 4.790264f), 91.74629f),
+                new SpawnPlace(new Vector3(253.5661f, -3122.964f, 8.9913f), 358.0086f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 65f),
@@ -6621,6 +6811,24 @@ new ConditionalLocation(, 75f),*/
             InteriorID = 24652901,
             IsOnSPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(259.5945f, -3059.748f, 4.862996f), 121.1893f),
+                new SpawnPlace(new Vector3(257.3155f, -3062.532f, 4.862997f), 41.40289f),
+                new SpawnPlace(new Vector3(249.2999f, -3073.471f, 4.863023f), 134.7726f),
+                new SpawnPlace(new Vector3(256.9539f, -3081.718f, 4.868857f), 135.945f),
+                new SpawnPlace(new Vector3(262.0152f, -3083.523f, 4.868788f), 226.6208f),
+                new SpawnPlace(new Vector3(269.9313f, -3075.652f, 4.774576f), 223.4672f),
+                new SpawnPlace(new Vector3(280.2556f, -3065.681f, 4.77555f), 227.2318f),
+                new SpawnPlace(new Vector3(270.2598f, -3056.766f, 4.817614f), 316.4533f),
+                new SpawnPlace(new Vector3(275.5166f, -3015.439f, 5.136481f), 97.55825f),
+                new SpawnPlace(new Vector3(285.0347f, -2981.069f, 4.539929f), 173.9707f),
+                new SpawnPlace(new Vector3(285.7259f, -3028.987f, 5.136465f), 269.5735f),
+                new SpawnPlace(new Vector3(246.9582f, -3026.748f, 11.45123f), 185.2274f),
+                new SpawnPlace(new Vector3(213.8953f, -3077.219f, 6.01534f), 282.2874f),
+                new SpawnPlace(new Vector3(235.2579f, -3111.713f, 4.790264f), 91.74629f),
+                new SpawnPlace(new Vector3(253.5661f, -3122.964f, 8.9913f), 358.0086f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(259.1913f, -3060.097f, 5.862996f), 73.5638f, 65f),
@@ -6648,6 +6856,20 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1184.906f, -1620.386f, 44.85315f), 124.7279f),
+                new SpawnPlace(new Vector3(1183.528f, -1610.425f, 44.85312f), 35.28681f),
+                new SpawnPlace(new Vector3(1193.85f, -1624.053f, 45.22145f), 183.8323f),
+                new SpawnPlace(new Vector3(1214.24f, -1644.203f, 48.646f), 46.77005f),
+                new SpawnPlace(new Vector3(1220.464f, -1659.026f, 48.53115f), 208.6136f),
+                new SpawnPlace(new Vector3(1205.795f, -1607.616f, 50.73615f), 211.1342f),
+                new SpawnPlace(new Vector3(1202.258f, -1594.401f, 50.34812f), 87.42784f),
+                new SpawnPlace(new Vector3(1203.596f, -1671.238f, 42.35906f), 213.1268f),
+                new SpawnPlace(new Vector3(1147.065f, -1672.871f, 36.56709f), 203.5216f),
+                new SpawnPlace(new Vector3(1152.725f, -1639.54f, 36.95771f), 205.0376f),
+                new SpawnPlace(new Vector3(1162.814f, -1637.438f, 36.96169f), 190.9172f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 75f),
@@ -6674,6 +6896,20 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = false,
             InteriorID = 29926513,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1184.906f, -1620.386f, 44.85315f), 124.7279f),
+                new SpawnPlace(new Vector3(1183.528f, -1610.425f, 44.85312f), 35.28681f),
+                new SpawnPlace(new Vector3(1193.85f, -1624.053f, 45.22145f), 183.8323f),
+                new SpawnPlace(new Vector3(1214.24f, -1644.203f, 48.646f), 46.77005f),
+                new SpawnPlace(new Vector3(1220.464f, -1659.026f, 48.53115f), 208.6136f),
+                new SpawnPlace(new Vector3(1205.795f, -1607.616f, 50.73615f), 211.1342f),
+                new SpawnPlace(new Vector3(1202.258f, -1594.401f, 50.34812f), 87.42784f),
+                new SpawnPlace(new Vector3(1203.596f, -1671.238f, 42.35906f), 213.1268f),
+                new SpawnPlace(new Vector3(1147.065f, -1672.871f, 36.56709f), 203.5216f),
+                new SpawnPlace(new Vector3(1152.725f, -1639.54f, 36.95771f), 205.0376f),
+                new SpawnPlace(new Vector3(1162.814f, -1637.438f, 36.96169f), 190.9172f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 75f),
@@ -6703,6 +6939,24 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1307.621f, -1754.008f, 53.88044f), 34.51284f),
+                new SpawnPlace(new Vector3(1314.46f, -1770.278f, 54.84428f), 113.4819f),
+                new SpawnPlace(new Vector3(1350.432f, -1747.699f, 64.07758f), 109.2707f),
+                new SpawnPlace(new Vector3(1336.666f, -1740.112f, 56.33615f), 293.0635f),
+                new SpawnPlace(new Vector3(1322.362f, -1736.713f, 54.37666f), 298.3408f),
+                new SpawnPlace(new Vector3(1321.605f, -1746.753f, 54.35059f), 206.3622f),
+                new SpawnPlace(new Vector3(1314.464f, -1731.386f, 54.70008f), 6.462904f),
+                new SpawnPlace(new Vector3(1312.26f, -1697.884f, 58.21873f), 190.9624f),
+                new SpawnPlace(new Vector3(1314.089f, -1683.766f, 57.84111f), 35.96219f),
+                new SpawnPlace(new Vector3(1295.708f, -1697.032f, 55.07864f), 110.0868f),
+                new SpawnPlace(new Vector3(1283.301f, -1699.287f, 55.07875f), 20.38351f),
+                new SpawnPlace(new Vector3(1271.053f, -1707.176f, 54.65503f), 25.33139f),
+                new SpawnPlace(new Vector3(1267.481f, -1714.421f, 54.65507f), 115.5235f),
+                new SpawnPlace(new Vector3(1258.516f, -1778.356f, 49.25783f), 23.8678f),
+                new SpawnPlace(new Vector3(1269.925f, -1771.301f, 49.4483f), 201.7928f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
@@ -6729,6 +6983,24 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = false,
             InteriorID = 29926512,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1307.621f, -1754.008f, 53.88044f), 34.51284f),
+                new SpawnPlace(new Vector3(1314.46f, -1770.278f, 54.84428f), 113.4819f),
+                new SpawnPlace(new Vector3(1350.432f, -1747.699f, 64.07758f), 109.2707f),
+                new SpawnPlace(new Vector3(1336.666f, -1740.112f, 56.33615f), 293.0635f),
+                new SpawnPlace(new Vector3(1322.362f, -1736.713f, 54.37666f), 298.3408f),
+                new SpawnPlace(new Vector3(1321.605f, -1746.753f, 54.35059f), 206.3622f),
+                new SpawnPlace(new Vector3(1314.464f, -1731.386f, 54.70008f), 6.462904f),
+                new SpawnPlace(new Vector3(1312.26f, -1697.884f, 58.21873f), 190.9624f),
+                new SpawnPlace(new Vector3(1314.089f, -1683.766f, 57.84111f), 35.96219f),
+                new SpawnPlace(new Vector3(1295.708f, -1697.032f, 55.07864f), 110.0868f),
+                new SpawnPlace(new Vector3(1283.301f, -1699.287f, 55.07875f), 20.38351f),
+                new SpawnPlace(new Vector3(1271.053f, -1707.176f, 54.65503f), 25.33139f),
+                new SpawnPlace(new Vector3(1267.481f, -1714.421f, 54.65507f), 115.5235f),
+                new SpawnPlace(new Vector3(1258.516f, -1778.356f, 49.25783f), 23.8678f),
+                new SpawnPlace(new Vector3(1269.925f, -1771.301f, 49.4483f), 201.7928f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
@@ -6770,6 +7042,20 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-594.2856f, -749.1403f, 29.48706f), 179.3684f),
+                new SpawnPlace(new Vector3(-578.715f, -778.4082f, 30.69767f), 93.49163f),
+                new SpawnPlace(new Vector3(-580.4406f, -778.6337f, 25.01721f), 90.72147f),
+                new SpawnPlace(new Vector3(-588.259f, -773.8872f, 25.01723f), 91.67467f),
+                new SpawnPlace(new Vector3(-588.5326f, -783.5722f, 25.01723f), 87.91087f),
+                new SpawnPlace(new Vector3(-603.9809f, -774.3694f, 25.20001f), 179.3249f),
+                new SpawnPlace(new Vector3(-603.9863f, -782.9644f, 25.20448f), 0.1062168f),
+                new SpawnPlace(new Vector3(-604.9214f, -802.4261f, 25.10073f), 88.97829f),
+                new SpawnPlace(new Vector3(-656.5526f, -763.7483f, 26.94008f), 271.5131f),
+                new SpawnPlace(new Vector3(-657.5888f, -735.4687f, 27.22356f), 180.7621f),
+                new SpawnPlace(new Vector3(-617.4648f, -735.1879f, 28.03816f), 89.40703f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 70f),
@@ -6802,6 +7088,22 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = false,
             MaxAssaultSpawns = 20,
             VendorPersonnelID = "KoreanPeds",
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-608.7655f, -714.2634f, 36.2798f), 90.71024f),
+                new SpawnPlace(new Vector3(-608.591f, -721.9913f, 36.27993f), 89.69503f),
+                new SpawnPlace(new Vector3(-599.7689f, -726.999f, 36.27991f), 179.0695f),
+                new SpawnPlace(new Vector3(-589.4184f, -725.8607f, 36.27969f), 179.6155f),
+                new SpawnPlace(new Vector3(-579.0705f, -727.0001f, 36.27958f), 179.3779f),
+                new SpawnPlace(new Vector3(-569.9877f, -721.777f, 36.27935f), 267.7079f),
+                new SpawnPlace(new Vector3(-570.1074f, -714.428f, 36.27918f), 276.5219f),
+                new SpawnPlace(new Vector3(-577.7543f, -708.032f, 36.27919f), 359.3394f),
+                new SpawnPlace(new Vector3(-589.4501f, -707.8503f, 36.27942f), 2.317164f),
+                new SpawnPlace(new Vector3(-601.2427f, -707.989f, 36.27956f), 2.187198f),
+                new SpawnPlace(new Vector3(-583.7827f, -701.3433f, 31.23437f), 69.56745f),
+                new SpawnPlace(new Vector3(-604.6392f, -704.4391f, 31.23592f), 328.1317f),
+                new SpawnPlace(new Vector3(-579.876f, -675.7117f, 32.82784f), 357.9647f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-586.7721f, -674.8427f, 30.43967f), 0f, 70f){TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario },// front on road
@@ -6831,6 +7133,22 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(959.4832f, 3619.043f, 32.66891f), 87.58515f),
+                new SpawnPlace(new Vector3(965.2206f, 3613.7f, 32.85542f), 175.7461f),
+                new SpawnPlace(new Vector3(969.1274f, 3618.065f, 32.55291f), 267.7784f),
+                new SpawnPlace(new Vector3(961.2322f, 3626.103f, 32.36558f), 358.7123f),
+                new SpawnPlace(new Vector3(961.9532f, 3623.048f, 36.08109f), 176.7814f),
+                new SpawnPlace(new Vector3(910.9692f, 3644.664f, 32.67754f), 177.026f),
+                new SpawnPlace(new Vector3(917.6051f, 3655.262f, 32.48355f), 359.5044f),
+                new SpawnPlace(new Vector3(910.2179f, 3649.707f, 36.13766f), 258.0513f),
+                new SpawnPlace(new Vector3(905.6821f, 3587.1f, 33.38477f), 0.7807105f),
+                new SpawnPlace(new Vector3(916.4911f, 3576.886f, 33.56024f), 271.5622f),
+                new SpawnPlace(new Vector3(912.9825f, 3571.816f, 33.78194f), 266.9766f),
+                new SpawnPlace(new Vector3(996.5894f, 3575.284f, 34.61134f), 13.1355f),
+                new SpawnPlace(new Vector3(902.6502f, 3564.412f, 33.79782f), 82.05021f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 75f),
@@ -6855,6 +7173,22 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 24627301,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(959.4832f, 3619.043f, 32.66891f), 87.58515f),
+                new SpawnPlace(new Vector3(965.2206f, 3613.7f, 32.85542f), 175.7461f),
+                new SpawnPlace(new Vector3(969.1274f, 3618.065f, 32.55291f), 267.7784f),
+                new SpawnPlace(new Vector3(961.2322f, 3626.103f, 32.36558f), 358.7123f),
+                new SpawnPlace(new Vector3(961.9532f, 3623.048f, 36.08109f), 176.7814f),
+                new SpawnPlace(new Vector3(910.9692f, 3644.664f, 32.67754f), 177.026f),
+                new SpawnPlace(new Vector3(917.6051f, 3655.262f, 32.48355f), 359.5044f),
+                new SpawnPlace(new Vector3(910.2179f, 3649.707f, 36.13766f), 258.0513f),
+                new SpawnPlace(new Vector3(905.6821f, 3587.1f, 33.38477f), 0.7807105f),
+                new SpawnPlace(new Vector3(916.4911f, 3576.886f, 33.56024f), 271.5622f),
+                new SpawnPlace(new Vector3(912.9825f, 3571.816f, 33.78194f), 266.9766f),
+                new SpawnPlace(new Vector3(996.5894f, 3575.284f, 34.61134f), 13.1355f),
+                new SpawnPlace(new Vector3(902.6502f, 3564.412f, 33.79782f), 82.05021f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 // across road Locations
@@ -6880,7 +7214,7 @@ new ConditionalLocation(, 75f),*/
                 new GangConditionalLocation(new Vector3(898.3737f, 3583.522f, 32.88903f), 1.134625f, 75f),
                 new GangConditionalLocation(new Vector3(896.1827f, 3591.412f, 32.5743f), 88.75269f, 75f),
                 new GangConditionalLocation(new Vector3(916.613f, 3589.789f, 32.76786f), 269.8999f, 75f){ IsEmpty = false, },
-            }
+            },
         };
         GangDens.Add(RedneckDen1MP);
     }
@@ -6896,7 +7230,23 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1662.302f, 4776.384f, 42.00767f), 279.1427f),
+                new SpawnPlace(new Vector3(1648.83f, 4779.556f, 42.01566f), 15.24741f),
+                new SpawnPlace(new Vector3(1652.906f, 4746.185f, 42.02153f), 111.8551f),
+                new SpawnPlace(new Vector3(1664.081f, 4739.719f, 42.00838f), 294.5716f),
+                new SpawnPlace(new Vector3(1710.694f, 4759.946f, 42.03519f), 181.8081f),
+                new SpawnPlace(new Vector3(1695.86f, 4785.289f, 42.01148f), 93.22364f),
+                new SpawnPlace(new Vector3(1717.719f, 4792.023f, 41.98403f), 287.6675f),
+                new SpawnPlace(new Vector3(1700.263f, 4816.588f, 41.94078f), 192.2924f),
+                new SpawnPlace(new Vector3(1698.3f, 4836.698f, 41.93739f), 186.4559f),
+                new SpawnPlace(new Vector3(1651.34f, 4829.955f, 42.02621f), 194.3823f),
+                new SpawnPlace(new Vector3(1646.346f, 4843.911f, 42.01584f), 101.948f),
+                new SpawnPlace(new Vector3(1652.978f, 4839.043f, 47.17132f), 186.5961f),
+                new SpawnPlace(new Vector3(1691.641f, 4823.834f, 45.96307f), 189.9594f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 65f),
@@ -6922,7 +7272,23 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 29926514,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(1662.302f, 4776.384f, 42.00767f), 279.1427f),
+                new SpawnPlace(new Vector3(1648.83f, 4779.556f, 42.01566f), 15.24741f),
+                new SpawnPlace(new Vector3(1652.906f, 4746.185f, 42.02153f), 111.8551f),
+                new SpawnPlace(new Vector3(1664.081f, 4739.719f, 42.00838f), 294.5716f),
+                new SpawnPlace(new Vector3(1710.694f, 4759.946f, 42.03519f), 181.8081f),
+                new SpawnPlace(new Vector3(1695.86f, 4785.289f, 42.01148f), 93.22364f),
+                new SpawnPlace(new Vector3(1717.719f, 4792.023f, 41.98403f), 287.6675f),
+                new SpawnPlace(new Vector3(1700.263f, 4816.588f, 41.94078f), 192.2924f),
+                new SpawnPlace(new Vector3(1698.3f, 4836.698f, 41.93739f), 186.4559f),
+                new SpawnPlace(new Vector3(1651.34f, 4829.955f, 42.02621f), 194.3823f),
+                new SpawnPlace(new Vector3(1646.346f, 4843.911f, 42.01584f), 101.948f),
+                new SpawnPlace(new Vector3(1652.978f, 4839.043f, 47.17132f), 186.5961f),
+                new SpawnPlace(new Vector3(1691.641f, 4823.834f, 45.96307f), 189.9594f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 65f),
@@ -6935,7 +7301,7 @@ new ConditionalLocation(, 75f),*/
             {
                 new GangConditionalLocation(new Vector3(1669.677f, 4776.892f, 41.22393f), 4.480381f, 75f),
                 new GangConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f),
-            }
+            },
         };
         GangDen LupisellaDen1 = new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "", "LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA")
         {
@@ -6947,7 +7313,19 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f),
+                new SpawnPlace(new Vector3(-231.1147f, 6450.935f, 31.19764f), 50.89023f),
+                new SpawnPlace(new Vector3(-214.8099f, 6444.476f, 31.3135f), 317.9684f),
+                new SpawnPlace(new Vector3(-167.0845f, 6439.404f, 31.9159f), 128.3655f),
+                new SpawnPlace(new Vector3(-153.1437f, 6429.345f, 31.9159f), 136.4906f),
+                new SpawnPlace(new Vector3(-183.5616f, 6403.98f, 31.90574f), 315.271f),
+                new SpawnPlace(new Vector3(-189.5827f, 6410.347f, 31.91249f), 34.84613f),
+                new SpawnPlace(new Vector3(-214.0163f, 6396.451f, 33.08509f), 45.23524f),
+                new SpawnPlace(new Vector3(-194.3724f, 6387.129f, 33.08516f), 223.145f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 65f),
@@ -6973,7 +7351,19 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 29926515,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f),
+                new SpawnPlace(new Vector3(-231.1147f, 6450.935f, 31.19764f), 50.89023f),
+                new SpawnPlace(new Vector3(-214.8099f, 6444.476f, 31.3135f), 317.9684f),
+                new SpawnPlace(new Vector3(-167.0845f, 6439.404f, 31.9159f), 128.3655f),
+                new SpawnPlace(new Vector3(-153.1437f, 6429.345f, 31.9159f), 136.4906f),
+                new SpawnPlace(new Vector3(-183.5616f, 6403.98f, 31.90574f), 315.271f),
+                new SpawnPlace(new Vector3(-189.5827f, 6410.347f, 31.91249f), 34.84613f),
+                new SpawnPlace(new Vector3(-214.0163f, 6396.451f, 33.08509f), 45.23524f),
+                new SpawnPlace(new Vector3(-194.3724f, 6387.129f, 33.08516f), 223.145f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 65f),
@@ -6999,6 +7389,19 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f),
+                new SpawnPlace(new Vector3(-1651.873f, 28.04742f, 62.3316f), 19.08335f),
+                new SpawnPlace(new Vector3(-1646.033f, 17.82299f, 62.5367f), 242.4769f),
+                new SpawnPlace(new Vector3(-1625.078f, 8.882976f, 62.53674f), 151.9427f),
+                new SpawnPlace(new Vector3(-1610.362f, 5.570623f, 61.57377f), 88.23811f),
+                new SpawnPlace(new Vector3(-1621.712f, 15.74522f, 62.54132f), 338.5354f),
+                new SpawnPlace(new Vector3(-1594.314f, 21.0634f, 65.79229f), 261.0975f),
+                new SpawnPlace(new Vector3(-1591.479f, 45.25194f, 60.22267f), 308.7405f),
+                new SpawnPlace(new Vector3(-1608.654f, 81.10107f, 61.46685f), 86.93497f),
+                new SpawnPlace(new Vector3(-1618.153f, 81.72367f, 61.73633f), 244.6366f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 65f),
@@ -7025,6 +7428,19 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = false,
             InteriorID = 29926516,
             MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f),
+                new SpawnPlace(new Vector3(-1651.873f, 28.04742f, 62.3316f), 19.08335f),
+                new SpawnPlace(new Vector3(-1646.033f, 17.82299f, 62.5367f), 242.4769f),
+                new SpawnPlace(new Vector3(-1625.078f, 8.882976f, 62.53674f), 151.9427f),
+                new SpawnPlace(new Vector3(-1610.362f, 5.570623f, 61.57377f), 88.23811f),
+                new SpawnPlace(new Vector3(-1621.712f, 15.74522f, 62.54132f), 338.5354f),
+                new SpawnPlace(new Vector3(-1594.314f, 21.0634f, 65.79229f), 261.0975f),
+                new SpawnPlace(new Vector3(-1591.479f, 45.25194f, 60.22267f), 308.7405f),
+                new SpawnPlace(new Vector3(-1608.654f, 81.10107f, 61.46685f), 86.93497f),
+                new SpawnPlace(new Vector3(-1618.153f, 81.72367f, 61.73633f), 244.6366f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 65f),
@@ -7049,7 +7465,21 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 15,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-3228.478f, 1092.326f, 10.76343f), 253.458f),
+                new SpawnPlace(new Vector3(-3231.997f, 1081.674f, 10.80774f), 256.2454f),
+                new SpawnPlace(new Vector3(-3240.327f, 1082.571f, 7.39701f), 162.9831f),
+                new SpawnPlace(new Vector3(-3229.216f, 1100.603f, 10.57875f), 161.7845f),
+                new SpawnPlace(new Vector3(-3233.528f, 1104.056f, 7.6043f), 105.027f),
+                new SpawnPlace(new Vector3(-3225.137f, 1112.949f, 10.57764f), 340.6542f),
+                new SpawnPlace(new Vector3(-3244.83f, 1078.012f, 11.0333f), 347.6943f),
+                new SpawnPlace(new Vector3(-3252.607f, 1077.152f, 11.0333f), 81.00128f),
+                new SpawnPlace(new Vector3(-3232.654f, 1068.003f, 11.03354f), 257.6971f),
+                new SpawnPlace(new Vector3(-3184.271f, 1106.668f, 20.87817f), 62.95254f),
+                new SpawnPlace(new Vector3(-3202.016f, 1058.921f, 20.87287f), 249.4391f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 65f),
@@ -7075,7 +7505,21 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 29926517,
-            MaxAssaultSpawns = 15,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-3228.478f, 1092.326f, 10.76343f), 253.458f),
+                new SpawnPlace(new Vector3(-3231.997f, 1081.674f, 10.80774f), 256.2454f),
+                new SpawnPlace(new Vector3(-3240.327f, 1082.571f, 7.39701f), 162.9831f),
+                new SpawnPlace(new Vector3(-3229.216f, 1100.603f, 10.57875f), 161.7845f),
+                new SpawnPlace(new Vector3(-3233.528f, 1104.056f, 7.6043f), 105.027f),
+                new SpawnPlace(new Vector3(-3225.137f, 1112.949f, 10.57764f), 340.6542f),
+                new SpawnPlace(new Vector3(-3244.83f, 1078.012f, 11.0333f), 347.6943f),
+                new SpawnPlace(new Vector3(-3252.607f, 1077.152f, 11.0333f), 81.00128f),
+                new SpawnPlace(new Vector3(-3232.654f, 1068.003f, 11.03354f), 257.6971f),
+                new SpawnPlace(new Vector3(-3184.271f, 1106.668f, 20.87817f), 62.95254f),
+                new SpawnPlace(new Vector3(-3202.016f, 1058.921f, 20.87287f), 249.4391f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 65f),
@@ -7101,7 +7545,22 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f),
+                new SpawnPlace(new Vector3(522.8597f, 200.0244f, 108.3095f), 73.10762f),
+                new SpawnPlace(new Vector3(485.5479f, 202.1682f, 104.745f), 344.9415f),
+                new SpawnPlace(new Vector3(485.5735f, 213.8579f, 108.3095f), 245.7049f),
+                new SpawnPlace(new Vector3(470.2546f, 224.2039f, 104.9038f), 158.8486f),
+                new SpawnPlace(new Vector3(495.0069f, 236.1984f, 104.745f), 202.5727f),
+                new SpawnPlace(new Vector3(518.3367f, 241.5771f, 104.9097f), 254.8766f),
+                new SpawnPlace(new Vector3(530.3705f, 223.7302f, 104.7449f), 113.1159f),
+                new SpawnPlace(new Vector3(525.5062f, 206.3738f, 104.744f), 70.60644f),
+                new SpawnPlace(new Vector3(532.9328f, 195.8993f, 104.9043f), 258.2364f),
+                new SpawnPlace(new Vector3(574.9498f, 169.658f, 100.1823f), 69.99049f),
+                new SpawnPlace(new Vector3(642.0856f, 260.459f, 103.2953f), 63.77834f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, spawnChance) { TaskRequirements = TaskRequirements.Guard, ForceSidearm = true },//right by thingo, alwayts has a gun
@@ -7128,7 +7587,22 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnSPMap = false,
             InteriorID = 29926518,
-            MaxAssaultSpawns = 10,
+            MaxAssaultSpawns = 20,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f),
+                new SpawnPlace(new Vector3(522.8597f, 200.0244f, 108.3095f), 73.10762f),
+                new SpawnPlace(new Vector3(485.5479f, 202.1682f, 104.745f), 344.9415f),
+                new SpawnPlace(new Vector3(485.5735f, 213.8579f, 108.3095f), 245.7049f),
+                new SpawnPlace(new Vector3(470.2546f, 224.2039f, 104.9038f), 158.8486f),
+                new SpawnPlace(new Vector3(495.0069f, 236.1984f, 104.745f), 202.5727f),
+                new SpawnPlace(new Vector3(518.3367f, 241.5771f, 104.9097f), 254.8766f),
+                new SpawnPlace(new Vector3(530.3705f, 223.7302f, 104.7449f), 113.1159f),
+                new SpawnPlace(new Vector3(525.5062f, 206.3738f, 104.744f), 70.60644f),
+                new SpawnPlace(new Vector3(532.9328f, 195.8993f, 104.9043f), 258.2364f),
+                new SpawnPlace(new Vector3(574.9498f, 169.658f, 100.1823f), 69.99049f),
+                new SpawnPlace(new Vector3(642.0856f, 260.459f, 103.2953f), 63.77834f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, spawnChance) { TaskRequirements = TaskRequirements.Guard, ForceSidearm = true },//right by thingo, alwayts has a gun
@@ -7168,6 +7642,27 @@ new ConditionalLocation(, 75f),*/
             IsOnMPMap = false,
             IsEnabled = true,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(86.11255f, -1959.272f, 21.12168f), 318.5057f),
+                new SpawnPlace(new Vector3(84.74812f, -1967.052f, 20.74746f), 227.6701f),
+                new SpawnPlace(new Vector3(75.15337f, -1970.74f, 20.75854f), 143.3801f),
+                new SpawnPlace(new Vector3(67.53627f, -1960.693f, 20.93467f), 145.1779f),
+                new SpawnPlace(new Vector3(77.77432f, -1947.309f, 21.17414f), 261.9052f),
+                new SpawnPlace(new Vector3(101.9092f, -1899.503f, 21.07219f), 152.1668f),
+                new SpawnPlace(new Vector3(125.2509f, -1930.593f, 21.38246f), 95.51179f),
+                new SpawnPlace(new Vector3(129.272f, -1921.355f, 21.01831f), 28.9115f),
+                new SpawnPlace(new Vector3(139.7002f, -1921.312f, 21.00622f), 296.6204f),
+                new SpawnPlace(new Vector3(145.6827f, -1935.401f, 19.81798f), 316.2831f),
+                new SpawnPlace(new Vector3(125.7797f, -1956.874f, 20.73485f), 314.5935f),
+                new SpawnPlace(new Vector3(113.664f, -1960.392f, 21.1248f), 33.34439f),
+                new SpawnPlace(new Vector3(79.67442f, -1965.774f, 24.36626f), 322.1465f),
+                new SpawnPlace(new Vector3(104.9533f, -1976.527f, 20.96483f), 24.25643f),
+                new SpawnPlace(new Vector3(79.31725f, -1899.848f, 21.82358f), 47.36011f),
+                new SpawnPlace(new Vector3(57.27884f, -1921.608f, 21.5886f), 325.7827f),
+                new SpawnPlace(new Vector3(46.91835f, -1942.158f, 21.50557f), 48.06763f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 35f),
@@ -7195,6 +7690,27 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = false,
             InteriorID = 29926511,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(86.11255f, -1959.272f, 21.12168f), 318.5057f),
+                new SpawnPlace(new Vector3(84.74812f, -1967.052f, 20.74746f), 227.6701f),
+                new SpawnPlace(new Vector3(75.15337f, -1970.74f, 20.75854f), 143.3801f),
+                new SpawnPlace(new Vector3(67.53627f, -1960.693f, 20.93467f), 145.1779f),
+                new SpawnPlace(new Vector3(77.77432f, -1947.309f, 21.17414f), 261.9052f),
+                new SpawnPlace(new Vector3(101.9092f, -1899.503f, 21.07219f), 152.1668f),
+                new SpawnPlace(new Vector3(125.2509f, -1930.593f, 21.38246f), 95.51179f),
+                new SpawnPlace(new Vector3(129.272f, -1921.355f, 21.01831f), 28.9115f),
+                new SpawnPlace(new Vector3(139.7002f, -1921.312f, 21.00622f), 296.6204f),
+                new SpawnPlace(new Vector3(145.6827f, -1935.401f, 19.81798f), 316.2831f),
+                new SpawnPlace(new Vector3(125.7797f, -1956.874f, 20.73485f), 314.5935f),
+                new SpawnPlace(new Vector3(113.664f, -1960.392f, 21.1248f), 33.34439f),
+                new SpawnPlace(new Vector3(79.67442f, -1965.774f, 24.36626f), 322.1465f),
+                new SpawnPlace(new Vector3(104.9533f, -1976.527f, 20.96483f), 24.25643f),
+                new SpawnPlace(new Vector3(79.31725f, -1899.848f, 21.82358f), 47.36011f),
+                new SpawnPlace(new Vector3(57.27884f, -1921.608f, 21.5886f), 325.7827f),
+                new SpawnPlace(new Vector3(46.91835f, -1942.158f, 21.50557f), 48.06763f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 35f),
@@ -7212,21 +7728,6 @@ new ConditionalLocation(, 75f),*/
         };
         GangDen BallasDen2 = new GangDen()
         {
-            //MapIcon = 106,
-            AssignedAssociationID = "AMBIENT_GANG_BALLAS",
-            PossiblePedSpawns = new List<ConditionalLocation>()
-            {
-                    new GangConditionalLocation(new Vector3(166.5394f,-1870.718f,24.05765f),166.9992f,35f),
-                    new GangConditionalLocation(new Vector3(176.6803f,-1856.694f,24.0493f),17.00001f,35f),
-                    new GangConditionalLocation(new Vector3(168.3999f,-1863.078f,24.09362f),89.99988f,35f),
-                    new GangConditionalLocation(new Vector3(177.6906f,-1856.02f,24.07937f),120.7892f,35f),
-                    new GangConditionalLocation(new Vector3(168.0899f,-1862.198f,24.10498f),-175.0005f,35f),
-            },
-            PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(166.1798f,-1860.151f,23.61886f),-22.5675f, 75f),
-            },
-            MenuID = "BallasDenMenu",
             Name = "Ballas Grove Trap house",
             FullName = "Ballas Grove Trap house",
             Description = "",
@@ -7236,6 +7737,33 @@ new ConditionalLocation(, 75f),*/
             EntranceHeading = 97.43147f,
             OpenTime = 0,
             CloseTime = 24,
+            //MapIcon = 106,
+            AssignedAssociationID = "AMBIENT_GANG_BALLAS",
+            MenuID = "BallasDenMenu",
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(169.0699f, -1863.175f, 24.20555f), 73.16087f),
+                new SpawnPlace(new Vector3(176.7231f, -1857.03f, 24.04158f), 338.5695f),
+                new SpawnPlace(new Vector3(176.74f, -1868.501f, 24.04563f), 289.1964f),
+                new SpawnPlace(new Vector3(188.6579f, -1867.265f, 24.68082f), 61.44382f),
+                new SpawnPlace(new Vector3(163.2314f, -1831.386f, 27.52778f), 215.0939f),
+                new SpawnPlace(new Vector3(149.2609f, -1903.1f, 23.15285f), 338.4634f),
+                new SpawnPlace(new Vector3(128.9675f, -1906.468f, 23.2398f), 332.6517f),
+                new SpawnPlace(new Vector3(136.8387f, -1912.632f, 23.06144f), 67.14511f),
+                new SpawnPlace(new Vector3(113.7193f, -1900.898f, 23.53875f), 244.9568f),
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(166.5394f,-1870.718f,24.05765f),166.9992f,35f),
+                new GangConditionalLocation(new Vector3(176.6803f,-1856.694f,24.0493f),17.00001f,35f),
+                new GangConditionalLocation(new Vector3(168.3999f,-1863.078f,24.09362f),89.99988f,35f),
+                new GangConditionalLocation(new Vector3(177.6906f,-1856.02f,24.07937f),120.7892f,35f),
+                new GangConditionalLocation(new Vector3(168.0899f,-1862.198f,24.10498f),-175.0005f,35f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(166.1798f,-1860.151f,23.61886f),-22.5675f, 75f),
+            },
         };
         GangDen BallasDen3 = new GangDen()
         {
@@ -7409,6 +7937,30 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
+                new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
+                new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
+                new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
+                new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
+                new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
+                new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
+                new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
+                new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
+                new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
+                new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
+                new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
+                new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
+                new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
+                new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
+                new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
+                new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
+                new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
+                new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
+                new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
@@ -7438,6 +7990,30 @@ new ConditionalLocation(, 75f),*/
             InteriorID = 29926510,
             IsOnSPMap = false,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
+                new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
+                new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
+                new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
+                new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
+                new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
+                new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
+                new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
+                new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
+                new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
+                new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
+                new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
+                new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
+                new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
+                new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
+                new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
+                new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
+                new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
+                new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
+                new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
@@ -7673,6 +8249,28 @@ new ConditionalLocation(, 75f),*/
             IsOnSPMap = true,
             MaxAssaultSpawns = 25,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(981.9285f, -103.1422f, 74.84873f), 227.3508f),
+                new SpawnPlace(new Vector3(1005.857f, -114.4237f, 73.96925f), 331.3114f),
+                new SpawnPlace(new Vector3(964.7866f, -107.5744f, 81.35038f), 208.0531f),
+                new SpawnPlace(new Vector3(969.5823f, -99.38947f, 80.86066f), 32.57677f),
+                new SpawnPlace(new Vector3(954.1641f, -110.9786f, 80.11448f), 137.3268f),
+                new SpawnPlace(new Vector3(971.8476f, -95.17942f, 74.84132f), 45.28675f),
+                new SpawnPlace(new Vector3(944.0562f, -121.989f, 74.39256f), 304.8406f),
+                new SpawnPlace(new Vector3(959.2604f, -121.2197f, 74.96348f), 212.1346f),
+                new SpawnPlace(new Vector3(984.6906f, -125.7766f, 73.95802f), 147.789f),
+                new SpawnPlace(new Vector3(982.2967f, -142.7029f, 74.23651f), 62.82843f),
+                new SpawnPlace(new Vector3(993.5122f, -126.1674f, 80.73526f), 150.9762f),
+                new SpawnPlace(new Vector3(997.7421f, -128.49f, 86.50779f), 58.4211f),
+                new SpawnPlace(new Vector3(998.175f, -134.3277f, 74.14075f), 185.3753f),
+                new SpawnPlace(new Vector3(1012.902f, -122.86f, 73.90211f), 252.7669f),
+                new SpawnPlace(new Vector3(965.5116f, -187.8002f, 73.05312f), 241.3672f),
+                new SpawnPlace(new Vector3(954.6216f, -194.2111f, 82.35484f), 333.8159f),
+                new SpawnPlace(new Vector3(949.9042f, -180.4155f, 79.3154f), 338.0642f),
+                new SpawnPlace(new Vector3(944.2947f, -188.3614f, 73.78098f), 14.55741f),
+                new SpawnPlace(new Vector3(909.6141f, -158.7594f, 74.13415f), 326.5141f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 45f),
@@ -7716,6 +8314,28 @@ new ConditionalLocation(, 75f),*/
             MaxAssaultSpawns = 25,
             IgnoreEntranceInteract = true,
             //HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(981.9285f, -103.1422f, 74.84873f), 227.3508f),
+                new SpawnPlace(new Vector3(1005.857f, -114.4237f, 73.96925f), 331.3114f),
+                new SpawnPlace(new Vector3(964.7866f, -107.5744f, 81.35038f), 208.0531f),
+                new SpawnPlace(new Vector3(969.5823f, -99.38947f, 80.86066f), 32.57677f),
+                new SpawnPlace(new Vector3(954.1641f, -110.9786f, 80.11448f), 137.3268f),
+                new SpawnPlace(new Vector3(971.8476f, -95.17942f, 74.84132f), 45.28675f),
+                new SpawnPlace(new Vector3(944.0562f, -121.989f, 74.39256f), 304.8406f),
+                new SpawnPlace(new Vector3(959.2604f, -121.2197f, 74.96348f), 212.1346f),
+                new SpawnPlace(new Vector3(984.6906f, -125.7766f, 73.95802f), 147.789f),
+                new SpawnPlace(new Vector3(982.2967f, -142.7029f, 74.23651f), 62.82843f),
+                new SpawnPlace(new Vector3(993.5122f, -126.1674f, 80.73526f), 150.9762f),
+                new SpawnPlace(new Vector3(997.7421f, -128.49f, 86.50779f), 58.4211f),
+                new SpawnPlace(new Vector3(998.175f, -134.3277f, 74.14075f), 185.3753f),
+                new SpawnPlace(new Vector3(1012.902f, -122.86f, 73.90211f), 252.7669f),
+                new SpawnPlace(new Vector3(965.5116f, -187.8002f, 73.05312f), 241.3672f),
+                new SpawnPlace(new Vector3(954.6216f, -194.2111f, 82.35484f), 333.8159f),
+                new SpawnPlace(new Vector3(949.9042f, -180.4155f, 79.3154f), 338.0642f),
+                new SpawnPlace(new Vector3(944.2947f, -188.3614f, 73.78098f), 14.55741f),
+                new SpawnPlace(new Vector3(909.6141f, -158.7594f, 74.13415f), 326.5141f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 //Exterior
@@ -7784,6 +8404,27 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             MaxAssaultSpawns = 30,
             // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(84.04226f, 3718.52f, 39.79118f), 50.35764f),
+                new SpawnPlace(new Vector3(67.96211f, 3693.357f, 40.53197f), 55.08184f),
+                new SpawnPlace(new Vector3(57.69836f, 3692.293f, 39.92128f), 275.1284f),
+                new SpawnPlace(new Vector3(47.90059f, 3702.262f, 40.51203f), 337.5538f),
+                new SpawnPlace(new Vector3(40.61531f, 3715.471f, 39.67837f), 155.44f),
+                new SpawnPlace(new Vector3(78.14964f, 3732.547f, 40.27261f), 318.1141f),
+                new SpawnPlace(new Vector3(76.54773f, 3757.377f, 39.75471f), 282.3998f),
+                new SpawnPlace(new Vector3(90.12094f, 3746.865f, 40.77293f), 218.0247f),
+                new SpawnPlace(new Vector3(93.55637f, 3753.316f, 40.77094f), 192.0397f),
+                new SpawnPlace(new Vector3(51.98073f, 3742.08f, 40.08867f), 190.6618f),
+                new SpawnPlace(new Vector3(30.97037f, 3736.029f, 40.63021f), 146.042f),
+                new SpawnPlace(new Vector3(11.31186f, 3720.585f, 39.59206f), 236.3255f),
+                new SpawnPlace(new Vector3(15.43877f, 3688.684f, 39.98893f), 201.8059f),
+                new SpawnPlace(new Vector3(22.60449f, 3671.973f, 39.75502f), 66.77432f),
+                new SpawnPlace(new Vector3(29.17957f, 3666.031f, 40.44059f), 332.7126f),
+                new SpawnPlace(new Vector3(101.1139f, 3652.629f, 40.63929f), 271.5565f),
+                new SpawnPlace(new Vector3(97.86238f, 3682.259f, 39.7367f), 4.317885f),
+                new SpawnPlace(new Vector3(105.6989f, 3728.569f, 40.46704f), 123.2491f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 20f),
@@ -7816,7 +8457,7 @@ new ConditionalLocation(, 75f),*/
 
 
 
-        GangDen AODDen1 = new GangDen(new Vector3(564.5187f, 2598.906f, 43.87211f), 108.823f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        GangDen AODDen1 = new GangDen(new Vector3(61.34058f, 2793.329f, 57.87826f), 322.6789f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
         {
             CanInteractWhenWanted = true,
             //MapIcon = 226,
@@ -7826,27 +8467,40 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 30,
+            MaxAssaultSpawns = 20,
             // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(61.34058f, 2793.329f, 57.87826f), 322.6789f),
+                new SpawnPlace(new Vector3(45.11653f, 2798.059f, 57.87816f), 51.94063f),
+                new SpawnPlace(new Vector3(46.34821f, 2789.037f, 57.87828f), 142.0504f),
+                new SpawnPlace(new Vector3(50.62239f, 2788.862f, 57.87828f), 186.3684f),
+                new SpawnPlace(new Vector3(62.0715f, 2786.82f, 57.88808f), 232.7647f),
+                new SpawnPlace(new Vector3(95.89717f, 2830.703f, 52.57161f), 172.2343f),
+                new SpawnPlace(new Vector3(50.68753f, 2824.532f, 54.07411f), 78.56271f),
+                new SpawnPlace(new Vector3(48.98709f, 2794.561f, 62.27275f), 320.1485f),
+                new SpawnPlace(new Vector3(58.1534f, 2789.739f, 62.27275f), 239.1773f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(560.9178f, 2602.27f, 43.02237f), 158.5504f, 65f),
-                new GangConditionalLocation(new Vector3(562.6679f, 2594.881f, 43.02491f), 86.77177f, 65f),
-                new GangConditionalLocation(new Vector3(567.6641f, 2590.169f, 42.81374f), 133.1242f, 65f),
-                new GangConditionalLocation(new Vector3(561.3026f, 2610.389f, 42.86051f), 30.94393f, 65f),
-                new GangConditionalLocation(new Vector3(559.5026f, 2621.251f, 42.9962f), 62.93612f, 65f),
+                new GangConditionalLocation(new Vector3(59.83832f, 2794.272f, 57.87829f), 324.4708f, 65f),
+                new GangConditionalLocation(new Vector3(59.73622f, 2796.608f, 57.87829f), 202.455f, 65f),
+                new GangConditionalLocation(new Vector3(65.0679f, 2789.895f, 57.88807f), 175.3693f, 65f),
+                new GangConditionalLocation(new Vector3(64.15955f, 2789.582f, 57.88807f), 185.7836f, 65f),
+                new GangConditionalLocation(new Vector3(55.38973f, 2786.021f, 57.8783f), 144.3636f, 65f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(571.2027f, 2589.197f, 42.81371f), 97.68387f, 75f),
-                new GangConditionalLocation(new Vector3(557.566f, 2593.706f, 42.81371f), 9.633554f, 75f),
-
+                new GangConditionalLocation(new Vector3(64.32527f, 2785.342f, 57.6927f), 27.17085f, 75f),
+                new GangConditionalLocation(new Vector3(61.90302f, 2782.176f, 57.694f), 26.50716f, 75f),
+                new GangConditionalLocation(new Vector3(48.51749f, 2783.749f, 57.36243f), 70.20178f, 75f){ IsEmpty = false },
             },
 
-            VehiclePreviewLocation = new SpawnPlace(new Vector3(548.1042f, 2602.095f, 42.78351f), 78.18074f),
-            VehicleDeliveryLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(547.9156f, 2592.404f, 42.90622f), 40.88092f),
-                }
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(51.84286f, 2785.797f, 57.34736f), 143.6424f),
+            VehicleDeliveryLocations = new List<SpawnPlace>()
+            {
+                    new SpawnPlace(new Vector3(68.45283f, 2781.917f, 57.69341f), 143.243f),
+            }
         };
         GangDens.Add(AODDen1);
         GangDen AODDen1MP = new GangDen(new Vector3(61.34058f, 2793.329f, 57.87826f), 322.6789f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
@@ -7860,8 +8514,20 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             InteriorID = 246273,
             IsOnSPMap = false,
-            MaxAssaultSpawns = 30,
+            MaxAssaultSpawns = 20,
             // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(61.34058f, 2793.329f, 57.87826f), 322.6789f),
+                new SpawnPlace(new Vector3(45.11653f, 2798.059f, 57.87816f), 51.94063f),
+                new SpawnPlace(new Vector3(46.34821f, 2789.037f, 57.87828f), 142.0504f),
+                new SpawnPlace(new Vector3(50.62239f, 2788.862f, 57.87828f), 186.3684f),
+                new SpawnPlace(new Vector3(62.0715f, 2786.82f, 57.88808f), 232.7647f),
+                new SpawnPlace(new Vector3(95.89717f, 2830.703f, 52.57161f), 172.2343f),
+                new SpawnPlace(new Vector3(50.68753f, 2824.532f, 54.07411f), 78.56271f),
+                new SpawnPlace(new Vector3(48.98709f, 2794.561f, 62.27275f), 320.1485f),
+                new SpawnPlace(new Vector3(58.1534f, 2789.739f, 62.27275f), 239.1773f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(59.83832f, 2794.272f, 57.87829f), 324.4708f, 65f),
@@ -7884,6 +8550,51 @@ new ConditionalLocation(, 75f),*/
             }
         };
         GangDens.Add(AODDen1MP);
+        GangDen AODDen2 = new GangDen(new Vector3(564.5187f, 2598.906f, 43.87211f), 108.823f, "Angles of Death Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_ANGELS")
+        {
+            CanInteractWhenWanted = true,
+            //MapIcon = 226,
+            IsPrimaryGangDen = false,
+            BannerImagePath = "gangs\\angelsofdeath.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            MaxAssaultSpawns = 25,
+            // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(564.5599f, 2598.793f, 43.88064f), 112.0429f),
+                new SpawnPlace(new Vector3(570.9436f, 2593.5f, 43.06292f), 200.0334f),
+                new SpawnPlace(new Vector3(569.519f, 2604.75f, 43.25575f), 291.0959f),
+                new SpawnPlace(new Vector3(563.0718f, 2610.288f, 42.88957f), 18.90219f),
+                new SpawnPlace(new Vector3(557.6901f, 2665.029f, 42.18118f), 211.4816f),
+                new SpawnPlace(new Vector3(552.642f, 2658.81f, 45.87349f), 189.3215f),
+                new SpawnPlace(new Vector3(546.7354f, 2667.21f, 48.94073f), 176.4974f),
+                new SpawnPlace(new Vector3(541.5972f, 2663.698f, 42.16935f), 95.95811f),
+                new SpawnPlace(new Vector3(506.5865f, 2610.291f, 43.95991f), 12.48673f),
+                new SpawnPlace(new Vector3(499.5914f, 2606.43f, 43.69963f), 99.07087f),
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(560.9178f, 2602.27f, 43.02237f), 158.5504f, 65f),
+                new GangConditionalLocation(new Vector3(562.6679f, 2594.881f, 43.02491f), 86.77177f, 65f),
+                new GangConditionalLocation(new Vector3(567.6641f, 2590.169f, 42.81374f), 133.1242f, 65f),
+                new GangConditionalLocation(new Vector3(561.3026f, 2610.389f, 42.86051f), 30.94393f, 65f),
+                new GangConditionalLocation(new Vector3(559.5026f, 2621.251f, 42.9962f), 62.93612f, 65f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(571.2027f, 2589.197f, 42.81371f), 97.68387f, 75f),
+                new GangConditionalLocation(new Vector3(557.566f, 2593.706f, 42.81371f), 9.633554f, 75f),
+
+            },
+
+            VehiclePreviewLocation = new SpawnPlace(new Vector3(548.1042f, 2602.095f, 42.78351f), 78.18074f),
+            VehicleDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(547.9156f, 2592.404f, 42.90622f), 40.88092f),
+                }
+        };
+        GangDens.Add(AODDen2);
     }
     private void DefaultConfig_GangDens_Triads()
     {
@@ -7897,6 +8608,21 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             IsOnMPMap = false,
             MaxAssaultSpawns = 15,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(101.883f, -818.7246f, 31.33265f), 342.5939f),
+                new SpawnPlace(new Vector3(117.0739f, -822.0114f, 31.30379f), 336.2936f),
+                new SpawnPlace(new Vector3(143.4375f, -832.2547f, 31.17142f), 299.9357f),
+                new SpawnPlace(new Vector3(161.9273f, -774.0336f, 31.87377f), 166.297f),
+                new SpawnPlace(new Vector3(120.7111f, -776.6448f, 45.75475f), 154.8763f),
+                new SpawnPlace(new Vector3(75.72089f, -806.9447f, 31.45793f), 337.8452f),
+                new SpawnPlace(new Vector3(46.75225f, -796.7785f, 31.58579f), 342.742f),
+                new SpawnPlace(new Vector3(42.73561f, -841.1398f, 30.90088f), 69.44466f),
+                new SpawnPlace(new Vector3(72.04379f, -877.2527f, 30.43411f), 56.73637f),
+                new SpawnPlace(new Vector3(84.0085f, -849.905f, 30.84426f), 164.6605f),
+                new SpawnPlace(new Vector3(86.85764f, -834.7982f, 31.06561f), 72.49498f),
+                new SpawnPlace(new Vector3(92.3605f, -819.6162f, 31.2907f), 74.83411f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 65f),
@@ -7923,6 +8649,17 @@ new ConditionalLocation(, 75f),*/
             InteriorID = 238849,
             IsOnSPMap= false,
             MaxAssaultSpawns = 15,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(-66.4826f, -802.4872f, 44.22732f), 332.1696f),
+                new SpawnPlace(new Vector3(-83.13336f, -794.2574f, 44.2273f), 17.06827f),
+                new SpawnPlace(new Vector3(-53.20935f, -805.2422f, 44.22514f), 302.1242f),
+                new SpawnPlace(new Vector3(-48.95714f, -816.1345f, 43.62823f), 335.4795f),
+                new SpawnPlace(new Vector3(-93.6637f, -798.6245f, 43.62265f), 310.3874f),
+                new SpawnPlace(new Vector3(-70.40166f, -748.9125f, 44.08294f), 140.1172f),
+                new SpawnPlace(new Vector3(-80.26855f, -764.3837f, 41.36571f), 20.02902f),
+                new SpawnPlace(new Vector3(-21.0247f, -810.3773f, 43.40391f), 63.69227f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(-63.9335f, -790.1324f, 42.22454f), 2.775635f, 65f){ TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario },
@@ -7941,7 +8678,7 @@ new ConditionalLocation(, 75f),*/
     }
     private void DefaultConfig_GangDens_Vagos()
     {
-        GangDen VagosMainDen = new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
+        GangDen VagosMainDen = new GangDen(new Vector3(976.3761f, -1831.478f, 31.26991f), 355.635f, "Vagos Den", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -7950,21 +8687,39 @@ new ConditionalLocation(, 75f),*/
             CloseTime = 24,
             IsEnabled = true,
             IsOnMPMap = false,
-            MaxAssaultSpawns = 20,
             // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(976.4718f, -1831.261f, 30.26396f), 353.1181f),
+                new SpawnPlace(new Vector3(967.8098f, -1829.04f, 30.2384f), 357.8585f),
+                new SpawnPlace(new Vector3(963.1687f, -1830.154f, 35.05553f), 359.1494f),
+                new SpawnPlace(new Vector3(967.572f, -1810.293f, 30.22339f), 175.7328f),
+                new SpawnPlace(new Vector3(965.7585f, -1802.738f, 39.19905f), 86.93941f),
+                new SpawnPlace(new Vector3(975.448f, -1803.352f, 39.19901f), 75.48665f),
+                new SpawnPlace(new Vector3(981.7082f, -1805.701f, 34.48454f), 260.5927f),
+                new SpawnPlace(new Vector3(995.3274f, -1787.257f, 30.4242f), 80.28412f),
+                new SpawnPlace(new Vector3(1005.779f, -1788.735f, 36.82006f), 357.2602f),
+                new SpawnPlace(new Vector3(990.3124f, -1853.06f, 30.03982f), 180.9537f),
+                new SpawnPlace(new Vector3(979.1029f, -1864.91f, 30.34843f), 265.5565f),
+                new SpawnPlace(new Vector3(967.7165f, -1867.319f, 30.44757f), 174.9247f),
+                new SpawnPlace(new Vector3(956.4958f, -1864.381f, 30.19792f), 89.51145f),
+                new SpawnPlace(new Vector3(960.4583f, -1834.519f, 30.47681f), 85.98988f),
+                new SpawnPlace(new Vector3(929.1336f, -1826.309f, 29.78214f), 265.8525f),
+                new SpawnPlace(new Vector3(962.0327f, -1805.385f, 30.54185f), 87.53848f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 35f),
-                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 35f),
-                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 35f),
-                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 35f),
+                    new GangConditionalLocation(new Vector3(967.5907f, -1811.09f, 31.20285f), 175.6448f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(981.8354f, -1812.576f, 31.31854f), 206.1447f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(990.9349f, -1819.979f, 31.24498f), 89.4577f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(990.5758f, -1821.232f, 31.23732f), 79.45193f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 35f),
-                new GangConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 35f),
-                new GangConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 35f),
-                new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 35f),
+                new GangConditionalLocation(new Vector3(969.2849f, -1824.248f, 30.35702f), 175.7239f, 75f),
+                new GangConditionalLocation(new Vector3(964.4178f, -1824.122f, 30.33176f), 174.2758f, 75f),
+                new GangConditionalLocation(new Vector3(976.1611f, -1823.362f, 30.40788f), 9.935324f, 75f),
             }
         };
         GangDen VagosMainDen1MP = new GangDen(new Vector3(976.3761f, -1831.478f, 31.26991f), 355.635f, "Vagos Garage", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
@@ -7977,61 +8732,43 @@ new ConditionalLocation(, 75f),*/
             IsEnabled = true,
             InteriorID = 246529,
             IsOnSPMap = false,
-            MaxAssaultSpawns = 20,
             // HasVanillaGangSpawnedAroundToBeBlocked = true,
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(976.4718f, -1831.261f, 30.26396f), 353.1181f),
+                new SpawnPlace(new Vector3(967.8098f, -1829.04f, 30.2384f), 357.8585f),
+                new SpawnPlace(new Vector3(963.1687f, -1830.154f, 35.05553f), 359.1494f),
+                new SpawnPlace(new Vector3(967.572f, -1810.293f, 30.22339f), 175.7328f),
+                new SpawnPlace(new Vector3(965.7585f, -1802.738f, 39.19905f), 86.93941f),
+                new SpawnPlace(new Vector3(975.448f, -1803.352f, 39.19901f), 75.48665f),
+                new SpawnPlace(new Vector3(981.7082f, -1805.701f, 34.48454f), 260.5927f),
+                new SpawnPlace(new Vector3(995.3274f, -1787.257f, 30.4242f), 80.28412f),
+                new SpawnPlace(new Vector3(1005.779f, -1788.735f, 36.82006f), 357.2602f),
+                new SpawnPlace(new Vector3(990.3124f, -1853.06f, 30.03982f), 180.9537f),
+                new SpawnPlace(new Vector3(979.1029f, -1864.91f, 30.34843f), 265.5565f),
+                new SpawnPlace(new Vector3(967.7165f, -1867.319f, 30.44757f), 174.9247f),
+                new SpawnPlace(new Vector3(956.4958f, -1864.381f, 30.19792f), 89.51145f),
+                new SpawnPlace(new Vector3(960.4583f, -1834.519f, 30.47681f), 85.98988f),
+                new SpawnPlace(new Vector3(929.1336f, -1826.309f, 29.78214f), 265.8525f),
+                new SpawnPlace(new Vector3(962.0327f, -1805.385f, 30.54185f), 87.53848f),
+            },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 35f),
-                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 35f),
-                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 35f),
-                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 35f),
+                    new GangConditionalLocation(new Vector3(967.5907f, -1811.09f, 31.20285f), 175.6448f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    new GangConditionalLocation(new Vector3(981.8354f, -1812.576f, 31.31854f), 206.1447f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+                    new GangConditionalLocation(new Vector3(990.9349f, -1819.979f, 31.24498f), 89.4577f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(990.5758f, -1821.232f, 31.23732f), 79.45193f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(969.2849f, -1824.248f, 30.35702f), 175.7239f, 35f),
-                new GangConditionalLocation(new Vector3(964.4178f, -1824.122f, 30.33176f), 174.2758f, 35f),
-                new GangConditionalLocation(new Vector3(976.1611f, -1823.362f, 30.40788f), 9.935324f, 35f),
+                new GangConditionalLocation(new Vector3(969.2849f, -1824.248f, 30.35702f), 175.7239f, 75f),
+                new GangConditionalLocation(new Vector3(964.4178f, -1824.122f, 30.33176f), 174.2758f, 75f),
+                new GangConditionalLocation(new Vector3(976.1611f, -1823.362f, 30.40788f), 9.935324f, 75f),
             }
         };
         GangDen VagosHangout1 = new GangDen()
         {
-            //MapIcon = 47,
-            AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
-            PossiblePedSpawns = new List<ConditionalLocation>() {
-                new GangConditionalLocation() {
-                Location = new Vector3(279.9768f,-1957.178f,23.844f),
-                Heading = -166.0208f,
-                Percentage = 35f,
-                },
-                new GangConditionalLocation() {
-                Location = new Vector3(281.0413f,-1958.143f,23.8485f),
-                Heading = 79.9999f,
-                Percentage = 35f,
-                },
-                new GangConditionalLocation() {
-                Location = new Vector3(289.5965f,-1960.205f,22.51619f),
-                Heading = 55.99986f,
-                Percentage = 35f,
-                },
-                new GangConditionalLocation() {
-                Location = new Vector3(289.101f,-1958.489f,22.55319f),
-                Heading = -159.0003f,
-                Percentage = 35f,
-                },
-                new GangConditionalLocation() {
-                Location = new Vector3(287.7115f,-1959.962f,22.54695f),
-                Heading = -84.99989f,
-                Percentage = 35f,
-                },
-                },
-            PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                new GangConditionalLocation() {
-                Location = new Vector3(298.1687f,-1976.326f,21.81265f),
-                Heading = 48.75335f,
-                Percentage = 35f,
-                },
-                },
-            MenuID = "VagosDenMenu",
             Name = "Vagos Trap House 1",
             FullName = "Vagos Trap House",
             Description = "",
@@ -8043,6 +8780,46 @@ new ConditionalLocation(, 75f),*/
             OpenTime = 0,
             CloseTime = 24,
             InteriorID = -1,
+            //MapIcon = 47,
+            MenuID = "VagosDenMenu",
+            AssignedAssociationID = "AMBIENT_GANG_MEXICAN",
+            MaxAssaultSpawns = 30,
+            AssaultSpawnLocations = new List<SpawnPlace>()
+            {
+                new SpawnPlace(new Vector3(295.8492f, -1971.933f, 21.90085f), 224.9982f),
+                new SpawnPlace(new Vector3(291.0593f, -1958.343f, 21.51624f), 41.13974f),
+                new SpawnPlace(new Vector3(286.1907f, -1963.368f, 21.52996f), 45.44984f),
+                new SpawnPlace(new Vector3(274.9774f, -1969.087f, 22.00341f), 309.3063f),
+                new SpawnPlace(new Vector3(292.2632f, -1981.671f, 20.60053f), 167.6973f),
+                new SpawnPlace(new Vector3(330.7928f, -2000.166f, 23.04605f), 231.0349f),
+                new SpawnPlace(new Vector3(342.8274f, -1981.299f, 23.22199f), 317.035f),
+                new SpawnPlace(new Vector3(331.5074f, -1982.292f, 23.16728f), 46.15617f),
+                new SpawnPlace(new Vector3(312.8976f, -1956.838f, 23.22256f), 234.101f),
+                new SpawnPlace(new Vector3(306.0446f, -1944.213f, 23.4215f), 50.33228f),
+                new SpawnPlace(new Vector3(299.0916f, -1940.921f, 23.24179f), 136.48f),
+                new SpawnPlace(new Vector3(292.6824f, -1946.445f, 23.26236f), 320.4589f),
+                new SpawnPlace(new Vector3(275.4893f, -2003.83f, 18.81988f), 233.2252f),
+                new SpawnPlace(new Vector3(298.2985f, -2034.11f, 18.83858f), 318.7336f),
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                    // Front
+                    new GangConditionalLocation(new Vector3(298.3533f, -1971.641f, 22.46816f), 189.7294f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    new GangConditionalLocation(new Vector3(294.2687f, -1973.553f, 21.90097f), 217.5822f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, },
+                    // Rear
+                    new GangConditionalLocation(new Vector3(289.2138f, -1961.489f, 21.51618f), 40.86111f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, },
+                    new GangConditionalLocation(new Vector3(287.3152f, -1960.852f, 22.52455f), 251.086f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                    new GangConditionalLocation(new Vector3(288.7051f, -1959.396f, 22.53018f), 186.856f, 75f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation() 
+                {
+                    Location = new Vector3(298.1687f,-1976.326f,21.81265f),
+                    Heading = 48.75335f,
+                    Percentage = 75f,
+                },
+            },
         };
         GangDen VagosHangout2 = new GangDen()
         {

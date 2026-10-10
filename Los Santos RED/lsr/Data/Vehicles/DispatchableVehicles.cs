@@ -778,7 +778,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             "zentorno",
             //Tuners
             "zr350","savestra","zion3","blista2","calico","elegy","elegy2","euros","feltzer2","futo","futo2","jester3","penumbra","rt3000","sentinel3","sentinel4","hardy",
-                    "uranus1","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
+                    "uranus","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
             //RIch
             "tenf","raiden","schafter2","schafter3","schafter4","comet6","comet7","astron","baller2","baller4","baller7","baller8","cavalcade3","rhinehart","growler",
                     "tailgater","tailgater2","landstalker2","coquette4","vstr","vectre","cypher","jester4","rebla","xls","drafter","iwagen","niobe","feltzer3","schwarzer",

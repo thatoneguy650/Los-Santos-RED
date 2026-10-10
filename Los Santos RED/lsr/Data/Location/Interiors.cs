@@ -1419,7 +1419,20 @@ public class Interiors : IInteriors
             new Interior(35074,"The Pit"),//tattoo
             //Car Dealer
             new Interior(37890,"Los Santos Customs"),
-            new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }) { IsTrespassingWhenClosed = true,IsWeaponRestricted = true, },
+            new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }) 
+            { 
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors = new List<InteriorDoor>() 
+                {
+                    new InteriorDoor(1417577297, new Vector3(-60.5458f, -1094.7490f, 26.8887f)) { DoorGroupName = "doorPair1", LockWhenClosed = true, InteractPostion = new Vector3(-61.7231f, -1093.3030f, 26.8862f), InteractHeader = 250f },
+                    new InteriorDoor(2059227086, new Vector3(-59.8930f, -1092.9520f, 26.8836f)) { DoorGroupName = "doorPair1", LockWhenClosed = true, InteractPostion = new Vector3(-61.7231f, -1093.3030f, 26.8862f), InteractHeader = 250f },
+                    new InteriorDoor(2059227086, new Vector3(-39.1337f, -1108.2180f, 26.7198f)) { DoorGroupName = "doorPair2", LockWhenClosed = true, InteractPostion = new Vector3(-38.7745f, -1110.0510f, 26.7198f), InteractHeader = 340f },
+                    new InteriorDoor(1417577297, new Vector3(-37.3311f, -1108.8730f, 26.7198f)) { DoorGroupName = "doorPair2", LockWhenClosed = true, InteractPostion = new Vector3(-38.7745f, -1110.0510f, 26.7198f), InteractHeader = 340f },
+                    new InteriorDoor(2243315674, new Vector3(-33.8099f, -1107.5790f, 26.5723f)) { LockWhenClosed = true, InteractPostion = new Vector3(-32.1267f, -1107.3400f, 26.5723f), InteractHeader = 70.0000f },
+                    new InteriorDoor(2243315674, new Vector3(-31.7235f, -1101.8470f, 26.5723f)) { LockWhenClosed = true, InteractPostion = new Vector3(-30.0404f, -1101.6080f, 26.5723f), InteractHeader = 70.0000f },
+                },
+            },
 
             //Banks
             
@@ -1609,7 +1622,7 @@ public class Interiors : IInteriors
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(1391.485f, 1132.229f, 114.3336f),
                 InteriorEgressHeading = 269.3185f,
-                // RequestIPLs = new List<string>() {"v_ranch"}, don't need to request
+                RequestIPLs = new List<string>() {"v_ranch"}, // NO request = open doors with collision - requested doors closed
                 PropSpawns = new List<PropSpawn>()
                 {
 
@@ -2239,7 +2252,7 @@ public class Interiors : IInteriors
             new GangDenInterior(287745,"Kkhangpae Office")
              {
                 IsTeleportEntry = true, //sf_fixeroffice_kt1_08
-                InteriorEgressPosition = new Vector3(-574.855f, -715.8423f, 113.0053f),
+                InteriorEgressPosition = new Vector3(-577.6437f, -715.6846f, 113.0052f),
                 InteriorEgressHeading = 88.73509f,
                 RequestIPLs = new List<string>() { "sf_fixeroffice_kt1_08" },
                 Doors = new List<InteriorDoor>()
@@ -2287,7 +2300,7 @@ public class Interiors : IInteriors
                 InteriorTintColor   = 7,
                 InteractPoints = new List<InteriorInteract>()
                 {
-                    new ExitInteriorInteract("KkhangpaeOfficeExit1",new Vector3(-574.855f, -715.8423f, 113.0053f), 270.2314f,"Exit") ,
+                    new ExitInteriorInteract("KkhangpaeOfficeExit1",new Vector3(-577.6437f, -715.6846f, 113.0052f), 270.2314f,"Exit") ,
 
                     new StandardInteriorInteract("KkhangpaeOfficeStandard1",new Vector3(-599.5054f, -717.5174f, 116.8053f), 180.2921f,"Interact"){ UseNavmesh = false } ,
                     new StandardInteriorInteract("KkhangpaeOfficeStandard2",new Vector3(-581.9081f, -712.624f, 116.8052f), 270.7584f,"Interact") { UseNavmesh = false },
@@ -14246,100 +14259,35 @@ public class Interiors : IInteriors
 
         PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
-            new BankInterior(71682,"Fleeca Bank") {
-
-                SearchLocations = new List<Vector3>() { new Vector3(-355.2124f, -47.33231f, 49.03636f) },
+            new BankInterior(76802,"Fleeca Bank") // PillBox
+            {
+                InternalInteriorCoordinates = new Vector3(145.4168f, -1039.277f, 28.43788f), // X:145.4168 Y:-1039.277 Z:28.43788
                 IsTrespassingWhenClosed = true,
-               IsWeaponRestricted = true, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(-353.2158f,-53.87801f,49.03653f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.9555f, -54.50634f, 49.04526f), InteractHeader = 255.9796f },//unknown door1
-                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 162.9344f },//Front Door1
-                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 162.9344f },//Front Door1
-                   new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.06768f, 49.31105f)) { LockWhenClosed = true,ForceRotateOpen = true },//teller door
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>()
+                {
+                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door1
+                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door2
+                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true, InteractPostion = new Vector3(145.1315f, -1040.635f, 29.3679f), InteractHeader = 250f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8685f, -1045.45f, 29.36802f), InteractHeader = 250f }, // Vault Door
+                    new InteriorDoor(2703963187, new Vector3(150.2913f, -1047.6290f, 29.6663f)) { LockWhenClosed = true, InteractPostion = new Vector3(149.2136f, -1046.469f, 29.34628f), InteractHeader = 160f }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("fleeca1Drawer1",new Vector3(-351.3789f, -51.64762f, 49.03649f), 336.6109f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca2Drawer1",new Vector3(148.0502f, -1041.786f, 29.36794f), 340f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca2Drawer2",new Vector3(150.8582f, -1042.844f, 29.36802f), 340f,"Steal from Drawer") { AutoCamera = false },
                 },
-
-
-                InteractPoints = new List<InteriorInteract> () {
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca1vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 350.4557f, -58.93706f, 49.01488f),360f-251.1714f,-.4f),
-                        Heading = 251.1714f,
-                        CameraPosition = new Vector3(-350.751f, -60.13727f, 50.7495f),
-                        CameraDirection = new Vector3(-0.3681353f, 0.6738781f, -0.6405972f),
-                        CameraRotation = new Rotator(-39.83636f, 1.223048E-05f, 28.6475f),
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca1vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 353.7186f, -57.80367f, 49.0148f),360f-72.45023f,-.4f),
-                        Heading = 72.45023f,
-                        CameraPosition = new Vector3( - 350.751f, -60.13727f, 50.7495f),
-                        CameraDirection = new Vector3( - 0.3681353f, 0.6738781f, -0.6405972f),
-                        CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca1vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 352.4845f, -59.79395f, 49.01487f),360f-162.354f,-.4f),
-                        Heading = 162.354f,
-                        CameraPosition = new Vector3( - 350.751f, -60.13727f, 50.7495f),
-                        CameraDirection = new Vector3( - 0.3681353f, 0.6738781f, -0.6405972f),
-                        CameraRotation = new Rotator( - 39.83636f, 1.223048E-05f, 28.6475f),
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                },
-
-            },
-            new BankInterior(76802,"Fleeca Bank"){
-               IsTrespassingWhenClosed = true,IsWeaponRestricted = true
-               ,SearchLocations = new List<Vector3>() { new Vector3(145.943f, -1037.929f, 29.36783f) }//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
-               , Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8517f, -1044.938f, 29.37783f), InteractHeader = 243.6279f },
-                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  159.3992f } ,//Front Door1
-                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  159.3992f } ,//Front Door2
-                    new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { LockWhenClosed = true,ForceRotateOpen = true, InteractPostion = new Vector3(144.9844f, -1041.089f, 29.36791f), InteractHeader = 246.9139f },//teller door
-                },
-                BankDrawerInteracts = new List<BankDrawerInteract>()
+                InteractPoints = new List < InteriorInteract > ()
                 {
-                    new BankDrawerInteract("fleeca2Drawer1",new Vector3(147.8368f, -1041.57f, 29.36793f), 338.927f,"Steal from Drawer") { AutoCamera = false },
-                    new BankDrawerInteract("fleeca2Drawer2",new Vector3(149.4326f, -1042.337f, 29.368f), 340.193f,"Steal from Drawer") { AutoCamera = false },
-                },
-                InteractPoints = new List < InteriorInteract > () {
+                    // Behind Vault Door
                     new ItemTheftInteract() {
                         PossibleItems = SafetyDepositBoxStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(150.1338f, -1049.841f, 29.3464f),360f-250.8819f,-.4f),
-                        Heading = 250.8819f,
-                        CameraPosition = new Vector3(149.8349f, -1051.176f, 31.3536f),
-                        CameraDirection = new Vector3( - 0.5062351f, 0.7241401f, -0.468345f),
-                        CameraRotation = new Rotator( - 27.92692f, 1.642717E-05f, 34.9568f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(149.7003f, -1045.097f, 29.34629f),360f-340f,0f),
+                        Heading = 340f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14351,11 +14299,23 @@ public class Interiors : IInteriors
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca2vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(146.9373f, -1048.566f, 29.3463f),360f-70.71257f,-.4f),
-                        Heading = 70.71257f,
-                        CameraPosition = new Vector3(146.7075f, -1049.683f, 31.4293f),
-                        CameraDirection = new Vector3(0.7448676f, 0.3106417f, -0.5904863f),
-                        CameraRotation = new Rotator( - 36.19152f, 1.375267E-05f, -67.36177f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(150.9715f, -1046.548f, 29.34632f),360f-250f,0f),
+                        Heading = 250f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+
+                    // InnerVault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(150.3301f, -1049.857f, 29.34639f),360f-250f,0f),
+                        Heading = 250.8819f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14366,45 +14326,79 @@ public class Interiors : IInteriors
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca2vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(148.2065f, -1050.615f, 29.34638f),360f-159.0868f,-.4f),
+                        Name = "fleeca2innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(147.0453f, -1048.596f, 29.34631f),360f-70f,0f),
+                        Heading = 70.71257f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2innervaulttop",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(147.3618f, -1050.204f, 29.34636f),360f-160f,0f),
                         Heading = 159.0868f,
-                        CameraPosition = new Vector3(150.5642f, -1044.893f, 31.26001f),
-                        CameraDirection = new Vector3( - 0.3296868f, -0.8698641f, -0.3669374f),
-                        CameraRotation = new Rotator( - 21.52686f, 1.835587E-06f, 159.2428f),
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca2innervaulttop2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(148.9512f, -1050.814f, 29.34637f),360f-160f,0f),
+                        Heading = 159.0868f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
+                SearchLocations = new List<Vector3>()
+                {
+                    //new Vector3(151.2465f, -1038.371f, 28.37833f), // Front Door Area
+                    new Vector3(150.2855f, -1039.235f, 29.37206f), // Entrance Area
+                    new Vector3(144.2679f, -1040.983f, 29.36788f), // Teller Door Area
+                    new Vector3(145.5718f, -1044.663f, 29.37782f), // Vault Entrance Area
+                    new Vector3(149.1106f, -1048.224f, 29.34636f), // Vault Area
+                },//,new Vector3(150.2974f, -1046.151f, 29.34631f) }
             },
-            new BankInterior(11266,"Fleeca Bank") {
-                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-                SearchLocations = new List<Vector3>() { new Vector3(310.2834f, -276.4164f, 54.16457f) },
-                Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f), InteractHeader =  250.7064f },//Vault Door
-                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.026f, -275.6472f, 53.92545f), InteractHeader =  165.5958f }, //Front Door1
-                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.026f, -275.6472f, 53.92545f), InteractHeader =  165.5958f }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader =  257.4634f },//teller door
+            new BankInterior(11266,"Fleeca Bank") // Alta
+            {
+                InternalInteriorCoordinates = new Vector3(309.7465f, -277.6442f, 53.2346f), // X:309.7465 Y:-277.6442 Z:53.2346
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>()
+                {
+                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader =  250.0f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f), InteractHeader =  250.0f },//Vault Door
+                    new InteriorDoor(2703963187, new Vector3(314.6239f, -285.9945f, 54.4630f)) { LockWhenClosed = true, InteractPostion = new Vector3(313.4933f, -284.8791f, 54.14301f), InteractHeader = 160.0f }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("fleeca3Drawer1",new Vector3(313.6212f, -280.8588f, 54.1647f), 335.8324f,"Steal from Drawer") { AutoCamera = false },
-                    new BankDrawerInteract("fleeca3Drawer2",new Vector3(312.5256f, -280.4068f, 54.1647f), 338.1261f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca3Drawer1",new Vector3(312.3173f, -280.1486f, 54.16462f), 340.0f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca3Drawer2",new Vector3(315.1795f, -281.1533f, 54.16471f), 340.0f,"Steal from Drawer") { AutoCamera = false },
                 },
-                InteractPoints = new List < InteriorInteract > () {
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                    // Behind Vault Door
                     new ItemTheftInteract() {
                         PossibleItems = SafetyDepositBoxStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(314.826f, -288.2838f, 54.1431f),360f-250.2773f,-.4f),
-                        Heading = 250.2773f,
-                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
-                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
-                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(314.0371f, -283.4107f, 54.14301f),360f-340f,0f),
+                        Heading = 340f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14416,11 +14410,22 @@ public class Interiors : IInteriors
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(311.3073f, -286.9115f, 54.14302f),360f-71.48337f,-.4f),
-                        Heading = 71.48337f,
-                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
-                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
-                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(315.3103f, -284.8781f, 54.14301f),360f-250f,0f),
+                        Heading = 250f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    // InnerVault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(314.6726f, -288.2663f, 54.1431f),360f-250f,0f),
+                        Heading = 250f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14428,263 +14433,195 @@ public class Interiors : IInteriors
                     },
                     new ItemTheftInteract() {
                         PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(311.3222f, -286.9587f, 54.14302f),360f-70f,0f),
+                        Heading = 70f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca3vaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(313.2457f, -289.1383f, 54.14309f),360f-160f,0f),
+                        Heading = 160f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca3vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(312.443f, -289.0419f, 54.14309f),360f-161.7028f,-.4f),
-                        Heading = 161.7028f,
-                        CameraPosition = new Vector3(314.3101f, -289.4625f, 56.25073f),
-                        CameraDirection = new Vector3( - 0.2966053f, 0.6950718f, -0.6549049f),
-                        CameraRotation = new Rotator( - 40.91244f, 6.778568E-06f, 23.10921f),
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(311.692f, -288.5702f, 54.14309f),360f-160f,0f),
+                        Heading = 160f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
-            },
-            new BankInterior(20226,"Fleeca Bank") {
-               IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-                SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
-                Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader =  351.4251f },//Vault Door sp door
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f  }, //Front Door1
-                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader =  357.0348f },//teller door
-                },
-                BankDrawerInteracts = new List<BankDrawerInteract>()
+                SearchLocations = new List<Vector3>() 
                 {
-                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f,"Steal from Drawer") { AutoCamera = false },
-                },
-                InteractPoints = new List < InteriorInteract > () {
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.013f, 486.0489f, 15.67541f),360f-358.9159f,-.4f),
-                        Heading = 358.9159f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.152f, 482.4714f, 15.67532f),360f-171.9128f,-.4f),
-                        Heading = 171.9128f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2952.514f, 484.314f, 15.67538f),360f-264.5385f,-.4f),
-                        Heading = 264.5385f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
+                    new Vector3(314.6078f, -277.5555f, 54.16479f), // Enterance Area
+                    new Vector3(308.6093f, -279.2743f, 54.16458f), // Teller Door Area
+                    new Vector3(309.8065f, -283.1129f, 54.17452f), // Vault Entrance Area
+                    new Vector3(313.4434f, -286.6106f, 54.14309f), // Vault Area
                 },
             },
-            new BankInterior(202262,"Fleeca Bank") { // duplicate for MP Vault door 
-               IsTrespassingWhenClosed = true,IsWeaponRestricted = true,
-                SearchLocations = new List<Vector3>() { new Vector3(-2963.338f, 477.7827f, 15.69686f) },
-                Doors =  new List<InteriorDoor>() {
-                    new InteriorDoor(4231427725,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader =  351.4251f },//Vault Door mp door
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f  }, //Front Door1
-                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader =  269.5416f }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader =  357.0348f },//teller door
-                },
-                BankDrawerInteracts = new List<BankDrawerInteract>()
-                {
-                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2960.644f, 482.839f, 15.69701f), 81.83675f,"Steal from Drawer") { AutoCamera = false },
-                },
-                InteractPoints = new List < InteriorInteract > () {
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.013f, 486.0489f, 15.67541f),360f-358.9159f,-.4f),
-                        Heading = 358.9159f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2954.152f, 482.4714f, 15.67532f),360f-171.9128f,-.4f),
-                        Heading = 171.9128f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca4vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 2952.514f, 484.314f, 15.67538f),360f-264.5385f,-.4f),
-                        Heading = 264.5385f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                },
-            },
-            new BankInterior(90626,"Fleeca Bank") {
-               IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  89.52586f }, // vault door
-                   new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
-                   new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
-                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  93.75737f },//teller door
-                },
-                BankDrawerInteracts = new List<BankDrawerInteract>()
-                {
-                    new BankDrawerInteract("fleeca5Drawer1",new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f,"Steal from Drawer") { AutoCamera = false },
-                },
-                InteractPoints = new List < InteriorInteract > () {
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1171.215f, 2715.287f, 38.06635f),360f-90.35101f,-.4f),
-                        Heading = 90.35101f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1175.178f, 2715.24f, 38.06626f),360f-271.4401f,-.4f),
-                        Heading = 271.4401f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                    new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
-                        MinItems = SafetyDepositBoxStealMinItems,
-                        MaxItems = SafetyDepositBoxStealMaxItems,
-                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1173.201f, 2716.751f, 38.06634f),360f-357.0772f,-.4f),
-                        Heading = 357.0772f,
-                        ButtonPromptText = "Rob",
-                        UseNavmesh = false,
-                        HasPreInteractRequirement = true,
-                        ItemUsePreInteract = new DrillUsePreInteract(),
-                    },
-                },
-            },
-            new BankInterior(906262,"Fleeca Bank") 
+            new BankInterior(71682,"Fleeca Bank") // Burton
             {
+                InternalInteriorCoordinates = new Vector3(-355.4359f, -48.5326f, 48.10638f), // X:-355.4359 Y:-48.5326 Z:48.10638
                 IsTrespassingWhenClosed = true,
-                IsWeaponRestricted = true, 
-                SearchLocations = new List<Vector3>() {new Vector3(1180.423f, 2705.902f, 38.08785f) }, 
-                Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(1175.5420f, 2710.8610f, 38.2269f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.24f, 2712.083f, 38.08813f), InteractHeader =  90f }, // vault door
-                   new InteriorDoor(3142793112,new Vector3(1176.4950f, 2703.6130f, 38.4391f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
-                   new InteriorDoor(73386408,new Vector3(1173.9030f, 2703.6130f, 38.4390f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  1.289581f },
-                   new InteriorDoor(4163212883, new Vector3(1178.8700f, 2709.3650f, 38.3625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.461f, 2708.432f, 38.08786f), InteractHeader =  90f },//teller door
-                },
+                IsWeaponRestricted = true,
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("fleeca5Drawer1",new Vector3(1175.087f, 2708.431f, 38.08793f), 177.2366f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca1Drawer1",new Vector3(-352.7176f, -51.0663f, 49.03646f), 341.1673f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca1Drawer2",new Vector3(-349.9999f, -52.06235f, 49.0365f), 343.4147f,"Steal from Drawer") { AutoCamera = false },
                 },
-                InteractPoints = new List < InteriorInteract > () {
+                Doors =  new List<InteriorDoor>() 
+                {
+                   new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
+                   new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
+                   new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.0677f, 49.3111f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-355.6839f, -49.966f, 49.0364f), InteractHeader = 250.0f },//teller door
+                   new InteriorDoor(2121050683, new Vector3(-352.7365f, -53.5725f, 49.1754f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.6405f, -54.81015f, 49.03649f), InteractHeader = 250.0f },//Vault door1
+                   new InteriorDoor(2703963187, new Vector3(-350.4144f, -56.7971f, 49.3348f)) { LockWhenClosed = true, InteractPostion = new Vector3(-351.518f, -55.57577f, 49.01479f), InteractHeader = 160.0f },//Inner Vault Gate
+                },
+                InteractPoints = new List<InteriorInteract> ()
+                {
+                    // Behind Vault Door
                     new ItemTheftInteract() {
                         PossibleItems = SafetyDepositBoxStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1171.215f, 2715.287f, 38.06635f),360f-90.35101f,-.4f),
-                        Heading = 90.35101f,
+                        Name = "fleeca1vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-351.0648f, -54.31751f, 49.0148f),360f-340f,0f),
+                        Heading = 340f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract()
+                    {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca1vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-349.7284f, -55.69968f, 49.0148f),360f-250f,0f),
+                        Heading = 250f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+
+                    // Inner Vault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca1innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-350.1486f, -59.02372f, 49.01487f),360f-250f,0f),
+                        Heading = 250f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract()
+                    {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca1innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-353.6728f, -57.81961f, 49.01482f),360f-70f,0f),
+                        Heading = 70f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1175.178f, 2715.24f, 38.06626f),360f-271.4401f,-.4f),
-                        Heading = 271.4401f,
+                        Name = "fleeca1innervaultbackleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-351.7526f, -60.06323f, 49.01486f),360f-160f,0f),
+                        Heading = 160f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                     new ItemTheftInteract() {
-                        PossibleItems = SafetyDepositBoxStealItems,
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca5vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3(1173.201f, 2716.751f, 38.06634f),360f-357.0772f,-.4f),
-                        Heading = 357.0772f,
+                        Name = "fleeca1innervaultbackright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-353.3298f, -59.57481f, 49.01486f),360f-160f,0f),
+                        Heading = 160f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
+                },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(-350.4966f, -48.27919f, 49.04629f), // Enterance Area
+                    new Vector3(-356.514f, -50.06951f, 49.03637f), // Teller Door Area
+                    new Vector3(-355.2623f, -53.91936f, 49.04631f), // Vault Entrance Area
+                    new Vector3(-351.5466f, -57.49191f, 49.01484f), // Vault Area
                 },
             },
-            new BankInterior(87810,"Fleeca Bank") {
-               IsTrespassingWhenClosed = true,IsWeaponRestricted = true, SearchLocations = new List<Vector3>() {new Vector3(-1217.313f, -331.7081f, 37.7808f) }, Doors =  new List<InteriorDoor>() {
-                   new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300.011f},//vault door
-                   new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f },
-                   new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f  },
-                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader =  298.9969f },//teller door
+            new BankInterior(87810,"Fleeca Bank") // Rockford Hills
+            {
+                InternalInteriorCoordinates = new Vector3(-1216.762f, -333.0008f, 36.85084f), // X:-1216.762 Y:-333.0008 Z:36.85084
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>()
+                {
+
+                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f },
+                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f  },
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader =  300f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300f},//vault door
+                    new InteriorDoor(2703963187, new Vector3(-1207.3280f, -335.1289f, 38.0793f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1208.954f, -335.2103f, 37.75925f), InteractHeader = 205f }, // inner vault gate
+
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("fleeca6Drawer1",new Vector3(-1211.815f, -332.2156f, 37.78094f), 25.86222f,"Steal from Drawer") { AutoCamera = false },
-                    new BankDrawerInteract("fleeca6Drawer2",new Vector3(-1213.225f, -333.1036f, 37.78089f), 22.51491f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca6Drawer1",new Vector3(-1213.189f, -332.6631f, 37.78087f), 25f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca6Drawer2",new Vector3(-1210.535f, -331.3191f, 37.78096f), 25f,"Steal from Drawer") { AutoCamera = false },
                 },
-                InteractPoints = new List < InteriorInteract > () {
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                    // Behind Vault Door
                     new ItemTheftInteract() {
                         PossibleItems = SafetyDepositBoxStealItems,
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 1205.487f, -336.3931f, 37.75935f),360f-296.6526f,-.4f),
-                        Heading = 296.6526f,
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1209.632f, -333.829f, 37.75925f),360f-25f,0f),
+                        Heading = 25f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14696,8 +14633,22 @@ public class Interiors : IInteriors
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "fleeca6vaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 1208.928f, -338.272f, 37.75927f),360f-116.7019f,-.4f),
-                        Heading = 116.7019f,
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1207.629f, -333.8887f, 37.75926f),360f-300f,0f),
+                        Heading = 300f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    // Inner Vault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1208.917f, -338.1811f, 37.75928f),360f-120f,0f),
+                        Heading = 120f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14708,52 +14659,409 @@ public class Interiors : IInteriors
                         MinItems = SafetyDepositBoxStealMinItems,
                         MaxItems = SafetyDepositBoxStealMaxItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "fleeca6vaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 1206.709f, -338.908f, 37.75932f),360f-207.8481f,-.4f),
-                        Heading = 207.8481f,
+                        Name = "fleeca6innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1205.639f, -336.6274f, 37.75933f),360f-300f,0f),
+                        Heading = 300f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6innervaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1206.012f, -338.2422f, 37.75935f),360f-210f,0f),
+                        Heading = 210f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca6innervaulttopright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-1207.434f, -339.0964f, 37.75933f),360f-210f,0f),
+                        Heading = 210f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(-1213.701f, -328.92f, 37.79074f), // Enterance Area
+                    new Vector3(-1216.504f, -334.8219f, 37.78082f), // Teller Door Area
+                    new Vector3(-1212.704f, -336.5938f, 37.79076f), // Vault Entrance Area
+                    new Vector3(-1207.637f, -336.3337f, 37.75931f), // Vault Area
+                },
+            },
+            new BankInterior(20226,"Fleeca Bank") // Banham Canyon
+            {
+                InternalInteriorCoordinates = new Vector3(-2962.591f, 478.238f, 14.7669f), // X:-2962.591 Y:478.238 Z:14.7669
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>() 
+                {
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door SP
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f }, // Inner Vault Gate
+
+                    //MP Door
+                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door MP
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2961.045f, 481.5413f, 15.69695f), 90f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca4Drawer2",new Vector3(-2960.912f, 484.4827f, 15.69703f), 90f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                // Behind Vault Door
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2958.297f, 484.1177f, 15.67529f),360f-90f,0f),
+                        Heading = 90f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2957.338f, 485.7026f, 15.67533f),360f-360f,0f),
+                        Heading = 360f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    // InnerVault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2954.221f, 482.6226f, 15.67531f),360f-176.162f,0f),
+                        Heading = 176.162f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2954.011f, 486.1617f, 15.67541f),360f-358.9159f,0f),
+                        Heading = 358.9159f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2952.734f, 483.386f, 15.67537f),360f-270f,0f),
+                        Heading = 270f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaulttopright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2952.68f, 485.0456f, 15.67538f),360f-270f,0f),
+                        Heading = 270f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(-2964.595f, 482.8853f, 15.70682f), // Enterance Area
+                    new Vector3(-2960.848f, 477.5904f, 15.69689f), // Teller Door Area
+                    new Vector3(-2957.398f, 479.9364f, 15.70684f), // Vault Entrance Area
+                    new Vector3(-2955.267f, 484.3793f, 15.67537f), // Vault Area
+                },
+            },
+            new BankInterior(2022602,"Fleeca Bank") // Banham Canyon MP
+            {
+                InternalInteriorCoordinates = new Vector3(-2962.591f, 478.238f, 14.7669f), // X:-2962.591 Y:478.238 Z:14.7669
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>()
+                {
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
+                    new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f }, // Inner Vault Gate
+
+                    //MP Door
+                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door MP
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca4Drawer1",new Vector3(-2961.045f, 481.5413f, 15.69695f), 90f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca4Drawer2",new Vector3(-2960.912f, 484.4827f, 15.69703f), 90f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > ()
+                {
+                // Behind Vault Door
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2958.297f, 484.1177f, 15.67529f),360f-90f,0f),
+                        Heading = 90f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2957.338f, 485.7026f, 15.67533f),360f-360f,0f),
+                        Heading = 360f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    // InnerVault after second gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2954.221f, 482.6226f, 15.67531f),360f-176.162f,0f),
+                        Heading = 176.162f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2954.011f, 486.1617f, 15.67541f),360f-358.9159f,0f),
+                        Heading = 358.9159f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2952.734f, 483.386f, 15.67537f),360f-270f,0f),
+                        Heading = 270f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca4innervaulttopright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-2952.68f, 485.0456f, 15.67538f),360f-270f,0f),
+                        Heading = 270f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(-2964.595f, 482.8853f, 15.70682f), // Enterance Area
+                    new Vector3(-2960.848f, 477.5904f, 15.69689f), // Teller Door Area
+                    new Vector3(-2957.398f, 479.9364f, 15.70684f), // Vault Entrance Area
+                    new Vector3(-2955.267f, 484.3793f, 15.67537f), // Vault Area
+                },
+            },
+            new BankInterior(90626,"Fleeca Bank") // Grand Senora Desert
+            {
+                InternalInteriorCoordinates = new Vector3(1179.745f, 2706.985f, 37.15784f), // X:1179.745 Y:2706.985 Z:37.15784
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true, 
+                Doors =  new List<InteriorDoor>() 
+                {
+                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
+                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  90f },// teller door
+                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  90f }, // Vault door
+                    new InteriorDoor(2703963187, new Vector3(1172.2910f, 2713.1460f, 38.3863f)) { LockWhenClosed = true, InteractPostion = new Vector3(1173.731f, 2712.444f, 38.06626f), InteractHeader = 0.0000f }, // Innger Vault Gate
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("fleeca5Drawer1",new Vector3(1176.489f, 2708.28f, 38.08787f), 180f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("fleeca5Drawer2",new Vector3(1173.484f, 2708.392f, 38.08796f), 180f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > () 
+                {
+                    // Behind Vault Door
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1173.696f, 2711.014f, 38.06625f),360f-180f,0f),
+                        Heading = 180f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5vaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1172.052f, 2711.88f, 38.06626f),360f-90f,0f),
+                        Heading = 90f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    // Inner Vault behind Gate
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5innervaultleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1171.425f, 2715.233f, 38.06634f),360f-90f,0f),
+                        Heading = 90f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5innervaultright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1175.018f, 2715.134f, 38.06627f),360f-270f,0f),
+                        Heading = 270f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5innervaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1172.49f, 2716.573f, 38.06634f),360f-0f,0f),
+                        Heading = 0f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinItems,
+                        MaxItems = SafetyDepositBoxStealMaxItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "fleeca5innervaulttopright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(1174.173f, 2716.611f, 38.06632f),360f-0f,0f),
+                        Heading = 0f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+                SearchLocations = new List<Vector3>() 
+                {
+                    new Vector3(1175.147f, 2704.668f, 38.09779f), // Enterance Area
+                    new Vector3(1180.372f, 2708.804f, 38.08782f), // Teller Door Area
+                    new Vector3(1177.842f, 2711.991f, 38.09777f), // Vault Entrance Area
+                    new Vector3(1173.174f, 2714.11f, 38.06633f), // Vault Area
+                },
             },
 
-            new BankInterior(103170,"Pacific Standard Bank") {
-                SearchLocations = new List<Vector3>(){new Vector3(257.4755f, 223.8576f, 106.2864f),new Vector3(252.2917f, 218.485f, 101.6834f),new Vector3(249.9998f, 209.9364f, 110.2829f)},
-                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,Doors =  new List<InteriorDoor>() {
-
-
-
-
-
-
+            new BankInterior(103170,"Pacific Standard Bank")
+            {
+                InternalInteriorCoordinates = new Vector3(247.9133f, 218.0428f, 105.283f), // X:247.9133 Y:218.0428 Z:105.283
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                Doors =  new List<InteriorDoor>()
+                {
                     new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE RIGHT
                     new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE LEFT
 
-                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
-                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
+                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
+                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
 
-
-                    // First Gate to Teller Area SP = 3048744503 Mp = 4072696575
-                    //new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.3379f, 219.594f, 106.2863f), InteractHeader =  340.1839f },// First gate to Teller area
+                    new InteriorDoor(0xB5B82637,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.3379f, 219.594f, 106.2863f), InteractHeader =  340.1839f, UseDoorSystem = true, DoorSystemHash = -1246222793 },// First gate to Teller area
                     new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.3234f, 221.3495f, 106.2831f), InteractHeader =  251.4932f }, // Second gate to Vault within teller area
                     new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
                     new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
 
+                    // Vault Door Works both SP MP
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
 
-                    new InteriorDoor(961976194,new Vector3(255.2283f, 223.976f, 102.3932f)) { ForceRotateOpen = true, LockWhenClosed = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
-
-
-                    //new InteriorDoor(1956494919,new Vector3(266.3624f, 217.5697f, 110.4328f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
-                    //new InteriorDoor(4072696575,new Vector3(256.3116f, 220.6579f, 106.4296f)) { ForceRotateOpen = true, LockWhenClosed = true, },//?
-                    //new InteriorDoor(4072696575, new Vector3(256.3116f,220.6579f,106.4296f)) { LockWhenClosed = true },//teller door
-                    // 3048744503
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("pacstdDrawer1",new Vector3(249.3135f, 224.6261f, 106.287f), 147.2702f,"Steal from Drawer") { AutoCamera = false },
-                    new BankDrawerInteract("pacstdDrawer2",new Vector3(253.0091f, 223.5203f, 106.2868f), 151.6559f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer1",new Vector3(253.1834f, 223.1352f, 106.2868f), 160.5431f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer2",new Vector3(248.0371f, 224.9725f, 106.2873f), 161.9311f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer3",new Vector3(242.9027f, 226.8951f, 106.2872f), 161.1216f,"Steal from Drawer") { AutoCamera = false },
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
@@ -14900,19 +15208,277 @@ public class Interiors : IInteriors
                         ItemUsePreInteract = new DrillUsePreInteract(),
                     },
                 },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(252.0398f, 217.1886f, 106.2868f),// Main Floor
+                    new Vector3(258.2141f, 222.6274f, 106.286f),// Teller Area
+                    new Vector3(254.6612f, 227.8323f, 101.6833f),// Outside Vault Area
+                    new Vector3(257.3766f, 216.4211f, 101.6834f),// Inside Vault Area
+                    new Vector3(263.3286f, 214.3889f, 101.6834f)// Inside Vault Area 2
+                },
+                //  Seat Test
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(243.8219f, 230.8122f, 106.2869f), 250.0631f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "TellerPeds",
+                        MinHourSpawn = 6,
+                        MaxHourSpawn = 20,
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    },
+                    new CivilianConditionalLocation(new Vector3(251.1611f, 228.0399f, 106.2868f), 78.40794f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "TellerPeds",
+                        MinHourSpawn = 6,
+                        MaxHourSpawn = 20,
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    },
+                //        new CivilianConditionalLocation(new Vector3(241.2955f, 227.088f, 104.2869f), 142f, 100f)
+                //    {
+                //        OverrideDispatchablePersonGroupID = "TellerPeds",
+                //        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                //    },
+                },
             },
-
-            new BankInterior(42754,"Blaine County Savings") {
-                IsTrespassingWhenClosed = true,IsWeaponRestricted = true,SearchLocations = new List<Vector3>() {new Vector3(-106.8916f, 6474.261f, 31.62672f) },
+            new BankInterior(10317002,"Pacific Standard Bank") // MP
+            {
+                InternalInteriorCoordinates = new Vector3(247.9133f, 218.0428f, 105.283f), // X:247.9133 Y:218.0428 Z:105.283
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader =  46.74528f },//teller
-                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 1
-                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 2
+                    new InteriorDoor(110411286, new Vector3(232.6054f, 214.1584f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Right
+                    new InteriorDoor(110411286, new Vector3(231.5123f, 216.5177f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Left
+
+
+                    new InteriorDoor(110411286,new Vector3(260.6432f, 203.2052f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
+                    new InteriorDoor(110411286,new Vector3(258.2022f, 204.1005f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
+
+                    new InteriorDoor(0xF2C06AFF,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.1427f, 219.5229f, 106.2864f), InteractHeader =  345.1115f, UseDoorSystem = true, DoorSystemHash = -222270721 },// First gate to Teller area
+                    new InteriorDoor(746855201,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.0142f, 221.6492f, 106.2831f), InteractHeader =  248.4048f }, // Second gate to Vault within teller area
+                    new InteriorDoor(2786611474,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
+                    new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
+
+                    // Vault Door Works both SP MP
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
-                    new BankDrawerInteract("bcsDrawer1",new Vector3(-111.1494f, 6470.298f, 31.6267f), 133.0098f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer1",new Vector3(253.1834f, 223.1352f, 106.2868f), 160.5431f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer2",new Vector3(248.0371f, 224.9725f, 106.2873f), 161.9311f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("pacstdDrawer3",new Vector3(242.9027f, 226.8951f, 106.2872f), 161.1216f,"Steal from Drawer") { AutoCamera = false },
+                },
+                InteractPoints = new List < InteriorInteract > () {
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultL1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(258.57f, 218.4534f, 101.6834f),360f-340.07f,-.4f),
+                        Heading = 340.07f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultL2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(260.6405f, 217.6998f, 101.6834f),360f-340.7092f,-.4f),
+                        Heading = 340.7092f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultR1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(257.0691f, 214.541f, 101.6834f),360f-160.8612f,-.4f),
+                        Heading = 160.8612f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdOuterVaultR2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(259.4067f, 213.6903f, 101.6834f),360f-159.7794f,-.4f),
+                        Heading = 159.7794f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultL1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(263.6108f, 216.4729f, 101.6834f),360f-342.1166f,-.4f),
+                        Heading = 342.1166f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultL2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(265.6564f, 215.8741f, 101.6834f),360f-342.004f,-.4f),
+                        Heading = 342.004f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultT1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(266.4569f, 214.4251f, 101.6834f),360f-250.5221f,-.4f),
+                        Heading = 250.5221f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultT2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(265.6734f, 212.6927f, 101.6834f),360f-249.6621f,-.4f),
+                        Heading = 249.6621f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultR1",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(262.3621f, 213.0617f, 101.6834f),360f-167.3309f,-.4f),
+                        Heading = 167.3309f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "pacstdInnerVaultR2",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(264.2992f, 212.1149f, 101.6834f),360f-161.562f,-.4f),
+                        Heading = 161.562f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                },
+                SearchLocations = new List<Vector3>()
+                {
+                    new Vector3(252.0398f, 217.1886f, 106.2868f),// Main Floor
+                    new Vector3(258.2141f, 222.6274f, 106.286f),// Teller Area
+                    new Vector3(254.6612f, 227.8323f, 101.6833f),// Outside Vault Area
+                    new Vector3(257.3766f, 216.4211f, 101.6834f),// Inside Vault Area
+                    new Vector3(263.3286f, 214.3889f, 101.6834f)// Inside Vault Area 2
+                },
+                //  Seat Test
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(243.8219f, 230.8122f, 106.2869f), 250.0631f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "TellerPeds",
+                        MinHourSpawn = 6,
+                        MaxHourSpawn = 20,
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    },
+                    new CivilianConditionalLocation(new Vector3(251.1611f, 228.0399f, 106.2868f), 78.40794f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "TellerPeds",
+                        MinHourSpawn = 6,
+                        MaxHourSpawn = 20,
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    },
+                    //    new CivilianConditionalLocation(new Vector3(241.2955f, 227.088f, 104.2869f), 142f, 100f)
+                    //{
+                    //    OverrideDispatchablePersonGroupID = "TellerPeds",
+                    //    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    //},
+                    //new SecurityConditionalLocation(new Vector3(264.8986f, 219.8816f, 101.6832f), 316.7925f,100f) // X:264.437 Y:219.3253 Z:100.6899
+                    //{
+                    //    AssociationID = "GRP6",
+                    //    RequiredPedGroup = "ArmedSecurity",
+                    //    //LongGunAlwaysEquipped = true,
+                    //    //ForceSidearm = true,
+                    //    //ForceLongGun = true,
+                    //    MinHourSpawn = 0, MaxHourSpawn = 24,
+                    //    TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                    //    ForcedScenarios = new List<string>() { "PROP_HUMAN_SEAT_CHAIR_MP_PLAYER" },
+                    //},
+                },
+            },
+
+            new BankInterior(42754,"Blaine County Savings") 
+            {
+                InternalInteriorCoordinates = new Vector3(-109.4503f, 6467.768f, 30.4388f), // X:-109.4503 Y:6467.768 Z:30.4388
+                IsTrespassingWhenClosed = true,
+                IsWeaponRestricted = true,
+                SearchLocations = new List<Vector3>() 
+                {
+                    new Vector3(-107.2381f, 6466.549f, 31.62672f), // Main Floor
+                    new Vector3(-105.086f, 6476.458f, 31.62671f) // Vault Area
+                },
+                Doors =  new List<InteriorDoor>()
+                {
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 2
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader =  46.74528f },//teller
+                    //new InteriorDoor(1622278560, new Vector3(-104.8136f, 6473.6460f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.2074f, 6472.042f, 31.62671f), InteractHeader = 47.6748f },// first vault gate (DONT USE)
+                    new InteriorDoor(1309269072, new Vector3(-106.4713f, 6476.1580f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.8392f, 6474.736f, 31.62671f), InteractHeader = 316.2019f },// second vault gate
+                },
+                BankDrawerInteracts = new List<BankDrawerInteract>()
+                {
+                    new BankDrawerInteract("bcsDrawer1",new Vector3(-111.0876f, 6470.114f, 31.62672f), 137.2809f,"Steal from Drawer") { AutoCamera = false },
+                    new BankDrawerInteract("bcsDrawer1",new Vector3(-113.2698f, 6472.164f, 31.6267f), 133.7394f,"Steal from Drawer") { AutoCamera = false },
                 },
                 InteractPoints = new List < InteriorInteract > () {
                     new ItemTheftInteract() {
@@ -14921,8 +15487,8 @@ public class Interiors : IInteriors
                         MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultleft",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 105.9199f, 6478.416f, 31.62671f),360f-47.10064f,-.4f),
-                        Heading = 47.10064f,
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-105.7717f, 6478.436f, 31.62672f),360f-46.13543f,0f),
+                        Heading = 46.13543f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14934,8 +15500,8 @@ public class Interiors : IInteriors
                         MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
                         Name = "bcsvaultright",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 102.9088f, 6475.624f, 31.62673f),360f-226.068f,-.4f),
-                        Heading = 226.068f,
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-103.1094f, 6475.741f, 31.64927f),360f-228.0109f,0f),
+                        Heading = 228.0109f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -14946,9 +15512,22 @@ public class Interiors : IInteriors
                         MinItems = SafetyDepositBoxStealMinLargeItems,
                         MaxItems = SafetyDepositBoxStealMaxLargeItems,
                         ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
-                        Name = "bcsvaulttop",
-                        Position = NativeHelper.GetOffsetPosition(new Vector3( - 103.1819f, 6478.17f, 31.62672f),360f-315.1491f,-.4f),
-                        Heading = 315.1491f,
+                        Name = "bcsvaulttopleft",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-104.1655f, 6478.748f, 31.62673f),360f-316.7068f,0f),
+                        Heading = 316.7068f,
+                        ButtonPromptText = "Rob",
+                        UseNavmesh = false,
+                        HasPreInteractRequirement = true,
+                        ItemUsePreInteract = new DrillUsePreInteract(),
+                    },
+                    new ItemTheftInteract() {
+                        PossibleItems = SafetyDepositBoxLargeStealItems,
+                        MinItems = SafetyDepositBoxStealMinLargeItems,
+                        MaxItems = SafetyDepositBoxStealMaxLargeItems,
+                        ViolatingCrimeID = StaticStrings.ArmedRobberyCrimeID,
+                        Name = "bcsvaulttopright",
+                        Position = NativeHelper.GetOffsetPosition(new Vector3(-102.664f, 6477.242f, 31.62673f),360f-316.7068f,0f),
+                        Heading = 316.7068f,
                         ButtonPromptText = "Rob",
                         UseNavmesh = false,
                         HasPreInteractRequirement = true,
@@ -15589,7 +16168,13 @@ public class Interiors : IInteriors
 
 
             new Interior(89602,"Yellow Jacket Inn") {IsTrespassingWhenClosed = true, IsWeaponRestricted = true, SearchLocations = new List<Vector3>() { new Vector3(1993.187f, 3045.516f, 47.21509f) } },
-            new Interior(118018,"Vanilla Unicorn"),
+            new Interior(118018,"Vanilla Unicorn")
+            {
+             Doors = new List<InteriorDoor>() 
+                 {
+                    new InteriorDoor(668467214, new Vector3(96.0920f, -1284.8540f, 29.4388f)) { LockWhenClosed = true, NeedsDefaultUnlock = true, InteractPostion = new Vector3(94.6492f, -1283.9550f, 29.4388f), InteractHeader = 210.0000f }, // Rear Door to Office
+                 },
+            },
 
             //new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
             //new Interior(92674,"Darnell Bros. Garments",new List<string>() { "id2_14_during1","id2_14_during_door" },new List<string>() {"id2_14_during_door","id2_14_during1","id2_14_during2","id2_14_on_fire","id2_14_post_no_int","id2_14_pre_no_int" }),//top floor works and doors are open, but no interiror>?
@@ -15612,6 +16197,26 @@ public class Interiors : IInteriors
                 },
                 InternalInteriorCoordinates = new Vector3(-611.4f, -1615.7f, 29.2f),
                 NeedsActivation = true,
+            },
+
+            new Interior(197377,"Strawberry ChopShop",new List<string>() { "v_chopshop" },new List<string>() { })
+            {
+                InternalInteriorCoordinates = new Vector3(479.0568f, -1316.825f, 28.20739f),
+                NeedsActivation = true,
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new StandardInteriorInteract("ChopShopModInteract",new Vector3(472.1123f, -1310.666f, 29.21938f), 123.0208f,"Sell Vehicle")
+                    {
+                        CameraPosition = new Vector3(474.0947f, -1312.331f, 30.38552f),
+                        CameraDirection = new Vector3(-0.7502922f, 0.572381f, -0.3308196f),
+                        CameraRotation = new Rotator(-19.31853f, -1.357072E-05f, 52.66081f),
+                        DisableMovement = true,
+                    },
+                },
+                Doors = new List<InteriorDoor>()
+                {
+                    new InteriorDoor(4104186511, new Vector3(484.5642f, -1315.574f, 30.20331f)) { LockWhenClosed= true, NeedsDefaultUnlock = true, UseDoorSystem = true ,DoorSystemHash = -190780785 } // UseDoorSystem = false,DoorSystemHash = -190780785
+                },
             },
 
             //Tuner / Mod Shop Building Facades

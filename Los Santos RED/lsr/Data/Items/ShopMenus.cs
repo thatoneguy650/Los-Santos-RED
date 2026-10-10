@@ -509,7 +509,7 @@ public class ShopMenus : IShopMenus
                     "bison2","bison3",
          * TUNERS
          * "zr350","savestra","zion3","blista2","calico","elegy","elegy2","euros","feltzer2","futo","futo2","jester3","penumbra","rt3000","sentinel3","sentinel4","hardy",
-                    "uranus1","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
+                    "uranus","firebolt","vorschlaghammer","eurosx32","sultan","sultan2","sultan3","blista","kanjo","kanjosj","previon","sultanrs",
          * SUPER
          * "adder","cheetah","cyclone","emerus","fmj","furia","gp1","ignus","infernus","italigtb","italigtb2","nero","nero2","osiris","penetrator","pfister811","reaper",
             "sc1","sheava","t20","tempesta","thrax","tigon","torero2","tyrant","vacca","zorrusso","luiva","fmj2","xtreme","turismor","infernus2","cheetah2","entityxf",
