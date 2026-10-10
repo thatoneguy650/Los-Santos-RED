@@ -27,6 +27,8 @@ public class GroupSettings : ISettingsDefaultable
     public bool EnableGroupButtonPrompts { get; set; }
     public float MinBrakingDistance { get; set; }
     public float DecelerationValue { get; set; }
+    public float TeleportDistanceRequirement { get; set; }
+    public bool AllowTeleportingGroupMembersInOtherVehicles { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -56,6 +58,8 @@ public class GroupSettings : ISettingsDefaultable
 
         DecelerationValue = 8f;
         MinBrakingDistance = 8f;
+        TeleportDistanceRequirement = 20f;
+        AllowTeleportingGroupMembersInOtherVehicles = false;
     }
 
 }

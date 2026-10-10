@@ -1395,6 +1395,8 @@
     <Compile Include="lsr\World\Places\StaticPlaces.cs" />
     <Compile Include="lsr\World\SpawnError.cs" />
     <Compile Include="lsr\World\Vehicles\PlateController.cs" />
+    <Compile Include="lsr\World\Vehicles\VehicleBaseHandlingData.cs" />
+    <Compile Include="lsr\World\Vehicles\VehicleHandlingDataModifier.cs" />
     <Compile Include="lsr\World\WeatherReporting.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />

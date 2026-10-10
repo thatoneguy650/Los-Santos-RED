@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsUsingController { get; }
         bool IsRagdoll { get; }
         bool IsStunned { get; }
+        GroupManager GroupManager { get; }
 
         void HasSetOffAlarm(GameLocation gameLocation);
         void OnStartedBreakingIntoGangCar(Gang associatedGang, GangVehicleExt gangVehicleExt);

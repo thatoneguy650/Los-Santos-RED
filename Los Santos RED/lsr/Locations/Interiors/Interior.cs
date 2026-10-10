@@ -377,15 +377,10 @@ public class Interior
         {
             return; //give you 10 seconds OUTSIde befoe it locks
         }
-
         if(isOpen != IsOpen)
         {
             if (IsOpen)
             {      
-                //if (GameLocation != null)
-                //{
-                //    GameLocation.IsServiceFilled = false;
-                //}
                 EntryPoint.WriteToConsole($"Interior changed from closed to Open {Name}");
             }
             else
@@ -395,20 +390,6 @@ public class Interior
             LoadDoors(IsOpen, false);
             isOpen = IsOpen;
         }
-
-        //if(IsTeleportEntry)
-        //{
-        //    return;
-        //}
-        //if(InteractPoints== null || !InteractPoints.Any() || InteractableLocation == null)
-        //{
-        //    return;
-        //}
-
-        //if(!IsRunningInteriorUpdate && InteractableLocation.DistanceToPlayer <= 100f)
-        //{
-        //    OnBecameClose();
-        //}
     }
     public virtual void Teleport(IInteractionable player, GameLocation interactableLocation, LocationCamera locationCamera)
     {
@@ -436,6 +417,7 @@ public class Interior
             IsMenuInteracting = false;
             locationCamera?.StopImmediately(true);
             Player.InteriorManager.OnTeleportedInside(InteractableLocation);
+            Player.GroupManager.OnTeleportedInside(this);
             GameFiber.Sleep(500);
             RemoveExistingPeds();
             if(VendorLocations != null && VendorLocations.Any())
@@ -540,7 +522,7 @@ public class Interior
         }
         else
         {
-            EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen}");
+            EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry}");
 
             if (reLockForcedEntry)
             {
@@ -551,9 +533,15 @@ public class Interior
             }
             else
             {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
+                bool hasAnyBeenForced = Doors.Where(x => x.LockWhenClosed && x.HasBeenForcedOpen).Any();
+                EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry} hasAnyBeenForced{hasAnyBeenForced}");
+
+                if (!hasAnyBeenForced)
                 {
-                    door.LockDoor();
+                    foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
+                    {
+                        door.LockDoor();
+                    }
                 }
             }
         }
@@ -672,7 +660,7 @@ public class Interior
                 Player.Character.Position = InteractableLocation.EntrancePosition;
                 Player.Character.Heading = InteractableLocation.EntranceHeading;
             }
-
+            Player.GroupManager.OnTeleportedOutside(this, InteractableLocation);
 
             if (!Player.IsInVehicle)
             {
@@ -691,6 +679,7 @@ public class Interior
             Game.FadeScreenIn(1000, true);
             InteractableLocation.DoExitCamera(false);
             Player.InteriorManager.OnTeleportedOutside(InteractableLocation);
+            
             //GameFiber.Sleep(1000);
         }
     }

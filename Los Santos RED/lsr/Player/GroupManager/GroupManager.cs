@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -261,6 +262,53 @@ public class GroupManager
             Game.DisplayHelp($"{autoDriveHelpText}");
             HasShownAutoDrivePrompt = true;
         }
+    }
+
+    public void OnTeleportedOutside(Interior interior, GameLocation currentLocation)
+    {
+        if(currentLocation == null)
+        {
+            return;
+        }
+        TeleportGroupMembersToPosition(new SpawnLocation(currentLocation.EntrancePosition, currentLocation.EntranceHeading));
+
+    }
+    private void TeleportGroupMembersToPosition(SpawnLocation startingLocation)
+    {
+        foreach (GroupMember groupMember in CurrentGroupMembers.Where(x => x.PedExt != null && x.PedExt.Pedestrian.Exists() && !x.PedExt.IsDead && !x.PedExt.IsBusted && !x.PedExt.IsArrested && !x.PedExt.IsUnconscious).ToList())
+        {
+            if (groupMember.PedExt.DistanceToPlayer > Settings.SettingsManager.GroupSettings.TeleportDistanceRequirement)
+            {
+                continue;
+            }
+
+           Vector3 OffsetLocation = NativeHelper.GetOffsetPosition(startingLocation.InitialPosition, startingLocation.Heading, 1.5f);
+
+            SpawnLocation toSpawn = new SpawnLocation(OffsetLocation.Around2D(1.5f), startingLocation.Heading);
+            if (groupMember.PedExt.IsInVehicle && groupMember.PedExt.Pedestrian.CurrentVehicle.Exists())
+            {
+                bool isPedInPlayerVehicle = Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Handle == groupMember.PedExt.Pedestrian.CurrentVehicle.Handle;
+                if (!isPedInPlayerVehicle && Settings.SettingsManager.GroupSettings.AllowTeleportingGroupMembersInOtherVehicles)
+                {
+                    groupMember.PedExt.Pedestrian.CurrentVehicle.Position = toSpawn.InitialPosition;
+                    groupMember.PedExt.Pedestrian.CurrentVehicle.Heading = toSpawn.Heading;
+                }
+            }
+            else
+            {
+                groupMember.PedExt.Pedestrian.Position = toSpawn.InitialPosition;
+                groupMember.PedExt.Pedestrian.Heading = toSpawn.Heading;
+            }
+        }
+    }
+
+    public void OnTeleportedInside(Interior interior)
+    {
+        if(interior == null)
+        {
+            return;
+        }
+        TeleportGroupMembersToPosition(new SpawnLocation(interior.InteriorEgressPosition, interior.InteriorEgressHeading));
     }
 }
 

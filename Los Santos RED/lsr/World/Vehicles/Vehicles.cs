@@ -33,6 +33,7 @@ public class Vehicles
     private List<uint> FEJSuppressedHashes;
     private HashSet<uint> VehicleModelHashes = new HashSet<uint>();
     private uint GameTimeLastClearedModels;
+    private VehicleHandlingDataModifier VehicleHandlingDataModifier;
 
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems, IEntityProvideable world, IOrganizations organizations)
     {
@@ -45,6 +46,7 @@ public class Vehicles
         World = world;
         Organizations = organizations;
         PlateController = new PlateController(this, Zones, PlateTypes, Settings);
+        VehicleHandlingDataModifier = new VehicleHandlingDataModifier(Settings);
     }
     public PlateController PlateController { get; private set; }
     public List<PoliceVehicleExt> PoliceVehicles { get; private set; } = new List<PoliceVehicleExt>();
@@ -139,6 +141,7 @@ public class Vehicles
         FEJSuppressedHashes = new List<uint>() { 
             TaxiHashKey, 
         };
+        VehicleHandlingDataModifier.Setup();
     }
     public void Dispose()
     {
@@ -152,7 +155,7 @@ public class Vehicles
         {
             SetFEJSuppressionStatus(false);
         }
-
+        VehicleHandlingDataModifier.Dispose();
     }
     public void Prune()
     {
@@ -209,6 +212,10 @@ public class Vehicles
     }
     public void CreateNew()
     {
+        if(!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         RageVehicles = Rage.World.GetAllVehicles().ToList(); //EntryPoint.ModController.AllVehicles.ToList();////Rage.World.GetAllVehicles().ToList(); Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
         int updated = 0;
@@ -273,6 +280,10 @@ public class Vehicles
         {
             return false;
         }
+        if(Settings.SettingsManager.VehicleSettings.ScaleVehicleDeformation)
+        {
+            VehicleHandlingDataModifier.CheckVehicle(vehicle);
+        }
         if (vehicle.IsPoliceVehicle)
         {
             if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
@@ -292,6 +303,16 @@ public class Vehicles
         //VehicleModelHashes.Add(vehicle.Model.Hash);
         return false;
     }
+
+    private void ScaleVehicleDeformation(Vehicle vehicle)
+    {
+        if (!vehicle.Exists())
+        {
+            return;
+        }
+        //if()
+    }
+
     private void CreatePoliceFromAmbient(Vehicle vehicle)
     {
         PoliceVehicleExt Car = new PoliceVehicleExt(vehicle, Settings);

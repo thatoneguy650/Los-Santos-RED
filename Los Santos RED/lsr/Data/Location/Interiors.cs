@@ -15257,7 +15257,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(0xF2C06AFF,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(257.1427f, 219.5229f, 106.2864f), InteractHeader =  345.1115f, UseDoorSystem = true, DoorSystemHash = -222270721 },// First gate to Teller area
                     new InteriorDoor(746855201,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.0142f, 221.6492f, 106.2831f), InteractHeader =  248.4048f }, // Second gate to Vault within teller area
                     new InteriorDoor(2786611474,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
-                    new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
+                    new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,  InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
 
                     // Vault Door Works both SP MP
                     new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR

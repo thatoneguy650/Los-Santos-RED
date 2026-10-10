@@ -21,6 +21,7 @@ public class FightClubFight
     private FightClubArena FightClubArena;
     private List<FightClubFighter> Fighters;
     private List<AIFightClubFighter> AIFighters;
+    private List<PedExt> Spectators;
     private FightClub FightClub;
     private bool IsPlayerFight;
     private int TotalFighters;
@@ -108,7 +109,10 @@ public class FightClubFight
         {
             fightClubFighter.Dispose();
         }
-
+        foreach (PedExt spectator in Spectators)
+        {
+            DisposeSpectator(spectator);
+        }
         //GameFiber.Sleep(1000);
         BigMessage.Fiber?.Abort();
         if (BigMessage != null && BigMessage.MessageInstance != null)
@@ -117,6 +121,22 @@ public class FightClubFight
         }
         Player.ActivityManager.IsInteractingWithLocation = false;
     }
+
+    private void DisposeSpectator(PedExt PedExt)
+    {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        PedExt.Pedestrian.IsPersistent = false;
+        PedExt.CanBeAmbientTasked = true;
+        PedExt.CanBeTasked = true;
+        PedExt.CanBeIdleTasked = true;
+        PedExt.IsManuallyDeleted = false;
+        PedExt.ClearTasks(true);
+        PedExt.PedBrain.AssignIdleTask();
+    }
+
     public void Update()
     {
         foreach (FightClubFighter fighter in Fighters)
@@ -490,8 +510,68 @@ public class FightClubFight
             Game.DisplayHelp("COULD NOT START FIGHT");
         }
         SetupFighters();
+
+        CreateSpectators();
+
         //Game.FadeScreenIn(1000, true);
     }
+
+    private void CreateSpectators()
+    {
+        if (RoundNumber > 0)
+        {
+            return;
+        }
+        List<SpawnPlace> spawnLocations = new List<SpawnPlace>();
+        spawnLocations.AddRange(FightClubArena.SpectatorLocations);
+        if (!IsPlayerFight)
+        {   
+            SpawnPlace spectatorSpot = spawnLocations.PickRandom();
+            if (spectatorSpot == null)
+            {
+                return;
+            }
+            Player.Character.Position = spectatorSpot.Position;
+            Player.Character.Heading = spectatorSpot.Heading;
+            spawnLocations.Remove(spectatorSpot);
+        }
+        foreach(SpawnPlace spawnPlace in spawnLocations)
+        {
+            CreateSpectator(spawnPlace);
+        }
+    }
+
+    private void CreateSpectator(SpawnPlace spawnPlace)
+    {
+        SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
+
+        DispatchablePerson dispatchablePersonToCreate = new DispatchablePerson("a_m_y_methhead_01", 0, 0);
+        if (NonGangFightersGroup != null && NonGangFightersGroup.Any())
+        {
+            dispatchablePersonToCreate = NonGangFightersGroup.RandomElementByWeight(x => x.AmbientSpawnChance);
+        }
+
+        PedExt createdSpectator = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePersonToCreate, FightClub, null);
+
+        if (createdSpectator == null || !createdSpectator.Pedestrian.Exists())
+        {
+            return;
+        }
+        createdSpectator.CanBeAmbientTasked = false;
+        createdSpectator.CanBeTasked = false;
+        createdSpectator.CanBeIdleTasked = false;
+        createdSpectator.WillFight = false;
+        createdSpectator.WillCallPolice = false;
+        createdSpectator.WillCower = false;
+        createdSpectator.IsManuallyDeleted = true;
+        createdSpectator.Pedestrian.IsPersistent = true;
+        createdSpectator.Pedestrian.RelationshipGroup = new RelationshipGroup($"SPECTATOR");
+        createdSpectator.Pedestrian.BlockPermanentEvents = true;
+        createdSpectator.Pedestrian.KeepTasks = true;
+        createdSpectator.Pedestrian.Tasks.StandStill(1500000);
+        Spectators.Add(createdSpectator);
+    }
+
     private void AnnounceFighters()
     {
 
@@ -722,16 +802,16 @@ public class FightClubFight
             FightClubFighterPlayer.MoveToRing(FightClubArena, World, toPick, Player);
             Fighters.Add(FightClubFighterPlayer);
         }     
-        else if(RoundNumber == 0)
-        {
-            SpawnPlace spectatorSpot = FightClubArena.SpectatorLocations.PickRandom();
-            if (spectatorSpot == null)
-            {
-                return false;
-            }
-            Player.Character.Position = spectatorSpot.Position;
-            Player.Character.Heading = spectatorSpot.Heading;
-        }
+        //else if(RoundNumber == 0)
+        //{
+        //    SpawnPlace spectatorSpot = FightClubArena.SpectatorLocations.PickRandom();
+        //    if (spectatorSpot == null)
+        //    {
+        //        return false;
+        //    }
+        //    Player.Character.Position = spectatorSpot.Position;
+        //    Player.Character.Heading = spectatorSpot.Heading;
+        //}
         bool CreatedAny = false;
         for (int fightersSpawned = 0; fightersSpawned < FightersToSpawn; fightersSpawned++)
         {

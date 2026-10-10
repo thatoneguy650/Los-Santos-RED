@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsInVehicle { get; }
         bool IsDriver { get; }
+        VehicleExt CurrentVehicle { get; }
     }
 }
