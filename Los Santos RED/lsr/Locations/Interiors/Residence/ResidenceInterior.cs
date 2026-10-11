@@ -35,33 +35,9 @@ public class ResidenceInterior : Interior
     {
 
     }
-    
-    protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
+    public override bool ShouldUnlockDoors(bool isOpen)
     {
-        if (isOpen && Residence != null && Residence.IsOwnedOrRented)
-        {
-            foreach (InteriorDoor door in Doors)
-            {
-                door.UnLockDoor();
-            }
-        }
-        else
-        {
-            if (reLockForcedEntry)
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
-                {
-                    door.LockDoor();
-                }
-            }
-            else
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
-                {
-                    door.LockDoor();
-                }
-            }
-        }
+        return isOpen && Residence != null && Residence.IsOwnedOrRented;
     }
     public void SetResidence(Residence newResidence)
     {

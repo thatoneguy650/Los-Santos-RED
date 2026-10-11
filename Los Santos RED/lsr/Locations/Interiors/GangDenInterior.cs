@@ -35,32 +35,9 @@ public class GangDenInterior : Interior
             test.RestableLocation = newGangDen;
         }
     }
-    protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
+    public override bool ShouldUnlockDoors(bool isOpen)
     {
-        if (isOpen && GangDen != null && GangDen.IsAvailableForPlayer)
-        {
-            foreach (InteriorDoor door in Doors)
-            {
-                door.UnLockDoor();
-            }
-        }
-        else
-        {
-            if (reLockForcedEntry)
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
-                {
-                    door.LockDoor();
-                }
-            }
-            else
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
-                {
-                    door.LockDoor();
-                }
-            }
-        }
+        return isOpen && GangDen != null && GangDen.IsAvailableForPlayer;
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

@@ -36,32 +36,9 @@ public class FightClubInterior : Interior
             test.FightClub = newFightClub;
         }
     }
-    protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
+    public override bool ShouldUnlockDoors(bool isOpen)
     {
-        if (isOpen && FightClub != null && FightClub.IsAvailableForPlayer())
-        {
-            foreach (InteriorDoor door in Doors)
-            {
-                door.UnLockDoor();
-            }
-        }
-        else
-        {
-            if (reLockForcedEntry)
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
-                {
-                    door.LockDoor();
-                }
-            }
-            else
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
-                {
-                    door.LockDoor();
-                }
-            }
-        }
+        return isOpen && FightClub != null && FightClub.IsAvailableForPlayer();
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

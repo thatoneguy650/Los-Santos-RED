@@ -113,7 +113,8 @@ public class Interior
 
 
 
-    
+
+
 
 
     [XmlIgnore]
@@ -364,7 +365,7 @@ public class Interior
             //EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
             door.UnLockDoor();
         }
-        foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && x.LockWhenClosed && !x.HasRanLockWithEntity))
+        foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && (x.LockWhenClosed || x.IsAlwaysLocked) && !x.HasRanLockWithEntity))
         {
             //EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
             door.LockDoor();
@@ -503,6 +504,12 @@ public class Interior
             interiorInteract.UpdateDistances(Player);
         }
     }
+
+
+    public virtual bool ShouldUnlockDoors(bool isOpen)
+    {
+        return isOpen;
+    }
     protected virtual void LoadDoors(bool isOpen, bool reLockForcedEntry)
     {
         EntryPoint.WriteToConsole($"LOAD DOORS RAN {isOpen}");
@@ -511,22 +518,26 @@ public class Interior
         {
             door.Activate(); // Properly registers/re-evaluates default state
         }
-
-
-        if (isOpen)
+        if (ShouldUnlockDoors(isOpen))
         {
             foreach (InteriorDoor door in Doors)
             {
-                door.UnLockDoor();
+                if (door.IsAlwaysLocked)
+                {
+                    door.LockDoor();
+                }
+                else
+                {
+                    door.UnLockDoor();
+                }
             }
         }
         else
         {
             EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry}");
-
             if (reLockForcedEntry)
             {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
+                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed || x.IsAlwaysLocked))
                 {
                     door.LockDoor();
                 }
@@ -535,10 +546,9 @@ public class Interior
             {
                 bool hasAnyBeenForced = Doors.Where(x => x.LockWhenClosed && x.HasBeenForcedOpen).Any();
                 EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry} hasAnyBeenForced{hasAnyBeenForced}");
-
                 if (!hasAnyBeenForced)
                 {
-                    foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
+                    foreach (InteriorDoor door in Doors.Where(x => (x.LockWhenClosed || x.IsAlwaysLocked) && !x.HasBeenForcedOpen))
                     {
                         door.LockDoor();
                     }

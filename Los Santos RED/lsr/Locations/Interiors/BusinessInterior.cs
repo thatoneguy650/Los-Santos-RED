@@ -32,33 +32,48 @@ public class BusinessInterior : Interior
     {
 
     }
-    protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
+    public override bool ShouldUnlockDoors(bool isOpen)
     {
-        if (Business != null && Business.IsOwned)
-        {
-            foreach (InteriorDoor door in Doors)
-            {
-                door.UnLockDoor();
-            }
-        }
-        else
-        {
-            if (reLockForcedEntry)
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
-                {
-                    door.LockDoor();
-                }
-            }
-            else
-            {
-                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
-                {
-                    door.LockDoor();
-                }
-            }
-        }
+        return Business != null && Business.IsOwned;
     }
+    //protected override void LoadDoors(bool isOpen, bool reLockForcedEntry)
+    //{
+
+    //    foreach (InteriorDoor door in Doors)
+    //    {
+    //        door.Activate(); // Properly registers/re-evaluates default state
+    //    }
+
+    //    if (Business != null && Business.IsOwned)
+    //    {
+    //        foreach (InteriorDoor door in Doors)
+    //        {
+    //            door.UnLockDoor();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (reLockForcedEntry)
+    //        {
+    //            foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed))
+    //            {
+    //                door.LockDoor();
+    //            }
+    //        }
+    //        else
+    //        {
+    //            bool hasAnyBeenForced = Doors.Where(x => x.LockWhenClosed && x.HasBeenForcedOpen).Any();
+    //            EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry} hasAnyBeenForced{hasAnyBeenForced}");
+    //            if (!hasAnyBeenForced)
+    //            {
+    //                foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed && !x.HasBeenForcedOpen))
+    //                {
+    //                    door.LockDoor();
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     public void SetBusiness(Business newBusiness)
     {
         business = newBusiness;

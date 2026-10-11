@@ -19,9 +19,6 @@ public class InteriorDoor
     private bool hasRanLockWithEntity;
     private List<InteriorDoor> PairedDoors = new List<InteriorDoor>();
     private bool IsDoorRegistered;
-
-    //private bool WasForceRotatedOpen;
-
     public InteriorDoor()
     {
 
@@ -39,27 +36,17 @@ public class InteriorDoor
     public bool NeedsDefaultUnlock { get; set; } = false;
     public bool LockWhenClosed { get; set; } = false;
 
+    public bool IsAlwaysLocked { get; set; } = false;
     public bool HasCustomInteractPosition => InteractPostion != Vector3.Zero;
     public bool CanBeForcedOpenByPlayer { get; set; } = true;
-
     public Vector3 InteractPostion { get; set; } = Vector3.Zero;
     public float InteractHeader { get; set; } = 0f;
-
-
-
     public bool UseDoorSystem { get; set; }
     public int DoorSystemHash { get; set; }
-
     public Rage.Object DoorObject => doorEntity;
-
-
     public string DoorGroupName { get; set; }
-
-
     [XmlIgnore]
     public bool HasBeenForceRotatedOpen { get; set; }
-
-
     public bool HasRanLockWithEntity => hasRanLockWithEntity;
     [XmlIgnore]
     public bool HasBeenForcedOpen { get; private set; }
@@ -78,13 +65,10 @@ public class InteriorDoor
             ForceRotateCloseDoor();
         }
         isLocked = true;
-
-
         if(Game.LocalPlayer.Character.Position.DistanceTo2D(Position)<= 10f)
         {
             hasRanLockWithEntity = true;
         }
-
         EntryPoint.WriteToConsole($"LOCKED DOOR {ModelHash} {Position} hasRanLockWithEntity{hasRanLockWithEntity}");
     }
 
@@ -98,10 +82,10 @@ public class InteriorDoor
         {
             return;
         }
-
         NativeFunction.Natives.DOOR_SYSTEM_SET_DOOR_STATE(DoorSystemHash, true, true, false);
         isLocked = true;
         hasRanLockWithEntity = true;
+        EntryPoint.WriteToConsole($"LOCKED DOOR SYSTEM DOOR {ModelHash} {Position} {DoorSystemHash} hasRanLockWithEntity{hasRanLockWithEntity}");
     }
 
     private void RegisterDoorWithSystem()
@@ -112,7 +96,6 @@ public class InteriorDoor
             NativeFunction.Natives.ADD_DOOR_TO_SYSTEM(DoorSystemHash, ModelHash,Position.X,Position.Y,Position.Z,false,true,false);
             IsDoorRegistered = NativeFunction.Natives.IS_DOOR_REGISTERED_WITH_SYSTEM<bool>(DoorSystemHash);
         }
-
     }
     private void UnregisterDoorWithSystem()
     {
@@ -135,16 +118,15 @@ public class InteriorDoor
         }
         NativeFunction.Natives.DOOR_SYSTEM_SET_DOOR_STATE(DoorSystemHash, false, true, false);
         isLocked = false;
+        EntryPoint.WriteToConsole($"UNLOCKED DOOR SYSTEM DOOR {ModelHash} {Position} {DoorSystemHash} hasRanLockWithEntity{hasRanLockWithEntity}");
     }
     public void UnLockDoor()
     {
-
         if (UseDoorSystem)
         {
             DoorSystemUnlock();
             return;
         }
-
         NativeFunction.Natives.x9B12F9A24FABEDB0(ModelHash, Position.X, Position.Y, Position.Z, false, 1.0f);//SET_LOCKED_UNSTREAMED_IN_DOOR_OF_TYPE
         if (ForceRotateOpen)
         {
@@ -152,8 +134,8 @@ public class InteriorDoor
         }
         isLocked = false;
         hasRanLockWithEntity = false;
-
-        if(PairedDoors == null)
+        EntryPoint.WriteToConsole($"UNLOCKED DOOR {ModelHash} {Position} hasRanLockWithEntity{hasRanLockWithEntity}");
+        if (PairedDoors == null)
         {
             return;
         }
