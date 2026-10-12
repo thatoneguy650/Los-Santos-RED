@@ -389,12 +389,14 @@ public class GameLocation : ILocationDispatchable
             CanInteract = false;
         }
         //World.Pedestrians.AddEntity(Vendor);
-        IsActivated = true;
+        //IsActivated = true;//moved down
         World = world;
         if (Interior != null && !Interior.IsTeleportEntry)
         {
             LoadInterior(isOpen);
         }
+
+
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
             ActivateBlip(time, world);
@@ -407,6 +409,9 @@ public class GameLocation : ILocationDispatchable
         }
         world.AddBlip(Blip);
         RestrictedAreas?.Activate(world);
+
+        IsActivated = true;
+
     }
     public virtual void AttemptVendorSpawn(bool isOpen, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world, bool isInterior)
     {

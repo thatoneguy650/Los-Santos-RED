@@ -15247,7 +15247,7 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(110411286, new Vector3(232.6054f, 214.1584f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Right
+                    new InteriorDoor(110411286, new Vector3(232.6054f, 214.1584f, 106.4049f)) { ForceKeepLocked = true,  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Right
                     new InteriorDoor(110411286, new Vector3(231.5123f, 216.5177f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Left
 
 

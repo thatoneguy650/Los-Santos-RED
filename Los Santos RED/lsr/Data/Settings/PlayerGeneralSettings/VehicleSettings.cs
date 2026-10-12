@@ -163,8 +163,12 @@ public class VehicleSettings : ISettingsDefaultable
     public float HotwirePoliceFillSpeedMax { get; set; }
     public bool AllowSetTransmissionState { get; set; }
     public float TransmissionDriveCreepPercentage { get; set; }
-    public bool ScaleVehicleDeformation { get; set; }
+    public bool ModifyVehicleHandlingValues { get; set; }
     public float VehicleDeformationMultiplier { get; set; }
+
+
+
+    public float VehicleTractionLossMultiplier { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -309,7 +313,8 @@ public class VehicleSettings : ISettingsDefaultable
 
         TransmissionDriveCreepPercentage = 0.3f;
 
-        ScaleVehicleDeformation = false;
-        VehicleDeformationMultiplier = 2.0f;
+        ModifyVehicleHandlingValues = false;
+        VehicleDeformationMultiplier = 1.0f;//3.0f-5.0f
+        VehicleTractionLossMultiplier = 1.0f;//4.0f-5.0f
     }
 }

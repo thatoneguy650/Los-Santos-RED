@@ -280,7 +280,7 @@ public class Vehicles
         {
             return false;
         }
-        if(Settings.SettingsManager.VehicleSettings.ScaleVehicleDeformation)
+        if(Settings.SettingsManager.VehicleSettings.ModifyVehicleHandlingValues)
         {
             VehicleHandlingDataModifier.CheckVehicle(vehicle);
         }

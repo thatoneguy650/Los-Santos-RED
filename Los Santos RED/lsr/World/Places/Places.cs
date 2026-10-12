@@ -89,7 +89,7 @@ public class Places
         {
             gl.Update(Time);
             updated++;
-            if (updated >= 5)//15)//5
+            if (updated >= 10)//5)//15)//5
             {
                 GameFiber.Yield();
                 updated = 0;

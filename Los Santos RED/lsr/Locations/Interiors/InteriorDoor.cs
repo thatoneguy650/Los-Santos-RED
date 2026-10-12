@@ -45,6 +45,7 @@ public class InteriorDoor
     public int DoorSystemHash { get; set; }
     public Rage.Object DoorObject => doorEntity;
     public string DoorGroupName { get; set; }
+    public bool ForceKeepLocked { get; set; }
     [XmlIgnore]
     public bool HasBeenForceRotatedOpen { get; set; }
     public bool HasRanLockWithEntity => hasRanLockWithEntity;

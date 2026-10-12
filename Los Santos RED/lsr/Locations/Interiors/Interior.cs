@@ -362,12 +362,12 @@ public class Interior
     {
         foreach (InteriorDoor door in Doors.Where(x=> !x.IsLocked && x.ForceRotateOpen && !x.HasBeenForceRotatedOpen))
         {
-            //EntryPoint.WriteToConsole("ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE");
+            EntryPoint.WriteToConsole($"    ATTEMPTING TO FORCE ROTATE OPEN DOOR THAT WASNT THERE {Name}");
             door.UnLockDoor();
         }
-        foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && (x.LockWhenClosed || x.IsAlwaysLocked) && !x.HasRanLockWithEntity))
+        foreach (InteriorDoor door in Doors.Where(x => x.IsLocked && (x.LockWhenClosed || x.IsAlwaysLocked) && (!x.HasRanLockWithEntity || x.ForceKeepLocked)))
         {
-            //EntryPoint.WriteToConsole("ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS");
+            EntryPoint.WriteToConsole($"    ATTEMPTING TO LOCK A DOOR WHERE THE ENTITY DOESNT EXISTS OR IS FORCE LOCKED {Name}");
             door.LockDoor();
         }
         if(!IsOpen && Player.CurrentLocation != null && Player.CurrentLocation.CurrentInterior != null && Player.CurrentLocation.CurrentInterior == this)
@@ -512,7 +512,7 @@ public class Interior
     }
     protected virtual void LoadDoors(bool isOpen, bool reLockForcedEntry)
     {
-        EntryPoint.WriteToConsole($"LOAD DOORS RAN {isOpen}");
+        EntryPoint.WriteToConsole($"        LOAD DOORS RAN {isOpen} {Name} reLockForcedEntry{reLockForcedEntry}");
 
         foreach (InteriorDoor door in Doors)
         {
@@ -525,21 +525,27 @@ public class Interior
                 if (door.IsAlwaysLocked)
                 {
                     door.LockDoor();
+                    EntryPoint.WriteToConsole($"LOAD DOORS LOCKED ALWAYS LOCKED AND OPEN DOOR {door.ModelHash} {door.Position} 1");
                 }
                 else
                 {
                     door.UnLockDoor();
+                    EntryPoint.WriteToConsole($"LOAD DOORS UNLOCKED SINCE OPEN DOOR {door.ModelHash} {door.Position} 1");
                 }
             }
         }
         else
         {
-            EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry}");
+            int totalDoorsLocked = 0;
+            
             if (reLockForcedEntry)
             {
+                EntryPoint.WriteToConsole($"LOAD DOORS RAN LOCKING STUFF {isOpen} reLockForcedEntry{reLockForcedEntry}");
                 foreach (InteriorDoor door in Doors.Where(x => x.LockWhenClosed || x.IsAlwaysLocked))
                 {
                     door.LockDoor();
+                    totalDoorsLocked++;
+                    EntryPoint.WriteToConsole($"LOAD DOORS LOCKED DOOR {door.ModelHash} {door.Position} 1");
                 }
             }
             else
@@ -551,10 +557,14 @@ public class Interior
                     foreach (InteriorDoor door in Doors.Where(x => (x.LockWhenClosed || x.IsAlwaysLocked) && !x.HasBeenForcedOpen))
                     {
                         door.LockDoor();
+                        totalDoorsLocked++;
+                        EntryPoint.WriteToConsole($"LOAD DOORS LOCKED DOOR {door.ModelHash} {door.Position} 2");
                     }
                 }
             }
         }
+
+        EntryPoint.WriteToConsole($"        LOAD DOORS END {Name}");
     }
     public void Exit()
     {

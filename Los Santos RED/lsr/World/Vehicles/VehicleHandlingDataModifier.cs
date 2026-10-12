@@ -25,6 +25,7 @@ public class VehicleHandlingDataModifier
         foreach (VehicleBaseHandlingData vehicleBaseHandlingData in VehicleBaseHandlingDataList)
         {
             ResetDeformationDamageMultiplier(vehicleBaseHandlingData);
+            ResetTractionLossMultiplier(vehicleBaseHandlingData);
         }
         VehicleBaseHandlingDataList.Clear();
     }
@@ -40,12 +41,15 @@ public class VehicleHandlingDataModifier
             return;
         }
         HandlingData handlingData = vehicle.HandlingData;
-        UpdateDeformationDamageMultiplier(modelHash, handlingData);
+        VehicleBaseHandlingData vehicleBaseHandlingData = new VehicleBaseHandlingData(modelHash);
+        UpdateDeformationDamageMultiplier(modelHash, handlingData, vehicleBaseHandlingData);
+        UpdateTractionLossMultiplier(modelHash, handlingData, vehicleBaseHandlingData);
+        VehicleBaseHandlingDataList.Add(vehicleBaseHandlingData);
     }
-    private void UpdateDeformationDamageMultiplier(uint modelHash, HandlingData handlingData)
+    private void UpdateDeformationDamageMultiplier(uint modelHash, HandlingData handlingData, VehicleBaseHandlingData vehicleBaseHandlingData)
     {
         float vanillaDeformation = handlingData.DeformationDamageMultiplier;
-        VehicleBaseHandlingDataList.Add(new VehicleBaseHandlingData(modelHash, vanillaDeformation) { HandlingData = handlingData });
+        vehicleBaseHandlingData.VanillaDeformationDamageMultiplier = vanillaDeformation;
         float updatedDeformation = vanillaDeformation * Settings.SettingsManager.VehicleSettings.VehicleDeformationMultiplier;
         handlingData.DeformationDamageMultiplier = updatedDeformation;
         EntryPoint.WriteToConsole($"UPDATED DEFORMATION FOR {modelHash} Vanilla:{vanillaDeformation} Updated:{updatedDeformation}");
@@ -59,6 +63,28 @@ public class VehicleHandlingDataModifier
         vehicleBaseHandlingData.HandlingData.DeformationDamageMultiplier = vehicleBaseHandlingData.VanillaDeformationDamageMultiplier;
         EntryPoint.WriteToConsole($"RESET DEFORMATION FOR {vehicleBaseHandlingData.ModelHash} Vanilla:{vehicleBaseHandlingData.VanillaDeformationDamageMultiplier}");
     }
+
+
+
+    private void UpdateTractionLossMultiplier(uint modelHash, HandlingData handlingData, VehicleBaseHandlingData vehicleBaseHandlingData)
+    {
+        float vanillaTractionLoss = handlingData.TractionLossMultiplier;
+        vehicleBaseHandlingData.VanillaTractionLossMultiplier = vanillaTractionLoss;
+        float updatedTractionLoss = vanillaTractionLoss * Settings.SettingsManager.VehicleSettings.VehicleTractionLossMultiplier;
+        handlingData.TractionLossMultiplier = updatedTractionLoss;
+        EntryPoint.WriteToConsole($"UPDATED TRACTION LOSS FOR {modelHash} Vanilla:{vanillaTractionLoss} Updated:{updatedTractionLoss}");
+    }
+    private void ResetTractionLossMultiplier(VehicleBaseHandlingData vehicleBaseHandlingData)
+    {
+        if (vehicleBaseHandlingData == null || vehicleBaseHandlingData.HandlingData == null)
+        {
+            return;
+        }
+        vehicleBaseHandlingData.HandlingData.TractionLossMultiplier = vehicleBaseHandlingData.VanillaTractionLossMultiplier;
+        EntryPoint.WriteToConsole($"RESET TRACTION LOSS FOR {vehicleBaseHandlingData.ModelHash} Vanilla:{vehicleBaseHandlingData.VanillaTractionLossMultiplier}");
+    }
+
+
 
 
 }

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 public class VehicleBaseHandlingData
 {
-    public VehicleBaseHandlingData(uint modelHash, float deformationDamageMultiplier)
+    public VehicleBaseHandlingData(uint modelHash)
     {
         ModelHash = modelHash;
-        VanillaDeformationDamageMultiplier = deformationDamageMultiplier;
     }
 
     public uint ModelHash { get; set; }
     public float VanillaDeformationDamageMultiplier { get; set; }
+    public float VanillaTractionLossMultiplier { get; set; }
     public HandlingData HandlingData { get; set; }
 }
 
