@@ -14269,8 +14269,8 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door1
                     new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door2
                     new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true, InteractPostion = new Vector3(145.1315f, -1040.635f, 29.3679f), InteractHeader = 250f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8685f, -1045.45f, 29.36802f), InteractHeader = 250f }, // Vault Door
-                    new InteriorDoor(2703963187, new Vector3(150.2913f, -1047.6290f, 29.6663f)) { LockWhenClosed = true, InteractPostion = new Vector3(149.2136f, -1046.469f, 29.34628f), InteractHeader = 160f }, // Inner Vault Gate
+                    new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8685f, -1045.45f, 29.36802f), InteractHeader = 250f, ForceOpenTimeScalar = 5 }, // Vault Door
+                    new InteriorDoor(2703963187, new Vector3(150.2913f, -1047.6290f, 29.6663f)) { LockWhenClosed = true, InteractPostion = new Vector3(149.2136f, -1046.469f, 29.34628f), InteractHeader = 160f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14380,8 +14380,8 @@ public class Interiors : IInteriors
                     new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door1
                     new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader =  250.0f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f), InteractHeader =  250.0f },//Vault Door
-                    new InteriorDoor(2703963187, new Vector3(314.6239f, -285.9945f, 54.4630f)) { LockWhenClosed = true, InteractPostion = new Vector3(313.4933f, -284.8791f, 54.14301f), InteractHeader = 160.0f }, // Inner Vault Gate
+                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f),  InteractHeader =  250.0f, ForceOpenTimeScalar = 5 },//Vault Door
+                    new InteriorDoor(2703963187, new Vector3(314.6239f, -285.9945f, 54.4630f)) { LockWhenClosed = true, InteractPostion = new Vector3(313.4933f, -284.8791f, 54.14301f), InteractHeader = 160.0f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14494,8 +14494,8 @@ public class Interiors : IInteriors
                    new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
                    new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.0677f, 49.3111f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-355.6839f, -49.966f, 49.0364f), InteractHeader = 250.0f },//teller door
-                   new InteriorDoor(2121050683, new Vector3(-352.7365f, -53.5725f, 49.1754f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.6405f, -54.81015f, 49.03649f), InteractHeader = 250.0f },//Vault door1
-                   new InteriorDoor(2703963187, new Vector3(-350.4144f, -56.7971f, 49.3348f)) { LockWhenClosed = true, InteractPostion = new Vector3(-351.518f, -55.57577f, 49.01479f), InteractHeader = 160.0f },//Inner Vault Gate
+                   new InteriorDoor(2121050683, new Vector3(-352.7365f, -53.5725f, 49.1754f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.6405f, -54.81015f, 49.03649f), InteractHeader = 250.0f,ForceOpenTimeScalar = 5 },//Vault door1
+                   new InteriorDoor(2703963187, new Vector3(-350.4144f, -56.7971f, 49.3348f)) { LockWhenClosed = true, InteractPostion = new Vector3(-351.518f, -55.57577f, 49.01479f), InteractHeader = 160.0f,ForceOpenTimeScalar = 2 },//Inner Vault Gate
                 },
                 InteractPoints = new List<InteriorInteract> ()
                 {
@@ -14602,8 +14602,8 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f },
                     new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f  },
                     new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader =  300f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300f},//vault door
-                    new InteriorDoor(2703963187, new Vector3(-1207.3280f, -335.1289f, 38.0793f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1208.954f, -335.2103f, 37.75925f), InteractHeader = 205f }, // inner vault gate
+                    new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300f,ForceOpenTimeScalar = 5},//vault door
+                    new InteriorDoor(2703963187, new Vector3(-1207.3280f, -335.1289f, 38.0793f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1208.954f, -335.2103f, 37.75925f), InteractHeader = 205f,ForceOpenTimeScalar = 2 }, // inner vault gate
 
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
@@ -14712,11 +14712,11 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door SP
-                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f }, // Inner Vault Gate
+                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door SP
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
 
                     //MP Door
-                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door MP
+                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door MP
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14824,10 +14824,10 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
-                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f }, // Inner Vault Gate
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
 
                     //MP Door
-                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door MP
+                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door MP
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14935,8 +14935,8 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
                     new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
                     new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  90f },// teller door
-                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  90f }, // Vault door
-                    new InteriorDoor(2703963187, new Vector3(1172.2910f, 2713.1460f, 38.3863f)) { LockWhenClosed = true, InteractPostion = new Vector3(1173.731f, 2712.444f, 38.06626f), InteractHeader = 0.0000f }, // Innger Vault Gate
+                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  90f,ForceOpenTimeScalar = 5 }, // Vault door
+                    new InteriorDoor(2703963187, new Vector3(1172.2910f, 2713.1460f, 38.3863f)) { LockWhenClosed = true, InteractPostion = new Vector3(1173.731f, 2712.444f, 38.06626f), InteractHeader = 0.0000f,ForceOpenTimeScalar = 2 }, // Innger Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -15054,7 +15054,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
 
                     // Vault Door Works both SP MP
-                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f,ForceOpenTimeScalar = 6 },//VAULT DOOR
 
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
@@ -15260,7 +15260,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true,  InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
 
                     // Vault Door Works both SP MP
-                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f },//VAULT DOOR
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f,ForceOpenTimeScalar = 6 },//VAULT DOOR
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -15473,7 +15473,7 @@ public class Interiors : IInteriors
                     new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 2
                     new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader =  46.74528f },//teller
                     //new InteriorDoor(1622278560, new Vector3(-104.8136f, 6473.6460f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.2074f, 6472.042f, 31.62671f), InteractHeader = 47.6748f },// first vault gate (DONT USE)
-                    new InteriorDoor(1309269072, new Vector3(-106.4713f, 6476.1580f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.8392f, 6474.736f, 31.62671f), InteractHeader = 316.2019f },// second vault gate
+                    new InteriorDoor(1309269072, new Vector3(-106.4713f, 6476.1580f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.8392f, 6474.736f, 31.62671f), InteractHeader = 316.2019f,ForceOpenTimeScalar = 4 },// second vault gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {

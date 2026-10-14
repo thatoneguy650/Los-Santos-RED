@@ -183,7 +183,14 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.TaskSettings.ShowEntityBlips = false;
         SettingsManager.TaskSettings.DisplayHelpPrompts = false;
-        
+
+
+        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = true;
+        SettingsManager.VehicleSettings.VehicleTractionLossMultiplier = 4.0f;
+        SettingsManager.VehicleSettings.VehicleDeformationMultiplier = 3.0f;
+
+        SettingsManager.VehicleSettings.AllowSetTransmissionState = true;
+
     }
     public void SetHard()
     {
@@ -326,6 +333,15 @@ public class Settings : ISettingsProvideable
         SettingsManager.ScannerSettings.ShowPoliceVehicleBlipsWithScanner = false;
 
         SettingsManager.GangSettings.AllowNonEnemyTargets = false;
+
+
+        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = true;
+        SettingsManager.VehicleSettings.VehicleTractionLossMultiplier = 5.0f;
+        SettingsManager.VehicleSettings.VehicleDeformationMultiplier = 4.0f;
+
+
+        SettingsManager.VehicleSettings.AllowSetTransmissionState = true;
+
 
     }
     public void SetLC()

@@ -27,27 +27,18 @@ public class FightClubInteract : InteriorInteract
 
         Interior?.RemoveButtonPrompts();
         RemovePrompt();
-        SetupCamera(false);
-        if (!MoveToPosition())
-        {
-            Interior.IsMenuInteracting = false;
-            Game.DisplayHelp("Access Failed");
-            LocationCamera?.StopImmediately(true);
-            return;
-        }
+        //SetupCamera(false);
+        //if (!MoveToPosition())
+        //{
+        //    Interior.IsMenuInteracting = false;
+        //    Game.DisplayHelp("Access Failed");
+        //    LocationCamera?.StopImmediately(true);
+        //    return;
+        //}
         Player.InteriorManager.OnStartedInteriorInteract();
-        //Player.OutfitManager.PlayIdleAnimation();
-        //OutfitableLocation.CreateOutfitMenu(true, true);
-
-
         FightClub?.GenerateFightMenu(LocationCamera);
-
-
-
-
-
-        LocationCamera?.ReturnToGameplay(true);
-        LocationCamera?.StopImmediately(true);
+        //LocationCamera?.ReturnToGameplay(true);
+       // LocationCamera?.StopImmediately(true);
         Interior.IsMenuInteracting = false;
         Player.InteriorManager.OnEndedInteriorInteract();
     }

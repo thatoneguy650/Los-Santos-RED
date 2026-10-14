@@ -46,11 +46,15 @@ public class InteriorDoor
     public Rage.Object DoorObject => doorEntity;
     public string DoorGroupName { get; set; }
     public bool ForceKeepLocked { get; set; }
+
+    public uint ForceOpenTimeScalar { get; set; }
+
     [XmlIgnore]
     public bool HasBeenForceRotatedOpen { get; set; }
     public bool HasRanLockWithEntity => hasRanLockWithEntity;
     [XmlIgnore]
     public bool HasBeenForcedOpen { get; private set; }
+
 
     public void LockDoor()
     {

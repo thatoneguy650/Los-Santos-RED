@@ -184,6 +184,8 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.ClearTasks(true);
         PedExt.CurrentTask = null;
         PedExt.Pedestrian.IsPersistent = true;
+        PedExt.WillFight = false;
+        PedExt.WillCower = false;
         PedExt.Pedestrian.BlockPermanentEvents = true;
         PedExt.Pedestrian.KeepTasks = true;
 

@@ -54,11 +54,11 @@ public class DrillItem : ModItem
         possibleItems?.DrillItems.Add(this);
     }
 
-    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings)
+    public void PerformDrillingAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings, InteriorDoor interiorDoor)
     {
         SetupDrillingAnimation();
         CreateAndAttachItem(Player);
-        PerformAnimation(Player, OnCompletedDrilling, isSafe, interior, settings);
+        PerformAnimation(Player, OnCompletedDrilling, isSafe, interior, settings, interiorDoor);
     }
     private void SetupDrillingAnimation()
     {
@@ -104,7 +104,7 @@ public class DrillItem : ModItem
         CreatedDrillProp = SpawnAndAttachItem(Player, true, true);
         
     }
-    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings)
+    private void PerformAnimation(IInteractionable Player, Action OnCompletedDrilling, bool isSafe, Interior interior, ISettingsProvideable settings, InteriorDoor interiorDoor)
     {
         Player.ActivityManager.StopDynamicActivity();
         Player.ActivityManager.IsPerformingActivity = true;
@@ -113,6 +113,10 @@ public class DrillItem : ModItem
         if(!isSafe)
         {
             DrillingTime = RandomItems.GetRandomNumber(MinDoorDrillTime, MaxDoorDrillTime);
+        }
+        if(interiorDoor != null && interiorDoor.ForceOpenTimeScalar >= 1)
+        {
+            DrillingTime *= interiorDoor.ForceOpenTimeScalar;
         }
 
 

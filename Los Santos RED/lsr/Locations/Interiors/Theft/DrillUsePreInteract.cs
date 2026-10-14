@@ -33,7 +33,7 @@ public class DrillUsePreInteract : ItemUsePreInteract
         }
         else
         {
-            InventoryItem drillInventory = Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == ItemType.Equipment && x.ModItem.ItemSubType == ItemSubType.Tool && x.ModItem.GetType() == typeof(DrillItem)).FirstOrDefault();
+            InventoryItem drillInventory = Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == ItemType.Equipment && x.ModItem.ItemSubType == ItemSubType.Tool && x.ModItem.GetType() == typeof(DrillItem)).OrderBy(x=> ((DrillItem)x.ModItem).MinDoorDrillTime).FirstOrDefault();
             if (drillInventory == null)
             {
                 Game.DisplayHelp("Need a Drill to interact");
@@ -47,7 +47,7 @@ public class DrillUsePreInteract : ItemUsePreInteract
             }
         }
 
-        DrillItem.PerformDrillingAnimation(Player, TheftInteract.SetUnlocked, true, Player.ActivityManager.ActiveDoorInterior, Settings);
+        DrillItem.PerformDrillingAnimation(Player, TheftInteract.SetUnlocked, true, Player.ActivityManager.ActiveDoorInterior, Settings, null);
 
 
         //Setup();

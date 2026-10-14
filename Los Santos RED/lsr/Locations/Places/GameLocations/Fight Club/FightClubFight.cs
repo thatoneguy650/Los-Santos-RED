@@ -42,11 +42,12 @@ public class FightClubFight
     private ISettingsProvideable Settings;
     private int RoundNumber;
     private bool IsShowingMenu;
+    private bool IsCancelled;
 
     private AIFightClubFighter SelectedOrBetFighter;
     private AIFightClubFighter PreviousWinner;
     private List<DispatchablePerson> NonGangFightersGroup;
-    private bool IsShowingActiveFightMenu;
+
     private UIMenu ActiveFightMenu;
 
     public bool IsFightActive { get;private set; }
@@ -56,6 +57,9 @@ public class FightClubFight
     public bool AllowHeavyWeapons { get; set; }
 
     public bool IsWeaponFight => AllowMeleeWeapons || AllowSidearms || AllowHeavyWeapons;
+
+
+
     public FightClubFight()
     {
 
@@ -105,6 +109,7 @@ public class FightClubFight
         EntryPoint.WriteToConsole("DISPOSE RAN FOR FIGHT CLUB");
         Player.DisableMainMenu = false;
         Player.ButtonPrompts.RemovePrompt("StartCheer");
+        Player.ButtonPrompts.RemovePrompt("FightMenu");
         foreach (FightClubFighter fightClubFighter in Fighters)
         {
             fightClubFighter.Dispose();
@@ -132,6 +137,8 @@ public class FightClubFight
         PedExt.CanBeAmbientTasked = true;
         PedExt.CanBeTasked = true;
         PedExt.CanBeIdleTasked = true;
+        PedExt.WillCallPolice = false;
+        PedExt.WillFight = false;
         PedExt.IsManuallyDeleted = false;
         PedExt.ClearTasks(true);
         PedExt.PedBrain.AssignIdleTask();
@@ -144,34 +151,12 @@ public class FightClubFight
             fighter.Update();
         }
         CheckEndingConditions();
-        if(!IsPlayerFight && IsFightActive)
-        {
-            if(Player.ActivityManager.IsCheering && !IsShowingMenu)
-            {
-                Player.ButtonPrompts.RemovePrompt("StartCheer");
-            }
-            else
-            {
-                Player.ButtonPrompts.AttemptAddPrompt("StartCheer", "Start Cheering", "StartCheer", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 999);
-
-                if(Player.ButtonPrompts.IsPressed("StartCheer") && !Player.ActivityManager.IsCheering)
-                {
-                    Player.ActivityManager.Cheer();
-                }
-            }
-            NativeHelper.DisablePlayerMovementControl();
-        }
-        if(!IsPlayerFight && !IsFightActive)
-        {
-            Player.ButtonPrompts.RemovePrompt("StartCheer");
-        }
         if(!EntryPoint.ModController.IsRunning)
         {
             Dispose();
         }
-
-        if(IsPlayerFight )
-        {
+        //if(IsPlayerFight)
+        //{
             if (IsFightActive)
             {
                 Player.ActivityManager.IsInteractingWithLocation = false;
@@ -180,41 +165,68 @@ public class FightClubFight
             {
                 Player.ActivityManager.IsInteractingWithLocation = true;
             }
+        //}
+        if (IsFightActive)
+        {
+            HighlightSelectedOrBetFighter();
+        }
+        if (!IsPlayerFight && IsFightActive)
+        {
+            NativeHelper.DisablePlayerMovementControl();
         }
 
-        if(IsFightActive)
+
+        //button shit below
+        if (!IsPlayerFight && IsFightActive)
         {
-            if ((ActiveFightMenu == null || !ActiveFightMenu.Visible))
+            if (Player.ActivityManager.IsCheering || IsShowingMenu)
             {
-                Player.ButtonPrompts.AttemptAddPrompt("FightMenu", "Fight Options", "FightMenu", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 999);
+                Player.ButtonPrompts.RemovePrompt("StartCheer");
+            }
+            else
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("StartCheer", "Start Cheering", "StartCheer", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 999);
+
+                if (Player.ButtonPrompts.IsPressed("StartCheer") && !Player.ActivityManager.IsCheering)
+                {
+                    Player.ActivityManager.Cheer();
+                }
+            }
+        }
+        if (!IsPlayerFight && !IsFightActive)
+        {
+            Player.ButtonPrompts.RemovePrompt("StartCheer");
+        }
+
+
+        if (IsFightActive)
+        {
+            if (!IsShowingMenu && (ActiveFightMenu == null || !ActiveFightMenu.Visible))
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("FightMenu", "Fight Options", "FightMenu", Settings.SettingsManager.KeySettings.InteractStart, 999);
             }
             else
             {
                 Player.ButtonPrompts.RemovePrompt("FightMenu");
             }
-
-
-
-
             if (Player.ButtonPrompts.IsPressed("FightMenu") && (ActiveFightMenu == null || !ActiveFightMenu.Visible))
             {
+                EntryPoint.WriteToConsole("FightMenu RAN BUTTON PRESS");
                 ShowActiveFightMenu();
             }
-
-
-            HighlightSelectedOrBetFighter();
         }
         else
         {
             Player.ButtonPrompts.RemovePrompt("FightMenu");
         }
+
+
     }
 
     private void ShowActiveFightMenu()
     {
+        EntryPoint.WriteToConsole("ShowActiveFightMenu RAN");
         MenuPool.Clear();
-
-        
 
         ActiveFightMenu = new UIMenu("Fight Options", "Select fight options");
         ActiveFightMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -226,12 +238,28 @@ public class FightClubFight
             if(IsFightActive)
             {
                 ActiveFightMenu.Visible = false;
+                IsCancelled = true;
                 OnFightEnded();              
             }
         };
         ActiveFightMenu.AddItem(endFightMenu);
         ActiveFightMenu.Visible = true;
-        IsShowingActiveFightMenu = true;
+
+
+
+        IsShowingMenu = true;
+
+        Player.ActivityManager.StopDynamicActivity();
+
+        Player.ButtonPrompts.RemovePrompt("FightMenu");
+        Player.ButtonPrompts.RemovePrompts("CheerActivity");
+        while (MenuPool.IsAnyMenuOpen())
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+        IsShowingMenu = false;
+        EntryPoint.WriteToConsole("ShowActiveFightMenu RAN");
     }
 
 
@@ -304,7 +332,11 @@ public class FightClubFight
     private void OnFightEnded()
     {
         IsFightActive = false;
-        PayoutBetsToPlayer();
+
+        if (!IsCancelled)
+        {
+            PayoutBetsToPlayer();
+        }
         foreach (AIFightClubFighter fightClubFighter in AIFighters)
         {
             fightClubFighter.SetPassive();
@@ -313,7 +345,7 @@ public class FightClubFight
         {
             Player.ActivityManager.CancelCurrentActivity();
         }
-        if(Player.IsDead || !EntryPoint.ModController.IsRunning)
+        if(Player.IsDead || !EntryPoint.ModController.IsRunning || IsCancelled)
         {
             Dispose();
             return;        
@@ -522,6 +554,7 @@ public class FightClubFight
         {
             return;
         }
+        Spectators = new List<PedExt>();
         List<SpawnPlace> spawnLocations = new List<SpawnPlace>();
         spawnLocations.AddRange(FightClubArena.SpectatorLocations);
         if (!IsPlayerFight)

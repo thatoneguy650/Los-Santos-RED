@@ -203,7 +203,10 @@ public class FightClub : GameLocation
         List<DispatchablePerson> listOfPeople = DispatchablePeople.GetPersonData(NonGangFightersGroup).ToList();
         FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World, Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs, AllowedGangs, listOfPeople);
         fightClubsMenu.Setup(locationCamera);
-        InteractionMenu.Visible = true;
+        //InteractionMenu.Visible = true;
+
+        FightSubMenu.Visible = true;
+
         fightClubsMenu.UpdateMenus();
     }
 
