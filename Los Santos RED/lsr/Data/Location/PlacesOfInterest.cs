@@ -2319,7 +2319,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         Forgers = new List<Forger>()
         {
-            new Forger(new Vector3(1480.319f, 3678.905f, 34.28013f), 198.993f, "Bell's Forgeries", "Is anything really original these days?")
+            new Forger(new Vector3(1435.499f, 3657.137f, 34.38877f), 290.9912f, "Bell's Forgeries", "Is anything really original these days?") // ORIGINAL loc: 1480.319f, 3678.905f, 34.28013f), 198.993f
             {
                 CleanPlateSalesPrice = 200,
                 WantedPlateSalesPrice = 50,
@@ -2327,8 +2327,20 @@ public class PlacesOfInterest : IPlacesOfInterest
                 RandomPlateCost = 300,
                 OpenTime = 0,
                 CloseTime = 24,
+                IsOnMPMap = false,
             },
-            new Forger(new Vector3(-41.79562f, 6637.322f, 31.08751f), 216.5384f,"Zancone The Forger","Not a murmur to anyone!")
+            new Forger(new Vector3(1435.499f, 3657.137f, 34.38877f), 290.9912f, "Bell's Forgeries", "Is anything really original these days?")
+            {
+                CleanPlateSalesPrice = 200,
+                WantedPlateSalesPrice = 50,
+                CustomPlateCost = 550,
+                RandomPlateCost = 300,
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                InteriorID = 247809,
+            },
+            new Forger(new Vector3(-41.64923f, 6637.335f, 31.08751f), 236.3574f,"Zancone The Forger","Not a murmur to anyone!") // ORIG loc -41.79562f, 6637.322f, 31.08751f), 216.5384f - if using counterfit interior use -44.61787f, 6448.167f, 31.47856f), 133.2572f
             {
                 CleanPlateSalesPrice = 300,
                 WantedPlateSalesPrice = 150,
@@ -2336,6 +2348,18 @@ public class PlacesOfInterest : IPlacesOfInterest
                 RandomPlateCost = 350,
                 OpenTime = 0,
                 CloseTime = 24,
+                IsOnMPMap = false,
+            },
+            new Forger(new Vector3(-41.64923f, 6637.335f, 31.08751f), 236.3574f,"Zancone The Forger","Not a murmur to anyone!")
+            {
+                CleanPlateSalesPrice = 300,
+                WantedPlateSalesPrice = 150,
+                CustomPlateCost = 650,
+                RandomPlateCost = 350,
+                OpenTime = 0,
+                CloseTime = 24,
+                IsOnMPMap = true,
+                InteriorID = 29926503,
             },
         };
 
@@ -3097,9 +3121,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             },
-            new IllicitMarketplace(new Vector3(-30.06856f, 6456.729f, 31.47281f), 243.118f, "Dealer Hangout 5", "Dealer Hangout 5","DealerHangoutMenu1") {
+
+            new IllicitMarketplace(new Vector3(-17.94051f, 6468.028f, 31.48129f), 223.9857f, "Dealer Hangout 5", "Dealer Hangout 5","DealerHangoutMenu1") // Original Loc: -30.06856f, 6456.729f, 31.47281f), 243.118f
+            {
                 OpenTime = 0, CloseTime = 24,
-                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-30.06856f, 6456.729f, 31.47281f), 243.118f) },
+                VendorLocations = new List<SpawnPlace>() { new SpawnPlace(new Vector3(-17.94051f, 6468.028f, 30.48129f), 223.9857f) },
                 AppearPercentages = new List<AppearPercentage>()
                 {
                     new AppearPercentage(0,85),
@@ -3127,12 +3153,30 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new AppearPercentage(22,75),
                     new AppearPercentage(23,85),
                 },
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new ConditionalLocation(new Vector3(-50.55559f, 6438.076f, 40.37756f), 300.6061f,0f),
-                    new ConditionalLocation(new Vector3(-58.55237f, 6447.396f, 40.37756f), 274.0475f, 0f),
-                    new ConditionalLocation(new Vector3(-38.00097f, 6469.404f, 35.40913f), 228.3165f, 0f),
-                    new ConditionalLocation(new Vector3(-11.94416f, 6478.693f, 31.45957f), 188.2354f, 0f),
-                    new ConditionalLocation(new Vector3(14.13199f, 6503.866f, 31.49215f), 239.9304f, 0f), }
+                PossiblePedSpawns = new List<ConditionalLocation>() 
+                {
+                    //Original locations
+                    //new ConditionalLocation(new Vector3(-50.55559f, 6438.076f, 40.37756f), 300.6061f,0f),
+                    //new ConditionalLocation(new Vector3(-58.55237f, 6447.396f, 40.37756f), 274.0475f, 0f),
+                    //new ConditionalLocation(new Vector3(-38.00097f, 6469.404f, 35.40913f), 228.3165f, 0f),
+                    //new ConditionalLocation(new Vector3(-11.94416f, 6478.693f, 31.45957f), 188.2354f, 0f),
+                    //new ConditionalLocation(new Vector3(14.13199f, 6503.866f, 31.49215f), 239.9304f, 0f),
+
+                    // Roof level locations
+                    new ConditionalLocation(new Vector3(-47.91711f, 6437.615f, 40.37759f), 306.8014f, 0f),
+                    new ConditionalLocation(new Vector3(16.60071f, 6462.032f, 36.17932f), 44.15216f, 0f),
+                    new ConditionalLocation(new Vector3(25.56812f, 6479.501f, 36.32862f), 100.2505f, 0f),
+                    new ConditionalLocation(new Vector3(-8.150167f, 6495.794f, 36.6614f), 163.8955f, 0f),
+                    new ConditionalLocation(new Vector3(-22.12605f, 6477.93f, 34.64086f), 221.862f, 0f),
+                    //Ground level locations
+                    new ConditionalLocation(new Vector3(16.34525f, 6435.913f, 31.4253f), 76.72827f, 0f),
+                    new ConditionalLocation(new Vector3(-18.13177f, 6415.271f, 31.4252f), 38.07999f, 0f),
+                    new ConditionalLocation(new Vector3(-46.08759f, 6446.589f, 31.47317f), 258.6606f, 0f),
+                    new ConditionalLocation(new Vector3(-30.86587f, 6480.778f, 31.4998f), 43.45936f, 0f),
+                    new ConditionalLocation(new Vector3(2.411677f, 6500.188f, 31.48461f), 176.5061f, 0f),
+                    new ConditionalLocation(new Vector3(14.78009f, 6503.303f, 31.49215f), 167.9782f, 0f),
+
+                }
 
 
             },
@@ -7926,7 +7970,7 @@ new ConditionalLocation(, 75f),*/
     }
     private void DefaultConfig_GangDens_Families()
     {
-        GangDen FamiliesDen1 = new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
+        GangDen FamiliesDen1 = new GangDen(new Vector3(-216.5266f, -1674.361f, 34.46318f), 0f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY") // Original Loc: -223.1647f, -1601.309f, 34.88379f), 266.3889f
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -7940,45 +7984,73 @@ new ConditionalLocation(, 75f),*/
             MaxAssaultSpawns = 30,
             AssaultSpawnLocations = new List<SpawnPlace>()
             {
-                new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
-                new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
-                new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
-                new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
-                new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
-                new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
-                new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
-                new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
-                new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
-                new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
-                new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
-                new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
-                new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
-                new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
-                new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
-                new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
-                new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
-                new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
-                new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
-                new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+                // Original Location
+                //new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
+                //new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
+                //new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
+                //new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
+                //new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
+                //new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
+                //new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
+                //new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
+                //new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
+                //new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
+                //new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
+                //new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
+                //new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
+                //new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
+                //new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
+                //new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
+                //new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
+                //new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
+                //new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
+                //new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+
+                new SpawnPlace(new Vector3(-207.788f, -1671.026f, 36.83156f), 92.81821f),
+                new SpawnPlace(new Vector3(-207.8442f, -1651.83f, 36.83688f), 91.38039f),
+                new SpawnPlace(new Vector3(-224.2056f, -1648.722f, 38.44494f), 178.4545f),
+                new SpawnPlace(new Vector3(-251.6956f, -1662.623f, 31.86371f), 269.0798f),
+                new SpawnPlace(new Vector3(-192.8572f, -1672.334f, 33.6024f), 87.95138f),
+                new SpawnPlace(new Vector3(-203.6307f, -1679.183f, 42.08518f), 36.03621f),
+                new SpawnPlace(new Vector3(-209.476f, -1641.559f, 41.53517f), 171.5205f),
+                new SpawnPlace(new Vector3(-232.2489f, -1677.345f, 41.27604f), 271.7646f),
+
             },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
-                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 35f),
-                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 35f),
-                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 35f),
-                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 35f),
-                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 35f),
+                // Original Location
+                //new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
+                //new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 35f),
+                //new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 35f),
+                //new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 35f),
+                //new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 35f),
+                //new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 35f),
+
+                // New Location
+                new GangConditionalLocation(new Vector3(-199.93f, -1671.165f, 33.41173f), 248.9002f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_DRINKING"}, }, // Scenario Point: X:-199.93 Y:-1671.165 Z:33.41173 WORLD_HUMAN_DRINKING
+                new GangConditionalLocation(new Vector3(-199.8689f, -1672.244f, 33.4105f), 295.7017f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, }, // Scenario Point: X:-199.8689 Y:-1672.244 Z:33.4105 WORLD_HUMAN_SMOKING
+                new GangConditionalLocation(new Vector3(-217.3474f, -1674.423f, 33.46306f), 0f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, }, // Scenario Point: X:-217.3474 Y:-1674.423 Z:33.46306 WORLD_HUMAN_LEANING
+                new GangConditionalLocation(new Vector3(-225.8842f, -1665.084f, 33.46275f), 0f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, }, // Scenario Point: X:-225.8842 Y:-1665.084 Z:33.46275 WORLD_HUMAN_LEANING
+                new GangConditionalLocation(new Vector3(-212.583f, -1652.006f, 34.4633f), 92.51225f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, }, 
+                new GangConditionalLocation(new Vector3(-223.6661f, -1649.57f, 34.46327f), 218.3086f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 45f),
-                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 45f),
-                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 45f),
-                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 45f),
+                // Original Location
+                //new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 45f),
+                //new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 45f),
+                //new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 45f),
+                //new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 45f),
+
+                // New Location
+                new GangConditionalLocation(new Vector3(-231.4977f, -1692.598f, 32.88865f), 0f, 45f), // X:-231.4977 Y:-1692.598 Z:32.88865
+                new GangConditionalLocation(new Vector3(-222.6394f, -1691.892f, 33.15136f), 0f, 45f), // X:-222.6394 Y:-1691.892 Z:33.15136
+                new GangConditionalLocation(new Vector3(-236.241f, -1675.915f, 33.59501f), 0f, 45f), // X:-236.241 Y:-1675.915 Z:33.59501
+                new GangConditionalLocation(new Vector3(-243.634f, -1658.927f, 33.65684f), 180f, 45f), // X:-243.634 Y:-1658.927 Z:33.65684
+
             }
         };//This is in Chamberlain Hills
-        GangDen FamiliesDen1MP = new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
+        GangDen FamiliesDen1MP = new GangDen(new Vector3(-216.5266f, -1674.361f, 34.46318f), 0f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
         {
             IsPrimaryGangDen = true,
             CanInteractWhenWanted = true,
@@ -7993,42 +8065,70 @@ new ConditionalLocation(, 75f),*/
             MaxAssaultSpawns = 30,
             AssaultSpawnLocations = new List<SpawnPlace>()
             {
-                new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
-                new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
-                new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
-                new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
-                new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
-                new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
-                new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
-                new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
-                new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
-                new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
-                new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
-                new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
-                new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
-                new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
-                new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
-                new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
-                new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
-                new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
-                new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
-                new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+                // Original Location
+                //new SpawnPlace(new Vector3(-223.1647f, -1601.259f, 34.88374f), 268.6839f),
+                //new SpawnPlace(new Vector3(-212.4419f, -1617.797f, 38.0545f), 38.39874f),
+                //new SpawnPlace(new Vector3(-208.9674f, -1600.5f, 38.04931f), 83.81237f),
+                //new SpawnPlace(new Vector3(-206.1112f, -1585.629f, 38.05451f), 120.6805f),
+                //new SpawnPlace(new Vector3(-216.1997f, -1576.687f, 38.0545f), 180.4353f),
+                //new SpawnPlace(new Vector3(-222.7395f, -1601.152f, 38.0545f), 272.0634f),
+                //new SpawnPlace(new Vector3(-201.511f, -1624.564f, 41.34509f), 289.6816f),
+                //new SpawnPlace(new Vector3(-200.125f, -1602.164f, 41.29062f), 261.9734f),
+                //new SpawnPlace(new Vector3(-194.1649f, -1587.579f, 41.30846f), 232.9506f),
+                //new SpawnPlace(new Vector3(-215.5441f, -1559.835f, 41.21697f), 47.27681f),
+                //new SpawnPlace(new Vector3(-234.6205f, -1607.789f, 34.25611f), 4.264464f),
+                //new SpawnPlace(new Vector3(-231.7172f, -1578.919f, 34.01382f), 59.42915f),
+                //new SpawnPlace(new Vector3(-212.3463f, -1557.373f, 34.12993f), 149.7523f),
+                //new SpawnPlace(new Vector3(-193.7852f, -1577.589f, 34.75968f), 228.6595f),
+                //new SpawnPlace(new Vector3(-142.135f, -1590.82f, 34.24369f), 51.68867f),
+                //new SpawnPlace(new Vector3(-158.8534f, -1595.509f, 34.92048f), 99.12867f),
+                //new SpawnPlace(new Vector3(-158.7244f, -1637.962f, 34.61707f), 54.50668f),
+                //new SpawnPlace(new Vector3(-148.991f, -1622.768f, 33.65551f), 143.6143f),
+                //new SpawnPlace(new Vector3(-205.4208f, -1632.56f, 33.80816f), 185.447f),
+                //new SpawnPlace(new Vector3(-223.7961f, -1662.927f, 34.46351f), 92.53432f),
+
+                new SpawnPlace(new Vector3(-207.788f, -1671.026f, 36.83156f), 92.81821f),
+                new SpawnPlace(new Vector3(-207.8442f, -1651.83f, 36.83688f), 91.38039f),
+                new SpawnPlace(new Vector3(-224.2056f, -1648.722f, 38.44494f), 178.4545f),
+                new SpawnPlace(new Vector3(-251.6956f, -1662.623f, 31.86371f), 269.0798f),
+                new SpawnPlace(new Vector3(-192.8572f, -1672.334f, 33.6024f), 87.95138f),
+                new SpawnPlace(new Vector3(-203.6307f, -1679.183f, 42.08518f), 36.03621f),
+                new SpawnPlace(new Vector3(-209.476f, -1641.559f, 41.53517f), 171.5205f),
+                new SpawnPlace(new Vector3(-232.2489f, -1677.345f, 41.27604f), 271.7646f),
+
             },
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
-                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 35f),
-                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 35f),
-                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 35f),
-                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 35f),
-                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 35f),
+                // Original Location
+                //new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
+                //new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 35f),
+                //new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 35f),
+                //new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 35f),
+                //new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 35f),
+                //new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 35f),
+
+                // New Location
+                new GangConditionalLocation(new Vector3(-199.93f, -1671.165f, 33.41173f), 248.9002f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_DRINKING"}, }, // Scenario Point: X:-199.93 Y:-1671.165 Z:33.41173 WORLD_HUMAN_DRINKING
+                new GangConditionalLocation(new Vector3(-199.8689f, -1672.244f, 33.4105f), 295.7017f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_SMOKING"}, }, // Scenario Point: X:-199.8689 Y:-1672.244 Z:33.4105 WORLD_HUMAN_SMOKING
+                new GangConditionalLocation(new Vector3(-217.3474f, -1674.423f, 33.46306f), 0f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, }, // Scenario Point: X:-217.3474 Y:-1674.423 Z:33.46306 WORLD_HUMAN_LEANING
+                new GangConditionalLocation(new Vector3(-225.8842f, -1665.084f, 33.46275f), 0f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_LEANING"}, }, // Scenario Point: X:-225.8842 Y:-1665.084 Z:33.46275 WORLD_HUMAN_LEANING
+                new GangConditionalLocation(new Vector3(-212.583f, -1652.006f, 34.4633f), 92.51225f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_STAND_MOBILE"}, },
+                new GangConditionalLocation(new Vector3(-223.6661f, -1649.57f, 34.46327f), 218.3086f, 45f){ TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<String>() {"WORLD_HUMAN_HANG_OUT_STREET"}, },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 45f),
-                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 45f),
-                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 45f),
-                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 45f),
+                // Original Location
+                //new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 45f),
+                //new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 45f),
+                //new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 45f),
+                //new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 45f),
+
+                // New Location
+                new GangConditionalLocation(new Vector3(-231.4977f, -1692.598f, 32.88865f), 0f, 45f), // X:-231.4977 Y:-1692.598 Z:32.88865
+                new GangConditionalLocation(new Vector3(-222.6394f, -1691.892f, 33.15136f), 0f, 45f), // X:-222.6394 Y:-1691.892 Z:33.15136
+                new GangConditionalLocation(new Vector3(-236.241f, -1675.915f, 33.59501f), 0f, 45f), // X:-236.241 Y:-1675.915 Z:33.59501
+                new GangConditionalLocation(new Vector3(-243.634f, -1658.927f, 33.65684f), 180f, 45f), // X:-243.634 Y:-1658.927 Z:33.65684
+
             }
         };
         GangDen FamiliesDen2 = new GangDen()
