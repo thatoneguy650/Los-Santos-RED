@@ -1442,7 +1442,7 @@ public class Interiors : IInteriors
 
             // Forgers
             // Mid Interior
-            new BusinessInterior(29926503, "Mid Forger House")
+            new Interior(29926503, "Mid Forger House")
             {
                 IsTeleportEntry = true,
                 InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
@@ -1581,7 +1581,7 @@ public class Interiors : IInteriors
                     },
                 }
             },
-            new BusinessInterior(247809, "Counterfeit Cash")
+            new Interior(247809, "Counterfeit Cash")
             {
                 InternalInteriorCoordinates = new Vector3(1124.734f, -3196.597f, -39.99353f), // X:1124.734 Y:-3196.597 Z:-39.99353
                 IsTeleportEntry = true,
