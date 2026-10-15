@@ -963,6 +963,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public string LootInventory(IInteractionable player, IModItems modItems, ICellphones cellphones)
     {
+        // Hooked here rather than at the call sites because both of them — HoldUp and
+        // PedInspect — funnel through this one method, and HasBeenLooted below already
+        // guarantees a ped can only pay out once.
+        if (!HasBeenLooted)
+        {
+            player.GangRequisitionManager?.OnDealerLooted(this);
+        }
         HasBeenLooted = true;
         string ItemsFound = "";
         ItemsFound += StealPhone(player, modItems, cellphones);
@@ -1486,6 +1493,16 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
+        // Murder-hobo deterrent. Gang members, cops and merchants are all scored by their
+        // own rules elsewhere; this is the ordinary bystander case, charged as heat.
+        // A dealer is not a bystander, so killing one draws no heat penalty — but it pays
+        // nothing either. The money is in leaving him alive to be leaned on and looted,
+        // which is the whole point of rewarding assault over murder.
+        if (Player.GangProgressionManager?.IsShakeableDealer(this) != true
+            && !IsGangMember && !IsCop && Pedestrian.Exists())
+        {
+            Player.GangProgressionManager?.OnCivilianKilled(Pedestrian.Position);
+        }
 
     }
     public virtual void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
@@ -1502,6 +1519,14 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void OnUnconscious(IPoliceRespondable policeRespondable)
     {
+        // Beating a dealer senseless. On the base rather than GangMember because most
+        // street dealers are unaffiliated civilians. Fires exactly once — HealthState
+        // guards SetUnconscious on !IsUnconscious — and HasBeenHurtByPlayer separates a
+        // beating from being caught in someone else's firefight.
+        if (HasBeenHurtByPlayer)
+        {
+            policeRespondable.GangRequisitionManager?.OnDealerBeaten(this);
+        }
 
     }
     public virtual bool OnTreatedByEMT(float revivePercentage)
@@ -1818,7 +1843,7 @@ ENDENUM
             IgnorePlayerCrimes = false;
         }
     }
-    public void OnKilledPed(PedExt myPed)
+    public virtual void OnKilledPed(PedExt myPed)
     {
         if(myPed == null)
         {

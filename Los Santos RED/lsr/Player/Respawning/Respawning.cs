@@ -478,6 +478,7 @@ public class Respawning// : IRespawning
                     Game.LocalPlayer.Character.IsInvincible = false;
                 });
             }
+            PoliceRespondable?.GangRequisitionManager?.ChargeForUndie();
             GameTimeLastUndied = Game.GameTime;
         }
     }

@@ -237,6 +237,7 @@ public class CarLockPick
             return false;
         }
         TargetVehicle.LockStatus = VehicleLockStatus.Unlocked;
+        Interactionable?.GangCrewManager?.OnPlayerBrokeIntoVehicle();
         if (RandomItems.RandomPercent(50))
         {
             TargetVehicle.Doors[DoorIndex].Open(true, false);
@@ -304,6 +305,7 @@ public class CarLockPick
 
         TargetVehicle.LockStatus = VehicleLockStatus.Unlocked;
 
+        Interactionable?.GangCrewManager?.OnPlayerBrokeIntoVehicle();
         if (RandomItems.RandomPercent(50))
         {
             TargetVehicle.Doors[DoorIndex].Open(true, false);

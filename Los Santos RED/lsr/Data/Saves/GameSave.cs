@@ -19,7 +19,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace LosSantosRED.lsr.Data
 {
-    public class GameSave
+    public partial class GameSave
     {
         public GameSave()
         {
@@ -126,6 +126,8 @@ namespace LosSantosRED.lsr.Data
             SaveOwnedProperties(player);
             SavePurchasedClothingItem(player);
             SaveGangWarfare(player);
+            SaveGangProgression(player);
+            SaveGangCrew(player);
         }
 
         private void SaveGangWarfare(ISaveable player)
@@ -392,6 +394,7 @@ namespace LosSantosRED.lsr.Data
                 EntryPoint.WriteToConsole("Load 4");
 
 
+
                 LoadDebt(player);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
@@ -407,6 +410,8 @@ namespace LosSantosRED.lsr.Data
                 LoadSavedClothingItems(player, shopMenus);
 
                 LoadGangWarfare(player, gangs, zones);
+                LoadGangProgression(player);
+                LoadGangCrew(player);
 
                 EntryPoint.WriteToConsole("Load 6");
                 GameFiber.Sleep(1000);
@@ -709,8 +714,6 @@ namespace LosSantosRED.lsr.Data
                 player.GangTerritoryManager.LoadRetaliation(targetGang, toAttackZones, grs.TimesPlayerDefendedRetaliation, grs.CenterPoint);
             }
         }
-
-
         private void LoadContacts(IInventoryable player, IGangs gangs)
         {
             foreach (PhoneContact ifc in Contacts.OrderBy(x => x.Index))

@@ -85,6 +85,10 @@ public class BurnerPhone
         }
         PhoneApps.Add(SettingsApp);
         PhoneApps.Add(MapsApp);
+        if (Settings.SettingsManager.GangProgressionSettings.EnableCrewApp)
+        {
+            PhoneApps.Add(new BurnerPhoneGangStandingApp(this, Player, Time, Settings, 5));
+        }
         
 
         MaxColumns = 3;//hardcoded to the phone

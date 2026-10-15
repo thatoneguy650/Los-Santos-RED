@@ -15,6 +15,9 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         CellPhone CellPhone { get; }
         RelationshipManager RelationshipManager { get; }
+        GangProgressionManager GangProgressionManager { get; }
+        GangCrewManager GangCrewManager { get; }
+        GangRequisitionManager GangRequisitionManager { get; }
         PlayerTasks PlayerTasks { get; }
         Licenses Licenses { get; }
         BankAccounts BankAccounts { get; }

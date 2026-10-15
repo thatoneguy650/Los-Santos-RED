@@ -9,6 +9,7 @@ namespace LosSantosRED.lsr.Interface
     {
         LocationData CurrentLocation { get; set; }
         RelationshipManager RelationshipManager { get; }
+        GangProgressionManager GangProgressionManager { get; }
         WeaponEquipment WeaponEquipment { get; }
         Investigation Investigation { get; }
         PoliceResponse PoliceResponse { get; }

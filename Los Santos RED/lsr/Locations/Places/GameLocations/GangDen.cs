@@ -206,7 +206,9 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
     {
         //KeepInteractionGoing = false;
         CreateTransactionMenuItems(isInside);
-        CreateTaskMenuItems();     
+        CreateTaskMenuItems();
+        CreateRequisitionMenuItems();
+        AddKickUpItems();
         if (!isInside)
         {
             CreateRestInteractionMenu();
@@ -214,6 +216,214 @@ public class GangDen : GameLocation, IRestableLocation, IAssaultSpawnable
         CreateLoanMenuItems();
     }
 
+    /// <summary>
+    /// The gang armoury: weapons, plates and a car, gated by rank and paid for in goodwill.
+    ///
+    /// Deliberately at the den rather than on the phone. Gear you have to drive home for
+    /// pulls the player back toward their own turf, which is the whole point of a
+    /// territory-shaped progression system; backup stays on the phone because needing a
+    /// crew is the one thing that never happens while you are standing in the clubhouse.
+    ///
+    /// Follows this file's own idiom rather than the gang phone menu's: items stay VISIBLE
+    /// and refuse at activation with a reason, the way DropoffKick does, instead of being
+    /// hidden. A player who cannot see the shotgun does not know there is a shotgun to
+    /// work toward.
+    /// </summary>
+    private void CreateRequisitionMenuItems()
+    {
+        GangRequisitionManager requisition = Player.GangRequisitionManager;
+        if (requisition == null || !requisition.IsEnabled || AssociatedGang == null)
+        {
+            return;
+        }
+        if (Player.RelationshipManager.GangRelationships.CurrentGang?.ID != AssignedAssociationID)
+        {
+            return;
+        }
+        if (Player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember != true)
+        {
+            return;
+        }
+
+        UIMenu requisitionMenu = MenuPool.AddSubMenu(InteractionMenu, "The Stash");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "See what they'll let you walk out with.";
+        requisitionMenu.RemoveBanner();
+
+        AddWeaponRequisitionItems(requisitionMenu, requisition);
+        AddArmorRequisitionItem(requisitionMenu, requisition);
+    }
+
+    private void AddWeaponRequisitionItems(UIMenu requisitionMenu, GangRequisitionManager requisition)
+    {
+        List<IssuableWeapon> weapons = requisition.AvailableWeapons(AssociatedGang);
+        if (!weapons.Any())
+        {
+            UIMenuItem none = new UIMenuItem("Piece", "Nothing here for you yet.") { Enabled = false };
+            requisitionMenu.AddItem(none);
+            return;
+        }
+        // Specific weapons rather than categories. A bat and a switchblade are both melee,
+        // and offering "Melee" at one price made the whole category read as a single item
+        // whose identity was decided by a dice roll.
+        List<string> weaponNames = weapons.Select(x => requisition.DisplayNameFor(x)).ToList();
+        UIMenuListScrollerItem<string> weaponScroller = new UIMenuListScrollerItem<string>("Weapon", "Pick what you're asking for.", weaponNames);
+        requisitionMenu.AddItem(weaponScroller);
+
+        UIMenuItem drawWeapon = new UIMenuItem("Take It", "Ask for it and see what they say.")
+        {
+            RightLabel = $"~o~{requisition.WeaponCostFor(weapons[0])} GW~s~"
+        };
+        weaponScroller.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            int index = weaponScroller.Index;
+            if (index >= 0 && index < weapons.Count)
+            {
+                drawWeapon.RightLabel = $"~o~{requisition.WeaponCostFor(weapons[index])} GW~s~";
+            }
+        };
+        drawWeapon.Activated += (sender, selectedItem) =>
+        {
+            int index = weaponScroller.Index;
+            IssuableWeapon chosen = index >= 0 && index < weapons.Count ? weapons[index] : null;
+            string refusal = requisition.RequestWeapon(AssociatedGang, chosen);
+            if (refusal != null)
+            {
+                PlayErrorSound();
+                DisplayMessage("~r~Reply", refusal);
+                return;
+            }
+            PlaySuccessSound();
+            DisplayMessage("~g~Reply", "Take it. Don't bring it back with a body on it.");
+        };
+        requisitionMenu.AddItem(drawWeapon);
+    }
+
+    private void AddArmorRequisitionItem(UIMenu requisitionMenu, GangRequisitionManager requisition)
+    {
+        string armorName = requisition.ArmorItemNameFor(AssociatedGang);
+        if (string.IsNullOrWhiteSpace(armorName))
+        {
+            UIMenuItem none = new UIMenuItem("Vest", "Plates are for people who've earned them.") { Enabled = false };
+            requisitionMenu.AddItem(none);
+            return;
+        }
+        int cost = requisition.PrivilegeFor(AssociatedGang).ArmorGoodwill;
+        UIMenuItem drawArmor = new UIMenuItem("Request Body Armor", $"Ask for a vest. Goes into your inventory.~n~{armorName}")
+        {
+            RightLabel = $"~o~{cost} GW~s~"
+        };
+        drawArmor.Activated += (sender, selectedItem) =>
+        {
+            string refusal = requisition.RequestArmor(AssociatedGang);
+            if (refusal != null)
+            {
+                PlayErrorSound();
+                DisplayMessage("~r~Reply", refusal);
+                return;
+            }
+            PlaySuccessSound();
+            DisplayMessage("~g~Reply", "It's in your bag. Put it on before you need it, not after.");
+        };
+        requisitionMenu.AddItem(drawArmor);
+    }
+    /// <summary>
+    /// Putting the crew's own earnings to work.
+    ///
+    /// Deliberately NOT hung off CreateRequisitionMenuItems. Fencing was, once, and turning
+    /// requisition off silently took fencing with it — the same coupling would hide this
+    /// behind a feature it has nothing to do with, and this one has to survive on its own if
+    /// the crew roster ships without the goodwill economy.
+    ///
+    /// The stake is a SHARE rather than a number. A fixed ladder of amounts would have to be
+    /// rebuilt every time the player scrolls to a different man, because each man has a
+    /// different pot; a percentage is correct for everyone and reads better besides.
+    ///
+    /// Scroller items render their own value on the right and throw if given a RightLabel -
+    /// that mistake took down the whole den interaction once. Everything here goes in the
+    /// title or the description.
+    /// </summary>
+    private void AddKickUpItems()
+    {
+        GangCrewManager crew = Player.GangCrewManager;
+        GangKickUpManager kickUp = crew?.KickUp;
+        if (crew == null || kickUp == null || !kickUp.IsEnabled || AssociatedGang == null)
+        {
+            return;
+        }
+        if (Player.RelationshipManager.GangRelationships.CurrentGang?.ID != AssignedAssociationID)
+        {
+            return;
+        }
+
+        List<GangCrewMember> earners = crew.MembersWithTribute();
+        UIMenu kickUpMenu = MenuPool.AddSubMenu(InteractionMenu, "Put Somebody On It");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description =
+            "Your men have their own money. Let one of them run it up.";
+        kickUpMenu.RemoveBanner();
+
+        if (!earners.Any())
+        {
+            kickUpMenu.AddItem(new UIMenuItem("Nobody's holding", "Take them out and let them earn.") { Enabled = false });
+            return;
+        }
+
+        List<string> names = earners.Select(x => $"{x.Name} ({x.Tribute})").ToList();
+        UIMenuListScrollerItem<string> who = new UIMenuListScrollerItem<string>("Whose", "What he's sitting on.", names);
+        kickUpMenu.AddItem(who);
+
+        List<int> shares = new List<int> { 25, 50, 75, 100 };
+        UIMenuListScrollerItem<int> share = new UIMenuListScrollerItem<int>("How much", "How much of his own he puts up.", shares);
+        kickUpMenu.AddItem(share);
+
+        Func<GangCrewMember> selectedMember = () =>
+        {
+            int index = who.Index;
+            return index >= 0 && index < earners.Count ? earners[index] : null;
+        };
+        Func<int> selectedStake = () =>
+        {
+            GangCrewMember member = selectedMember();
+            return member == null ? 0 : (int)Math.Round(member.Tribute * share.SelectedItem / 100.0);
+        };
+
+        List<UIMenuItem> tierItems = new List<UIMenuItem>();
+        foreach (GangKickUpManager.RiskTier tier in kickUp.AllTiers)
+        {
+            GangKickUpManager.RiskTier captured = tier;
+            UIMenuItem item = new UIMenuItem(kickUp.NameFor(captured), kickUp.BlurbFor(captured));
+            item.Activated += (sender, selected) =>
+            {
+                GangCrewMember member = selectedMember();
+                int stake = selectedStake();
+                string result = kickUp.Attempt(member, stake, captured);
+                Game.DisplaySubtitle(result);
+                // The pot has changed, so every label that mentions it is now a lie. Rebuilding
+                // the whole den menu mid-interaction is not safe, so close instead and let the
+                // player walk back in to a menu built from current numbers.
+                InteractionMenu.Visible = false;
+                kickUpMenu.Visible = false;
+            };
+            tierItems.Add(item);
+            kickUpMenu.AddItem(item);
+        }
+
+        Action refresh = () =>
+        {
+            GangCrewMember member = selectedMember();
+            int stake = selectedStake();
+            for (int i = 0; i < tierItems.Count; i++)
+            {
+                GangKickUpManager.RiskTier tier = kickUp.AllTiers[i];
+                string stakeText = member == null ? "nothing"
+                    : stake < kickUp.MinimumStake ? $"{stake}, under the {kickUp.MinimumStake} minimum"
+                    : stake.ToString();
+                tierItems[i].Description = $"Staking {stakeText}. {kickUp.BlurbFor(tier)}";
+            }
+        };
+        who.IndexChanged += (sender, oldIndex, newIndex) => refresh();
+        share.IndexChanged += (sender, oldIndex, newIndex) => refresh();
+        refresh();
+    }
     private void CreateLoanMenuItems()
     {
         LoanSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Cash Loans");

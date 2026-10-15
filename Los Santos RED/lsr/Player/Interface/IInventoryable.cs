@@ -25,6 +25,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; set; }
         OutfitManager OutfitManager { get; }
         GangTerritoryManager GangTerritoryManager { get; }
+        GangProgressionManager GangProgressionManager { get; }
+        GangCrewManager GangCrewManager { get; }
 
         void DisplayPlayerNotification();
         void RemoveAgencyStatus();
