@@ -1439,6 +1439,226 @@ public class Interiors : IInteriors
 
 
             //103170
+
+            // Forgers
+            // Mid Interior
+            new Interior(29926503, "Mid Forger House")
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(64.01186f, -91.76822f, -74.19619f),
+                InteriorEgressHeading = 0.9475109f,
+                PropSpawns = new List<PropSpawn>()
+                {
+                    // Entry Room
+                    new PropSpawn("m23_2_prop_m32_cratelspd_02a", new SpawnPlace(new Vector3(66.55852f, -90.07759f, -75.19622f), 87.9997253f)) { PlaceOnGround = true },
+
+                    // Kitchen
+                    new PropSpawn("bkr_prop_prtmachine_paperream", new SpawnPlace(new Vector3(60.13252f, -84.86435f, -75.19622f), 2.00046825f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(60.13876f, -84.8395157f, -75.19622f), -89.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_prtmachine_paperream", new SpawnPlace(new Vector3(60.1910553f, -84.9442749f, -74.15682f), -177.999756f)) { PlaceOnGround = false },
+
+                    new PropSpawn("bkr_prop_fakeid_deskfan_01a", new SpawnPlace(new Vector3(59.15475f, -84.97443f, -74.1378555f), 117.998604f)) { PlaceOnGround = true },
+
+                    // Bedroom
+                    new PropSpawn("reh_prop_reh_desk_comp_01a", new SpawnPlace(new Vector3(69.25905f, -76.93446f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_tablet_01a", new SpawnPlace(new Vector3(69.2991638f, -77.05477f, -74.39422f), 93.99994f)) { PlaceOnGround = true },
+                    new PropSpawn("h4_prop_h4_cash_bon_01a", new SpawnPlace(new Vector3(68.51927f, -77.3854446f, -74.39422f), -54.0006027f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_bundledriverl", new SpawnPlace(new Vector3(68.85946f, -77.41491f, -74.39422f), -72.9996643f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_bundlepassports", new SpawnPlace(new Vector3(68.85806f, -76.94275f, -74.39422f), -87.99967f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_pen_02a", new SpawnPlace(new Vector3(69.6717148f, -77.1207047f, -74.39422f), 177.000244f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_cs_lester_crate", new SpawnPlace(new Vector3(67.78025f, -76.29108f, -75.11f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_clubhouse_offchair_01a", new SpawnPlace(new Vector3(69.6649f, -78.22f, -74.58f), -147.9993f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("bkr_prop_bkr_cash_scatter_03", new SpawnPlace(new Vector3(69.22486f, -82.5383453f, -75.19622f), 19.00012f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(69.87254f, -82.50516f, -75.19622f), -89.99954f)) { PlaceOnGround = true },
+                    new PropSpawn("ex_cash_scatter_02", new SpawnPlace(new Vector3(70.0743f, -82.11258f, -74.35682f), -43.9999275f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_cash_scatter_02", new SpawnPlace(new Vector3(69.70711f, -82.53388f, -74.35682f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_money_counter", new SpawnPlace(new Vector3(69.7969742f, -83.04497f, -74.35682f), -100.000336f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_money_counter", new SpawnPlace(new Vector3(69.75064f, -81.73558f, -74.35682f), -64.99834f)) { PlaceOnGround = false },
+                    new PropSpawn("ex_office_swag_counterfeit2", new SpawnPlace(new Vector3(69.52066f, -82.2912445f, -74.35682f), 86.9997253f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cash_roll_01", new SpawnPlace(new Vector3(69.61299f, -83.38443f, -74.35682f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_bkr_cashpile_01", new SpawnPlace(new Vector3(70.0260849f, -82.4581451f, -74.35682f), -0.000374197931f)) { PlaceOnGround = false },
+                    new PropSpawn("ex_prop_exec_cashpile", new SpawnPlace(new Vector3(70.20394f, -83.22772f, -74.24f), -89.9993f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("bkr_prop_clubhouse_chair_01", new SpawnPlace(new Vector3(69.1f, -82.95f, -74.6f), 82.9997559f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_clubhouse_chair_01", new SpawnPlace(new Vector3(69.05f, -81.92f, -74.6f), 99.99957f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_fakeid_boxdriverl_01a", new SpawnPlace(new Vector3(66.51156f, -80.01254f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_boxpassport_01a", new SpawnPlace(new Vector3(66.52699f, -80.41656f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(66.53778f, -79.768074f, -75.19622f), -89.99952f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_foiltipper", new SpawnPlace(new Vector3(66.47827f, -80.53139f, -74.35682f), 91.9997253f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_embosser", new SpawnPlace(new Vector3(66.5438f, -80.03954f, -74.35683f), 90.000145f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_laminator", new SpawnPlace(new Vector3(66.5881958f, -79.21165f, -74.35682f), 89.9996643f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_magnifyingglass", new SpawnPlace(new Vector3(66.86915f, -80.29033f, -74.35682f), -48.0000534f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_openpassport", new SpawnPlace(new Vector3(66.52425f, -80.1503f, -74.39374f), -26.9999733f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_pen_01a", new SpawnPlace(new Vector3(66.55478f, -79.71182f, -74.35682f), -104.999695f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_pen_02a", new SpawnPlace(new Vector3(66.4062958f, -80.32221f, -74.39374f), -89.9992447f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_penclipboard", new SpawnPlace(new Vector3(66.9403152f, -80.69443f, -74.35683f), 157.999847f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_ruler_01a", new SpawnPlace(new Vector3(66.2696f, -80.09214f, -74.39374f), 127.999474f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_ruler_02a", new SpawnPlace(new Vector3(66.58544f, -79.58204f, -74.35682f), 95.99983f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_scalpel_01a", new SpawnPlace(new Vector3(66.62118f, -80.7459641f, -74.35682f), -95.9998245f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_scalpel_02a", new SpawnPlace(new Vector3(66.6464844f, -78.77393f, -74.35682f), -97.99988f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_singledriverl", new SpawnPlace(new Vector3(66.85703f, -80.55492f, -74.35682f), 90.0001755f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_singlepassport", new SpawnPlace(new Vector3(66.90226f, -79.67143f, -74.35682f), 91.99931f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_openpassport", new SpawnPlace(new Vector3(66.91576f, -79.2222061f, -74.33331f), 0f)) { PlaceOnGround = true },
+
+
+                    // Main Room
+                    new PropSpawn("ch_prop_ch_cashtrolley_01a", new SpawnPlace(new Vector3(65.39918f, -85.74746f, -75.19622f), -89.9995956f)) { PlaceOnGround = true },
+                    new PropSpawn("m23_1_prop_m31_crate_fake", new SpawnPlace(new Vector3(65.51997f, -84.7164154f, -75.19622f), -90.99979f)) { PlaceOnGround = true },
+
+                    new PropSpawn("sm_prop_smug_crate_m_01a", new SpawnPlace(new Vector3(65.90158f, -81.58911f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_plate_stand_01", new SpawnPlace(new Vector3(64.7f, -81.55f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("prop_plate_stand_01", new SpawnPlace(new Vector3(64f, -81.55f, -75.19622f), 179.999985f)) { PlaceOnGround = true },
+
+
+                    new PropSpawn("bkr_prop_printmachine_4rollerpress", new SpawnPlace(new Vector3(56.98f, -83.5f, -75.19622f), 89.99963f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_bkr_cashpile_05", new SpawnPlace(new Vector3(61.5f, -76.7f, -75.19f), -90f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_prtmachine_dryer_op", new SpawnPlace(new Vector3(62.45f, -76.9f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_prtmachine_dryer_spin", new SpawnPlace(new Vector3(62.45f, -78.5f, -75.19622f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_prtmachine_dryer_spin", new SpawnPlace(new Vector3(62.45f, -80.1f, -75.19622f), -89.99975f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_bkr_cashpile_07", new SpawnPlace(new Vector3(62.6344376f, -83.41235f, -75.19622f), 179.9999f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_bkr_cashpile_04", new SpawnPlace(new Vector3(59.2688866f, -83.412674f, -75.19622f), -176.999863f)) { PlaceOnGround = true },
+
+                    new PropSpawn("ba_prop_battle_fakeid_boxdl_01a", new SpawnPlace(new Vector3(59.52025f, -80.08571f, -75.19622f), -178.999039f)) { PlaceOnGround = true },
+                    new PropSpawn("ba_prop_battle_fakeid_boxpp_01a", new SpawnPlace(new Vector3(59.50964f, -80.46591f, -75.19622f), 0f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_weed_table_01b", new SpawnPlace(new Vector3(59.5f, -79.8f, -75.19622f), 90f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_cutter_moneystack_01a", new SpawnPlace(new Vector3(59.5821648f, -79.11899f, -74.35682f), 89.00017f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_clubhouse_laptop_01a", new SpawnPlace(new Vector3(59.51603f, -80.64128f, -74.35682f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_bundledriverl", new SpawnPlace(new Vector3(59.1761971f, -80.7833f, -74.35682f), -68.9993744f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_bundlepassports", new SpawnPlace(new Vector3(59.1679f, -80.5762939f, -74.35683f), 59.9999237f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_moneypack_01a", new SpawnPlace(new Vector3(59.87321f, -80.65344f, -74.35682f), -95.99968f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_moneypack_02a", new SpawnPlace(new Vector3(59.54144f, -79.97701f, -74.35683f), 0f)) { PlaceOnGround = false },
+                    new PropSpawn("bkr_prop_moneypack_03a", new SpawnPlace(new Vector3(59.5187073f, -79.9811249f, -74.28197f), 25.9999714f)) { PlaceOnGround = false },
+
+                    new PropSpawn("bkr_prop_fakeid_bundledriverl", new SpawnPlace(new Vector3(59.1761971f, -80.7833f, -74.35682f), -68.9993744f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_fakeid_bundlepassports", new SpawnPlace(new Vector3(59.1679f, -80.5762939f, -74.35683f), 59.9999237f)) { PlaceOnGround = true },
+
+                    new PropSpawn("bkr_prop_fakeid_papercutter", new SpawnPlace(new Vector3(58.8f, -76.65f, -75.19622f), 0f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_cutter_moneystack_01a", new SpawnPlace(new Vector3(58.4f, -76.68f, -74.26f), -90f)) { PlaceOnGround = true },
+                    new PropSpawn("bkr_prop_cutter_singlestack_01a", new SpawnPlace(new Vector3(59.15f, -76.68f, -74.23f), -89.99815f)) { PlaceOnGround = true },
+
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("MidMethHouseExit1",new Vector3(64.01186f, -91.76822f, -74.19619f), 172.8977f,"Exit"),
+                    new StandardInteriorInteract("MidMethHouseStandard1",new Vector3(59.48264f, -81.15726f, -74.19616f), 356.1881f,"Manage"){AutoCamera = false},
+                    new ToiletInteract("MidMethHouseToilet1",new Vector3(64.35353f, -77.11946f, -74.19622f), 356.5656f,"Use Toilet") {
+                        UseNavmesh = false,
+                    },
+                    new SinkInteract("MidMethHouseSink1",new Vector3(64.80113f, -78.44011f, -74.19625f), 85.11085f,"Use Sink")
+                    {
+                        UseNavmesh = false,
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(68.6075f, -82.47024f, -75.19623f), 265.7588f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario
+                        //ForcedScenarios = new List<string> () { "WORLD_HUMAN_INSPECT_CROUCH", "WORLD_HUMAN_INSPECT_STAND" }
+                    },
+                    new CivilianConditionalLocation(new Vector3(67.33818f, -80.06385f, -75.19622f), 88.36013f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string> () { "WORLD_HUMAN_CLIPBOARD" }
+                    },
+                    new CivilianConditionalLocation(new Vector3(58.16385f, -78.47963f, -75.19624f), 88.243f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string> () { "WORLD_HUMAN_INSPECT_STAND" }
+                    },
+                }
+            },
+            new Interior(247809, "Counterfeit Cash")
+            {
+                InternalInteriorCoordinates = new Vector3(1124.734f, -3196.597f, -39.99353f), // X:1124.734 Y:-3196.597 Z:-39.99353
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1138.115f, -3199.196f, -39.66568f),
+                InteriorEgressHeading =  5.70763f,
+                InteriorSets = new List<string>()
+                {
+                    "counterfeit_cashpile10d",
+                    "counterfeit_cashpile20d",
+                    "counterfeit_cashpile100d",
+                    "counterfeit_security",
+                    "counterfeit_setup",
+                    "counterfeit_upgrade_equip_no_prod",
+                    "counterfeit_upgrade_equip",
+                    "dryera_open",
+                    "dryerb_on",
+                    "dryerc_off",
+                    "dryerd_on",
+                    "money_cutter",
+                    "special_chairs",
+                },
+                RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_5_biker_dlc_int_ware04_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_cash_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("v_ind_cs_hifi", new SpawnPlace(new Vector3(1130.304f, -3192.95f, -40.49f), 0f)){PlaceOnGround = false },
+                     new PropSpawn("prop_plate_stand_01", new SpawnPlace(new Vector3(1127.88f, -3193.02f, -41.39f), -145f)){PlaceOnGround = true },
+                     new PropSpawn("ba_prop_battle_fakeid_boxpp_01a", new SpawnPlace(new Vector3(1128.83f, -3193.18f, -40.59f), -145f)){PlaceOnGround = false },
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("CounterfeitExit",new Vector3(1138.092f, -3199.069f, -39.66568f), 185.5803f,"Exit"){ UseNavmesh = false },
+                    new StandardInteriorInteract("CounterfeitStandard",new Vector3(1129.54f, -3194.124f, -40.39639f), 355.4791f,"Manage"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "CounterfeitRadio1",
+                        Position = new Vector3(1131f, -3193.8f, -40.39442f),
+                        Heading =  38.04631f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1131.078f, -3195.337f, -39.29183f),
+                        CameraDirection = new Vector3(-0.1920331f, 0.8218083f, -0.5364274f),
+                        CameraRotation = new Rotator(-32.44077f, 1.517466E-06f, 13.15239f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1119.337f, -3197.348f, -42.3951f), 154.7988f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario,
+                        //ForcedScenarios = new List<string>(){ "WORLD_HUMAN_CLIPBOARD" },
+                    },
+                    new CivilianConditionalLocation(new Vector3(1117.129f, -3195.584f, -40.60231f), 101.729f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario
+                        //ForcedScenarios = new List<string>()
+                        //{
+                        //    "WORLD_HUMAN_INSPECT_CROUCH",
+                        //    "WORLD_HUMAN_INSPECT_STAND",
+                        //    "WORLD_HUMAN_JANITOR"
+                        //},
+                    },
+                    new CivilianConditionalLocation(new Vector3(1138.26f, -3194.276f, -40.40231f), 104.876f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "CounterSec",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario
+                    },
+                },
+            },
         });
     }
     private void Tunnels()
@@ -4845,7 +5065,7 @@ public class Interiors : IInteriors
                 },
                 Doors = new List<InteriorDoor>()
                 {
-                    new InteriorDoor(2739859149,new Vector3(-1607.536f, -3005.431f, -75.05607f)){ },// VIP Door top 
+                    new InteriorDoor(2739859149,new Vector3(-1607.536f, -3005.431f, -75.05607f)){ IsAlwaysLocked = true, },// VIP Door top 
                 },
                 InteriorSets = new List<string>()
                 {
@@ -13068,6 +13288,11 @@ public class Interiors : IInteriors
                 {
                     new InteriorDoor(3148580203, new Vector3(973.5854f, 39.23685f, 116.2144f)) { NeedsDefaultUnlock = true, ForceRotateOpen = true }, // OFFICE SAFES L 
                     new InteriorDoor(2642659608, new Vector3(971.3591f, 40.62897f, 116.2144f)) { NeedsDefaultUnlock = true, ForceRotateOpen = false }, // OFFICE SAFES R - DOOR ROTATES WRONG DIRECTION
+                    //new InteriorDoor(1016572513, new Vector3(959.8201f, 38.5576f, 116.6785f)) {  }, // 1 Doors to Cinema Room - Will Open Auto for Player
+                    //new InteriorDoor(1016572513, new Vector3(957.8334f, 39.7996f, 116.6765f)) {  }, // 2 Doors to Cinema Room
+                    //new InteriorDoor(0x3C97AA61, new Vector3(966.8274f, 54.1867f, 116.6799f)) { CanBeForcedOpenByPlayer = false,UseDoorSystem = true, DoorSystemHash = 1016572513 }, // 1 Doors To Gambling Room - Only Auto Opens from within Room
+                    //new InteriorDoor(0x3C97AA61, new Vector3(968.8102f, 52.9477f, 116.6799f)) { CanBeForcedOpenByPlayer = false,UseDoorSystem = true, DoorSystemHash = 1016572513 }, // 2 Doors To Gambling Room - Nothing helps to allow from both sides.
+
                 //    new InteriorDoor(-1531126741, new Vector3(981.7401f, 57.1052f, 117.0361f)) { NeedsDefaultUnlock = true },
                 //    new InteriorDoor(-464856246, new Vector3(980.6803f, 55.4091f, 117.0361f)) { NeedsDefaultUnlock = true },
                 //    new InteriorDoor(323644026, new Vector3(975.8081f, 53.1021f, 117.5600f)) { NeedsDefaultUnlock = true, ForceRotateOpen = true },
@@ -14259,18 +14484,18 @@ public class Interiors : IInteriors
 
         PossibleInteriors.BankInteriors.AddRange(new List<BankInterior>()
         {
-            new BankInterior(76802,"Fleeca Bank") // PillBox
+            new BankInterior(76802,"Fleeca Bank") // PillBox Hill
             {
                 InternalInteriorCoordinates = new Vector3(145.4168f, -1039.277f, 28.43788f), // X:145.4168 Y:-1039.277 Z:28.43788
                 IsTrespassingWhenClosed = true,
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door1
-                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader =  160f } ,//Front Door2
+                    new InteriorDoor(3142793112,new Vector3(149.6298f, -1037.231f, 29.71915f)){ DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader = 160f } ,//Front Door1
+                    new InteriorDoor(73386408,new Vector3(152.0632f, -1038.124f, 29.71909f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(151.1552f, -1036.979f, 29.33911f), InteractHeader = 160f } ,//Front Door2
                     new InteriorDoor(4163212883, new Vector3(145.4186f,-1041.813f,29.64255f)) { ForceRotateOpen = true, InteractPostion = new Vector3(145.1315f, -1040.635f, 29.3679f), InteractHeader = 250f },//teller door
                     new InteriorDoor(2121050683,new Vector3(148.2597f,-1045.38f,29.34628f)) { ForceRotateOpen = true, InteractPostion = new Vector3(146.8685f, -1045.45f, 29.36802f), InteractHeader = 250f, ForceOpenTimeScalar = 5 }, // Vault Door
-                    new InteriorDoor(2703963187, new Vector3(150.2913f, -1047.6290f, 29.6663f)) { LockWhenClosed = true, InteractPostion = new Vector3(149.2136f, -1046.469f, 29.34628f), InteractHeader = 160f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
+                    new InteriorDoor(2703963187, new Vector3(150.2913f, -1047.6290f, 29.6663f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(149.2136f, -1046.469f, 29.34628f), InteractHeader = 160f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14377,11 +14602,11 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door1
-                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader =  160.0f }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader =  250.0f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f),  InteractHeader =  250.0f, ForceOpenTimeScalar = 5 },//Vault Door
-                    new InteriorDoor(2703963187, new Vector3(314.6239f, -285.9945f, 54.4630f)) { LockWhenClosed = true, InteractPostion = new Vector3(313.4933f, -284.8791f, 54.14301f), InteractHeader = 160.0f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
+                    new InteriorDoor(73386408,new Vector3(316.3925f, -276.4888f, 54.5158f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader = 160.0f }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(313.9587f, -275.5965f, 54.51586f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(315.3875f, -275.4682f, 53.92442f), InteractHeader = 160.0f }, //Front Door2
+                    new InteriorDoor(4163212883, new Vector3(309.7491f, -280.1797f, 54.43926f)) { ForceRotateOpen = true, InteractPostion = new Vector3(309.6064f, -279.3072f, 54.16461f), InteractHeader = 250.0f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(311.8455f, -283.0915f, 54.16475f)) { ForceRotateOpen = true, InteractPostion = new Vector3(311.313f, -283.8194f, 54.16523f), InteractHeader = 250.0f, ForceOpenTimeScalar = 5 },//Vault Door
+                    new InteriorDoor(2703963187, new Vector3(314.6239f, -285.9945f, 54.4630f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(313.4933f, -284.8791f, 54.14301f), InteractHeader = 160.0f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14494,8 +14719,8 @@ public class Interiors : IInteriors
                    new InteriorDoor(73386408,new Vector3(-348.8109f, -47.26213f, 49.38759f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
                    new InteriorDoor(3142793112,new Vector3(-351.2598f, -46.41221f, 49.38765f)) { DoorGroupName = "frontDoor", LockWhenClosed = true, InteractPostion = new Vector3(-349.7116f, -45.93815f, 49.03682f), InteractHeader = 160.0f },//Front Door1
                    new InteriorDoor(4163212883, new Vector3(-355.3892f, -51.0677f, 49.3111f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-355.6839f, -49.966f, 49.0364f), InteractHeader = 250.0f },//teller door
-                   new InteriorDoor(2121050683, new Vector3(-352.7365f, -53.5725f, 49.1754f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.6405f, -54.81015f, 49.03649f), InteractHeader = 250.0f,ForceOpenTimeScalar = 5 },//Vault door1
-                   new InteriorDoor(2703963187, new Vector3(-350.4144f, -56.7971f, 49.3348f)) { LockWhenClosed = true, InteractPostion = new Vector3(-351.518f, -55.57577f, 49.01479f), InteractHeader = 160.0f,ForceOpenTimeScalar = 2 },//Inner Vault Gate
+                   new InteriorDoor(2121050683, new Vector3(-352.7365f, -53.5725f, 49.1754f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-353.6405f, -54.81015f, 49.03649f), InteractHeader = 250.0f, ForceOpenTimeScalar = 5 },//Vault door1
+                   new InteriorDoor(2703963187, new Vector3(-350.4144f, -56.7971f, 49.3348f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(-351.518f, -55.57577f, 49.01479f), InteractHeader = 160.0f, ForceOpenTimeScalar = 2 },//Inner Vault Gate
                 },
                 InteractPoints = new List<InteriorInteract> ()
                 {
@@ -14599,11 +14824,11 @@ public class Interiors : IInteriors
                 Doors =  new List<InteriorDoor>()
                 {
 
-                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f },
-                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader =  211.7525f  },
-                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader =  300f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader =  300f,ForceOpenTimeScalar = 5},//vault door
-                    new InteriorDoor(2703963187, new Vector3(-1207.3280f, -335.1289f, 38.0793f)) { LockWhenClosed = true, InteractPostion = new Vector3(-1208.954f, -335.2103f, 37.75925f), InteractHeader = 205f,ForceOpenTimeScalar = 2 }, // inner vault gate
+                    new InteriorDoor(3142793112,new Vector3(-1215.386f, -328.5237f, 38.13211f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader = 211.7525f },
+                    new InteriorDoor(73386408,new Vector3(-1213.074f, -327.3524f, 38.13205f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-1214.562f, -327.7575f, 37.72295f), InteractHeader = 211.7525f  },
+                    new InteriorDoor(4163212883, new Vector3(-1214.906f, -334.7281f, 38.05551f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1215.494f, -334.2195f, 37.78087f), InteractHeader = 300f },//teller door
+                    new InteriorDoor(2121050683,new Vector3(-1210.374f, -335.0283f, 37.75924f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-1210.954f, -336.0472f, 37.78099f), InteractHeader = 300f, ForceOpenTimeScalar = 5 },//vault door
+                    new InteriorDoor(2703963187, new Vector3(-1207.3280f, -335.1289f, 38.0793f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(-1208.954f, -335.2103f, 37.75925f), InteractHeader = 205f, ForceOpenTimeScalar = 2 }, // inner vault gate
 
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
@@ -14712,11 +14937,11 @@ public class Interiors : IInteriors
                     new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
                     new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
-                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door SP
-                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
+                    new InteriorDoor(2121050683,new Vector3(-2957.66f, 482.8094f, 15.67528f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f, ForceOpenTimeScalar = 5 },//Vault Door SP
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
 
                     //MP Door
-                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door MP
+                    //new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f },//Vault Door MP
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14821,13 +15046,13 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f  }, //Front Door1
+                    new InteriorDoor(3142793112,new Vector3(-2965.821f, 481.6297f, 16.04816f)) { DoorGroupName = "frontDoor",LockWhenClosed = true , CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door1
                     new InteriorDoor(73386408,new Vector3(-2965.71f, 484.2195f, 16.0481f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, CanBeForcedOpenByPlayer = true, InteractPostion = new Vector3(-2966.152f, 482.6152f, 15.69272f), InteractHeader = 270f }, //Front Door2
-                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f },//teller door
-                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f,ForceOpenTimeScalar = 2 }, // Inner Vault Gate
+                    new InteriorDoor(4163212883, new Vector3(-2960.176f, 479.0105f, 15.97156f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2960.875f, 478.6606f, 15.69693f), InteractHeader = 360f},//teller door
+                    new InteriorDoor(2703963187, new Vector3(-2956.1160f, 485.4206f, 15.9953f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(-2956.891f, 484.0023f, 15.67529f), InteractHeader = 270f, ForceOpenTimeScalar = 2 }, // Inner Vault Gate
 
                     //MP Door
-                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f,ForceOpenTimeScalar = 5 },//Vault Door MP
+                    new InteriorDoor(4231427725,new Vector3(-2958.5390f, 482.2706f, 15.8359f)) { ForceRotateOpen = true, InteractPostion = new Vector3(-2957.055f, 481.725f, 15.69703f), InteractHeader = 360f, ForceOpenTimeScalar = 5 },//Vault Door MP
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -14932,11 +15157,11 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true, 
                 Doors =  new List<InteriorDoor>() 
                 {
-                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
-                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader =  0f },
-                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader =  90f },// teller door
-                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader =  90f,ForceOpenTimeScalar = 5 }, // Vault door
-                    new InteriorDoor(2703963187, new Vector3(1172.2910f, 2713.1460f, 38.3863f)) { LockWhenClosed = true, InteractPostion = new Vector3(1173.731f, 2712.444f, 38.06626f), InteractHeader = 0.0000f,ForceOpenTimeScalar = 2 }, // Innger Vault Gate
+                    new InteriorDoor(3142793112,new Vector3(1176.495f, 2703.613f, 38.43911f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader = 0f },
+                    new InteriorDoor(73386408,new Vector3(1173.903f, 2703.613f, 38.43904f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(1175.468f, 2703.274f, 38.17256f), InteractHeader = 0f },
+                    new InteriorDoor(4163212883, new Vector3(1178.87f, 2709.365f, 38.36251f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1179.211f, 2708.674f, 38.08788f), InteractHeader = 90f },// teller door
+                    new InteriorDoor(2121050683,new Vector3(1174.963f, 2711.711f, 38.06625f)) { ForceRotateOpen = true, InteractPostion = new Vector3(1176.058f, 2712.343f, 38.08799f), InteractHeader = 90f, ForceOpenTimeScalar = 5 }, // Vault door
+                    new InteriorDoor(2703963187, new Vector3(1172.2910f, 2713.1460f, 38.3863f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(1173.731f, 2712.444f, 38.06626f), InteractHeader = 0.0000f, ForceOpenTimeScalar = 2 }, // Innger Vault Gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -15042,19 +15267,19 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE RIGHT
-                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f },//FRONT ENTRANCE LEFT
+                    new InteriorDoor(2253282288,new Vector3(232.6054f, 214.1584f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader = 301.2537f },//FRONT ENTRANCE RIGHT
+                    new InteriorDoor(2253282288,new Vector3(231.5075f, 216.5148f, 106.4049f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader = 301.2537f },//FRONT ENTRANCE LEFT
 
-                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
-                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
+                    new InteriorDoor(1335309163,new Vector3(260.6518f, 203.2292f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader = 344.0826f },//BACK ENTRANCE LEFT
+                    new InteriorDoor(1335309163,new Vector3(258.2093f, 204.119f, 106.4328f)) { DoorGroupName = "frontDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader = 344.0826f },//BACK ENTRANCE RIGHT
 
                     new InteriorDoor(0xB5B82637,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(257.3379f, 219.594f, 106.2863f), InteractHeader =  340.1839f, UseDoorSystem = true, DoorSystemHash = -1246222793 },// First gate to Teller area
-                    new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.3234f, 221.3495f, 106.2831f), InteractHeader =  251.4932f }, // Second gate to Vault within teller area
-                    new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
-                    new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
+                    new InteriorDoor(1289409051,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.3234f, 221.3495f, 106.2831f), InteractHeader = 251.4932f }, // Second gate to Vault within teller area
+                    new InteriorDoor(1655182495,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader = 165.1844f }, // Third gate after Vault door
+                    new InteriorDoor(1655182495,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader = 253.4986f }, // Forth gate inside vault to Lockbox table
 
                     // Vault Door Works both SP MP
-                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f,ForceOpenTimeScalar = 6 },//VAULT DOOR
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader = 165.1394f, ForceOpenTimeScalar = 6 },//VAULT DOOR
 
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
@@ -15247,20 +15472,20 @@ public class Interiors : IInteriors
                 IsWeaponRestricted = true,
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(110411286, new Vector3(232.6054f, 214.1584f, 106.4049f)) { ForceKeepLocked = true,  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Right
-                    new InteriorDoor(110411286, new Vector3(231.5123f, 216.5177f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader =  301.2537f }, // Front Left
+                    new InteriorDoor(110411286, new Vector3(232.6054f, 214.1584f, 106.4049f)) { ForceKeepLocked = true,  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader = 301.2537f }, // Front Right
+                    new InteriorDoor(110411286, new Vector3(231.5123f, 216.5177f, 106.4049f)) {  DoorGroupName = "mainDoor", LockWhenClosed = true, InteractPostion = new Vector3(231.7552f, 214.8078f, 106.28f), InteractHeader = 301.2537f }, // Front Left
 
 
-                    new InteriorDoor(110411286,new Vector3(260.6432f, 203.2052f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE LEFT
-                    new InteriorDoor(110411286,new Vector3(258.2022f, 204.1005f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader =  344.0826f },//BACK ENTRANCE RIGHT
+                    new InteriorDoor(110411286,new Vector3(260.6432f, 203.2052f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader = 344.0826f },//BACK ENTRANCE LEFT
+                    new InteriorDoor(110411286,new Vector3(258.2022f, 204.1005f, 106.4049f)) { DoorGroupName = "sideDoor2",LockWhenClosed = true, InteractPostion = new Vector3(259.5241f, 203.1226f, 106.2802f), InteractHeader = 344.0826f },//BACK ENTRANCE RIGHT
 
-                    new InteriorDoor(0xF2C06AFF,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(257.1427f, 219.5229f, 106.2864f), InteractHeader =  345.1115f, UseDoorSystem = true, DoorSystemHash = -222270721 },// First gate to Teller area
-                    new InteriorDoor(746855201,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.0142f, 221.6492f, 106.2831f), InteractHeader =  248.4048f }, // Second gate to Vault within teller area
-                    new InteriorDoor(2786611474,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader =  165.1844f }, // Third gate after Vault door
-                    new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true,  InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader =  253.4986f }, // Forth gate inside vault to Lockbox table
+                    new InteriorDoor(0xF2C06AFF,new Vector3(256.3116f, 220.6579f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(257.1427f, 219.5229f, 106.2864f), InteractHeader = 345.1115f, UseDoorSystem = true, DoorSystemHash = -222270721 },// First gate to Teller area
+                    new InteriorDoor(746855201,new Vector3(262.1981f, 222.5188f, 106.4296f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(261.0142f, 221.6492f, 106.2831f), InteractHeader = 248.4048f }, // Second gate to Vault within teller area
+                    new InteriorDoor(2786611474,new Vector3(251.8576f, 221.0655f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(252.8438f, 221.1251f, 101.6834f), InteractHeader = 165.1844f }, // Third gate after Vault door
+                    new InteriorDoor(2786611474,new Vector3(261.3004f, 214.5051f, 101.8324f)){ LockWhenClosed = true,IsAlwaysLocked = true,  InteractPostion = new Vector3(261.2419f, 215.4917f, 101.6834f), InteractHeader = 253.4986f }, // Forth gate inside vault to Lockbox table
 
                     // Vault Door Works both SP MP
-                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader =  165.1394f,ForceOpenTimeScalar = 6 },//VAULT DOOR
+                    new InteriorDoor(0x39569782,new Vector3(255.2283f, 223.9760f, 102.3932f)) { ForceRotateOpen = true,LockWhenClosed = true,IsAlwaysLocked = true, InteractPostion = new Vector3(253.5679f, 225.1372f, 101.8757f), InteractHeader = 165.1394f, ForceOpenTimeScalar = 6 },//VAULT DOOR
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -15469,11 +15694,11 @@ public class Interiors : IInteriors
                 },
                 Doors =  new List<InteriorDoor>()
                 {
-                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 1
-                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader =  316.1779f },//FRONT 2
-                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader =  46.74528f },//teller
+                    new InteriorDoor(2628496933, new Vector3(-109.65f,6462.11f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader = 316.1779f },//FRONT 1
+                    new InteriorDoor(3941780146, new Vector3(-111.48f,6463.94f,31.98499f)) { DoorGroupName = "frontDoor",LockWhenClosed = true, InteractPostion = new Vector3(-110.5739f, 6462.542f, 31.64077f), InteractHeader = 316.1779f },//FRONT 2
+                    new InteriorDoor(3110375179, new Vector3(-108.9147f,6469.105f,31.91028f)) { LockWhenClosed = true, InteractPostion = new Vector3(-109.216f, 6468.348f, 31.62672f), InteractHeader = 46.74528f },//teller
                     //new InteriorDoor(1622278560, new Vector3(-104.8136f, 6473.6460f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.2074f, 6472.042f, 31.62671f), InteractHeader = 47.6748f },// first vault gate (DONT USE)
-                    new InteriorDoor(1309269072, new Vector3(-106.4713f, 6476.1580f, 31.9548f)) { LockWhenClosed = true, InteractPostion = new Vector3(-105.8392f, 6474.736f, 31.62671f), InteractHeader = 316.2019f,ForceOpenTimeScalar = 4 },// second vault gate
+                    new InteriorDoor(1309269072, new Vector3(-106.4713f, 6476.1580f, 31.9548f)) { LockWhenClosed = true, IsAlwaysLocked = true, InteractPostion = new Vector3(-105.8392f, 6474.736f, 31.62671f), InteractHeader = 316.2019f, ForceOpenTimeScalar = 4 },// second vault gate
                 },
                 BankDrawerInteracts = new List<BankDrawerInteract>()
                 {
@@ -16511,6 +16736,71 @@ public class Interiors : IInteriors
                     },
                 },
             },
+            new BusinessInterior(246785, "Document forgery")
+            {
+                IsTeleportEntry = true,
+                InteriorEgressPosition = new Vector3(1173.786f, -3196.667f, -39.00798f),
+                InteriorEgressHeading = 91.33833f,
+                InteriorSets = new List<string>() { "interior_upgrade", "equipment_upgrade", "security_high", "table_equipment_upgrade", "chair01", "chair02", "chair03", "chair04", "chair05", "chair06", "chair07", "production", "set_up", "clutter"},
+                RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_6_biker_dlc_int_ware05_milo"},
+                AudioEmitters = new List<AudioEmitter>()
+                {
+                    new AudioEmitter($"se_dlc_biker_fakeid_warehouse_radio","Radio"),
+                },
+                PropSpawns = new List<PropSpawn>()
+                {
+                     new PropSpawn("v_res_fh_speakerdock", new SpawnPlace(new Vector3(1156.13f, -3196.55f, -38.03f), 90f)),
+                },
+                InteractPoints = new List<InteriorInteract>()
+                {
+                    new ExitInteriorInteract("DocumentForgeryExit",new Vector3(1173.632f, -3196.689f, -39.00798f), 271.3391f,"Exit"),
+                    new StandardInteriorInteract("DocumentForgeryStandard",new Vector3(1160.249f, -3192.299f, -39.00798f), 186.1683f,"Manage"),
+                    new AudioEmitterInteract()
+                    {
+                        Name = "DocumentForgeryRadio1",
+                        Position = new Vector3(1156.776f, -3196.856f, -39.00798f),
+                        Heading =  91.06123f,
+                        ButtonPromptText = "Radio Control",
+                        UseNavmesh = false,
+                        CameraPosition = new Vector3(1157.675f, -3197.823f, -37.88883f),
+                        CameraDirection = new Vector3(-0.7669014f, 0.5397997f, -0.3471001f),
+                        CameraRotation = new Rotator(-20.31005f, -1.820747E-06f, 54.85939f),
+                    },
+                },
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new CivilianConditionalLocation(new Vector3(1166.567f, -3198.109f, -41f), 134.9248f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
+                            "WORLD_HUMAN_CLIPBOARD",
+                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
+                        },
+                    },
+                    new CivilianConditionalLocation(new Vector3(1158.42f, -3195.766f, -41f), 205.8045f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "Counterfeit",
+                        TaskRequirements = TaskRequirements.Guard,
+                        ForcedScenarios = new List<string>()
+                        {
+                            "WORLD_HUMAN_INSPECT_CROUCH",
+                            "WORLD_HUMAN_INSPECT_STAND",
+                            "WORLD_HUMAN_JANITOR"
+                        },
+                    },
+                    new CivilianConditionalLocation(new Vector3(1172.86f, -3197.96f, -40f), 62.52f, 100f)
+                    {
+                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
+                        RequiredPedGroup = "CounterSec",
+                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
+                    },
+                },
+            },
             // Cash Offices
             new BusinessInterior(298753, "Smoke On The Water Office")  //-1160.493, -1538.932, -50.0 
             {
@@ -16752,104 +17042,6 @@ public class Interiors : IInteriors
                         OverrideDispatchablePersonGroupID = "DrugFacilityPeds",
                         RequiredPedGroup = "CokeSec",
                         TaskRequirements = TaskRequirements.Guard | TaskRequirements.LocalScenario
-                    },
-                },
-            },
-            new BusinessInterior(247809, "Counterfeit Cash")
-            {
-                IsTeleportEntry = true,
-                InteriorEgressPosition = new Vector3(1138.115f, -3199.196f, -39.66568f),
-                InteriorEgressHeading =  5.70763f,
-                InteriorSets = new List<string>() { "counterfeit_upgrade_equip_no_prod", "counterfeit_upgrade_equip", "counterfeit_security", "dryera_on", "dryerb_open", "dryerc_on", "dryerd_off", "counterfeit_cashpile10a", "counterfeit_cashpile20c", "counterfeit_cashpile100d", "special_chairs", "money_cutter", "counterfeit_setup"},
-                RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_5_biker_dlc_int_ware04_milo"},
-                AudioEmitters = new List<AudioEmitter>()
-                {
-                    new AudioEmitter($"se_dlc_biker_cash_warehouse_radio","Radio"),
-                },
-                PropSpawns = new List<PropSpawn>()
-                {
-                     new PropSpawn("m24_1_prop_m41_radio_01a", new SpawnPlace(new Vector3(1130.2f, -3193.3f, -40.59289f), 0f)),
-                },
-                InteractPoints = new List<InteriorInteract>()
-                {
-                    new ExitInteriorInteract("CounterfeitExit",new Vector3(1138.092f, -3199.069f, -39.66568f), 185.5803f,"Exit"),
-                    new StandardInteriorInteract("CounterfeitStandard",new Vector3(1129.54f, -3194.124f, -40.39639f), 355.4791f,"Manage"),
-                    new AudioEmitterInteract()
-                    {
-                        Name = "CounterfeitRadio1",
-                        Position = new Vector3(1130.326f, -3194.299f, -40.39745f),
-                        Heading =  358.9831f,
-                        ButtonPromptText = "Radio Control",
-                        UseNavmesh = false,
-                        CameraPosition = new Vector3(1132.12f, -3195.095f, -39.3692f),
-                        CameraDirection = new Vector3(-0.6912193f, 0.6331462f, -0.3483415f),
-                        CameraRotation = new Rotator(-20.38591f, 9.108204E-07f, 47.5108f),
-                    },
-                }
-
-            },
-            new BusinessInterior(246785, "Document forgery")
-            {
-                IsTeleportEntry = true,
-                InteriorEgressPosition = new Vector3(1173.786f, -3196.667f, -39.00798f),
-                InteriorEgressHeading = 91.33833f,
-                InteriorSets = new List<string>() { "interior_upgrade", "equipment_upgrade", "security_high", "table_equipment_upgrade", "chair01", "chair02", "chair03", "chair04", "chair05", "chair06", "chair07", "production", "set_up", "clutter"},
-                RequestIPLs = new List<string>() { "bkr_biker_interior_placement_interior_6_biker_dlc_int_ware05_milo"},
-                AudioEmitters = new List<AudioEmitter>()
-                {
-                    new AudioEmitter($"se_dlc_biker_fakeid_warehouse_radio","Radio"),
-                },
-                PropSpawns = new List<PropSpawn>()
-                {
-                     new PropSpawn("v_res_fh_speakerdock", new SpawnPlace(new Vector3(1156.13f, -3196.55f, -38.03f), 90f)),
-                },
-                InteractPoints = new List<InteriorInteract>()
-                {
-                    new ExitInteriorInteract("DocumentForgeryExit",new Vector3(1173.632f, -3196.689f, -39.00798f), 271.3391f,"Exit"),
-                    new StandardInteriorInteract("DocumentForgeryStandard",new Vector3(1160.249f, -3192.299f, -39.00798f), 186.1683f,"Manage"),
-                    new AudioEmitterInteract()
-                    {
-                        Name = "DocumentForgeryRadio1",
-                        Position = new Vector3(1156.776f, -3196.856f, -39.00798f),
-                        Heading =  91.06123f,
-                        ButtonPromptText = "Radio Control",
-                        UseNavmesh = false,
-                        CameraPosition = new Vector3(1157.675f, -3197.823f, -37.88883f),
-                        CameraDirection = new Vector3(-0.7669014f, 0.5397997f, -0.3471001f),
-                        CameraRotation = new Rotator(-20.31005f, -1.820747E-06f, 54.85939f),
-                    },
-                },
-                PossiblePedSpawns = new List<ConditionalLocation>()
-                {
-                    new CivilianConditionalLocation(new Vector3(1166.567f, -3198.109f, -41f), 134.9248f, 100f)
-                    {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "Counterfeit",
-                        TaskRequirements = TaskRequirements.Guard,
-                        ForcedScenarios = new List<string>()
-                        {
-                            "WORLD_HUMAN_STAND_MOBILE_CLUBHOUSE",
-                            "WORLD_HUMAN_CLIPBOARD",
-                            "WORLD_HUMAN_CLIPBOARD_FACILITY"
-                        },
-                    },
-                    new CivilianConditionalLocation(new Vector3(1158.42f, -3195.766f, -41f), 205.8045f, 100f)
-                    {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "Counterfeit",
-                        TaskRequirements = TaskRequirements.Guard,
-                        ForcedScenarios = new List<string>()
-                        {
-                            "WORLD_HUMAN_INSPECT_CROUCH",
-                            "WORLD_HUMAN_INSPECT_STAND",
-                            "WORLD_HUMAN_JANITOR"
-                        },
-                    },
-                    new CivilianConditionalLocation(new Vector3(1172.86f, -3197.96f, -40f), 62.52f, 100f)
-                    {
-                        OverrideDispatchablePersonGroupID = "OfficeFacilityPeds",
-                        RequiredPedGroup = "CounterSec",
-                        TaskRequirements = TaskRequirements.Guard | TaskRequirements.AnyScenario
                     },
                 },
             },
@@ -18187,7 +18379,6 @@ public class Interiors : IInteriors
                     },
                 }
             },
-
         });
     }
 
