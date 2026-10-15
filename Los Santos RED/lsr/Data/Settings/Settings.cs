@@ -185,7 +185,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.TaskSettings.DisplayHelpPrompts = false;
 
 
-        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = true;
+        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = false;
         SettingsManager.VehicleSettings.VehicleTractionLossMultiplier = 4.0f;
         SettingsManager.VehicleSettings.VehicleDeformationMultiplier = 3.0f;
 
@@ -335,7 +335,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.GangSettings.AllowNonEnemyTargets = false;
 
 
-        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = true;
+        SettingsManager.VehicleSettings.ModifyVehicleHandlingValues = false;
         SettingsManager.VehicleSettings.VehicleTractionLossMultiplier = 5.0f;
         SettingsManager.VehicleSettings.VehicleDeformationMultiplier = 4.0f;
 
