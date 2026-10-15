@@ -20,5 +20,6 @@ namespace LosSantosRED.lsr.Interface
         HealthManager HealthManager { get; }
         Respawning Respawning { get; }
         bool DisableMainMenu { get; set; }
+        bool IsAliveAndFree { get; }
     }
 }

@@ -266,7 +266,7 @@ public class ForceDoorActivity : DynamicActivity
         }
         Player.Violations.SetContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
        //screwdriverItem.PickDoorLock(LocationInteractable, BasicUseable, InteriorDoor.UnLockDoor);
-        screwdriverItem.DoLockpickAnimation(LocationInteractable, BasicUseable, InteriorDoor.ForceOpenDoor, Settings, true, false, Interior, null);
+        screwdriverItem.DoLockpickAnimation(LocationInteractable, BasicUseable, InteriorDoor.ForceOpenDoor, Settings, true, false, Interior, null, InteriorDoor);
         Player.Violations.StopContinuouslyViolating(StaticStrings.BreakingEnteringCrimeID);
     }
     private void Exit()

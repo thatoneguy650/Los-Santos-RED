@@ -152,8 +152,9 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.CanBeTasked = true;
         PedExt.CanBeIdleTasked = true;
         PedExt.IsManuallyDeleted = false;
-
-        if(GangMember != null && Gang != null)
+        PedExt.PedPerception.Reset();
+        PedExt.PlayerPerception.Reset();
+        if (GangMember != null && Gang != null)
         {
             PedExt.Pedestrian.RelationshipGroup = new RelationshipGroup(Gang.ID);
         }
@@ -188,6 +189,10 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.WillCower = false;
         PedExt.Pedestrian.BlockPermanentEvents = true;
         PedExt.Pedestrian.KeepTasks = true;
+
+
+        PedExt.PedPerception.Reset();
+        PedExt.PlayerPerception.Reset();
 
         if (SpawnPlace == null)
         {

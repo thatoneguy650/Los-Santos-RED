@@ -37,8 +37,8 @@ public class LockpickMiniGame
     // Scaleform
     private Scaleform yogaScaleform;
 
-    private int TotalPinSteps = 3;
-    private int TotalPins = 2;
+    //private int TotalPinSteps = 3;
+    //private int TotalPins = 2;
     public LockpickMiniGame(IInteractionable player, bool isHotwire)
     {
         Player = player;
@@ -56,6 +56,12 @@ public class LockpickMiniGame
 
     public bool HasPickedLock { get; private set; }
     public bool IsActive { get; private set; }
+
+
+
+    public int TotalPinSteps { get; set; } = 3;
+    public int TotalPins { get; set; } = 2;
+
     public void Start()
     {
         IsActive = true;

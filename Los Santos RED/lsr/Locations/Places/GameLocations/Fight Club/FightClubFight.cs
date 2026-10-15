@@ -140,6 +140,8 @@ public class FightClubFight
         PedExt.WillCallPolice = false;
         PedExt.WillFight = false;
         PedExt.IsManuallyDeleted = false;
+        PedExt.PedPerception.Reset();
+        PedExt.PlayerPerception.Reset();
         PedExt.ClearTasks(true);
         PedExt.PedBrain.AssignIdleTask();
     }
@@ -157,18 +159,26 @@ public class FightClubFight
         }
         //if(IsPlayerFight)
         //{
-            if (IsFightActive)
-            {
-                Player.ActivityManager.IsInteractingWithLocation = false;
-            }
-            else
-            {
-                Player.ActivityManager.IsInteractingWithLocation = true;
-            }
+            //if (IsFightActive)
+            //{
+            //    Player.ActivityManager.IsInteractingWithLocation = false;
+            //}
+            //else if(!IsCancelled)
+            //{
+            //    Player.ActivityManager.IsInteractingWithLocation = true;
+            //}
         //}
         if (IsFightActive)
         {
-            HighlightSelectedOrBetFighter();
+            if(IsPlayerFight)
+            {
+                HighlightAllOpponents();
+            }
+            else
+            {
+                HighlightSelectedOrBetFighter();
+            }
+            
         }
         if (!IsPlayerFight && IsFightActive)
         {
@@ -252,7 +262,7 @@ public class FightClubFight
         Player.ActivityManager.StopDynamicActivity();
 
         Player.ButtonPrompts.RemovePrompt("FightMenu");
-        Player.ButtonPrompts.RemovePrompts("CheerActivity");
+        //Player.ButtonPrompts.RemovePrompts("CheerActivity");
         while (MenuPool.IsAnyMenuOpen())
         {
             MenuPool.ProcessMenus();
@@ -487,7 +497,10 @@ public class FightClubFight
                 Player.BankAccounts.GiveMoney(2 * PlayerBetAmount, false);
                 wonMoney = true;
             }
-            ShowMessage($"You Have Won", $"The fight has been won by {Player.PlayerName}");
+            if (Player.IsAliveAndFree)
+            {
+                ShowMessage($"You Have Won", $"The fight has been won by {Player.PlayerName}");
+            }
         }
         AIFightClubFighter winningPed = AIFighters.Where(x => !x.HasLost).FirstOrDefault();
         if (winningPed != null)
@@ -497,9 +510,12 @@ public class FightClubFight
                 Player.BankAccounts.GiveMoney(2 * PlayerBetAmount, false);
                 wonMoney = true;
             }
-            ShowMessage($"{winningPed.PedExt.Name} Has Won", $"The fight has been won by {winningPed.PedExt.Name}");
+            if (Player.IsAliveAndFree)
+            {
+                ShowMessage($"{winningPed.PedExt.Name} Has Won", $"The fight has been won by {winningPed.PedExt.Name}");
+            }
         }
-        if (wonMoney)
+        if (wonMoney && Player.IsAliveAndFree)
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", FightClub.Name, "Winner", $"You have won ~g~${2 * PlayerBetAmount}~s~");
         }
@@ -739,6 +755,16 @@ public class FightClubFight
         }
         Rage.Debug.DrawArrowDebug(SelectedOrBetFighter.PedExt.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
     }
+    private void HighlightAllOpponents()
+    {
+        foreach(AIFightClubFighter aIFightClubFighter in AIFighters)
+        {
+            if (aIFightClubFighter.PedExt != null && aIFightClubFighter.PedExt.Pedestrian.Exists())
+            {
+                Rage.Debug.DrawArrowDebug(aIFightClubFighter.PedExt.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+            }
+        }
+    }
     private void DoCountdown()
     {
         IsShowingMenu = true;
@@ -818,7 +844,7 @@ public class FightClubFight
         if (IsPlayerFight)
         {
             SpawnPlace toPick = null;
-            if (FightClubFighterPlayer.SpawnPlace != null)
+            if (FightClubFighterPlayer != null && FightClubFighterPlayer.SpawnPlace != null)
             {
                 toPick = FightClubFighterPlayer.SpawnPlace;
             }
@@ -917,7 +943,11 @@ public class FightClubFight
     }
     private void SetGameplayCameraHint()
     {
-        //NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(FightClubArena.ArenaCenter.X, FightClubArena.ArenaCenter.Y, FightClubArena.ArenaCenter.Z, 2000, 2000, 0);
+        if(FightClubArena == null || FightClubArena.ArenaCenter == Vector3.Zero)
+        {
+            return;
+        }
+        NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(FightClubArena.ArenaCenter.X, FightClubArena.ArenaCenter.Y, FightClubArena.ArenaCenter.Z, 1000, 2000, 2000);
     }
     public void ShowMessage(string v, string v1, HudColor color1, HudColor color2, int time)
     {

@@ -217,7 +217,7 @@ public class CarLockPick
             EntryPoint.WriteToConsole("SCREWDRIVER ITEM IS NULL 2");
             return false;
         }
-        Continue = ScrewdriverItem.DoLockpickAnimation(Interactionable, BasicUseable, OpenDoor, Settings, "veh@break_in@0h@p_m_one@", Animation, false,true, TargetVehicle, SeatTryingToEnter, DoorIndex, null, TargetVehicleExt);
+        Continue = ScrewdriverItem.DoLockpickAnimation(Interactionable, BasicUseable, OpenDoor, Settings, "veh@break_in@0h@p_m_one@", Animation, false,true, TargetVehicle, SeatTryingToEnter, DoorIndex, null, TargetVehicleExt, null);
         if (!TargetVehicle.Exists())
         {
             return false;

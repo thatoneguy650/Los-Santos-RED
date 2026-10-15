@@ -88,9 +88,9 @@ public class ScrewdriverItem : ModItem
     }
 
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle, Interior interior, VehicleExt targetVhielcExt) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle, null, -1, -1, interior, targetVhielcExt);
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, bool showHelpText, bool isVehicle, Interior interior, VehicleExt targetVhielcExt, InteriorDoor interiorDoor) => DoLockpickAnimation(Player, BasicUseable, OnCompletedPicking, Settings, "", "", showHelpText, isVehicle, null, -1, -1, interior, targetVhielcExt, interiorDoor);
 
-    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle, Vehicle TargetVehicle, int SeatTryingToEnter, int DoorIndex, Interior interior, VehicleExt targetVhielcExt)
+    public bool DoLockpickAnimation(IInteractionable Player, IBasicUseable BasicUseable, Action OnCompletedPicking, ISettingsProvideable Settings, string dictionary, string anim, bool showHelpText, bool isVehicle, Vehicle TargetVehicle, int SeatTryingToEnter, int DoorIndex, Interior interior, VehicleExt targetVhielcExt, InteriorDoor interiorDoor)
     {
         float LockpickAnimStopPercentage = 0.5f;
         float LockpickAnimRestartPercentage = 0.3f;
@@ -117,6 +117,11 @@ public class ScrewdriverItem : ModItem
 
             lockpickMiniGame = new LockpickMiniGame(Player,false, TotalPins, TotalPinSteps, ZoneWidth, FillSpeed);
         }
+        if(interiorDoor != null && interiorDoor.ForceOpenTimeScalar > 1)
+        {
+            lockpickMiniGame.TotalPins *= (int)interiorDoor.ForceOpenTimeScalar;
+        }
+
 
         if(!string.IsNullOrEmpty(dictionary))
         {
