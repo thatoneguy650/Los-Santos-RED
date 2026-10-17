@@ -283,7 +283,7 @@ public class GangSpawnTask : SpawnTask
         GangMember GangMember;
         if (PersonType.IsAnimal)
         {
-            GangMember = new GangDog(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
+            GangMember = new GangDog(ped, Settings, Gang, true, Names.GetRandomName(isMale, PersonType.IsAnimal), Crimes, Weapons, World);
         }
         else
         {

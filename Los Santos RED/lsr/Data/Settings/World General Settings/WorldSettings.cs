@@ -58,6 +58,11 @@ public class WorldSettings : ISettingsDefaultable
     public bool ShowAllBlipsOnMap { get; set; }
     [Description("If enabled, there will be a 3D entrance marker around location entrances. Performance Intensive")]
     public bool ShowMarkersOnLocationEntrances { get; set; }
+
+
+    public int ShowMarkersOnLocationEntrancesMaxNumber { get; set; }
+
+
     [Description("If enabled, hotels will use specific rooms (if available).")]
     public bool HotelsUsesRooms { get; set; }
     [Description("If enabled, the blip showing where police are requsting backup will appear.")]
@@ -96,6 +101,7 @@ public class WorldSettings : ISettingsDefaultable
     public bool ExtendedVehicleCleanup { get;  set; }
     public bool SuppressFEJVehiclesFromGenerators { get; set; }
     public bool SetMissionFlagOn { get; set; }
+
 
 
     //public int MaxPedsBeforeDispatchPause { get; set; }
@@ -182,6 +188,7 @@ public class WorldSettings : ISettingsDefaultable
 
         //MaxPedsBeforeDispatchPause = 120;
         //MaxVehiclesBeforeDispatchPause = 180;
+        ShowMarkersOnLocationEntrancesMaxNumber = 3;
 
     }
 

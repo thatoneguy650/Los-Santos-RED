@@ -215,11 +215,11 @@ public class Zone
 
 
 
-        if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
+        if (!EntryPoint.IsLSPDFRIntegrationEnabled && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null && !IsContestedTerritory)
         {
             toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
         }
-        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && AssignedGang != null && !IsContestedTerritory)
+        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && AssignedGang != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} - " + AssignedGang.ColorInitials;
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssignedGang);
@@ -234,7 +234,7 @@ public class Zone
         }
         if (IsContestedTerritory)
         {
-            toDisplay += $"{CurrentDefaultTextColor} (Contested)";
+            toDisplay += $" ~r~(Contested){CurrentDefaultTextColor}";
         }
         return toDisplay;
     }

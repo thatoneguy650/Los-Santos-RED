@@ -172,7 +172,14 @@ public class UI : IMenuProvideable
     {
         DisplayButtonPrompts();
         ForceVanillaUI();
-        MarkerManager.Update();
+        if (MarkerManager.ShouldUpdateLocations)
+        {
+            MarkerManager.UpdateLocations();
+        }
+        MarkerManager.UpdateMarkers();
+
+
+
     }
     public void Tick3()
     {

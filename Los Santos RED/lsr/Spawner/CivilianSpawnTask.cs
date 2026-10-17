@@ -207,7 +207,9 @@ public class CivilianSpawnTask : SpawnTask
         bool isMale = PersonType.IsMale(ped);
         ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
         string groupName = isMale ? "Man" : "Woman";
-        string newName = Names.GetRandomName(isMale);
+        string newName = Names.GetRandomName(isMale, PersonType.IsAnimal);
+
+        
         PedExt CreatedPedExt = new PedExt(ped, Settings, Crimes, Weapons, newName, groupName, World);
 
         EntryPoint.WriteToConsole($"CIV SPAWN TASK CREATED PED {groupName} SetPersistent{SetPersistent} newName{newName}");

@@ -97,9 +97,9 @@ public class GangRetaliation
         EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Initial");
         RetaliationPercentAtIncrement -= (float)((float)TimesPlayerDefendedRetaliation * Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended);
         EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Adjusted");
-        if (RetaliationPercentAtIncrement <= 1.0f)
+        if (RetaliationPercentAtIncrement <= 0.0f)//1.0f)
         {
-            RetaliationPercentAtIncrement = 1.0f;
+            RetaliationPercentAtIncrement = Settings.SettingsManager.GangSettings.TerritoryRetaliationPercentageLowestPercentagePossible;// 0.0f;// 1.0f;
         }
         EntryPoint.WriteToConsole($"RESET GANG RETALIATION RetaliationPercentAtIncrement{RetaliationPercentAtIncrement} Final");
 
@@ -114,7 +114,7 @@ public class GangRetaliation
     }
     private void CheckRetaliationStart()
     {
-        if(TargetGang == null || ZonesToAttack == null || !ZonesToAttack.Any())
+        if(TargetGang == null || ZonesToAttack == null || !ZonesToAttack.Any() || RetaliationPercentAtIncrement == 0.0f)
         {
             return;
         }

@@ -5423,7 +5423,10 @@ public class Interiors : IInteriors
             new FightClubInterior(-2006,"Construction Rumble"){
                 FightClubInteracts = new List<FightClubInteract> 
                 {
-                    new FightClubInteract("rooffightInteract1",new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f,"Start Fight") ,
+                    new FightClubInteract("rooffightInteract1",new Vector3(-145.6288f, -949.1072f, 269.1353f), 159.0168f//new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f
+                    
+                    
+                    ,"Start Fight") ,
                 },
                 InteractPoints = new List<InteriorInteract>()
                 {

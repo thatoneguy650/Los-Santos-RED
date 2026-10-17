@@ -16,8 +16,9 @@ public class FightClubsMenu
     private MenuPool MenuPool;
     private LocationCamera LocationCamera;
     private UIMenu FightMenu;
-    IEntityProvideable World;
-    IInteractionable Player;
+    private IEntityProvideable World;
+    private IInteractionable Player;
+    private IDances Dances;
     private UIMenuItem startFightMenuItem;
     private IFightClubable FightClubable;
     private ITargetable Targetable;
@@ -25,10 +26,10 @@ public class FightClubsMenu
     private IGangs Gangs;
     private ISettingsProvideable Settings;
     private List<string> AllowedGangs;
-    List<DispatchablePerson> NonGangFightersGroup;
-
+    private List<DispatchablePerson> NonGangFightersGroup;
+    private List<DispatchablePerson> SpectatorsPersonList;
     public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, 
-        ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup)
+        ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup, IDances dances, List<DispatchablePerson> spectatorsPersonList)
     {
         MenuPool = menuPool;
         FightMenu = fightSubMenu;
@@ -41,6 +42,8 @@ public class FightClubsMenu
         Gangs = gangs;
         AllowedGangs = allowedGangs;
         NonGangFightersGroup = nonGangFightersGroup;
+        Dances = dances;
+        SpectatorsPersonList = spectatorsPersonList;
     }
     public void Setup(LocationCamera locationCamera)
     {
@@ -64,6 +67,11 @@ public class FightClubsMenu
         UIMenuNumericScrollerItem<int> numberOfFightersScroller = new UIMenuNumericScrollerItem<int>("Number of Opponents", "Pick the number of opponents", 1, 4, 1);
         numberOfFightersScroller.Value = 1;
         PlayerFightSubMenu.AddItem(numberOfFightersScroller);
+
+
+        UIMenuNumericScrollerItem<int> numberOfSpectatorsScrollerSpectate = new UIMenuNumericScrollerItem<int>("Number of Spectators", "Pick the number of spectators watching the fight", 0, 4, 1);
+        numberOfSpectatorsScrollerSpectate.Value = 0;
+        PlayerFightSubMenu.AddItem(numberOfSpectatorsScrollerSpectate);
 
         UIMenuCheckboxItem meleeWeaponsCheckbox = null;
         UIMenuCheckboxItem sidearmsWeaponsCheckbox = null;
@@ -110,7 +118,7 @@ public class FightClubsMenu
                 isGangFightMenuItem != null && GangToFightScroller != null && isGangFightMenuItem.Checked ? GangToFightScroller.SelectedItem : null,
                 meleeWeaponsCheckbox != null && meleeWeaponsCheckbox.Checked,
                 sidearmsWeaponsCheckbox != null && sidearmsWeaponsCheckbox.Checked,
-                heavyWeaponsCheckbox != null && heavyWeaponsCheckbox.Checked);
+                heavyWeaponsCheckbox != null && heavyWeaponsCheckbox.Checked, numberOfSpectatorsScrollerSpectate.Value);
         };
         PlayerFightSubMenu.AddItem(startFightMenuItem);
     }
@@ -122,6 +130,14 @@ public class FightClubsMenu
         UIMenuNumericScrollerItem<int>  numberOfFightersScrollerSpectate = new UIMenuNumericScrollerItem<int>("Number of Fighters", "Pick the number of fighters to watch", 2, 5, 1);
         numberOfFightersScrollerSpectate.Value = 2;
         PlayerSpectateSubMenu.AddItem(numberOfFightersScrollerSpectate);
+
+
+
+        UIMenuNumericScrollerItem<int> numberOfSpectatorsScrollerSpectate = new UIMenuNumericScrollerItem<int>("Number of Spectators", "Pick the number of spectators watching the fight", 0, 4, 1);
+        numberOfSpectatorsScrollerSpectate.Value = 0;
+        PlayerSpectateSubMenu.AddItem(numberOfSpectatorsScrollerSpectate);
+
+
 
         UIMenuCheckboxItem meleeWeaponsCheckbox = null;
         UIMenuCheckboxItem sidearmsWeaponsCheckbox = null;
@@ -170,7 +186,7 @@ public class FightClubsMenu
                 isGangFightMenuItem != null && GangToFightScroller != null && isGangFightMenuItem.Checked ? GangToFightScroller.SelectedItem : null, 
                 meleeWeaponsCheckbox != null && meleeWeaponsCheckbox.Checked,
                 sidearmsWeaponsCheckbox != null && sidearmsWeaponsCheckbox.Checked,
-                heavyWeaponsCheckbox != null && heavyWeaponsCheckbox.Checked);
+                heavyWeaponsCheckbox != null && heavyWeaponsCheckbox.Checked, numberOfSpectatorsScrollerSpectate.Value);
         };
         PlayerSpectateSubMenu.AddItem(startFightMenuItemSpectator);
     }
@@ -182,7 +198,7 @@ public class FightClubsMenu
             GameFiber.Yield();
         }
     }
-    private void StartFight(UIMenu menu, bool isPlayerFight, int numberOfFightersSelected, Gang gangToFight,bool allowMelee, bool allowSidearms, bool allowHeavyWeapons)
+    private void StartFight(UIMenu menu, bool isPlayerFight, int numberOfFightersSelected, Gang gangToFight,bool allowMelee, bool allowSidearms, bool allowHeavyWeapons, int spectatorsSelected)
     {
         menu.Visible = false;
         try
@@ -194,15 +210,16 @@ public class FightClubsMenu
             FightClubFight fightClubFight;
             if (gangToFight != null)
             {
-                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, gangToFight);
+                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, gangToFight, Dances, SpectatorsPersonList);
             }
             else
             {
-                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup);
+                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup, Dances, SpectatorsPersonList);
             }
             fightClubFight.AllowMeleeWeapons = allowMelee;
             fightClubFight.AllowSidearms = allowSidearms;
             fightClubFight.AllowHeavyWeapons = allowHeavyWeapons;
+            fightClubFight.SpectatorsToAdd = spectatorsSelected;
             fightClubFight.Setup();
             Game.FadeScreenOut(1000, true);
             fightClubFight.BeginFirstFight();

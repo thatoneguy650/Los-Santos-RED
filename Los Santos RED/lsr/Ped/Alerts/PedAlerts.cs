@@ -58,6 +58,13 @@ public class PedAlerts
             pedAlert.OnReportedCrime(policeRespondable);
         }
     }
+    public void Reset()
+    {
+        foreach (PedAlert pedAlert in PedAlertList)
+        {
+            pedAlert.Reset();
+        }
+    }
 }
 
 

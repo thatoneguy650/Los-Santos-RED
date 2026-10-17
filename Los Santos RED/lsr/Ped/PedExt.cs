@@ -305,6 +305,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsWanted => PedViolations.IsWanted;
     public bool IsNotWanted => PedViolations.IsNotWanted;
     public bool IsZombie { get; set; } = false;
+    public bool DisableCrimeCheck { get;set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
     public bool StayInVehicle { get; set; } = false;
@@ -354,6 +355,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         get
         {
+            if(DisableCrimeCheck)
+            {
+                return false;
+            }
             if (Pedestrian.Exists())
             {
                 string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
@@ -489,6 +494,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int CiviliansKilled { get; private set; }
     public virtual float PickpocketDetectionMultiplier { get; set; } = 1.0f;
     public bool IsInArmedMilitaryVehicle { get; private set; }
+    public bool DisableUnconsciousBodyAlerts { get; set; }
+
     public bool IsInRaceWorthyCar(IEntityProvideable World)
     {
         if(!IsInVehicle)

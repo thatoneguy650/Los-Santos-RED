@@ -21,5 +21,6 @@ namespace LosSantosRED.lsr.Interface
         Respawning Respawning { get; }
         bool DisableMainMenu { get; set; }
         bool IsAliveAndFree { get; }
+        WeaponEquipment WeaponEquipment { get; }
     }
 }

@@ -61,6 +61,11 @@ public class SettingsManager
     [Category("Player")]
     [Description("Respawn Settings")]
     public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
+
+    [Category("Player")]
+    [Description("Racing Settings")]
+    public RacingSettings RacingSettings { get; set; } = new RacingSettings();
+
     [Category("Player")]
     [Description("Scanner Settings")]
     public ScannerSettings ScannerSettings { get; set; } = new ScannerSettings();

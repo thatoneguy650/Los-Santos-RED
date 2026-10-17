@@ -16,6 +16,7 @@ public class FightClub : GameLocation
     private IGangs Gangs;
     private IDispatchablePeople DispatchablePeople;
     private IIssuableWeapons IssuableWeapons;
+    private IDances Dances;
     public FightClub() : base()
     {
 
@@ -44,6 +45,7 @@ public class FightClub : GameLocation
     public string HeavyWeaponsGroup { get; set; }
 
     public string NonGangFightersGroup { get; set; }
+    public string SpectatorsGroup { get; set; }
     public List<string> AllowedGangs { get; set; }
     public bool DisablePlayerFights { get;  set; }
     public bool DisableGangFights { get; set; }
@@ -68,7 +70,10 @@ public class FightClub : GameLocation
         possibleLocations.FightClubs.Add(this);
         base.AddLocation(possibleLocations);
     }
-    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, ILocationInteractable player, IModItems modItems, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
+    public override void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories,
+        INameProvideable names, ICrimes crimes, IPedGroups PedGroups, IEntityProvideable world, IStreets streets, ILocationTypes locationTypes, ISettingsProvideable settings, 
+        IPlateTypes plateTypes, IOrganizations associations, IContacts contacts, IInteriors interiors, ILocationInteractable player, IModItems modItems, IWeapons weapons,
+        ITimeControllable time, IPlacesOfInterest placesOfInterest, IIssuableWeapons issuableWeapons, IHeads heads, IDispatchablePeople dispatchablePeople, ModDataFileManager modDataFileManager)
     {
         Gangs = gangs;
        // PlacesOfInterest = placesOfInterest;
@@ -77,6 +82,7 @@ public class FightClub : GameLocation
         IssuableWeapons = issuableWeapons;
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         OriginalGang = AssociatedGang;
+        Dances = modDataFileManager.DanceList;
         if (HasInterior)
         {
             FightClubInterior = interiors.PossibleInteriors.FightClubInteriors.Where(x => x.LocalID == InteriorID).FirstOrDefault();
@@ -201,7 +207,9 @@ public class FightClub : GameLocation
             FightSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
         List<DispatchablePerson> listOfPeople = DispatchablePeople.GetPersonData(NonGangFightersGroup).ToList();
-        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World, Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs, AllowedGangs, listOfPeople);
+        List<DispatchablePerson> listOfSpectatorPeople = DispatchablePeople.GetPersonData(SpectatorsGroup).ToList();
+        FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World, Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs, 
+            AllowedGangs, listOfPeople, Dances, listOfSpectatorPeople);
         fightClubsMenu.Setup(locationCamera);
         //InteractionMenu.Visible = true;
 

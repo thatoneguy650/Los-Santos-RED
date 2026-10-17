@@ -199,17 +199,17 @@ public class Dances : IDances
             new DanceData("Cheer Male 4","amb@world_human_cheering@male_e","base") { IsCheer = true },
 
 
-            new DanceData("Cheer Podium 1","anim@arena@celeb@podium@no_prop@","clapping_a_1st") { IsCheer = true },
-            new DanceData("Cheer Podium 2","anim@arena@celeb@podium@no_prop@","cheer_a_2nd") { IsCheer = true },
-            new DanceData("Cheer Podium 3","anim@arena@celeb@podium@no_prop@","cheer_a_1nd") { IsCheer = true },
+            //new DanceData("Cheer Podium 1","anim@arena@celeb@podium@no_prop@","clapping_a_1st") { IsCheer = true },
+            //new DanceData("Cheer Podium 2","anim@arena@celeb@podium@no_prop@","cheer_a_2nd") { IsCheer = true },
+            //new DanceData("Cheer Podium 3","anim@arena@celeb@podium@no_prop@","cheer_a_1nd") { IsCheer = true },
 
             new DanceData("Slow Clap 1","anim@mp_player_intcelebrationfemale@slow_clap","slow_clap") { IsCheer = true },
             new DanceData("Slow Clap 2","anim@mp_player_intcelebrationmale@slow_clap","slow_clap") { IsCheer = true },
 
 
-            new DanceData("Angry Clap 1","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_b") { IsCheer = true },
-            new DanceData("Angry Clap 2","anim@arena@celeb@flat@solo@no_props@","angry_clap_a_player_a") { IsCheer = true },
-            new DanceData("Angry Clap 3","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_a") { IsCheer = true },
+            //new DanceData("Angry Clap 1","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_b") { IsCheer = true },
+            //new DanceData("Angry Clap 2","anim@arena@celeb@flat@solo@no_props@","angry_clap_a_player_a") { IsCheer = true },
+            //new DanceData("Angry Clap 3","anim@arena@celeb@flat@solo@no_props@","angry_clap_b_player_a") { IsCheer = true },
         };
         Serialization.SerializeParams(DanceLookups, ConfigFileName);
     }

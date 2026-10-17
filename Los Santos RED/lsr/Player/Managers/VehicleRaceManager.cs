@@ -140,7 +140,7 @@ public class VehicleRaceManager
         Player.BankAccounts.GiveMoney(-1 * betAmount, false);
         pedExt.SetPersistent();
         List<AIVehicleRacer> vehicleRacers = new List<AIVehicleRacer>() { };
-        AIVehicleRacer challenger = new AIVehicleRacer(pedExt, racerVehicle) { };
+        AIVehicleRacer challenger = new AIVehicleRacer(pedExt, racerVehicle, Settings) { };
         vehicleRacers.Add(challenger);
         pedExt.AddBlip();
         PlayerVehicleRacer playerRacer = new PlayerVehicleRacer(Player.CurrentVehicle, Player, Settings);
@@ -333,7 +333,7 @@ public class VehicleRaceManager
             createdPed.CanBeIdleTasked = false;
             createdPed.IsManuallyDeleted = true;
         }
-        return new AIVehicleRacer(cst.CreatedPeople.FirstOrDefault(), createdvehicle) { WasSpawnedForRace = true };
+        return new AIVehicleRacer(cst.CreatedPeople.FirstOrDefault(), createdvehicle, Settings) { WasSpawnedForRace = true };
 
     }
     private void MoveVehicleToPosition(VehicleExt toMove, VehicleRaceStartingPosition vrsp)

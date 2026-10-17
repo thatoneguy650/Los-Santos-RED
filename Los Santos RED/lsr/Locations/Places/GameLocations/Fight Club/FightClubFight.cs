@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using static RAGENativeUI.Elements.UIMenuStatsPanel;
@@ -28,6 +29,7 @@ public class FightClubFight
     private IEntityProvideable World;
     private IFightClubable Player;
     private ITargetable Targetable;
+    private IDances Dances;
     private bool HasFoundWinner;
     private PlayerFightClubFighter FightClubFighterPlayer;
     private Gang GangToFight;
@@ -47,7 +49,7 @@ public class FightClubFight
     private AIFightClubFighter SelectedOrBetFighter;
     private AIFightClubFighter PreviousWinner;
     private List<DispatchablePerson> NonGangFightersGroup;
-
+    private List<DispatchablePerson> SpectatorsPersonList;
     private UIMenu ActiveFightMenu;
 
     public bool IsFightActive { get;private set; }
@@ -58,7 +60,7 @@ public class FightClubFight
 
     public bool IsWeaponFight => AllowMeleeWeapons || AllowSidearms || AllowHeavyWeapons;
 
-
+    public int SpectatorsToAdd { get; set; } 
 
     public FightClubFight()
     {
@@ -66,7 +68,7 @@ public class FightClubFight
     }
 
     public FightClubFight(FightClubArena fightClubArena,  FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
-        IFightClubable player, List<DispatchablePerson> nonGangFightersGroup)
+        IFightClubable player, List<DispatchablePerson> nonGangFightersGroup, IDances dances, List<DispatchablePerson> spectatorsPersonList)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -77,10 +79,12 @@ public class FightClubFight
         Targetable = targetable;
         Player = player;
         NonGangFightersGroup = nonGangFightersGroup;
+        Dances = dances;
+        SpectatorsPersonList = spectatorsPersonList;
     }
 
     public FightClubFight(FightClubArena fightClubArena, FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
-        IFightClubable player, Gang gang)
+        IFightClubable player, Gang gang, IDances dances, List<DispatchablePerson> spectatorsPersonList)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -91,6 +95,8 @@ public class FightClubFight
         Targetable = targetable;
         Player = player;
         GangToFight = gang;
+        Dances = dances;
+        SpectatorsPersonList = spectatorsPersonList;
     }
 
     public void Setup()
@@ -110,14 +116,19 @@ public class FightClubFight
         Player.DisableMainMenu = false;
         Player.ButtonPrompts.RemovePrompt("StartCheer");
         Player.ButtonPrompts.RemovePrompt("FightMenu");
+
         foreach (FightClubFighter fightClubFighter in Fighters)
         {
             fightClubFighter.Dispose();
         }
+
+
         foreach (PedExt spectator in Spectators)
         {
             DisposeSpectator(spectator);
         }
+
+
         //GameFiber.Sleep(1000);
         BigMessage.Fiber?.Abort();
         if (BigMessage != null && BigMessage.MessageInstance != null)
@@ -140,6 +151,8 @@ public class FightClubFight
         PedExt.WillCallPolice = false;
         PedExt.WillFight = false;
         PedExt.IsManuallyDeleted = false;
+        PedExt.PedAlerts.Reset();
+        PedExt.PedViolations.Reset();
         PedExt.PedPerception.Reset();
         PedExt.PlayerPerception.Reset();
         PedExt.ClearTasks(true);
@@ -173,12 +186,16 @@ public class FightClubFight
             if(IsPlayerFight)
             {
                 HighlightAllOpponents();
+                
             }
             else
             {
                 HighlightSelectedOrBetFighter();
             }
-            
+            if (!IsWeaponFight)
+            {
+                Player.WeaponEquipment.SetUnarmed();
+            }
         }
         if (!IsPlayerFight && IsFightActive)
         {
@@ -282,6 +299,11 @@ public class FightClubFight
         Game.FadeScreenIn(1000, true);
         AnnounceFighters();
         TakeBets();
+        if (IsCancelled)
+        {
+            Dispose();
+            return;
+        }
         DoCountdown();
         StartFight();
     }
@@ -297,6 +319,12 @@ public class FightClubFight
         SetGameplayCameraHint();
         AnnounceFighters();
         TakeBets();
+
+        if(IsCancelled)
+        {
+            Dispose();
+            return;
+        }
         DoCountdown();
         StartFight();
     }
@@ -549,6 +577,9 @@ public class FightClubFight
     {
         //Game.FadeScreenOut(1000, true);
 
+
+        NativeFunction.Natives.CLEAR_AREA_OF_PEDS(FightClubArena.ArenaCenter, 5.0f, false);
+
         bool createdFighters = CreateFighters();
         if(!createdFighters)
         {
@@ -566,10 +597,11 @@ public class FightClubFight
 
     private void CreateSpectators()
     {
-        if (RoundNumber > 0)
+        if (RoundNumber > 0 || SpectatorsToAdd <= 0)
         {
             return;
         }
+        EntryPoint.WriteToConsole($"CreateSpectators SpectatorsToAdd{SpectatorsToAdd}");
         Spectators = new List<PedExt>();
         List<SpawnPlace> spawnLocations = new List<SpawnPlace>();
         spawnLocations.AddRange(FightClubArena.SpectatorLocations);
@@ -584,9 +616,15 @@ public class FightClubFight
             Player.Character.Heading = spectatorSpot.Heading;
             spawnLocations.Remove(spectatorSpot);
         }
+        int spectatorsAdded = 0;
         foreach(SpawnPlace spawnPlace in spawnLocations)
         {
             CreateSpectator(spawnPlace);
+            spectatorsAdded++;
+            if(spectatorsAdded >= SpectatorsToAdd)
+            {
+                break;
+            }
         }
     }
 
@@ -595,7 +633,13 @@ public class FightClubFight
         SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
 
         DispatchablePerson dispatchablePersonToCreate = new DispatchablePerson("a_m_y_methhead_01", 0, 0);
-        if (NonGangFightersGroup != null && NonGangFightersGroup.Any())
+
+        if(SpectatorsPersonList != null && SpectatorsPersonList.Any())
+        {
+            dispatchablePersonToCreate = SpectatorsPersonList.RandomElementByWeight(x => x.AmbientSpawnChance);
+
+        }
+        else if (NonGangFightersGroup != null && NonGangFightersGroup.Any())
         {
             dispatchablePersonToCreate = NonGangFightersGroup.RandomElementByWeight(x => x.AmbientSpawnChance);
         }
@@ -617,10 +661,50 @@ public class FightClubFight
         createdSpectator.Pedestrian.RelationshipGroup = new RelationshipGroup($"SPECTATOR");
         createdSpectator.Pedestrian.BlockPermanentEvents = true;
         createdSpectator.Pedestrian.KeepTasks = true;
-        createdSpectator.Pedestrian.Tasks.StandStill(1500000);
+
+
+        AssignSpectatorCheer(createdSpectator);
+
+        //createdSpectator.Pedestrian.Tasks.StandStill(1500000);
         Spectators.Add(createdSpectator);
     }
+    private void AssignSpectatorCheer(PedExt createdSpectator)
+    {
+        if (createdSpectator == null || !createdSpectator.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (Dances == null || !Dances.DanceLookups.Any(x => x.IsCheer && !string.IsNullOrEmpty(x.AnimationIdle)))
+        {
+            return;
+        }
+        if (createdSpectator != null && createdSpectator.IsAnimal)
+        {
+            createdSpectator.Pedestrian.Tasks.StandStill(1500000);
+            return;
+        }
+        DanceData danceData = Dances.DanceLookups.Where(x => x.IsCheer && !string.IsNullOrEmpty(x.AnimationIdle)).PickRandom();
+        if(danceData == null)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"AssignSpectatorCheer DICT:{danceData.AnimationDictionary}");
+        bool isAvailable = AnimationDictionary.RequestAnimationDictionayResult(danceData.AnimationDictionary);
 
+        GameFiber.Sleep(100);//let it load or it dont worko
+
+        if(!isAvailable)
+        {
+            EntryPoint.WriteToConsole("AssignSpectatorCheer FAILED");
+            createdSpectator.Pedestrian.Tasks.StandStill(1500000);
+            return;
+        }
+        
+        EntryPoint.WriteToConsole($"AssignSpectatorCheer RAN {danceData.AnimationIdle}");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", createdSpectator.Pedestrian, danceData.AnimationDictionary, danceData.AnimationIdle, 4.0f, -4.0f, -1, 1, 0, false, false, false);//-1
+
+        //NativeFunction.Natives.TASK_PLAY_ANIM(createdSpectator.Pedestrian, danceData.AnimationDictionary, danceData.AnimationIdle, 4.0f, -4.0f, -1, 1, 0, false, false, false);//-1
+    }
     private void AnnounceFighters()
     {
 
@@ -728,6 +812,19 @@ public class FightClubFight
             PlayerBetName = "";
         };
         BetMenu.AddItem(noBet);
+
+
+
+        UIMenuItem cancelFight = new UIMenuItem("Cancel Fight", "Select to cancel the current fight.");
+        cancelFight.Activated += (sender, e) =>
+        {
+            FinishedBetting = true;
+            SelectedOrBetFighter = null;
+            PlayerBetAmount = 0;
+            PlayerBetName = "";
+            IsCancelled = true;
+        };
+        BetMenu.AddItem(cancelFight);
 
 
         BetMenu.Visible = true;

@@ -82,6 +82,27 @@ public class Names : INameProvideable
         Name += " " + PossibleNames.LastNames.PickRandom();
         return Name;
     }
+
+
+    public string GetRandomName(bool IsMale, bool isAnimal)
+    {
+        if(isAnimal)
+        {
+            return GetRandomDogName(IsMale);
+        }
+        string Name = "";
+        if (IsMale)
+        {
+            Name += PossibleNames.MaleNames.PickRandom();
+        }
+        else
+        {
+            Name += PossibleNames.FemaleNames.PickRandom();
+        }
+        Name += " " + PossibleNames.LastNames.PickRandom();
+        return Name;
+    }
+
     public string GetRandomDogName(bool IsMale)
     {
         string Name = "";

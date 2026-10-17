@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 public class AIVehicleRacer : VehicleRacer
 {
+    private ISettingsProvideable Settings;
     // Timing and State
     private uint GameTimeLastClearedFront;
     private bool hasBeenDisposed;
@@ -48,19 +49,21 @@ public class AIVehicleRacer : VehicleRacer
     //public bool IsManualDispose { get; set; } = false;
     public bool IsDisqualified { get; set; }
 
-    public AIVehicleRacer(PedExt pedExt, VehicleExt vehicleExt) : base(vehicleExt)
+    public AIVehicleRacer(PedExt pedExt, VehicleExt vehicleExt, ISettingsProvideable settings) : base(vehicleExt)
     {
+        Settings = settings;
         PedExt = pedExt;
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        //Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         // Personality Initialization
-        SpeedOffset = (float)(rnd.NextDouble() * 7.0 - 1.0); 
-        PowerOffset = (float)(rnd.NextDouble() * 0.4 - 0.05); 
-        DriverAbility = (float)(rnd.NextDouble() * 0.20 + 0.80);
-        DriverAggressiveness = (float)(rnd.NextDouble() * 0.20 + 0.80);
+        SpeedOffset = RandomItems.GetRandomNumber(Settings.SettingsManager.RacingSettings.AISpeedOffsetMin, Settings.SettingsManager.RacingSettings.AISpeedOffsetMax);// -1.0f, 6.0f);////(float)(rnd.NextDouble() * 7.0 - 1.0); 
+        PowerOffset = RandomItems.GetRandomNumber(Settings.SettingsManager.RacingSettings.AIPowerOffsetMin, Settings.SettingsManager.RacingSettings.AIPowerOffsetMax);//-0.05f, 0.35f);//(float)(rnd.NextDouble() * 0.4 - 0.05); 
+        DriverAbility = RandomItems.GetRandomNumber(Settings.SettingsManager.RacingSettings.AIDriverAbilityMin, Settings.SettingsManager.RacingSettings.AIDriverAbilityMax);//0.8f, 1.0f);//(float)(rnd.NextDouble() * 0.20 + 0.80);
+        DriverAggressiveness = RandomItems.GetRandomNumber(Settings.SettingsManager.RacingSettings.AIDriverAggressivenessMin, Settings.SettingsManager.RacingSettings.AIDriverAggressivenessMax);//0.8f, 1.0f);//(float)(rnd.NextDouble() * 0.20 + 0.80);
 
         // Native Reaction Logic: Higher aggressiveness results in lower reaction delay
-        reactionDelay = (int)((1.0f - DriverAggressiveness) * 500);
+        reactionDelay = (int)((1.0f - DriverAggressiveness) * Settings.SettingsManager.RacingSettings.AIReactionDelayScalar);// 500);
+
     }
 
     public override void Update(VehicleRace vehicleRace)
@@ -115,14 +118,24 @@ public class AIVehicleRacer : VehicleRacer
         HandleStuckDetection(raceCar, driver, vehicleRace);
 
         // BEHAVIOR TUNING
-        ApplyRubberBanding(vehicleRace, raceCar, driver);
-        ApplyStabilityForce(raceCar);
 
-        if (Game.GameTime - GameTimeLastClearedFront > 200 && vehicleRace.HasRaceStarted)
+        if(Settings.SettingsManager.RacingSettings.EnableOpponentRaceAssists)
         {
-            ClearFront();
-            GameTimeLastClearedFront = Game.GameTime;
+            ApplyRubberBanding(vehicleRace, raceCar, driver);
+            ApplyStabilityForce(raceCar);
+
+
+            if (Game.GameTime - GameTimeLastClearedFront > 200 && vehicleRace.HasRaceStarted)
+            {
+                ClearFront();
+                GameTimeLastClearedFront = Game.GameTime;
+            }
+
         }
+
+
+
+
     }
 
     private void ResetPreRaceState(Vehicle raceCar)
@@ -158,6 +171,10 @@ public class AIVehicleRacer : VehicleRacer
 
     private void HandleStuckDetection(Vehicle raceCar, Ped driver, VehicleRace vehicleRace)
     {
+        if(!Settings.SettingsManager.RacingSettings.AIUnStuckAssist)
+        {
+            return;
+        }
         // Only run stuck detection if the race has at least two checkpoints 
         if (vehicleRace.VehicleRaceTrack.RaceCheckpoints.Count <= 1)
         {
@@ -241,6 +258,11 @@ public class AIVehicleRacer : VehicleRacer
 
     private void ApplyRubberBanding(VehicleRace vehicleRace, Vehicle raceCar, Ped driver)
     {
+        if(!Settings.SettingsManager.RacingSettings.AIRubberBandingEnabled)
+        {
+            return;
+        }
+
         VehicleRacer playerRacer = vehicleRace.VehicleRacers.FirstOrDefault(r => r.IsPlayer);
         if (playerRacer?.VehicleExt?.Vehicle == null) return;
 
@@ -285,6 +307,10 @@ public class AIVehicleRacer : VehicleRacer
 
     private void ApplyStabilityForce(Vehicle raceCar)
     {
+        if(!Settings.SettingsManager.RacingSettings.AIStabilityForceAssist)
+        {
+            return;
+        }
         if (raceCar.Model.IsBike || raceCar.Model.IsQuadBike) return; // remove raceCar.Model.IsBike || raceCar.Model.IsQuadBike to cut down on air time for these vehicles.
 
         float speedFactor = raceCar.Speed * 0.0018f; // Scales the force based on current speed (tuning parameter) - 0.0018f allows for some natural air time
@@ -432,6 +458,10 @@ public class AIVehicleRacer : VehicleRacer
 
     public void ClearFront()
     {
+        if(!Settings.SettingsManager.RacingSettings.AIClearFrontAssist)
+        {
+            return;
+        }
         if (PedExt.IsInHelicopter || !PedExt.Pedestrian.Exists()) return;
         Vehicle raceCar = PedExt.Pedestrian.CurrentVehicle;
         if (!raceCar.Exists()) return;

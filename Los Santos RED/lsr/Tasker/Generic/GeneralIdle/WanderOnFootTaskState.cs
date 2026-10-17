@@ -99,6 +99,10 @@ class WanderOnFootTaskState : TaskState
         {
             IsPatrolling = true;
         }
+        if(PedGeneral.IsAnimal)
+        {
+
+        }
         EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
         SetTasking();
     }
@@ -221,7 +225,10 @@ class WanderOnFootTaskState : TaskState
                 ScenarioChosen = NonDealerScenarios.PickRandom();
             }
         }
-
+        if (PedGeneral.IsAnimal)
+        {
+            ScenarioChosen = DogScenarios.PickRandom();
+        }
         EntryPoint.WriteToConsole($"ScenarioChosen {ScenarioChosen.ToString()}");
 
         if(PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipLongGunWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipSidearmWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipMeleeWhenIdle))

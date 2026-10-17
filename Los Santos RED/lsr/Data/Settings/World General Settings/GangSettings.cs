@@ -191,7 +191,7 @@ public class GangSettings : ISettingsDefaultable
     public float TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended { get; set; }
     public float WarefareCloseDistance { get; set; }
     public float TerritoryRetaliationAutoDefendPercentage { get; set; }
-
+    public float TerritoryRetaliationPercentageLowestPercentagePossible { get; set; }
 
     public GangSettings()
     {
@@ -359,11 +359,12 @@ public class GangSettings : ISettingsDefaultable
         TerritoryRetaliationTimeToReturnMin = 60000 * 8;
         TerritoryRetaliationTimeToReturnMax = 60000 * 10;
 
-        TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended = 5f;
+        TerritoryRetaliationPercentageDecreaseBasedOnTimesPlayerDefended = 7f;
         DisableVanillaGangZoneTakeover = true;
         WarefareCloseDistance = 300f;
 
         TerritoryRetaliationAutoDefendPercentage = 20f;
+        TerritoryRetaliationPercentageLowestPercentagePossible = 0.01f;
 
     }
 

@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         string GetRandomDogName(bool isMale);
         string GetRandomName(bool isMale);
+        string GetRandomName(bool isMale, bool isAnimal);
     }
 }

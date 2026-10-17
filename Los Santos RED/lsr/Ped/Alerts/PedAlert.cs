@@ -33,6 +33,11 @@ public abstract class PedAlert
     public bool CanPositionAlert => Position != Vector3.Zero;
     public bool CanPedAlert => AlertTarget != null && AlertTarget.Pedestrian.Exists();
 
+    public void Reset()
+    {
+        GameTimeLastAlerted = 0;
+        AlertTarget = null;
+    }
     public virtual void Update()
     {
 
