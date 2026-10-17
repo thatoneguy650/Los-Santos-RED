@@ -9,21 +9,27 @@
 
   Bored with the vanilla GTA 5 free roam mode? Wish there was more interaction and things to do? Hate how the cops will only ever kill and never arrest? Confused why civilians don't care that you are carrying a rocket launcher? Los Santos RED hopes to enhance the default criminal free roam experience by: adding an entirely new script based dispatching system, enhancing police/gang/civilian AI, adding stores and locations to visit, allowing you to perform actions and consume items you buy, giving you the ability to swap to any ped on the street and become that persona, adding new crimes that civilians and cops can report/arrest you for, enhancing the carjacking and lockpicking activities, adding and expanding civilian hold ups and interactions, completely rewriting the scanner system to be more immersive, and much more. The mod also aims to be extremely customizable by exposing tons of settings for the player to get the experience they want. Additional configuration settings are also available in the user editable xml files for even more customization.
 
-## Installation
+## Installation (Legacy and Enhanced)
 - Place all RAGE Plugin Hook files in the root GTA V directory
   - RAGE Plugin Hook Version 1.100 or later required, see [RPH Discord #necessities](https://discord.gg/z8N5P9MCRx) to get it since the main site is outdated
 
 + Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI) files in the root GTA V directory
   + RageNativeUI Version 1.9 or later required, be sure to update if you haven't
 + Download the latest release and drag into the root GTA V directory (NAudio is included in the package with LSR)
-+ Requires a custom Gameconfig, Packfile Limit Adjuster, and Heap Adjuster!
-  + Download an install based on the instructions provided. Links: [Gameconfig](https://github.com/pnwparksfan/gameconfig/releases) [Packfile Limit Adjuster](https://www.gta5-mods.com/tools/packfile-limit-adjuster) [Heap Adjuster](https://www.gta5-mods.com/tools/heapadjuster/)
 - Verify RAGE Plugin Hook is installed to the root GTA V directory
 - Verify NAudio.dll and NAudio.xml along with RageNativeUI.dll and RageNativeUI.xml are in the root GTA V directory
 - Verify the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder  are in the plugins folder (in the root GTA V directory)
 
 + To update the mod, remove the Los Santos RED.dll, Los Santos RED.pdb, and LosSantosRED folder from your Plugins folder and replace with the newest version. If you want to keep your Setting, SavedGames, and Outfits: You can backup the Settings.xml, SaveGames.xml, and SavedOutfits.xml and restore them after updating. LSR will automatically update them to include the new items after running.
 
++ LEGACY GTA Requires a custom ASI Loader, Gameconfig, Packfile Limit Adjuster, OpenIV/OpenRPF and Heap Adjuster!
+  + Download an install based on the instructions provided. Links: [ASI Loader](https://www.dev-c.com/gtav/scripthookv/) [Gameconfig](https://github.com/pnwparksfan/gameconfig/releases) [Packfile Limit Adjuster](https://www.gta5-mods.com/tools/packfile-limit-adjuster) [Heap Adjuster](https://www.gta5-mods.com/tools/heapadjuster/)
+  + See Tutorials Section on the LSR Discord for More information and help!
++ ENHANCED GTA ONLY Requires a custom ASI Loader, Gameconfig, Packfile Limit Adjuster, Heap Adjuster, OpenRPF, and Direct Storage Fix (if using nvme drive) IF USING FILE MODS (Vehicles, Peds, Weapons, etc.)!
+  + Download an install based on the instructions provided. Links: [ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader/releases/download/x64-latest/xinput1_4-x64.zip) [Gameconfig](https://www.gta5-mods.com/misc/gta-5-gameconfig-300-cars) [Packfile Limit Adjuster](https://www.gta5-mods.com/scripts/packfile-limit-adjuster-enhanced) [Heap Adjuster](https://www.gta5-mods.com/scripts/heapadjuster-enhanced) [OpenRPF](https://www.gta5-mods.com/tools/openrpf-openiv-asi-for-gta-v-enhanced) [Direct Storage Fix](https://www.gta5-mods.com/scripts/directstoragefix )
+  + See Tutorials Section on the LSR Discord for More information and help!
+ 
+    
 ## Features
 Enhanced Free Roam Mode
   - Police Enhancements
@@ -189,7 +195,6 @@ Any modifications or contributions should be submitted via Pull Request to the o
 - [benzstar](https://github.com/aleur)
 - box
 - [huzzahsir](https://github.com/peeppeep-io)
-- [CPKS]((https://github.com/CPKS997))
 - [alexguirre](https://github.com/alexguirre)
 - [alloc8tor](https://github.com/alloc8or)
 - [pongo1231](https://github.com/pongo1231)
@@ -217,26 +222,26 @@ Any modifications or contributions should be submitted via Pull Request to the o
 - Vanilla taxi service is not available with LSR active (Downtown Cab Co on the vanilla cell will show Busy forever) use the burner cell to call the LSR taxi service.
 - Loading bodies in the trunk can fail or not attach properly.
 
- ## Full Expanded Jurisdiction
+ ## Full Expanded Jurisdiction (Enhanced Only)
 - Preview images of some of the new vehicles included in the FEJ pack. See LosSantosRED/AlternateConfigs/FullExpandedJurisdiction folder to install or learn more.
 ![test](https://imgur.com/6e5BO2c.jpeg)
 
  
-## Full Modern Traffic
+## Full Modern Traffic (Enhanced Only)
 - Preview images of some of the new vehicles included in the FMT pack. Updates traffic to use DLC vehicles along with other lore friendly vehicle edits. See LosSantosRED/AlternateConfigs/FullModernTraffic folder to install or learn more.
 ![test2](https://i.imgur.com/zziAhEM.jpeg)
  
 
-## Full Expanded Weapons
+## Full Expanded Weapons (Enhanced Only)
 - Lore friendly weapon tweaks and additions. See LosSantosRED/AlternateConfigs/FullExpandedWeapons folder to install or learn more.
 ![test3](https://s3-attachments.int-cdn.lcpdfrusercontent.com/monthly_2025_07/image.jpeg.9af99633d87e10d54bf34865f5afabef.jpeg)
 
  
-## Full Modern License Plates
+## Full Modern License Plates (Enhanced Only)
 - Includes lore friendly modern license plates for EVERY state and lots of government/state/federal items. See LosSantosRED/AlternateConfigs/FullModernLicensePlates folder to install or learn more
 ![test4](https://i.imgur.com/J4JYu0A.png)
 
  
-## Liberty City RED
+## Liberty City RED (Legacy Only)
 - Included in the LSR download is a full LSR config, peds/vehicles, and some LSR focused map fixes. Usable with Full Modern Traffic for that super modern feel. See LosSantosRED/AlternateConfigs/Liberty City folder to install or learn more. 
 ![test5](https://i.imgur.com/yMtpzcE.jpeg)
