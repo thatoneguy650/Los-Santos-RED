@@ -275,6 +275,7 @@ namespace LosSantosRED.lsr
                     new ModTask(1000, "World.UpdateNear", World.Places.UpdateLocations, 3),//500//1000//????MAYBE BAD?
 
                     new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
+                    new ModTask(2000, "Player.GangProgressionUpdate", Player.GangProgressionManager.Update, 7),
                     new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
 
                     new ModTask(1000, "World.Update", World.Update, 6),///????MAYBE BAD?

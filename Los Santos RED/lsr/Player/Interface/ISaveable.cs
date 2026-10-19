@@ -38,5 +38,8 @@ namespace LosSantosRED.lsr.Interface
         InteriorManager InteriorManager { get; }
         OutfitManager OutfitManager { get; }
         GangTerritoryManager GangTerritoryManager { get; }
+        GangProgressionManager GangProgressionManager { get; }
+        GangCrewManager GangCrewManager { get; }
+        IEntityProvideable World { get; }
     }
 }

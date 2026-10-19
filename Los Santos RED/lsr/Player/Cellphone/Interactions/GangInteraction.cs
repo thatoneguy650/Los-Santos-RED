@@ -186,7 +186,17 @@ public class GangInteraction : IContactMenuInteraction
 
 
 
-            UIMenuNumericScrollerItem<int> backupCountMenu = new UIMenuNumericScrollerItem<int>("Requested Members", "Set the number of members you want to be dispatched to your location.", 1, 7, 1) { Value = 2 };
+            // Offer only what rank will actually authorize, so the scroller never promises
+            // men the request path is going to refuse. Returns upstream's 7 when the
+            // backup limits flag is off.
+            int backupCap = Player.GangRequisitionManager == null ? 7 : Player.GangRequisitionManager.BackupCap(ActiveGang);
+            int backupCost = Player.GangRequisitionManager != null && Player.GangRequisitionManager.BackupLimitsEnabled
+                ? Player.GangRequisitionManager.PrivilegeFor(ActiveGang).BackupGoodwillPerMember
+                : 0;
+            string backupDescription = backupCost > 0
+                ? $"Set the number of members you want dispatched to your location. {backupCost} goodwill each."
+                : "Set the number of members you want to be dispatched to your location.";
+            UIMenuNumericScrollerItem<int> backupCountMenu = new UIMenuNumericScrollerItem<int>("Requested Members", backupDescription, 1, backupCap, 1) { Value = Math.Min(2, backupCap) };
             BackupSubMenu.AddItem(backupCountMenu);
 
             List<VehicleNameSelect> vehicleNameList = new List<VehicleNameSelect>();

@@ -326,6 +326,8 @@ public class PedInspect : DynamicActivity
         }
         Ped.ShowCustomDisplay(pedHeadshotHandle, "~r~Ped Searched", Description);
         EntryPoint.WriteToConsole($"LOOTING:{Ped.Name} {Description}");
+        // The crew were standing there while you did it. Only pays if something was taken.
+        Player?.GangCrewManager?.OnBodyLooted(Ped, CashAdded, hasAddedItem);
     }
     private bool PlayAnimation(string dictionary, string animation)
     {
