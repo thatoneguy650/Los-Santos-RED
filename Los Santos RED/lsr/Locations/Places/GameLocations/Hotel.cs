@@ -138,7 +138,23 @@ public class Hotel : GameLocation
             return;
         }
         Player.BankAccounts.GiveMoney(-1 * Price, true);
-        Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
+
+        // Fixed DateTime handling
+        DateTime currentDate = new DateTime(
+            Time.CurrentYear,
+            Time.CurrentMonth,
+            Time.CurrentDay
+        );
+
+        DateTime checkoutDate = currentDate.AddDays(Nights);
+
+        Time.FastForward(new DateTime(
+            checkoutDate.Year,
+            checkoutDate.Month,
+            checkoutDate.Day,
+            11, 0, 0
+        ));
+
         Player.IsResting = true;
         Player.IsSleeping = true;
         KeepInteractionGoing = true;
