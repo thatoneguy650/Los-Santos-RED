@@ -2,6 +2,10 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <GameInstallDir Condition="'$(GameInstallDir)' == ''">..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V</GameInstallDir>
+    <EnhancedGameInstallDir Condition="'$(EnhancedGameInstallDir)' == ''">..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V Enhanced</EnhancedGameInstallDir>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2541830F-5D6E-4B6C-947C-90B760178BE2}</ProjectGuid>
@@ -18,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>$(GameInstallDir)\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V Enhanced\Plugins\</OutputPath>
+    <OutputPath>$(EnhancedGameInstallDir)\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>$(GameInstallDir)\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -44,7 +48,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V Enhanced\Plugins\</OutputPath>
+    <OutputPath>$(EnhancedGameInstallDir)\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -106,7 +110,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Enhanced|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V Enhanced\plugins\</OutputPath>
+    <OutputPath>$(EnhancedGameInstallDir)\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
@@ -127,7 +131,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Enhanced|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V Enhanced\plugins\</OutputPath>
+    <OutputPath>$(EnhancedGameInstallDir)\plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
@@ -140,17 +144,17 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
+      <HintPath>$(GameInstallDir)\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>$(GameInstallDir)\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHookSDK">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
+      <HintPath>$(GameInstallDir)\SDK\RagePluginHookSDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
