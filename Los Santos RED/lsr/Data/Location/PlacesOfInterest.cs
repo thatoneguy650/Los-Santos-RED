@@ -3249,30 +3249,40 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
 
         Vector3 ConstructionRoofTopCenter = new Vector3(-149.5585f, -960.4874f, 269.135f);
+        Vector3 TestFightCenter = new Vector3(1151.215f, 3095.373f, 40.416f);
         float ConstructionRoofTopHeading = 0f;
         FightClubs = new List<FightClub>()
         {
-            //new FightClub(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f, "Test Fight Club", "Test Fight Club","")
-            //{
-            //    FightClubArena = new FightClubArena(new Vector3(1155.039f, 3102.574f, 40.41409f),
-            //                                    new List<SpawnPlace>() {
-            //                                        new SpawnPlace(new Vector3(1155.683f, 3099.726f, 40.41409f), 14.22223f),
-            //                                        new SpawnPlace(new Vector3(1154.417f, 3105.639f, 40.41409f), 193.7743f),
-            //                                        new SpawnPlace(new Vector3(1150.119f, 3101.229f, 40.41409f), 286.4763f),
-            //                                        new SpawnPlace(new Vector3(1159.48f, 3103.968f, 40.41409f), 105.1117f),
-            //                                    },
-            //                                    new List<SpawnPlace>() {
-            //                                    new SpawnPlace(new Vector3(1162.14f, 3100.934f, 40.41409f), 73.75758f),
-            //                                    new SpawnPlace(new Vector3(1149.294f, 3106.389f, 40.41409f), 233.9551f),
-            //                                    new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
-            //                                },
-            //                                    new List<SpawnPlace>() {
-            //                                    new SpawnPlace(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f),
-            //                                }),
-            //    OpenTime = 0,
-            //    CloseTime = 24,
-            //    NonGangFightersGroup = "FightClubPeds",
-            //},
+            new FightClub(new Vector3(1151.215f, 3095.373f, 40.416f), 328.3329f, "Test Fight Club", "Test Fight Club","")
+            {
+                FightClubArena = new FightClubArena(TestFightCenter,
+                                                new List<SpawnPlace>() {
+                                                  new SpawnPlace(NativeHelper.GetOffsetPosition(TestFightCenter,0f,4.0f), -180f + 90f + 180f),
+                                                new SpawnPlace(NativeHelper.GetOffsetPosition(TestFightCenter,-90f,4.0f), 90f + 90f + 180f),
+                                                new SpawnPlace(NativeHelper.GetOffsetPosition(TestFightCenter,-180f,4.0f), 0f + 90f + 180f),
+                                                new SpawnPlace(NativeHelper.GetOffsetPosition(TestFightCenter,-270f,4.0f), -90f + 90f + 180f),
+                                                },
+                                                new List<SpawnPlace>() {
+                                                new SpawnPlace(NativeHelper.GetOffsetPosition(TestFightCenter,0f,10.0f), -180f + 90f + 180f),
+                                                //new SpawnPlace(NativeHelper.GetOffsetPosition(ConstructionRoofTopCenter,-90f,4.0f), 90f + 90f + 180f),
+                                                //new SpawnPlace(NativeHelper.GetOffsetPosition(ConstructionRoofTopCenter,-180f,4.0f), 0f + 90f + 180f),
+                                                //new SpawnPlace(NativeHelper.GetOffsetPosition(ConstructionRoofTopCenter,-270f,4.0f), -90f + 90f + 180f),
+                                            },
+                                                new List<SpawnPlace>() {
+                                                //new SpawnPlace(new Vector3(-79.78997f, -1032.375f, 28.23083f), 226.2868f),
+                                            }),
+
+
+                OpenTime = 0,
+                CloseTime = 24,
+                DisableRegularInteract = true,
+                DisableGangFights = true,
+                InteriorID = -2004,
+                NonGangFightersGroup = "FightClubPeds",
+                SpectatorsGroup = "FightClubPeds",
+                VehiclesGroup = "RivalsVehicles",
+                IsVehicleFight = true,
+            },
 
             new FightClub(new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f, "Construction Rumble", "Fight at the top of a skyscraper","")
             {
@@ -3346,18 +3356,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 NonGangFightersGroup = "DogFightPeds",
                 SpectatorsGroup = "FightClubPeds",
             },
-
-
-            /*
-             * new ConditionalLocation(new Vector3(1451.354f, 1066.984f, 114.334f), 91.76149f, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),
-new ConditionalLocation(, 75f),*/
 
         };
     }

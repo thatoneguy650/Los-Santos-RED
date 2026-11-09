@@ -12,33 +12,45 @@ public class AIFightClubFighter : FightClubFighter
 {
 
     private ITargetable Targetable;
+    private bool IsVehicleFight;
+    private ISettingsProvideable Settings;
     public override bool IsPlayer => false;
     public PedExt PedExt { get; private set; }
     public GangMember GangMember { get; private set; }
     public bool WasPreviousWinner { get; set; }
     public Gang Gang { get; set; }
+    public VehicleExt VehicleExt { get; private set; }
 
     public void SpawnInRing(FightClubArena fightClubArena, IEntityProvideable world, IFightClubable player, SpawnPlace spawnPlace, FightClub fightClub, DispatchablePerson dispatchablePerson,
-        ITargetable targetable, int spawnedOrder)
+        ITargetable targetable, int spawnedOrder, DispatchableVehicle dispatchableVehicleToCreate, bool isVehicleFight, ISettingsProvideable settings)
     {
+        IsVehicleFight = isVehicleFight;
         FightClubArena = fightClubArena;
         Player = player;
         Targetable = targetable;
         SpawnPlace = spawnPlace;
+        Settings = settings;
         SpawnLocation spawnLocation = new SpawnLocation(spawnPlace.Position, spawnPlace.Heading);
         if(Gang == null)
         {
-            PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePerson, fightClub, null);
+            PedExt = Player.Dispatcher.SpawnCivilian(spawnLocation, dispatchableVehicleToCreate, dispatchablePerson, fightClub, null, false);
         }
         else
         {
-            GangMember = Player.Dispatcher.GangDispatcher.SpawnGangMember(spawnLocation, Gang,true, true,null, dispatchablePerson, fightClub, true);
+            GangMember = Player.Dispatcher.GangDispatcher.SpawnGangMember(spawnLocation, Gang,!IsVehicleFight, !IsVehicleFight, dispatchableVehicleToCreate, dispatchablePerson, fightClub, true);
             PedExt = GangMember;
         }   
         if (PedExt == null || !PedExt.Pedestrian.Exists())
         {
             return;
         }
+
+
+        if(isVehicleFight && PedExt.Pedestrian.CurrentVehicle.Exists())
+        {
+            VehicleExt = world.Vehicles.GetVehicleExt(PedExt.Pedestrian.CurrentVehicle);
+        }
+
         PedExt.CanBeAmbientTasked = false;
         PedExt.CanBeTasked = false;
         PedExt.CanBeIdleTasked = false;
@@ -56,7 +68,10 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.Pedestrian.KeepTasks = true;
         //PedExt.Pedestrian.Tasks.StandStill(1500000);
 
-
+        if(isVehicleFight)
+        {
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(PedExt.Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, false);
+        }
 
 
         PutInMeleeAnimation();
@@ -70,6 +85,14 @@ public class AIFightClubFighter : FightClubFighter
     private void PutInMeleeAnimation()
     {
         if(PedExt != null && PedExt.IsAnimal)
+        {
+            return;
+        }
+        if(!PedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        if(IsVehicleFight)
         {
             return;
         }
@@ -99,7 +122,7 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.WillFightPolice = true;
         PedExt.CanBeTasked = false;
         PedExt.WillCower = false;
-        PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable, fightClubFight);
+        PedExt.CurrentTask = new GeneralFight(PedExt, PedExt, Targetable, fightClubFight, Settings);
         PedExt.CurrentTask.Start();
     }
     public override void Update()
@@ -138,8 +161,18 @@ public class AIFightClubFighter : FightClubFighter
         {
             return;
         }
-        PedExt.Pedestrian.Position = SpawnPlace.Position;
-        PedExt.Pedestrian.Heading = SpawnPlace.Heading;
+
+        if(IsVehicleFight && PedExt.Pedestrian.CurrentVehicle.Exists())
+        {
+            PedExt.Pedestrian.CurrentVehicle.Position = SpawnPlace.Position;
+            PedExt.Pedestrian.CurrentVehicle.Heading = SpawnPlace.Heading;
+        }
+        else
+        {
+            PedExt.Pedestrian.Position = SpawnPlace.Position;
+            PedExt.Pedestrian.Heading = SpawnPlace.Heading;
+        }
+
         PutInMeleeAnimation();
         //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedExt.Pedestrian, "melee@unarmed@base", "melee_intro_ai", 4.0f, -4.0f, -1, (int)(eAnimationFlags.), 0, false, false, false);//-1
 
@@ -154,6 +187,12 @@ public class AIFightClubFighter : FightClubFighter
         {
             HasLost = true;
             EntryPoint.WriteToConsole("FIGHTER LOST SINCE THEY ARE DEAD GONE OR UNCONSCIOUS");
+            return;
+        }
+        if(IsVehicleFight && (!PedExt.Pedestrian.CurrentVehicle.Exists() || !PedExt.Pedestrian.IsInAnyVehicle(false)) )
+        {
+            HasLost = true;
+            EntryPoint.WriteToConsole("FIGHTER LOST SINCE THEIR VWEHICLE IS GONE OR DESTROYED");
             return;
         }
         if (distance >= 20f)
@@ -211,6 +250,12 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.Pedestrian.BlockPermanentEvents = true;
         PedExt.DisableCrimeCheck = false;
         
+
+        if(VehicleExt != null && VehicleExt.Vehicle.Exists())
+        {
+            VehicleExt.Vehicle.IsPersistent = false;
+        }
+
         base.Dispose();
         EntryPoint.WriteToConsole($"AI FIGHTER DISPOSE RAN FOR {PedExt.Name}");
     }
@@ -242,14 +287,17 @@ public class AIFightClubFighter : FightClubFighter
         PedExt.PedPerception.Reset();
         PedExt.PlayerPerception.Reset();
 
-        if (SpawnPlace == null)
+        if (!IsVehicleFight)
         {
-            PedExt.Pedestrian.Tasks.StandStill(1500000);
+            if (SpawnPlace == null)
+            {
+                PedExt.Pedestrian.Tasks.StandStill(1500000);
+            }
+            else
+            {
+                PedExt.Pedestrian.Tasks.GoStraightToPosition(SpawnPlace.Position, 1.0f, SpawnPlace.Heading, 1.0f, 5000);
+            }
         }
-        else
-        {
-            PedExt.Pedestrian.Tasks.GoStraightToPosition(SpawnPlace.Position, 1.0f, SpawnPlace.Heading, 1.0f, 5000);
-        }    
         //PedExt.PedBrain.AssignIdleTask();
         EntryPoint.WriteToConsole($"SET PASSIVE RAN FOR {PedExt.Name}");
     }

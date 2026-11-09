@@ -9,6 +9,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowCivilianTaskArrows { get; set; }
     public bool ShowCivilianPerceptionArrows { get; set; }
     public bool ShowTrafficArrows { get; set; }
+    public int FightClubVehicleMission { get; set; }
 
     [OnDeserialized()]
     private void SetValuesOnDeserialized(StreamingContext context)
@@ -27,5 +28,6 @@ public class DebugSettings : ISettingsDefaultable
         ShowCivilianTaskArrows = false;
         ShowCivilianPerceptionArrows = false;
         ShowTrafficArrows = false;
+        FightClubVehicleMission = 2;
     }
 }

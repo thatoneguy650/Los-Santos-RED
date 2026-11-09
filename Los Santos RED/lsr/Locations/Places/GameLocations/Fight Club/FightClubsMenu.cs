@@ -28,8 +28,10 @@ public class FightClubsMenu
     private List<string> AllowedGangs;
     private List<DispatchablePerson> NonGangFightersGroup;
     private List<DispatchablePerson> SpectatorsPersonList;
+    private List<DispatchableVehicle> FigherVehicles;
     public FightClubsMenu(MenuPool menuPool, UIMenu fightSubMenu, IEntityProvideable world, ISettingsProvideable settings, IInteractionable player, IFightClubable fightClubable, 
-        ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup, IDances dances, List<DispatchablePerson> spectatorsPersonList)
+        ITargetable targetable, FightClub fightClub, IGangs gangs, List<string> allowedGangs, List<DispatchablePerson> nonGangFightersGroup, IDances dances, 
+        List<DispatchablePerson> spectatorsPersonList, List<DispatchableVehicle> listOfVehicles)
     {
         MenuPool = menuPool;
         FightMenu = fightSubMenu;
@@ -44,6 +46,7 @@ public class FightClubsMenu
         NonGangFightersGroup = nonGangFightersGroup;
         Dances = dances;
         SpectatorsPersonList = spectatorsPersonList;
+        FigherVehicles = listOfVehicles;
     }
     public void Setup(LocationCamera locationCamera)
     {
@@ -210,16 +213,17 @@ public class FightClubsMenu
             FightClubFight fightClubFight;
             if (gangToFight != null)
             {
-                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, gangToFight, Dances, SpectatorsPersonList);
+                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, gangToFight, Dances, SpectatorsPersonList, FigherVehicles);
             }
             else
             {
-                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup, Dances, SpectatorsPersonList);
+                fightClubFight = new FightClubFight(FightClub.FightClubArena, FightClub, isPlayerFight, TotalFighters, World, Settings, Targetable, FightClubable, NonGangFightersGroup, Dances, SpectatorsPersonList, FigherVehicles);
             }
             fightClubFight.AllowMeleeWeapons = allowMelee;
             fightClubFight.AllowSidearms = allowSidearms;
             fightClubFight.AllowHeavyWeapons = allowHeavyWeapons;
             fightClubFight.SpectatorsToAdd = spectatorsSelected;
+            fightClubFight.IsVehicleFight = FightClub.IsVehicleFight;
             fightClubFight.Setup();
             Game.FadeScreenOut(1000, true);
             fightClubFight.BeginFirstFight();

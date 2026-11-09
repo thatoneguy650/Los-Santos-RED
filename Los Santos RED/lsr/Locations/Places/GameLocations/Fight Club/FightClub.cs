@@ -15,6 +15,7 @@ public class FightClub : GameLocation
     private UIMenu FightSubMenu;
     private IGangs Gangs;
     private IDispatchablePeople DispatchablePeople;
+    private IDispatchableVehicles DispatchableVehicles;
     private IIssuableWeapons IssuableWeapons;
     private IDances Dances;
     public FightClub() : base()
@@ -52,6 +53,8 @@ public class FightClub : GameLocation
     public bool IsRestrictedToFriendly { get; set; } = false;
     public bool IsRestrictedToMember { get; set; } = false;
 
+    public bool IsVehicleFight { get; set; }
+    public string VehiclesGroup { get; set; }
 
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
@@ -78,7 +81,7 @@ public class FightClub : GameLocation
         Gangs = gangs;
        // PlacesOfInterest = placesOfInterest;
         DispatchablePeople = dispatchablePeople;
-        //DispatchableVehicles = modDataFileManager.DispatchableVehicles;
+        DispatchableVehicles = modDataFileManager.DispatchableVehicles;
         IssuableWeapons = issuableWeapons;
         AssociatedGang = gangs.GetGang(AssignedAssociationID);
         OriginalGang = AssociatedGang;
@@ -206,10 +209,11 @@ public class FightClub : GameLocation
         {
             FightSubMenu.SetBannerType(EntryPoint.LSRedColor);
         }
+        List<DispatchableVehicle> listOfVehicles = DispatchableVehicles.GetVehicleData(VehiclesGroup).ToList();
         List<DispatchablePerson> listOfPeople = DispatchablePeople.GetPersonData(NonGangFightersGroup).ToList();
         List<DispatchablePerson> listOfSpectatorPeople = DispatchablePeople.GetPersonData(SpectatorsGroup).ToList();
         FightClubsMenu fightClubsMenu = new FightClubsMenu(MenuPool, FightSubMenu, World, Settings, Player, EntryPoint.ModController.Player, EntryPoint.ModController.Player, this, Gangs, 
-            AllowedGangs, listOfPeople, Dances, listOfSpectatorPeople);
+            AllowedGangs, listOfPeople, Dances, listOfSpectatorPeople, listOfVehicles);
         fightClubsMenu.Setup(locationCamera);
         //InteractionMenu.Visible = true;
 

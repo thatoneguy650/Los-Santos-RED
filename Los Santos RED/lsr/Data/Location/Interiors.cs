@@ -5414,14 +5414,14 @@ public class Interiors : IInteriors
     {
         PossibleInteriors.FightClubInteriors.AddRange(new List<FightClubInterior>()
         {
-            new FightClubInterior(-2005,"Cartel Dogfights"){ 
-                FightClubInteracts = new List<FightClubInteract> 
-                { 
+            new FightClubInterior(-2005,"Cartel Dogfights"){
+                FightClubInteracts = new List<FightClubInteract>
+                {
                     new FightClubInteract("carteldogfightInteract1",new Vector3(1464.851f, 1046.678f, 114.3341f), 177.3881f,"Start Fight"),// new Vector3(1464.842f, 1047.021f, 114.334f), 0.1439041f,"Start Fight") ,
                 } },
 
             new FightClubInterior(-2006,"Construction Rumble"){
-                FightClubInteracts = new List<FightClubInteract> 
+                FightClubInteracts = new List<FightClubInteract>
                 {
                     new FightClubInteract("rooffightInteract1",new Vector3(-145.6288f, -949.1072f, 269.1353f), 159.0168f//new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f
                     
@@ -5436,7 +5436,15 @@ public class Interiors : IInteriors
                 },
                 MaxUpdateDistance = 300f,
             },
-        });
+            new FightClubInterior(-2004,"Test Fight"){
+                FightClubInteracts = new List<FightClubInteract>
+                {
+                    new FightClubInteract("testFightInteract1", new Vector3(1158.411f,3088.665f,40.50196f), 104.7892f//new Vector3(-145.1138f, -958.579f, 269.1349f), 125.4617f
+                    
+                    
+                    ,"Start Fight") ,
+                }, }}
+        );
     }
     private void GamblingDens()
     {

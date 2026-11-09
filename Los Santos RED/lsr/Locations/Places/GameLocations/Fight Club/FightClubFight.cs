@@ -21,10 +21,10 @@ public class FightClubFight
 {
     private FightClubArena FightClubArena;
     private List<FightClubFighter> Fighters;
-    private List<AIFightClubFighter> AIFighters;
-    private List<PedExt> Spectators;
+
+    private List<PedExt> Spectators = new List<PedExt>();
     private FightClub FightClub;
-    private bool IsPlayerFight;
+
     private int TotalFighters;
     private IEntityProvideable World;
     private IFightClubable Player;
@@ -50,8 +50,9 @@ public class FightClubFight
     private AIFightClubFighter PreviousWinner;
     private List<DispatchablePerson> NonGangFightersGroup;
     private List<DispatchablePerson> SpectatorsPersonList;
+    private List<DispatchableVehicle> FightersVehicles;
     private UIMenu ActiveFightMenu;
-
+    public List<AIFightClubFighter> AIFighters { get; private set; }
     public bool IsFightActive { get;private set; }
     public bool IsEnded { get; private set; }   
     public bool AllowMeleeWeapons { get; set; }
@@ -61,14 +62,15 @@ public class FightClubFight
     public bool IsWeaponFight => AllowMeleeWeapons || AllowSidearms || AllowHeavyWeapons;
 
     public int SpectatorsToAdd { get; set; } 
-
+    public bool IsVehicleFight { get; set; }
+    public bool IsPlayerFight { get; private set; }
     public FightClubFight()
     {
 
     }
 
     public FightClubFight(FightClubArena fightClubArena,  FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
-        IFightClubable player, List<DispatchablePerson> nonGangFightersGroup, IDances dances, List<DispatchablePerson> spectatorsPersonList)
+        IFightClubable player, List<DispatchablePerson> nonGangFightersGroup, IDances dances, List<DispatchablePerson> spectatorsPersonList, List<DispatchableVehicle> fightersVehicles)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -81,10 +83,11 @@ public class FightClubFight
         NonGangFightersGroup = nonGangFightersGroup;
         Dances = dances;
         SpectatorsPersonList = spectatorsPersonList;
+        FightersVehicles = fightersVehicles;
     }
 
     public FightClubFight(FightClubArena fightClubArena, FightClub fightClub, bool isPlayerFight, int totalFighters, IEntityProvideable world, ISettingsProvideable settings, ITargetable targetable, 
-        IFightClubable player, Gang gang, IDances dances, List<DispatchablePerson> spectatorsPersonList)
+        IFightClubable player, Gang gang, IDances dances, List<DispatchablePerson> spectatorsPersonList, List<DispatchableVehicle> fightersVehicles)
     {
         FightClubArena = fightClubArena;
         FightClub = fightClub;
@@ -97,6 +100,7 @@ public class FightClubFight
         GangToFight = gang;
         Dances = dances;
         SpectatorsPersonList = spectatorsPersonList;
+        FightersVehicles = fightersVehicles;
     }
 
     public void Setup()
@@ -644,7 +648,7 @@ public class FightClubFight
             dispatchablePersonToCreate = NonGangFightersGroup.RandomElementByWeight(x => x.AmbientSpawnChance);
         }
 
-        PedExt createdSpectator = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePersonToCreate, FightClub, null);
+        PedExt createdSpectator = Player.Dispatcher.SpawnCivilian(spawnLocation, null, dispatchablePersonToCreate, FightClub, null, false);
 
         if (createdSpectator == null || !createdSpectator.Pedestrian.Exists())
         {
@@ -1015,7 +1019,12 @@ public class FightClubFight
         {
             dispatchablePersonToCreate = NonGangFightersGroup.RandomElementByWeight(x => x.AmbientSpawnChance);
         }
-        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, dispatchablePersonToCreate, Targetable, order);//use the built in stuff here, get gans or other stuffo
+        DispatchableVehicle dispatchableVehicleToCreate = null;
+        if (IsVehicleFight && FightersVehicles != null && FightersVehicles.Any())
+        {
+            dispatchableVehicleToCreate = FightersVehicles.RandomElementByWeight(x => x.AmbientSpawnChance);
+        }
+        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, dispatchablePersonToCreate, Targetable, order, dispatchableVehicleToCreate, IsVehicleFight, Settings);//use the built in stuff here, get gans or other stuffo
         Fighters.Add(aiFighter);
         AIFighters.Add(aiFighter);
         return aiFighter.PedExt != null || aiFighter.PedExt.Pedestrian.Exists();
@@ -1031,9 +1040,14 @@ public class FightClubFight
         {
             return false;
         }
+        DispatchableVehicle dispatchableVehicleToCreate = null;
+        if (IsVehicleFight)
+        {
+            dispatchableVehicleToCreate = gang.Vehicles.RandomElementByWeight(x => x.AmbientSpawnChance);
+        }
         AIFightClubFighter aiFighter = new AIFightClubFighter();
         aiFighter.Gang = gang;
-        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, dispatchablePerson, Targetable, order);//use the built in stuff here, get gans or other stuffo
+        aiFighter.SpawnInRing(FightClubArena, World, Player, spawnLocation, FightClub, dispatchablePerson, Targetable, order, dispatchableVehicleToCreate, IsVehicleFight, Settings);//use the built in stuff here, get gans or other stuffo
         Fighters.Add(aiFighter);
         AIFighters.Add(aiFighter);
         return aiFighter.PedExt != null || aiFighter.PedExt.Pedestrian.Exists();

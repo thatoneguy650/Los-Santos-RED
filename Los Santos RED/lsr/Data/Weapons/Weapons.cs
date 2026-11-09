@@ -104,10 +104,31 @@ public class Weapons : IWeapons
             new WeaponComponent("Scope", 0x3CC6BA57, ComponentSlot.Optic),
             new WeaponComponent("Holographic Sight", 0x420FD713, ComponentSlot.Optic),
             new WeaponComponent("Suppressor", 0xC304849A,ComponentSlot.Muzzle),
-            new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring)
+            new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring),
+                        new WeaponComponent("Full Stock", 0x1660285F, ComponentSlot.ForwardGrip),
+            new WeaponComponent("Sliding Stock", 0x9FBCE0B9, ComponentSlot.ForwardGrip),
+
+            //0x1660285F
         };
-        fewList.Add(new WeaponInformation("weapon_smg", 90, WeaponCategory.SMG, 2, 736523883, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
-        
+        fewList.Add(new WeaponInformation("weapon_smg2", 90, WeaponCategory.SMG, 2, 2234779543, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGComponents });
+        List<WeaponComponent> SMGSDComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x26574997,ComponentSlot.Magazine),
+            new WeaponComponent("Extended Clip", 0x350966FB,ComponentSlot.Magazine),
+            new WeaponComponent("Drum Magazine", 0x79C77076, ComponentSlot.Magazine),
+            new WeaponComponent("Flashlight", 0x7BC4CDDC,ComponentSlot.Light),
+            new WeaponComponent("Scope", 0x3CC6BA57, ComponentSlot.Optic),
+            new WeaponComponent("Holographic Sight", 0x420FD713, ComponentSlot.Optic),
+            new WeaponComponent("Suppressor", 0xC304849A,ComponentSlot.Muzzle),
+            new WeaponComponent("Yusuf Amir Luxury Finish", 0x27872C90,ComponentSlot.Coloring),
+            new WeaponComponent("Full Stock", 0x1660285F, ComponentSlot.ForwardGrip),
+            new WeaponComponent("Sliding Stock", 0x9FBCE0B9, ComponentSlot.ForwardGrip),
+            //
+        };
+        fewList.Add(new WeaponInformation("weapon_smgsd", 90, WeaponCategory.SMG, 2, 3092162810, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.TwoRoundBurst | SelectorOptions.FullAuto) { PossibleComponents = SMGSDComponents });
+
+
+
         List<WeaponComponent> TacticalRifleComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x3749B8BB,ComponentSlot.Magazine),
