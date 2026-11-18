@@ -111,6 +111,11 @@ public class GangBackup
                     {
                         grpMember.SetFollow();
                     }
+                    // After SetFollow on purpose: GroupMember.OnBecameGroupMember applies
+                    // GroupSettings health and armor, and would overwrite the rank loadout
+                    // if this ran any earlier.
+                    Player.GangRequisitionManager?.ApplyBackupLoadout(gangMember, RequestedGang);
+                    Player.GangCrewManager?.ClaimIdentity(gangMember, RequestedGang);
                     //Player.GroupManager.SetFollow(gangMember);
                     //Player.GroupManager.SetFollow(gangMember);
                     gangMember.IsAddedToPlayerGroup = true;

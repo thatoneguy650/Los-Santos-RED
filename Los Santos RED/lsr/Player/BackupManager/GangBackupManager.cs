@@ -37,6 +37,7 @@ public class GangBackupManager
             gangBackup.Cancel();
         }
         ActiveBackup.Clear();
+        Player.GangRequisitionManager?.ReleaseAllSquads();
         EntryPoint.WriteToConsole("GangBackupManager Reset");
     }
     public void Dispose()
@@ -53,6 +54,20 @@ public class GangBackupManager
         {
             EntryPoint.WriteToConsole($"RequestBackup FAIL, NO GANG");      
             return;
+        }
+        // Rank cap, cooldown and goodwill, all at the one entry point every backup
+        // request passes through. Upstream's hard-coded 7 stays put downstream as a
+        // ceiling this never reaches, so none of those four literals need editing.
+        if (Player.GangRequisitionManager != null)
+        {
+            int authorizedCount = requestedMemberCount;
+            string requisitionRefusal = Player.GangRequisitionManager.AuthorizeBackup(gang, ref authorizedCount);
+            if (requisitionRefusal != null)
+            {
+                Player.CellPhone.AddPhoneResponse(gang.Contact.Name, gang.Contact.IconName, requisitionRefusal);
+                return;
+            }
+            requestedMemberCount = authorizedCount;
         }
         GangBackup currentBackup = ActiveBackup.FirstOrDefault(x => x.RequestedGang.ID == gang.ID);
         if(currentBackup == null)
@@ -108,6 +123,10 @@ public class GangBackupManager
         if (!gangBackup.IsActive)
         {
             EntryPoint.WriteToConsole($"RequestBackup FAIL, NOT ACTIVE");
+            // Nobody came, so nobody is paid for. AuthorizeBackup charged before the
+            // dispatcher was asked, which is the only place the charge can live, so the
+            // failure path has to hand it back.
+            Player.GangRequisitionManager?.RefundBackup(gang, requestedMemberCount);
             Player.CellPhone.AddPhoneResponse(gang.Contact.Name, gang.Contact.IconName, failReplies.PickRandom());
             return false;
         }
