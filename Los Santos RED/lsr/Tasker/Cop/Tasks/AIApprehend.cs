@@ -132,12 +132,12 @@ public class AIApprehend : ComplexTask
     }
     private Task GetCurrentTaskDynamic()
     {
-        if (IsTrafficStop && OtherTarget != null && OtherTarget.IsInVehicle &&
+        if (IsTrafficStop && Player != null && Player.IsInVehicle &&
             Ped.IsDriver && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
         {
             return Task.PullOver;
         }
-        if (IsTrafficStop && OtherTarget != null && !OtherTarget.IsInVehicle)
+        if (IsTrafficStop && Player != null && !Player.IsInVehicle)
         {
             return Task.Nothing;
         }
@@ -629,7 +629,7 @@ public class AIApprehend : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() &&
             OtherTarget != null && OtherTarget.Pedestrian.Exists() &&
-            OtherTarget.Pedestrian.CurrentVehicle.Exists())
+            Player.Character.CurrentVehicle.Exists())
         {
             NeedsUpdates = false;
             Ped.Pedestrian.BlockPermanentEvents = Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase;
@@ -641,7 +641,7 @@ public class AIApprehend : ComplexTask
                 "TASK_VEHICLE_MISSION",
                 Ped.Pedestrian,
                 Ped.Pedestrian.CurrentVehicle,
-                OtherTarget.Pedestrian.CurrentVehicle,
+                Player.Character.CurrentVehicle,
                 (int)eVehicleMissionType.PullOver,
                 20f,
                 (int)eCustomDrivingStyles.Code3Close,

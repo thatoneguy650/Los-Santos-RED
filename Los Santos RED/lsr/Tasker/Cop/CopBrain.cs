@@ -47,7 +47,7 @@ public class CopBrain : PedBrain
                     if (Cop.ShouldUpdateTarget)
                     {
                         PedExt otherTarget = Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop
-                            ? World.Pedestrians.GetPedExt(Player.Character.Handle)
+                            ? GetPlayerPedExt()
                             : PedToAttack();
                         Cop.CurrentTarget = otherTarget;
                         Cop.GameTimeLastUpdatedTarget = Game.GameTime;
@@ -140,6 +140,12 @@ public class CopBrain : PedBrain
         }
         Cop.GameTimeLastUpdatedTask = Game.GameTime;
     }
+    private PedExt GetPlayerPedExt()
+    {
+        Mod.Player modPlayer = Player as Mod.Player;
+        return modPlayer?.HealthState?.MyPed;
+    }
+
     private bool TryStartANPRTrafficStop()
     {
         if (Player == null || Player.IsWanted || !Player.IsInVehicle || Player.CurrentVehicle == null ||
@@ -183,7 +189,7 @@ public class CopBrain : PedBrain
             return false;
         }
 
-        PedExt playerPed = World.Pedestrians.GetPedExt(Player.Character.Handle);
+        PedExt playerPed = GetPlayerPedExt();
         if (playerPed == null)
         {
             return false;
