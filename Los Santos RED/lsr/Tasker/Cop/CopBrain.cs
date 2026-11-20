@@ -22,8 +22,8 @@ public class CopBrain : PedBrain
     private const uint ANPRScanDuration = 2500;
 
     private DateTime? LastSeenPlayerAt;
-    private DateTime? LastSeenVehicleAt;
     private VehicleExt LastSeenVehicle;
+    private Dictionary<VehicleExt, DateTime> LastSeenVehicles = new Dictionary<VehicleExt, DateTime>();
     private bool WasSeeingPlayer;
     private bool WasSeeingVehicle;
     private bool MemoryRecognizedPlayer;
@@ -386,18 +386,29 @@ public class CopBrain : PedBrain
         bool canSeeVehicle = currentVehicle != null && currentVehicle.Vehicle.Exists();
         if (canSeeVehicle)
         {
-            if ((!WasSeeingVehicle || LastSeenVehicle != currentVehicle) &&
-                LastSeenVehicle == currentVehicle && LastSeenVehicleAt.HasValue)
+            bool newVehicleEncounter = !WasSeeingVehicle || LastSeenVehicle != currentVehicle;
+            if (newVehicleEncounter)
             {
-                MemoryRecognizedVehicle = RollRecognition(LastSeenVehicleAt.Value, now);
-            }
-            else if (LastSeenVehicle != currentVehicle)
-            {
-                MemoryRecognizedVehicle = false;
+                DateTime previousVehicleSighting;
+                MemoryRecognizedVehicle = LastSeenVehicles.TryGetValue(currentVehicle, out previousVehicleSighting) &&
+                    RollRecognition(previousVehicleSighting, now);
             }
 
             LastSeenVehicle = currentVehicle;
-            LastSeenVehicleAt = now;
+            LastSeenVehicles[currentVehicle] = now;
+
+            // Keep the per-officer vehicle memory bounded.
+            if (LastSeenVehicles.Count > 64)
+            {
+                foreach (VehicleExt oldestVehicle in LastSeenVehicles
+                    .OrderBy(x => x.Value)
+                    .Take(LastSeenVehicles.Count - 64)
+                    .Select(x => x.Key)
+                    .ToList())
+                {
+                    LastSeenVehicles.Remove(oldestVehicle);
+                }
+            }
         }
         else
         {
