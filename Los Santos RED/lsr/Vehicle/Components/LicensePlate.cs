@@ -60,6 +60,7 @@ namespace LSR.Vehicles
                 registrationId = value;
             }
         }
+        public bool HasRegistrationId => !string.IsNullOrEmpty(registrationId);
         private static string NormalizePlateNumber(string plateNumber)
         {
             return string.IsNullOrWhiteSpace(plateNumber) ? string.Empty : plateNumber.Trim().ToUpperInvariant();

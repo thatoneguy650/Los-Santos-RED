@@ -137,7 +137,25 @@ namespace LSR.Vehicles
         }
         public uint GameTimeToReportStolen { get; set; } = 0;
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
-        public bool HasOriginalPlate => CarPlate != null && OriginalLicensePlate != null && CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId;
+        public bool HasOriginalPlate
+        {
+            get
+            {
+                if (CarPlate == null || OriginalLicensePlate == null)
+                {
+                    return false;
+                }
+                // Migrate legacy saves whose two plate objects predate RegistrationId.
+                if (!CarPlate.HasRegistrationId && !OriginalLicensePlate.HasRegistrationId &&
+                    string.Equals(CarPlate.PlateNumber, OriginalLicensePlate.PlateNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    string registrationId = Guid.NewGuid().ToString("N");
+                    CarPlate.RegistrationId = registrationId;
+                    OriginalLicensePlate.RegistrationId = registrationId;
+                }
+                return CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId;
+            }
+        }
         public bool IsWanted => CarPlate != null && CarPlate.IsWanted;// CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
 
 
