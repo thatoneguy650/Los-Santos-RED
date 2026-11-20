@@ -196,6 +196,18 @@ namespace Mod
         public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
         public LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
+
+        public WarrantRecord IssueLawEnforcementWarrant(WarrantType type, WarrantPriority priority, string issuingAgencyID,
+            string jurisdictionID, IEnumerable<string> linkedCrimeIDs, string suspectedResidenceID = null, float residenceConfidence = 0.0f)
+        {
+            List<string> ownedBusinessIDs = Properties == null ? new List<string>() : Properties.PropertyList
+                .OfType<Business>()
+                .Select(x => string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "BUSINESS:{0}:{1:0.00}:{2:0.00}:{3:0.00}", x.Name, x.EntrancePosition.X, x.EntrancePosition.Y, x.EntrancePosition.Z))
+                .ToList();
+            return LawEnforcementIntelligence.IssueWarrant(CurrentDateTime, type, priority, issuingAgencyID,
+                jurisdictionID, linkedCrimeIDs, ownedBusinessIDs, suspectedResidenceID, residenceConfidence);
+        }
         public PlayerTasks PlayerTasks { get; private set; }
         public VehicleManager VehicleManager { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
