@@ -57,6 +57,91 @@ namespace LosSantosRED.lsr
             return copy;
         }
 
+        public bool RecordPoliceSighting(DateTime observedAt, string officerID, bool inVehicle, string vehicleID, string vehicleDescription, float x, float y, float z)
+        {
+            string sourceID = "COP:" + (officerID ?? "UNKNOWN");
+            bool recorded = RecordObservation(new IntelligenceObservation
+            {
+                ObservedAt = observedAt, Source = IntelligenceSource.PatrolOfficer,
+                EvidenceType = IntelligenceEvidenceType.VisualSighting, TargetType = IntelligenceTargetType.Person,
+                TargetID = SubjectID, TargetDescription = "Player", SourceID = sourceID, EntityID = officerID,
+                IsKnownToPolice = true, Confidence = 0.85f, PositionX = x, PositionY = y, PositionZ = z
+            });
+            if (inVehicle && !string.IsNullOrWhiteSpace(vehicleID))
+            {
+                RecordObservation(new IntelligenceObservation
+                {
+                    ObservedAt = observedAt, Source = IntelligenceSource.PatrolOfficer,
+                    EvidenceType = IntelligenceEvidenceType.VisualSighting, TargetType = IntelligenceTargetType.Vehicle,
+                    TargetID = vehicleID, TargetDescription = vehicleDescription, SourceID = sourceID, EntityID = officerID,
+                    IsKnownToPolice = true, Confidence = 0.8f, PositionX = x, PositionY = y, PositionZ = z
+                });
+            }
+            return recorded;
+        }
+
+        public bool RecordANPRRead(DateTime observedAt, string officerID, string plateNumber, string registrationID, string vehicleDescription, float x, float y, float z)
+        {
+            if (string.IsNullOrWhiteSpace(plateNumber)) return false;
+            return RecordObservation(new IntelligenceObservation
+            {
+                ObservedAt = observedAt, Source = IntelligenceSource.ANPR,
+                EvidenceType = IntelligenceEvidenceType.LicensePlateRead, TargetType = IntelligenceTargetType.LicensePlate,
+                TargetID = plateNumber.Trim().ToUpperInvariant(), TargetDescription = vehicleDescription,
+                SourceID = "ANPR:" + (officerID ?? "UNKNOWN"), EntityID = registrationID,
+                IsKnownToPolice = true, Confidence = 0.98f, PositionX = x, PositionY = y, PositionZ = z,
+                Notes = "Plate read by an active police ANPR scan."
+            });
+        }
+
+        // Activity records are not automatically police-known; a later evidence source must establish access.
+        public bool RecordBusinessVisit(DateTime observedAt, string businessName, float x, float y, float z)
+        {
+            return RecordBusinessActivity(observedAt, businessName, x, y, z, IntelligenceEvidenceType.BusinessVisit, "Player visited this business.");
+        }
+
+        public bool RecordBusinessOwnership(DateTime observedAt, string businessName, float x, float y, float z, bool acquired)
+        {
+            return RecordBusinessActivity(observedAt, businessName, x, y, z, IntelligenceEvidenceType.BusinessOwnership,
+                acquired ? "Player acquired this business." : "Player ceased owning this business.");
+        }
+
+        private bool RecordBusinessActivity(DateTime observedAt, string businessName, float x, float y, float z, IntelligenceEvidenceType evidenceType, string notes)
+        {
+            if (string.IsNullOrWhiteSpace(businessName)) return false;
+            string businessID = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "BUSINESS:{0}:{1:0.00}:{2:0.00}:{3:0.00}", businessName.Trim(), x, y, z);
+            return RecordObservation(new IntelligenceObservation
+            {
+                ObservedAt = observedAt, Source = IntelligenceSource.PlayerRecord, EvidenceType = evidenceType,
+                TargetType = IntelligenceTargetType.Business, TargetID = businessID, TargetDescription = businessName,
+                SourceID = "PLAYER_ACTIVITY", IsKnownToPolice = false, Confidence = 1.0f,
+                PositionX = x, PositionY = y, PositionZ = z, Notes = notes
+            });
+        }
+
+        public bool RecordObservation(IntelligenceObservation observation)
+        {
+            if (observation == null || observation.ObservedAt == DateTime.MinValue) return false;
+            Normalize();
+            if (string.IsNullOrWhiteSpace(observation.ID)) observation.ID = Guid.NewGuid().ToString("N");
+            if (string.IsNullOrWhiteSpace(observation.SourceID)) observation.SourceID = "UNKNOWN";
+            observation.Confidence = Math.Max(0.0f, Math.Min(1.0f, observation.Confidence));
+            IntelligenceObservation previous = Observations
+                .Where(x => x != null && x.SourceID == observation.SourceID && x.EvidenceType == observation.EvidenceType &&
+                    x.TargetType == observation.TargetType && x.TargetID == observation.TargetID && x.Notes == observation.Notes)
+                .OrderByDescending(x => x.ObservedAt).FirstOrDefault();
+            if (previous != null && observation.ObservedAt >= previous.ObservedAt &&
+                observation.ObservedAt - previous.ObservedAt < TimeSpan.FromMinutes(5)) return false;
+            Observations.Add(observation);
+            LastUpdatedAt = observation.ObservedAt;
+            if (CreatedAt == DateTime.MinValue) CreatedAt = observation.ObservedAt;
+            if (Observations.Count > 5000)
+                Observations = Observations.Where(x => x != null).OrderByDescending(x => x.ObservedAt)
+                    .Take(5000).OrderBy(x => x.ObservedAt).ToList();
+            return true;
+        }
+
         public void Normalize()
         {
             if (SchemaVersion <= 0) SchemaVersion = 1;
@@ -111,6 +196,9 @@ namespace LosSantosRED.lsr
     public class IntelligenceObservation
     {
         public string ID { get; set; }
+        public string SourceID { get; set; }
+        public string EntityID { get; set; }
+        public bool IsKnownToPolice { get; set; }
         public DateTime ObservedAt { get; set; }
         public IntelligenceSource Source { get; set; }
         public IntelligenceEvidenceType EvidenceType { get; set; }
@@ -132,6 +220,9 @@ namespace LosSantosRED.lsr
             return new IntelligenceObservation
             {
                 ID = ID,
+                SourceID = SourceID,
+                EntityID = EntityID,
+                IsKnownToPolice = IsKnownToPolice,
                 ObservedAt = ObservedAt,
                 Source = Source,
                 EvidenceType = EvidenceType,

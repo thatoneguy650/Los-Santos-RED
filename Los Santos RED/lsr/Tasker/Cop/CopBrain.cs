@@ -48,6 +48,27 @@ public class CopBrain : PedBrain
         PlacesOfInterest = placesOfInterest;
         UpdateRecognitionMemory();
         UpdateANPRScan();
+        if (Cop.PlayerPerception.CanSeeTarget && Player != null)
+        {
+            Mod.Player modPlayer = Player as Mod.Player;
+            if (modPlayer?.LawEnforcementIntelligence != null)
+            {
+                VehicleExt observedVehicle = Player.IsInVehicle ? Player.CurrentVehicle : null;
+                bool hasObservedVehicle = observedVehicle != null && observedVehicle.Vehicle.Exists();
+                string vehicleID = null;
+                string vehicleDescription = null;
+                if (hasObservedVehicle)
+                {
+                    string plate = observedVehicle.Vehicle.LicensePlate;
+                    vehicleID = observedVehicle.CarPlate != null ? "REG:" + observedVehicle.CarPlate.RegistrationId :
+                        "MODEL:" + observedVehicle.Vehicle.Model.Hash + ":PLATE:" + (plate ?? "");
+                    vehicleDescription = observedVehicle.FullName(false);
+                }
+                modPlayer.LawEnforcementIntelligence.RecordPoliceSighting(modPlayer.CurrentDateTime,
+                    Cop.Pedestrian.Handle.ToString(), hasObservedVehicle, vehicleID, vehicleDescription,
+                    Player.Position.X, Player.Position.Y, Player.Position.Z);
+            }
+        }
         if (Cop.PlayerPerception.CanSeeTarget && Player.IsWanted && Player.IsInVehicle &&
             Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() &&
             Player.CurrentVehicle.Vehicle.Driver.Exists() &&
@@ -319,6 +340,14 @@ public class CopBrain : PedBrain
 
         VehicleExt scannedVehicle = ANPRScanVehicle;
         bool recognizedVehicle = ANPRScanVehicleWasRecognized;
+        Mod.Player observingPlayer = Player as Mod.Player;
+        if (observingPlayer?.LawEnforcementIntelligence != null)
+        {
+            observingPlayer.LawEnforcementIntelligence.RecordANPRRead(observingPlayer.CurrentDateTime,
+                Cop.Pedestrian.Handle.ToString(), visiblePlate, scannedVehicle.CarPlate?.RegistrationId,
+                scannedVehicle.FullName(false), scannedVehicle.Vehicle.Position.X,
+                scannedVehicle.Vehicle.Position.Y, scannedVehicle.Vehicle.Position.Z);
+        }
         ClearANPRScan();
 
         if (hasRegistrationIssue)

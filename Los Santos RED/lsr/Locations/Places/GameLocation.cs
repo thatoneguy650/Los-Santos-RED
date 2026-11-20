@@ -1494,10 +1494,22 @@ public class GameLocation : ILocationDispatchable
     public virtual void AddOwnership()
     {
         Player.Properties.AddOwnedLocation(this);
+        if (this is Business)
+        {
+            Mod.Player modPlayer = Player as Mod.Player;
+            modPlayer?.LawEnforcementIntelligence?.RecordBusinessOwnership(modPlayer.CurrentDateTime,
+                Name, EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, true);
+        }
     }
     public virtual void RemoveOwnership()
     {
         Player.Properties.RemoveOwnedLocation(this);
+        if (this is Business)
+        {
+            Mod.Player modPlayer = Player as Mod.Player;
+            modPlayer?.LawEnforcementIntelligence?.RecordBusinessOwnership(modPlayer.CurrentDateTime,
+                Name, EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, false);
+        }
     }
 
     public virtual SavedGameLocation GetSaveData()

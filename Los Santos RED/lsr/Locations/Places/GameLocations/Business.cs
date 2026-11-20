@@ -80,6 +80,12 @@ public class Business : GameLocation, ILocationSetupable, IRestableLocation, IIn
     }
     public override void OnInteract()
     {
+        Mod.Player modPlayer = Player as Mod.Player;
+        if (modPlayer?.LawEnforcementIntelligence != null)
+        {
+            modPlayer.LawEnforcementIntelligence.RecordBusinessVisit(modPlayer.CurrentDateTime,
+                Name, EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z);
+        }
         if (BusinessInterior != null && BusinessInterior.IsTeleportEntry && IsOwned)
         {
             DoEntranceCamera(false);
