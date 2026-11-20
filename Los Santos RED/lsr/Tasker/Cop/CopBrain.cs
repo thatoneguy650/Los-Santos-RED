@@ -191,7 +191,9 @@ public class CopBrain : PedBrain
         }
 
         VehicleExt vehicle = Player.CurrentVehicle;
-        if (Cop.DistanceToPlayer > 45f || !Cop.PlayerPerception.CanSeeTarget ||
+        Vector3 directionToCop = (Cop.Pedestrian.Position - vehicle.Vehicle.Position).ToNormalized();
+        bool copIsBehindPlayer = Vector3.Dot(directionToCop, vehicle.Vehicle.ForwardVector) < 0f;
+        if (Cop.DistanceToPlayer > 45f || !Cop.PlayerPerception.CanSeeTarget || !copIsBehindPlayer ||
             (Cop.CurrentTask != null && Cop.CurrentTask.Name != "Idle") ||
             Game.GameTime - vehicle.GameTimeLastANPRScan < 15000)
         {
