@@ -156,7 +156,7 @@ namespace LSR.Vehicles
                 return CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId;
             }
         }
-        public bool IsWanted => (CarPlate != null && CarPlate.IsWanted) || (Vehicle.Exists() && LicensePlate.IsPlateNumberWanted(Vehicle.LicensePlate));
+        public bool IsWanted => (CarPlate != null && CarPlate.IsWanted) || (Vehicle != null && Vehicle.Exists() && LicensePlate.IsPlateNumberWanted(Vehicle.LicensePlate));
 
 
         public bool HasObviousFicticiousPlate(IViolateable player)

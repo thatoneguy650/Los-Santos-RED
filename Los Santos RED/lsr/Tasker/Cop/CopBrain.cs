@@ -70,7 +70,8 @@ public class CopBrain : PedBrain
                     //GameFiber.Yield();
                     if (Cop.ShouldUpdateTarget)
                     {
-                        PedExt otherTarget = Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop
+                        PedExt otherTarget = Cop.CurrentTask is AIApprehend activeApprehend &&
+                            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit)
                             ? GetPlayerPedExt()
                             : PedToAttack();
                         Cop.CurrentTarget = otherTarget;
@@ -96,7 +97,8 @@ public class CopBrain : PedBrain
     }
     protected override void UpdateCurrentTask()
     {
-        if (Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop)
+        if (Cop.CurrentTask is AIApprehend activeApprehend &&
+            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit))
         {
             return;
         }
@@ -289,7 +291,7 @@ public class CopBrain : PedBrain
             ClearANPRScan();
             if (playerPed != null)
             {
-                SetAIApprehend(playerPed);
+                SetANPREvasionPursuit(playerPed);
             }
             return;
         }
@@ -450,6 +452,24 @@ public class CopBrain : PedBrain
     {
         return start + (end - start) * (float)Math.Max(0.0, Math.Min(1.0, amount));
     }
+    private void SetANPREvasionPursuit(PedExt target)
+    {
+        if (Cop.CurrentTask is AIApprehend activeApprehend && activeApprehend.IsANPREvasionPursuit)
+        {
+            return;
+        }
+
+        Cop.CurrentTask = new AIApprehend(Cop, Player, Cop, Settings)
+        {
+            OtherTarget = target,
+            IsANPREvasionPursuit = true,
+            UseWantedLevel = false
+        };
+        Cop.WeaponInventory.Reset();
+        GameFiber.Yield();
+        Cop.CurrentTask.Start();
+    }
+
     private void SetANPRTrafficStop(PedExt target)
     {
         if (Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop)
