@@ -254,8 +254,72 @@ public class DebugVehicleSubMenu : DebugSubMenu
         CreateColorMenuItem();
         CreateBetterColorMenu();
         CreateInfoMenuItem();
+        CreateVehicleStateMenuItem();
         CreateModificationItem();
         CreateOtherItem();
+    }
+
+    private void CreateVehicleStateMenuItem()
+    {
+        UIMenuItem vehicleStateMenuItem = new UIMenuItem(
+            "Get Vehicle State",
+            "Print the current vehicle's internal LSR state."
+        );
+
+        vehicleStateMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.InterestedVehicle == null ||
+                !Player.InterestedVehicle.Vehicle.Exists())
+            {
+                Game.DisplaySubtitle("No valid vehicle selected.");
+                return;
+            }
+
+            var vehicle = Player.InterestedVehicle;
+            var currentPlate = vehicle.CarPlate;
+            var originalPlate = vehicle.OriginalLicensePlate;
+
+            string toDisplay = string.Join(Environment.NewLine, new[]
+            {
+            "========== VEHICLE STATE ==========",
+
+            $"Vehicle Model Hash: {vehicle.Vehicle.Model.Hash}",
+
+            $"IsStolen: {vehicle.IsStolen}",
+            $"WasReportedStolen: {vehicle.WasReportedStolen}",
+
+            $"IsWanted: {vehicle.IsWanted}",
+            $"CopsRecognizeAsStolen: {vehicle.CopsRecognizeAsStolen}",
+            $"HasBeenSeenByPoliceDuringWanted: {vehicle.HasBeenSeenByPoliceDuringWanted}",
+
+            $"HasOriginalPlate: {vehicle.HasOriginalPlate}",
+            $"HasObviousFicticiousPlate: {vehicle.HasObviousFicticiousPlate(Player as IViolateable)}",
+
+            "--- CURRENT PLATE ---",
+            $"PlateNumber: {currentPlate?.PlateNumber ?? "<null>"}",
+            $"PlateType: {currentPlate?.PlateType.ToString() ?? "<null>"}",
+            $"IsWanted: {currentPlate?.IsWanted.ToString() ?? "<null>"}",
+            $"OriginalModelHash: {currentPlate?.OriginalModelHash.ToString() ?? "<null>"}",
+
+            "--- ORIGINAL PLATE ---",
+            $"PlateNumber: {originalPlate?.PlateNumber ?? "<null>"}",
+            $"PlateType: {originalPlate?.PlateType.ToString() ?? "<null>"}",
+            $"IsWanted: {originalPlate?.IsWanted.ToString() ?? "<null>"}",
+            $"OriginalModelHash: {originalPlate?.OriginalModelHash.ToString() ?? "<null>"}",
+
+            "==================================="
+        });
+
+            EntryPoint.WriteToConsole(toDisplay);
+
+            Game.DisplaySubtitle(
+                $"Vehicle state logged. Stolen: {vehicle.IsStolen}, " +
+                $"Reported: {vehicle.WasReportedStolen}, " +
+                $"Plate Wanted: {vehicle.IsWanted}"
+            );
+        };
+
+        vehicleItemsMenu.AddItem(vehicleStateMenuItem);
     }
 
     private void CreateOtherItem()

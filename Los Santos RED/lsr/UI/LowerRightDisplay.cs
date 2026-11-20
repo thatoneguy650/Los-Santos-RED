@@ -494,13 +494,13 @@ public class LowerRightDisplay
 
             if (DisplayablePlayer.CurrentVehicle != null)
             {
-                if (DisplayablePlayer.CurrentVehicle.WasReportedStolen)
-                {
-                    CurrentSpeedDisplay += $" ~r~Vehicle Reported Stolen{UI.CurrentDefaultTextColor}";
-                }
-                else if (DisplayablePlayer.CurrentVehicle.HasObviousFicticiousPlate(Violateable))
+                if (DisplayablePlayer.CurrentVehicle.HasObviousFicticiousPlate(Violateable))
                 {
                     CurrentSpeedDisplay += $" ~r~Ficticious Plate{UI.CurrentDefaultTextColor}";
+                }
+                else if (DisplayablePlayer.CurrentVehicle.WasReportedStolen)
+                {
+                    CurrentSpeedDisplay += $" ~r~Vehicle Reported Stolen{UI.CurrentDefaultTextColor}";
                 }
                 else if (DisplayablePlayer.CurrentVehicle.HasBeenSeenByPoliceDuringWanted)
                 {

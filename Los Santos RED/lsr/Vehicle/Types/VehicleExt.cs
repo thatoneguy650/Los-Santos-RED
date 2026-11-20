@@ -879,7 +879,7 @@ namespace LSR.Vehicles
             {
                 DescriptionColor = Vehicle.PrimaryColor;
             }
-            if (IsStolen && WasReportedStolen && CarPlate != null && !CarPlate.IsWanted)
+            if (IsStolen && WasReportedStolen && CarPlate != null && !CarPlate.IsWanted && HasOriginalPlate)
             {
                 CarPlate.IsWanted = true;
             }
