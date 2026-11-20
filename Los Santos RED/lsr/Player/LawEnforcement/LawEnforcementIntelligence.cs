@@ -196,12 +196,15 @@ namespace LosSantosRED.lsr
                 b.Status = BOLOStatus.Expired;
             LastUpdatedAt = at;
         }
-        public float GetBOLOStopChance(DateTime at, string zoneID)
+        public float GetBOLOStopChance(DateTime at, string zoneID, string plateNumber)
         {
             UpdateExpirations(at);
             float chance = 0.0f;
             foreach (BOLORecord b in BOLOs.Where(x => x != null && x.Status == BOLOStatus.Active && x.SubjectID == SubjectID && x.TargetType != BOLOTargetType.Person))
             {
+                if (b.TargetType == BOLOTargetType.LicensePlate &&
+                    (string.IsNullOrWhiteSpace(plateNumber) || !string.Equals(b.PlateNumber, plateNumber.Trim(), StringComparison.OrdinalIgnoreCase)))
+                    continue;
                 float candidate = !string.IsNullOrWhiteSpace(b.ZoneID) && string.Equals(b.ZoneID, zoneID, StringComparison.OrdinalIgnoreCase) ? b.StopChanceInZone : b.StopChanceOutsideZone;
                 if (candidate > chance) chance = candidate;
             }

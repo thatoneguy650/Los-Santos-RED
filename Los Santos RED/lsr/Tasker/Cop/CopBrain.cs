@@ -20,6 +20,7 @@ public class CopBrain : PedBrain
     private string ANPRScanPlateNumber;
     private bool ANPRScanVehicleWasRecognized;
     private const uint ANPRScanDuration = 2500;
+    private uint GameTimeLastBOLOCheck;
 
     private DateTime? LastSeenPlayerAt;
     private VehicleExt LastSeenVehicle;
@@ -136,6 +137,10 @@ public class CopBrain : PedBrain
             {
                 // The registration mismatch has been detected; the traffic-stop task owns this cop.
             }
+            else if (TryStartBOLOTrafficStop())
+            {
+                // An active vehicle or plate BOLO has prompted a probabilistic traffic stop.
+            }
             else
             {
                 if (Player.IsWanted && Cop.IsRespondingToWanted && (Cop.SawPlayerViolating || Player.PoliceResponse.WantedLevelHasBeenRadioedIn))
@@ -195,6 +200,52 @@ public class CopBrain : PedBrain
     {
         Mod.Player modPlayer = Player as Mod.Player;
         return modPlayer?.HealthState?.MyPed;
+    }
+
+
+    private bool TryStartBOLOTrafficStop()
+    {
+        if (Game.GameTime - GameTimeLastBOLOCheck < 10000)
+            return false;
+        if (Player == null || Player.IsWanted || !Player.IsInVehicle || Player.CurrentVehicle == null ||
+            !Player.CurrentVehicle.Vehicle.Exists() || !Cop.Pedestrian.Exists() || !Cop.IsDriver ||
+            !Cop.IsInVehicle || !Cop.PlayerPerception.CanSeeTarget)
+            return false;
+
+        Mod.Player modPlayer = Player as Mod.Player;
+        if (modPlayer?.LawEnforcementIntelligence == null || !Player.CurrentVehicle.Vehicle.Driver.Exists() ||
+            Player.CurrentVehicle.Vehicle.Driver.Handle != modPlayer.Character.Handle)
+            return false;
+
+        GameTimeLastBOLOCheck = Game.GameTime;
+        string zoneID = modPlayer.CurrentLocation?.CurrentZone?.InternalGameName;
+        string plateNumber = Player.CurrentVehicle.Vehicle.LicensePlate;
+        float stopChance = modPlayer.LawEnforcementIntelligence.GetBOLOStopChance(
+            modPlayer.CurrentDateTime, zoneID, plateNumber);
+        if (stopChance <= 0.0f || !RandomItems.RandomPercent(stopChance * 100.0f))
+            return false;
+
+        PedExt target = GetPlayerPedExt();
+        if (target == null)
+            return false;
+
+        SetBOLOTrafficStop(target);
+        return true;
+    }
+
+    private void SetBOLOTrafficStop(PedExt target)
+    {
+        if (Cop.CurrentTask is AIApprehend activeStop && activeStop.IsTrafficStop)
+            return;
+        Cop.CurrentTask = new AIApprehend(Cop, Player, Cop, Settings)
+        {
+            OtherTarget = target,
+            IsTrafficStop = true,
+            UseWantedLevel = false
+        };
+        Cop.WeaponInventory.Reset();
+        GameFiber.Yield();
+        Cop.CurrentTask.Start();
     }
 
     private bool TryStartANPRTrafficStop()
