@@ -505,6 +505,7 @@ namespace Mod
                 return Time;
             }
         }
+        public DateTime CurrentDateTime => TimeControllable.CurrentDateTime;
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }

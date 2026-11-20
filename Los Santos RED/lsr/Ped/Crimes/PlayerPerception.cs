@@ -22,6 +22,7 @@ public class PlayerPerception
     private ISettingsProvideable Settings;
     private IPerceptable Target;
     private uint GameTimeLastSetFakeSeen;
+    private bool IsRecognizedFromMemory;
 
     private bool IsFakeSeen => GameTimeLastSetFakeSeen != 0 && Game.GameTime - GameTimeLastSetFakeSeen <= 5000;
     public bool IsSetFakeSeen => IsFakeSeen;
@@ -38,6 +39,7 @@ public class PlayerPerception
         get
         {
             if (Target == null) return false;
+            if (Originator.IsCop && IsRecognizedFromMemory && CanSeeTarget) return true;
             uint RecognizeTime = Target.StealthManager.GetRecognizeTime(Originator);
 
 
@@ -59,6 +61,11 @@ public class PlayerPerception
             }
         }
     }
+    public void SetRecognizedFromMemory(bool recognized)
+    {
+        IsRecognizedFromMemory = recognized;
+    }
+
     public bool CanSeeTarget { get; private set; } = false;
     public float ClosestDistanceToTarget { get; private set; } = 2000f;
     public string PlayerPerceptionString => $"CanSeeTarget:{CanSeeTarget} CanRecognizeTarget:{CanRecognizeTarget} GameTimeContinuoslySeenTargetSince:{GameTimeContinuoslySeenTargetSince} GameTimeLastSetFakeSeen {GameTimeLastSetFakeSeen}";

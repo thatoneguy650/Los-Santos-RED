@@ -26,13 +26,7 @@ namespace LSR.Vehicles
         {
             get
             {
-                if (isWanted) return true;
-                string normalizedPlate = NormalizePlateNumber(PlateNumber);
-                if (string.IsNullOrEmpty(normalizedPlate)) return false;
-                lock (WantedPlateNumbersLock)
-                {
-                    return WantedPlateNumbers.Contains(normalizedPlate);
-                }
+                return isWanted || IsPlateNumberWanted(PlateNumber);
             }
             set
             {
@@ -73,6 +67,16 @@ namespace LSR.Vehicles
             lock (WantedPlateNumbersLock)
             {
                 WantedPlateNumbers.Add(normalizedPlate);
+            }
+        }
+
+        public static bool IsPlateNumberWanted(string plateNumber)
+        {
+            string normalizedPlate = NormalizePlateNumber(plateNumber);
+            if (string.IsNullOrEmpty(normalizedPlate)) return false;
+            lock (WantedPlateNumbersLock)
+            {
+                return WantedPlateNumbers.Contains(normalizedPlate);
             }
         }
 

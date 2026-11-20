@@ -156,7 +156,7 @@ namespace LSR.Vehicles
                 return CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId;
             }
         }
-        public bool IsWanted => CarPlate != null && CarPlate.IsWanted;// CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
+        public bool IsWanted => (CarPlate != null && CarPlate.IsWanted) || (Vehicle.Exists() && LicensePlate.IsPlateNumberWanted(Vehicle.LicensePlate));
 
 
         public bool HasObviousFicticiousPlate(IViolateable player)
@@ -672,6 +672,10 @@ namespace LSR.Vehicles
                 LicensePlate.ClearWantedPlateNumber(OriginalLicensePlate.PlateNumber);
                 OriginalLicensePlate.IsWanted = false;
             }
+            if (Vehicle.Exists())
+            {
+                LicensePlate.ClearWantedPlateNumber(Vehicle.LicensePlate);
+            }
             HasBeenSeenByPoliceDuringWanted = false;
         }
         public string FullName(bool withColor)
@@ -895,9 +899,13 @@ namespace LSR.Vehicles
             }
             if (driverIsWanted && CarPlate != null)
             {
-                // Police remember the displayed registration, not just this vehicle instance.
-                LicensePlate.RegisterWantedPlateNumber(CarPlate.PlateNumber);
-                CarPlate.IsWanted = true;
+                // Police remember the registration actually displayed on the vehicle.
+                string displayedPlate = Vehicle.Exists() ? Vehicle.LicensePlate : CarPlate.PlateNumber;
+                LicensePlate.RegisterWantedPlateNumber(displayedPlate);
+                if (string.Equals(displayedPlate, CarPlate.PlateNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    CarPlate.IsWanted = true;
+                }
             }
             else if (IsStolen && WasReportedStolen && CarPlate != null && !CarPlate.IsWanted && HasOriginalPlate)
             {

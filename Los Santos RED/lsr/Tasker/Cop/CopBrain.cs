@@ -13,6 +13,21 @@ using System.Threading.Tasks;
 public class CopBrain : PedBrain
 {
     private Cop Cop;
+    private VehicleExt ANPRScanVehicle;
+    private uint GameTimeANPRScanStarted;
+    private Vector3 ANPRScanStartPosition;
+    private float ANPRScanStartSpeed;
+    private string ANPRScanPlateNumber;
+    private bool ANPRScanVehicleWasRecognized;
+    private const uint ANPRScanDuration = 2500;
+
+    private DateTime? LastSeenPlayerAt;
+    private DateTime? LastSeenVehicleAt;
+    private VehicleExt LastSeenVehicle;
+    private bool WasSeeingPlayer;
+    private bool WasSeeingVehicle;
+    private bool MemoryRecognizedPlayer;
+    private bool MemoryRecognizedVehicle;
     public CopBrain(Cop cop, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons) : base(cop, settings, world, weapons)
     {
         Cop = cop;
@@ -31,6 +46,8 @@ public class CopBrain : PedBrain
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
+        UpdateRecognitionMemory();
+        UpdateANPRScan();
         if (Cop.PlayerPerception.CanSeeTarget && Player.IsWanted && Player.IsInVehicle &&
             Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() &&
             Player.CurrentVehicle.Vehicle.Driver.Exists() &&
@@ -159,6 +176,11 @@ public class CopBrain : PedBrain
 
     private bool TryStartANPRTrafficStop()
     {
+        if (ANPRScanVehicle != null)
+        {
+            return true;
+        }
+
         if (Player == null || Player.IsWanted || !Player.IsInVehicle || Player.CurrentVehicle == null ||
             !Player.CurrentVehicle.Vehicle.Exists() || !Cop.Pedestrian.Exists() || !Cop.IsDriver ||
             !Cop.IsInVehicle || !Cop.Pedestrian.CurrentVehicle.Exists())
@@ -166,36 +188,21 @@ public class CopBrain : PedBrain
             return false;
         }
 
+        VehicleExt vehicle = Player.CurrentVehicle;
         if (Cop.DistanceToPlayer > 45f || !Cop.PlayerPerception.CanSeeTarget ||
             (Cop.CurrentTask != null && Cop.CurrentTask.Name != "Idle") ||
-            Game.GameTime - Player.CurrentVehicle.GameTimeLastANPRScan < 15000)
+            Game.GameTime - vehicle.GameTimeLastANPRScan < 15000)
         {
             return false;
         }
 
-        bool isStationary = Player.CurrentVehicle.Vehicle.Speed <= 0.5f;
-        bool isSuspicious = !string.IsNullOrEmpty(Player.CurrentVehicle.IsSuspicious(false)) ||
+        bool isStationary = vehicle.Vehicle.Speed <= 0.5f;
+        bool isSuspicious = !string.IsNullOrEmpty(vehicle.IsSuspicious(false)) ||
             (Player.Violations != null && Player.Violations.TrafficViolations != null &&
              Player.Violations.TrafficViolations.IsViolatingAnyTrafficLaws);
+        bool recognizedFlaggedVehicle = MemoryRecognizedVehicle && vehicle.HasBeenSeenByPoliceDuringWanted;
 
-        if (!isStationary && !isSuspicious)
-        {
-            return false;
-        }
-
-        Player.CurrentVehicle.GameTimeLastANPRScan = Game.GameTime;
-
-        string visiblePlate = Player.CurrentVehicle.Vehicle.LicensePlate;
-        bool hasNoVisiblePlate = string.IsNullOrWhiteSpace(visiblePlate);
-        bool hasNoRegistrationRecord = Player.CurrentVehicle.CarPlate == null ||
-            Player.CurrentVehicle.OriginalLicensePlate == null;
-        bool visiblePlateDoesNotMatchRecord = !hasNoRegistrationRecord &&
-            !string.Equals(visiblePlate, Player.CurrentVehicle.CarPlate.PlateNumber, StringComparison.OrdinalIgnoreCase);
-        bool registrationBelongsToAnotherVehicle = !Player.CurrentVehicle.HasOriginalPlate;
-        bool registrationIsWanted = Player.CurrentVehicle.CarPlate != null && Player.CurrentVehicle.CarPlate.IsWanted;
-
-        if (!hasNoVisiblePlate && !hasNoRegistrationRecord && !visiblePlateDoesNotMatchRecord &&
-            !registrationBelongsToAnotherVehicle && !registrationIsWanted)
+        if (!isStationary && !isSuspicious && !recognizedFlaggedVehicle)
         {
             return false;
         }
@@ -206,14 +213,243 @@ public class CopBrain : PedBrain
             return false;
         }
 
-        SetANPRTrafficStop(playerPed);
+        ANPRScanVehicle = vehicle;
+        ANPRScanPlateNumber = vehicle.Vehicle.LicensePlate;
+        ANPRScanStartPosition = vehicle.Vehicle.Position;
+        ANPRScanStartSpeed = vehicle.Vehicle.Speed;
+        ANPRScanVehicleWasRecognized = recognizedFlaggedVehicle;
+        GameTimeANPRScanStarted = Game.GameTime;
+        vehicle.GameTimeLastANPRScan = Game.GameTime;
+
+        Mod.Player modPlayer = Player as Mod.Player;
+        if (modPlayer != null && modPlayer.Inventory.Has(typeof(RadioItem)) &&
+            Settings.SettingsManager.ScannerSettings.EnableNotifications)
+        {
+            new GTANotification(
+                "CHAR_LS_TOURIST_BOARD",
+                "CHAR_LS_TOURIST_BOARD",
+                "Police Scanner",
+                "~r~ANPR Alert",
+                "An officer behind you is running your plate...").Display();
+        }
+
         EntryPoint.WriteToConsole(
-            $"ANPR: Officer {Cop.Pedestrian.Handle} detected registration issue on vehicle {Player.CurrentVehicle.Handle}. " +
-            $"NoPlate:{hasNoVisiblePlate} NoRecord:{hasNoRegistrationRecord} TextMismatch:{visiblePlateDoesNotMatchRecord} " +
-            $"WrongVehicle:{registrationBelongsToAnotherVehicle} WantedPlate:{registrationIsWanted}");
+            $"ANPR: Officer {Cop.Pedestrian.Handle} started scanning vehicle {vehicle.Handle}, plate '{ANPRScanPlateNumber}'.");
         return true;
     }
 
+    private void UpdateANPRScan()
+    {
+        if (ANPRScanVehicle == null)
+        {
+            return;
+        }
+
+        if (!Cop.Pedestrian.Exists() || !Cop.Pedestrian.IsAlive || !ANPRScanVehicle.Vehicle.Exists())
+        {
+            ClearANPRScan();
+            return;
+        }
+
+        float dx = ANPRScanVehicle.Vehicle.Position.X - ANPRScanStartPosition.X;
+        float dy = ANPRScanVehicle.Vehicle.Position.Y - ANPRScanStartPosition.Y;
+        float dz = ANPRScanVehicle.Vehicle.Position.Z - ANPRScanStartPosition.Z;
+        float distanceMoved = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+        float currentSpeed = ANPRScanVehicle.Vehicle.Speed;
+
+        bool changedToAnotherVehicle = Player == null ||
+            (Player.IsInVehicle && Player.CurrentVehicle != ANPRScanVehicle);
+        float playerDx = Player == null ? 0f : Player.Position.X - ANPRScanStartPosition.X;
+        float playerDy = Player == null ? 0f : Player.Position.Y - ANPRScanStartPosition.Y;
+        float playerDz = Player == null ? 0f : Player.Position.Z - ANPRScanStartPosition.Z;
+        float playerDistanceFromScan = (float)Math.Sqrt(playerDx * playerDx + playerDy * playerDy + playerDz * playerDz);
+        bool ranAwayOnFoot = Player != null && !Player.IsInVehicle && playerDistanceFromScan >= 15f;
+        bool acceleratedAway = currentSpeed >= 10f &&
+            (ANPRScanStartSpeed <= 3f || currentSpeed - ANPRScanStartSpeed >= 6f) &&
+            distanceMoved >= 12f;
+        bool droveAwayFromStoppedPosition = ANPRScanStartSpeed <= 3f && distanceMoved >= 25f && currentSpeed >= 5f;
+        bool fledDuringScan = changedToAnotherVehicle || ranAwayOnFoot ||
+            acceleratedAway || droveAwayFromStoppedPosition;
+
+        if (fledDuringScan)
+        {
+            string plateToFlag = ANPRScanPlateNumber;
+            LicensePlate.RegisterWantedPlateNumber(plateToFlag);
+            if (ANPRScanVehicle.CarPlate != null &&
+                string.Equals(ANPRScanVehicle.CarPlate.PlateNumber, plateToFlag, StringComparison.OrdinalIgnoreCase))
+            {
+                ANPRScanVehicle.CarPlate.IsWanted = true;
+            }
+            ANPRScanVehicle.HasBeenSeenByPoliceDuringWanted = true;
+
+            EntryPoint.WriteToConsole(
+                $"ANPR: Player evaded plate scan. Vehicle {ANPRScanVehicle.Handle}, displayed plate '{plateToFlag}' marked wanted and vehicle marked known to police.");
+
+            PedExt playerPed = GetPlayerPedExt();
+            ClearANPRScan();
+            if (playerPed != null)
+            {
+                SetAIApprehend(playerPed);
+            }
+            return;
+        }
+
+        if (Game.GameTime - GameTimeANPRScanStarted < ANPRScanDuration)
+        {
+            return;
+        }
+
+        string visiblePlate = ANPRScanPlateNumber;
+        bool hasNoVisiblePlate = string.IsNullOrWhiteSpace(visiblePlate);
+        bool hasNoRegistrationRecord = ANPRScanVehicle.CarPlate == null ||
+            ANPRScanVehicle.OriginalLicensePlate == null;
+        bool visiblePlateDoesNotMatchRecord = !hasNoRegistrationRecord &&
+            !string.Equals(visiblePlate, ANPRScanVehicle.CarPlate.PlateNumber, StringComparison.OrdinalIgnoreCase);
+        bool registrationBelongsToAnotherVehicle = !ANPRScanVehicle.HasOriginalPlate;
+        bool registrationIsWanted = LicensePlate.IsPlateNumberWanted(visiblePlate) ||
+            (ANPRScanVehicle.CarPlate != null && ANPRScanVehicle.CarPlate.IsWanted);
+
+        bool hasRegistrationIssue = hasNoVisiblePlate || hasNoRegistrationRecord ||
+            visiblePlateDoesNotMatchRecord || registrationBelongsToAnotherVehicle ||
+            registrationIsWanted || ANPRScanVehicleWasRecognized;
+
+        VehicleExt scannedVehicle = ANPRScanVehicle;
+        ClearANPRScan();
+
+        if (hasRegistrationIssue)
+        {
+            PedExt playerPed = GetPlayerPedExt();
+            if (playerPed != null)
+            {
+                SetANPRTrafficStop(playerPed);
+            }
+            EntryPoint.WriteToConsole(
+                $"ANPR: Officer {Cop.Pedestrian.Handle} completed scan and detected registration issue on vehicle {scannedVehicle.Handle}. " +
+                $"NoPlate:{hasNoVisiblePlate} NoRecord:{hasNoRegistrationRecord} TextMismatch:{visiblePlateDoesNotMatchRecord} " +
+                $"WrongVehicle:{registrationBelongsToAnotherVehicle} WantedPlate:{registrationIsWanted} RecognizedVehicle:{ANPRScanVehicleWasRecognized}");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"ANPR: Officer {Cop.Pedestrian.Handle} completed scan; registration '{visiblePlate}' is valid.");
+        }
+    }
+
+    private void ClearANPRScan()
+    {
+        ANPRScanVehicle = null;
+        GameTimeANPRScanStarted = 0;
+        ANPRScanStartPosition = Vector3.Zero;
+        ANPRScanStartSpeed = 0f;
+        ANPRScanPlateNumber = null;
+        ANPRScanVehicleWasRecognized = false;
+    }
+
+    private void UpdateRecognitionMemory()
+    {
+        Mod.Player modPlayer = Player as Mod.Player;
+        if (modPlayer == null || !Settings.SettingsManager.PoliceTaskSettings.EnablePoliceRecognitionMemory)
+        {
+            MemoryRecognizedPlayer = false;
+            MemoryRecognizedVehicle = false;
+            Cop.PlayerPerception.SetRecognizedFromMemory(false);
+            WasSeeingPlayer = false;
+            WasSeeingVehicle = false;
+            return;
+        }
+
+        DateTime now = modPlayer.CurrentDateTime;
+        bool canSeePlayer = Cop.PlayerPerception.CanSeeTarget;
+
+        if (canSeePlayer)
+        {
+            if (!WasSeeingPlayer && LastSeenPlayerAt.HasValue)
+            {
+                MemoryRecognizedPlayer = RollRecognition(LastSeenPlayerAt.Value, now);
+            }
+            else if (!WasSeeingPlayer)
+            {
+                MemoryRecognizedPlayer = false;
+            }
+            LastSeenPlayerAt = now;
+        }
+        else
+        {
+            MemoryRecognizedPlayer = false;
+        }
+        WasSeeingPlayer = canSeePlayer;
+        Cop.PlayerPerception.SetRecognizedFromMemory(MemoryRecognizedPlayer);
+
+        VehicleExt currentVehicle = canSeePlayer && Player.IsInVehicle ? Player.CurrentVehicle : null;
+        bool canSeeVehicle = currentVehicle != null && currentVehicle.Vehicle.Exists();
+        if (canSeeVehicle)
+        {
+            if ((!WasSeeingVehicle || LastSeenVehicle != currentVehicle) &&
+                LastSeenVehicle == currentVehicle && LastSeenVehicleAt.HasValue)
+            {
+                MemoryRecognizedVehicle = RollRecognition(LastSeenVehicleAt.Value, now);
+            }
+            else if (LastSeenVehicle != currentVehicle)
+            {
+                MemoryRecognizedVehicle = false;
+            }
+
+            LastSeenVehicle = currentVehicle;
+            LastSeenVehicleAt = now;
+        }
+        else
+        {
+            MemoryRecognizedVehicle = false;
+        }
+        WasSeeingVehicle = canSeeVehicle;
+    }
+
+    private bool RollRecognition(DateTime lastSeenAt, DateTime now)
+    {
+        TimeSpan elapsed = now >= lastSeenAt ? now - lastSeenAt : TimeSpan.Zero;
+        float chance = GetRecognitionChance(elapsed.TotalHours);
+        return RandomItems.RandomPercent((int)Math.Round(chance));
+    }
+
+    private float GetRecognitionChance(double elapsedHours)
+    {
+        PoliceTaskSettings recognitionSettings = Settings.SettingsManager.PoliceTaskSettings;
+        if (elapsedHours <= 1.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceInitial,
+                recognitionSettings.PoliceRecognitionChanceAfter1Hour, elapsedHours);
+        }
+        if (elapsedHours <= 6.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceAfter1Hour,
+                recognitionSettings.PoliceRecognitionChanceAfter6Hours, (elapsedHours - 1.0) / 5.0);
+        }
+        if (elapsedHours <= 12.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceAfter6Hours,
+                recognitionSettings.PoliceRecognitionChanceAfter12Hours, (elapsedHours - 6.0) / 6.0);
+        }
+        if (elapsedHours <= 24.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceAfter12Hours,
+                recognitionSettings.PoliceRecognitionChanceAfter24Hours, (elapsedHours - 12.0) / 12.0);
+        }
+        if (elapsedHours <= 72.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceAfter24Hours,
+                recognitionSettings.PoliceRecognitionChanceAfter3Days, (elapsedHours - 24.0) / 48.0);
+        }
+        if (elapsedHours <= 168.0)
+        {
+            return Lerp(recognitionSettings.PoliceRecognitionChanceAfter3Days,
+                recognitionSettings.PoliceRecognitionChanceAfter7Days, (elapsedHours - 72.0) / 96.0);
+        }
+        return recognitionSettings.PoliceRecognitionChanceAfter7Days;
+    }
+
+    private float Lerp(float start, float end, double amount)
+    {
+        return start + (end - start) * (float)Math.Max(0.0, Math.Min(1.0, amount));
+    }
     private void SetANPRTrafficStop(PedExt target)
     {
         if (Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop)

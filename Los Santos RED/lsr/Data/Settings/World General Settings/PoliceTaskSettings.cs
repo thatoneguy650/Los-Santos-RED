@@ -71,6 +71,23 @@ public class PoliceTaskSettings : ISettingsDefaultable
     [Description("Percentage of search mode that cops will be able to use their sixth sense. A value of 0.7 means they would be able to use their sixth sense powers for the first 30% of search mode (1.0 is none, 0.0 is the entire search mode).")]
     public float SixthSenseSearchModeLimitPercentage { get; set; }
 
+    [Description("Enables time-decaying recognition memory for previously seen players and vehicles.")]
+    public bool EnablePoliceRecognitionMemory { get; set; }
+    [Description("Recognition probability immediately after a previous sighting.")]
+    public float PoliceRecognitionChanceInitial { get; set; }
+    [Description("Recognition probability one in-game hour after a previous sighting.")]
+    public float PoliceRecognitionChanceAfter1Hour { get; set; }
+    [Description("Recognition probability six in-game hours after a previous sighting.")]
+    public float PoliceRecognitionChanceAfter6Hours { get; set; }
+    [Description("Recognition probability twelve in-game hours after a previous sighting.")]
+    public float PoliceRecognitionChanceAfter12Hours { get; set; }
+    [Description("Recognition probability twenty-four in-game hours after a previous sighting.")]
+    public float PoliceRecognitionChanceAfter24Hours { get; set; }
+    [Description("Recognition probability three in-game days after a previous sighting.")]
+    public float PoliceRecognitionChanceAfter3Days { get; set; }
+    [Description("Recognition probability seven in-game days after a previous sighting. This chance is retained for longer gaps.")]
+    public float PoliceRecognitionChanceAfter7Days { get; set; }
+
 
     [Description("Enables or disables siege mode when you are in a building the police saw you enter. Allows police to keep an active search mode when they cannot directly see you.")]
     public bool AllowSiegeMode { get; set; }
@@ -215,6 +232,14 @@ public class PoliceTaskSettings : ISettingsDefaultable
         SixthSenseHelicopterPercentage = 95f;// 90f;// 90f;
         SixthSenseSearchModeLimitPercentage = 0.7f;// 0.7f;
 
+        EnablePoliceRecognitionMemory = true;
+        PoliceRecognitionChanceInitial = 99f;
+        PoliceRecognitionChanceAfter1Hour = 95f;
+        PoliceRecognitionChanceAfter6Hours = 85f;
+        PoliceRecognitionChanceAfter12Hours = 70f;
+        PoliceRecognitionChanceAfter24Hours = 50f;
+        PoliceRecognitionChanceAfter3Days = 25f;
+        PoliceRecognitionChanceAfter7Days = 5f;
 
 
         AllowSiegeMode = true;
