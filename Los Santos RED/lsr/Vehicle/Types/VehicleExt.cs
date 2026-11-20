@@ -957,8 +957,9 @@ namespace LSR.Vehicles
             }
             string randomPlate = RandomItems.RandomString(8);
             uint modelHash = Vehicle.Model.Hash;
-            OriginalLicensePlate = new LicensePlate(randomPlate, 0, false, modelHash);
-            CarPlate = new LicensePlate(randomPlate, 0, false, modelHash);
+            string registrationId = Guid.NewGuid().ToString("N");
+            OriginalLicensePlate = new LicensePlate(randomPlate, 0, false, modelHash) { RegistrationId = registrationId };
+            CarPlate = new LicensePlate(randomPlate, 0, false, modelHash) { RegistrationId = registrationId };
             EntryPoint.WriteToConsole($"SET PLATE {randomPlate}");
   
             Vehicle.LicensePlate = randomPlate;

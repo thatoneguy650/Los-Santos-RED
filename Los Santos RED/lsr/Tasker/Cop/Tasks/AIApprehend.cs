@@ -47,7 +47,8 @@ public class AIApprehend : ComplexTask
         CarJack,
         FootChase,
         Nothing,
-        StopCar
+        StopCar,
+        PullOver
     }
     private enum eVehicleMissionType
     {
@@ -87,6 +88,7 @@ public class AIApprehend : ComplexTask
 
     }
     public bool UseWantedLevel = true;
+    public bool IsTrafficStop { get; set; }
     private bool IsCancelled;
 
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
@@ -130,6 +132,15 @@ public class AIApprehend : ComplexTask
     }
     private Task GetCurrentTaskDynamic()
     {
+        if (IsTrafficStop && OtherTarget != null && OtherTarget.IsInVehicle &&
+            Ped.IsDriver && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            return Task.PullOver;
+        }
+        if (IsTrafficStop && OtherTarget != null && !OtherTarget.IsInVehicle)
+        {
+            return Task.Nothing;
+        }
         if (CurrentAIDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
         {
             if (ShouldExitPoliceVehicle)
@@ -376,6 +387,12 @@ public class AIApprehend : ComplexTask
             SubTaskName = "StopCar";
             StopCar();
         }
+        else if (CurrentTask == Task.PullOver)
+        {
+            RunInterval = 1000;
+            SubTaskName = "PullOver";
+            PullOver();
+        }
         GameTimeLastRan = Game.GameTime;
     }
     private void GoToPlayersCar()
@@ -608,6 +625,36 @@ public class AIApprehend : ComplexTask
             //EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
         }
     }
+    private void PullOver()
+    {
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() &&
+            OtherTarget != null && OtherTarget.Pedestrian.Exists() &&
+            OtherTarget.Pedestrian.CurrentVehicle.Exists())
+        {
+            NeedsUpdates = false;
+            Ped.Pedestrian.BlockPermanentEvents = Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase;
+            Ped.Pedestrian.KeepTasks = true;
+            SetSiren();
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 0.0f);
+            NativeFunction.CallByName<bool>(
+                "TASK_VEHICLE_MISSION",
+                Ped.Pedestrian,
+                Ped.Pedestrian.CurrentVehicle,
+                OtherTarget.Pedestrian.CurrentVehicle,
+                (int)eVehicleMissionType.PullOver,
+                20f,
+                (int)eCustomDrivingStyles.Code3Close,
+                5f,
+                5f,
+                true);
+        }
+        else
+        {
+            NeedsUpdates = true;
+        }
+    }
+
     private void StopCar()
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())

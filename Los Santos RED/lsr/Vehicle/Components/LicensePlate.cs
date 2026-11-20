@@ -14,10 +14,30 @@ namespace LSR.Vehicles
         {
 
         }
+        private string registrationId;
+
         public string PlateNumber { get; set; }
         public bool IsWanted { get; set; }
         public int PlateType { get; set; }
         public uint OriginalModelHash { get; set; }
+
+        // Stable registration identity. The lazy fallback supports older serialized
+        // LicensePlate objects that predate this field.
+        public string RegistrationId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(registrationId))
+                {
+                    registrationId = Guid.NewGuid().ToString("N");
+                }
+                return registrationId;
+            }
+            set
+            {
+                registrationId = value;
+            }
+        }
         public LicensePlate(string plateNumber, int plateType, bool isWanted, uint originalModelHash)
         {
             PlateNumber = plateNumber;

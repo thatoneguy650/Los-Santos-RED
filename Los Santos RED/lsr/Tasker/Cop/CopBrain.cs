@@ -46,7 +46,9 @@ public class CopBrain : PedBrain
                     //GameFiber.Yield();
                     if (Cop.ShouldUpdateTarget)
                     {
-                        PedExt otherTarget = PedToAttack();
+                        PedExt otherTarget = Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop
+                            ? World.Pedestrians.GetPedExt(Player.Character.Handle)
+                            : PedToAttack();
                         Cop.CurrentTarget = otherTarget;
                         Cop.GameTimeLastUpdatedTarget = Game.GameTime;
                         Cop.UpdateTask(otherTarget);
@@ -78,6 +80,10 @@ public class CopBrain : PedBrain
             if (MainTarget != null)
             {
                 SetAIApprehend(MainTarget);
+            }
+            else if (TryStartANPRTrafficStop())
+            {
+                // The registration mismatch has been detected; the traffic-stop task owns this cop.
             }
             else
             {
@@ -134,6 +140,81 @@ public class CopBrain : PedBrain
         }
         Cop.GameTimeLastUpdatedTask = Game.GameTime;
     }
+    private bool TryStartANPRTrafficStop()
+    {
+        if (Player == null || Player.IsWanted || !Player.IsInVehicle || Player.CurrentVehicle == null ||
+            !Player.CurrentVehicle.Vehicle.Exists() || !Cop.Pedestrian.Exists() || !Cop.IsDriver ||
+            !Cop.IsInVehicle || !Cop.Pedestrian.CurrentVehicle.Exists())
+        {
+            return false;
+        }
+
+        if (Cop.DistanceToPlayer > 45f || !Cop.PlayerPerception.CanSeeTarget ||
+            (Cop.CurrentTask != null && Cop.CurrentTask.Name != "Idle") ||
+            Game.GameTime - Player.CurrentVehicle.GameTimeLastANPRScan < 15000)
+        {
+            return false;
+        }
+
+        bool isStationary = Player.CurrentVehicle.Vehicle.Speed <= 0.5f;
+        bool isSuspicious = !string.IsNullOrEmpty(Player.CurrentVehicle.IsSuspicious(false)) ||
+            (Player.Violations != null && Player.Violations.TrafficViolations != null &&
+             Player.Violations.TrafficViolations.IsViolatingAnyTrafficLaws);
+
+        if (!isStationary && !isSuspicious)
+        {
+            return false;
+        }
+
+        Player.CurrentVehicle.GameTimeLastANPRScan = Game.GameTime;
+
+        string visiblePlate = Player.CurrentVehicle.Vehicle.LicensePlate;
+        bool hasNoVisiblePlate = string.IsNullOrWhiteSpace(visiblePlate);
+        bool hasNoRegistrationRecord = Player.CurrentVehicle.CarPlate == null ||
+            Player.CurrentVehicle.OriginalLicensePlate == null;
+        bool visiblePlateDoesNotMatchRecord = !hasNoRegistrationRecord &&
+            !string.Equals(visiblePlate, Player.CurrentVehicle.CarPlate.PlateNumber, StringComparison.OrdinalIgnoreCase);
+        bool registrationBelongsToAnotherVehicle = !Player.CurrentVehicle.HasOriginalPlate;
+        bool registrationIsWanted = Player.CurrentVehicle.CarPlate != null && Player.CurrentVehicle.CarPlate.IsWanted;
+
+        if (!hasNoVisiblePlate && !hasNoRegistrationRecord && !visiblePlateDoesNotMatchRecord &&
+            !registrationBelongsToAnotherVehicle && !registrationIsWanted)
+        {
+            return false;
+        }
+
+        PedExt playerPed = World.Pedestrians.GetPedExt(Player.Character.Handle);
+        if (playerPed == null)
+        {
+            return false;
+        }
+
+        SetANPRTrafficStop(playerPed);
+        EntryPoint.WriteToConsole(
+            $"ANPR: Officer {Cop.Pedestrian.Handle} detected registration issue on vehicle {Player.CurrentVehicle.Handle}. " +
+            $"NoPlate:{hasNoVisiblePlate} NoRecord:{hasNoRegistrationRecord} TextMismatch:{visiblePlateDoesNotMatchRecord} " +
+            $"WrongVehicle:{registrationBelongsToAnotherVehicle} WantedPlate:{registrationIsWanted}");
+        return true;
+    }
+
+    private void SetANPRTrafficStop(PedExt target)
+    {
+        if (Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop)
+        {
+            return;
+        }
+
+        Cop.CurrentTask = new AIApprehend(Cop, Player, Cop, Settings)
+        {
+            OtherTarget = target,
+            IsTrafficStop = true,
+            UseWantedLevel = false
+        };
+        Cop.WeaponInventory.Reset();
+        GameFiber.Yield();
+        Cop.CurrentTask.Start();
+    }
+
     private PedExt PedToAttack()
     {
         if (Settings.SettingsManager.PerformanceSettings.CopGetPedToAttackDisable)
