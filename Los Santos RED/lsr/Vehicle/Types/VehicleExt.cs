@@ -672,7 +672,7 @@ namespace LSR.Vehicles
                 LicensePlate.ClearWantedPlateNumber(OriginalLicensePlate.PlateNumber);
                 OriginalLicensePlate.IsWanted = false;
             }
-            if (Vehicle.Exists())
+            if (Vehicle != null && Vehicle.Exists())
             {
                 LicensePlate.ClearWantedPlateNumber(Vehicle.LicensePlate);
             }
