@@ -162,6 +162,7 @@ namespace LosSantosRED.lsr
         }
         public WarrantRecord GetActiveArrestWarrant()
         {
+            if (Warrants == null) return null;
             return Warrants.Where(x => x != null && x.Status == WarrantStatus.Active &&
                 (x.Type == WarrantType.Arrest || x.Type == WarrantType.Bench ||
                  x.Type == WarrantType.ProbationParole || x.Type == WarrantType.Extradition))
