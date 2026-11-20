@@ -226,8 +226,7 @@ namespace LosSantosRED.lsr
             if (investigation.ObservationIDs == null) investigation.ObservationIDs = new List<string>();
             if (investigation.KnownVehicleIDs == null) investigation.KnownVehicleIDs = new List<string>();
             if (investigation.KnownLocationIDs == null) investigation.KnownLocationIDs = new List<string>();
-            List<IntelligenceObservation> evidence = Observations.Where(x => x != null && x.IsKnownToPolice &&
-                x.ObservedAt >= investigation.CreatedAt && x.ObservedAt <= currentTime).ToList();
+            List<IntelligenceObservation> evidence = Observations.Where(x => x != null && x.IsKnownToPolice && x.ObservedAt <= currentTime).ToList();
             foreach (IntelligenceObservation item in evidence)
             {
                 if (!investigation.ObservationIDs.Contains(item.ID)) investigation.ObservationIDs.Add(item.ID);
