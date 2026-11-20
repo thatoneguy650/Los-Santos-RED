@@ -72,6 +72,10 @@ public class CopBrain : PedBrain
     }
     protected override void UpdateCurrentTask()
     {
+        if (Cop.CurrentTask is AIApprehend activeTrafficStop && activeTrafficStop.IsTrafficStop)
+        {
+            return;
+        }
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
 
