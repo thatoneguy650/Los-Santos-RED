@@ -196,7 +196,7 @@ namespace LosSantosRED.lsr
                 b.Status = BOLOStatus.Expired;
             LastUpdatedAt = at;
         }
-        public float GetBOLOStopChance(DateTime at, string zoneID, string plateNumber)
+        public float GetBOLOStopChance(DateTime at, string zoneID, string plateNumber, string vehicleModel)
         {
             UpdateExpirations(at);
             float chance = 0.0f;
@@ -204,6 +204,9 @@ namespace LosSantosRED.lsr
             {
                 if (b.TargetType == BOLOTargetType.LicensePlate &&
                     (string.IsNullOrWhiteSpace(plateNumber) || !string.Equals(b.PlateNumber, plateNumber.Trim(), StringComparison.OrdinalIgnoreCase)))
+                    continue;
+                if (b.TargetType == BOLOTargetType.Vehicle && !string.IsNullOrWhiteSpace(b.VehicleModel) &&
+                    !string.Equals(b.VehicleModel, vehicleModel, StringComparison.OrdinalIgnoreCase))
                     continue;
                 float candidate = !string.IsNullOrWhiteSpace(b.ZoneID) && string.Equals(b.ZoneID, zoneID, StringComparison.OrdinalIgnoreCase) ? b.StopChanceInZone : b.StopChanceOutsideZone;
                 if (candidate > chance) chance = candidate;

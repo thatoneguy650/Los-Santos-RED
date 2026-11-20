@@ -221,7 +221,7 @@ public class CopBrain : PedBrain
         string zoneID = modPlayer.CurrentLocation?.CurrentZone?.InternalGameName;
         string plateNumber = Player.CurrentVehicle.Vehicle.LicensePlate;
         float stopChance = modPlayer.LawEnforcementIntelligence.GetBOLOStopChance(
-            modPlayer.CurrentDateTime, zoneID, plateNumber);
+            modPlayer.CurrentDateTime, zoneID, plateNumber, Player.CurrentVehicle.FullName(false));
         if (stopChance <= 0.0f || !RandomItems.RandomPercent(stopChance * 100.0f))
             return false;
 
