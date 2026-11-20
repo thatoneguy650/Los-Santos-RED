@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -93,7 +94,7 @@ public class CopBrain : PedBrain
                     if (Cop.ShouldUpdateTarget)
                     {
                         PedExt otherTarget = Cop.CurrentTask is AIApprehend activeApprehend &&
-                            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit || activeApprehend.IsWarrantApprehension)
+                            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit)
                             ? GetPlayerPedExt()
                             : PedToAttack();
                         Cop.CurrentTarget = otherTarget;
@@ -120,27 +121,18 @@ public class CopBrain : PedBrain
     protected override void UpdateCurrentTask()
     {
         if (Cop.CurrentTask is AIApprehend activeApprehend &&
-            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit || activeApprehend.IsWarrantApprehension))
+            (activeApprehend.IsTrafficStop || activeApprehend.IsANPREvasionPursuit))
         {
             return;
         }
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
 
-            Mod.Player warrantPlayer = Player as Mod.Player;
-            WarrantRecord activeArrestWarrant = warrantPlayer?.ActiveArrestWarrant;
             PedExt MainTarget = PedToAttack();
             GameFiber.Yield();
             if (MainTarget != null)
             {
-                if (activeArrestWarrant != null && warrantPlayer != null &&
-                    MainTarget.Handle == warrantPlayer.Character.Handle)
-                    warrantPlayer.BeginWarrantApprehension(activeArrestWarrant.ID);
                 SetAIApprehend(MainTarget);
-            }
-            else if (TryStartWarrantApprehend())
-            {
-                // A visible subject with an active arrest-authority warrant is being apprehended.
             }
             else if (TryStartANPRTrafficStop())
             {
@@ -794,36 +786,6 @@ public class CopBrain : PedBrain
             Cop.CurrentTask.Start();
         }
     }
-    private bool TryStartWarrantApprehend()
-    {
-        Mod.Player modPlayer = Player as Mod.Player;
-        WarrantRecord warrant = modPlayer?.ActiveArrestWarrant;
-        if (warrant == null || !Cop.PlayerPerception.CanSeeTarget)
-            return false;
-        PedExt target = GetPlayerPedExt();
-        if (target == null || !target.Pedestrian.Exists())
-            return false;
-        modPlayer.BeginWarrantApprehension(warrant.ID);
-        SetWarrantApprehend(target);
-        return true;
-    }
-
-    private void SetWarrantApprehend(PedExt target)
-    {
-        if (Cop.CurrentTask is AIApprehend existing && existing.IsWarrantApprehension)
-            return;
-        AIApprehend task = new AIApprehend(Cop, Player, Cop, Settings)
-        {
-            OtherTarget = target,
-            UseWantedLevel = false,
-            IsWarrantApprehension = true
-        };
-        Cop.CurrentTask = task;
-        Cop.WeaponInventory.Reset();
-        GameFiber.Yield();
-        task.Start();
-    }
-
     private bool HasSixthSense()
     {
         bool HasSixthSense = RandomItems.RandomPercent(Cop.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
