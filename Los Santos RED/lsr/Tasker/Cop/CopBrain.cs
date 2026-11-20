@@ -31,6 +31,11 @@ public class CopBrain : PedBrain
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
+        if (Cop.PlayerPerception.CanSeeTarget && Player.IsWanted && Player.IsInVehicle &&
+            Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            Player.CurrentVehicle.OnPoliceSeenCar(true);
+        }
         if (Cop.CanBeTasked)
         {
             if (Cop.HasExistedFor >= 1000 && Cop.RecentlyUpdated)
