@@ -32,7 +32,9 @@ public class CopBrain : PedBrain
         Player = player;
         PlacesOfInterest = placesOfInterest;
         if (Cop.PlayerPerception.CanSeeTarget && Player.IsWanted && Player.IsInVehicle &&
-            Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() &&
+            Player.CurrentVehicle.Vehicle.Driver.Exists() &&
+            Player.CurrentVehicle.Vehicle.Driver.Handle == Player.Character.Handle)
         {
             Player.CurrentVehicle.OnPoliceSeenCar(true);
         }
