@@ -160,6 +160,14 @@ namespace LosSantosRED.lsr
             WarrantRecord w = new WarrantRecord { ID = Guid.NewGuid().ToString("N"), SubjectID = SubjectID, Type = type, Status = WarrantStatus.Active, Priority = priority, IssuingAgencyID = issuingAgencyID, JurisdictionID = jurisdictionID, IssuedAt = issuedAt, LinkedCrimeIDs = linkedCrimeIDs == null ? new List<string>() : linkedCrimeIDs.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), KnownBusinessIDsAtIssuance = ownedBusinessIDsAtIssuance == null ? new List<string>() : ownedBusinessIDsAtIssuance.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), SuspectedResidenceID = suspectedResidenceID, ResidenceConfidence = Math.Max(0.0f, Math.Min(1.0f, residenceConfidence)) };
             Warrants.Add(w); LastUpdatedAt = issuedAt; return w;
         }
+        public WarrantRecord GetActiveArrestWarrant()
+        {
+            return Warrants.Where(x => x != null && x.Status == WarrantStatus.Active &&
+                (x.Type == WarrantType.Arrest || x.Type == WarrantType.Bench ||
+                 x.Type == WarrantType.ProbationParole || x.Type == WarrantType.Extradition))
+                .OrderByDescending(x => x.Priority).ThenBy(x => x.IssuedAt).FirstOrDefault();
+        }
+
         public bool ResolveWarrant(string id, WarrantStatus status, DateTime at, string notes)
         {
             if (status != WarrantStatus.Served && status != WarrantStatus.Cleared && status != WarrantStatus.Expired) return false;

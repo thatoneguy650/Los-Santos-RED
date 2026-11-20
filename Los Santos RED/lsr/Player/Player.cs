@@ -197,6 +197,19 @@ namespace Mod
         public CriminalHistory CriminalHistory { get; private set; }
         public LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
 
+        private string WarrantApprehensionID { get; set; }
+        public WarrantRecord ActiveArrestWarrant => LawEnforcementIntelligence?.GetActiveArrestWarrant();
+        public bool HasActiveArrestWarrant => ActiveArrestWarrant != null;
+
+        public void BeginWarrantApprehension(string warrantID)
+        {
+            WarrantRecord warrant = LawEnforcementIntelligence?.Warrants?.FirstOrDefault(x =>
+                x != null && x.ID == warrantID && x.Status == WarrantStatus.Active &&
+                (x.Type == WarrantType.Arrest || x.Type == WarrantType.Bench ||
+                 x.Type == WarrantType.ProbationParole || x.Type == WarrantType.Extradition));
+            if (warrant != null) WarrantApprehensionID = warrant.ID;
+        }
+
         public WarrantRecord IssueLawEnforcementWarrant(WarrantType type, WarrantPriority priority, string issuingAgencyID,
             string jurisdictionID, IEnumerable<string> linkedCrimeIDs, string suspectedResidenceID = null, float residenceConfidence = 0.0f)
         {
@@ -2005,6 +2018,12 @@ namespace Mod
         public void Arrest()
         {
             BeingArrested = true;
+            if (!string.IsNullOrWhiteSpace(WarrantApprehensionID))
+            {
+                LawEnforcementIntelligence?.ResolveWarrant(WarrantApprehensionID, WarrantStatus.Served,
+                    CurrentDateTime, "Subject arrested");
+                WarrantApprehensionID = null;
+            }
             if (!IsBusted)
             {
                 OnPlayerBusted();

@@ -90,6 +90,7 @@ public class AIApprehend : ComplexTask
     public bool UseWantedLevel = true;
     public bool IsTrafficStop { get; set; }
     public bool IsANPREvasionPursuit { get; set; }
+    public bool IsWarrantApprehension { get; set; }
     private bool IsCancelled;
     private bool HasIssuedTrafficStopExit;
 
