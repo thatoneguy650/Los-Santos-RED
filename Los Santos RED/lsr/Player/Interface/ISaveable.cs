@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         VehicleOwnership VehicleOwnership { get; }
         Inventory Inventory { get; set; }
+        LosSantosRED.lsr.LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
 
         string PlayerName { get; }
         string ModelName { get; }

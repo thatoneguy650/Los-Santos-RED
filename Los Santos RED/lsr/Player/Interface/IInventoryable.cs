@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Interface
         HumanState HumanState { get; }
         VehicleOwnership VehicleOwnership { get; }
         Inventory Inventory { get; }
+        LosSantosRED.lsr.LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
         BankAccounts BankAccounts { get; }
         ActivityManager ActivityManager { get; }
         Ped Character { get; }

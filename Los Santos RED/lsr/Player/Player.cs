@@ -143,6 +143,7 @@ namespace Mod
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories, World, this);
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
+            LawEnforcementIntelligence = new LawEnforcementIntelligence();
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SecurityResponse = new SecurityResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
@@ -194,6 +195,7 @@ namespace Mod
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
+        public LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
         public PlayerTasks PlayerTasks { get; private set; }
         public VehicleManager VehicleManager { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }

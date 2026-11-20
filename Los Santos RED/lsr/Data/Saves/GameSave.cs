@@ -91,6 +91,7 @@ namespace LosSantosRED.lsr.Data
 
         public List<GangWarSave> GangWarSaves { get; set; } = new List<GangWarSave>();
         public List<GangRetaliationSave> GangRetaliationSaves { get; set; } = new List<GangRetaliationSave>();
+        public LawEnforcementIntelligence LawEnforcementIntelligence { get; set; } = new LawEnforcementIntelligence();
 
 
         ////LEGACY TO BE REMOVED
@@ -111,6 +112,7 @@ namespace LosSantosRED.lsr.Data
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             SaveDemographics(player);
+            LawEnforcementIntelligence = player.LawEnforcementIntelligence == null ? new LawEnforcementIntelligence() : player.LawEnforcementIntelligence.Copy();
             SaveMoney(player);
             SaveInventory(player, modItems);
             SaveWeapons(player, weapons);
@@ -375,6 +377,7 @@ namespace LosSantosRED.lsr.Data
                 Game.FadeScreenOut(1000, true);
                 EntryPoint.WriteToConsole("Load 1");
                 time.SetDateTime(CurrentDateTime);
+                player.LawEnforcementIntelligence = LawEnforcementIntelligence == null ? new LawEnforcementIntelligence() : LawEnforcementIntelligence.Copy();
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 EntryPoint.WriteToConsole("Load 2");
                 LoadMoney(player);
