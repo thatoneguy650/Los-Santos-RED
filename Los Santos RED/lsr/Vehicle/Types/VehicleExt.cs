@@ -100,6 +100,7 @@ namespace LSR.Vehicles
         public uint HasExistedFor => GameTimeSpawned == 0 ? 0 : Game.GameTime - GameTimeSpawned;
         public uint HasBeenEmptyFor => GameTimeBecameEmpty == 0 ? 0 : Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
+        public uint GameTimeLastANPRScan { get; set; }
         public Vector3 PositionSpawned { get; set; } = Vector3.Zero;
         public bool WasModSpawned { get; set; } = false;
         public bool ManuallyRolledDriverWindowDown { get; set; }
@@ -136,7 +137,7 @@ namespace LSR.Vehicles
         }
         public uint GameTimeToReportStolen { get; set; } = 0;
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
-        public bool HasOriginalPlate => CarPlate != null && OriginalLicensePlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
+        public bool HasOriginalPlate => CarPlate != null && OriginalLicensePlate != null && CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId;
         public bool IsWanted => CarPlate != null && CarPlate.IsWanted;// CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
 
 
@@ -146,19 +147,12 @@ namespace LSR.Vehicles
             {
                 return true;
             }
-            if (HasOriginalPlate)
+            if (OriginalLicensePlate == null)
             {
                 return false;
             }
-            if(!Vehicle.Exists())
-            {
-                return false;
-            }
-            if (CarPlate.OriginalModelHash != Vehicle.Model.Hash)
-            {
-                return true;
-            }
-            return false;
+            // A registration belongs to one vehicle, not to every vehicle of the same model.
+            return !HasOriginalPlate;
         }
 
         public bool CopsRecognizeAsStolen
@@ -1910,7 +1904,7 @@ namespace LSR.Vehicles
             {
                 OriginalLicensePlate.IsWanted = true;
             }
-            if (CarPlate != null && OriginalLicensePlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
+            if (CarPlate != null && OriginalLicensePlate != null && CarPlate.RegistrationId == OriginalLicensePlate.RegistrationId)
             {
                 CarPlate.IsWanted = true;
                 Game.DisplaySubtitle($"Vehicle Reported Stolen with plate {CarPlate.PlateNumber}");
