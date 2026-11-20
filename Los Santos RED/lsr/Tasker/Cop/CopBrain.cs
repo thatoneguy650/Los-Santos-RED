@@ -316,6 +316,7 @@ public class CopBrain : PedBrain
             registrationIsWanted || ANPRScanVehicleWasRecognized;
 
         VehicleExt scannedVehicle = ANPRScanVehicle;
+        bool recognizedVehicle = ANPRScanVehicleWasRecognized;
         ClearANPRScan();
 
         if (hasRegistrationIssue)
@@ -328,7 +329,7 @@ public class CopBrain : PedBrain
             EntryPoint.WriteToConsole(
                 $"ANPR: Officer {Cop.Pedestrian.Handle} completed scan and detected registration issue on vehicle {scannedVehicle.Handle}. " +
                 $"NoPlate:{hasNoVisiblePlate} NoRecord:{hasNoRegistrationRecord} TextMismatch:{visiblePlateDoesNotMatchRecord} " +
-                $"WrongVehicle:{registrationBelongsToAnotherVehicle} WantedPlate:{registrationIsWanted} RecognizedVehicle:{ANPRScanVehicleWasRecognized}");
+                $"WrongVehicle:{registrationBelongsToAnotherVehicle} WantedPlate:{registrationIsWanted} RecognizedVehicle:{recognizedVehicle}");
         }
         else
         {
@@ -409,7 +410,7 @@ public class CopBrain : PedBrain
     {
         TimeSpan elapsed = now >= lastSeenAt ? now - lastSeenAt : TimeSpan.Zero;
         float chance = GetRecognitionChance(elapsed.TotalHours);
-        return RandomItems.RandomPercent((int)Math.Round(chance));
+        return RandomItems.RandomPercent(chance);
     }
 
     private float GetRecognitionChance(double elapsedHours)
@@ -450,7 +451,8 @@ public class CopBrain : PedBrain
 
     private float Lerp(float start, float end, double amount)
     {
-        return start + (end - start) * (float)Math.Max(0.0, Math.Min(1.0, amount));
+        float result = start + (end - start) * (float)Math.Max(0.0, Math.Min(1.0, amount));
+        return Math.Max(0f, Math.Min(100f, result));
     }
     private void SetANPREvasionPursuit(PedExt target)
     {
