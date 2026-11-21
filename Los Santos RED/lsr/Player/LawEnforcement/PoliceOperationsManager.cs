@@ -92,8 +92,10 @@ namespace LosSantosRED.lsr
 
             if (intelligence.PoliceOperations == null)
                 intelligence.PoliceOperations = new List<PoliceOperationRecord>();
-            if (intelligence.PoliceOperations.Any(x => x != null &&
-                x.WarrantID == warrant.ID && x.Stage != PoliceOperationStage.Aborted))
+            if (intelligence.PoliceOperations.Any(x => x != null && x.WarrantID == warrant.ID &&
+                (x.Stage != PoliceOperationStage.Aborted ||
+                 x.LastUpdatedAt == DateTime.MinValue ||
+                 now - x.LastUpdatedAt < TimeSpan.FromMinutes(30))))
                 return null;
 
             PoliceOperationRecord operation = new PoliceOperationRecord
