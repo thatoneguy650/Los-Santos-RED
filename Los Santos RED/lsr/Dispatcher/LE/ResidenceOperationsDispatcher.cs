@@ -263,19 +263,6 @@ public class ResidenceOperationsDispatcher
         if (operation.Stage == PoliceOperationStage.ArrestAttempt)
         {
             runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
-            if (!runtime.TeamSpawned || runtime.Officers.Count < 2)
-            {
-                if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
-                {
-                    manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
-                        "Raid ended without a confirmed apprehension; the warrant remains active.");
-                    return;
-                }
-                if (!DeployRaidTeam(intelligence, operation, runtime, manager, now))
-                    return;
-                runtime.StageStartedAt = Game.GameTime;
-            }
-
             if (Player.IsBusted)
             {
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
@@ -288,6 +275,19 @@ public class ResidenceOperationsDispatcher
                 RecordOperationObservation(intelligence, operation, runtime.Residence, now,
                     "Arrest warrant raid completed and the subject was apprehended.");
                 return;
+            }
+
+            if (!runtime.TeamSpawned || runtime.Officers.Count < 2)
+            {
+                if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
+                {
+                    manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
+                        "Raid ended without a confirmed apprehension; the warrant remains active.");
+                    return;
+                }
+                if (!DeployRaidTeam(intelligence, operation, runtime, manager, now))
+                    return;
+                runtime.StageStartedAt = Game.GameTime;
             }
 
             if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence) ||
