@@ -91,8 +91,8 @@ public class PlateTheft : DynamicActivity
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
+                EntryPoint.WriteToConsole("Plate theft activity failed: " + ex.Message + " " + ex.StackTrace, 0);
+                CleanupActivity();
             }
         }, "PlayDispatchQueue");
     }
@@ -183,21 +183,37 @@ public class PlateTheft : DynamicActivity
         }
         catch (Exception e)
         {
+            EntryPoint.WriteToConsole("Plate change failed: " + e.Message + " " + e.StackTrace, 0);
+            CleanupActivity();
+        }
+    }
+
+    private void CleanupActivity()
+    {
+        try
+        {
             if (LicensePlateModel != null && LicensePlateModel.Exists())
             {
                 LicensePlateModel.Delete();
             }
+        }
+        catch { }
+
+        try
+        {
             if (ScrewdriverModel != null && ScrewdriverModel.Exists())
             {
                 ScrewdriverModel.Delete();
             }
-            LicensePlateModel = null;
-            ScrewdriverModel = null;
-            Player.IsChangingLicensePlates = false;
-            Player.ActivityManager.IsPerformingActivity = false;
-            //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
         }
+        catch { }
+
+        LicensePlateModel = null;
+        ScrewdriverModel = null;
+        Player.IsChangingLicensePlates = false;
+        Player.ActivityManager.IsPerformingActivity = false;
     }
+
     private bool IsHeadingWithinTolerance(float currentHeading, float desiredHeading, float tolerance)
     {
         float difference = (currentHeading - desiredHeading) % 360f;
