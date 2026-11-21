@@ -467,7 +467,6 @@ public class CopBrain : PedBrain
         {
             MemoryRecognizedPlayer = false;
             MemoryRecognizedVehicle = false;
-            WasRecognizedByPersonBOLO = false;
             Cop.PlayerPerception.SetRecognizedFromMemory(false);
             WasSeeingPlayer = false;
             WasSeeingVehicle = false;
@@ -476,8 +475,6 @@ public class CopBrain : PedBrain
 
         DateTime now = modPlayer.CurrentDateTime;
         bool canSeePlayer = Cop.PlayerPerception.CanSeeTarget;
-        if (Player.IsInVehicle)
-            WasRecognizedByPersonBOLO = false;
 
         if (canSeePlayer)
         {
@@ -496,8 +493,6 @@ public class CopBrain : PedBrain
         else
         {
             MemoryRecognizedPlayer = false;
-            if (Cop.CurrentTask?.Name != "BOLOIdentify")
-                WasRecognizedByPersonBOLO = false;
         }
         WasSeeingPlayer = canSeePlayer;
         Cop.PlayerPerception.SetRecognizedFromMemory(MemoryRecognizedPlayer);
