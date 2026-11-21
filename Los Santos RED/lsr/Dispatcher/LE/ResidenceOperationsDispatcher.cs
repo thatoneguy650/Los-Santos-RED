@@ -28,6 +28,7 @@ public class ResidenceOperationsDispatcher
         public List<Cop> Officers = new List<Cop>();
         public uint StageStartedAt;
         public bool AnnouncementShown;
+        public bool PerimeterSpawned;
         public bool TeamSpawned;
     }
 
@@ -203,6 +204,8 @@ public class ResidenceOperationsDispatcher
             manager.Advance(intelligence, operation.ID, PoliceOperationStage.Perimeter, now);
         if (operation.Stage == PoliceOperationStage.Perimeter)
         {
+            if (!runtime.PerimeterSpawned && !DeployPerimeterTeam(intelligence, operation, runtime, manager, now, 2))
+                return;
             manager.Advance(intelligence, operation.ID, PoliceOperationStage.Announcement, now);
             runtime.StageStartedAt = Game.GameTime;
             runtime.AnnouncementShown = true;
@@ -247,6 +250,7 @@ public class ResidenceOperationsDispatcher
             }
             if (!runtime.TeamSpawned)
             {
+                CleanupOfficers(runtime);
                 if (!DeployRaidTeam(intelligence, operation, runtime, manager, now))
                     return;
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.ArrestAttempt, now,
@@ -301,6 +305,44 @@ public class ResidenceOperationsDispatcher
         }
     }
 
+    private bool DeployPerimeterTeam(LawEnforcementIntelligence intelligence,
+        PoliceOperationRecord operation, RuntimeOperation runtime, PoliceOperationsManager manager,
+        DateTime now, int requiredOfficers)
+    {
+        Vector3 entrance = runtime.Residence?.EntrancePosition ?? Vector3.Zero;
+        if (entrance == Vector3.Zero)
+        {
+            manager.Abort(intelligence, operation.ID, now,
+                "Operation aborted because the residence has no valid perimeter entry position.");
+            return false;
+        }
+        Agency agency = GetAgencyForWarrant(intelligence, operation.WarrantID);
+        runtime.Officers.Add(SpawnOfficer(agency, entrance + new Vector3(2f, 0f, 0f), true));
+        if (requiredOfficers > 1)
+            runtime.Officers.Add(SpawnOfficer(agency, entrance + new Vector3(-2f, 0f, 0f), true));
+        runtime.Officers.RemoveAll(x => x == null);
+        if (runtime.Officers.Count < requiredOfficers)
+        {
+            CleanupOfficers(runtime);
+            manager.Abort(intelligence, operation.ID, now,
+                "Operation aborted because the perimeter team could not be deployed.");
+            return false;
+        }
+        foreach (Cop officer in runtime.Officers)
+            NativeFunction.Natives.TASK_STAND_STILL(officer.Pedestrian, 15000);
+        runtime.PerimeterSpawned = true;
+        return true;
+    }
+
+    private static void CleanupOfficers(RuntimeOperation runtime)
+    {
+        if (runtime == null) return;
+        foreach (Cop officer in runtime.Officers.Where(x => x != null).ToList())
+            if (officer.Pedestrian != null && officer.Pedestrian.Exists())
+                officer.Pedestrian.Delete();
+        runtime.Officers.Clear();
+    }
+
     private bool DeployRaidTeam(LawEnforcementIntelligence intelligence,
         PoliceOperationRecord operation, RuntimeOperation runtime, PoliceOperationsManager manager, DateTime now)
     {
@@ -347,6 +389,8 @@ public class ResidenceOperationsDispatcher
             manager.Advance(intelligence, operation.ID, PoliceOperationStage.Perimeter, now);
         if (operation.Stage == PoliceOperationStage.Perimeter)
         {
+            if (!runtime.PerimeterSpawned && !DeployPerimeterTeam(intelligence, operation, runtime, manager, now, 1))
+                return;
             if (IsPlayerAtResidence(runtime.Residence))
             {
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.Announcement, now);
@@ -389,6 +433,7 @@ public class ResidenceOperationsDispatcher
         {
             if (!runtime.TeamSpawned)
             {
+                CleanupOfficers(runtime);
                 Agency agency = GetAgencyForWarrant(intelligence, operation.WarrantID);
                 List<Vector3> positions = GetSearchPositions(runtime.Residence);
                 foreach (Vector3 position in positions.Take(2))
