@@ -213,6 +213,9 @@ public class FIBSurveillanceDispatcher
             spawnTask.AllowBuddySpawn = false;
             spawnTask.ClearVehicleArea = false;
             spawnTask.SpawnWithAllWeapons = false;
+            // Off-duty classification prevents the normal CopBrain wanted-level/pursuit flow.
+            // This team is controlled exclusively by the surveillance dispatcher.
+            spawnTask.IsOffDutySpawn = true;
             spawnTask.AttemptSpawn();
 
             VehicleExt spawnedVehicle = spawnTask.CreatedVehicles.FirstOrDefault(x =>
