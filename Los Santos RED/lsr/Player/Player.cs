@@ -206,15 +206,15 @@ namespace Mod
         }
 
         private string WarrantApprehensionID { get; set; }
-        public WarrantRecord ActiveArrestWarrant => LawEnforcementIntelligence?.GetActiveArrestWarrant();
+        public WarrantRecord ActiveArrestWarrant => LawEnforcementIntelligenceManager?.WarrantManager?
+            .FindActive(LawEnforcementIntelligence, AssignedAgency?.ID, CurrentLocation?.Jurisdiction?.ID);
         public bool HasActiveArrestWarrant => ActiveArrestWarrant != null;
 
         public void BeginWarrantApprehension(string warrantID)
         {
             WarrantRecord warrant = LawEnforcementIntelligence?.Warrants?.FirstOrDefault(x =>
-                x != null && x.ID == warrantID && x.Status == WarrantStatus.Active &&
-                (x.Type == WarrantType.Arrest || x.Type == WarrantType.Bench ||
-                 x.Type == WarrantType.ProbationParole || x.Type == WarrantType.Extradition));
+                x != null && x.ID == warrantID &&
+                LawEnforcementIntelligenceManager?.WarrantManager?.CanAuthorizeArrest(x) == true);
             if (warrant != null) WarrantApprehensionID = warrant.ID;
         }
 
@@ -232,8 +232,9 @@ namespace Mod
                 .Select(x => string.Format(System.Globalization.CultureInfo.InvariantCulture,
                     "BUSINESS:{0}:{1:0.00}:{2:0.00}:{3:0.00}", x.Name, x.EntrancePosition.X, x.EntrancePosition.Y, x.EntrancePosition.Z))
                 .ToList();
-            return LawEnforcementIntelligence.IssueWarrant(CurrentDateTime, type, priority, issuingAgencyID,
-                jurisdictionID, linkedCrimeIDs, ownedBusinessIDs, suspectedResidenceID, residenceConfidence);
+            return LawEnforcementIntelligenceManager?.WarrantManager?.Issue(LawEnforcementIntelligence,
+                CurrentDateTime, type, priority, issuingAgencyID, jurisdictionID, linkedCrimeIDs,
+                ownedBusinessIDs, suspectedResidenceID, residenceConfidence);
         }
         public PlayerTasks PlayerTasks { get; private set; }
         public VehicleManager VehicleManager { get; private set; }
