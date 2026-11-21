@@ -132,6 +132,14 @@ namespace LosSantosRED.lsr
 
             if (intelligence.VehicleAssociations != null)
                 intelligence.VehicleAssociations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
+            if (intelligence.SurveillanceAssignments != null)
+                intelligence.SurveillanceAssignments.RemoveAll(x => x == null ||
+                    (x.State == SurveillanceAssignmentState.Completed &&
+                     x.LastStateChangedAt != DateTime.MinValue && x.LastStateChangedAt < cutoff));
+            if (intelligence.PoliceOperations != null)
+                intelligence.PoliceOperations.RemoveAll(x => x == null ||
+                    ((x.Stage == PoliceOperationStage.Completed || x.Stage == PoliceOperationStage.Aborted) &&
+                     x.LastUpdatedAt != DateTime.MinValue && x.LastUpdatedAt < cutoff));
         }
 
         public void ResetClock()
