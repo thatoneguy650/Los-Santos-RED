@@ -27,6 +27,7 @@ public class FIBSurveillanceDispatcher
         public PedExt Driver;
         public VehicleExt Vehicle;
         public uint LastFollowCommandAt;
+        public uint LastDetectionCheckAt;
     }
 
     public FIBSurveillanceDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies,
@@ -193,6 +194,14 @@ public class FIBSurveillanceDispatcher
                     x.AddVehicleToList(World);
             });
 
+            if (NativeFunction.Natives.HAS_ENTITY_CLEAR_LOS_TO_ENTITY<bool>(
+                Player.Character, spawnedVehicle.Vehicle, 17))
+            {
+                spawnedDriver.Pedestrian.Delete();
+                spawnedVehicle.FullyDelete();
+                continue;
+            }
+
             RuntimeTeam team = new RuntimeTeam
             {
                 AssignmentID = teamID,
@@ -280,18 +289,26 @@ public class FIBSurveillanceDispatcher
                 continue;
             }
 
-            if (playerCanSeeTeam && RandomItems.RandomPercent(settings.SurveillanceDetectionChance))
+            if (playerCanSeeTeam && Game.GameTime - team.LastDetectionCheckAt >= 15000)
             {
+                team.LastDetectionCheckAt = Game.GameTime;
+                if (RandomItems.RandomPercent(settings.SurveillanceDetectionChance))
+                {
                 (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
                     .Transition(assignment, SurveillanceAssignmentState.Compromised, now);
                 assignment.ReplacementRequired = true;
-                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
-                    team.Vehicle.Vehicle, 22f, 3);
-                continue;
+                    NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
+                        team.Vehicle.Vehicle, 22f, 3);
+                    continue;
+                }
             }
 
-            if (assignment.State == SurveillanceAssignmentState.LostContact ||
-                assignment.State == SurveillanceAssignmentState.Approaching)
+            if (assignment.State == SurveillanceAssignmentState.LostContact)
+            {
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                    .Transition(assignment, SurveillanceAssignmentState.Approaching, now);
+            }
+            if (assignment.State == SurveillanceAssignmentState.Approaching)
             {
                 (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
                     .Transition(assignment, SurveillanceAssignmentState.Following, now);
@@ -301,6 +318,24 @@ public class FIBSurveillanceDispatcher
                 IssueFollowCommand(team, settings);
 
             RecordActualObservation(intelligence, assignment, now, team);
+        }
+
+        // A team whose entities disappeared has no runtime object left to drive its timeout.
+        // Complete its assignment after the reacquisition window so another team can replace it.
+        foreach (SurveillanceAssignment assignment in intelligence.SurveillanceAssignments.Where(x =>
+            x != null && x.State == SurveillanceAssignmentState.LostContact &&
+            !RuntimeTeams.ContainsKey(x.ID)).ToList())
+        {
+            DateTime lastContact = assignment.LastSuccessfulObservationAt == DateTime.MinValue
+                ? assignment.AssignedAt : assignment.LastSuccessfulObservationAt;
+            if (now - lastContact >= TimeSpan.FromMinutes(2))
+            {
+                assignment.ReplacementRequired = true;
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                    .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                    .Transition(assignment, SurveillanceAssignmentState.Completed, now);
+            }
         }
     }
 
@@ -359,6 +394,9 @@ public class FIBSurveillanceDispatcher
                     .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
             }
             CleanupTeam(pair.Value);
+            if (assignment != null)
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                    .Transition(assignment, SurveillanceAssignmentState.Completed, now);
             RuntimeTeams.Remove(pair.Key);
         }
     }
