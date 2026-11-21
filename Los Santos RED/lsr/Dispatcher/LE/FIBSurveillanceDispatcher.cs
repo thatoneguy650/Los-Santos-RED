@@ -434,25 +434,26 @@ public class FIBSurveillanceDispatcher
     private void RecordActualObservation(LawEnforcementIntelligence intelligence,
         SurveillanceAssignment assignment, DateTime now, RuntimeTeam team)
     {
-        // Only called after the spawned FIB agent has direct line of sight to the player.
-        IntelligenceObservation observation = new IntelligenceObservation
+        bool inVehicle = Player.IsInVehicle && Player.CurrentVehicle != null &&
+            Player.CurrentVehicle.Vehicle.Exists();
+        string vehicleID = null;
+        string vehicleDescription = null;
+        if (inVehicle)
         {
-            ObservedAt = now,
-            Source = IntelligenceSource.Surveillance,
-            EvidenceType = IntelligenceEvidenceType.Surveillance,
-            TargetType = IntelligenceTargetType.Person,
-            TargetID = intelligence.SubjectID,
-            TargetDescription = "Player",
-            SourceID = "FIB_SURVEILLANCE:" + assignment.TeamID,
-            IsKnownToPolice = true,
-            IsVerified = true,
-            Confidence = 0.9f,
-            PositionX = Player.Position.X,
-            PositionY = Player.Position.Y,
-            PositionZ = Player.Position.Z,
-            Notes = "Direct visual observation by an assigned FIB surveillance team."
-        };
-        if (intelligence.RecordObservation(observation))
+            string plate = Player.CurrentVehicle.CarPlate?.PlateNumber;
+            vehicleID = Player.CurrentVehicle.CarPlate != null
+                ? "REG:" + Player.CurrentVehicle.CarPlate.RegistrationId
+                : !string.IsNullOrWhiteSpace(plate)
+                    ? "PLATE:" + plate.Trim().ToUpperInvariant()
+                    : "MODEL:" + Player.CurrentVehicle.Vehicle.Model.Hash;
+            vehicleDescription = Player.CurrentVehicle.FullName(false);
+        }
+
+        string zoneID = Player.CurrentLocation?.CurrentZone?.InternalGameName;
+        bool recorded = intelligence.RecordSurveillanceSighting(now, assignment.TeamID, inVehicle,
+            vehicleID, vehicleDescription, Player.Position.X, Player.Position.Y, Player.Position.Z,
+            zoneID, zoneID);
+        if (recorded)
         {
             (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
                 .RecordObservation(assignment, now, Player.Position.X, Player.Position.Y, Player.Position.Z);
