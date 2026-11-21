@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr
         Undecided,
         Surrendered,
         Resisted,
+        DidNotComply,
         Absent,
         CompliedWithSearch,
         RefusedEntry
@@ -63,7 +64,7 @@ namespace LosSantosRED.lsr
         {
             if (intelligence == null || settings == null || !settings.EnableWarrants ||
                 now == DateTime.MinValue || string.IsNullOrWhiteSpace(residenceID) ||
-                !playerBelievedHome || availableUnits <= 0)
+                availableUnits <= 0)
                 return null;
             settings.Normalize();
             WarrantRecord warrant = intelligence.Warrants == null ? null :
@@ -82,9 +83,9 @@ namespace LosSantosRED.lsr
             }
             else if (IsArrestWarrant(warrant.Type))
             {
-                if (warrant.Priority < WarrantPriority.High) return null;
+                if (!playerBelievedHome || warrant.Priority < WarrantPriority.High || availableUnits < 2)
+                    return null;
                 type = PoliceOperationType.ArrestWarrantRaid;
-                if (availableUnits < 2) return null;
             }
             else
                 return null;
@@ -92,8 +93,9 @@ namespace LosSantosRED.lsr
             if (intelligence.PoliceOperations == null)
                 intelligence.PoliceOperations = new List<PoliceOperationRecord>();
             if (intelligence.PoliceOperations.Any(x => x != null &&
-                x.WarrantID == warrant.ID && x.Stage != PoliceOperationStage.Completed &&
-                x.Stage != PoliceOperationStage.Aborted))
+                x.WarrantID == warrant.ID &&
+                (x.Stage == PoliceOperationStage.Completed ||
+                 (x.Stage != PoliceOperationStage.Aborted && x.Stage != PoliceOperationStage.Completed))))
                 return null;
 
             PoliceOperationRecord operation = new PoliceOperationRecord
@@ -181,11 +183,14 @@ namespace LosSantosRED.lsr
             if (operation.Type == PoliceOperationType.ArrestWarrantRaid)
             {
                 if (response != PoliceOperationPlayerResponse.Surrendered &&
-                    response != PoliceOperationPlayerResponse.Resisted) return false;
+                    response != PoliceOperationPlayerResponse.Resisted &&
+                    response != PoliceOperationPlayerResponse.DidNotComply) return false;
                 operation.Stage = PoliceOperationStage.Entry;
                 operation.Outcome = response == PoliceOperationPlayerResponse.Surrendered
                     ? "Subject surrendered during the announcement phase; officers must complete the arrest and restraint."
-                    : "Subject resisted the announcement; officers proceed with controlled entry and arrest attempt.";
+                    : response == PoliceOperationPlayerResponse.Resisted
+                        ? "Subject resisted the announcement; officers proceed with controlled entry and arrest attempt."
+                        : "Subject did not comply with the announcement; officers proceed with controlled entry and arrest attempt.";
             }
             else
             {
