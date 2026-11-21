@@ -156,6 +156,16 @@ namespace LosSantosRED.lsr
             PoliceOperationRecord operation = intelligence.PoliceOperations.FirstOrDefault(x =>
                 x != null && x.ID == operationID && x.Stage == PoliceOperationStage.Announcement);
             if (operation == null || at < operation.LastUpdatedAt) return false;
+            WarrantRecord authorizingWarrant = intelligence.Warrants == null ? null :
+                intelligence.Warrants.FirstOrDefault(x => x != null && x.ID == operation.WarrantID);
+            if (authorizingWarrant == null || authorizingWarrant.Status != WarrantStatus.Active)
+            {
+                operation.Stage = PoliceOperationStage.Aborted;
+                operation.LastUpdatedAt = at;
+                operation.Outcome = "Operation aborted because its authorizing warrant is no longer active.";
+                intelligence.LastUpdatedAt = at;
+                return false;
+            }
 
             if (response == PoliceOperationPlayerResponse.Absent)
             {
