@@ -16,6 +16,29 @@ namespace LosSantosRED.lsr
         public SurveillanceAssignmentManager SurveillanceAssignmentManager { get; private set; } = new SurveillanceAssignmentManager();
         public PoliceOperationsManager PoliceOperationsManager { get; private set; } = new PoliceOperationsManager();
 
+        public string GetDebugSummary(LawEnforcementIntelligence intelligence)
+        {
+            if (intelligence == null) return "Law enforcement intelligence: unavailable";
+            intelligence.Normalize();
+            int activeWarrants = intelligence.Warrants.Count(x => x != null && x.Status == WarrantStatus.Active);
+            int activeBOLOs = intelligence.BOLOs.Count(x => x != null && x.Status == BOLOStatus.Active);
+            int policeObservations = intelligence.Observations.Count(x => x != null && x.IsKnownToPolice);
+            int activeSurveillance = intelligence.SurveillanceAssignments.Count(x => x != null &&
+                x.State != SurveillanceAssignmentState.Available &&
+                x.State != SurveillanceAssignmentState.Completed);
+            int activeOperations = intelligence.PoliceOperations.Count(x => x != null &&
+                x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted);
+            InvestigationRecord current = intelligence.Investigations
+                .Where(x => x != null && x.Stage != InvestigationStage.Closed &&
+                    x.Stage != InvestigationStage.Suspended)
+                .OrderByDescending(x => x.HeatLevel).FirstOrDefault();
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "LE Intelligence | Observations: {0} (Police-known: {1}) | Investigations: {2} | Stage: {3} | Warrants: {4} | BOLOs: {5} | FIB teams: {6} | Operations: {7}",
+                intelligence.Observations.Count, policeObservations, intelligence.Investigations.Count,
+                current == null ? "None" : current.Stage.ToString(), activeWarrants, activeBOLOs,
+                activeSurveillance, activeOperations);
+        }
+
         public bool TryAssignSurveillance(LawEnforcementIntelligence intelligence, string investigationID,
             string teamID, DateTime assignedAt, LawEnforcementIntelligenceSettings settings)
         {
