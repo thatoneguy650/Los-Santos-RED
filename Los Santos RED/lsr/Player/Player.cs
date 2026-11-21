@@ -236,6 +236,35 @@ namespace Mod
                 CurrentDateTime, type, priority, issuingAgencyID, jurisdictionID, linkedCrimeIDs,
                 ownedBusinessIDs, suspectedResidenceID, residenceConfidence);
         }
+        public BOLORecord IssueLawEnforcementBOLO(BOLOTargetType targetType, string description,
+            string vehicleModel, string plateNumber, string zoneID, string lastKnownLocationID,
+            DateTime? expiresAt, string notes = null)
+        {
+            LawEnforcementIntelligenceSettings settings = Settings?.SettingsManager?.LawEnforcementIntelligenceSettings;
+            if (settings == null || !settings.EnableBOLOSystem) return null;
+            if (LawEnforcementIntelligence == null) LawEnforcementIntelligence = new LawEnforcementIntelligence();
+            return LawEnforcementIntelligenceManager?.BOLOManager?.Issue(LawEnforcementIntelligence,
+                CurrentDateTime, targetType, description, vehicleModel, plateNumber, zoneID,
+                lastKnownLocationID, expiresAt, settings, notes);
+        }
+
+        public float GetVehicleBOLOStopChance(string zoneID, string plateNumber, string vehicleModel)
+        {
+            LawEnforcementIntelligenceSettings settings = Settings?.SettingsManager?.LawEnforcementIntelligenceSettings;
+            if (settings == null || !settings.EnableBOLOSystem) return 0f;
+            return LawEnforcementIntelligenceManager?.BOLOManager?.GetVehicleStopChance(
+                LawEnforcementIntelligence, CurrentDateTime, zoneID, plateNumber, vehicleModel) ?? 0f;
+        }
+
+        public PoliceOperationRecord PlanLawEnforcementResidenceOperation(string warrantID,
+            string investigationID, string residenceID, bool playerBelievedHome, int availableUnits)
+        {
+            LawEnforcementIntelligenceSettings settings = Settings?.SettingsManager?.LawEnforcementIntelligenceSettings;
+            if (settings == null || LawEnforcementIntelligence == null) return null;
+            return LawEnforcementIntelligenceManager?.PoliceOperationsManager?.PlanResidenceOperation(
+                LawEnforcementIntelligence, warrantID, investigationID, residenceID,
+                playerBelievedHome, availableUnits, CurrentDateTime, settings);
+        }
         public PlayerTasks PlayerTasks { get; private set; }
         public VehicleManager VehicleManager { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
