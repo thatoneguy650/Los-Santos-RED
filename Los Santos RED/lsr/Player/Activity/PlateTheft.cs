@@ -45,14 +45,11 @@ public class PlateTheft : DynamicActivity
     {
         get
         {
-            if (TargetVehicle.Vehicle.LicensePlate == "        ")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return TargetVehicle != null
+                && TargetVehicle.Vehicle != null
+                && TargetVehicle.Vehicle.Exists()
+                && !string.IsNullOrWhiteSpace(TargetVehicle.Vehicle.LicensePlate)
+                && TargetVehicle.Vehicle.LicensePlate != "        ";
         }
     }
     public override void Cancel()
@@ -110,10 +107,24 @@ public class PlateTheft : DynamicActivity
     }
     private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
+        if (Pedestrian == null || !Pedestrian.Exists())
+        {
+            return null;
+        }
+
         Rage.Object LicensePlate = null;
         try
         {
             LicensePlate = new Rage.Object("p_num_plate_01", Pedestrian.GetOffsetPositionUp(55f));
+            if (LicensePlate == null || !LicensePlate.Exists())
+            {
+                return null;
+            }
+
+            LicensePlate.IsVisible = true;
+            int BoneIndexLeftHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 18905);
+            LicensePlate.AttachTo(Pedestrian, BoneIndexLeftHand, new Vector3(0.19f, 0.08f, 0.0f), new Rotator(-57.2f, 90f, -173f));
+            return LicensePlate;
         }
         catch (Exception ex)
         {
@@ -121,12 +132,9 @@ public class PlateTheft : DynamicActivity
             {
                 LicensePlate.Delete();
             }
+            EntryPoint.WriteToConsole("Unable to create the license plate prop: " + ex.Message, 1);
+            return null;
         }
-        LicensePlate.IsVisible = true;
-        int BoneIndexLeftHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 18905);
-        LicensePlate.AttachTo(Player.Character, BoneIndexLeftHand, new Vector3(0.19f, 0.08f, 0.0f), new Rotator(-57.2f, 90f, -173f));
-
-        return LicensePlate;
     }
     private void Enter()
     {
@@ -190,9 +198,18 @@ public class PlateTheft : DynamicActivity
             //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
         }
     }
-    private bool FloatIsWithin(float value, float minimum, float maximum)
+    private bool IsHeadingWithinTolerance(float currentHeading, float desiredHeading, float tolerance)
     {
-        return value >= minimum && value <= maximum;
+        float difference = (currentHeading - desiredHeading) % 360f;
+        if (difference > 180f)
+        {
+            difference -= 360f;
+        }
+        else if (difference < -180f)
+        {
+            difference += 360f;
+        }
+        return Math.Abs(difference) <= tolerance;
     }
 
 
@@ -271,36 +288,46 @@ public class PlateTheft : DynamicActivity
     }
     private bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
-        bool Continue = true;
-        bool isPlayer = false;
-        if (PedToMove == Player.Character)
-            isPlayer = true;
-        Ped Driver = TargetVehicle.Driver;
+        const uint timeoutMilliseconds = 15000;
+
+        if (TargetVehicle == null || !TargetVehicle.Exists() || PedToMove == null || !PedToMove.Exists())
+        {
+            return false;
+        }
+
+        bool isPlayer = PedToMove == Player.Character;
+        Ped Driver = StopDriver ? TargetVehicle.Driver : null;
+        uint startedAt = Game.GameTime;
+
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
-        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
+        while (TargetVehicle.Exists() && PedToMove.Exists())
         {
-            GameFiber.Yield();
-            if (isPlayer && Player.IsMoveControlPressed)
+            if (PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f
+                && IsHeadingWithinTolerance(PedToMove.Heading, DesiredHeading, 5f))
             {
-                Continue = false;
+                return true;
+            }
+
+            if ((isPlayer && Player.IsMoveControlPressed)
+                || Game.GameTime - startedAt >= timeoutMilliseconds)
+            {
                 break;
             }
-            if (StopDriver && TargetVehicle.Driver != null)
+
+            if (StopDriver && Driver != null && Driver.Exists())
             {
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
             }
-//#if DEBUG
-//            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-//#endif
+
+            GameFiber.Yield();
         }
-        if (!Continue)
+
+        if (PedToMove.Exists())
         {
-            //PedToMove.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(PedToMove);
-            return false;
         }
-        return true;
+        return false;
     }
     private void Setup()
     {
@@ -313,32 +340,83 @@ public class PlateTheft : DynamicActivity
     }
     private void UpdateModelPlates()
     {
-        LicensePlate PlateToRemove = TargetVehicle.CarPlate;
-        if (IsChangingPlate)
+        if (TargetVehicle == null || TargetVehicle.Vehicle == null || !TargetVehicle.Vehicle.Exists())
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToAdd {PlateToAdd.LicensePlate.PlateNumber}");
-            Player.Inventory.Remove(PlateToAdd);
-            if (PlateToRemove != null && PlateToRemove.PlateNumber != "        ")
-            {
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {PlateToRemove.PlateNumber}");
-                LicensePlateItem toAdd = new LicensePlateItem($"{TargetVehicle.CarPlate.PlateNumber}") { Description = TargetVehicle.CarPlate.GenerateDescription(), LicensePlate = PlateToRemove };
-                Player.Inventory.Add(toAdd, 1.0f);
-            }
-            TargetVehicle.CarPlate = PlateToAdd.LicensePlate;
-            TargetVehicle.Vehicle.LicensePlate = PlateToAdd.LicensePlate.PlateNumber;
-            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", TargetVehicle.Vehicle, PlateToAdd.LicensePlate.PlateType);
+            return;
         }
-        else
+
+        LicensePlate previousPlate = TargetVehicle.CarPlate;
+        string previousVehiclePlateText = TargetVehicle.Vehicle.LicensePlate;
+        LicensePlateItem removedPlateItem = null;
+        if (previousPlate != null && !string.IsNullOrWhiteSpace(previousPlate.PlateNumber) && previousPlate.PlateNumber != "        ")
         {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {TargetVehicle.CarPlate}");
-            if (TargetVehicle.CarPlate != null && TargetVehicle.CarPlate.PlateNumber != "        ")
+            removedPlateItem = new LicensePlateItem(previousPlate.PlateNumber)
             {
-                LicensePlateItem toAdd = new LicensePlateItem($"{TargetVehicle.CarPlate.PlateNumber}") { Description = TargetVehicle.CarPlate.GenerateDescription(), LicensePlate = TargetVehicle.CarPlate };
-                Player.Inventory.Add(toAdd, 1.0f);
+                Description = previousPlate.GenerateDescription(),
+                LicensePlate = previousPlate
+            };
+        }
+
+        if (IsChangingPlate && (PlateToAdd == null || PlateToAdd.LicensePlate == null
+            || string.IsNullOrWhiteSpace(PlateToAdd.LicensePlate.PlateNumber)))
+        {
+            Game.DisplayHelp("The selected license plate is invalid.");
+            return;
+        }
+
+        bool replacementPlateConsumed = false;
+        bool removedPlateAddedToInventory = false;
+        try
+        {
+            if (IsChangingPlate)
+            {
+                if (!Player.Inventory.Remove(PlateToAdd))
+                {
+                    Game.DisplayHelp("You no longer have that license plate.");
+                    return;
+                }
+                replacementPlateConsumed = true;
             }
-            TargetVehicle.CarPlate = null;
-            TargetVehicle.Vehicle.LicensePlate = "        ";
-            TargetVehicle.CarPlate = null;
+
+            if (removedPlateItem != null)
+            {
+                Player.Inventory.Add(removedPlateItem, 1.0f);
+                removedPlateAddedToInventory = true;
+            }
+
+            if (IsChangingPlate)
+            {
+                TargetVehicle.CarPlate = PlateToAdd.LicensePlate;
+                TargetVehicle.Vehicle.LicensePlate = PlateToAdd.LicensePlate.PlateNumber;
+                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", TargetVehicle.Vehicle, PlateToAdd.LicensePlate.PlateType);
+            }
+            else
+            {
+                TargetVehicle.CarPlate = null;
+                TargetVehicle.Vehicle.LicensePlate = "        ";
+            }
+        }
+        catch
+        {
+            TargetVehicle.CarPlate = previousPlate;
+            if (TargetVehicle.Vehicle != null && TargetVehicle.Vehicle.Exists())
+            {
+                TargetVehicle.Vehicle.LicensePlate = previousVehiclePlateText;
+                if (previousPlate != null)
+                {
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", TargetVehicle.Vehicle, previousPlate.PlateType);
+                }
+            }
+
+            if (removedPlateAddedToInventory && removedPlateItem != null)
+            {
+                Player.Inventory.Remove(removedPlateItem);
+            }
+            if (replacementPlateConsumed && PlateToAdd != null)
+            {
+                Player.Inventory.Add(PlateToAdd, 1.0f);
+            }
+            throw;
         }
     }
 }
