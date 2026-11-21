@@ -63,15 +63,16 @@ public class ResidenceOperationsDispatcher
         intelligence.Normalize();
         settings.Normalize();
 
-        if (!settings.EnableWarrants || modPlayer.IsDead)
+        if (!settings.EnableWarrants)
         {
             AbortAll(intelligence, modPlayer.CurrentDateTime,
-                "Residence operations stopped because warrant operations are disabled or the player is unavailable.");
+                "Residence operations stopped because warrant operations are disabled.");
             return;
         }
 
         UpdateActiveOperations(intelligence, modPlayer.CurrentDateTime);
-        TryPlanOperation(intelligence, modPlayer.CurrentDateTime, settings);
+        if (!modPlayer.IsDead)
+            TryPlanOperation(intelligence, modPlayer.CurrentDateTime, settings);
     }
 
     public void Dispose()
@@ -214,7 +215,7 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.Announcement)
         {
-            if (!IsPlayerAtResidence(runtime.Residence))
+            if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
             {
                 manager.RecordAnnouncementResponse(intelligence, operation.ID,
                     PoliceOperationPlayerResponse.Absent, now);
@@ -414,7 +415,7 @@ public class ResidenceOperationsDispatcher
         spawnTask.AllowAnySpawn = true;
         spawnTask.AllowBuddySpawn = false;
         spawnTask.ClearVehicleArea = false;
-        spawnTask.PlacePedOnGround = true;
+        spawnTask.PlacePedOnGround = false;
         spawnTask.SpawnWithAllWeapons = false;
         spawnTask.IsOffDutySpawn = offDuty;
         spawnTask.AttemptSpawn();
