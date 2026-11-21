@@ -227,7 +227,7 @@ public class FIBSurveillanceDispatcher
             VehicleExt spawnedVehicle = spawnTask.CreatedVehicles.FirstOrDefault(x =>
                 x != null && x.Vehicle.Exists());
             PedExt spawnedDriver = spawnTask.CreatedPeople.FirstOrDefault(x =>
-                x != null && x.Pedestrian.Exists());
+                x != null && x.Pedestrian != null && x.Pedestrian.Exists());
             if (spawnedVehicle == null || spawnedDriver == null)
             {
                 foreach (PedExt ped in spawnTask.CreatedPeople.Where(x => x != null))
@@ -247,7 +247,7 @@ public class FIBSurveillanceDispatcher
 
             spawnTask.CreatedPeople.ForEach(x =>
             {
-                if (x != null && x.Pedestrian.Exists())
+                if (x != null && x.Pedestrian != null && x.Pedestrian.Exists())
                     World.Pedestrians.AddEntity(x);
             });
             spawnTask.CreatedVehicles.ForEach(x =>
@@ -328,8 +328,8 @@ public class FIBSurveillanceDispatcher
                     (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
             }
 
-            bool entitiesExist = team.Driver != null && team.Driver.Pedestrian.Exists() &&
-                team.Vehicle != null && team.Vehicle.Vehicle.Exists() &&
+            bool entitiesExist = team.Driver != null && team.Driver.Pedestrian != null && team.Driver.Pedestrian.Exists() &&
+                team.Vehicle != null && team.Vehicle.Vehicle != null && team.Vehicle.Vehicle.Exists() &&
                 team.Driver.Pedestrian.IsAlive;
             if (!entitiesExist)
             {
@@ -459,8 +459,8 @@ public class FIBSurveillanceDispatcher
 
     private void IssueFollowCommand(RuntimeTeam team, LawEnforcementIntelligenceSettings settings)
     {
-        if (team == null || team.Driver == null || !team.Driver.Pedestrian.Exists() ||
-            team.Vehicle == null || !team.Vehicle.Vehicle.Exists())
+        if (team == null || team.Driver == null || !team.Driver.Pedestrian != null && team.Driver.Pedestrian.Exists() ||
+            team.Vehicle == null || !team.Vehicle.Vehicle != null && team.Vehicle.Vehicle.Exists())
             return;
         Entity target = Player.IsInVehicle && Player.CurrentVehicle != null &&
             Player.CurrentVehicle.Vehicle.Exists()
@@ -492,9 +492,9 @@ public class FIBSurveillanceDispatcher
     private static void CleanupTeam(RuntimeTeam team)
     {
         if (team == null) return;
-        if (team.Driver != null && team.Driver.Pedestrian.Exists())
+        if (team.Driver != null && team.Driver.Pedestrian != null && team.Driver.Pedestrian.Exists())
             team.Driver.Pedestrian.Delete();
-        if (team.Vehicle != null && team.Vehicle.Vehicle.Exists())
+        if (team.Vehicle != null && team.Vehicle.Vehicle != null && team.Vehicle.Vehicle.Exists())
             team.Vehicle.FullyDelete();
     }
 
