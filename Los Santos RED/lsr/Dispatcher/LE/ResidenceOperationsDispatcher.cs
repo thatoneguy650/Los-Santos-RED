@@ -142,7 +142,7 @@ public class ResidenceOperationsDispatcher
         bool playerBelievedHome = IsPlayerAtResidence(searchResidence);
         PoliceOperationRecord search = modPlayerOperations(intelligence).PlanResidenceOperation(
             intelligence, searchWarrant.ID, searchInvestigationID, searchResidenceID,
-            playerBelievedHome, 1, now, settings);
+            playerBelievedHome, 2, now, settings);
         if (search != null)
         {
             RuntimeOperations[search.ID] = new RuntimeOperation
