@@ -18,6 +18,7 @@ namespace LosSantosRED.lsr
         public List<BOLORecord> BOLOs { get; set; } = new List<BOLORecord>();
         public List<SurveillanceAssignment> SurveillanceAssignments { get; set; } = new List<SurveillanceAssignment>();
         public List<PoliceOperationRecord> PoliceOperations { get; set; } = new List<PoliceOperationRecord>();
+        public List<VehicleAssociationRecord> VehicleAssociations { get; set; } = new List<VehicleAssociationRecord>();
 
         public LawEnforcementIntelligence Copy()
         {
@@ -71,6 +72,13 @@ namespace LosSantosRED.lsr
                     if (item != null) copy.PoliceOperations.Add(item.Copy());
                 }
             }
+            if (VehicleAssociations != null)
+            {
+                foreach (VehicleAssociationRecord item in VehicleAssociations)
+                {
+                    if (item != null) copy.VehicleAssociations.Add(item.Copy());
+                }
+            }
             return copy;
         }
 
@@ -96,13 +104,16 @@ namespace LosSantosRED.lsr
                     LocationID = locationID, LocationName = locationName
                 });
             }
+            if (inVehicle && !string.IsNullOrWhiteSpace(vehicleID))
+                RecordVehicleAssociation(observedAt, vehicleID, VehicleAssociationType.CurrentDriver,
+                    sourceID, 0.8f, true, "Player was visibly driving this vehicle when observed by patrol.");
             return recorded;
         }
 
         public bool RecordANPRRead(DateTime observedAt, string officerID, string plateNumber, string registrationID, string vehicleDescription, float x, float y, float z, string locationID = null, string locationName = null)
         {
             if (string.IsNullOrWhiteSpace(plateNumber)) return false;
-            return RecordObservation(new IntelligenceObservation
+            bool recorded = RecordObservation(new IntelligenceObservation
             {
                 ObservedAt = observedAt, Source = IntelligenceSource.ANPR,
                 EvidenceType = IntelligenceEvidenceType.LicensePlateRead, TargetType = IntelligenceTargetType.LicensePlate,
@@ -112,6 +123,42 @@ namespace LosSantosRED.lsr
                 LocationID = locationID, LocationName = locationName,
                 Notes = "Plate read by an active police ANPR scan."
             });
+            if (recorded)
+            {
+                string vehicleID = !string.IsNullOrWhiteSpace(registrationID)
+                    ? "REG:" + registrationID : "PLATE:" + plateNumber.Trim().ToUpperInvariant();
+                RecordVehicleAssociation(observedAt, vehicleID, VehicleAssociationType.ConfirmedByANPR,
+                    "ANPR:" + (officerID ?? "UNKNOWN"), 0.98f, true,
+                    "Vehicle and displayed plate were confirmed by an active police ANPR scan while the player was visibly driving.");
+            }
+            return recorded;
+        }
+
+        public bool RecordVehicleAssociation(DateTime observedAt, string vehicleID,
+            VehicleAssociationType associationType, string sourceID, float confidence,
+            bool isKnownToPolice, string notes)
+        {
+            if (observedAt == DateTime.MinValue || string.IsNullOrWhiteSpace(vehicleID)) return false;
+            Normalize();
+            VehicleAssociationRecord previous = VehicleAssociations.FirstOrDefault(x => x != null &&
+                x.VehicleID == vehicleID && x.AssociationType == associationType &&
+                x.SourceID == sourceID && x.ObservedAt <= observedAt &&
+                observedAt - x.ObservedAt < TimeSpan.FromMinutes(5));
+            if (previous != null) return false;
+            VehicleAssociations.Add(new VehicleAssociationRecord
+            {
+                ID = Guid.NewGuid().ToString("N"),
+                SubjectID = SubjectID,
+                VehicleID = vehicleID,
+                AssociationType = associationType,
+                ObservedAt = observedAt,
+                SourceID = string.IsNullOrWhiteSpace(sourceID) ? "UNKNOWN" : sourceID,
+                IsKnownToPolice = isKnownToPolice,
+                Confidence = NormalizeProbability(confidence),
+                Notes = notes
+            });
+            LastUpdatedAt = observedAt;
+            return true;
         }
 
         // Activity records are not automatically police-known; a later evidence source must establish access.
@@ -147,7 +194,7 @@ namespace LosSantosRED.lsr
             Normalize();
             if (string.IsNullOrWhiteSpace(observation.ID)) observation.ID = Guid.NewGuid().ToString("N");
             if (string.IsNullOrWhiteSpace(observation.SourceID)) observation.SourceID = "UNKNOWN";
-            observation.Confidence = Math.Max(0.0f, Math.Min(1.0f, observation.Confidence));
+            observation.Confidence = NormalizeProbability(observation.Confidence);
             IntelligenceObservation previous = Observations
                 .Where(x => x != null && x.SourceID == observation.SourceID && x.EvidenceType == observation.EvidenceType &&
                     x.TargetType == observation.TargetType && x.TargetID == observation.TargetID && x.Notes == observation.Notes)
@@ -316,6 +363,13 @@ namespace LosSantosRED.lsr
             if (BOLOs == null) BOLOs = new List<BOLORecord>();
             if (SurveillanceAssignments == null) SurveillanceAssignments = new List<SurveillanceAssignment>();
             if (PoliceOperations == null) PoliceOperations = new List<PoliceOperationRecord>();
+            if (VehicleAssociations == null) VehicleAssociations = new List<VehicleAssociationRecord>();
+            foreach (VehicleAssociationRecord association in VehicleAssociations.Where(x => x != null))
+            {
+                if (string.IsNullOrWhiteSpace(association.ID)) association.ID = Guid.NewGuid().ToString("N");
+                if (string.IsNullOrWhiteSpace(association.SubjectID)) association.SubjectID = SubjectID;
+                association.Confidence = NormalizeProbability(association.Confidence);
+            }
             foreach (SurveillanceAssignment assignment in SurveillanceAssignments.Where(x => x != null))
             {
                 if (string.IsNullOrWhiteSpace(assignment.ID)) assignment.ID = Guid.NewGuid().ToString("N");
