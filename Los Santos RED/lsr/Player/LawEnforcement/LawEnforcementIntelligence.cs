@@ -288,6 +288,30 @@ namespace LosSantosRED.lsr
             if (Investigations == null) Investigations = new List<InvestigationRecord>();
             if (Warrants == null) Warrants = new List<WarrantRecord>();
             if (BOLOs == null) BOLOs = new List<BOLORecord>();
+
+            // Older or partially written saves may contain records whose nested lists are null.
+            foreach (InvestigationRecord investigation in Investigations.Where(x => x != null))
+            {
+                if (investigation.ObservationIDs == null) investigation.ObservationIDs = new List<string>();
+                if (investigation.WarrantIDs == null) investigation.WarrantIDs = new List<string>();
+                if (investigation.BOLOIDs == null) investigation.BOLOIDs = new List<string>();
+                if (investigation.KnownVehicleIDs == null) investigation.KnownVehicleIDs = new List<string>();
+                if (investigation.KnownLocationIDs == null) investigation.KnownLocationIDs = new List<string>();
+                if (investigation.AssociateIDs == null) investigation.AssociateIDs = new List<string>();
+                if (string.IsNullOrWhiteSpace(investigation.SubjectID)) investigation.SubjectID = SubjectID;
+            }
+            foreach (WarrantRecord warrant in Warrants.Where(x => x != null))
+            {
+                if (warrant.LinkedCrimeIDs == null) warrant.LinkedCrimeIDs = new List<string>();
+                if (warrant.EvidenceObservationIDs == null) warrant.EvidenceObservationIDs = new List<string>();
+                if (warrant.KnownBusinessIDsAtIssuance == null) warrant.KnownBusinessIDsAtIssuance = new List<string>();
+            }
+            foreach (IntelligenceObservation observation in Observations.Where(x => x != null))
+            {
+                if (string.IsNullOrWhiteSpace(observation.ID)) observation.ID = Guid.NewGuid().ToString("N");
+                if (string.IsNullOrWhiteSpace(observation.SourceID)) observation.SourceID = "UNKNOWN";
+                observation.Confidence = Math.Max(0.0f, Math.Min(1.0f, observation.Confidence));
+            }
         }
     }
 
