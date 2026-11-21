@@ -1448,6 +1448,7 @@
     <Compile Include="lsr\Player\Scanner\AudioSet.cs" />
     <Compile Include="lsr\Dispatcher\LE\LEDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\LE\FIBSurveillanceDispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\LE\ResidenceOperationsDispatcher.cs" />
     <Compile Include="lsr\Player\Crime\Investigation.cs" />
     <Compile Include="lsr\Player\Crime\CriminalHistory.cs" />
     <Compile Include="lsr\Player\Scanner\CrimeSceneDescription.cs" />
