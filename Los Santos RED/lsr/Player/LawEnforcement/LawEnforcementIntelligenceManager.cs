@@ -9,6 +9,45 @@ namespace LosSantosRED.lsr
     {
         private DateTime LastUpdateAt { get; set; }
 
+        public WarrantManager WarrantManager { get; private set; } = new WarrantManager();
+        public BOLOManager BOLOManager { get; private set; } = new BOLOManager();
+        public IntelligenceDatabase IntelligenceDatabase { get; private set; } = new IntelligenceDatabase();
+        public InvestigationManager InvestigationManager { get; private set; } = new InvestigationManager();
+        public SurveillanceAssignmentManager SurveillanceAssignmentManager { get; private set; } = new SurveillanceAssignmentManager();
+        public PoliceOperationsManager PoliceOperationsManager { get; private set; } = new PoliceOperationsManager();
+
+        public bool TryAssignSurveillance(LawEnforcementIntelligence intelligence, string investigationID,
+            string teamID, DateTime assignedAt, LawEnforcementIntelligenceSettings settings)
+        {
+            if (intelligence == null || settings == null || !settings.EnableFIBSurveillance ||
+                string.IsNullOrWhiteSpace(teamID) || assignedAt == DateTime.MinValue) return false;
+            settings.Normalize();
+            intelligence.Normalize();
+            int activeCount = intelligence.SurveillanceAssignments.Count(x => x != null &&
+                x.State != SurveillanceAssignmentState.Available &&
+                x.State != SurveillanceAssignmentState.Completed);
+            if (activeCount >= settings.MaxActiveFIBTeams ||
+                intelligence.SurveillanceAssignments.Any(x => x != null && x.TeamID == teamID &&
+                    x.State != SurveillanceAssignmentState.Completed &&
+                    x.State != SurveillanceAssignmentState.Available)) return false;
+            InvestigationRecord investigation = intelligence.Investigations.FirstOrDefault(x =>
+                x != null && x.ID == investigationID && x.Stage != InvestigationStage.Closed &&
+                x.Stage != InvestigationStage.Suspended);
+            if (investigation == null) return false;
+            intelligence.SurveillanceAssignments.Add(new SurveillanceAssignment
+            {
+                ID = Guid.NewGuid().ToString("N"),
+                InvestigationID = investigation.ID,
+                TeamID = teamID,
+                TargetSubjectID = intelligence.SubjectID,
+                State = SurveillanceAssignmentState.Assigned,
+                AssignedAt = assignedAt,
+                LastStateChangedAt = assignedAt
+            });
+            intelligence.LastUpdatedAt = assignedAt;
+            return true;
+        }
+
         public void Update(LawEnforcementIntelligence intelligence, DateTime currentTime, LawEnforcementIntelligenceSettings settings)
         {
             if (intelligence == null || currentTime == DateTime.MinValue || settings == null) return;
@@ -23,7 +62,7 @@ namespace LosSantosRED.lsr
                 return;
 
             if (settings.EnableBOLOSystem)
-                intelligence.UpdateExpirations(currentTime);
+                BOLOManager.Update(intelligence, currentTime);
 
             if (settings.EnableBackgroundInvestigation)
             {
@@ -33,7 +72,7 @@ namespace LosSantosRED.lsr
                 bool hasOpenInvestigation = intelligence.Investigations.Any(x => x != null &&
                     x.Stage != InvestigationStage.Closed && x.Stage != InvestigationStage.Suspended);
                 if (hasPoliceEvidence || hasActiveRecords || hasOpenInvestigation)
-                    intelligence.RefreshInvestigation(currentTime);
+                    InvestigationManager.Refresh(intelligence, currentTime);
             }
 
             PruneOldObservations(intelligence, currentTime, settings.IntelligenceRetentionDays);
