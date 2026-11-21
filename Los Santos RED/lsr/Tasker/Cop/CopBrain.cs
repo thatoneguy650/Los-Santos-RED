@@ -474,6 +474,8 @@ public class CopBrain : PedBrain
 
         DateTime now = modPlayer.CurrentDateTime;
         bool canSeePlayer = Cop.PlayerPerception.CanSeeTarget;
+        if (Player.IsInVehicle)
+            WasRecognizedByPersonBOLO = false;
 
         if (canSeePlayer)
         {
@@ -490,7 +492,7 @@ public class CopBrain : PedBrain
             // A person BOLO raises identification probability on a fresh visual encounter.
             // It does not itself grant arrest authority; arrest still requires an applicable warrant
             // or another existing lawful basis handled by the normal police response flow.
-            if (!WasSeeingPlayer)
+            if (!WasSeeingPlayer && !Player.IsInVehicle)
             {
                 Mod.Player boloPlayer = Player as Mod.Player;
                 float personBoloChance = Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableBOLOSystem
