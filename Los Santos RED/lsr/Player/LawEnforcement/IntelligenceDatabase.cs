@@ -32,6 +32,18 @@ namespace LosSantosRED.lsr
                 (!policeKnownOnly || x.IsKnownToPolice)).OrderBy(x => x.ObservedAt).ToList();
         }
 
+        public IEnumerable<VehicleAssociationRecord> GetVehicleAssociations(
+            LawEnforcementIntelligence intelligence, string vehicleID, bool policeKnownOnly = true)
+        {
+            if (intelligence == null || intelligence.VehicleAssociations == null ||
+                string.IsNullOrWhiteSpace(vehicleID))
+                return Enumerable.Empty<VehicleAssociationRecord>();
+            return intelligence.VehicleAssociations.Where(x => x != null &&
+                string.Equals(x.VehicleID, vehicleID, StringComparison.OrdinalIgnoreCase) &&
+                (!policeKnownOnly || x.IsKnownToPolice))
+                .OrderByDescending(x => x.ObservedAt).ToList();
+        }
+
         public bool MarkKnownToPolice(LawEnforcementIntelligence intelligence, string observationID,
             IntelligenceSource source, string sourceID, float confidence, DateTime recordedAt, string notes = null)
         {
