@@ -265,6 +265,33 @@ public class FIBSurveillanceDispatcher
     private void UpdateRuntimeTeams(LawEnforcementIntelligence intelligence, DateTime now,
         LawEnforcementIntelligenceSettings settings)
     {
+        int excessTeams = Math.Max(0, RuntimeTeams.Count - settings.MaxActiveFIBTeams);
+        if (excessTeams > 0)
+        {
+            foreach (KeyValuePair<string, RuntimeTeam> excess in RuntimeTeams
+                .Select(pair => new
+                {
+                    Pair = pair,
+                    Assignment = intelligence.SurveillanceAssignments.FirstOrDefault(x =>
+                        x != null && x.ID == pair.Key),
+                    Investigation = intelligence.SurveillanceAssignments
+                        .Where(x => x != null && x.ID == pair.Key)
+                        .Select(x => intelligence.Investigations.FirstOrDefault(i =>
+                            i != null && i.ID == x.InvestigationID)).FirstOrDefault()
+                })
+                .OrderBy(x => x.Investigation == null ? InvestigationStage.Preliminary : x.Investigation.Stage)
+                .ThenBy(x => x.Assignment == null ? DateTime.MinValue : x.Assignment.LastSuccessfulObservationAt)
+                .Take(excessTeams).Select(x => x.Pair).ToList())
+            {
+                SurveillanceAssignment assignment = intelligence.SurveillanceAssignments
+                    .FirstOrDefault(x => x != null && x.ID == excess.Key);
+                if (assignment != null && assignment.State != SurveillanceAssignmentState.Disengaging &&
+                    assignment.State != SurveillanceAssignmentState.Compromised)
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                        .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+            }
+        }
+
         foreach (KeyValuePair<string, RuntimeTeam> pair in RuntimeTeams.ToList())
         {
             RuntimeTeam team = pair.Value;
