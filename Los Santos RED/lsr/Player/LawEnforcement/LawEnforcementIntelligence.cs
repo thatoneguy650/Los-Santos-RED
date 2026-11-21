@@ -74,7 +74,7 @@ namespace LosSantosRED.lsr
             return copy;
         }
 
-        public bool RecordPoliceSighting(DateTime observedAt, string officerID, bool inVehicle, string vehicleID, string vehicleDescription, float x, float y, float z)
+        public bool RecordPoliceSighting(DateTime observedAt, string officerID, bool inVehicle, string vehicleID, string vehicleDescription, float x, float y, float z, string locationID = null, string locationName = null)
         {
             string sourceID = "COP:" + (officerID ?? "UNKNOWN");
             bool recorded = RecordObservation(new IntelligenceObservation
@@ -82,7 +82,8 @@ namespace LosSantosRED.lsr
                 ObservedAt = observedAt, Source = IntelligenceSource.PatrolOfficer,
                 EvidenceType = IntelligenceEvidenceType.VisualSighting, TargetType = IntelligenceTargetType.Person,
                 TargetID = SubjectID, TargetDescription = "Player", SourceID = sourceID, EntityID = officerID,
-                IsKnownToPolice = true, Confidence = 0.85f, PositionX = x, PositionY = y, PositionZ = z
+                IsKnownToPolice = true, Confidence = 0.85f, PositionX = x, PositionY = y, PositionZ = z,
+                LocationID = locationID, LocationName = locationName
             });
             if (inVehicle && !string.IsNullOrWhiteSpace(vehicleID))
             {
@@ -91,13 +92,14 @@ namespace LosSantosRED.lsr
                     ObservedAt = observedAt, Source = IntelligenceSource.PatrolOfficer,
                     EvidenceType = IntelligenceEvidenceType.VisualSighting, TargetType = IntelligenceTargetType.Vehicle,
                     TargetID = vehicleID, TargetDescription = vehicleDescription, SourceID = sourceID, EntityID = officerID,
-                    IsKnownToPolice = true, Confidence = 0.8f, PositionX = x, PositionY = y, PositionZ = z
+                    IsKnownToPolice = true, Confidence = 0.8f, PositionX = x, PositionY = y, PositionZ = z,
+                    LocationID = locationID, LocationName = locationName
                 });
             }
             return recorded;
         }
 
-        public bool RecordANPRRead(DateTime observedAt, string officerID, string plateNumber, string registrationID, string vehicleDescription, float x, float y, float z)
+        public bool RecordANPRRead(DateTime observedAt, string officerID, string plateNumber, string registrationID, string vehicleDescription, float x, float y, float z, string locationID = null, string locationName = null)
         {
             if (string.IsNullOrWhiteSpace(plateNumber)) return false;
             return RecordObservation(new IntelligenceObservation
@@ -107,6 +109,7 @@ namespace LosSantosRED.lsr
                 TargetID = plateNumber.Trim().ToUpperInvariant(), TargetDescription = vehicleDescription,
                 SourceID = "ANPR:" + (officerID ?? "UNKNOWN"), EntityID = registrationID,
                 IsKnownToPolice = true, Confidence = 0.98f, PositionX = x, PositionY = y, PositionZ = z,
+                LocationID = locationID, LocationName = locationName,
                 Notes = "Plate read by an active police ANPR scan."
             });
         }
@@ -133,7 +136,8 @@ namespace LosSantosRED.lsr
                 ObservedAt = observedAt, Source = IntelligenceSource.PlayerRecord, EvidenceType = evidenceType,
                 TargetType = IntelligenceTargetType.Business, TargetID = businessID, TargetDescription = businessName,
                 SourceID = "PLAYER_ACTIVITY", IsKnownToPolice = false, Confidence = 1.0f,
-                PositionX = x, PositionY = y, PositionZ = z, Notes = notes
+                PositionX = x, PositionY = y, PositionZ = z, LocationID = businessID,
+                LocationName = businessName, Notes = notes
             });
         }
 
