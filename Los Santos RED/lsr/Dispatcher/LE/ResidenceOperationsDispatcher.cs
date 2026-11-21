@@ -256,6 +256,12 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.ArrestAttempt)
         {
+            foreach (Cop unavailableOfficer in runtime.Officers.Where(x =>
+                x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
+            {
+                if (unavailableOfficer != null && unavailableOfficer.Pedestrian.Exists())
+                    unavailableOfficer.Pedestrian.Delete();
+            }
             runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
             if (Player.IsBusted)
             {
@@ -305,7 +311,13 @@ public class ResidenceOperationsDispatcher
         Agency agency = GetAgencyForWarrant(intelligence, operation.WarrantID);
         Vector3 firstPosition = Player.Character.GetOffsetPosition(new Vector3(4f, 0f, 0f));
         Vector3 secondPosition = Player.Character.GetOffsetPosition(new Vector3(-4f, 0f, 0f));
-        runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists());
+        foreach (Cop unavailableOfficer in runtime.Officers.Where(x =>
+            x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
+        {
+            if (unavailableOfficer != null && unavailableOfficer.Pedestrian.Exists())
+                unavailableOfficer.Pedestrian.Delete();
+        }
+        runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
         if (runtime.Officers.Count == 0)
             runtime.Officers.Add(SpawnOfficer(agency, firstPosition, false));
         if (runtime.Officers.Count < 2)
