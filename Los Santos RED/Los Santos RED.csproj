@@ -588,6 +588,12 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
     <Compile Include="lsr\Player\LawEnforcement\LawEnforcementIntelligence.cs" />
     <Compile Include="lsr\Player\LawEnforcement\LawEnforcementIntelligenceManager.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\WarrantManager.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\BOLOManager.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\IntelligenceDatabase.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\SurveillanceAssignment.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\InvestigationManager.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\PoliceOperationsManager.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\LawEnforcementIntelligenceSettings.cs" />
     <Compile Include="lsr\Player\Crime\BOLO.cs" />
     <Compile Include="lsr\Player\Crime\Crimes\TrainStopper.cs" />
