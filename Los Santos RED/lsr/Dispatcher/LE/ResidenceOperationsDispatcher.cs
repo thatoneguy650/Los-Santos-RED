@@ -124,38 +124,32 @@ public class ResidenceOperationsDispatcher
             }
         }
 
-        WarrantRecord searchWarrant = intelligence.Warrants
+        foreach (WarrantRecord searchWarrant in intelligence.Warrants
             .Where(x => x != null && x.Status == WarrantStatus.Active &&
                 x.Type == WarrantType.Search &&
                 !string.IsNullOrWhiteSpace(x.SuspectedResidenceID) &&
                 x.ResidenceConfidence * 100f >= settings.RaidMinimumConfidence &&
                 x.Priority >= WarrantPriority.Moderate)
-            .OrderByDescending(x => x.Priority).ThenBy(x => x.IssuedAt).FirstOrDefault();
-        if (searchWarrant == null)
-            return;
-
-        Residence searchResidence = FindResidence(searchWarrant.SuspectedResidenceID);
-        if (searchResidence == null)
-            return;
-        string searchResidenceID = searchResidence.ResidenceID.ToString();
-        string searchInvestigationID = FindInvestigationID(intelligence, searchWarrant.ID);
-        bool playerBelievedHome = IsPlayerAtResidence(searchResidence);
-        PoliceOperationRecord search = modPlayerOperations(intelligence).PlanResidenceOperation(
-            intelligence, searchWarrant.ID, searchInvestigationID, searchResidenceID,
-            playerBelievedHome, 2, now, settings);
-        if (search != null)
+            .OrderByDescending(x => x.Priority).ThenBy(x => x.IssuedAt))
         {
+            Residence searchResidence = FindResidence(searchWarrant.SuspectedResidenceID);
+            if (searchResidence == null)
+                continue;
+            string searchResidenceID = searchResidence.ResidenceID.ToString();
+            string searchInvestigationID = FindInvestigationID(intelligence, searchWarrant.ID);
+            bool playerBelievedHome = IsPlayerAtResidence(searchResidence);
+            PoliceOperationRecord search = operationsManager.PlanResidenceOperation(
+                intelligence, searchWarrant.ID, searchInvestigationID, searchResidenceID,
+                playerBelievedHome, 2, now, settings);
+            if (search == null)
+                continue;
             RuntimeOperations[search.ID] = new RuntimeOperation
             {
                 Residence = searchResidence,
                 StageStartedAt = Game.GameTime
             };
+            return;
         }
-    }
-
-    private PoliceOperationsManager modPlayerOperations(LawEnforcementIntelligence intelligence)
-    {
-        return (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.PoliceOperationsManager;
     }
 
     private void UpdateActiveOperations(LawEnforcementIntelligence intelligence, DateTime now)
