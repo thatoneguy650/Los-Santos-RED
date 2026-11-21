@@ -90,10 +90,10 @@ public class LawEnforcementIntelligenceSettings : ISettingsDefaultable
         SurveillanceStartDistance = ClampDistance(SurveillanceStartDistance, 350f);
         SurveillanceMinDistance = ClampDistance(SurveillanceMinDistance, 100f);
         SurveillanceMaxDistance = ClampDistance(SurveillanceMaxDistance, 450f);
-        if (SurveillanceMaxDistance < SurveillanceMinDistance)
-            SurveillanceMaxDistance = SurveillanceMinDistance;
         if (SurveillanceStartDistance < SurveillanceMinDistance)
             SurveillanceStartDistance = SurveillanceMinDistance;
+        if (SurveillanceMaxDistance < SurveillanceStartDistance + 50f)
+            SurveillanceMaxDistance = Math.Min(5000f, SurveillanceStartDistance + 50f);
         SurveillanceDetectionChance = ClampPercent(SurveillanceDetectionChance, 8f);
         IntelligenceRetentionDays = Math.Max(1, Math.Min(3650, IntelligenceRetentionDays <= 0 ? 90 : IntelligenceRetentionDays));
         BOLOInZoneStopChance = ClampPercent(BOLOInZoneStopChance, 65f);
