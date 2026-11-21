@@ -44,6 +44,7 @@ public class Dispatcher
     public LocationDispatcher LocationDispatcher { get; private set; }
     public TaxiDispatcher TaxiDispatcher { get; private set; }
     public FIBSurveillanceDispatcher FIBSurveillanceDispatcher { get; private set; }
+    public ResidenceOperationsDispatcher ResidenceOperationsDispatcher { get; private set; }
 
     public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes,
         IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems, 
@@ -86,6 +87,8 @@ public class Dispatcher
         TaxiDispatcher = new TaxiDispatcher(World, Player, Agencies,Settings, Streets,Zones,Jurisdictions,Weapons,Names,PlacesOfInterest,Organizations,Crimes,ModItems,ShopMenus);
         FIBSurveillanceDispatcher = new FIBSurveillanceDispatcher(World, Player, Agencies, Settings,
             Weapons, Names, ModItems, ShopMenus, Crimes);
+        ResidenceOperationsDispatcher = new ResidenceOperationsDispatcher(World, Player, Agencies,
+            Settings, Weapons, Names, ModItems, ShopMenus, Crimes, PlacesOfInterest);
     }
     public void Dispatch()
     {
@@ -115,6 +118,7 @@ public class Dispatcher
         }
 
         FIBSurveillanceDispatcher?.Update();
+        ResidenceOperationsDispatcher?.Update();
 
         //int vehicleCount = World.Vehicles.AllVehicleList.Count();
         //int pedCount = World.Pedestrians.PedExts.Count();
@@ -301,6 +305,7 @@ public class Dispatcher
     }
     public void Dispose()
     {
+        ResidenceOperationsDispatcher?.Dispose();
         FIBSurveillanceDispatcher?.Dispose();
         LEDispatcher.Dispose();
     }
