@@ -301,6 +301,7 @@ public class Dispatcher
     }
     public void Dispose()
     {
+        FIBSurveillanceDispatcher?.Dispose();
         LEDispatcher.Dispose();
     }
     public void DebugSpawnRoadblock(bool enableCars, bool enableSpike, bool enableProps, float distance)
