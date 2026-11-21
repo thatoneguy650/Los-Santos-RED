@@ -84,6 +84,7 @@ namespace LosSantosRED.lsr
             {
                 if (warrant.Priority < WarrantPriority.High) return null;
                 type = PoliceOperationType.ArrestWarrantRaid;
+                if (availableUnits < 2) return null;
             }
             else
                 return null;
@@ -158,7 +159,14 @@ namespace LosSantosRED.lsr
 
             if (response == PoliceOperationPlayerResponse.Absent)
             {
-                return AbortIfPlayerAbsent(intelligence, operationID, at);
+                if (operation.Type == PoliceOperationType.ArrestWarrantRaid)
+                    return AbortIfPlayerAbsent(intelligence, operationID, at);
+                operation.Stage = PoliceOperationStage.Search;
+                operation.PlayerResponse = response;
+                operation.LastUpdatedAt = at;
+                operation.Outcome = "Subject was absent; the active search warrant remains executable at the verified premises.";
+                intelligence.LastUpdatedAt = at;
+                return true;
             }
             if (operation.Type == PoliceOperationType.ArrestWarrantRaid)
             {
