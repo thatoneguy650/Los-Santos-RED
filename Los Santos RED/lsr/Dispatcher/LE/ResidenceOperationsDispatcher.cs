@@ -528,6 +528,8 @@ public class ResidenceOperationsDispatcher
 
     private void AbortAll(LawEnforcementIntelligence intelligence, DateTime now, string reason)
     {
+        if (intelligence == null) return;
+        intelligence.Normalize();
         foreach (PoliceOperationRecord operation in intelligence.PoliceOperations.Where(x => x != null &&
             x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted).ToList())
             modPlayerOperations(intelligence)?.Abort(intelligence, operation.ID, now, reason);
