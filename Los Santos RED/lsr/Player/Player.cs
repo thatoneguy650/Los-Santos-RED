@@ -219,7 +219,8 @@ namespace Mod
         }
 
         public WarrantRecord IssueLawEnforcementWarrant(WarrantType type, WarrantPriority priority, string issuingAgencyID,
-            string jurisdictionID, IEnumerable<string> linkedCrimeIDs, string suspectedResidenceID = null, float residenceConfidence = 0.0f)
+            string jurisdictionID, IEnumerable<string> linkedCrimeIDs, string suspectedResidenceID = null,
+            float residenceConfidence = 0.0f, DateTime? expiresAt = null)
         {
             if (Settings?.SettingsManager?.LawEnforcementIntelligenceSettings == null ||
                 !Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableWarrants)
@@ -234,7 +235,7 @@ namespace Mod
                 .ToList();
             return LawEnforcementIntelligenceManager?.WarrantManager?.Issue(LawEnforcementIntelligence,
                 CurrentDateTime, type, priority, issuingAgencyID, jurisdictionID, linkedCrimeIDs,
-                ownedBusinessIDs, suspectedResidenceID, residenceConfidence);
+                ownedBusinessIDs, suspectedResidenceID, residenceConfidence, expiresAt);
         }
         public BOLORecord IssueLawEnforcementBOLO(BOLOTargetType targetType, string description,
             string vehicleModel, string plateNumber, string zoneID, string lastKnownLocationID,
