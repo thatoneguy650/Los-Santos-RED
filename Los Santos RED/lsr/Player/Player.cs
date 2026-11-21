@@ -266,6 +266,20 @@ namespace Mod
                 LawEnforcementIntelligence, warrantID, investigationID, residenceID,
                 playerBelievedHome, availableUnits, CurrentDateTime, settings);
         }
+        public bool RecordLawEnforcementOperationResponse(string operationID,
+            PoliceOperationPlayerResponse response)
+        {
+            return LawEnforcementIntelligenceManager?.PoliceOperationsManager?.RecordAnnouncementResponse(
+                LawEnforcementIntelligence, operationID, response, CurrentDateTime) ?? false;
+        }
+
+        public bool AdvanceLawEnforcementOperation(string operationID, PoliceOperationStage next,
+            string outcome = null)
+        {
+            return LawEnforcementIntelligenceManager?.PoliceOperationsManager?.Advance(
+                LawEnforcementIntelligence, operationID, next, CurrentDateTime, outcome) ?? false;
+        }
+
         public PlayerTasks PlayerTasks { get; private set; }
         public VehicleManager VehicleManager { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
