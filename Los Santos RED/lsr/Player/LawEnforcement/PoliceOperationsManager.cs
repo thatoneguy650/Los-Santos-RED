@@ -10,6 +10,16 @@ namespace LosSantosRED.lsr
         SearchWarrantExecution
     }
 
+    public enum PoliceOperationPlayerResponse
+    {
+        Undecided,
+        Surrendered,
+        Resisted,
+        Absent,
+        CompliedWithSearch,
+        RefusedEntry
+    }
+
     public enum PoliceOperationStage
     {
         Planned,
@@ -36,6 +46,7 @@ namespace LosSantosRED.lsr
         public DateTime LastUpdatedAt { get; set; }
         public bool PlayerBelievedHome { get; set; }
         public string Outcome { get; set; }
+        public PoliceOperationPlayerResponse PlayerResponse { get; set; }
 
         public PoliceOperationRecord Copy()
         {
@@ -127,10 +138,49 @@ namespace LosSantosRED.lsr
             if (operation.Type == PoliceOperationType.SearchWarrantExecution &&
                 (next == PoliceOperationStage.ArrestAttempt))
                 return false;
-            if (!CanAdvance(operation.Stage, next)) return false;
+            if (!CanAdvance(operation, next)) return false;
             operation.Stage = next;
             operation.LastUpdatedAt = at;
             if (!string.IsNullOrWhiteSpace(outcome)) operation.Outcome = outcome;
+            intelligence.LastUpdatedAt = at;
+            return true;
+        }
+
+        public bool RecordAnnouncementResponse(LawEnforcementIntelligence intelligence,
+            string operationID, PoliceOperationPlayerResponse response, DateTime at)
+        {
+            if (intelligence == null || intelligence.PoliceOperations == null ||
+                response == PoliceOperationPlayerResponse.Undecided || at == DateTime.MinValue)
+                return false;
+            PoliceOperationRecord operation = intelligence.PoliceOperations.FirstOrDefault(x =>
+                x != null && x.ID == operationID && x.Stage == PoliceOperationStage.Announcement);
+            if (operation == null || at < operation.LastUpdatedAt) return false;
+
+            if (response == PoliceOperationPlayerResponse.Absent)
+            {
+                return AbortIfPlayerAbsent(intelligence, operationID, at);
+            }
+            if (operation.Type == PoliceOperationType.ArrestWarrantRaid)
+            {
+                if (response != PoliceOperationPlayerResponse.Surrendered &&
+                    response != PoliceOperationPlayerResponse.Resisted) return false;
+                operation.Stage = PoliceOperationStage.Entry;
+                operation.Outcome = response == PoliceOperationPlayerResponse.Surrendered
+                    ? "Subject surrendered during the announcement phase; officers must complete the arrest and restraint."
+                    : "Subject resisted the announcement; officers proceed with controlled entry and arrest attempt.";
+            }
+            else
+            {
+                if (response != PoliceOperationPlayerResponse.CompliedWithSearch &&
+                    response != PoliceOperationPlayerResponse.RefusedEntry) return false;
+                operation.Stage = response == PoliceOperationPlayerResponse.CompliedWithSearch
+                    ? PoliceOperationStage.Search : PoliceOperationStage.Entry;
+                operation.Outcome = response == PoliceOperationPlayerResponse.CompliedWithSearch
+                    ? "Occupant complied with the search warrant."
+                    : "Occupant refused entry; officers proceed under the search warrant's authorized entry procedure.";
+            }
+            operation.PlayerResponse = response;
+            operation.LastUpdatedAt = at;
             intelligence.LastUpdatedAt = at;
             return true;
         }
@@ -157,9 +207,9 @@ namespace LosSantosRED.lsr
                 type == WarrantType.ProbationParole || type == WarrantType.Extradition;
         }
 
-        private static bool CanAdvance(PoliceOperationStage current, PoliceOperationStage next)
+        private static bool CanAdvance(PoliceOperationRecord operation, PoliceOperationStage next)
         {
-            switch (current)
+            switch (operation.Stage)
             {
                 case PoliceOperationStage.Planned: return next == PoliceOperationStage.Deploying || next == PoliceOperationStage.Aborted;
                 case PoliceOperationStage.Deploying: return next == PoliceOperationStage.Perimeter || next == PoliceOperationStage.Aborted;
@@ -168,8 +218,9 @@ namespace LosSantosRED.lsr
                     return next == PoliceOperationStage.Entry || next == PoliceOperationStage.Search ||
                         next == PoliceOperationStage.Aborted;
                 case PoliceOperationStage.Entry:
-                    return next == PoliceOperationStage.ArrestAttempt || next == PoliceOperationStage.Completed ||
-                        next == PoliceOperationStage.Aborted;
+                    return next == PoliceOperationStage.ArrestAttempt ||
+                        (operation.Type == PoliceOperationType.SearchWarrantExecution && next == PoliceOperationStage.Search) ||
+                        next == PoliceOperationStage.Completed || next == PoliceOperationStage.Aborted;
                 case PoliceOperationStage.ArrestAttempt:
                 case PoliceOperationStage.Search:
                     return next == PoliceOperationStage.Completed || next == PoliceOperationStage.Aborted;
