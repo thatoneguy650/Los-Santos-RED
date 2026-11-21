@@ -1739,6 +1739,7 @@ namespace Mod
         }
         private void OnPlayerBusted()
         {
+            ResolveWarrantApprehension();
             GameFiber.Yield();
             DiedInVehicle = IsInVehicle;
             IsBusted = true;
@@ -2015,15 +2016,20 @@ namespace Mod
             Scanner.AnnounceCrime(crimeObserved, description);
             EntryPoint.WriteToConsole("OnSeenInRestrictedAreaOnCamera");
         }
+        private void ResolveWarrantApprehension()
+        {
+            if (string.IsNullOrWhiteSpace(WarrantApprehensionID))
+                return;
+
+            LawEnforcementIntelligence?.ResolveWarrant(WarrantApprehensionID, WarrantStatus.Served,
+                CurrentDateTime, "Subject arrested");
+            WarrantApprehensionID = null;
+        }
+
         public void Arrest()
         {
             BeingArrested = true;
-            if (!string.IsNullOrWhiteSpace(WarrantApprehensionID))
-            {
-                LawEnforcementIntelligence?.ResolveWarrant(WarrantApprehensionID, WarrantStatus.Served,
-                    CurrentDateTime, "Subject arrested");
-                WarrantApprehensionID = null;
-            }
+            ResolveWarrantApprehension();
             if (!IsBusted)
             {
                 OnPlayerBusted();
