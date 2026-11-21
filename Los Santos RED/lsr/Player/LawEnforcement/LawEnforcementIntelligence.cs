@@ -485,7 +485,8 @@ namespace LosSantosRED.lsr
         Informant,
         BusinessRecord,
         PlayerRecord,
-        Surveillance
+        Surveillance,
+        PoliceOperations
     }
 
     public enum IntelligenceEvidenceType
