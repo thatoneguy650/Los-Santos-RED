@@ -459,8 +459,9 @@ public class FIBSurveillanceDispatcher
 
     private void IssueFollowCommand(RuntimeTeam team, LawEnforcementIntelligenceSettings settings)
     {
-        if (team == null || team.Driver == null || !team.Driver.Pedestrian != null && team.Driver.Pedestrian.Exists() ||
-            team.Vehicle == null || !team.Vehicle.Vehicle != null && team.Vehicle.Vehicle.Exists())
+        if (team == null || team.Driver == null || team.Driver.Pedestrian == null ||
+            !team.Driver.Pedestrian.Exists() || team.Vehicle == null ||
+            team.Vehicle.Vehicle == null || !team.Vehicle.Vehicle.Exists())
             return;
         Entity target = Player.IsInVehicle && Player.CurrentVehicle != null &&
             Player.CurrentVehicle.Vehicle.Exists()
