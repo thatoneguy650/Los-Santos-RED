@@ -552,8 +552,7 @@ public class CopBrain : PedBrain
         if (!Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableBOLOSystem)
             return;
 
-        float chance = modPlayer.LawEnforcementIntelligenceManager?.BOLOManager?
-            .GetPersonRecognitionChance(modPlayer.LawEnforcementIntelligence, modPlayer.CurrentDateTime,
+        float chance = modPlayer.LawEnforcementIntelligenceManager?.BOLOManager?.GetPersonRecognitionChance(modPlayer.LawEnforcementIntelligence, modPlayer.CurrentDateTime,
                 modPlayer.LawEnforcementIntelligence?.SubjectID,
                 modPlayer.CurrentLocation?.CurrentZone?.InternalGameName) ?? 0f;
         if (chance > 0f && RandomItems.RandomPercent(chance * 100f))
