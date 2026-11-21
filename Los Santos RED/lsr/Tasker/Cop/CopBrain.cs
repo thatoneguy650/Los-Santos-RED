@@ -129,7 +129,7 @@ public class CopBrain : PedBrain
         {
 
             Mod.Player warrantPlayer = Player as Mod.Player;
-            WarrantRecord activeArrestWarrant = warrantPlayer?.ActiveArrestWarrant;
+            WarrantRecord activeArrestWarrant = warrantPlayer?.LawEnforcementIntelligence?.GetActiveArrestWarrantForAgency(Cop.AssignedAgency?.ID, warrantPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
             PedExt MainTarget = PedToAttack();
             GameFiber.Yield();
             if (MainTarget != null)
@@ -798,7 +798,7 @@ public class CopBrain : PedBrain
     private bool TryStartWarrantApprehend()
     {
         Mod.Player modPlayer = Player as Mod.Player;
-        WarrantRecord warrant = modPlayer?.ActiveArrestWarrant;
+        WarrantRecord warrant = modPlayer?.LawEnforcementIntelligence?.GetActiveArrestWarrantForAgency(Cop.AssignedAgency?.ID, modPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
         if (warrant == null || !Cop.PlayerPerception.CanSeeTarget)
             return false;
         PedExt target = GetPlayerPedExt();
