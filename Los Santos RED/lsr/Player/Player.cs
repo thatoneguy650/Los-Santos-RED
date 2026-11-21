@@ -221,6 +221,12 @@ namespace Mod
         public WarrantRecord IssueLawEnforcementWarrant(WarrantType type, WarrantPriority priority, string issuingAgencyID,
             string jurisdictionID, IEnumerable<string> linkedCrimeIDs, string suspectedResidenceID = null, float residenceConfidence = 0.0f)
         {
+            if (Settings?.SettingsManager?.LawEnforcementIntelligenceSettings == null ||
+                !Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableWarrants)
+                return null;
+            if (LawEnforcementIntelligence == null)
+                LawEnforcementIntelligence = new LawEnforcementIntelligence();
+
             List<string> ownedBusinessIDs = Properties == null ? new List<string>() : Properties.PropertyList
                 .OfType<Business>()
                 .Select(x => string.Format(System.Globalization.CultureInfo.InvariantCulture,
