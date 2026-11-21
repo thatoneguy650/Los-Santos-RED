@@ -216,6 +216,12 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.Announcement)
         {
+            if (!runtime.AnnouncementShown)
+            {
+                Game.DisplaySubtitle("Police: We have an arrest warrant. Come out with your hands visible.", 5000);
+                runtime.AnnouncementShown = true;
+                runtime.StageStartedAt = Game.GameTime;
+            }
             if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
             {
                 manager.RecordAnnouncementResponse(intelligence, operation.ID,
@@ -246,19 +252,8 @@ public class ResidenceOperationsDispatcher
             }
             if (!runtime.TeamSpawned)
             {
-                Agency agency = GetAgencyForWarrant(intelligence, operation.WarrantID);
-                Vector3 firstPosition = Player.Character.GetOffsetPosition(new Vector3(4f, 0f, 0f));
-                Vector3 secondPosition = Player.Character.GetOffsetPosition(new Vector3(-4f, 0f, 0f));
-                runtime.Officers.Add(SpawnOfficer(agency, firstPosition, false));
-                runtime.Officers.Add(SpawnOfficer(agency, secondPosition, false));
-                runtime.Officers.RemoveAll(x => x == null);
-                runtime.TeamSpawned = true;
-                if (runtime.Officers.Count < 2)
-                {
-                    manager.Abort(intelligence, operation.ID, now,
-                        "Raid aborted because the required entry team could not be deployed.");
+                if (!DeployRaidTeam(intelligence, operation, runtime, manager, now))
                     return;
-                }
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.ArrestAttempt, now,
                     "Entry team deployed; officers are attempting to apprehend the subject.");
                 runtime.StageStartedAt = Game.GameTime;
@@ -267,6 +262,20 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.ArrestAttempt)
         {
+            runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
+            if (!runtime.TeamSpawned || runtime.Officers.Count < 2)
+            {
+                if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
+                {
+                    manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
+                        "Raid ended without a confirmed apprehension; the warrant remains active.");
+                    return;
+                }
+                if (!DeployRaidTeam(intelligence, operation, runtime, manager, now))
+                    return;
+                runtime.StageStartedAt = Game.GameTime;
+            }
+
             if (Player.IsBusted)
             {
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
@@ -289,6 +298,33 @@ public class ResidenceOperationsDispatcher
                 return;
             }
         }
+    }
+
+    private bool DeployRaidTeam(LawEnforcementIntelligence intelligence,
+        PoliceOperationRecord operation, RuntimeOperation runtime, PoliceOperationsManager manager, DateTime now)
+    {
+        if (Player.Character == null || !Player.Character.Exists())
+        {
+            manager.Abort(intelligence, operation.ID, now, "Raid aborted because the player entity is unavailable.");
+            return false;
+        }
+        Agency agency = GetAgencyForWarrant(intelligence, operation.WarrantID);
+        Vector3 firstPosition = Player.Character.GetOffsetPosition(new Vector3(4f, 0f, 0f));
+        Vector3 secondPosition = Player.Character.GetOffsetPosition(new Vector3(-4f, 0f, 0f));
+        runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists());
+        if (runtime.Officers.Count == 0)
+            runtime.Officers.Add(SpawnOfficer(agency, firstPosition, false));
+        if (runtime.Officers.Count < 2)
+            runtime.Officers.Add(SpawnOfficer(agency, secondPosition, false));
+        runtime.Officers.RemoveAll(x => x == null);
+        runtime.TeamSpawned = runtime.Officers.Count >= 2;
+        if (!runtime.TeamSpawned)
+        {
+            manager.Abort(intelligence, operation.ID, now,
+                "Raid aborted because the required entry team could not be deployed.");
+            return false;
+        }
+        return true;
     }
 
     private void UpdateSearchOperation(LawEnforcementIntelligence intelligence,
@@ -320,6 +356,12 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.Announcement)
         {
+            if (!runtime.AnnouncementShown)
+            {
+                Game.DisplaySubtitle("Police: We have a search warrant for these premises.", 5000);
+                runtime.AnnouncementShown = true;
+                runtime.StageStartedAt = Game.GameTime;
+            }
             if (!IsPlayerAtResidence(runtime.Residence))
                 manager.RecordAnnouncementResponse(intelligence, operation.ID,
                     PoliceOperationPlayerResponse.Absent, now);
