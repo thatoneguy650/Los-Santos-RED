@@ -380,6 +380,10 @@ public class PlateTheft : DynamicActivity
             return;
         }
 
+        InventoryItem replacementPlateInventoryEntry = IsChangingPlate ? Player.Inventory.Get(PlateToAdd) : null;
+        float replacementPlateAmount = replacementPlateInventoryEntry == null ? 0f : replacementPlateInventoryEntry.RemainingPercent;
+        InventoryItem previousPlateInventoryEntry = removedPlateItem == null ? null : Player.Inventory.Get(removedPlateItem);
+        float previousPlateInventoryAmount = previousPlateInventoryEntry == null ? 0f : previousPlateInventoryEntry.RemainingPercent;
         bool replacementPlateConsumed = false;
         bool removedPlateAddedToInventory = false;
         try
@@ -426,11 +430,18 @@ public class PlateTheft : DynamicActivity
 
             if (removedPlateAddedToInventory && removedPlateItem != null)
             {
-                Player.Inventory.Remove(removedPlateItem);
+                if (previousPlateInventoryEntry != null)
+                {
+                    previousPlateInventoryEntry.RemainingPercent = previousPlateInventoryAmount;
+                }
+                else
+                {
+                    Player.Inventory.Remove(removedPlateItem);
+                }
             }
             if (replacementPlateConsumed && PlateToAdd != null)
             {
-                Player.Inventory.Add(PlateToAdd, 1.0f);
+                Player.Inventory.Add(PlateToAdd, replacementPlateAmount > 0f ? replacementPlateAmount : 1.0f);
             }
             throw;
         }
