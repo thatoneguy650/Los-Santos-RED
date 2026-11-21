@@ -157,7 +157,7 @@ namespace LosSantosRED.lsr
         {
             if (issuedAt == DateTime.MinValue) return null;
             Normalize();
-            WarrantRecord w = new WarrantRecord { ID = Guid.NewGuid().ToString("N"), SubjectID = SubjectID, Type = type, Status = WarrantStatus.Active, Priority = priority, IssuingAgencyID = issuingAgencyID, JurisdictionID = jurisdictionID, IssuedAt = issuedAt, LinkedCrimeIDs = linkedCrimeIDs == null ? new List<string>() : linkedCrimeIDs.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), KnownBusinessIDsAtIssuance = ownedBusinessIDsAtIssuance == null ? new List<string>() : ownedBusinessIDsAtIssuance.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), SuspectedResidenceID = suspectedResidenceID, ResidenceConfidence = Math.Max(0.0f, Math.Min(1.0f, residenceConfidence)) };
+            WarrantRecord w = new WarrantRecord { ID = Guid.NewGuid().ToString("N"), SubjectID = SubjectID, Type = type, Status = WarrantStatus.Active, Priority = priority, IssuingAgencyID = issuingAgencyID, JurisdictionID = jurisdictionID, IssuedAt = issuedAt, LinkedCrimeIDs = linkedCrimeIDs == null ? new List<string>() : linkedCrimeIDs.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), KnownBusinessIDsAtIssuance = ownedBusinessIDsAtIssuance == null ? new List<string>() : ownedBusinessIDsAtIssuance.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList(), SuspectedResidenceID = suspectedResidenceID, ResidenceConfidence = NormalizeProbability(residenceConfidence) };
             Warrants.Add(w); LastUpdatedAt = issuedAt; return w;
         }
         public WarrantRecord GetActiveArrestWarrant()
@@ -202,7 +202,7 @@ namespace LosSantosRED.lsr
             if (issuedAt == DateTime.MinValue || (expiresAt.HasValue && expiresAt.Value <= issuedAt)) return null;
             if (targetType == BOLOTargetType.LicensePlate && string.IsNullOrWhiteSpace(plateNumber)) return null;
             Normalize();
-            BOLORecord b = new BOLORecord { ID = Guid.NewGuid().ToString("N"), SubjectID = SubjectID, TargetType = targetType, Status = BOLOStatus.Active, Description = description, VehicleModel = vehicleModel, PlateNumber = string.IsNullOrWhiteSpace(plateNumber) ? null : plateNumber.Trim().ToUpperInvariant(), ZoneID = zoneID, LastKnownLocationID = lastKnownLocationID, IssuedAt = issuedAt, ExpiresAt = expiresAt, StopChanceInZone = Math.Max(0.0f, Math.Min(1.0f, stopChanceInZone)), StopChanceOutsideZone = Math.Max(0.0f, Math.Min(1.0f, stopChanceOutsideZone)), Notes = notes };
+            BOLORecord b = new BOLORecord { ID = Guid.NewGuid().ToString("N"), SubjectID = SubjectID, TargetType = targetType, Status = BOLOStatus.Active, Description = description, VehicleModel = vehicleModel, PlateNumber = string.IsNullOrWhiteSpace(plateNumber) ? null : plateNumber.Trim().ToUpperInvariant(), ZoneID = zoneID, LastKnownLocationID = lastKnownLocationID, IssuedAt = issuedAt, ExpiresAt = expiresAt, StopChanceInZone = NormalizeProbability(stopChanceInZone), StopChanceOutsideZone = NormalizeProbability(stopChanceOutsideZone), Notes = notes };
             BOLOs.Add(b); LastUpdatedAt = issuedAt; return b;
         }
 
@@ -280,6 +280,12 @@ namespace LosSantosRED.lsr
             return investigation;
         }
 
+        private static float NormalizeProbability(float value, float fallback = 0.0f)
+        {
+            if (float.IsNaN(value) || float.IsInfinity(value)) return fallback;
+            return Math.Max(0.0f, Math.Min(1.0f, value));
+        }
+
         public void Normalize()
         {
             if (SchemaVersion <= 0) SchemaVersion = 1;
@@ -292,6 +298,7 @@ namespace LosSantosRED.lsr
             // Older or partially written saves may contain records whose nested lists are null.
             foreach (InvestigationRecord investigation in Investigations.Where(x => x != null))
             {
+                if (string.IsNullOrWhiteSpace(investigation.ID)) investigation.ID = Guid.NewGuid().ToString("N");
                 if (investigation.ObservationIDs == null) investigation.ObservationIDs = new List<string>();
                 if (investigation.WarrantIDs == null) investigation.WarrantIDs = new List<string>();
                 if (investigation.BOLOIDs == null) investigation.BOLOIDs = new List<string>();
@@ -299,18 +306,29 @@ namespace LosSantosRED.lsr
                 if (investigation.KnownLocationIDs == null) investigation.KnownLocationIDs = new List<string>();
                 if (investigation.AssociateIDs == null) investigation.AssociateIDs = new List<string>();
                 if (string.IsNullOrWhiteSpace(investigation.SubjectID)) investigation.SubjectID = SubjectID;
+                investigation.HeatLevel = Math.Max(0, Math.Min(5, investigation.HeatLevel));
             }
             foreach (WarrantRecord warrant in Warrants.Where(x => x != null))
             {
+                if (string.IsNullOrWhiteSpace(warrant.ID)) warrant.ID = Guid.NewGuid().ToString("N");
+                if (string.IsNullOrWhiteSpace(warrant.SubjectID)) warrant.SubjectID = SubjectID;
                 if (warrant.LinkedCrimeIDs == null) warrant.LinkedCrimeIDs = new List<string>();
                 if (warrant.EvidenceObservationIDs == null) warrant.EvidenceObservationIDs = new List<string>();
                 if (warrant.KnownBusinessIDsAtIssuance == null) warrant.KnownBusinessIDsAtIssuance = new List<string>();
+                warrant.ResidenceConfidence = NormalizeProbability(warrant.ResidenceConfidence);
+            }
+            foreach (BOLORecord bolo in BOLOs.Where(x => x != null))
+            {
+                if (string.IsNullOrWhiteSpace(bolo.ID)) bolo.ID = Guid.NewGuid().ToString("N");
+                if (string.IsNullOrWhiteSpace(bolo.SubjectID)) bolo.SubjectID = SubjectID;
+                bolo.StopChanceInZone = NormalizeProbability(bolo.StopChanceInZone);
+                bolo.StopChanceOutsideZone = NormalizeProbability(bolo.StopChanceOutsideZone);
             }
             foreach (IntelligenceObservation observation in Observations.Where(x => x != null))
             {
                 if (string.IsNullOrWhiteSpace(observation.ID)) observation.ID = Guid.NewGuid().ToString("N");
                 if (string.IsNullOrWhiteSpace(observation.SourceID)) observation.SourceID = "UNKNOWN";
-                observation.Confidence = Math.Max(0.0f, Math.Min(1.0f, observation.Confidence));
+                observation.Confidence = NormalizeProbability(observation.Confidence);
             }
         }
     }
