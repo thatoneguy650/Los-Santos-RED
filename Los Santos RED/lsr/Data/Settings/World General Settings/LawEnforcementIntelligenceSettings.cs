@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 
 [Serializable]
-public class LawEnforcementIntelligenceSettings
+public class LawEnforcementIntelligenceSettings : ISettingsDefaultable
 {
     [Category("Law Enforcement Intelligence")]
     [Description("Enable persistent warrant records and warrant lifecycle processing.")]
@@ -35,6 +35,23 @@ public class LawEnforcementIntelligenceSettings
     [Category("Law Enforcement Intelligence")]
     [Description("Minimum residence confidence required before a raid can be considered, from 0 to 100.")]
     public float RaidMinimumConfidence { get; set; } = 75f;
+
+    public LawEnforcementIntelligenceSettings()
+    {
+        SetDefault();
+    }
+
+    public void SetDefault()
+    {
+        EnableWarrants = true;
+        EnableBOLOSystem = true;
+        EnableBackgroundInvestigation = true;
+        InvestigationUpdateInterval = 60000;
+        IntelligenceRetentionDays = 90;
+        BOLOInZoneStopChance = 65f;
+        BOLOOutOfZoneStopChance = 15f;
+        RaidMinimumConfidence = 75f;
+    }
 
     public void Normalize()
     {
