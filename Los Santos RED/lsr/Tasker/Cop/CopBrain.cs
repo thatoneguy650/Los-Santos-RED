@@ -31,6 +31,7 @@ public class CopBrain : PedBrain
     private bool MemoryRecognizedPlayer;
     private bool MemoryRecognizedVehicle;
     private bool WasRecognizedByPersonBOLO;
+    private bool WasSeeingPlayerForBOLO;
     public CopBrain(Cop cop, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons) : base(cop, settings, world, weapons)
     {
         Cop = cop;
@@ -50,6 +51,7 @@ public class CopBrain : PedBrain
         Player = player;
         PlacesOfInterest = placesOfInterest;
         UpdateRecognitionMemory();
+        UpdatePersonBOLORecognition();
         UpdateANPRScan();
         if (Cop.PlayerPerception.CanSeeTarget && Player != null)
         {
@@ -489,23 +491,6 @@ public class CopBrain : PedBrain
                 WasRecognizedByPersonBOLO = false;
             }
 
-            // A person BOLO raises identification probability on a fresh visual encounter.
-            // It does not itself grant arrest authority; arrest still requires an applicable warrant
-            // or another existing lawful basis handled by the normal police response flow.
-            if (!WasSeeingPlayer && !Player.IsInVehicle)
-            {
-                Mod.Player boloPlayer = Player as Mod.Player;
-                float personBoloChance = Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableBOLOSystem
-                    ? boloPlayer?.LawEnforcementIntelligenceManager?.BOLOManager?.GetPersonRecognitionChance(boloPlayer.LawEnforcementIntelligence, now,
-                        boloPlayer.LawEnforcementIntelligence?.SubjectID,
-                        boloPlayer.CurrentLocation?.CurrentZone?.InternalGameName) ?? 0f
-                    : 0f;
-                if (personBoloChance > 0f && RandomItems.RandomPercent(personBoloChance * 100f))
-                {
-                    MemoryRecognizedPlayer = true;
-                    WasRecognizedByPersonBOLO = true;
-                }
-            }
             LastSeenPlayerAt = now;
         }
         else
@@ -550,6 +535,34 @@ public class CopBrain : PedBrain
             MemoryRecognizedVehicle = false;
         }
         WasSeeingVehicle = canSeeVehicle;
+    }
+
+    private void UpdatePersonBOLORecognition()
+    {
+        Mod.Player modPlayer = Player as Mod.Player;
+        bool canSeePlayer = Cop.PlayerPerception.CanSeeTarget;
+        if (Player == null || modPlayer == null || Player.IsInVehicle || !canSeePlayer)
+        {
+            if (Cop.CurrentTask?.Name != "BOLOIdentify")
+                WasRecognizedByPersonBOLO = false;
+            WasSeeingPlayerForBOLO = false;
+            return;
+        }
+
+        if (WasSeeingPlayerForBOLO)
+            return;
+
+        WasRecognizedByPersonBOLO = false;
+        WasSeeingPlayerForBOLO = true;
+        if (!Settings.SettingsManager.LawEnforcementIntelligenceSettings.EnableBOLOSystem)
+            return;
+
+        float chance = modPlayer.LawEnforcementIntelligenceManager?.BOLOManager?
+            .GetPersonRecognitionChance(modPlayer.LawEnforcementIntelligence, modPlayer.CurrentDateTime,
+                modPlayer.LawEnforcementIntelligence?.SubjectID,
+                modPlayer.CurrentLocation?.CurrentZone?.InternalGameName) ?? 0f;
+        if (chance > 0f && RandomItems.RandomPercent(chance * 100f))
+            WasRecognizedByPersonBOLO = true;
     }
 
     private bool RollRecognition(DateTime lastSeenAt, DateTime now)
