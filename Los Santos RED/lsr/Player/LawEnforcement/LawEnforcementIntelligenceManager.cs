@@ -61,6 +61,8 @@ namespace LosSantosRED.lsr
                 currentTime - LastUpdateAt < TimeSpan.FromMilliseconds(settings.InvestigationUpdateInterval))
                 return;
 
+            if (settings.EnableWarrants)
+                WarrantManager.UpdateExpirations(intelligence, currentTime);
             if (settings.EnableBOLOSystem)
                 BOLOManager.Update(intelligence, currentTime);
 
