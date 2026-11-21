@@ -93,9 +93,7 @@ namespace LosSantosRED.lsr
             if (intelligence.PoliceOperations == null)
                 intelligence.PoliceOperations = new List<PoliceOperationRecord>();
             if (intelligence.PoliceOperations.Any(x => x != null &&
-                x.WarrantID == warrant.ID &&
-                (x.Stage == PoliceOperationStage.Completed ||
-                 (x.Stage != PoliceOperationStage.Aborted && x.Stage != PoliceOperationStage.Completed))))
+                x.WarrantID == warrant.ID && x.Stage != PoliceOperationStage.Aborted))
                 return null;
 
             PoliceOperationRecord operation = new PoliceOperationRecord
@@ -108,7 +106,7 @@ namespace LosSantosRED.lsr
                 Stage = PoliceOperationStage.Planned,
                 CreatedAt = now,
                 LastUpdatedAt = now,
-                PlayerBelievedHome = true
+                PlayerBelievedHome = playerBelievedHome
             };
             intelligence.PoliceOperations.Add(operation);
             intelligence.LastUpdatedAt = now;
