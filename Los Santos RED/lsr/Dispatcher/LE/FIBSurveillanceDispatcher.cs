@@ -51,7 +51,8 @@ public class FIBSurveillanceDispatcher
     public void Update()
     {
         Mod.Player modPlayer = Player as Mod.Player;
-        if (modPlayer == null || modPlayer.LawEnforcementIntelligence == null ||
+        if (modPlayer == null || modPlayer.Character == null || !modPlayer.Character.Exists() ||
+            modPlayer.LawEnforcementIntelligence == null ||
             Settings?.SettingsManager?.LawEnforcementIntelligenceSettings == null)
             return;
         LawEnforcementIntelligenceSettings settings = Settings.SettingsManager.LawEnforcementIntelligenceSettings;
@@ -63,6 +64,11 @@ public class FIBSurveillanceDispatcher
 
         LawEnforcementIntelligence intelligence = modPlayer.LawEnforcementIntelligence;
         intelligence.Normalize();
+        if (modPlayer.IsDead)
+        {
+            DisengageAll(intelligence, modPlayer.CurrentDateTime);
+            return;
+        }
         if (!ReferenceEquals(CurrentRuntimeIntelligence, intelligence))
         {
             foreach (RuntimeTeam oldTeam in RuntimeTeams.Values.ToList())
