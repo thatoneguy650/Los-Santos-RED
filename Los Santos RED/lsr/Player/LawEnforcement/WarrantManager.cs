@@ -41,8 +41,9 @@ namespace LosSantosRED.lsr
 
         public bool CanAuthorizeSearch(WarrantRecord warrant)
         {
+            // A search warrant is the only warrant type that authorizes a planned premises search.
             return warrant != null && warrant.Status == WarrantStatus.Active &&
-                (warrant.Type == WarrantType.Search || IsArrestAuthority(warrant.Type));
+                warrant.Type == WarrantType.Search;
         }
 
         public bool Resolve(LawEnforcementIntelligence intelligence, string warrantID, WarrantStatus status,
