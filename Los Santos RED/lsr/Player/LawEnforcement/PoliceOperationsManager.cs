@@ -50,8 +50,9 @@ namespace LosSantosRED.lsr
             string warrantID, string investigationID, string residenceID, bool playerBelievedHome,
             int availableUnits, DateTime now, LawEnforcementIntelligenceSettings settings)
         {
-            if (intelligence == null || settings == null || now == DateTime.MinValue ||
-                string.IsNullOrWhiteSpace(residenceID) || !playerBelievedHome || availableUnits <= 0)
+            if (intelligence == null || settings == null || !settings.EnableWarrants ||
+                now == DateTime.MinValue || string.IsNullOrWhiteSpace(residenceID) ||
+                !playerBelievedHome || availableUnits <= 0)
                 return null;
             settings.Normalize();
             WarrantRecord warrant = intelligence.Warrants == null ? null :
@@ -64,9 +65,15 @@ namespace LosSantosRED.lsr
 
             PoliceOperationType type;
             if (warrant.Type == WarrantType.Search)
+            {
+                if (warrant.Priority < WarrantPriority.Moderate) return null;
                 type = PoliceOperationType.SearchWarrantExecution;
+            }
             else if (IsArrestWarrant(warrant.Type))
+            {
+                if (warrant.Priority < WarrantPriority.High) return null;
                 type = PoliceOperationType.ArrestWarrantRaid;
+            }
             else
                 return null;
 
@@ -104,6 +111,16 @@ namespace LosSantosRED.lsr
             if (operation == null || at < operation.LastUpdatedAt ||
                 operation.Stage == PoliceOperationStage.Completed || operation.Stage == PoliceOperationStage.Aborted)
                 return false;
+            WarrantRecord warrant = intelligence.Warrants == null ? null :
+                intelligence.Warrants.FirstOrDefault(x => x != null && x.ID == operation.WarrantID);
+            if (warrant == null || warrant.Status != WarrantStatus.Active)
+            {
+                operation.Stage = PoliceOperationStage.Aborted;
+                operation.LastUpdatedAt = at;
+                operation.Outcome = "Operation aborted because its authorizing warrant is no longer active.";
+                intelligence.LastUpdatedAt = at;
+                return false;
+            }
             if (operation.Type == PoliceOperationType.ArrestWarrantRaid &&
                 (next == PoliceOperationStage.Search))
                 return false;
@@ -125,7 +142,8 @@ namespace LosSantosRED.lsr
             PoliceOperationRecord operation = intelligence.PoliceOperations.FirstOrDefault(x =>
                 x != null && x.ID == operationID && x.Stage != PoliceOperationStage.Completed &&
                 x.Stage != PoliceOperationStage.Aborted);
-            if (operation == null || at < operation.LastUpdatedAt) return false;
+            if (operation == null || operation.Type != PoliceOperationType.ArrestWarrantRaid ||
+                at < operation.LastUpdatedAt) return false;
             operation.Stage = PoliceOperationStage.Aborted;
             operation.LastUpdatedAt = at;
             operation.Outcome = "Operation aborted: subject not present at the verified location.";
