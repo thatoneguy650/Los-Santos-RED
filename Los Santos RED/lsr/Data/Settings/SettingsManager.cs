@@ -255,7 +255,7 @@ public class SettingsManager
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,TaxiSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings
-            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings,RadarDetectorSettings, GroupSettings
+            ,DoorToggleSettings,ShovelSettings,PedLoadingSettings,RadarDetectorSettings, GroupSettings, LawEnforcementIntelligenceSettings
         };
     }
     public void SetDefault()
