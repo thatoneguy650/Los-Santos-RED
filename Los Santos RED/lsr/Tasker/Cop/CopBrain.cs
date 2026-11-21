@@ -129,7 +129,9 @@ public class CopBrain : PedBrain
         {
 
             Mod.Player warrantPlayer = Player as Mod.Player;
-            WarrantRecord activeArrestWarrant = warrantPlayer?.LawEnforcementIntelligence?.GetActiveArrestWarrantForAgency(Cop.AssignedAgency?.ID, warrantPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
+            WarrantRecord activeArrestWarrant = warrantPlayer?.LawEnforcementIntelligenceManager?.WarrantManager?.FindActive(
+                warrantPlayer.LawEnforcementIntelligence, Cop.AssignedAgency?.ID,
+                warrantPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
             PedExt MainTarget = PedToAttack();
             GameFiber.Yield();
             if (MainTarget != null)
@@ -230,8 +232,9 @@ public class CopBrain : PedBrain
         GameTimeLastBOLOCheck = Game.GameTime;
         string zoneID = modPlayer.CurrentLocation?.CurrentZone?.InternalGameName;
         string plateNumber = Player.CurrentVehicle.Vehicle.LicensePlate;
-        float stopChance = modPlayer.LawEnforcementIntelligence.GetBOLOStopChance(
-            modPlayer.CurrentDateTime, zoneID, plateNumber, Player.CurrentVehicle.FullName(false));
+        float stopChance = modPlayer.LawEnforcementIntelligenceManager?.BOLOManager?.GetVehicleStopChance(
+            modPlayer.LawEnforcementIntelligence, modPlayer.CurrentDateTime, zoneID,
+            plateNumber, Player.CurrentVehicle.FullName(false)) ?? 0f;
         if (stopChance <= 0.0f || !RandomItems.RandomPercent(stopChance * 100.0f))
             return false;
 
@@ -464,6 +467,20 @@ public class CopBrain : PedBrain
             else if (!WasSeeingPlayer)
             {
                 MemoryRecognizedPlayer = false;
+            }
+
+            // A person BOLO raises identification probability on a fresh visual encounter.
+            // It does not itself grant arrest authority; arrest still requires an applicable warrant
+            // or another existing lawful basis handled by the normal police response flow.
+            if (!WasSeeingPlayer)
+            {
+                Mod.Player boloPlayer = Player as Mod.Player;
+                float personBoloChance = boloPlayer?.LawEnforcementIntelligenceManager?.BOLOManager?
+                    .GetPersonRecognitionChance(boloPlayer.LawEnforcementIntelligence, now,
+                        boloPlayer.LawEnforcementIntelligence?.SubjectID,
+                        boloPlayer.CurrentLocation?.CurrentZone?.InternalGameName) ?? 0f;
+                if (personBoloChance > 0f && RandomItems.RandomPercent(personBoloChance * 100f))
+                    MemoryRecognizedPlayer = true;
             }
             LastSeenPlayerAt = now;
         }
@@ -798,7 +815,9 @@ public class CopBrain : PedBrain
     private bool TryStartWarrantApprehend()
     {
         Mod.Player modPlayer = Player as Mod.Player;
-        WarrantRecord warrant = modPlayer?.LawEnforcementIntelligence?.GetActiveArrestWarrantForAgency(Cop.AssignedAgency?.ID, modPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
+        WarrantRecord warrant = modPlayer?.LawEnforcementIntelligenceManager?.WarrantManager?.FindActive(
+            modPlayer.LawEnforcementIntelligence, Cop.AssignedAgency?.ID,
+            modPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
         if (warrant == null || !Cop.PlayerPerception.CanSeeTarget)
             return false;
         PedExt target = GetPlayerPedExt();
