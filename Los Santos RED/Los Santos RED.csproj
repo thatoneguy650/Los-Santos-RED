@@ -586,6 +586,7 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\TaxiServiceInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\LawEnforcementIntelligence.cs" />
     <Compile Include="lsr\Player\Crime\BOLO.cs" />
     <Compile Include="lsr\Player\Crime\Crimes\TrainStopper.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
