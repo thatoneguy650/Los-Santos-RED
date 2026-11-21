@@ -1217,6 +1217,7 @@
     <Compile Include="lsr\Player\Inventory\eConsumableType.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\Cop\Tasks\AIApprehend.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\AIIdentify.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Data\Agencies\Jurisdictions.cs" />
     <Compile Include="lsr\Data\Agencies\ResponseType.cs" />
