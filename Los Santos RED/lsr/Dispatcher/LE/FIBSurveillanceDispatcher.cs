@@ -163,8 +163,7 @@ public class FIBSurveillanceDispatcher
             }
             team.AssignmentID = assignment.ID;
             RuntimeTeams[assignment.ID] = team;
-            (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                .Transition(assignment, SurveillanceAssignmentState.Approaching, now);
+            (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Approaching, now);
             activeCount++;
         }
     }
@@ -298,8 +297,7 @@ public class FIBSurveillanceDispatcher
                     .FirstOrDefault(x => x != null && x.ID == excess.Key);
                 if (assignment != null && assignment.State != SurveillanceAssignmentState.Disengaging &&
                     assignment.State != SurveillanceAssignmentState.Compromised)
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
             }
         }
 
@@ -322,8 +320,7 @@ public class FIBSurveillanceDispatcher
             {
                 if (assignment.State != SurveillanceAssignmentState.Disengaging &&
                     assignment.State != SurveillanceAssignmentState.Compromised)
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
             }
 
             bool entitiesExist = team.Driver != null && team.Driver.Pedestrian.Exists() &&
@@ -331,8 +328,7 @@ public class FIBSurveillanceDispatcher
                 team.Driver.Pedestrian.IsAlive;
             if (!entitiesExist)
             {
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.LostContact, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.LostContact, now);
                 assignment.ReplacementRequired = true;
                 CleanupTeam(team);
                 RuntimeTeams.Remove(pair.Key);
@@ -356,8 +352,7 @@ public class FIBSurveillanceDispatcher
                 }
                 if (distance >= settings.SurveillanceMaxDistance + 100f)
                 {
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.Completed, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Completed, now);
                     CleanupTeam(team);
                     RuntimeTeams.Remove(pair.Key);
                 }
@@ -368,16 +363,14 @@ public class FIBSurveillanceDispatcher
             {
                 if (assignment.State == SurveillanceAssignmentState.Following ||
                     assignment.State == SurveillanceAssignmentState.Approaching)
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.LostContact, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.LostContact, now);
 
                 DateTime lastContact = assignment.LastSuccessfulObservationAt == DateTime.MinValue
                     ? assignment.AssignedAt : assignment.LastSuccessfulObservationAt;
                 if (now - lastContact >= TimeSpan.FromMinutes(2))
                 {
                     assignment.ReplacementRequired = true;
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
                 }
                 continue;
             }
@@ -387,8 +380,7 @@ public class FIBSurveillanceDispatcher
                 team.LastDetectionCheckAt = Game.GameTime;
                 if (RandomItems.RandomPercent(settings.SurveillanceDetectionChance))
                 {
-                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                        .Transition(assignment, SurveillanceAssignmentState.Compromised, now);
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Compromised, now);
                     assignment.ReplacementRequired = true;
                     NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
                         team.Vehicle.Vehicle, 22f, 3);
@@ -399,13 +391,11 @@ public class FIBSurveillanceDispatcher
 
             if (assignment.State == SurveillanceAssignmentState.LostContact)
             {
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Approaching, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Approaching, now);
             }
             if (assignment.State == SurveillanceAssignmentState.Approaching)
             {
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Following, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Following, now);
             }
 
             if (Game.GameTime - team.LastFollowCommandAt >= 5000)
@@ -425,10 +415,8 @@ public class FIBSurveillanceDispatcher
             if (now - lastContact >= TimeSpan.FromMinutes(2))
             {
                 assignment.ReplacementRequired = true;
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Completed, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Completed, now);
             }
         }
     }
@@ -457,8 +445,7 @@ public class FIBSurveillanceDispatcher
             zoneID, zoneID);
         if (recorded)
         {
-            (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                .RecordObservation(assignment, now, Player.Position.X, Player.Position.Y, Player.Position.Z);
+            (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.RecordObservation(assignment, now, Player.Position.X, Player.Position.Y, Player.Position.Z);
         }
     }
 
@@ -485,13 +472,11 @@ public class FIBSurveillanceDispatcher
                 .FirstOrDefault(x => x != null && x.ID == pair.Key);
             if (assignment != null && assignment.State != SurveillanceAssignmentState.Completed)
             {
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
             }
             CleanupTeam(pair.Value);
             if (assignment != null)
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Completed, now);
+                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Completed, now);
             RuntimeTeams.Remove(pair.Key);
         }
     }
