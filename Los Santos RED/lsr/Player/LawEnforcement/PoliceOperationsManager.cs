@@ -254,7 +254,10 @@ namespace LosSantosRED.lsr
             {
                 case PoliceOperationStage.Planned: return next == PoliceOperationStage.Deploying || next == PoliceOperationStage.Aborted;
                 case PoliceOperationStage.Deploying: return next == PoliceOperationStage.Perimeter || next == PoliceOperationStage.Aborted;
-                case PoliceOperationStage.Perimeter: return next == PoliceOperationStage.Announcement || next == PoliceOperationStage.Aborted;
+                case PoliceOperationStage.Perimeter:
+                    return next == PoliceOperationStage.Announcement ||
+                        (operation.Type == PoliceOperationType.SearchWarrantExecution && next == PoliceOperationStage.Search) ||
+                        next == PoliceOperationStage.Aborted;
                 case PoliceOperationStage.Announcement:
                     return next == PoliceOperationStage.Entry || next == PoliceOperationStage.Search ||
                         next == PoliceOperationStage.Aborted;
