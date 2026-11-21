@@ -89,6 +89,7 @@ public class FIBSurveillanceDispatcher
                 savedAssignment.State = SurveillanceAssignmentState.LostContact;
                 savedAssignment.LastStateChangedAt = modPlayer.CurrentDateTime;
                 savedAssignment.ReplacementRequired = true;
+                savedAssignment.NextAssignmentAllowedAt = modPlayer.CurrentDateTime.AddMinutes(2);
             }
         }
         if (!settings.EnableFIBSurveillance || settings.MaxActiveFIBTeams <= 0)
@@ -374,6 +375,7 @@ public class FIBSurveillanceDispatcher
                 if (now - lastContact >= TimeSpan.FromMinutes(2))
                 {
                     assignment.ReplacementRequired = true;
+                    assignment.NextAssignmentAllowedAt = now.AddMinutes(5);
                     (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
                 }
                 continue;
@@ -420,6 +422,7 @@ public class FIBSurveillanceDispatcher
             if (now - lastContact >= TimeSpan.FromMinutes(2))
             {
                 assignment.ReplacementRequired = true;
+                assignment.NextAssignmentAllowedAt = now.AddMinutes(5);
                 (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
                 (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Completed, now);
             }
