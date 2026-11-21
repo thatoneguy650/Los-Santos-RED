@@ -237,7 +237,7 @@ public class ResidenceOperationsDispatcher
 
         if (operation.Stage == PoliceOperationStage.Entry)
         {
-            if (!IsPlayerAtResidence(runtime.Residence))
+            if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence))
             {
                 manager.AbortIfPlayerAbsent(intelligence, operation.ID, now);
                 return;
@@ -279,7 +279,7 @@ public class ResidenceOperationsDispatcher
                 return;
             }
 
-            if (!IsPlayerAtResidence(runtime.Residence) ||
+            if (Player.IsDead || !IsPlayerAtResidence(runtime.Residence) ||
                 Game.GameTime - runtime.StageStartedAt >= 60000)
             {
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
