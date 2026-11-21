@@ -207,7 +207,7 @@ namespace Mod
 
         private string WarrantApprehensionID { get; set; }
         public WarrantRecord ActiveArrestWarrant => LawEnforcementIntelligenceManager?.WarrantManager?
-            .FindActive(LawEnforcementIntelligence, AssignedAgency?.ID, CurrentLocation?.Jurisdiction?.ID);
+            .FindActive(LawEnforcementIntelligence, AssignedAgency?.ID, null);
         public bool HasActiveArrestWarrant => ActiveArrestWarrant != null;
 
         public void BeginWarrantApprehension(string warrantID)
