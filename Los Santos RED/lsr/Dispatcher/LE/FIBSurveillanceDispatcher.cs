@@ -191,8 +191,10 @@ public class FIBSurveillanceDispatcher
         for (int attempt = 0; attempt < 8; attempt++)
         {
             float angle = RandomItems.MyRand.Next(0, 360) * (float)Math.PI / 180f;
+            int maxSpawnOffset = Math.Max(1, (int)Math.Min(100f,
+                settings.SurveillanceMaxDistance - settings.SurveillanceStartDistance - 25f));
             float distance = settings.SurveillanceStartDistance +
-                RandomItems.MyRand.Next(50, Math.Max(51, (int)(settings.SurveillanceStartDistance * 0.5f)));
+                RandomItems.MyRand.Next(0, maxSpawnOffset);
             Vector3 playerPosition = Player.Position;
             Vector3 candidatePosition = new Vector3(
                 playerPosition.X + (float)Math.Cos(angle) * distance,
