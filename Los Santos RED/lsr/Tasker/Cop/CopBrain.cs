@@ -63,7 +63,7 @@ public class CopBrain : PedBrain
                 {
                     string plate = observedVehicle.Vehicle.LicensePlate;
                     vehicleID = observedVehicle.CarPlate != null ? "REG:" + observedVehicle.CarPlate.RegistrationId :
-                        "MODEL:" + observedVehicle.Vehicle.Model.Hash + ":PLATE:" + (plate ?? "");
+                        "PLATE:" + (plate ?? "").Trim().ToUpperInvariant();
                     vehicleDescription = observedVehicle.FullName(false);
                 }
                 modPlayer.LawEnforcementIntelligence.RecordPoliceSighting(modPlayer.CurrentDateTime,
