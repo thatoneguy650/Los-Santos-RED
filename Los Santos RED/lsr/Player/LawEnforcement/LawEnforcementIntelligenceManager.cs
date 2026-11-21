@@ -92,6 +92,8 @@ namespace LosSantosRED.lsr
             if (expiredIDs.Count == 0) return;
 
             intelligence.Observations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
+            if (intelligence.VehicleAssociations != null)
+                intelligence.VehicleAssociations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
             foreach (InvestigationRecord investigation in intelligence.Investigations.Where(x => x != null))
                 if (investigation.ObservationIDs != null)
                     investigation.ObservationIDs.RemoveAll(x => expiredIDs.Contains(x));
