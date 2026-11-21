@@ -587,6 +587,8 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\Taxi\AmbientSpawner.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\VehicleExporterInteraction.cs" />
     <Compile Include="lsr\Player\LawEnforcement\LawEnforcementIntelligence.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\LawEnforcementIntelligenceManager.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\LawEnforcementIntelligenceSettings.cs" />
     <Compile Include="lsr\Player\Crime\BOLO.cs" />
     <Compile Include="lsr\Player\Crime\Crimes\TrainStopper.cs" />
     <Compile Include="lsr\Player\Crime\RestrictedAreaManager.cs" />
