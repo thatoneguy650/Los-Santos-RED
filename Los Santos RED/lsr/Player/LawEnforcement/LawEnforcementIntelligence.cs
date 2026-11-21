@@ -8,7 +8,7 @@ namespace LosSantosRED.lsr
     // a data-only model: collection and decision-making are added in later phases.
     public class LawEnforcementIntelligence
     {
-        public int SchemaVersion { get; set; } = 1;
+        public int SchemaVersion { get; set; } = 2;
         public string SubjectID { get; set; } = "PLAYER";
         public DateTime CreatedAt { get; set; }
         public DateTime LastUpdatedAt { get; set; }
@@ -324,11 +324,19 @@ namespace LosSantosRED.lsr
                     investigation.KnownLocationIDs.Add(item.LocationID);
             }
             int recentCount = evidence.Count(x => x.ObservedAt >= currentTime.AddDays(-7));
-            investigation.HeatLevel = Math.Min(5, recentCount / 3);
-            investigation.Stage = recentCount >= 15 ? InvestigationStage.Critical :
-                recentCount >= 9 ? InvestigationStage.Intensive :
-                recentCount >= 5 ? InvestigationStage.Focused :
-                recentCount >= 2 ? InvestigationStage.Active : InvestigationStage.Preliminary;
+            List<WarrantRecord> activeWarrants = Warrants.Where(x => x != null &&
+                x.Status == WarrantStatus.Active).ToList();
+            int priorityBoost = activeWarrants.Any(x => x.Priority == WarrantPriority.Critical) ? 6 :
+                activeWarrants.Any(x => x.Priority == WarrantPriority.High) ? 3 :
+                activeWarrants.Any(x => x.Priority == WarrantPriority.Moderate) ? 1 : 0;
+            int linkedCrimeCount = activeWarrants.SelectMany(x => x.LinkedCrimeIDs ?? new List<string>())
+                .Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count();
+            int investigationScore = recentCount + priorityBoost + Math.Min(3, linkedCrimeCount);
+            investigation.HeatLevel = Math.Min(5, investigationScore / 3);
+            investigation.Stage = investigationScore >= 15 ? InvestigationStage.Critical :
+                investigationScore >= 9 ? InvestigationStage.Intensive :
+                investigationScore >= 5 ? InvestigationStage.Focused :
+                investigationScore >= 2 ? InvestigationStage.Active : InvestigationStage.Preliminary;
             if (evidence.Count > 0) investigation.LastActivityAt = evidence.Max(x => x.ObservedAt);
             foreach (WarrantRecord warrant in Warrants.Where(x => x != null && x.Status == WarrantStatus.Active))
                 if (!investigation.WarrantIDs.Contains(warrant.ID)) investigation.WarrantIDs.Add(warrant.ID);
@@ -346,7 +354,7 @@ namespace LosSantosRED.lsr
 
         public void Normalize()
         {
-            if (SchemaVersion <= 0) SchemaVersion = 1;
+            if (SchemaVersion < 2) SchemaVersion = 2;
             if (string.IsNullOrWhiteSpace(SubjectID)) SubjectID = "PLAYER";
             if (Observations == null) Observations = new List<IntelligenceObservation>();
             if (Investigations == null) Investigations = new List<InvestigationRecord>();
