@@ -208,6 +208,21 @@ namespace LosSantosRED.lsr
             return true;
         }
 
+        public bool Abort(LawEnforcementIntelligence intelligence, string operationID, DateTime at, string reason)
+        {
+            if (intelligence == null || intelligence.PoliceOperations == null || at == DateTime.MinValue)
+                return false;
+            PoliceOperationRecord operation = intelligence.PoliceOperations.FirstOrDefault(x =>
+                x != null && x.ID == operationID &&
+                x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted);
+            if (operation == null || at < operation.LastUpdatedAt) return false;
+            operation.Stage = PoliceOperationStage.Aborted;
+            operation.LastUpdatedAt = at;
+            operation.Outcome = string.IsNullOrWhiteSpace(reason) ? "Operation aborted." : reason;
+            intelligence.LastUpdatedAt = at;
+            return true;
+        }
+
         public bool AbortIfPlayerAbsent(LawEnforcementIntelligence intelligence, string operationID,
             DateTime at)
         {
