@@ -140,7 +140,10 @@ public class FIBSurveillanceDispatcher
                 x.InvestigationID == investigation.ID &&
                 x.State != SurveillanceAssignmentState.Available &&
                 x.State != SurveillanceAssignmentState.Completed);
-            if (alreadyAssigned)
+            bool inCooldown = intelligence.SurveillanceAssignments.Any(x => x != null &&
+                x.InvestigationID == investigation.ID && x.NextAssignmentAllowedAt.HasValue &&
+                now < x.NextAssignmentAllowedAt.Value);
+            if (alreadyAssigned || inCooldown)
                 continue;
 
             string teamID = Guid.NewGuid().ToString("N");
@@ -383,6 +386,7 @@ public class FIBSurveillanceDispatcher
                 {
                     (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?.Transition(assignment, SurveillanceAssignmentState.Compromised, now);
                     assignment.ReplacementRequired = true;
+                    assignment.NextAssignmentAllowedAt = now.AddMinutes(2);
                     NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
                         team.Vehicle.Vehicle, 22f, 3);
                     team.DisengageCommandIssued = true;
