@@ -91,8 +91,10 @@ public class ResidenceOperationsDispatcher
     private void TryPlanOperation(LawEnforcementIntelligence intelligence, DateTime now,
         LawEnforcementIntelligenceSettings settings)
     {
-        if (intelligence.PoliceOperations.Any(x => x != null &&
-            x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted))
+        PoliceOperationsManager operationsManager = modPlayerOperations(intelligence);
+        if (operationsManager == null ||
+            intelligence.PoliceOperations.Any(x => x != null &&
+                x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted))
             return;
 
         Residence currentResidence = Player.IsDead ? null : GetCurrentResidence();
@@ -107,7 +109,7 @@ public class ResidenceOperationsDispatcher
             if (arrestWarrant != null)
             {
                 string investigationID = FindInvestigationID(intelligence, arrestWarrant.ID);
-                PoliceOperationRecord raid = modPlayerOperations(intelligence).PlanResidenceOperation(
+                PoliceOperationRecord raid = operationsManager.PlanResidenceOperation(
                     intelligence, arrestWarrant.ID, investigationID, currentResidenceID,
                     true, 2, now, settings);
                 if (raid != null)
@@ -445,8 +447,7 @@ public class ResidenceOperationsDispatcher
 
     private List<Vector3> GetSearchPositions(Residence residence)
     {
-        List<Vector3> positions = residence?.ResidenceInterior?.AllInteractPoints?
-            .Where(x => x != null && x.Position != Vector3.Zero)
+        List<Vector3> positions = residence?.ResidenceInterior?.AllInteractPoints?.Where(x => x != null && x.Position != Vector3.Zero)
             .Select(x => x.Position).Distinct().Take(2).ToList() ?? new List<Vector3>();
         if (positions.Count == 0 && residence != null && residence.EntrancePosition != Vector3.Zero)
             positions.Add(residence.EntrancePosition);
