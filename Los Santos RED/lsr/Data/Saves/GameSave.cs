@@ -112,7 +112,9 @@ namespace LosSantosRED.lsr.Data
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             SaveDemographics(player);
+            if (player.LawEnforcementIntelligence != null) player.LawEnforcementIntelligence.Normalize();
             LawEnforcementIntelligence = player.LawEnforcementIntelligence == null ? new LawEnforcementIntelligence() : player.LawEnforcementIntelligence.Copy();
+            LawEnforcementIntelligence.Normalize();
             SaveMoney(player);
             SaveInventory(player, modItems);
             SaveWeapons(player, weapons);
@@ -378,6 +380,7 @@ namespace LosSantosRED.lsr.Data
                 EntryPoint.WriteToConsole("Load 1");
                 time.SetDateTime(CurrentDateTime);
                 player.LawEnforcementIntelligence = LawEnforcementIntelligence == null ? new LawEnforcementIntelligence() : LawEnforcementIntelligence.Copy();
+                player.LawEnforcementIntelligence.Normalize();
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 EntryPoint.WriteToConsole("Load 2");
                 LoadMoney(player);
