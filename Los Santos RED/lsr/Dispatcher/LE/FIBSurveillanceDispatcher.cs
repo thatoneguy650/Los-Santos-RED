@@ -253,6 +253,17 @@ public class FIBSurveillanceDispatcher
                 continue;
             }
 
+            InvestigationRecord investigation = intelligence.Investigations.FirstOrDefault(x =>
+                x != null && x.ID == assignment.InvestigationID);
+            if (investigation == null || investigation.Stage == InvestigationStage.Closed ||
+                investigation.Stage == InvestigationStage.Suspended)
+            {
+                if (assignment.State != SurveillanceAssignmentState.Disengaging &&
+                    assignment.State != SurveillanceAssignmentState.Compromised)
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                        .Transition(assignment, SurveillanceAssignmentState.Disengaging, now);
+            }
+
             bool entitiesExist = team.Driver != null && team.Driver.Pedestrian.Exists() &&
                 team.Vehicle != null && team.Vehicle.Vehicle.Exists() &&
                 team.Driver.Pedestrian.IsAlive;
@@ -314,9 +325,9 @@ public class FIBSurveillanceDispatcher
                 team.LastDetectionCheckAt = Game.GameTime;
                 if (RandomItems.RandomPercent(settings.SurveillanceDetectionChance))
                 {
-                (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
-                    .Transition(assignment, SurveillanceAssignmentState.Compromised, now);
-                assignment.ReplacementRequired = true;
+                    (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
+                        .Transition(assignment, SurveillanceAssignmentState.Compromised, now);
+                    assignment.ReplacementRequired = true;
                     NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
                         team.Vehicle.Vehicle, 22f, 3);
                     team.DisengageCommandIssued = true;
