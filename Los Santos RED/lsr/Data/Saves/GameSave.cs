@@ -381,6 +381,7 @@ namespace LosSantosRED.lsr.Data
                 time.SetDateTime(CurrentDateTime);
                 player.LawEnforcementIntelligence = LawEnforcementIntelligence == null ? new LawEnforcementIntelligence() : LawEnforcementIntelligence.Copy();
                 player.LawEnforcementIntelligence.Normalize();
+                (player as Player)?.LawEnforcementIntelligenceManager?.ResetClock();
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 EntryPoint.WriteToConsole("Load 2");
                 LoadMoney(player);
