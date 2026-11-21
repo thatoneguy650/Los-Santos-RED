@@ -127,7 +127,10 @@ namespace LosSantosRED.lsr
                 return false;
             WarrantRecord warrant = intelligence.Warrants == null ? null :
                 intelligence.Warrants.FirstOrDefault(x => x != null && x.ID == operation.WarrantID);
-            if (warrant == null || warrant.Status != WarrantStatus.Active)
+            bool completedByServedArrest = operation.Type == PoliceOperationType.ArrestWarrantRaid &&
+                next == PoliceOperationStage.Completed && warrant != null &&
+                warrant.Status == WarrantStatus.Served;
+            if (warrant == null || (warrant.Status != WarrantStatus.Active && !completedByServedArrest))
             {
                 operation.Stage = PoliceOperationStage.Aborted;
                 operation.LastUpdatedAt = at;
