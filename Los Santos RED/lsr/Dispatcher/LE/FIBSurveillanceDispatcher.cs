@@ -21,6 +21,7 @@ public class FIBSurveillanceDispatcher
     private readonly Dictionary<string, RuntimeTeam> RuntimeTeams = new Dictionary<string, RuntimeTeam>();
     private uint LastUpdateGameTime;
     private bool HasInitializedRuntime;
+    private LawEnforcementIntelligence CurrentRuntimeIntelligence;
 
     private class RuntimeTeam
     {
@@ -62,6 +63,14 @@ public class FIBSurveillanceDispatcher
 
         LawEnforcementIntelligence intelligence = modPlayer.LawEnforcementIntelligence;
         intelligence.Normalize();
+        if (!ReferenceEquals(CurrentRuntimeIntelligence, intelligence))
+        {
+            foreach (RuntimeTeam oldTeam in RuntimeTeams.Values.ToList())
+                CleanupTeam(oldTeam);
+            RuntimeTeams.Clear();
+            CurrentRuntimeIntelligence = intelligence;
+            HasInitializedRuntime = false;
+        }
         if (!HasInitializedRuntime)
         {
             HasInitializedRuntime = true;
@@ -96,6 +105,8 @@ public class FIBSurveillanceDispatcher
                 CleanupTeam(team);
             RuntimeTeams.Clear();
         }
+        CurrentRuntimeIntelligence = null;
+        HasInitializedRuntime = false;
     }
 
     private void AssignEligibleInvestigations(LawEnforcementIntelligence intelligence, DateTime now,
