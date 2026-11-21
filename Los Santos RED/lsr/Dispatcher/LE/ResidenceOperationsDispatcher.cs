@@ -506,7 +506,7 @@ public class ResidenceOperationsDispatcher
     {
         if (Player?.CurrentLocation == null || !Player.CurrentLocation.IsInside)
             return null;
-        return Player.CurrentLocation.CurrentInteriorGameLocation as Residence;
+        return (Player.CurrentLocation.CurrentInterior as ResidenceInterior)?.Residence;
     }
 
     private bool IsPlayerAtResidence(Residence residence)
