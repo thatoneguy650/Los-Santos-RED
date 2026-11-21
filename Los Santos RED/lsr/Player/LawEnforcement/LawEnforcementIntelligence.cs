@@ -597,6 +597,7 @@ namespace LosSantosRED.lsr
         public string IssuingAgencyID { get; set; }
         public string JurisdictionID { get; set; }
         public DateTime IssuedAt { get; set; }
+        public DateTime? ExpiresAt { get; set; }
         public DateTime? ResolvedAt { get; set; }
         public List<string> LinkedCrimeIDs { get; set; } = new List<string>();
         public List<string> EvidenceObservationIDs { get; set; } = new List<string>();
@@ -617,6 +618,7 @@ namespace LosSantosRED.lsr
                 IssuingAgencyID = IssuingAgencyID,
                 JurisdictionID = JurisdictionID,
                 IssuedAt = IssuedAt,
+                ExpiresAt = ExpiresAt,
                 ResolvedAt = ResolvedAt,
                 LinkedCrimeIDs = LinkedCrimeIDs == null ? new List<string>() : new List<string>(LinkedCrimeIDs),
                 EvidenceObservationIDs = EvidenceObservationIDs == null ? new List<string>() : new List<string>(EvidenceObservationIDs),
