@@ -444,7 +444,7 @@ public class FIBSurveillanceDispatcher
                 ? "REG:" + registrationID.Trim().ToUpperInvariant()
                 : !string.IsNullOrWhiteSpace(plate)
                     ? "PLATE:" + plate.Trim().ToUpperInvariant()
-                    : "MODEL:" + Player.CurrentVehicle.Vehicle.Model.Hash;
+                    : null;
             vehicleDescription = Player.CurrentVehicle.FullName(false);
         }
 
