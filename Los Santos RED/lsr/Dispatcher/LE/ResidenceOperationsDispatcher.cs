@@ -71,8 +71,7 @@ public class ResidenceOperationsDispatcher
         }
 
         UpdateActiveOperations(intelligence, modPlayer.CurrentDateTime);
-        if (!modPlayer.IsDead)
-            TryPlanOperation(intelligence, modPlayer.CurrentDateTime, settings);
+        TryPlanOperation(intelligence, modPlayer.CurrentDateTime, settings);
     }
 
     public void Dispose()
@@ -96,7 +95,7 @@ public class ResidenceOperationsDispatcher
             x.Stage != PoliceOperationStage.Completed && x.Stage != PoliceOperationStage.Aborted))
             return;
 
-        Residence currentResidence = GetCurrentResidence();
+        Residence currentResidence = Player.IsDead ? null : GetCurrentResidence();
         if (currentResidence != null && currentResidence.IsOwnedOrRented)
         {
             string currentResidenceID = currentResidence.ResidenceID.ToString();
