@@ -594,6 +594,7 @@
     <Compile Include="lsr\Player\LawEnforcement\SurveillanceAssignment.cs" />
     <Compile Include="lsr\Player\LawEnforcement\InvestigationManager.cs" />
     <Compile Include="lsr\Player\LawEnforcement\PoliceOperationsManager.cs" />
+    <Compile Include="lsr\Player\LawEnforcement\VehicleAssociationRecord.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\LawEnforcementIntelligenceSettings.cs" />
     <Compile Include="lsr\Player\Crime\BOLO.cs" />
     <Compile Include="lsr\Player\Crime\Crimes\TrainStopper.cs" />
