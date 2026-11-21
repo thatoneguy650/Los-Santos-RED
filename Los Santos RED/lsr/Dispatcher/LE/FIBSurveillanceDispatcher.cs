@@ -85,6 +85,19 @@ public class FIBSurveillanceDispatcher
         AssignEligibleInvestigations(intelligence, modPlayer.CurrentDateTime, settings);
     }
 
+    public void Dispose()
+    {
+        Mod.Player modPlayer = Player as Mod.Player;
+        if (modPlayer != null && modPlayer.LawEnforcementIntelligence != null)
+            DisengageAll(modPlayer.LawEnforcementIntelligence, modPlayer.CurrentDateTime);
+        else
+        {
+            foreach (RuntimeTeam team in RuntimeTeams.Values.ToList())
+                CleanupTeam(team);
+            RuntimeTeams.Clear();
+        }
+    }
+
     private void AssignEligibleInvestigations(LawEnforcementIntelligence intelligence, DateTime now,
         LawEnforcementIntelligenceSettings settings)
     {
