@@ -110,6 +110,57 @@ namespace LosSantosRED.lsr
             return recorded;
         }
 
+        public bool RecordSurveillanceSighting(DateTime observedAt, string teamID, bool inVehicle,
+            string vehicleID, string vehicleDescription, float x, float y, float z,
+            string locationID = null, string locationName = null)
+        {
+            string sourceID = "FIB_SURVEILLANCE:" + (teamID ?? "UNKNOWN");
+            bool recorded = RecordObservation(new IntelligenceObservation
+            {
+                ObservedAt = observedAt,
+                Source = IntelligenceSource.Surveillance,
+                EvidenceType = IntelligenceEvidenceType.Surveillance,
+                TargetType = IntelligenceTargetType.Person,
+                TargetID = SubjectID,
+                TargetDescription = "Player",
+                SourceID = sourceID,
+                IsKnownToPolice = true,
+                IsVerified = true,
+                Confidence = 0.9f,
+                PositionX = x,
+                PositionY = y,
+                PositionZ = z,
+                LocationID = locationID,
+                LocationName = locationName,
+                Notes = "Direct visual observation by an assigned FIB surveillance team."
+            });
+            if (inVehicle && !string.IsNullOrWhiteSpace(vehicleID))
+            {
+                RecordObservation(new IntelligenceObservation
+                {
+                    ObservedAt = observedAt,
+                    Source = IntelligenceSource.Surveillance,
+                    EvidenceType = IntelligenceEvidenceType.Surveillance,
+                    TargetType = IntelligenceTargetType.Vehicle,
+                    TargetID = vehicleID,
+                    TargetDescription = vehicleDescription,
+                    SourceID = sourceID,
+                    IsKnownToPolice = true,
+                    IsVerified = true,
+                    Confidence = 0.9f,
+                    PositionX = x,
+                    PositionY = y,
+                    PositionZ = z,
+                    LocationID = locationID,
+                    LocationName = locationName,
+                    Notes = "Player was directly observed driving this vehicle by FIB surveillance."
+                });
+                RecordVehicleAssociation(observedAt, vehicleID, VehicleAssociationType.CurrentDriver,
+                    sourceID, 0.9f, true, "Player was directly observed driving this vehicle by FIB surveillance.");
+            }
+            return recorded;
+        }
+
         public bool RecordANPRRead(DateTime observedAt, string officerID, string plateNumber, string registrationID, string vehicleDescription, float x, float y, float z, string locationID = null, string locationName = null)
         {
             if (string.IsNullOrWhiteSpace(plateNumber)) return false;
