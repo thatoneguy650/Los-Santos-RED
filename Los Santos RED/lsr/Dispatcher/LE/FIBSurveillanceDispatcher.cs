@@ -20,6 +20,7 @@ public class FIBSurveillanceDispatcher
     private readonly ICrimes Crimes;
     private readonly Dictionary<string, RuntimeTeam> RuntimeTeams = new Dictionary<string, RuntimeTeam>();
     private uint LastUpdateGameTime;
+    private bool HasInitializedRuntime;
 
     private class RuntimeTeam
     {
@@ -28,6 +29,7 @@ public class FIBSurveillanceDispatcher
         public VehicleExt Vehicle;
         public uint LastFollowCommandAt;
         public uint LastDetectionCheckAt;
+        public bool DisengageCommandIssued;
     }
 
     public FIBSurveillanceDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies,
@@ -60,6 +62,19 @@ public class FIBSurveillanceDispatcher
 
         LawEnforcementIntelligence intelligence = modPlayer.LawEnforcementIntelligence;
         intelligence.Normalize();
+        if (!HasInitializedRuntime)
+        {
+            HasInitializedRuntime = true;
+            foreach (SurveillanceAssignment savedAssignment in intelligence.SurveillanceAssignments.Where(x =>
+                x != null && x.State != SurveillanceAssignmentState.Available &&
+                x.State != SurveillanceAssignmentState.Completed))
+            {
+                // Runtime entities are deliberately not restored from saves. Reacquire with a new team.
+                savedAssignment.State = SurveillanceAssignmentState.LostContact;
+                savedAssignment.LastStateChangedAt = modPlayer.CurrentDateTime;
+                savedAssignment.ReplacementRequired = true;
+            }
+        }
         if (!settings.EnableFIBSurveillance || settings.MaxActiveFIBTeams <= 0)
         {
             DisengageAll(intelligence, modPlayer.CurrentDateTime);
@@ -183,6 +198,14 @@ public class FIBSurveillanceDispatcher
                 continue;
             }
 
+            if (NativeFunction.Natives.HAS_ENTITY_CLEAR_LOS_TO_ENTITY<bool>(
+                Player.Character, spawnedVehicle.Vehicle, 17))
+            {
+                spawnedDriver.Pedestrian.Delete();
+                spawnedVehicle.FullyDelete();
+                continue;
+            }
+
             spawnTask.CreatedPeople.ForEach(x =>
             {
                 if (x != null && x.Pedestrian.Exists())
@@ -193,14 +216,6 @@ public class FIBSurveillanceDispatcher
                 if (x != null && x.Vehicle.Exists())
                     x.AddVehicleToList(World);
             });
-
-            if (NativeFunction.Natives.HAS_ENTITY_CLEAR_LOS_TO_ENTITY<bool>(
-                Player.Character, spawnedVehicle.Vehicle, 17))
-            {
-                spawnedDriver.Pedestrian.Delete();
-                spawnedVehicle.FullyDelete();
-                continue;
-            }
 
             RuntimeTeam team = new RuntimeTeam
             {
@@ -246,6 +261,7 @@ public class FIBSurveillanceDispatcher
                 (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
                     .Transition(assignment, SurveillanceAssignmentState.LostContact, now);
                 assignment.ReplacementRequired = true;
+                CleanupTeam(team);
                 RuntimeTeams.Remove(pair.Key);
                 continue;
             }
@@ -259,8 +275,12 @@ public class FIBSurveillanceDispatcher
             if (assignment.State == SurveillanceAssignmentState.Compromised ||
                 assignment.State == SurveillanceAssignmentState.Disengaging)
             {
-                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
-                    team.Vehicle.Vehicle, 20f, 3);
+                if (!team.DisengageCommandIssued)
+                {
+                    NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
+                        team.Vehicle.Vehicle, 20f, 3);
+                    team.DisengageCommandIssued = true;
+                }
                 if (distance >= settings.SurveillanceMaxDistance + 100f)
                 {
                     (Player as Mod.Player)?.LawEnforcementIntelligenceManager?.SurveillanceAssignmentManager?
@@ -299,6 +319,7 @@ public class FIBSurveillanceDispatcher
                 assignment.ReplacementRequired = true;
                     NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(team.Driver.Pedestrian,
                         team.Vehicle.Vehicle, 22f, 3);
+                    team.DisengageCommandIssued = true;
                     continue;
                 }
             }
