@@ -150,6 +150,10 @@ public class SettingsManager
 
 
 
+    [Category("Law Enforcement Intelligence")]
+    [Description("Warrants, BOLOs, and persistent investigations")]
+    public LawEnforcementIntelligenceSettings LawEnforcementIntelligenceSettings { get; set; } = new LawEnforcementIntelligenceSettings();
+
     [Category("Police")]
     [Description("General Settings")]
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
