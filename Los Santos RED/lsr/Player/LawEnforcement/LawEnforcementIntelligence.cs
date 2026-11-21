@@ -238,17 +238,8 @@ namespace LosSantosRED.lsr
 
         public WarrantRecord GetActiveArrestWarrantForAgency(string agencyID, string jurisdictionID)
         {
-            if (Warrants == null || (string.IsNullOrWhiteSpace(agencyID) && string.IsNullOrWhiteSpace(jurisdictionID)))
-                return null;
-
-            return Warrants.Where(x => x != null && x.Status == WarrantStatus.Active &&
-                    (x.Type == WarrantType.Arrest || x.Type == WarrantType.Bench ||
-                     x.Type == WarrantType.ProbationParole || x.Type == WarrantType.Extradition) &&
-                    ((!string.IsNullOrWhiteSpace(x.IssuingAgencyID) &&
-                      string.Equals(x.IssuingAgencyID, agencyID, StringComparison.OrdinalIgnoreCase)) ||
-                     (!string.IsNullOrWhiteSpace(x.JurisdictionID) &&
-                      string.Equals(x.JurisdictionID, jurisdictionID, StringComparison.OrdinalIgnoreCase))))
-                .OrderByDescending(x => x.Priority).ThenBy(x => x.IssuedAt).FirstOrDefault();
+            // Retained for source compatibility. Warrants are valid and discoverable across jurisdictions.
+            return GetActiveArrestWarrant();
         }
 
         public bool ResolveWarrant(string id, WarrantStatus status, DateTime at, string notes)
