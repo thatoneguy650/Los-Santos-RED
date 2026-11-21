@@ -144,6 +144,7 @@ namespace Mod
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             LawEnforcementIntelligence = new LawEnforcementIntelligence();
+            LawEnforcementIntelligenceManager = new LawEnforcementIntelligenceManager();
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SecurityResponse = new SecurityResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
@@ -196,6 +197,13 @@ namespace Mod
         public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
         public LawEnforcementIntelligence LawEnforcementIntelligence { get; set; }
+        public LawEnforcementIntelligenceManager LawEnforcementIntelligenceManager { get; private set; }
+
+        public void UpdateLawEnforcementIntelligence()
+        {
+            LawEnforcementIntelligenceManager?.Update(LawEnforcementIntelligence, CurrentDateTime,
+                Settings?.SettingsManager?.LawEnforcementIntelligenceSettings);
+        }
 
         private string WarrantApprehensionID { get; set; }
         public WarrantRecord ActiveArrestWarrant => LawEnforcementIntelligence?.GetActiveArrestWarrant();
