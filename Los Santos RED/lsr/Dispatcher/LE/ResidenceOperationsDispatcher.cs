@@ -98,7 +98,8 @@ public class ResidenceOperationsDispatcher
             return;
 
         Residence currentResidence = Player.IsDead ? null : GetCurrentResidence();
-        if (currentResidence != null && currentResidence.IsOwnedOrRented)
+        if (currentResidence != null && currentResidence.ResidenceID >= 0 &&
+            currentResidence.IsOwnedOrRented)
         {
             string currentResidenceID = currentResidence.ResidenceID.ToString();
             WarrantRecord arrestWarrant = intelligence.Warrants.FirstOrDefault(x => x != null &&
@@ -453,6 +454,8 @@ public class ResidenceOperationsDispatcher
 
     private Cop SpawnOfficer(Agency agency, Vector3 position, bool offDuty)
     {
+        if (position == Vector3.Zero)
+            return null;
         DispatchablePerson person = agency?.Personnel?.FirstOrDefault(x => x != null && !x.IsAnimal);
         if (person == null)
             return null;
@@ -519,7 +522,7 @@ public class ResidenceOperationsDispatcher
     {
         if (string.IsNullOrWhiteSpace(residenceID) || PlacesOfInterest?.PossibleLocations?.Residences == null)
             return null;
-        if (!int.TryParse(residenceID, out int id))
+        if (!int.TryParse(residenceID, out int id) || id < 0)
             return null;
         return PlacesOfInterest.PossibleLocations.Residences.FirstOrDefault(x =>
             x != null && x.ResidenceID == id);
