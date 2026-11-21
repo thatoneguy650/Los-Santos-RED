@@ -82,24 +82,31 @@ namespace LosSantosRED.lsr
 
         private static void PruneOldObservations(LawEnforcementIntelligence intelligence, DateTime currentTime, int retentionDays)
         {
-            if (intelligence.Observations == null || intelligence.Observations.Count == 0) return;
             DateTime cutoff = currentTime.AddDays(-Math.Max(1, retentionDays));
-            var expiredIDs = intelligence.Observations
-                .Where(x => x != null && x.ObservedAt < cutoff)
-                .Select(x => x.ID)
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .ToList();
-            if (expiredIDs.Count == 0) return;
+            List<string> expiredIDs = new List<string>();
 
-            intelligence.Observations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
+            if (intelligence.Observations != null && intelligence.Observations.Count > 0)
+            {
+                expiredIDs = intelligence.Observations
+                    .Where(x => x != null && x.ObservedAt < cutoff)
+                    .Select(x => x.ID)
+                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .ToList();
+
+                if (expiredIDs.Count > 0)
+                {
+                    intelligence.Observations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
+                    foreach (InvestigationRecord investigation in intelligence.Investigations.Where(x => x != null))
+                        if (investigation.ObservationIDs != null)
+                            investigation.ObservationIDs.RemoveAll(x => expiredIDs.Contains(x));
+                    foreach (WarrantRecord warrant in intelligence.Warrants.Where(x => x != null))
+                        if (warrant.EvidenceObservationIDs != null)
+                            warrant.EvidenceObservationIDs.RemoveAll(x => expiredIDs.Contains(x));
+                }
+            }
+
             if (intelligence.VehicleAssociations != null)
                 intelligence.VehicleAssociations.RemoveAll(x => x == null || x.ObservedAt < cutoff);
-            foreach (InvestigationRecord investigation in intelligence.Investigations.Where(x => x != null))
-                if (investigation.ObservationIDs != null)
-                    investigation.ObservationIDs.RemoveAll(x => expiredIDs.Contains(x));
-            foreach (WarrantRecord warrant in intelligence.Warrants.Where(x => x != null))
-                if (warrant.EvidenceObservationIDs != null)
-                    warrant.EvidenceObservationIDs.RemoveAll(x => expiredIDs.Contains(x));
         }
 
         public void ResetClock()
