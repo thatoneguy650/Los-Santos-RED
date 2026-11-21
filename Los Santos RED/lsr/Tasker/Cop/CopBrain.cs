@@ -415,7 +415,9 @@ public class CopBrain : PedBrain
             observingPlayer.LawEnforcementIntelligence.RecordANPRRead(observingPlayer.CurrentDateTime,
                 Cop.Pedestrian.Handle.ToString(), visiblePlate, scannedVehicle.CarPlate?.RegistrationId,
                 scannedVehicle.FullName(false), scannedVehicle.Vehicle.Position.X,
-                scannedVehicle.Vehicle.Position.Y, scannedVehicle.Vehicle.Position.Z);
+                scannedVehicle.Vehicle.Position.Y, scannedVehicle.Vehicle.Position.Z,
+                observingPlayer.CurrentLocation?.CurrentZone?.InternalGameName,
+                observingPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
         }
         ClearANPRScan();
 
