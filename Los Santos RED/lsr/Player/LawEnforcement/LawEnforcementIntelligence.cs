@@ -242,6 +242,11 @@ namespace LosSantosRED.lsr
         public bool RecordObservation(IntelligenceObservation observation)
         {
             if (observation == null || observation.ObservedAt == DateTime.MinValue) return false;
+            if (observation.IsKnownToPolice &&
+                (observation.Source == IntelligenceSource.Unknown ||
+                 observation.EvidenceType == IntelligenceEvidenceType.Unknown ||
+                 string.IsNullOrWhiteSpace(observation.SourceID)))
+                return false;
             Normalize();
             if (string.IsNullOrWhiteSpace(observation.ID)) observation.ID = Guid.NewGuid().ToString("N");
             if (string.IsNullOrWhiteSpace(observation.SourceID)) observation.SourceID = "UNKNOWN";
