@@ -16,6 +16,8 @@ namespace LosSantosRED.lsr
         public List<InvestigationRecord> Investigations { get; set; } = new List<InvestigationRecord>();
         public List<WarrantRecord> Warrants { get; set; } = new List<WarrantRecord>();
         public List<BOLORecord> BOLOs { get; set; } = new List<BOLORecord>();
+        public List<SurveillanceAssignment> SurveillanceAssignments { get; set; } = new List<SurveillanceAssignment>();
+        public List<PoliceOperationRecord> PoliceOperations { get; set; } = new List<PoliceOperationRecord>();
 
         public LawEnforcementIntelligence Copy()
         {
@@ -53,6 +55,20 @@ namespace LosSantosRED.lsr
                 foreach (BOLORecord item in BOLOs)
                 {
                     if (item != null) copy.BOLOs.Add(item.Copy());
+                }
+            }
+            if (SurveillanceAssignments != null)
+            {
+                foreach (SurveillanceAssignment item in SurveillanceAssignments)
+                {
+                    if (item != null) copy.SurveillanceAssignments.Add(item.Copy());
+                }
+            }
+            if (PoliceOperations != null)
+            {
+                foreach (PoliceOperationRecord item in PoliceOperations)
+                {
+                    if (item != null) copy.PoliceOperations.Add(item.Copy());
                 }
             }
             return copy;
@@ -294,6 +310,17 @@ namespace LosSantosRED.lsr
             if (Investigations == null) Investigations = new List<InvestigationRecord>();
             if (Warrants == null) Warrants = new List<WarrantRecord>();
             if (BOLOs == null) BOLOs = new List<BOLORecord>();
+            if (SurveillanceAssignments == null) SurveillanceAssignments = new List<SurveillanceAssignment>();
+            if (PoliceOperations == null) PoliceOperations = new List<PoliceOperationRecord>();
+            foreach (SurveillanceAssignment assignment in SurveillanceAssignments.Where(x => x != null))
+            {
+                if (string.IsNullOrWhiteSpace(assignment.ID)) assignment.ID = Guid.NewGuid().ToString("N");
+                if (string.IsNullOrWhiteSpace(assignment.TargetSubjectID)) assignment.TargetSubjectID = SubjectID;
+            }
+            foreach (PoliceOperationRecord operation in PoliceOperations.Where(x => x != null))
+            {
+                if (string.IsNullOrWhiteSpace(operation.ID)) operation.ID = Guid.NewGuid().ToString("N");
+            }
 
             // Older or partially written saves may contain records whose nested lists are null.
             foreach (InvestigationRecord investigation in Investigations.Where(x => x != null))
