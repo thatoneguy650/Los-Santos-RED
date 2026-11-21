@@ -9,12 +9,16 @@ namespace LosSantosRED.lsr
     {
         public WarrantRecord Issue(LawEnforcementIntelligence intelligence, DateTime issuedAt, WarrantType type,
             WarrantPriority priority, string agencyID, string jurisdictionID, IEnumerable<string> crimeIDs,
-            IEnumerable<string> ownedBusinessIDs, string residenceID = null, float residenceConfidence = 0f)
+            IEnumerable<string> ownedBusinessIDs, string residenceID = null, float residenceConfidence = 0f,
+            DateTime? expiresAt = null)
         {
-            if (intelligence == null || issuedAt == DateTime.MinValue) return null;
+            if (intelligence == null || issuedAt == DateTime.MinValue ||
+                (expiresAt.HasValue && expiresAt.Value <= issuedAt)) return null;
             intelligence.Normalize();
-            return intelligence.IssueWarrant(issuedAt, type, priority, agencyID, jurisdictionID,
+            WarrantRecord warrant = intelligence.IssueWarrant(issuedAt, type, priority, agencyID, jurisdictionID,
                 crimeIDs, ownedBusinessIDs, residenceID, residenceConfidence);
+            if (warrant != null) warrant.ExpiresAt = expiresAt;
+            return warrant;
         }
 
         public WarrantRecord FindActive(LawEnforcementIntelligence intelligence, string agencyID, string jurisdictionID)
@@ -32,6 +36,19 @@ namespace LosSantosRED.lsr
             if (intelligence == null || intelligence.Warrants == null) return Enumerable.Empty<WarrantRecord>();
             return intelligence.Warrants.Where(x => x != null && x.Status == WarrantStatus.Active)
                 .OrderByDescending(x => x.Priority).ThenBy(x => x.IssuedAt).ToList();
+        }
+
+        public void UpdateExpirations(LawEnforcementIntelligence intelligence, DateTime currentTime)
+        {
+            if (intelligence == null || intelligence.Warrants == null || currentTime == DateTime.MinValue)
+                return;
+            foreach (WarrantRecord warrant in intelligence.Warrants.Where(x => x != null &&
+                x.Status == WarrantStatus.Active && x.ExpiresAt.HasValue &&
+                currentTime >= x.ExpiresAt.Value).ToList())
+            {
+                intelligence.ResolveWarrant(warrant.ID, WarrantStatus.Expired, currentTime,
+                    "Warrant expired at its configured expiration time.");
+            }
         }
 
         public bool CanAuthorizeArrest(WarrantRecord warrant)
