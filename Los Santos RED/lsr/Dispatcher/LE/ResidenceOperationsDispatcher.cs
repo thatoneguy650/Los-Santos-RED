@@ -257,12 +257,12 @@ public class ResidenceOperationsDispatcher
         if (operation.Stage == PoliceOperationStage.ArrestAttempt)
         {
             foreach (Cop unavailableOfficer in runtime.Officers.Where(x =>
-                x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
+                x == null || x.Pedestrian == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
             {
-                if (unavailableOfficer != null && unavailableOfficer.Pedestrian.Exists())
+                if (unavailableOfficer != null && unavailableOfficer.Pedestrian != null && unavailableOfficer.Pedestrian.Exists())
                     unavailableOfficer.Pedestrian.Delete();
             }
-            runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
+            runtime.Officers.RemoveAll(x => x == null || x.Pedestrian == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
             if (Player.IsBusted)
             {
                 manager.Advance(intelligence, operation.ID, PoliceOperationStage.Completed, now,
@@ -312,12 +312,12 @@ public class ResidenceOperationsDispatcher
         Vector3 firstPosition = Player.Character.GetOffsetPosition(new Vector3(4f, 0f, 0f));
         Vector3 secondPosition = Player.Character.GetOffsetPosition(new Vector3(-4f, 0f, 0f));
         foreach (Cop unavailableOfficer in runtime.Officers.Where(x =>
-            x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
+            x == null || x.Pedestrian == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive).ToList())
         {
-            if (unavailableOfficer != null && unavailableOfficer.Pedestrian.Exists())
+            if (unavailableOfficer != null && unavailableOfficer.Pedestrian != null && unavailableOfficer.Pedestrian.Exists())
                 unavailableOfficer.Pedestrian.Delete();
         }
-        runtime.Officers.RemoveAll(x => x == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
+        runtime.Officers.RemoveAll(x => x == null || x.Pedestrian == null || !x.Pedestrian.Exists() || !x.Pedestrian.IsAlive);
         if (runtime.Officers.Count == 0)
             runtime.Officers.Add(SpawnOfficer(agency, firstPosition, false));
         if (runtime.Officers.Count < 2)
@@ -469,11 +469,11 @@ public class ResidenceOperationsDispatcher
         spawnTask.IsOffDutySpawn = offDuty;
         spawnTask.AttemptSpawn();
 
-        foreach (PedExt ped in spawnTask.CreatedPeople.Where(x => x != null && x.Pedestrian.Exists()))
+        foreach (PedExt ped in spawnTask.CreatedPeople.Where(x => x != null && x.Pedestrian != null && x.Pedestrian.Exists()))
             World.Pedestrians.AddEntity(ped);
 
         Cop cop = spawnTask.CreatedPeople.OfType<Cop>().FirstOrDefault(x =>
-            x != null && x.Pedestrian.Exists());
+            x != null && x.Pedestrian != null && x.Pedestrian.Exists());
         if (cop == null)
         {
             foreach (PedExt ped in spawnTask.CreatedPeople.Where(x => x != null))
@@ -554,7 +554,7 @@ public class ResidenceOperationsDispatcher
     {
         if (runtime == null) return;
         foreach (Cop officer in runtime.Officers.Where(x => x != null).ToList())
-            if (officer.Pedestrian.Exists()) officer.Pedestrian.Delete();
+            if (officer.Pedestrian != null && officer.Pedestrian.Exists()) officer.Pedestrian.Delete();
         runtime.Officers.Clear();
     }
 }
