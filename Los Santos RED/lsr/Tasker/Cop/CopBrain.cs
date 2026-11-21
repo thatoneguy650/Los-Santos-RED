@@ -475,8 +475,7 @@ public class CopBrain : PedBrain
             if (!WasSeeingPlayer)
             {
                 Mod.Player boloPlayer = Player as Mod.Player;
-                float personBoloChance = boloPlayer?.LawEnforcementIntelligenceManager?.BOLOManager?
-                    .GetPersonRecognitionChance(boloPlayer.LawEnforcementIntelligence, now,
+                float personBoloChance = boloPlayer?.LawEnforcementIntelligenceManager?.BOLOManager?.GetPersonRecognitionChance(boloPlayer.LawEnforcementIntelligence, now,
                         boloPlayer.LawEnforcementIntelligence?.SubjectID,
                         boloPlayer.CurrentLocation?.CurrentZone?.InternalGameName) ?? 0f;
                 if (personBoloChance > 0f && RandomItems.RandomPercent(personBoloChance * 100f))
