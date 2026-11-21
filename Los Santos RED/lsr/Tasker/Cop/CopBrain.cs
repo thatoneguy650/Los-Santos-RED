@@ -68,7 +68,9 @@ public class CopBrain : PedBrain
                 }
                 modPlayer.LawEnforcementIntelligence.RecordPoliceSighting(modPlayer.CurrentDateTime,
                     Cop.Pedestrian.Handle.ToString(), hasObservedVehicle, vehicleID, vehicleDescription,
-                    Player.Position.X, Player.Position.Y, Player.Position.Z);
+                    Player.Position.X, Player.Position.Y, Player.Position.Z,
+                    modPlayer.CurrentLocation?.CurrentZone?.InternalGameName,
+                    modPlayer.CurrentLocation?.CurrentZone?.InternalGameName);
             }
         }
         if (Cop.PlayerPerception.CanSeeTarget && Player.IsWanted && Player.IsInVehicle &&
