@@ -45,7 +45,7 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
     public string ColorPrefix { get; set; } = "~s~";
     public string ColorString { get; set; } = "White";
     public string LicensePlatePrefix { get; set; } = "";
-    public int SpawnLimit { get; set; } = 99;
+
     public bool CanSpawnAnywhere { get; set; } = false;
     public bool CanAmbientlySpawnAnywhere { get; set; } = false;
     public bool SpawnsOnHighway { get; set; } = false;
