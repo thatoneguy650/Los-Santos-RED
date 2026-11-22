@@ -68,7 +68,7 @@ namespace Mod
         private IScenarios Scenarios;
         private ISettingsProvideable Settings;
         private ISpeeches Speeches;
-        private IEntityProvideable World;
+        public IEntityProvideable World { get; private set; }
         private IZones Zones;
         private IDances Dances;
         private IWeapons Weapons;
@@ -188,6 +188,9 @@ namespace Mod
             StealthManager = new StealthManager(this, World, Settings, TimeControllable);
             VehicleRaceManager = new VehicleRaceManager(this, Settings, World,Crimes,Weapons,Names,ModItems,shopMenus, this);
             GangTerritoryManager = new GangTerritoryManager(this, Settings, World, GangTerritories, PlacesOfInterest, TimeControllable, Zones);
+            GangProgressionManager = new GangProgressionManager(this, TimeControllable, Settings);
+            GangRequisitionManager = new GangRequisitionManager(this, TimeControllable, Settings, ModItems, Weapons, World);
+            GangCrewManager = new GangCrewManager(this, TimeControllable, Settings, Names, Weapons);
         }
         public IntimidationManager IntimidationManager { get; private set; }
         public CuffManager CuffManager { get; private set; }
@@ -240,6 +243,9 @@ namespace Mod
         public VehicleRaceManager VehicleRaceManager { get; private set; }
 
         public GangTerritoryManager GangTerritoryManager { get; private set; }
+        public GangProgressionManager GangProgressionManager { get; private set; }
+        public GangRequisitionManager GangRequisitionManager { get; private set; }
+        public GangCrewManager GangCrewManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : WantedLevel >= 6 ? 5000f : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -567,6 +573,9 @@ namespace Mod
             StealthManager.Setup();
             OutfitManager.Setup();
             GangTerritoryManager.Setup();
+            GangProgressionManager.Setup();
+            GangRequisitionManager.Setup();
+            GangCrewManager.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
@@ -788,6 +797,9 @@ namespace Mod
             if (resetRelationships)
             {
                 RelationshipManager.Reset(false);
+                GangProgressionManager.Reset();
+                GangRequisitionManager.Reset();
+                GangCrewManager.Reset();
             }
             if (resetOwnedVehicles)
             {
@@ -914,6 +926,9 @@ namespace Mod
             StealthManager.Dispose();
             VehicleRaceManager.Dispose();
             GangTerritoryManager.Dispose();
+            GangProgressionManager.Dispose();
+            GangRequisitionManager.Dispose();
+            GangCrewManager.Dispose();
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_BIKES, false);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_AUTO_HELMET_PLANES, false);

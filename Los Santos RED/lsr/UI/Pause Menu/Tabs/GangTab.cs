@@ -308,6 +308,15 @@ public class GangTab
             toReturn.Add(new Tuple<string, string>("Debt:", $"~r~{debtstring}~s~"));
         }
 
+        if (gr.IsMember && Player.GangProgressionManager != null && Settings.SettingsManager.GangProgressionSettings.EnableGangProgression)
+        {
+            GangStandingLevel standingLevel = Player.GangProgressionManager.GetLevel(gr.Gang);
+            int toNextLevel = Player.GangProgressionManager.GetStandingToNextLevel(gr.Gang);
+            toReturn.Add(new Tuple<string, string>("Rank:", standingLevel == null ? "-" : standingLevel.Name));
+            toReturn.Add(new Tuple<string, string>("Standing:", toNextLevel > 0
+                ? $"{Player.GangProgressionManager.GetStanding(gr.Gang)} (~y~{toNextLevel}~s~ to next)"
+                : $"{Player.GangProgressionManager.GetStanding(gr.Gang)}"));
+        }
         if (gr.IsMember && Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
         {
             toReturn.Add(new Tuple<string, string>("Kick Up:", $"${Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}"));
